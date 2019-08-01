@@ -24,7 +24,7 @@ namespace v2rayN.Forms
         {
             InitializeComponent();
             this.ShowInTaskbar = false;
-            //this.WindowState = FormWindowState.Minimized;
+            this.WindowState = FormWindowState.Minimized;
             HideForm();
             this.Text = Utils.GetVersion();
 
