@@ -112,7 +112,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].address;
+            return vmess[index].address.Trim();
         }
 
         public int port()
@@ -130,7 +130,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].id;
+            return vmess[index].id.Trim();
         }
 
         public int alterId()
@@ -148,7 +148,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].security;
+            return vmess[index].security.Trim();
         }
 
         public string remarks()
@@ -157,7 +157,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].remarks;
+            return vmess[index].remarks.Trim();
         }
         public string network()
         {
@@ -165,7 +165,7 @@ namespace v2rayN.Mode
             {
                 return Global.DefaultNetwork;
             }
-            return vmess[index].network;
+            return vmess[index].network.Trim();
         }
         public string headerType()
         {

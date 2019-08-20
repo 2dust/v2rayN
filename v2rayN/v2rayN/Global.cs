@@ -108,6 +108,14 @@ namespace v2rayN
         /// socks
         /// </summary>
         public const string socksProtocol = "socks://";
+        /// <summary>
+        /// http
+        /// </summary>
+        public const string httpProtocol = "http://";
+        /// <summary>
+        /// https
+        /// </summary>
+        public const string httpsProtocol = "https://";
 
         /// <summary>
         /// pac

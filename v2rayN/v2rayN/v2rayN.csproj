@@ -144,6 +144,8 @@
     </Compile>
     <Compile Include="Handler\V2rayUpdateHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServer.cs" />
+    <Compile Include="HttpProxyHandler\HttpWebServerB.cs" />
+    <Compile Include="HttpProxyHandler\HttpWebServerC.cs" />
     <Compile Include="HttpProxyHandler\PACFileWatcherHandle.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
     <Compile Include="HttpProxyHandler\PACListHandle.cs" />

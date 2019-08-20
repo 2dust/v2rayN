@@ -235,6 +235,31 @@ namespace v2rayN.Forms
             qrCodeControl.showQRCode(index, config);
         }
 
+        private void DisplayToolStatus()
+        {
+            var localIP = "127.0.0.1";
+            toolSslSocksPort.Text =
+            toolSslHttpPort.Text =
+            toolSslPacPort.Text = "NONE"; 
+
+            toolSslSocksPort.Text = $"{localIP}:{config.inbound[0].localPort}";
+          
+            if (config.sysAgentEnabled)
+            {
+                toolSslHttpPort.Text = $"{localIP}:{Global.sysAgentPort}";
+                if (config.listenerType == 2 || config.listenerType == 4)
+                {
+                    toolSslPacPort.Text = $"{HttpProxyHandle.GetPacUrl()}";
+                }
+            }
+        }
+        private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.ClickedItem.Text))
+            {
+                Utils.SetClipboardData(e.ClickedItem.Text);
+            }
+        }
         #endregion
 
         #region v2ray 操作
@@ -252,6 +277,7 @@ namespace v2rayN.Forms
             Global.reloadV2ray = false;
 
             ChangeSysAgent(config.sysAgentEnabled);
+            DisplayToolStatus();
         }
 
         /// <summary>
@@ -1073,7 +1099,7 @@ namespace v2rayN.Forms
                         break;
                 }
             }
-
+            DisplayToolStatus();
         }
 
         /// <summary>
@@ -1097,6 +1123,8 @@ namespace v2rayN.Forms
 
             menuSysAgentEnabled.Checked =
             menuSysAgentMode.Enabled = isChecked;
+
+            DisplayToolStatus();
         }
         #endregion
 
@@ -1365,6 +1393,7 @@ namespace v2rayN.Forms
         }
 
         #endregion
+
 
     }
 }

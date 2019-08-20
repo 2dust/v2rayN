@@ -112,6 +112,11 @@ namespace v2rayN.Handler
             //    config.pacPort = 8888;
             //}
 
+            if (config.subItem == null)
+            {
+                config.subItem = new List<SubItem>();
+            }
+
             if (config == null
                 || config.index < 0
                 || config.vmess.Count <= 0
@@ -146,6 +151,16 @@ namespace v2rayN.Handler
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Vmess;
+
+            vmessItem.address = vmessItem.address.Trim();
+            vmessItem.id = vmessItem.id.Trim();
+            vmessItem.security = vmessItem.security.Trim();
+            vmessItem.network = vmessItem.network.Trim();
+            vmessItem.headerType = vmessItem.headerType.Trim();
+            vmessItem.requestHost = vmessItem.requestHost.Trim();
+            vmessItem.path = vmessItem.path.Trim();
+            vmessItem.streamSecurity = vmessItem.streamSecurity.Trim();
+
             if (index >= 0)
             {
                 //修改
@@ -548,6 +563,11 @@ namespace v2rayN.Handler
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Shadowsocks;
+
+            vmessItem.address = vmessItem.address.Trim();
+            vmessItem.id = vmessItem.id.Trim();
+            vmessItem.security = vmessItem.security.Trim();
+           
             if (index >= 0)
             {
                 //修改
@@ -584,6 +604,9 @@ namespace v2rayN.Handler
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Socks;
+
+            vmessItem.address = vmessItem.address.Trim();
+
             if (index >= 0)
             {
                 //修改
@@ -698,6 +721,15 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 string msg;
+                //maybe sub
+                if (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol))
+                {
+                    if (AddSubItem(ref config, str) == 0)
+                    {
+                        countServers++;
+                    }
+                    continue;
+                }
                 VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(str, out msg);
                 if (vmessItem == null)
                 {
@@ -731,6 +763,32 @@ namespace v2rayN.Handler
                 return 0;
             }
             return -1;
+        }
+
+        /// <summary>
+        /// add sub
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static int AddSubItem(ref Config config, string url)
+        {
+            //already exists
+            foreach (var sub in config.subItem)
+            {
+                if (url == sub.url)
+                {
+                    return 0;
+                }
+            }
+
+            var subItem = new SubItem();
+            subItem.id = string.Empty;
+            subItem.remarks = "import sub";
+            subItem.url = url;
+            config.subItem.Add(subItem);
+
+            return SaveSubItem(ref config);
         }
 
         /// <summary>
