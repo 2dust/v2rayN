@@ -80,22 +80,23 @@ namespace v2rayN.Forms
         {
             //config.uiItem.mainQRCodeWidth = splitContainer1.SplitterDistance;
         }
-
-
-        //private const int WM_QUERYENDSESSION = 0x0011;
-        //protected override void WndProc(ref Message m)
-        //{
-        //    switch (m.Msg)
-        //    {
-        //        case WM_QUERYENDSESSION:
-        //            CloseV2ray();
-        //            m.Result = (IntPtr)1;
-        //            break;
-        //        default:
-        //            base.WndProc(ref m);
-        //            break;
-        //    }
-        //}
+        
+        private const int WM_QUERYENDSESSION = 0x0011;
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case WM_QUERYENDSESSION:
+                    Utils.SaveLog("Windows shutdown UnsetProxy");
+                    CloseV2ray();
+                    ProxySetting.UnsetProxy();
+                    m.Result = (IntPtr)1;
+                    break;
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
+        }
         #endregion
 
         #region 显示服务器 listview 和 menu
