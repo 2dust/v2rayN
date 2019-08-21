@@ -17,6 +17,7 @@ using System.Drawing;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
+using System.Security.Principal;
 
 namespace v2rayN
 {
@@ -669,6 +670,25 @@ namespace v2rayN
             {
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// IsAdministrator
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsAdministrator()
+        {
+            try
+            {
+                WindowsIdentity current = WindowsIdentity.GetCurrent();
+                WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
+                //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
+                return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         #endregion

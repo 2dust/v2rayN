@@ -145,11 +145,11 @@
     <Compile Include="Handler\V2rayUpdateHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServer.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServerB.cs" />
-    <Compile Include="HttpProxyHandler\HttpWebServerC.cs" />
     <Compile Include="HttpProxyHandler\PACFileWatcherHandle.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
     <Compile Include="HttpProxyHandler\PACListHandle.cs" />
     <Compile Include="HttpProxyHandler\PACServerHandle.cs" />
+    <Compile Include="HttpProxyHandler\ProxySetting.cs" />
     <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />
     <Compile Include="HttpProxyHandler\WebClientEx.cs">
