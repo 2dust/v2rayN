@@ -366,7 +366,9 @@ namespace v2rayN.Handler
                     {
                         remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
                     }
-                    url = string.Format("{0}:{1}",
+                    url = string.Format("{0}:{1}@{2}:{3}",
+                        vmessItem.security,
+                        vmessItem.id,
                         vmessItem.address,
                         vmessItem.port);
                     url = Utils.Base64Encode(url);

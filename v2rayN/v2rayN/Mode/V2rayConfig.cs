@@ -215,7 +215,29 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public int level { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<SocksUsersItem> users { get; set; }
     }
+
+    public class SocksUsersItem
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string user { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string pass { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int level { get; set; }
+    }
+
 
     public class Mux
     {

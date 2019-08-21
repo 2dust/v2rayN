@@ -400,6 +400,17 @@ namespace v2rayN.Handler
                     serversItem.address = config.address();
                     serversItem.port = config.port();
 
+                    if (!string.IsNullOrEmpty(config.security())
+                        && !string.IsNullOrEmpty(config.id()))
+                    {
+                        var socksUsersItem = new SocksUsersItem();
+                        socksUsersItem.user = config.security();
+                        socksUsersItem.pass = config.id();
+                        socksUsersItem.level = 1;
+
+                        serversItem.users = new List<SocksUsersItem>() { socksUsersItem };
+                    }
+
                     outbound.mux.enabled = false;
 
                     outbound.protocol = "socks";
@@ -425,7 +436,21 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                streamSettings.security = config.streamSecurity();
+                var host = config.requestHost();
+
+                //if tls
+                if (config.streamSecurity() == "tls")
+                {
+                    streamSettings.security = config.streamSecurity();
+
+                    TlsSettings tlsSettings = new TlsSettings();
+                    tlsSettings.allowInsecure = config.allowInsecure();
+                    if (!string.IsNullOrWhiteSpace(host))
+                    {
+                        tlsSettings.serverName = host;
+                    }
+                    streamSettings.tlsSettings = tlsSettings;
+                }
 
                 //streamSettings
                 switch (config.network())
@@ -463,12 +488,11 @@ namespace v2rayN.Handler
                         WsSettings wsSettings = new WsSettings();
                         wsSettings.connectionReuse = true;
 
-                        string host2 = config.requestHost();
                         string path = config.path();
-                        if (!string.IsNullOrWhiteSpace(host2))
+                        if (!string.IsNullOrWhiteSpace(host))
                         {
                             wsSettings.headers = new Headers();
-                            wsSettings.headers.Host = host2;
+                            wsSettings.headers.Host = host;
                         }
                         if (!string.IsNullOrWhiteSpace(path))
                         {
@@ -476,35 +500,34 @@ namespace v2rayN.Handler
                         }
                         streamSettings.wsSettings = wsSettings;
 
-                        TlsSettings tlsSettings = new TlsSettings();
-                        tlsSettings.allowInsecure = config.allowInsecure();
-                        if (!string.IsNullOrWhiteSpace(host2))
-                        {
-                            tlsSettings.serverName = host2;
-                        }
-                        streamSettings.tlsSettings = tlsSettings;
+                        //TlsSettings tlsSettings = new TlsSettings();
+                        //tlsSettings.allowInsecure = config.allowInsecure();
+                        //if (!string.IsNullOrWhiteSpace(host))
+                        //{
+                        //    tlsSettings.serverName = host;
+                        //}
+                        //streamSettings.tlsSettings = tlsSettings;
                         break;
                     //h2
                     case "h2":
                         HttpSettings httpSettings = new HttpSettings();
 
-                        string host3 = config.requestHost();
-                        if (!string.IsNullOrWhiteSpace(host3))
+                        if (!string.IsNullOrWhiteSpace(host))
                         {
-                            httpSettings.host = Utils.String2List(host3);
+                            httpSettings.host = Utils.String2List(host);
                         }
                         httpSettings.path = config.path();
 
                         streamSettings.httpSettings = httpSettings;
 
-                        TlsSettings tlsSettings2 = new TlsSettings();
-                        tlsSettings2.allowInsecure = config.allowInsecure();
-                        streamSettings.tlsSettings = tlsSettings2;
+                        //TlsSettings tlsSettings2 = new TlsSettings();
+                        //tlsSettings2.allowInsecure = config.allowInsecure();
+                        //streamSettings.tlsSettings = tlsSettings2;
                         break;
                     //quic
                     case "quic":
                         QuicSettings quicsettings = new QuicSettings();
-                        quicsettings.security = config.requestHost();
+                        quicsettings.security = host;
                         quicsettings.key = config.path();
                         quicsettings.header = new Header();
                         quicsettings.header.type = config.headerType();
@@ -524,9 +547,9 @@ namespace v2rayN.Handler
                             {
                                 //request填入自定义Host
                                 string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
-                                string[] arrHost = config.requestHost().Split(',');
-                                string host = string.Join("\",\"", arrHost);
-                                request = request.Replace("$requestHost$", string.Format("\"{0}\"", host));
+                                string[] arrHost = host.Split(',');
+                                string host2 = string.Join("\",\"", arrHost);
+                                request = request.Replace("$requestHost$", string.Format("\"{0}\"", host2));
                                 //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
 
                                 //填入自定义Path
@@ -1159,7 +1182,7 @@ namespace v2rayN.Handler
                         result = result.Substring(0, indexRemark);
                     }
                     //part decode
-                    int indexS = result.IndexOf(":");
+                    int indexS = result.IndexOf("@");
                     if (indexS > 0)
                     {
                     }
@@ -1168,15 +1191,22 @@ namespace v2rayN.Handler
                         result = Utils.Base64Decode(result);
                     }
 
-
-                    string[] arr21 = result.Split(':');
-                    int indexPort = result.LastIndexOf(":");
+                    string[] arr1 = result.Split('@');
+                    if (arr1.Length != 2)
+                    {
+                        return null;
+                    }
+                    string[] arr21 = arr1[0].Split(':');
+                    //string[] arr22 = arr1[1].Split(':');
+                    int indexPort = arr1[1].LastIndexOf(":");
                     if (arr21.Length != 2 || indexPort < 0)
                     {
                         return null;
                     }
-                    vmessItem.address = result.Substring(0, indexPort);
-                    vmessItem.port = Utils.ToInt(result.Substring(indexPort + 1, result.Length - (indexPort + 1)));
+                    vmessItem.address = arr1[1].Substring(0, indexPort);
+                    vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
+                    vmessItem.security = arr21[0];
+                    vmessItem.id = arr21[1];
                 }
                 else
                 {
