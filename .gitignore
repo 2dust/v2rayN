@@ -2,7 +2,7 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/v2rayN/.vs/v2rayN/v15
+/v2rayN/.vs/
 /v2rayN/v2rayN/bin/Debug/app.publish
 /v2rayN/v2rayN/bin/Debug
 /v2rayN/v2rayN/obj/Debug

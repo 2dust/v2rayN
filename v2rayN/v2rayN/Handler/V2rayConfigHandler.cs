@@ -1104,17 +1104,23 @@ namespace v2rayN.Handler
                         vmessItem.network = Global.DefaultNetwork;
                         vmessItem.headerType = Global.None;
 
+                        // v2ray 鬼才机场主们往往会各种不填，或者null，后面trim的时候会出Exception
+                        Func<String, String> check_null = nullableString => nullableString == null ? "" : nullableString;
+
                         vmessItem.configVersion = Utils.ToInt(vmessQRCode.v);
-                        vmessItem.remarks = vmessQRCode.ps;
-                        vmessItem.address = vmessQRCode.add;
+                        vmessItem.remarks = check_null(vmessQRCode.ps);
+                        vmessItem.address = check_null(vmessQRCode.add);
                         vmessItem.port = Utils.ToInt(vmessQRCode.port);
-                        vmessItem.id = vmessQRCode.id;
+                        vmessItem.id = check_null(vmessQRCode.id);
                         vmessItem.alterId = Utils.ToInt(vmessQRCode.aid);
-                        vmessItem.network = vmessQRCode.net;
-                        vmessItem.headerType = vmessQRCode.type;
-                        vmessItem.requestHost = vmessQRCode.host;
-                        vmessItem.path = vmessQRCode.path;
-                        vmessItem.streamSecurity = vmessQRCode.tls;
+                        // 上面有默认值， 不需要手动赋值空字符串
+                        if(vmessQRCode.net  != null)
+                            vmessItem.network = vmessQRCode.net;
+                        if(vmessQRCode.type != null)
+                            vmessItem.headerType = check_null(vmessQRCode.type);
+                        vmessItem.requestHost = check_null(vmessQRCode.host);
+                        vmessItem.path = check_null(vmessQRCode.host);
+                        vmessItem.streamSecurity = check_null(vmessQRCode.tls);
                     }
 
                     ConfigHandler.UpgradeServerVersion(ref vmessItem);
