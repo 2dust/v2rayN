@@ -1122,7 +1122,7 @@ namespace v2rayN.Handler
                         }
                          
                         vmessItem.requestHost = Utils.ToString(vmessQRCode.host);
-                        vmessItem.path = Utils.ToString(vmessQRCode.host);
+                        vmessItem.path = Utils.ToString(vmessQRCode.path);
                         vmessItem.streamSecurity = Utils.ToString(vmessQRCode.tls);
                     }
 
