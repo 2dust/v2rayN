@@ -225,13 +225,13 @@
     <value>447, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
-    <value>Test server delay (multiple choice)</value>
+    <value>Test server delay (multiple choice)(Ctrl+P)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>Test server speed (multiple choice)</value>
+    <value>Test server speed (multiple choice)(Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>444, 6</value>
@@ -273,7 +273,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 468</value>
+    <value>448, 490</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
