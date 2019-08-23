@@ -35,8 +35,8 @@ namespace v2rayN.Forms
         {
             if (subItem != null)
             {
-                subItem.remarks = txtRemarks.Text.Trim();
-                subItem.url = txtUrl.Text.Trim();
+                subItem.remarks = txtRemarks.Text.TrimEx();
+                subItem.url = txtUrl.Text.TrimEx();
                 subItem.enabled = chkEnabled.Checked;
             }
         }

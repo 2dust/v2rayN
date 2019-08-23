@@ -57,7 +57,7 @@ namespace v2rayN.HttpProxyHandler
 
                                 // Returns the data received from the host to the console.
                                 string returndata = Encoding.UTF8.GetString(bytes);
-                                if (!string.IsNullOrEmpty(returndata)
+                                if (!Utils.IsNullOrEmpty(returndata)
                                     && returndata.IndexOf("/pac/") >= 0
                                     && netStream.CanWrite)
                                 {

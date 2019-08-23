@@ -148,14 +148,14 @@ namespace v2rayN.Forms
         {
             //日志
             bool logEnabled = chklogEnabled.Checked;
-            string loglevel = cmbloglevel.Text.Trim();
+            string loglevel = cmbloglevel.Text.TrimEx();
 
             //Mux
             bool muxEnabled = chkmuxEnabled.Checked;
 
             //本地监听
-            string localPort = txtlocalPort.Text.Trim();
-            string protocol = cmbprotocol.Text.Trim();
+            string localPort = txtlocalPort.Text.TrimEx();
+            string protocol = cmbprotocol.Text.TrimEx();
             bool udpEnabled = chkudpEnabled.Checked;
             bool sniffingEnabled = chksniffingEnabled.Checked;
             if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
@@ -174,8 +174,8 @@ namespace v2rayN.Forms
             config.inbound[0].sniffingEnabled = sniffingEnabled;
 
             //本地监听2
-            string localPort2 = txtlocalPort2.Text.Trim();
-            string protocol2 = cmbprotocol2.Text.Trim();
+            string localPort2 = txtlocalPort2.Text.TrimEx();
+            string protocol2 = cmbprotocol2.Text.TrimEx();
             bool udpEnabled2 = chkudpEnabled2.Checked;
             bool sniffingEnabled2 = chksniffingEnabled2.Checked;
             if (chkAllowIn2.Checked)
@@ -215,7 +215,7 @@ namespace v2rayN.Forms
             config.muxEnabled = muxEnabled;
 
             //remoteDNS
-            config.remoteDNS = txtremoteDNS.Text.Trim();
+            config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
             return 0;
         }
@@ -230,9 +230,9 @@ namespace v2rayN.Forms
             string domainStrategy = cmbdomainStrategy.Text;
             string routingMode = cmbroutingMode.SelectedIndex.ToString();
 
-            string useragent = txtUseragent.Text.Trim();
-            string userdirect = txtUserdirect.Text.Trim();
-            string userblock = txtUserblock.Text.Trim();
+            string useragent = txtUseragent.Text.TrimEx();
+            string userdirect = txtUserdirect.Text.TrimEx();
+            string userblock = txtUserblock.Text.TrimEx();
 
             config.domainStrategy = domainStrategy;
             config.routingMode = routingMode;
@@ -250,12 +250,12 @@ namespace v2rayN.Forms
         /// <returns></returns>
         private int SaveKCP()
         {
-            string mtu = txtKcpmtu.Text.Trim();
-            string tti = txtKcptti.Text.Trim();
-            string uplinkCapacity = txtKcpuplinkCapacity.Text.Trim();
-            string downlinkCapacity = txtKcpdownlinkCapacity.Text.Trim();
-            string readBufferSize = txtKcpreadBufferSize.Text.Trim();
-            string writeBufferSize = txtKcpwriteBufferSize.Text.Trim();
+            string mtu = txtKcpmtu.Text.TrimEx();
+            string tti = txtKcptti.Text.TrimEx();
+            string uplinkCapacity = txtKcpuplinkCapacity.Text.TrimEx();
+            string downlinkCapacity = txtKcpdownlinkCapacity.Text.TrimEx();
+            string readBufferSize = txtKcpreadBufferSize.Text.TrimEx();
+            string writeBufferSize = txtKcpwriteBufferSize.Text.TrimEx();
             bool congestion = chkKcpcongestion.Checked;
 
             if (Utils.IsNullOrEmpty(mtu) || !Utils.IsNumberic(mtu)
@@ -289,7 +289,7 @@ namespace v2rayN.Forms
             Utils.SetAutoRun(chkAutoRun.Checked);
 
             //自定义GFWList
-            config.urlGFWList = txturlGFWList.Text.Trim();
+            config.urlGFWList = txturlGFWList.Text.TrimEx();
 
             config.allowLANConn = chkAllowLANConn.Checked;
 
