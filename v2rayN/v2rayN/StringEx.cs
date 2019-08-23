@@ -43,5 +43,10 @@ namespace v2rayN
                 yield return line;
             }
         }
+
+        public static string TrimEx(this string value)
+        {
+            return value == null ? string.Empty : value.Trim();
+        }
     }
 }

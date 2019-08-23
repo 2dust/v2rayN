@@ -88,7 +88,8 @@ namespace v2rayN.Forms
             {
                 case WM_QUERYENDSESSION:
                     Utils.SaveLog("Windows shutdown UnsetProxy");
-                    CloseV2ray();
+                    //CloseV2ray();
+                    ConfigHandler.ToJsonFile(config);
                     ProxySetting.UnsetProxy();
                     m.Result = (IntPtr)1;
                     break;
@@ -256,7 +257,7 @@ namespace v2rayN.Forms
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(e.ClickedItem.Text))
+            if (!Utils.IsNullOrEmpty(e.ClickedItem.Text))
             {
                 Utils.SetClipboardData(e.ClickedItem.Text);
             }
@@ -1283,7 +1284,7 @@ namespace v2rayN.Forms
             ShowForm();
 
             string result = Convert.ToString(e.UserState);
-            if (string.IsNullOrEmpty(result))
+            if (Utils.IsNullOrEmpty(result))
             {
                 UI.Show(UIRes.I18N("NoValidQRcodeFound"));
             }
@@ -1320,8 +1321,8 @@ namespace v2rayN.Forms
 
             for (int k = 1; k <= config.subItem.Count; k++)
             {
-                string id = config.subItem[k - 1].id.Trim();
-                string url = config.subItem[k - 1].url.Trim();
+                string id = config.subItem[k - 1].id.TrimEx();
+                string url = config.subItem[k - 1].url.TrimEx();
                 string hashCode = $"{k}->";
                 if (config.subItem[k - 1].enabled == false)
                 {

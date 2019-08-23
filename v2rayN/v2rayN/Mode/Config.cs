@@ -112,7 +112,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].address.Trim();
+            return vmess[index].address.TrimEx();
         }
 
         public int port()
@@ -130,7 +130,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].id.Trim();
+            return vmess[index].id.TrimEx();
         }
 
         public int alterId()
@@ -148,7 +148,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].security.Trim();
+            return vmess[index].security.TrimEx();
         }
 
         public string remarks()
@@ -157,7 +157,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].remarks.Trim();
+            return vmess[index].remarks.TrimEx();
         }
         public string network()
         {
@@ -165,7 +165,7 @@ namespace v2rayN.Mode
             {
                 return Global.DefaultNetwork;
             }
-            return vmess[index].network.Trim();
+            return vmess[index].network.TrimEx();
         }
         public string headerType()
         {
@@ -173,7 +173,7 @@ namespace v2rayN.Mode
             {
                 return Global.None;
             }
-            return vmess[index].headerType.Replace(" ", "").Trim();
+            return vmess[index].headerType.Replace(" ", "").TrimEx();
         }
         public string requestHost()
         {
@@ -181,7 +181,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].requestHost.Replace(" ", "").Trim();
+            return vmess[index].requestHost.Replace(" ", "").TrimEx();
         }
         public string path()
         {
@@ -189,7 +189,7 @@ namespace v2rayN.Mode
             {
                 return string.Empty;
             }
-            return vmess[index].path.Replace(" ", "").Trim();
+            return vmess[index].path.Replace(" ", "").TrimEx();
         }
         public string streamSecurity()
         {

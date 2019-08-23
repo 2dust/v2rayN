@@ -152,14 +152,14 @@ namespace v2rayN.Handler
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Vmess;
 
-            vmessItem.address = vmessItem.address.Trim();
-            vmessItem.id = vmessItem.id.Trim();
-            vmessItem.security = vmessItem.security.Trim();
-            vmessItem.network = vmessItem.network.Trim();
-            vmessItem.headerType = vmessItem.headerType.Trim();
-            vmessItem.requestHost = vmessItem.requestHost.Trim();
-            vmessItem.path = vmessItem.path.Trim();
-            vmessItem.streamSecurity = vmessItem.streamSecurity.Trim();
+            vmessItem.address = vmessItem.address.TrimEx();
+            vmessItem.id = vmessItem.id.TrimEx();
+            vmessItem.security = vmessItem.security.TrimEx();
+            vmessItem.network = vmessItem.network.TrimEx();
+            vmessItem.headerType = vmessItem.headerType.TrimEx();
+            vmessItem.requestHost = vmessItem.requestHost.TrimEx();
+            vmessItem.path = vmessItem.path.TrimEx();
+            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
 
             if (index >= 0)
             {
@@ -328,7 +328,7 @@ namespace v2rayN.Handler
                 {
                     VmessQRCode vmessQRCode = new VmessQRCode();
                     vmessQRCode.v = vmessItem.configVersion.ToString();
-                    vmessQRCode.ps = vmessItem.remarks.Trim(); //备注也许很长 ;
+                    vmessQRCode.ps = vmessItem.remarks.TrimEx(); //备注也许很长 ;
                     vmessQRCode.add = vmessItem.address;
                     vmessQRCode.port = vmessItem.port.ToString();
                     vmessQRCode.id = vmessItem.id;
@@ -566,9 +566,9 @@ namespace v2rayN.Handler
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Shadowsocks;
 
-            vmessItem.address = vmessItem.address.Trim();
-            vmessItem.id = vmessItem.id.Trim();
-            vmessItem.security = vmessItem.security.Trim();
+            vmessItem.address = vmessItem.address.TrimEx();
+            vmessItem.id = vmessItem.id.TrimEx();
+            vmessItem.security = vmessItem.security.TrimEx();
            
             if (index >= 0)
             {
@@ -607,7 +607,7 @@ namespace v2rayN.Handler
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Socks;
 
-            vmessItem.address = vmessItem.address.Trim();
+            vmessItem.address = vmessItem.address.TrimEx();
 
             if (index >= 0)
             {

@@ -212,7 +212,7 @@ namespace v2rayN
         {
             try
             {
-                plainText = plainText.Trim()
+                plainText = plainText.TrimEx()
                   .Replace("\n", "")
                   .Replace("\r\n", "")
                   .Replace("\r", "")
@@ -247,6 +247,18 @@ namespace v2rayN
             catch
             {
                 return 0;
+            }
+        }
+
+        public static string ToString(object obj)
+        {
+            try
+            {
+                return (obj == null ? string.Empty : obj.ToString());
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
 
@@ -304,7 +316,7 @@ namespace v2rayN
             }
 
             //清除要验证字符串中的空格
-            //ip = ip.Trim();
+            //ip = ip.TrimEx();
             //可能是CIDR
             if (ip.IndexOf(@"/") > 0)
             {
@@ -340,7 +352,7 @@ namespace v2rayN
             }
 
             //清除要验证字符串中的空格
-            //domain = domain.Trim();
+            //domain = domain.TrimEx();
 
             //模式字符串
             string pattern = @"^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$";
