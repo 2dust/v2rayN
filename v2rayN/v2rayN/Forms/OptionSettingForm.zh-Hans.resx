@@ -288,4 +288,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="chkEnableHotkey.Text" xml:space="preserve">
+    <value>启用快捷键(Ctrl+P ping 选中服务器/ Ctrl+T 测速选中服务器)</value>
+  </data>
 </root>

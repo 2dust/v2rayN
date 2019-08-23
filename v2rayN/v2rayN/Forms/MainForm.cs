@@ -80,7 +80,7 @@ namespace v2rayN.Forms
         {
             //config.uiItem.mainQRCodeWidth = splitContainer1.SplitterDistance;
         }
-        
+
         private const int WM_QUERYENDSESSION = 0x0011;
         protected override void WndProc(ref Message m)
         {
@@ -359,6 +359,22 @@ namespace v2rayN.Forms
                     case Keys.A:
                         menuSelectAll_Click(null, null);
                         break;
+                }
+                if (config.enableHotkey)
+                {
+                    if (e.KeyCode == Keys.T)
+                    {
+                        // Speed test selected servers
+                        GetLvSelectedIndex();
+                        ServerSpeedTest();
+                    }
+                    else if (e.KeyCode == Keys.P)
+                    {
+                        // Ping selected servers
+                        GetLvSelectedIndex();
+                        ClearTestResult();
+                        bgwPing.RunWorkerAsync();
+                    }
                 }
             }
             switch (e.KeyCode)
@@ -884,6 +900,7 @@ namespace v2rayN.Forms
             }
             catch
             {
+
             }
         }
 
@@ -1394,8 +1411,7 @@ namespace v2rayN.Forms
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
         }
 
+
         #endregion
-
-
     }
 }

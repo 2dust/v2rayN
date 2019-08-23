@@ -82,6 +82,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkEnableHotkey = new System.Windows.Forms.CheckBox();
             this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.txturlGFWList = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -473,6 +474,7 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.chkEnableHotkey);
             this.tabPage7.Controls.Add(this.chkAllowLANConn);
             this.tabPage7.Controls.Add(this.txturlGFWList);
             this.tabPage7.Controls.Add(this.label13);
@@ -480,6 +482,12 @@
             resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableHotkey
+            // 
+            resources.ApplyResources(this.chkEnableHotkey, "chkEnableHotkey");
+            this.chkEnableHotkey.Name = "chkEnableHotkey";
+            this.chkEnableHotkey.UseVisualStyleBackColor = true;
             // 
             // chkAllowLANConn
             // 
@@ -619,5 +627,6 @@
         private System.Windows.Forms.CheckBox chksniffingEnabled;
         private System.Windows.Forms.CheckBox chksniffingEnabled2;
         private System.Windows.Forms.Button btnSetDefRountingRule;
+        private System.Windows.Forms.CheckBox chkEnableHotkey;
     }
 }

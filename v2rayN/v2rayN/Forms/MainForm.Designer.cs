@@ -82,8 +82,10 @@
             this.toolSslSocksPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslSocksPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslHttpPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslHttpPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -111,8 +113,6 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.toolSslHttpPortLab = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -147,6 +147,7 @@
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
             this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
             this.lvServers.MultiSelect = false;
@@ -507,6 +508,11 @@
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
             this.toolSslBlank1.Spring = true;
             // 
+            // toolSslHttpPortLab
+            // 
+            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
+            resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
+            // 
             // toolSslHttpPort
             // 
             this.toolSslHttpPort.Name = "toolSslHttpPort";
@@ -517,6 +523,11 @@
             this.toolSslBlank2.Name = "toolSslBlank2";
             resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
             this.toolSslBlank2.Spring = true;
+            // 
+            // toolSslPacPortLab
+            // 
+            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
+            resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
             // 
             // toolSslPacPort
             // 
@@ -701,16 +712,6 @@
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
-            // 
-            // toolSslHttpPortLab
-            // 
-            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
-            resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
-            // 
-            // toolSslPacPortLab
-            // 
-            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
-            resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
             // 
             // MainForm
             // 

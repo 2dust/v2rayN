@@ -92,6 +92,11 @@ namespace v2rayN.Mode
         public bool allowLANConn { get; set; }
 
         /// <summary>
+        /// 启用快捷键
+        /// </summary>
+        public bool enableHotkey{ get; set; }
+
+        /// <summary>
         /// 自定义远程DNS
         /// </summary>
         public string remoteDNS { get; set; }

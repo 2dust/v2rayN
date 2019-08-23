@@ -293,6 +293,9 @@ namespace v2rayN.Forms
 
             config.allowLANConn = chkAllowLANConn.Checked;
 
+            //快捷键
+            config.enableHotkey = chkEnableHotkey.Checked;
+
             return 0;
         }
 
