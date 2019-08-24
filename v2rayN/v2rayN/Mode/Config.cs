@@ -92,6 +92,32 @@ namespace v2rayN.Mode
         public bool allowLANConn { get; set; }
 
         /// <summary>
+        /// 启用实时网速和流量统计
+        /// </summary>
+        public bool enableStatistics { get; set; }
+
+        /// <summary>
+        /// 视图刷新率
+        /// </summary>
+        public int statisticsFreshRate { get; set; }
+
+        /// <summary>
+        /// 统计数据缓存天数 [0, 30]
+        ///     * 0 关闭单独每天使用流量的缓存
+        ///     * 无论如何不会关闭总流量的缓存
+        /// </summary>
+        private uint cacheDays;
+        public uint CacheDays {
+            get { return cacheDays; }
+            set 
+            {
+                if (value < 0) cacheDays = 0;
+                else if (value > 30) cacheDays = 30;
+                else cacheDays = value;
+            }
+        }
+
+        /// <summary>
         /// 自定义远程DNS
         /// </summary>
         public string remoteDNS { get; set; }

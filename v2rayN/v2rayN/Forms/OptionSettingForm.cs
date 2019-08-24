@@ -106,6 +106,24 @@ namespace v2rayN.Forms
 
             chkAllowLANConn.Checked = config.allowLANConn;
 
+
+            var enableStatistics = config.enableStatistics;
+            chkEnableStatistics.Checked = enableStatistics;
+
+            tbCacheDays.Enabled = enableStatistics;
+            tbCacheDays.Text = config.CacheDays.ToString();
+
+
+
+            cbFreshrate.DataSource = new ComboItem[]
+            {
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = UIRes.I18N("QuickFresh")},
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = UIRes.I18N("MediumFresh")},
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = UIRes.I18N("SlowFresh")},
+            };
+
+            cbFreshrate.DisplayMember = "Text";
+            cbFreshrate.ValueMember = "ID";
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -293,6 +311,14 @@ namespace v2rayN.Forms
 
             config.allowLANConn = chkAllowLANConn.Checked;
 
+            config.enableStatistics = chkEnableStatistics.Checked;
+
+            uint days = 0;
+            var valid = uint.TryParse(tbCacheDays.Text, out days);
+            if (!valid)
+                days = 7;
+            config.CacheDays = days;
+
             return 0;
         }
 
@@ -357,5 +383,11 @@ namespace v2rayN.Forms
         {
             labRoutingTips.Text = text;
         }
+    }
+
+    class ComboItem
+    {
+        public int ID { get; set; }
+        public string Text { get; set; }
     }
 }

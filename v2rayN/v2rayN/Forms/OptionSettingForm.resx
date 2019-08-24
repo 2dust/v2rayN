@@ -1482,6 +1482,135 @@
   <data name="&gt;&gt;tabPage6.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 82</value>
+  </data>
+  <data name="cbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 20</value>
+  </data>
+  <data name="cbFreshrate.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="&gt;&gt;cbFreshrate.Name" xml:space="preserve">
+    <value>cbFreshrate</value>
+  </data>
+  <data name="&gt;&gt;cbFreshrate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbFreshrate.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;cbFreshrate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbCacheDays.Location" type="System.Drawing.Point, System.Drawing">
+    <value>516, 109</value>
+  </data>
+  <data name="tbCacheDays.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 21</value>
+  </data>
+  <data name="tbCacheDays.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;tbCacheDays.Name" xml:space="preserve">
+    <value>tbCacheDays</value>
+  </data>
+  <data name="&gt;&gt;tbCacheDays.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbCacheDays.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;tbCacheDays.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lbFreshrate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbFreshrate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>30, 90</value>
+  </data>
+  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="lbFreshrate.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="lbFreshrate.Text" xml:space="preserve">
+    <value>Statistics freshrate</value>
+  </data>
+  <data name="&gt;&gt;lbFreshrate.Name" xml:space="preserve">
+    <value>lbFreshrate</value>
+  </data>
+  <data name="&gt;&gt;lbFreshrate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbFreshrate.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;lbFreshrate.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lbCacheDays.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbCacheDays.Location" type="System.Drawing.Point, System.Drawing">
+    <value>30, 118</value>
+  </data>
+  <data name="lbCacheDays.Size" type="System.Drawing.Size, System.Drawing">
+    <value>455, 12</value>
+  </data>
+  <data name="lbCacheDays.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="lbCacheDays.Text" xml:space="preserve">
+    <value>Cache days(between 0 to 30, 0 disable cache indivitual days statistic data)</value>
+  </data>
+  <data name="&gt;&gt;lbCacheDays.Name" xml:space="preserve">
+    <value>lbCacheDays</value>
+  </data>
+  <data name="&gt;&gt;lbCacheDays.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbCacheDays.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;lbCacheDays.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="chkEnableStatistics.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkEnableStatistics.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkEnableStatistics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 60</value>
+  </data>
+  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>390, 16</value>
+  </data>
+  <data name="chkEnableStatistics.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="chkEnableStatistics.Text" xml:space="preserve">
+    <value>Enable Statistics(Realtime net speed and traffic data amount)</value>
+  </data>
+  <data name="&gt;&gt;chkEnableStatistics.Name" xml:space="preserve">
+    <value>chkEnableStatistics</value>
+  </data>
+  <data name="&gt;&gt;chkEnableStatistics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkEnableStatistics.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;chkEnableStatistics.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="chkAllowLANConn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1507,13 +1636,13 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAllowLANConn.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="txturlGFWList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>30, 132</value>
+    <value>32, 205</value>
   </data>
   <data name="txturlGFWList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>468, 21</value>
+    <value>544, 21</value>
   </data>
   <data name="txturlGFWList.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1528,13 +1657,13 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;txturlGFWList.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>30, 111</value>
+    <value>30, 176</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>431, 12</value>
@@ -1555,7 +1684,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="chkAutoRun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1582,7 +1711,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAutoRun.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="tabPage7.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1707,6 +1836,9 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="configBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1721,6 +1853,12 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="&gt;&gt;configBindingSource.Name" xml:space="preserve">
+    <value>configBindingSource</value>
+  </data>
+  <data name="&gt;&gt;configBindingSource.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>OptionSettingForm</value>

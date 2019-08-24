@@ -319,4 +319,13 @@
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
     <value>更新V2rayCore成功！正在重启服务...</value>
   </data>
+  <data name="MediumFresh" xml:space="preserve">
+    <value>中等</value>
+  </data>
+  <data name="QuickFresh" xml:space="preserve">
+    <value>快</value>
+  </data>
+  <data name="SlowFresh" xml:space="preserve">
+    <value>慢</value>
+  </data>
 </root>

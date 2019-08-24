@@ -4,6 +4,7 @@ using System.IO;
 using v2rayN.Mode;
 using System.Net;
 using System.Text;
+using System.Linq;
 
 namespace v2rayN.Handler
 {
@@ -77,6 +78,9 @@ namespace v2rayN.Handler
 
                 //dns
                 dns(config, ref v2rayConfig);
+
+                // TODO: 统计配置
+                statistic(config, ref v2rayConfig);
 
                 Utils.ToJsonFile(v2rayConfig, fileName);
 
@@ -609,6 +613,51 @@ namespace v2rayN.Handler
             }
             catch
             {
+            }
+            return 0;
+        }
+
+        public static int statistic(Config config, ref V2rayConfig v2rayConfig)
+        {
+            if (config.enableStatistics)
+            {
+                var tag = Global.InboundAPITagName;
+                var apiObj = new Mode.API();
+                var policyObj = new Mode.Policy();
+                var policySystemSetting = new Mode.SystemPolicy();
+
+                string[] services = { "StatsService" };
+
+                v2rayConfig.stats = new Stats();
+
+                apiObj.tag = tag;
+                apiObj.services =  services.ToList();
+                v2rayConfig.api = apiObj;
+
+                policySystemSetting.statsInboundDownlink = true;
+                policySystemSetting.statsInboundUplink = true;
+                policyObj.system = policySystemSetting;
+                v2rayConfig.policy = policyObj;
+                if(!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
+                {
+                    var apiInbound = new Mode.Inbounds();
+                    var apiInboundSettings = new Mode.Inboundsettings();
+                    apiInbound.tag = tag;
+                    apiInbound.listen = Global.Loopback;
+                    apiInbound.port = config.port();
+                    apiInbound.protocol = Global.InboundAPIProtocal;
+                    apiInboundSettings.address = Global.Loopback;
+                    apiInbound.settings = apiInboundSettings;
+                    v2rayConfig.inbounds.Add(apiInbound);
+                }
+                if(!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
+                {
+                    var apiRoutingRule = new Mode.RulesItem();
+                    apiRoutingRule.inboundTag = tag;
+                    apiRoutingRule.outboundTag = tag;
+                    apiRoutingRule.type = "field";
+                    v2rayConfig.routing.rules.Add(apiRoutingRule);
+                }
             }
             return 0;
         }

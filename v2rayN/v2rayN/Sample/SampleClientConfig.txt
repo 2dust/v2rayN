@@ -1,25 +1,55 @@
 ﻿{
+	"stats": {},
+	"api": {
+		"tag": "api",
+		"services": [
+			"StatsService"
+		]
+	},
+	"policy": {
+		"system": {
+			"statsInboundUplink": true,
+			"statsInboundDownlink": true
+		}
+	},
+	"log": {
+		"access": "",
+		"error": "",
+		"loglevel": "error"
+	},
 	"log": {
 		"access": "Vaccess.log",
 		"error": "Verror.log",
 		"loglevel": "warning"
 	},
-	"inbounds": [{
-		"port": 10808,
-		"protocol": "socks",
-		"listen": "127.0.0.1",
-		"settings": {
-			"auth": "noauth",
-			"udp": true
+	"inbounds": [
+		{
+			"tag": "proxy",
+			"port": 10808,
+			"protocol": "socks",
+			"listen": "127.0.0.1",
+			"settings": {
+				"auth": "noauth",
+				"udp": true
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls"
+				]
+			}
 		},
-		"sniffing": {
-			"enabled": true,
-			"destOverride": [
-				"http",
-				"tls"
-			]
-		}
-	}],
+		{
+            "listen": "127.0.0.1",
+            "port": 10085,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "tag": "api"
+        }
+	],
 	"outbounds": [{
 			"tag": "proxy",
 			"protocol": "vmess",
@@ -66,6 +96,12 @@
 	],
 	"routing": {
 		"domainStrategy": "IPIfNonMatch",
-		"rules": []
+		"rules": [
+				{
+                    "inboundTag": "api",
+                    "outboundTag": "api",
+                    "type": "field"
+                }
+		]
 	}
 }

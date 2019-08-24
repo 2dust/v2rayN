@@ -141,6 +141,19 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
+
+        public const string InboundAPITagName = "api";
+        public const string InboundProxyTagName = "proxy";
+        public const string Loopback = "127.0.0.1";
+        public const string InboundAPIProtocal = "dokodemo-door";
+        public const uint InboundAPIPort = 10085;
+        public enum StatisticsFreshRate
+        {
+            quick = 1000,
+            medium = 2000,
+            slow = 3000
+        }
+
         #endregion
 
         #region 全局变量

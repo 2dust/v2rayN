@@ -142,6 +142,7 @@
     <Compile Include="Forms\SubSettingControl.Designer.cs">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\V2rayUpdateHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServer.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServerB.cs" />
@@ -290,6 +291,7 @@
     <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\v2rayN.Mode.Config.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -18,6 +18,8 @@ namespace v2rayN.Forms
         private V2rayUpdateHandle v2rayUpdateHandle2;
         private List<int> lvSelecteds = new List<int>();
 
+        private StatisticsHandler statistics;
+
         #region Window 事件
 
         public MainForm()
@@ -39,7 +41,24 @@ namespace v2rayN.Forms
             ConfigHandler.LoadConfig(ref config);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
+            statistics = new StatisticsHandler(config, 
+                (ulong totalUp, ulong totalDown, ulong up, ulong down) => 
+                {
+                    toolSslBlank4.Text = down.ToString();
+                });
+        }
 
+        private void MainForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (statistics == null) return;
+            if((sender as Form).Visible)
+            {
+                statistics.UpdateUI = true;
+            }
+            else
+            {
+                statistics.UpdateUI = false;
+            }
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -90,6 +109,7 @@ namespace v2rayN.Forms
                     Utils.SaveLog("Windows shutdown UnsetProxy");
                     //CloseV2ray();
                     ConfigHandler.ToJsonFile(config);
+                    statistics.saveToFile();
                     ProxySetting.UnsetProxy();
                     m.Result = (IntPtr)1;
                     break;
@@ -1408,5 +1428,6 @@ namespace v2rayN.Forms
 
 
         #endregion
+
     }
 }

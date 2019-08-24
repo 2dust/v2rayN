@@ -88,6 +88,8 @@
             this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -487,7 +489,9 @@
             this.toolSslBlank2,
             this.toolSslPacPortLab,
             this.toolSslPacPort,
-            this.toolSslBlank3});
+            this.toolSslBlank3,
+            this.toolSslServerSpeed,
+            this.toolSslBlank4});
             resources.ApplyResources(this.ssMain, "ssMain");
             this.ssMain.Name = "ssMain";
             this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
@@ -539,6 +543,16 @@
             this.toolSslBlank3.Name = "toolSslBlank3";
             resources.ApplyResources(this.toolSslBlank3, "toolSslBlank3");
             this.toolSslBlank3.Spring = true;
+            // 
+            // toolSslServerSpeed
+            // 
+            this.toolSslServerSpeed.Name = "toolSslServerSpeed";
+            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
+            // 
+            // toolSslBlank4
+            // 
+            this.toolSslBlank4.Name = "toolSslBlank4";
+            resources.ApplyResources(this.toolSslBlank4, "toolSslBlank4");
             // 
             // panel1
             // 
@@ -727,6 +741,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -831,6 +846,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolSslSocksPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslHttpPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslPacPortLab;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslServerSpeed;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslBlank4;
     }
 }
 

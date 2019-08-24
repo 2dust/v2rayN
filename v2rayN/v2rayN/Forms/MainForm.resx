@@ -273,7 +273,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 490</value>
+    <value>448, 468</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -567,7 +567,7 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 17</value>
+    <value>257, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 17</value>
@@ -579,7 +579,7 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 17</value>
+    <value>257, 17</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 17</value>
@@ -591,7 +591,19 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 17</value>
+    <value>257, 17</value>
+  </data>
+  <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 17</value>
+  </data>
+  <data name="toolSslServerSpeed.Text" xml:space="preserve">
+    <value>SPEED</value>
+  </data>
+  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 17</value>
+  </data>
+  <data name="toolSslBlank4.Text" xml:space="preserve">
+    <value>N/A</value>
   </data>
   <data name="ssMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 151</value>
@@ -1182,6 +1194,18 @@
     <value>toolSslBlank3</value>
   </data>
   <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
+    <value>toolSslServerSpeed</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank4.Name" xml:space="preserve">
+    <value>toolSslBlank4</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
