@@ -57,13 +57,14 @@ namespace v2rayN.Forms
                 {
                     double up_amount = 0.0, down_amount;
                     string up_unit = "", down_unit;
+
+                    up /= (ulong)(config.statisticsFreshRate / 1000f);
+                    down /= (ulong)(config.statisticsFreshRate / 1000f);
+
                     Utils.ToHumanReadable(up, out up_amount, out up_unit);
                     Utils.ToHumanReadable(down, out down_amount, out down_unit);
                     up_unit += "/s";
                     down_unit += "/s";
-
-                    up_amount /= config.statisticsFreshRate / 1000f;
-                    down_amount /= config.statisticsFreshRate / 1000f;
 
                     toolSslBlank4.Text = string.Format(
                         "{4}: {0:f2} {1} | {5}: {2:f2} {3}", 
