@@ -273,7 +273,7 @@ namespace v2rayN
         {
             var factor = 1024u;
             var KBs = amount / factor;
-            if(amount / factor > 0)
+            if(KBs > 0)
             {
                 // multi KB
                 var MBs = KBs / factor;
