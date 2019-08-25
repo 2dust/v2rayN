@@ -173,6 +173,12 @@
   <data name="menuRemoveServer.Text" xml:space="preserve">
     <value>Remove selected server (multiple choice) (Delete)</value>
   </data>
+  <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>447, 22</value>
+  </data>
+  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
+    <value>Remove duplicate server</value>
+  </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
@@ -273,7 +279,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 468</value>
+    <value>448, 512</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -1345,6 +1351,12 @@
   </data>
   <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveDuplicateServer.Name" xml:space="preserve">
+    <value>menuRemoveDuplicateServer</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveDuplicateServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>

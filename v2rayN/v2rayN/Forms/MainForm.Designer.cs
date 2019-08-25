@@ -115,6 +115,7 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
+            this.menuRemoveDuplicateServer = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -172,6 +173,7 @@
             this.menuScanScreen,
             this.toolStripSeparator1,
             this.menuRemoveServer,
+            this.menuRemoveDuplicateServer,
             this.menuCopyServer,
             this.menuSetDefaultServer,
             this.toolStripSeparator3,
@@ -727,6 +729,12 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
+            // menuRemoveDuplicateServer
+            // 
+            this.menuRemoveDuplicateServer.Name = "menuRemoveDuplicateServer";
+            resources.ApplyResources(this.menuRemoveDuplicateServer, "menuRemoveDuplicateServer");
+            this.menuRemoveDuplicateServer.Click += new System.EventHandler(this.menuRemoveDuplicateServer_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -848,6 +856,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolSslPacPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslServerSpeed;
         private System.Windows.Forms.ToolStripStatusLabel toolSslBlank4;
+        private System.Windows.Forms.ToolStripMenuItem menuRemoveDuplicateServer;
     }
 }
 

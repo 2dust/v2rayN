@@ -580,6 +580,22 @@ namespace v2rayN.Forms
 
         }
 
+        private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
+        {
+            List<Mode.VmessItem> servers = null;
+            Utils.DedupServerList(config.vmess, out servers);
+            if (servers != null)
+            {
+                config.vmess = servers;
+            }
+            //刷新
+            RefreshServers();
+            LoadV2ray();
+
+            // save to config file
+            ConfigHandler.ToJsonFile(config);
+        }
+
         private void menuCopyServer_Click(object sender, EventArgs e)
         {
             int index = GetLvSelectedIndex();
@@ -1565,6 +1581,5 @@ namespace v2rayN.Forms
 
 
         #endregion
-
     }
 }

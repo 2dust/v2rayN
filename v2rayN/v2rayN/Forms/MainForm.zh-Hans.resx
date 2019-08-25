@@ -453,4 +453,7 @@
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>代理速度</value>
   </data>
+  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
+    <value>移除重复的服务器</value>
+  </data>
 </root>

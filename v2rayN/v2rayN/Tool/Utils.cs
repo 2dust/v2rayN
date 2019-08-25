@@ -311,6 +311,20 @@ namespace v2rayN
             }
         }
 
+        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
+        {
+            var list = new List<Mode.VmessItem>();
+            foreach (var item in source)
+            {
+                if(!list.Exists(i => item.address == i.address && item.port == i.port))
+                {
+                    list.Add(item);
+                }
+            }
+
+            result = list;
+        }
+
         #endregion
 
 
