@@ -20,6 +20,17 @@ namespace v2rayN.Forms
 
         private StatisticsHandler statistics;
 
+        class ListViewFlickerFree: ListView
+        {
+            public ListViewFlickerFree()
+            { 
+                SetStyle(ControlStyles.OptimizedDoubleBuffer
+                        | ControlStyles.AllPaintingInWmPaint
+                        , true);
+                UpdateStyles();
+            }
+        }
+
         #region Window 事件
 
         public MainForm()
@@ -42,15 +53,73 @@ namespace v2rayN.Forms
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
             statistics = new StatisticsHandler(config, 
-                (ulong totalUp, ulong totalDown, ulong up, ulong down) => 
+                (ulong totalUp, ulong totalDown, ulong up, ulong down, List<Mode.ServerStatistics> statistics) => 
                 {
-                    toolSslBlank4.Text = down.ToString();
+                    double up_amount = 0.0, down_amount;
+                    string up_unit = "", down_unit;
+                    Utils.ToHumanReadable(up, out up_amount, out up_unit);
+                    Utils.ToHumanReadable(down, out down_amount, out down_unit);
+                    up_unit += "/s";
+                    down_unit += "/s";
+
+                    up_amount /= config.statisticsFreshRate / 1000f;
+                    down_amount /= config.statisticsFreshRate / 1000f;
+
+                    toolSslBlank4.Text = string.Format(
+                        "{4}: {0:f2} {1} | {5}: {2:f2} {3}", 
+                        up_amount, 
+                        up_unit, 
+                        down_amount, 
+                        down_unit, 
+                        UIRes.I18N("uploadSpeed"), 
+                        UIRes.I18N("downloadSpeed")
+                    );
+
+
+                    List<string[]> datas = new List<string[]>();
+                    for (int i= 0; i < config.vmess.Count; i++)
+                    {
+                        string totalUp_ = string.Empty,
+                                totalDown_ = string.Empty,
+                                todayUp_ = string.Empty,
+                                todayDown_ = string.Empty;
+                        var index = statistics.FindIndex(item_ => (config.vmess[i].address == item_.address && config.vmess[i].port == item_.port));
+                        if (index != -1)
+                        {
+                            Func<ulong, string> human_fy = (amount) =>
+                            {
+                                double result;
+                                string unit;
+                                Utils.ToHumanReadable(amount, out result, out unit);
+                                return $"{string.Format("{0:f2}", result)}{unit}";
+                            };
+                            totalUp_ = human_fy(statistics[index].totalUp);
+                            totalDown_ = human_fy(statistics[index].totalDown);
+                            todayUp_ = human_fy(statistics[index].todayUp);
+                            todayDown_ = human_fy(statistics[index].todayDown);
+                        }
+
+                        datas.Add(new string[] { totalUp_, totalDown_, todayUp_, todayDown_ });
+                    }
+
+                    lvServers.Invoke((MethodInvoker)delegate
+                    {
+                        lvServers.SuspendLayout();
+                        for (int i =0; i< datas.Count; i++)
+                        {
+                            lvServers.Items[i].SubItems[7].Text = datas[i][0];
+                            lvServers.Items[i].SubItems[8].Text = datas[i][1];
+                            lvServers.Items[i].SubItems[9].Text = datas[i][2];
+                            lvServers.Items[i].SubItems[10].Text = datas[i][3];
+                        }
+                        lvServers.ResumeLayout();
+                    });
                 });
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
         {
-            if (statistics == null) return;
+            if (statistics == null || !statistics.Enable) return;
             if((sender as Form).Visible)
             {
                 statistics.UpdateUI = true;
@@ -78,8 +147,14 @@ namespace v2rayN.Forms
             {
                 e.Cancel = true;
 
+                statistics.saveToFile();
+
                 HideForm();
                 return;
+            }
+            if(e.CloseReason == CloseReason.ApplicationExitCall)
+            {
+                statistics.saveToFile();
             }
         }
 
@@ -109,7 +184,8 @@ namespace v2rayN.Forms
                     Utils.SaveLog("Windows shutdown UnsetProxy");
                     //CloseV2ray();
                     ConfigHandler.ToJsonFile(config);
-                    statistics.saveToFile();
+                    if(statistics!=null && statistics.Enable)
+                        statistics.saveToFile();
                     ProxySetting.UnsetProxy();
                     m.Result = (IntPtr)1;
                     break;
@@ -152,6 +228,16 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvPort"), 50, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70, HorizontalAlignment.Left);
+
+            if(statistics != null && statistics.Enable)
+            {
+                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTodayDownloadDataAmount"), 70, HorizontalAlignment.Left);
+                this.Width = 1250;
+            }
+
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 100, HorizontalAlignment.Left);
 
@@ -167,14 +253,38 @@ namespace v2rayN.Forms
             for (int k = 0; k < config.vmess.Count; k++)
             {
                 string def = string.Empty;
+                string totalUp = string.Empty, 
+                        totalDown = string.Empty, 
+                        todayUp = string.Empty, 
+                        todayDown = string.Empty;
                 if (config.index.Equals(k))
                 {
                     def = "√";
                 }
 
                 VmessItem item = config.vmess[k];
-                ListViewItem lvItem = new ListViewItem(new string[]
+
+                ListViewItem lvItem = null;
+                if (statistics != null && statistics.Enable)
                 {
+                    var index = statistics.Statistic.FindIndex(item_ => item_.address == item.address);
+                    if (index != -1)
+                    {
+                        Func<ulong, string> human_fy = (amount) =>
+                        {
+                            double result;
+                            string unit;
+                            Utils.ToHumanReadable(amount, out result, out unit);
+                            return $"{string.Format("{0:f2}", result)}{unit}";
+                        };
+                        totalUp = human_fy(statistics.Statistic[index].totalUp);
+                        totalDown = human_fy(statistics.Statistic[index].totalDown);
+                        todayUp = human_fy(statistics.Statistic[index].todayUp);
+                        todayDown = human_fy(statistics.Statistic[index].todayDown);
+                    }
+
+                    lvItem = new ListViewItem(new string[]
+                    {
                     def,
                     ((EConfigType)item.configType).ToString(),
                     item.remarks,
@@ -184,10 +294,37 @@ namespace v2rayN.Forms
                     //item.alterId.ToString(),
                     item.security,
                     item.network,
+                    totalUp,
+                    totalDown,
+                    todayUp,
+                    todayDown,
                     item.getSubRemarks(config),
                     item.testResult
-                });
-                lvServers.Items.Add(lvItem);
+                    });
+                }
+                else
+                {
+                    lvItem = new ListViewItem(new string[]
+                   {
+                    def,
+                    ((EConfigType)item.configType).ToString(),
+                    item.remarks,
+                    item.address,
+                    item.port.ToString(),
+                    //item.id,
+                    //item.alterId.ToString(),
+                    item.security,
+                    item.network,
+                    //totalUp,
+                    //totalDown,
+                    //todayUp,
+                    //todayDown,
+                    item.getSubRemarks(config),
+                    item.testResult
+                   });
+                }
+                
+                if(lvItem!=null) lvServers.Items.Add(lvItem);
             }
 
             //if (lvServers.Items.Count > 0)

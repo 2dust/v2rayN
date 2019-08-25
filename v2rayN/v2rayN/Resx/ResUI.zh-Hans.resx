@@ -328,4 +328,22 @@
   <data name="SlowFresh" xml:space="preserve">
     <value>慢</value>
   </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>今日下载</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>今日上传</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>总下载</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>总上传</value>
+  </data>
+  <data name="uploadSpeed" xml:space="preserve">
+    <value>上传</value>
+  </data>
 </root>

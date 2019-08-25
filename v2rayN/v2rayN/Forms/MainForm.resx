@@ -305,7 +305,7 @@
     <value>0, 0</value>
   </data>
   <data name="lvServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>726, 331</value>
+    <value>638, 331</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
@@ -315,7 +315,7 @@
     <value>lvServers</value>
   </data>
   <data name="&gt;&gt;lvServers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>v2rayN.Forms.MainForm+ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -375,10 +375,10 @@
     <value>100</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>986, 331</value>
+    <value>898, 331</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>726</value>
+    <value>638</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -501,7 +501,7 @@
     <value>0, 66</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 351</value>
+    <value>904, 351</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -537,7 +537,7 @@
     <value>Vertical</value>
   </data>
   <data name="txtMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>986, 134</value>
+    <value>898, 134</value>
   </data>
   <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -567,7 +567,7 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 17</value>
+    <value>227, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 17</value>
@@ -579,7 +579,7 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 17</value>
+    <value>227, 17</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 17</value>
@@ -591,7 +591,7 @@
     <value>0, 17</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 17</value>
+    <value>227, 17</value>
   </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 17</value>
@@ -609,7 +609,7 @@
     <value>3, 151</value>
   </data>
   <data name="ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>986, 22</value>
+    <value>898, 22</value>
   </data>
   <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -636,7 +636,7 @@
     <value>0, 417</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 176</value>
+    <value>904, 176</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -663,7 +663,7 @@
     <value>0, 56</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 10</value>
+    <value>904, 10</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -867,7 +867,7 @@
     <value>0, 0</value>
   </data>
   <data name="tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 56</value>
+    <value>904, 56</value>
   </data>
   <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -894,7 +894,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>992, 593</value>
+    <value>904, 593</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

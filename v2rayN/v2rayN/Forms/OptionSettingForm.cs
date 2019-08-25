@@ -114,16 +114,31 @@ namespace v2rayN.Forms
             tbCacheDays.Text = config.CacheDays.ToString();
 
 
-
-            cbFreshrate.DataSource = new ComboItem[]
+            var cbSource = new ComboItem[]
             {
                 new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = UIRes.I18N("QuickFresh")},
                 new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = UIRes.I18N("MediumFresh")},
                 new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = UIRes.I18N("SlowFresh")},
             };
+            cbFreshrate.DataSource = cbSource;
 
             cbFreshrate.DisplayMember = "Text";
             cbFreshrate.ValueMember = "ID";
+
+            switch(config.statisticsFreshRate)
+            {
+                case (int)Global.StatisticsFreshRate.quick:
+                    cbFreshrate.SelectedItem = cbSource[0];
+                    break;
+                case (int)Global.StatisticsFreshRate.medium:
+                    cbFreshrate.SelectedItem = cbSource[1];
+                    break;
+                case (int)Global.StatisticsFreshRate.slow:
+                    cbFreshrate.SelectedItem = cbSource[2];
+                    break;
+            }
+
+            cbFreshrate.Enabled = enableStatistics;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -318,6 +333,8 @@ namespace v2rayN.Forms
             if (!valid)
                 days = 7;
             config.CacheDays = days;
+
+            config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
 
             return 0;
         }

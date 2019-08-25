@@ -83,7 +83,9 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.cbFreshrate = new System.Windows.Forms.ComboBox();
             this.tbCacheDays = new System.Windows.Forms.TextBox();
+            this.lbFreshrate = new System.Windows.Forms.Label();
             this.lbCacheDays = new System.Windows.Forms.Label();
             this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
             this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
@@ -93,8 +95,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbFreshrate = new System.Windows.Forms.ComboBox();
-            this.lbFreshrate = new System.Windows.Forms.Label();
             this.configBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -494,10 +494,21 @@
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // cbFreshrate
+            // 
+            this.cbFreshrate.FormattingEnabled = true;
+            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
+            this.cbFreshrate.Name = "cbFreshrate";
+            // 
             // tbCacheDays
             // 
             resources.ApplyResources(this.tbCacheDays, "tbCacheDays");
             this.tbCacheDays.Name = "tbCacheDays";
+            // 
+            // lbFreshrate
+            // 
+            resources.ApplyResources(this.lbFreshrate, "lbFreshrate");
+            this.lbFreshrate.Name = "lbFreshrate";
             // 
             // lbCacheDays
             // 
@@ -550,17 +561,6 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
-            // cbFreshrate
-            // 
-            this.cbFreshrate.FormattingEnabled = true;
-            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
-            this.cbFreshrate.Name = "cbFreshrate";
-            // 
-            // lbFreshrate
-            // 
-            resources.ApplyResources(this.lbFreshrate, "lbFreshrate");
-            this.lbFreshrate.Name = "lbFreshrate";
             // 
             // configBindingSource
             // 

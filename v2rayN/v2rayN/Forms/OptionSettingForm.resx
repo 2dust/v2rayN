@@ -1486,7 +1486,7 @@
     <value>161, 82</value>
   </data>
   <data name="cbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
+    <value>58, 20</value>
   </data>
   <data name="cbFreshrate.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1591,13 +1591,13 @@
     <value>15, 60</value>
   </data>
   <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>390, 16</value>
+    <value>558, 16</value>
   </data>
   <data name="chkEnableStatistics.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
   </data>
   <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>Enable Statistics(Realtime net speed and traffic data amount)</value>
+    <value>Enable Statistics(Realtime net speed and traffic data amount. Need restart v2rayN client)</value>
   </data>
   <data name="&gt;&gt;chkEnableStatistics.Name" xml:space="preserve">
     <value>chkEnableStatistics</value>

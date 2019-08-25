@@ -106,6 +106,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DOWN.
+        /// </summary>
+        internal static string downloadSpeed {
+            get {
+                return ResourceManager.GetString("downloadSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Whether to download? {0}.
         /// </summary>
         internal static string DownloadYesNo {
@@ -318,6 +327,42 @@ namespace v2rayN.Resx {
         internal static string LvTestResults {
             get {
                 return ResourceManager.GetString("LvTestResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today download traffic.
+        /// </summary>
+        internal static string LvTodayDownloadDataAmount {
+            get {
+                return ResourceManager.GetString("LvTodayDownloadDataAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today upload traffic.
+        /// </summary>
+        internal static string LvTodayUploadDataAmount {
+            get {
+                return ResourceManager.GetString("LvTodayUploadDataAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total download traffic.
+        /// </summary>
+        internal static string LvTotalDownloadDataAmount {
+            get {
+                return ResourceManager.GetString("LvTotalDownloadDataAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total upload traffic.
+        /// </summary>
+        internal static string LvTotalUploadDataAmount {
+            get {
+                return ResourceManager.GetString("LvTotalUploadDataAmount", resourceCulture);
             }
         }
         
@@ -688,6 +733,15 @@ namespace v2rayN.Resx {
         internal static string SuccessfullyImportedServerViaScan {
             get {
                 return ResourceManager.GetString("SuccessfullyImportedServerViaScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UP.
+        /// </summary>
+        internal static string uploadSpeed {
+            get {
+                return ResourceManager.GetString("uploadSpeed", resourceCulture);
             }
         }
     }

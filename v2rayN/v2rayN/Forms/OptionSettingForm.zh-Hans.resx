@@ -288,11 +288,8 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
-  <data name="chkEnableHotkey.Text" xml:space="preserve">
-    <value>启用快捷键(Ctrl+P ping 选中服务器/ Ctrl+T 测速选中服务器)</value>
-  </data>
   <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计（实时网速显示和使用流量显示）</value>
+    <value>启用统计（实时网速显示和使用流量显示，需要重启v2rayN客户端）</value>
   </data>
   <data name="lbCacheDays.Text" xml:space="preserve">
     <value>缓存天数（0-30， 0关闭缓存单独每天的数据使用情况）</value>

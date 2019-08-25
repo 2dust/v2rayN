@@ -450,4 +450,7 @@
   <data name="tsbClose.Text" xml:space="preserve">
     <value>  关闭  </value>
   </data>
+  <data name="toolSslServerSpeed.Text" xml:space="preserve">
+    <value>代理速度</value>
+  </data>
 </root>
