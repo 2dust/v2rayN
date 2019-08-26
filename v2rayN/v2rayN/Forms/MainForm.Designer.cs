@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lvServers = new System.Windows.Forms.ListView();
+            this.lvServers = new v2rayN.Forms.MainForm.ListViewFlickerFree();
             this.cmsLv = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddShadowsocksServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,10 +82,14 @@
             this.toolSslSocksPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslSocksPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslHttpPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslHttpPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -111,8 +115,7 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.toolSslHttpPortLab = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuRemoveDuplicateServer = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -147,6 +150,7 @@
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
             this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
             this.lvServers.MultiSelect = false;
@@ -169,6 +173,7 @@
             this.menuScanScreen,
             this.toolStripSeparator1,
             this.menuRemoveServer,
+            this.menuRemoveDuplicateServer,
             this.menuCopyServer,
             this.menuSetDefaultServer,
             this.toolStripSeparator3,
@@ -486,7 +491,9 @@
             this.toolSslBlank2,
             this.toolSslPacPortLab,
             this.toolSslPacPort,
-            this.toolSslBlank3});
+            this.toolSslBlank3,
+            this.toolSslServerSpeed,
+            this.toolSslBlank4});
             resources.ApplyResources(this.ssMain, "ssMain");
             this.ssMain.Name = "ssMain";
             this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
@@ -507,6 +514,11 @@
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
             this.toolSslBlank1.Spring = true;
             // 
+            // toolSslHttpPortLab
+            // 
+            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
+            resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
+            // 
             // toolSslHttpPort
             // 
             this.toolSslHttpPort.Name = "toolSslHttpPort";
@@ -518,6 +530,11 @@
             resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
             this.toolSslBlank2.Spring = true;
             // 
+            // toolSslPacPortLab
+            // 
+            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
+            resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
+            // 
             // toolSslPacPort
             // 
             this.toolSslPacPort.Name = "toolSslPacPort";
@@ -528,6 +545,16 @@
             this.toolSslBlank3.Name = "toolSslBlank3";
             resources.ApplyResources(this.toolSslBlank3, "toolSslBlank3");
             this.toolSslBlank3.Spring = true;
+            // 
+            // toolSslServerSpeed
+            // 
+            this.toolSslServerSpeed.Name = "toolSslServerSpeed";
+            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
+            // 
+            // toolSslBlank4
+            // 
+            this.toolSslBlank4.Name = "toolSslBlank4";
+            resources.ApplyResources(this.toolSslBlank4, "toolSslBlank4");
             // 
             // panel1
             // 
@@ -702,15 +729,11 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
-            // toolSslHttpPortLab
+            // menuRemoveDuplicateServer
             // 
-            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
-            resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
-            // 
-            // toolSslPacPortLab
-            // 
-            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
-            resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
+            this.menuRemoveDuplicateServer.Name = "menuRemoveDuplicateServer";
+            resources.ApplyResources(this.menuRemoveDuplicateServer, "menuRemoveDuplicateServer");
+            this.menuRemoveDuplicateServer.Click += new System.EventHandler(this.menuRemoveDuplicateServer_Click);
             // 
             // MainForm
             // 
@@ -726,6 +749,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -750,7 +774,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtMsgBox;
-        private System.Windows.Forms.ListView lvServers;
+        private v2rayN.Forms.MainForm.ListViewFlickerFree lvServers;
         private System.Windows.Forms.NotifyIcon notifyMain;
         private System.Windows.Forms.ContextMenuStrip cmsMain;
         private System.Windows.Forms.ToolStripMenuItem menuExit;
@@ -830,6 +854,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolSslSocksPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslHttpPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslPacPortLab;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslServerSpeed;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslBlank4;
+        private System.Windows.Forms.ToolStripMenuItem menuRemoveDuplicateServer;
     }
 }
 

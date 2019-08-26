@@ -40,6 +40,15 @@ namespace v2rayN.Handler
 
                 ////默认监听端口
                 //config.pacPort = 8888;
+
+                // 默认缓存七天
+                config.CacheDays = 7;
+
+                // 默认不开启统计
+                config.enableStatistics = false;
+
+                // 默认中等刷新率
+                config.statisticsFreshRate = (int)Global.StatisticsFreshRate.medium;
             }
 
             //本地监听

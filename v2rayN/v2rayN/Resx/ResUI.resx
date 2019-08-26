@@ -319,4 +319,31 @@
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
     <value>Update V2rayCore successfully! Restarting service...</value>
   </data>
+  <data name="MediumFresh" xml:space="preserve">
+    <value>MediumFresh</value>
+  </data>
+  <data name="QuickFresh" xml:space="preserve">
+    <value>QuickFresh</value>
+  </data>
+  <data name="SlowFresh" xml:space="preserve">
+    <value>SlowFresh</value>
+  </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>DOWN</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Today download traffic</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Today upload traffic</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total download traffic</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total upload traffic</value>
+  </data>
+  <data name="uploadSpeed" xml:space="preserve">
+    <value>UP</value>
+  </data>
 </root>

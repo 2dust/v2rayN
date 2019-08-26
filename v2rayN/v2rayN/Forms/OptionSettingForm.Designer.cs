@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionSettingForm));
             this.btnClose = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -82,6 +83,11 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.cbFreshrate = new System.Windows.Forms.ComboBox();
+            this.tbCacheDays = new System.Windows.Forms.TextBox();
+            this.lbFreshrate = new System.Windows.Forms.Label();
+            this.lbCacheDays = new System.Windows.Forms.Label();
+            this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
             this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.txturlGFWList = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -89,6 +95,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.configBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -102,6 +109,7 @@
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.configBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -473,6 +481,11 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.cbFreshrate);
+            this.tabPage7.Controls.Add(this.tbCacheDays);
+            this.tabPage7.Controls.Add(this.lbFreshrate);
+            this.tabPage7.Controls.Add(this.lbCacheDays);
+            this.tabPage7.Controls.Add(this.chkEnableStatistics);
             this.tabPage7.Controls.Add(this.chkAllowLANConn);
             this.tabPage7.Controls.Add(this.txturlGFWList);
             this.tabPage7.Controls.Add(this.label13);
@@ -480,6 +493,33 @@
             resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // cbFreshrate
+            // 
+            this.cbFreshrate.FormattingEnabled = true;
+            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
+            this.cbFreshrate.Name = "cbFreshrate";
+            // 
+            // tbCacheDays
+            // 
+            resources.ApplyResources(this.tbCacheDays, "tbCacheDays");
+            this.tbCacheDays.Name = "tbCacheDays";
+            // 
+            // lbFreshrate
+            // 
+            resources.ApplyResources(this.lbFreshrate, "lbFreshrate");
+            this.lbFreshrate.Name = "lbFreshrate";
+            // 
+            // lbCacheDays
+            // 
+            resources.ApplyResources(this.lbCacheDays, "lbCacheDays");
+            this.lbCacheDays.Name = "lbCacheDays";
+            // 
+            // chkEnableStatistics
+            // 
+            resources.ApplyResources(this.chkEnableStatistics, "chkEnableStatistics");
+            this.chkEnableStatistics.Name = "chkEnableStatistics";
+            this.chkEnableStatistics.UseVisualStyleBackColor = true;
             // 
             // chkAllowLANConn
             // 
@@ -522,6 +562,10 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // configBindingSource
+            // 
+            this.configBindingSource.DataSource = typeof(v2rayN.Mode.Config);
+            // 
             // OptionSettingForm
             // 
             resources.ApplyResources(this, "$this");
@@ -553,6 +597,7 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.configBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -619,5 +664,11 @@
         private System.Windows.Forms.CheckBox chksniffingEnabled;
         private System.Windows.Forms.CheckBox chksniffingEnabled2;
         private System.Windows.Forms.Button btnSetDefRountingRule;
+        private System.Windows.Forms.CheckBox chkEnableStatistics;
+        private System.Windows.Forms.TextBox tbCacheDays;
+        private System.Windows.Forms.Label lbCacheDays;
+        private System.Windows.Forms.ComboBox cbFreshrate;
+        private System.Windows.Forms.Label lbFreshrate;
+        private System.Windows.Forms.BindingSource configBindingSource;
     }
 }

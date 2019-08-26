@@ -262,6 +262,69 @@ namespace v2rayN
             }
         }
 
+        /// <summary>
+        /// byte 转成 有两位小数点的 方便阅读的数据
+        ///     比如 2.50 MB
+        /// </summary>
+        /// <param name="amount">bytes</param>
+        /// <param name="result">转换之后的数据</param>
+        /// <param name="unit">单位</param>
+        public static void ToHumanReadable(ulong amount, out double result, out string unit)
+        {
+            var factor = 1024u;
+            var KBs = amount / factor;
+            if(KBs > 0)
+            {
+                // multi KB
+                var MBs = KBs / factor;
+                if(MBs > 0)
+                {
+                    // multi MB
+                    var GBs = MBs / factor;
+                    if(GBs > 0)
+                    {
+                        // multi GB
+                        var TBs = GBs / factor;
+                        if(TBs > 0)
+                        {
+                            // 你是魔鬼吗？ 用这么多流量
+                            result = TBs + GBs % factor / (factor + 0.0);
+                            unit = "TB";
+                            return;
+                        }
+                        result = GBs + MBs % factor / (factor + 0.0);
+                        unit = "GB";
+                        return;
+                    }
+                    result = MBs + KBs % factor / (factor + 0.0);
+                    unit = "MB";
+                    return;
+                }
+                result = KBs + amount % factor / (factor + 0.0);
+                unit = "KB";
+                return;
+            } 
+            else
+            {
+                result = amount;
+                unit = "Byte";
+            }
+        }
+
+        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
+        {
+            var list = new List<Mode.VmessItem>();
+            foreach (var item in source)
+            {
+                if(!list.Exists(i => item.address == i.address && item.port == i.port))
+                {
+                    list.Add(item);
+                }
+            }
+
+            result = list;
+        }
+
         #endregion
 
 

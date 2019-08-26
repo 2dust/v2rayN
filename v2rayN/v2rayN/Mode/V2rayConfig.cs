@@ -21,6 +21,43 @@ namespace v2rayN.Mode
         /// </summary>
         public List<Outbounds> outbounds { get; set; }
 
+        /// 网速统计
+        /// 使用v2ray api功能
+        /// 
+        /// routing->rules 需要加上这一条
+        /// {
+        ///     "inboundTag": [
+        ///         "api"
+        ///     ],
+        ///     "outboundTag": "api",
+        ///     "type": "field"
+        /// }
+
+        /// <summary>
+        /// 统计需要， 空对象
+        /// </summary>
+        public Stats stats { get; set; }
+
+        /// <summary>
+        /// 需要tag和services
+        /// "api": {
+        ///     "tag": "api",
+        ///     "services": [
+        ///         "StatsService"
+        ///     ]
+        /// }
+        /// </summary>
+        public API api { get; set; }
+
+        /// <summary>
+        /// policy 都设置为true；
+        /// "system": {
+        ///     "statsInboundUplink": true,
+        ///     "statsInboundDownlink": true
+        /// }
+        /// </summary>
+        public Policy policy;
+
         /// <summary>
         /// DNS 配置
         /// </summary>
@@ -29,6 +66,25 @@ namespace v2rayN.Mode
         /// 路由配置
         /// </summary>
         public Routing routing { get; set; }
+    }
+
+    public class Stats { };
+
+    public class API
+    {
+        public string tag { get; set; }
+        public List<string> services { get; set; }
+    }
+
+    public class Policy
+    {
+        public SystemPolicy system;
+    }
+
+    public class SystemPolicy
+    {
+        public bool statsInboundUplink;
+        public bool statsInboundDownlink;
     }
 
     public class Log
@@ -49,6 +105,7 @@ namespace v2rayN.Mode
 
     public class Inbounds
     {
+        public string tag { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -91,6 +148,11 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string ip { get; set; }
+
+        /// <summary>
+        /// api 使用
+        /// </summary>
+        public string address { get; set; }
 
         /// <summary>
         /// 
@@ -273,6 +335,8 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string port { get; set; }
+
+        public string inboundTag { get; set; }
         /// <summary>
         /// 
         /// </summary>
