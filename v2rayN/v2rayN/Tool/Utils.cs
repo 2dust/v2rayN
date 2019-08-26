@@ -316,7 +316,7 @@ namespace v2rayN
             var list = new List<Mode.VmessItem>();
             foreach (var item in source)
             {
-                if(!list.Exists(i => item.address == i.address && item.port == i.port))
+                if(!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
                 {
                     list.Add(item);
                 }

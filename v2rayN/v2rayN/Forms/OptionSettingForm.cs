@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
@@ -326,6 +327,7 @@ namespace v2rayN.Forms
 
             config.allowLANConn = chkAllowLANConn.Checked;
 
+            var lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
 
             uint days = 0;
@@ -336,6 +338,15 @@ namespace v2rayN.Forms
 
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
 
+            if(lastEnableStatistics != config.enableStatistics)
+            {
+                /// https://stackoverflow.com/questions/779405/how-do-i-restart-my-c-sharp-winform-application
+                // Shut down the current app instance.
+                Application.Exit();
+
+                // Restart the app passing "/restart [processId]" as cmd line args
+                Process.Start(Application.ExecutablePath, "/restart " + Process.GetCurrentProcess().Id);
+            }
             return 0;
         }
 
