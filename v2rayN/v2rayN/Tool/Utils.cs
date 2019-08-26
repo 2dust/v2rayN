@@ -316,7 +316,7 @@ namespace v2rayN
             var list = new List<Mode.VmessItem>();
             foreach (var item in source)
             {
-                if(!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
+                if(!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path && item.requestHost == i.requestHost))
                 {
                     list.Add(item);
                 }
@@ -432,6 +432,15 @@ namespace v2rayN
         public static bool IsMatch(string input, string pattern)
         {
             return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
+        }
+
+        public static bool IsIdenticalServer(Mode.ServerStatistics a, Mode.ServerStatistics b)
+        {
+            return (a.address == b.address
+                    && a.port == b.port
+                    && a.path == b.path
+                    && a.host == b.host
+                );
         }
 
         #endregion

@@ -86,7 +86,7 @@ namespace v2rayN.Forms
                         totalDown_ = string.Empty,
                         todayUp_ = string.Empty,
                         todayDown_ = string.Empty;
-                var index = statistics.FindIndex(item_ => (config.vmess[i].address == item_.address && config.vmess[i].port == item_.port && config.vmess[i].path == item_.path));
+                var index = statistics.FindIndex(item_ => Utils.IsIdenticalServer(item_, new ServerStatistics(config.vmess[i].remarks, config.vmess[i].address, config.vmess[i].port, config.vmess[i].path, config.vmess[i].requestHost, 0, 0, 0, 0)));
                 if (index != -1)
                 {
                     Func<ulong, string> human_fy = (amount) =>
