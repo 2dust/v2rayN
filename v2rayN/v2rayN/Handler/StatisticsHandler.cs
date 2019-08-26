@@ -62,7 +62,7 @@ namespace v2rayN.Handler
             DeleteExpiredLog();
             foreach (var server in config.vmess)
             {
-                var statistic = new ServerStatistics(server.remarks, server.address, server.port, 0, 0, 0, 0);
+                var statistic = new ServerStatistics(server.remarks, server.address, server.port, server.path, 0, 0, 0, 0);
                 Statistic.Add(statistic);
             }
 
@@ -211,7 +211,7 @@ namespace v2rayN.Handler
                     overallWriter.WriteLine($"DOWN {string.Format("{0:f2}", down_amount)}{down_unit} {TotalDown}");
                     foreach(var s in Statistic)
                     {
-                        overallWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.totalUp} {s.totalDown}");
+                        overallWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.path} {s.totalUp} {s.totalDown}");
                     }
                 }
             }
@@ -230,7 +230,7 @@ namespace v2rayN.Handler
                     dailyWriter.WriteLine($"LastUpdate {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                     foreach (var s in Statistic)
                     {
-                        dailyWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.todayUp} {s.todayDown}");
+                        dailyWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.path} {s.todayUp} {s.todayDown}");
                     }
                 }
             }
@@ -282,8 +282,9 @@ namespace v2rayN.Handler
                                 var name = datas[1];
                                 var address = datas[2];
                                 var port = int.Parse(datas[3]);
-                                var totalUp = ulong.Parse(datas[4]);
-                                var totalDown = ulong.Parse(datas[5]);
+                                var path = datas[4];
+                                var totalUp = ulong.Parse(datas[5]);
+                                var totalDown = ulong.Parse(datas[6]);
 
                                 var index = Statistic.FindIndex(item => item.address == address && item.port == port);
                                 if (index != -1)
@@ -293,7 +294,7 @@ namespace v2rayN.Handler
                                 }
                                 else
                                 {
-                                    var s = new Mode.ServerStatistics(name, address, port, totalUp, totalDown, 0, 0);
+                                    var s = new Mode.ServerStatistics(name, address, port, path, totalUp, totalDown, 0, 0);
                                     Statistic.Add(s);
                                 }
                             }
@@ -325,8 +326,9 @@ namespace v2rayN.Handler
                                 var name = datas[1];
                                 var address = datas[2];
                                 var port = int.Parse(datas[3]);
-                                var todayUp = ulong.Parse(datas[4]);
-                                var todayDown = ulong.Parse(datas[5]);
+                                var path = datas[4];
+                                var todayUp = ulong.Parse(datas[5]);
+                                var todayDown = ulong.Parse(datas[6]);
 
                                 var index = Statistic.FindIndex(item => item.address == address && item.port == port);
                                 if (index != -1)
@@ -336,7 +338,7 @@ namespace v2rayN.Handler
                                 }
                                 else
                                 {
-                                    var s = new Mode.ServerStatistics(name, address, port, 0, 0, todayUp, todayDown);
+                                    var s = new Mode.ServerStatistics(name, address, port, path, 0, 0, todayUp, todayDown);
                                     Statistic.Add(s);
                                 }
                             }

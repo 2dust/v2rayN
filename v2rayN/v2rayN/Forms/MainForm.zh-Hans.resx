@@ -456,4 +456,7 @@
   <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
     <value>移除重复的服务器</value>
   </data>
+  <data name="toolSslBlank4.Text" xml:space="preserve">
+    <value>未启用</value>
+  </data>
 </root>
