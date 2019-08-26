@@ -307,7 +307,7 @@ namespace v2rayN
             else
             {
                 result = amount;
-                unit = "Byte";
+                unit = "B";
             }
         }
 

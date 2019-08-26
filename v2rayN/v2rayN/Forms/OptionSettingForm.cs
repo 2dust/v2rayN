@@ -111,7 +111,6 @@ namespace v2rayN.Forms
             var enableStatistics = config.enableStatistics;
             chkEnableStatistics.Checked = enableStatistics;
 
-            tbCacheDays.Enabled = enableStatistics;
             tbCacheDays.Text = config.CacheDays.ToString();
 
 
@@ -139,7 +138,6 @@ namespace v2rayN.Forms
                     break;
             }
 
-            cbFreshrate.Enabled = enableStatistics;
         }
 
         private void btnOK_Click(object sender, EventArgs e)

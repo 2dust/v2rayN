@@ -496,6 +496,7 @@
             // 
             // cbFreshrate
             // 
+            this.cbFreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFreshrate.FormattingEnabled = true;
             resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
             this.cbFreshrate.Name = "cbFreshrate";
