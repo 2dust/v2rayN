@@ -96,7 +96,10 @@ namespace v2rayN.Handler
         public void Close()
         {
             exitFlag_ = true;
-            connector_.Kill();
+            if (!connector_.HasExited)
+            {
+                connector_.Kill();
+            }
         }
 
         public void run()
