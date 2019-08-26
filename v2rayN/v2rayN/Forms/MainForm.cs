@@ -1020,6 +1020,9 @@ namespace v2rayN.Forms
 
             this.Visible = false;
             this.Close();
+
+            statistics.Close();
+
             //this.Dispose();
             //System.Environment.Exit(System.Environment.ExitCode);
             Application.Exit();

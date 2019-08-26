@@ -47,6 +47,8 @@ namespace v2rayN.Handler
 
         private string logPath_;
 
+        private bool exitFlag_;  // true to close workThread_
+
         public StatisticsHandler(Config config, Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> update)
         {
             config_ = config;
@@ -55,6 +57,7 @@ namespace v2rayN.Handler
             updateFunc_ = update;
             logPath_ = Utils.GetPath($"{Global.StatisticLogDirectory}\\");
             Statistic = new List<Mode.ServerStatistics>();
+            exitFlag_ = false;
 
             DeleteExpiredLog();
             foreach (var server in config.vmess)
@@ -90,11 +93,17 @@ namespace v2rayN.Handler
             workThread_.Start();
         }
 
+        public void Close()
+        {
+            exitFlag_ = true;
+            connector_.Kill();
+        }
+
         public void run()
         {
             try
             {
-                while (true)
+                while (!exitFlag_)
                 {
                     if (enabled_)
                     {
