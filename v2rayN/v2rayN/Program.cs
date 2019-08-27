@@ -52,7 +52,7 @@ namespace v2rayN
         {
             try
             {
-                string resourceName = "v2rayN." + new AssemblyName(args.Name).Name + ".dll";
+                string resourceName = "v2rayN.LIB." + new AssemblyName(args.Name).Name + ".dll";
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
                 {
                     if (stream == null)
