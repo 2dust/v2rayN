@@ -9,6 +9,7 @@
 /v2rayN/.vs/v2rayN/DesignTimeBuild
 /v2rayN/v2rayN/bin/Release
 /v2rayN/v2rayN/obj/Release
+/v2rayN/packages
 .vs/ProjectSettings.json
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json

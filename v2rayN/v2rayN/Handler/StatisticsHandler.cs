@@ -5,18 +5,20 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+
 using v2rayN.Mode;
+using v2rayN.Protos.Statistics;
+
+using Grpc.Core;
 
 namespace v2rayN.Handler
 {
     class StatisticsHandler
     {
-        private Config config_;
-        private const string cliName_ = "v2ctl.exe";
-        private string args_ = "";
+        private Mode.Config config_;
 
-        private Process connector_;
-
+        private Channel channel_;
+        private StatsService.StatsServiceClient client_;
         private Thread workThread_;
 
         Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> updateFunc_;
@@ -44,7 +46,7 @@ namespace v2rayN.Handler
 
         private bool exitFlag_;  // true to close workThread_
 
-        public StatisticsHandler(Config config, Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> update)
+        public StatisticsHandler(Mode.Config config, Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> update)
         {
             config_ = config;
             enabled_ = config.enableStatistics;
@@ -63,40 +65,23 @@ namespace v2rayN.Handler
 
             loadFromFile();
 
-            var fullPath = Utils.GetPath(cliName_);
-
-            if (!File.Exists(fullPath))
-            {
-                connector_ = null;
-                return;
-            }
-
-            // .\v2ctl.exe api --server="127.0.0.1:port" StatsService.QueryStats "reset:true"
-            args_ = string.Format("api --server=\"127.0.0.1:{0}\" StatsService.QueryStats \"reset:true\"", Global.InboundAPIPort);
-
-            connector_ = new Process();
-            connector_.StartInfo.FileName = fullPath;
-            connector_.StartInfo.Arguments = args_;
-            connector_.StartInfo.RedirectStandardOutput = true;
-            connector_.StartInfo.UseShellExecute = false;
-            connector_.StartInfo.CreateNoWindow = true;
-            
+            grpcInit();
 
             workThread_ = new Thread(new ThreadStart(run));
             workThread_.Start();
         }
 
+        private void grpcInit ()
+        {
+            channel_ = new Channel($"127.0.0.1:{Global.InboundAPIPort}", ChannelCredentials.Insecure);
+            channel_.ConnectAsync();
+            client_ = new StatsService.StatsServiceClient(channel_);
+        }
+
         public void Close()
         {
-            try
-            {
-                exitFlag_ = true;
-                if (!connector_.HasExited)
-                {
-                    connector_.Kill();
-                }
-            }
-            catch { }
+            exitFlag_ = true;
+            channel_.ShutdownAsync();
         }
 
         public void run()
@@ -105,18 +90,18 @@ namespace v2rayN.Handler
             {
                 while (!exitFlag_)
                 {
-                    if (enabled_)
+                    if (enabled_ && channel_.State == ChannelState.Ready)
                     {
+                        var res = client_.QueryStats(new QueryStatsRequest() { Pattern = "", Reset = true });
+
                         var addr = config_.address();
                         var port = config_.port();
                         var cur = Statistic.FindIndex(item => item.address == addr && item.port == port);
-                        connector_.Start();
-                        string output = connector_.StandardOutput.ReadToEnd();
-                        UInt64 up = 0;
-                        UInt64 down = 0;
+                        ulong up = 0,
+                             down = 0;
 
                         //TODO: parse output
-                        parseOutput(output, out up, out down);
+                        parseOutput(res.Stat, out up, out down);
 
                         Up = up;
                         Down = down;
@@ -135,48 +120,41 @@ namespace v2rayN.Handler
                         if (UpdateUI)
                             updateFunc_(TotalUp, TotalDown, Up, Down, Statistic);
                         Thread.Sleep(config_.statisticsFreshRate);
+                        channel_.ConnectAsync();
                     }
                 }
             }
             catch {  }
         }
 
-        public void parseOutput(string source, out UInt64 up, out UInt64 down)
+        public void parseOutput(Google.Protobuf.Collections.RepeatedField<Stat> source, out ulong up, out ulong down)
         {
-            // (?<=name: ")(.*?)(?=")|(?<=value: )(.*?)
-            var datas = Regex.Matches(source, "(?<=name: \")(?<name>.*?)(?=\").*?(?<=value: )(?<value>.*?)(?=>)", RegexOptions.Singleline);
 
             up = 0; down = 0;
 
-            foreach(Match match in datas)
+            foreach(var stat in source)
             {
-                var g = match.Groups;
-                var name = g["name"].Value;
-                var value = g["value"].Value;
+                var name = stat.Name;
+                var value = stat.Value;
                 var nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var type = "";
 
                 name = name.Trim();
-                value = value.Trim();
 
                 name = nStr[1];
                 type = nStr[3];
 
-                try
+                if (name == Global.InboundProxyTagName)
                 {
-                    if (name == Global.InboundProxyTagName)
+                    if (type == "uplink")
                     {
-                        if (type == "uplink")
-                        {
-                            up = UInt64.Parse(value);
-                        }
-                        else if (type == "downlink")
-                        {
-                            down = UInt64.Parse(value);
-                        }
+                        up = (ulong)value;
+                    }
+                    else if (type == "downlink")
+                    {
+                        down = (ulong)value;
                     }
                 }
-                catch { }
             }
         }
 

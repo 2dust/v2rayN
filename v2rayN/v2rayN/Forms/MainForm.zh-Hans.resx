@@ -395,13 +395,13 @@
   </data>
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
-        QDfSDbQvuSb1AicFjJrwkxcN0FIolOuamv5VE2E+gLaPayWchEcE+hhTXVPhIoQmDcFYbKpoJtwEdX4X
-        jgIrXfTwnzb6dBw22BaJVdjJmWQs1/SdBRtE0U5cBXW2oSFRO0HtSEeW2FZ1wsq9sjuRdTDVAXnNuWLY
-        6JnAl0sYa/Q5q1dhq35ci+Bkq2HJvbZpxGeybAAuw4Fq+cnW1wPITgHFYxvBUw+qHEIL1yq1vDKhVlH3
-        NQwF4JkcFRWiUAB7IVW2FFPO3YqlgPd+LJf02e8Fdi3rMdIAcLDuf9UpeT0IS0G/hvhPm305vSl7EQFY
-        B6zCvozvYGzRM8zEoeg5TPZwDaGvpHQni1yzSxbXPW9q+hF13ROHuJnQcjbhtQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAATdJREFUWEftloENAiEMRW8ER3AEN9ANdARHcAPdwBF0A91AN9INtC+5JvUCJwWM
+        mvCTFw3QUiiU65qa/lUTYT6Ato9rJZyERwT6GFNdU+EihCYNwVhsqmgm3AR1fheOAitd9PCfNvp0HDbY
+        FolV2MmZZCzX9J0FG0TRTlwFdbahIVE7Qe1IR5bYVnXCyr2yO5F1MNUBec25YtjomcCXSxhr9DmrV2Gr
+        flyL4GSrYcm9tmnEZ7JsAC7DgWr5ydbXA8hOAcVjG8FTD6ocQgvXKrW8MqFWUfc1DAXgmRwVFaJQAHsh
+        VbYUU87diqWA934sl/TZ7wV2Lesx0gBwsO5/1Sl5PQhLQb+G+E+bfTm9KXsRAVgHrMK+jO9gbNEzzMSh
+        6DlM9nANoa+kdCeLXLNLFtc9b2r6EXXdE4e4mdByNuG1AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsbReload.Size" type="System.Drawing.Size, System.Drawing">
@@ -457,12 +457,15 @@
   </data>
   <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
-        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAADJJREFUWEftzrENACAIRUFGdVMdTZkAG4zFXfI68kMAAD8ap9lUbpfyaDV19QAA
+        8FDEBl3RImu5VcdbAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
     <value>  关闭  </value>
+  </data>
+  <data name="toolSslServerSpeed.Text" xml:space="preserve">
+    <value>网速显示未启用</value>
   </data>
 </root>
