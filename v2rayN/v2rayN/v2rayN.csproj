@@ -106,6 +106,9 @@
     <Compile Include="Forms\AddServer4Form.Designer.cs">
       <DependentUpon>AddServer4Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ListViewFlickerFree.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,7 +295,6 @@
     <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Properties\DataSources\v2rayN.Mode.Config.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

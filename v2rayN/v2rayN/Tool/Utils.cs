@@ -273,19 +273,19 @@ namespace v2rayN
         {
             var factor = 1024u;
             var KBs = amount / factor;
-            if(KBs > 0)
+            if (KBs > 0)
             {
                 // multi KB
                 var MBs = KBs / factor;
-                if(MBs > 0)
+                if (MBs > 0)
                 {
                     // multi MB
                     var GBs = MBs / factor;
-                    if(GBs > 0)
+                    if (GBs > 0)
                     {
                         // multi GB
                         var TBs = GBs / factor;
-                        if(TBs > 0)
+                        if (TBs > 0)
                         {
                             // 你是魔鬼吗？ 用这么多流量
                             result = TBs + GBs % factor / (factor + 0.0);
@@ -303,12 +303,20 @@ namespace v2rayN
                 result = KBs + amount % factor / (factor + 0.0);
                 unit = "KB";
                 return;
-            } 
+            }
             else
             {
                 result = amount;
-                unit = "Byte";
+                unit = "B";
             }
+        }
+
+        public static string HumanFy(ulong amount)
+        {
+            double result;
+            string unit;
+            ToHumanReadable(amount, out result, out unit);
+            return $"{string.Format("{0:f2}", result)}{unit}";
         }
 
         public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
@@ -316,7 +324,8 @@ namespace v2rayN
             var list = new List<Mode.VmessItem>();
             foreach (var item in source)
             {
-                if(!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path && item.requestHost == i.requestHost))
+
+                if (!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
                 {
                     list.Add(item);
                 }

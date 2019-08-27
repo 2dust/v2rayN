@@ -146,12 +146,12 @@ namespace v2rayN
         public const string InboundProxyTagName = "proxy";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPIProtocal = "dokodemo-door";
-        public const uint InboundAPIPort = 10085;
+        public const uint InboundAPIPort = 10805;
         public enum StatisticsFreshRate
         {
-            quick = 500,
-            medium = 1000,
-            slow = 2000
+            quick = 1000,
+            medium = 2000,
+            slow = 3000
         }
         public const string StatisticLogDirectory = "Statistics";
         public const string StatisticLogOverall = "overall.txt";

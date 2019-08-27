@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Threading;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Diagnostics;
-
+using System.Threading;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -91,11 +88,15 @@ namespace v2rayN.Handler
 
         public void Close()
         {
-            exitFlag_ = true;
-            if (!connector_.HasExited)
+            try
             {
-                connector_.Kill();
+                exitFlag_ = true;
+                if (!connector_.HasExited)
+                {
+                    connector_.Kill();
+                }
             }
+            catch { }
         }
 
         public void run()

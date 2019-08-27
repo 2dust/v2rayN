@@ -163,6 +163,12 @@
   <data name="menuRemoveServer.Text" xml:space="preserve">
     <value>移除所选服务器(多选)   (Delete)</value>
   </data>
+  <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 22</value>
+  </data>
+  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
+    <value>移除重复的服务器</value>
+  </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>252, 22</value>
   </data>
@@ -257,7 +263,7 @@
     <value>  服务器  </value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 468</value>
+    <value>253, 490</value>
   </data>
   <data name="lvServers.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -276,11 +282,20 @@
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
   </data>
+  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 164</value>
+  </data>
   <data name="menuSysAgentEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
   </data>
   <data name="menuSysAgentEnabled.Text" xml:space="preserve">
     <value>启用Http代理</value>
+  </data>
+  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="menuSysAgentMode.Text" xml:space="preserve">
+    <value>Http代理模式</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>340, 22</value>
@@ -305,12 +320,6 @@
   </data>
   <data name="menuKeepPAC.Text" xml:space="preserve">
     <value>仅开启PAC,不自动配置PAC</value>
-  </data>
-  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>Http代理模式</value>
   </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -345,14 +354,26 @@
   <data name="menuExit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
-  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 164</value>
-  </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器列表</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>信息</value>
+  </data>
+  <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 17</value>
+  </data>
+  <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 17</value>
+  </data>
+  <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 17</value>
+  </data>
+  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 53</value>
+  </data>
+  <data name="tsbSub.Text" xml:space="preserve">
+    <value>  订阅  </value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 22</value>
@@ -366,12 +387,6 @@
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>更新订阅</value>
   </data>
-  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 53</value>
-  </data>
-  <data name="tsbSub.Text" xml:space="preserve">
-    <value>  订阅  </value>
-  </data>
   <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 53</value>
   </data>
@@ -380,13 +395,13 @@
   </data>
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAATdJREFUWEftloENAiEMRW8ER3AEN9ANdARHcAPdwBF0A91AN9INtC+5JvUCJwWM
-        mvCTFw3QUiiU65qa/lUTYT6Ato9rJZyERwT6GFNdU+EihCYNwVhsqmgm3AR1fheOAitd9PCfNvp0HDbY
-        FolV2MmZZCzX9J0FG0TRTlwFdbahIVE7Qe1IR5bYVnXCyr2yO5F1MNUBec25YtjomcCXSxhr9DmrV2Gr
-        flyL4GSrYcm9tmnEZ7JsAC7DgWr5ydbXA8hOAcVjG8FTD6ocQgvXKrW8MqFWUfc1DAXgmRwVFaJQAHsh
-        VbYUU87diqWA934sl/TZ7wV2Lesx0gBwsO5/1Sl5PQhLQb+G+E+bfTm9KXsRAVgHrMK+jO9gbNEzzMSh
-        6DlM9nANoa+kdCeLXLNLFtc9b2r6EXXdE4e4mdByNuG1AAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
+        QDfSDbQvuSb1AicFjJrwkxcN0FIolOuamv5VE2E+gLaPayWchEcE+hhTXVPhIoQmDcFYbKpoJtwEdX4X
+        jgIrXfTwnzb6dBw22BaJVdjJmWQs1/SdBRtE0U5cBXW2oSFRO0HtSEeW2FZ1wsq9sjuRdTDVAXnNuWLY
+        6JnAl0sYa/Q5q1dhq35ci+Bkq2HJvbZpxGeybAAuw4Fq+cnW1wPITgHFYxvBUw+qHEIL1yq1vDKhVlH3
+        NQwF4JkcFRWiUAB7IVW2FFPO3YqlgPd+LJf02e8Fdi3rMdIAcLDuf9UpeT0IS0G/hvhPm305vSl7EQFY
+        B6zCvozvYGzRM8zEoeg5TPZwDaGvpHQni1yzSxbXPW9q+hF13ROHuJnQcjbhtQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="tsbReload.Size" type="System.Drawing.Size, System.Drawing">
@@ -394,6 +409,12 @@
   </data>
   <data name="tsbReload.Text" xml:space="preserve">
     <value>  重启服务  </value>
+  </data>
+  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 53</value>
+  </data>
+  <data name="tsbCheckUpdate.Text" xml:space="preserve">
+    <value>  检查更新  </value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
@@ -419,20 +440,14 @@
   <data name="tsbCheckClearPACList.Text" xml:space="preserve">
     <value>简化PAC (请设置Core路由)</value>
   </data>
-  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 53</value>
-  </data>
-  <data name="tsbCheckUpdate.Text" xml:space="preserve">
-    <value>  检查更新  </value>
-  </data>
-  <data name="tsbAbout.Text" xml:space="preserve">
-    <value>关于</value>
-  </data>
   <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 53</value>
   </data>
   <data name="tsbHelp.Text" xml:space="preserve">
     <value>   帮助   </value>
+  </data>
+  <data name="tsbAbout.Text" xml:space="preserve">
+    <value>关于</value>
   </data>
   <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 53</value>
@@ -442,21 +457,12 @@
   </data>
   <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAADJJREFUWEftzrENACAIRUFGdVMdTZkAG4zFXfI68kMAAD8ap9lUbpfyaDV19QAA
-        8FDEBl3RImu5VcdbAAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
+        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
     <value>  关闭  </value>
-  </data>
-  <data name="toolSslServerSpeed.Text" xml:space="preserve">
-    <value>代理速度</value>
-  </data>
-  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
-    <value>移除重复的服务器</value>
-  </data>
-  <data name="toolSslBlank4.Text" xml:space="preserve">
-    <value>未启用</value>
   </data>
 </root>
