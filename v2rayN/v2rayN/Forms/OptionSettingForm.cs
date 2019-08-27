@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Text;
 using System.Windows.Forms;
 using v2rayN.Handler;
 
@@ -336,15 +333,15 @@ namespace v2rayN.Forms
 
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
 
-            if(lastEnableStatistics != config.enableStatistics)
-            {
-                /// https://stackoverflow.com/questions/779405/how-do-i-restart-my-c-sharp-winform-application
-                // Shut down the current app instance.
-                Application.Exit();
+            //if(lastEnableStatistics != config.enableStatistics)
+            //{
+            //    /// https://stackoverflow.com/questions/779405/how-do-i-restart-my-c-sharp-winform-application
+            //    // Shut down the current app instance.
+            //    Application.Exit();
 
-                // Restart the app passing "/restart [processId]" as cmd line args
-                Process.Start(Application.ExecutablePath, "/restart " + Process.GetCurrentProcess().Id);
-            }
+            //    // Restart the app passing "/restart [processId]" as cmd line args
+            //    Process.Start(Application.ExecutablePath, "/restart " + Process.GetCurrentProcess().Id);
+            //}
             return 0;
         }
 

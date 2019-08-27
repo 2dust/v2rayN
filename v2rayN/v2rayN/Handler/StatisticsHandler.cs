@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Threading;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Diagnostics;
-
+using System.Threading;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler

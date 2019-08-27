@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
-using System.Collections.Generic;
-using System.IO;
 
 namespace v2rayN.Forms
 {
@@ -17,7 +17,6 @@ namespace v2rayN.Forms
         private V2rayUpdateHandle v2rayUpdateHandle;
         private V2rayUpdateHandle v2rayUpdateHandle2;
         private List<int> lvSelecteds = new List<int>();
-
         private StatisticsHandler statistics = null;
 
         #region Window 事件
@@ -44,70 +43,60 @@ namespace v2rayN.Forms
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
             if (config.enableStatistics)
             {
-                statistics = new StatisticsHandler(config, UpdateHandler);
+                statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
         }
 
-        private void UpdateHandler(ulong totalUp, ulong totalDown, ulong up, ulong down, List<Mode.ServerStatistics> statistics)
+        private void UpdateStatisticsHandler(ulong totalUp, ulong totalDown, ulong up, ulong down, List<Mode.ServerStatistics> statistics)
         {
-            double up_amount = 0.0, down_amount;
-            string up_unit = "", down_unit;
-
-            up /= (ulong)(config.statisticsFreshRate / 1000f);
-            down /= (ulong)(config.statisticsFreshRate / 1000f);
-
-            Utils.ToHumanReadable(up, out up_amount, out up_unit);
-            Utils.ToHumanReadable(down, out down_amount, out down_unit);
-            up_unit += "/s";
-            down_unit += "/s";
-
-            toolSslServerSpeed.Text = string.Format(
-                "{0:f2} {1}↑ | {2:f2} {3}↓",
-                up_amount,
-                up_unit,
-                down_amount,
-                down_unit
-            );
-
-            List<string[]> datas = new List<string[]>();
-            for (int i = 0; i < config.vmess.Count; i++)
+            try
             {
-                string totalUp_ = string.Empty,
-                        totalDown_ = string.Empty,
-                        todayUp_ = string.Empty,
-                        todayDown_ = string.Empty;
-                var index = statistics.FindIndex(item_ => (config.vmess[i].address == item_.address && config.vmess[i].port == item_.port && config.vmess[i].path == item_.path));
-                if (index != -1)
+                up /= (ulong)(config.statisticsFreshRate / 1000f);
+                down /= (ulong)(config.statisticsFreshRate / 1000f);
+                toolSslServerSpeed.Text = string.Format(
+                    "{0}/s↑ | {1}/s↓",
+                      Utils.HumanFy(up),
+                      Utils.HumanFy(down)
+                );
+
+                List<string[]> datas = new List<string[]>();
+                for (int i = 0; i < config.vmess.Count; i++)
                 {
-                    Func<ulong, string> human_fy = (amount) =>
+                    string totalUp_ = string.Empty,
+                            totalDown_ = string.Empty,
+                            todayUp_ = string.Empty,
+                            todayDown_ = string.Empty;
+                    var index = statistics.FindIndex(item_ => (config.vmess[i].address == item_.address && config.vmess[i].port == item_.port && config.vmess[i].path == item_.path));
+                    if (index != -1)
                     {
-                        double result;
-                        string unit;
-                        Utils.ToHumanReadable(amount, out result, out unit);
-                        return $"{string.Format("{0:f2}", result)}{unit}";
-                    };
-                    totalUp_ = human_fy(statistics[index].totalUp);
-                    totalDown_ = human_fy(statistics[index].totalDown);
-                    todayUp_ = human_fy(statistics[index].todayUp);
-                    todayDown_ = human_fy(statistics[index].todayDown);
+                        totalUp_ = Utils.HumanFy(statistics[index].totalUp);
+                        totalDown_ = Utils.HumanFy(statistics[index].totalDown);
+                        todayUp_ = Utils.HumanFy(statistics[index].todayUp);
+                        todayDown_ = Utils.HumanFy(statistics[index].todayDown);
+                    }
+
+                    datas.Add(new string[] { totalUp_, totalDown_, todayUp_, todayDown_ });
                 }
 
-                datas.Add(new string[] { totalUp_, totalDown_, todayUp_, todayDown_ });
-            }
-
-            lvServers.Invoke((MethodInvoker)delegate
-            {
-                lvServers.SuspendLayout();
-                for (int i = 0; i < datas.Count; i++)
+                lvServers.Invoke((MethodInvoker)delegate
                 {
-                    var indexStart = 9;
-                    lvServers.Items[i].SubItems[indexStart++].Text = datas[i][0];
-                    lvServers.Items[i].SubItems[indexStart++].Text = datas[i][1];
-                    lvServers.Items[i].SubItems[indexStart++].Text = datas[i][2];
-                    lvServers.Items[i].SubItems[indexStart++].Text = datas[i][3];
-                }
-                lvServers.ResumeLayout();
-            });
+                    lvServers.SuspendLayout();
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        var indexStart = 9;
+                        lvServers.Items[i].SubItems[indexStart++].Text = datas[i][0];
+                        lvServers.Items[i].SubItems[indexStart++].Text = datas[i][1];
+                        lvServers.Items[i].SubItems[indexStart++].Text = datas[i][2];
+                        lvServers.Items[i].SubItems[indexStart++].Text = datas[i][3];
+                    }
+                    lvServers.ResumeLayout();
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
@@ -179,8 +168,7 @@ namespace v2rayN.Forms
                     Utils.SaveLog("Windows shutdown UnsetProxy");
                     //CloseV2ray();
                     ConfigHandler.ToJsonFile(config);
-                  
-                        statistics?.saveToFile();
+                    statistics?.saveToFile();
                     ProxySetting.UnsetProxy();
                     m.Result = (IntPtr)1;
                     break;
@@ -262,17 +250,10 @@ namespace v2rayN.Forms
                     var index = statistics.Statistic.FindIndex(item_ => item_.address == item.address);
                     if (index != -1)
                     {
-                        Func<ulong, string> human_fy = (amount) =>
-                        {
-                            double result;
-                            string unit;
-                            Utils.ToHumanReadable(amount, out result, out unit);
-                            return $"{string.Format("{0:f2}", result)}{unit}";
-                        };
-                        totalUp = human_fy(statistics.Statistic[index].totalUp);
-                        totalDown = human_fy(statistics.Statistic[index].totalDown);
-                        todayUp = human_fy(statistics.Statistic[index].todayUp);
-                        todayDown = human_fy(statistics.Statistic[index].todayDown);
+                        totalUp = Utils.HumanFy(statistics.Statistic[index].totalUp);
+                        totalDown = Utils.HumanFy(statistics.Statistic[index].totalDown);
+                        todayUp = Utils.HumanFy(statistics.Statistic[index].todayUp);
+                        todayDown = Utils.HumanFy(statistics.Statistic[index].todayDown);
                     }
 
                     lvItem = new ListViewItem(new string[]
@@ -509,23 +490,10 @@ namespace v2rayN.Forms
                         menuSelectAll_Click(null, null);
                         break;
                     case Keys.T:
-                        // Speed test selected servers
-                        if (!config.sysAgentEnabled || config.listenerType != 1)
-                        {
-                            UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
-                            return;
-                        }
-
-                        UI.Show(UIRes.I18N("SpeedServerTips"));
-
-                        GetLvSelectedIndex();
-                        ServerSpeedTest();
+                        menuSpeedServer_Click(null, null);
                         break;
                     case Keys.P:
-                        // Ping selected servers
-                        GetLvSelectedIndex();
-                        ClearTestResult();
-                        bgwPing.RunWorkerAsync();
+                        menuPingServer_Click(null, null);
                         break;
                 }
             }
@@ -1090,7 +1058,7 @@ namespace v2rayN.Forms
         private void SetTestResult(int k, string txt)
         {
             config.vmess[k].testResult = txt;
-            lvServers.Items[k].SubItems[lvServers.Items[k].SubItems.Count - 1].Text = txt;
+            lvServers.Items[k].SubItems[8].Text = txt;
         }
         private void ClearTestResult()
         {
