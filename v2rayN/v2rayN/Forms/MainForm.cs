@@ -59,25 +59,25 @@ namespace v2rayN.Forms
                       Utils.HumanFy(down)
                 );
 
-                List<string[]> datas = new List<string[]>();
-                for (int i = 0; i < config.vmess.Count; i++)
-                {
-                    string totalUp_ = string.Empty,
-                            totalDown_ = string.Empty,
-                            todayUp_ = string.Empty,
-                            todayDown_ = string.Empty;
-                    var index = statistics.FindIndex(item_ => (config.vmess[i].address == item_.address && config.vmess[i].port == item_.port && config.vmess[i].path == item_.path));
-                    if (index != -1)
-                    {
-                        totalUp_ = Utils.HumanFy(statistics[index].totalUp);
-                        totalDown_ = Utils.HumanFy(statistics[index].totalDown);
-                        todayUp_ = Utils.HumanFy(statistics[index].todayUp);
-                        todayDown_ = Utils.HumanFy(statistics[index].todayDown);
+            List<string[]> datas = new List<string[]>();
+	            for (int i = 0; i < config.vmess.Count; i++)
+	            {
+	                string totalUp_ = string.Empty,
+	                        totalDown_ = string.Empty,
+	                        todayUp_ = string.Empty,
+	                        todayDown_ = string.Empty;
+	                var index = statistics.FindIndex(item_ => Utils.IsIdenticalServer(item_, new ServerStatistics(config.vmess[i].remarks, config.vmess[i].address, config.vmess[i].port, config.vmess[i].path, config.vmess[i].requestHost, 0, 0, 0, 0)));
+	                if (index != -1)
+	                {
+	                        totalUp_ = Utils.HumanFy(statistics[index].totalUp);
+	                        totalDown_ = Utils.HumanFy(statistics[index].totalDown);
+	                        todayUp_ = Utils.HumanFy(statistics[index].todayUp);
+	                        todayDown_ = Utils.HumanFy(statistics[index].todayDown);
                     }
 
                     datas.Add(new string[] { totalUp_, totalDown_, todayUp_, todayDown_ });
                 }
-
+                
                 lvServers.Invoke((MethodInvoker)delegate
                 {
                     lvServers.SuspendLayout();

@@ -29,24 +29,6 @@ namespace v2rayN
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
 
-            var args = Environment.GetCommandLineArgs();
-            bool _isRestart = args.Length > 1 && args[1] == "/restart";
-            if (_isRestart)
-            {
-                try
-                {
-                    // get old process and wait UP TO 5 secs then give up!
-                    int _restartProcessId = int.Parse(args[2]);
-                    Process oldProcess = Process.GetProcessById(_restartProcessId);
-                    oldProcess.WaitForExit();
-                }
-                catch 
-                {
-                    // the process did not exist - probably already closed!
-                    //TODO: --> LOG
-                }
-            }
-
             Process instance = RunningInstance();
             if (instance == null)
             {
@@ -62,7 +44,7 @@ namespace v2rayN
             }
             else
             {
-                UI.Show($"v2rayN is already running(v2rayN已经运行){args[1]} {args[2]}");
+                UI.Show($"v2rayN is already running(v2rayN已经运行)");
             }
         }
 
