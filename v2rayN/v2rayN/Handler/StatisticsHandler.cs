@@ -86,9 +86,9 @@ namespace v2rayN.Handler
 
         public void run()
         {
-            try
+            while (!exitFlag_)
             {
-                while (!exitFlag_)
+                try
                 {
                     if (enabled_ && channel_.State == ChannelState.Ready)
                     {
@@ -123,8 +123,8 @@ namespace v2rayN.Handler
                         channel_.ConnectAsync();
                     }
                 }
+                catch { }
             }
-            catch {  }
         }
 
         public void parseOutput(Google.Protobuf.Collections.RepeatedField<Stat> source, out ulong up, out ulong down)
