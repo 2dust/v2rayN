@@ -24,7 +24,7 @@ namespace v2rayN.Handler
         Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> updateFunc_;
 
         private bool enabled_;
-        public bool Enable 
+        public bool Enable
         {
             get { return enabled_; }
             set { enabled_ = value; }
@@ -33,10 +33,10 @@ namespace v2rayN.Handler
         public bool UpdateUI;
 
         public ulong TotalUp { get; private set; }
-       
+
         public ulong TotalDown { get; private set; }
 
-        public List<Mode.ServerStatistics> Statistic{ get; set; }
+        public List<Mode.ServerStatistics> Statistic { get; set; }
 
         public ulong Up { get; private set; }
 
@@ -71,7 +71,7 @@ namespace v2rayN.Handler
             workThread_.Start();
         }
 
-        private void grpcInit ()
+        private void grpcInit()
         {
             channel_ = new Channel($"127.0.0.1:{Global.InboundAPIPort}", ChannelCredentials.Insecure);
             channel_.ConnectAsync();
@@ -80,8 +80,16 @@ namespace v2rayN.Handler
 
         public void Close()
         {
-            exitFlag_ = true;
-            channel_.ShutdownAsync();
+            try
+            {
+
+                exitFlag_ = true;
+                channel_.ShutdownAsync();
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
         }
 
         public void run()
@@ -92,38 +100,54 @@ namespace v2rayN.Handler
                 {
                     if (enabled_ && channel_.State == ChannelState.Ready)
                     {
-                        var res = client_.QueryStats(new QueryStatsRequest() { Pattern = "", Reset = true });
-
-                        var addr = config_.address();
-                        var port = config_.port();
-                        var cur = Statistic.FindIndex(item => item.address == addr && item.port == port);
-                        ulong up = 0,
-                             down = 0;
-
-                        //TODO: parse output
-                        parseOutput(res.Stat, out up, out down);
-
-                        Up = up;
-                        Down = down;
-
-                        TotalUp += up;
-                        TotalDown += down;
-
-                        if(cur != -1)
+                        QueryStatsResponse res = null;
+                        try
                         {
-                            Statistic[cur].todayUp += up;
-                            Statistic[cur].todayDown += down;
-                            Statistic[cur].totalUp += up;
-                            Statistic[cur].totalDown += down;
+                            res = client_.QueryStats(new QueryStatsRequest() { Pattern = "", Reset = true });
+                        }
+                        catch (Exception ex)
+                        {
+                            Utils.SaveLog(ex.Message, ex);
                         }
 
-                        if (UpdateUI)
-                            updateFunc_(TotalUp, TotalDown, Up, Down, Statistic);
+                        if (res != null)
+                        {
+                            var addr = config_.address();
+                            var port = config_.port();
+                            var path = config_.path();
+                            var cur = Statistic.FindIndex(item => item.address == addr && item.port == port && item.path == path);
+                            ulong up = 0,
+                                 down = 0;
+
+                            //TODO: parse output
+                            parseOutput(res.Stat, out up, out down);
+
+                            Up = up;
+                            Down = down;
+
+                            TotalUp += up;
+                            TotalDown += down;
+
+                            if (cur != -1)
+                            {
+                                Statistic[cur].todayUp += up;
+                                Statistic[cur].todayDown += down;
+                                Statistic[cur].totalUp += up;
+                                Statistic[cur].totalDown += down;
+                            }
+
+                            if (UpdateUI)
+                                updateFunc_(TotalUp, TotalDown, Up, Down, Statistic);
+                        }
+
                         Thread.Sleep(config_.statisticsFreshRate);
                         channel_.ConnectAsync();
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                }
             }
         }
 
@@ -131,36 +155,43 @@ namespace v2rayN.Handler
         {
 
             up = 0; down = 0;
-
-            foreach(var stat in source)
+            try
             {
-                var name = stat.Name;
-                var value = stat.Value;
-                var nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                var type = "";
 
-                name = name.Trim();
-
-                name = nStr[1];
-                type = nStr[3];
-
-                if (name == Global.InboundProxyTagName)
+                foreach (var stat in source)
                 {
-                    if (type == "uplink")
+                    var name = stat.Name;
+                    var value = stat.Value;
+                    var nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    var type = "";
+
+                    name = name.Trim();
+
+                    name = nStr[1];
+                    type = nStr[3];
+
+                    if (name == Global.InboundProxyTagName)
                     {
-                        up = (ulong)value;
-                    }
-                    else if (type == "downlink")
-                    {
-                        down = (ulong)value;
+                        if (type == "uplink")
+                        {
+                            up = (ulong)value;
+                        }
+                        else if (type == "downlink")
+                        {
+                            down = (ulong)value;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
             }
         }
 
         public void saveToFile()
         {
-            if(!Directory.Exists(logPath_))
+            if (!Directory.Exists(logPath_))
             {
                 Directory.CreateDirectory(logPath_);
             }
@@ -184,13 +215,16 @@ namespace v2rayN.Handler
                     overallWriter.WriteLine($"LastUpdate {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                     overallWriter.WriteLine($"UP {string.Format("{0:f2}", up_amount)}{up_unit} {TotalUp}");
                     overallWriter.WriteLine($"DOWN {string.Format("{0:f2}", down_amount)}{down_unit} {TotalDown}");
-                    foreach(var s in Statistic)
+                    foreach (var s in Statistic)
                     {
                         overallWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.path} {s.host} {s.totalUp} {s.totalDown}");
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
 
             // 当天流量记录文件
             var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToLongDateString()}.txt");
@@ -209,7 +243,10 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
         }
 
         public void loadFromFile()
@@ -278,7 +315,10 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-                catch { }  
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                }
             }
 
             // 当天流量记录文件
@@ -324,27 +364,37 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                }
             }
         }
 
 
         private void DeleteExpiredLog()
         {
-            if (!Directory.Exists(logPath_)) return;
-            var dirInfo = new DirectoryInfo(logPath_);
-            var files = dirInfo.GetFiles();
-            foreach (var file in files)
+            try
             {
-                if (file.Name == "overall.txt") continue;
-                var name = file.Name.Split('.')[0];
-                var ft = DateTime.Parse(name);
-                var ct = DateTime.Now;
-                var dur = ct - ft;
-                if(dur.Days > config_.CacheDays)
+                if (!Directory.Exists(logPath_)) return;
+                var dirInfo = new DirectoryInfo(logPath_);
+                var files = dirInfo.GetFiles();
+                foreach (var file in files)
                 {
-                    file.Delete();
+                    if (file.Name == "overall.txt") continue;
+                    var name = file.Name.Split('.')[0];
+                    var ft = DateTime.Parse(name);
+                    var ct = DateTime.Now;
+                    var dur = ct - ft;
+                    if (dur.Days > config_.CacheDays)
+                    {
+                        file.Delete();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
             }
         }
     }
