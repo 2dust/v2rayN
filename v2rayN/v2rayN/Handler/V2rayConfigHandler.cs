@@ -631,26 +631,28 @@ namespace v2rayN.Handler
                 v2rayConfig.stats = new Stats();
 
                 apiObj.tag = tag;
-                apiObj.services =  services.ToList();
+                apiObj.services = services.ToList();
                 v2rayConfig.api = apiObj;
 
                 policySystemSetting.statsInboundDownlink = true;
                 policySystemSetting.statsInboundUplink = true;
                 policyObj.system = policySystemSetting;
                 v2rayConfig.policy = policyObj;
-                if(!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
+
+                if (!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
                 {
                     var apiInbound = new Mode.Inbounds();
                     var apiInboundSettings = new Mode.Inboundsettings();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
-                    apiInbound.port = config.port();
+                    apiInbound.port = Global.statePort;
                     apiInbound.protocol = Global.InboundAPIProtocal;
                     apiInboundSettings.address = Global.Loopback;
                     apiInbound.settings = apiInboundSettings;
                     v2rayConfig.inbounds.Add(apiInbound);
                 }
-                if(!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
+
+                if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
                 {
                     var apiRoutingRule = new Mode.RulesItem();
                     apiRoutingRule.inboundTag = tag;
@@ -1153,14 +1155,14 @@ namespace v2rayN.Handler
                         vmessItem.network = Global.DefaultNetwork;
                         vmessItem.headerType = Global.None;
 
-                      
+
                         vmessItem.configVersion = Utils.ToInt(vmessQRCode.v);
                         vmessItem.remarks = Utils.ToString(vmessQRCode.ps);
                         vmessItem.address = Utils.ToString(vmessQRCode.add);
                         vmessItem.port = Utils.ToInt(vmessQRCode.port);
                         vmessItem.id = Utils.ToString(vmessQRCode.id);
                         vmessItem.alterId = Utils.ToInt(vmessQRCode.aid);
-                    
+
                         if (!Utils.IsNullOrEmpty(vmessQRCode.net))
                         {
                             vmessItem.network = vmessQRCode.net;
@@ -1169,7 +1171,7 @@ namespace v2rayN.Handler
                         {
                             vmessItem.headerType = vmessQRCode.type;
                         }
-                         
+
                         vmessItem.requestHost = Utils.ToString(vmessQRCode.host);
                         vmessItem.path = Utils.ToString(vmessQRCode.path);
                         vmessItem.streamSecurity = Utils.ToString(vmessQRCode.tls);

@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Grpc.Core;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
-
 using v2rayN.Mode;
 using v2rayN.Protos.Statistics;
-
-using Grpc.Core;
 
 namespace v2rayN.Handler
 {
@@ -63,19 +60,24 @@ namespace v2rayN.Handler
                 Statistic.Add(statistic);
             }
 
-            loadFromFile();
+            LoadFromFile();
 
-            grpcInit();
+            GrpcInit();
 
-            workThread_ = new Thread(new ThreadStart(run));
+            workThread_ = new Thread(new ThreadStart(Run));
             workThread_.Start();
         }
 
-        private void grpcInit()
+        private void GrpcInit()
         {
-            channel_ = new Channel($"127.0.0.1:{Global.InboundAPIPort}", ChannelCredentials.Insecure);
-            channel_.ConnectAsync();
-            client_ = new StatsService.StatsServiceClient(channel_);
+            if (channel_ == null)
+            {
+                Global.statePort = GetFreePort();
+
+                channel_ = new Channel($"127.0.0.1:{Global.statePort}", ChannelCredentials.Insecure);
+                channel_.ConnectAsync();
+                client_ = new StatsService.StatsServiceClient(channel_);
+            }
         }
 
         public void Close()
@@ -92,7 +94,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void run()
+        public void Run()
         {
             while (!exitFlag_)
             {
@@ -120,7 +122,7 @@ namespace v2rayN.Handler
                                  down = 0;
 
                             //TODO: parse output
-                            parseOutput(res.Stat, out up, out down);
+                            ParseOutput(res.Stat, out up, out down);
 
                             Up = up;
                             Down = down;
@@ -139,10 +141,9 @@ namespace v2rayN.Handler
                             if (UpdateUI)
                                 updateFunc_(TotalUp, TotalDown, Up, Down, Statistic);
                         }
-
-                        Thread.Sleep(config_.statisticsFreshRate);
-                        channel_.ConnectAsync();
                     }
+                    Thread.Sleep(config_.statisticsFreshRate);
+                    channel_.ConnectAsync();
                 }
                 catch (Exception ex)
                 {
@@ -151,7 +152,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void parseOutput(Google.Protobuf.Collections.RepeatedField<Stat> source, out ulong up, out ulong down)
+        public void ParseOutput(Google.Protobuf.Collections.RepeatedField<Stat> source, out ulong up, out ulong down)
         {
 
             up = 0; down = 0;
@@ -189,7 +190,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void saveToFile()
+        public void SaveToFile()
         {
             if (!Directory.Exists(logPath_))
             {
@@ -249,7 +250,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void loadFromFile()
+        public void LoadFromFile()
         {
             if (!Directory.Exists(logPath_)) return;
 
@@ -395,6 +396,26 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+        private int GetFreePort()
+        {
+            int defaultPort = 28123;
+            try
+            {
+                // TCP stack please do me a favor
+                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                var port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+                return port;
+            }
+            catch (Exception ex)
+            {
+                // in case access denied
+                Utils.SaveLog(ex.Message, ex);
+                return defaultPort;
             }
         }
     }

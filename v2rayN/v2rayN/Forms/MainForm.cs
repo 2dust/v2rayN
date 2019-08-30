@@ -129,7 +129,7 @@ namespace v2rayN.Forms
             {
                 e.Cancel = true;
 
-                statistics?.saveToFile();
+                statistics?.SaveToFile();
 
                 HideForm();
                 return;
@@ -137,7 +137,7 @@ namespace v2rayN.Forms
             if (e.CloseReason == CloseReason.ApplicationExitCall)
             {
                 ConfigHandler.SaveConfig(ref config);
-                statistics?.saveToFile();
+                statistics?.SaveToFile();
                 statistics?.Close();
             }
         }
@@ -168,7 +168,7 @@ namespace v2rayN.Forms
                     Utils.SaveLog("Windows shutdown UnsetProxy");
                     //CloseV2ray();
                     ConfigHandler.ToJsonFile(config);
-                    statistics?.saveToFile();
+                    statistics?.SaveToFile();
                     ProxySetting.UnsetProxy();
                     m.Result = (IntPtr)1;
                     break;

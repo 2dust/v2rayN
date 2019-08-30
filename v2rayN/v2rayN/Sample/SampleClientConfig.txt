@@ -1,17 +1,4 @@
-﻿{
-	"stats": {},
-	"api": {
-		"tag": "api",
-		"services": [
-			"StatsService"
-		]
-	},
-	"policy": {
-		"system": {
-			"statsInboundUplink": true,
-			"statsInboundDownlink": true
-		}
-	},
+﻿{	 
 	"log": {
 		"access": "",
 		"error": "",
@@ -39,16 +26,7 @@
 					"tls"
 				]
 			}
-		},
-		{
-            "listen": "127.0.0.1",
-            "port": 10805,
-            "protocol": "dokodemo-door",
-            "settings": {
-                "address": "127.0.0.1"
-            },
-            "tag": "api"
-        }
+		}
 	],
 	"outbounds": [{
 			"tag": "proxy",

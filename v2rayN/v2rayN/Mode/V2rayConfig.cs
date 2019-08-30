@@ -21,40 +21,14 @@ namespace v2rayN.Mode
         /// </summary>
         public List<Outbounds> outbounds { get; set; }
 
-        /// 网速统计
-        /// 使用v2ray api功能
-        /// 
-        /// routing->rules 需要加上这一条
-        /// {
-        ///     "inboundTag": [
-        ///         "api"
-        ///     ],
-        ///     "outboundTag": "api",
-        ///     "type": "field"
-        /// }
-
         /// <summary>
         /// 统计需要， 空对象
         /// </summary>
         public Stats stats { get; set; }
-
-        /// <summary>
-        /// 需要tag和services
-        /// "api": {
-        ///     "tag": "api",
-        ///     "services": [
-        ///         "StatsService"
-        ///     ]
-        /// }
+       
         /// </summary>
         public API api { get; set; }
 
-        /// <summary>
-        /// policy 都设置为true；
-        /// "system": {
-        ///     "statsInboundUplink": true,
-        ///     "statsInboundDownlink": true
-        /// }
         /// </summary>
         public Policy policy;
 

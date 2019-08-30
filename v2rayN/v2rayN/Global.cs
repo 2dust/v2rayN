@@ -146,7 +146,7 @@ namespace v2rayN
         public const string InboundProxyTagName = "proxy";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPIProtocal = "dokodemo-door";
-        public const uint InboundAPIPort = 10805;
+     
         public enum StatisticsFreshRate
         {
             quick = 1000,
@@ -184,6 +184,11 @@ namespace v2rayN
         /// PAC监听端口号
         /// </summary>
         public static int pacPort { get; set; }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        public static int statePort { get; set; }
 
         #endregion
 
