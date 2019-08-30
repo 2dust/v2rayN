@@ -425,6 +425,7 @@
     <Content Include="grpc_csharp_ext.x86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="LIB\netstandard.dll" />
     <Content Include="Resources\help.png" />
     <Content Include="Resources\privoxy_conf.txt" />
   </ItemGroup>
