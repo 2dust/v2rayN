@@ -116,6 +116,7 @@ namespace v2rayN.Forms
         {
             InitServersView();
             RefreshServers();
+            lvServers.AutoResizeColumns();
 
             LoadV2ray();
 
