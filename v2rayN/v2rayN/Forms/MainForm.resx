@@ -563,8 +563,11 @@
   <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>603, 17</value>
   </metadata>
+  <data name="toolSslSocksPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 17</value>
+    <value>49, 17</value>
   </data>
   <data name="toolSslSocksPortLab.Text" xml:space="preserve">
     <value>SOCKS5</value>
@@ -572,11 +575,17 @@
   <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
   </data>
+  <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 17</value>
+    <value>188, 17</value>
+  </data>
+  <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 17</value>
+    <value>36, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
     <value>HTTP</value>
@@ -584,11 +593,17 @@
   <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
   </data>
+  <data name="toolSslBlank2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 17</value>
+    <value>188, 17</value>
+  </data>
+  <data name="toolSslPacPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 17</value>
+    <value>30, 17</value>
   </data>
   <data name="toolSslPacPortLab.Text" xml:space="preserve">
     <value>PAC</value>
@@ -596,20 +611,29 @@
   <data name="toolSslPacPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
   </data>
+  <data name="toolSslBlank3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 17</value>
+    <value>188, 17</value>
   </data>
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
+  </data>
+  <data name="toolSslServerSpeed.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslServerSpeed.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 17</value>
+    <value>220, 17</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
+  </data>
+  <data name="toolSslServerSpeed.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>

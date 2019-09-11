@@ -12,7 +12,7 @@ namespace v2rayN.HttpProxyHandler
     {
         private static string GetTimestamp(DateTime value)
         {
-            return value.ToString("yyyyMMddHHmmssfff");
+            return value.ToString("MMddHHmmssfff");
         }
 
         public static void ReSetPACProxy(Config config)

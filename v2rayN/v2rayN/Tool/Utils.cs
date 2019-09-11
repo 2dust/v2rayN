@@ -316,7 +316,7 @@ namespace v2rayN
             double result;
             string unit;
             ToHumanReadable(amount, out result, out unit);
-            return $"{string.Format("{0:f2}", result)}{unit}";
+            return $"{string.Format("{0:f1}", result)}{unit}";
         }
 
         public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)

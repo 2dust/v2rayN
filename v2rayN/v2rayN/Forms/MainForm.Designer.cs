@@ -506,8 +506,8 @@
             // 
             // toolSslSocksPortLab
             // 
-            this.toolSslSocksPortLab.Name = "toolSslSocksPortLab";
             resources.ApplyResources(this.toolSslSocksPortLab, "toolSslSocksPortLab");
+            this.toolSslSocksPortLab.Name = "toolSslSocksPortLab";
             // 
             // toolSslSocksPort
             // 
@@ -516,14 +516,14 @@
             // 
             // toolSslBlank1
             // 
-            this.toolSslBlank1.Name = "toolSslBlank1";
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
+            this.toolSslBlank1.Name = "toolSslBlank1";
             this.toolSslBlank1.Spring = true;
             // 
             // toolSslHttpPortLab
             // 
-            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
             resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
+            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
             // 
             // toolSslHttpPort
             // 
@@ -532,14 +532,14 @@
             // 
             // toolSslBlank2
             // 
-            this.toolSslBlank2.Name = "toolSslBlank2";
             resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
+            this.toolSslBlank2.Name = "toolSslBlank2";
             this.toolSslBlank2.Spring = true;
             // 
             // toolSslPacPortLab
             // 
-            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
             resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
+            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
             // 
             // toolSslPacPort
             // 
@@ -548,8 +548,8 @@
             // 
             // toolSslBlank3
             // 
-            this.toolSslBlank3.Name = "toolSslBlank3";
             resources.ApplyResources(this.toolSslBlank3, "toolSslBlank3");
+            this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Spring = true;
             // 
             // toolSslServerSpeed
