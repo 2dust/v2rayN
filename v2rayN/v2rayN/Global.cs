@@ -95,6 +95,11 @@ namespace v2rayN
         /// 阻止 tag值
         /// </summary>
         public const string blockTag = "block";
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string StreamSecurity = "tls";
 
         /// <summary>
         /// vmess

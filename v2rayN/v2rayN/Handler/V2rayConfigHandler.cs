@@ -443,7 +443,7 @@ namespace v2rayN.Handler
                 var host = config.requestHost();
 
                 //if tls
-                if (config.streamSecurity() == "tls")
+                if (config.streamSecurity() == Global.StreamSecurity)
                 {
                     streamSettings.security = config.streamSecurity();
 
@@ -964,6 +964,13 @@ namespace v2rayN.Handler
                     }
                 }
 
+                //tls
+                if (outbound.streamSettings != null
+                    && outbound.streamSettings.security != null
+                    && outbound.streamSettings.security == Global.StreamSecurity)
+                {
+                    vmessItem.streamSecurity = Global.StreamSecurity;
+                }
             }
             catch
             {
@@ -1100,6 +1107,14 @@ namespace v2rayN.Handler
                     {
                         vmessItem.requestHost = Utils.List2String(inbound.streamSettings.httpSettings.host);
                     }
+                }
+
+                //tls
+                if (inbound.streamSettings != null
+                    && inbound.streamSettings.security != null
+                    && inbound.streamSettings.security == Global.StreamSecurity)
+                {
+                    vmessItem.streamSecurity = Global.StreamSecurity;
                 }
             }
             catch
