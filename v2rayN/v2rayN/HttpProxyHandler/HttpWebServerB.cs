@@ -64,7 +64,7 @@ namespace v2rayN.HttpProxyHandler
                                     BinaryWriter writer = new BinaryWriter(netStream);
                                     //writeSuccess(writer, pac);
 
-                                    Byte[] sendBytes = Encoding.UTF8.GetBytes(writeSuccess(pac));
+                                    Byte[] sendBytes = ASCIIEncoding.ASCII.GetBytes(writeSuccess(pac));
                                     writer.Write(sendBytes, 0, sendBytes.Length);
                                     writer.Flush();
 
@@ -118,7 +118,7 @@ namespace v2rayN.HttpProxyHandler
 
             sb.Append("HTTP/1.0 200 OK");
             sb.AppendLine();
-            sb.Append(String.Format("Content-Type:{0};charset=utf-8", content_type));
+            sb.Append(String.Format("Content-Type:{0};", content_type));
             sb.AppendLine();
             //sb.Append("Connection: close");
             //sb.AppendLine();
