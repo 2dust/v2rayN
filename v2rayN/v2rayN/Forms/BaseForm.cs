@@ -41,11 +41,6 @@ namespace v2rayN.Forms
         //设置托盘图标
         private void LoadGlobleAgentCustomIcon()
         {
-            if (this.Icon == null)
-            {
-                globleAgentIcon = this.Icon;
-            }
-
             //原图标进行颜色变化
             System.Drawing.Bitmap gImage = this.Icon.ToBitmap();
             for (int x = 0; x < gImage.Width; x++)
