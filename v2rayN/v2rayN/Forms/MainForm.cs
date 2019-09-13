@@ -385,6 +385,17 @@ namespace v2rayN.Forms
                     toolSslPacPort.Text = $"{HttpProxyHandle.GetPacUrl()}";
                 }
             }
+
+            //设置托盘图标
+            if (config.sysAgentEnabled && 1 == config.listenerType)
+            {
+                this.notifyMain.Icon = globleAgentIcon;
+            }
+            else
+            {
+                this.notifyMain.Icon = this.Icon;
+            }
+
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -1010,12 +1021,12 @@ namespace v2rayN.Forms
 
         private void HideForm()
         {
-            //this.WindowState = FormWindowState.Minimized;
             this.Hide();
-            this.notifyMain.Icon = this.Icon;
+
             this.notifyMain.Visible = true;
             this.ShowInTaskbar = false;
 
+         
             SetVisibleCore(false);
         }
 
