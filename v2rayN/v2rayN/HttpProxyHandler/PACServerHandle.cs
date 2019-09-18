@@ -21,17 +21,31 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            if (Utils.IsAdministrator())
+            if (InitServer("127.0.0.1"))
             {
-                InitServer("127.0.0.1");
+                pacPort = Global.pacPort;
+            }
+            else if (InitServerB("127.0.0.1"))
+            {
+                pacPort = Global.pacPort;
             }
             else
             {
-                InitServerB("127.0.0.1");
+                Utils.SaveLog("Webserver init failed ");
+                pacPort = 0;
             }
+
+            //if (Utils.IsAdministrator())
+            //{
+            //    InitServer("127.0.0.1");
+            //}
+            //else
+            //{
+            //    InitServerB("127.0.0.1");
+            //}
         }
 
-        public static void InitServer(string address)
+        public static bool InitServer(string address)
         {
             try
             {
@@ -51,7 +65,7 @@ namespace v2rayN.HttpProxyHandler
                         HttpWebServer ws = new HttpWebServer(SendResponse, prefixes);
                         ws.Run();
 
-                        pacPort = Global.pacPort;
+                        //pacPort = Global.pacPort;
                     }
                 }
                 Utils.SaveLog("Webserver at " + address);
@@ -59,11 +73,13 @@ namespace v2rayN.HttpProxyHandler
             catch (Exception ex)
             {
                 Utils.SaveLog("Webserver InitServer " + ex.Message);
+                return false;
             }
+            return true;
         }
 
 
-        public static void InitServerB(string address)
+        public static bool InitServerB(string address)
         {
             try
             {
@@ -78,15 +94,17 @@ namespace v2rayN.HttpProxyHandler
                     if (serverB == null)
                     {
                         serverB = new HttpWebServerB(Global.pacPort, SendResponse);
-                        pacPort = Global.pacPort;
+                        //pacPort = Global.pacPort;
                     }
                 }
-                Utils.SaveLog("Webserver at " + address);
+                Utils.SaveLog("WebserverB at " + address);
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("Webserver InitServer " + ex.Message);
+                Utils.SaveLog("WebserverB InitServer " + ex.Message);
+                return false;
             }
+            return true;
         }
 
         public static string SendResponse(HttpListenerRequest request)
@@ -103,7 +121,7 @@ namespace v2rayN.HttpProxyHandler
                 return ex.Message;
             }
         }
-        
+
 
         public static string SendResponse(TcpClient tcpClient)
         {
@@ -114,7 +132,7 @@ namespace v2rayN.HttpProxyHandler
 
                 Console.WriteLine("SendResponse addr " + address);
                 //Utils.SaveLog("SendResponse addr " + address);
-                
+
                 return pac;
             }
             catch (Exception ex)
@@ -182,7 +200,8 @@ namespace v2rayN.HttpProxyHandler
                 return pac;
             }
             catch
-            { }
+            {
+            }
             return "No pac content";
         }
     }
