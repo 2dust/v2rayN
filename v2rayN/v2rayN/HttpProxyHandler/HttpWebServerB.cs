@@ -28,6 +28,7 @@ namespace v2rayN.HttpProxyHandler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+                throw;
             }
 
             Utils.SaveLog("WebserverB running...");
