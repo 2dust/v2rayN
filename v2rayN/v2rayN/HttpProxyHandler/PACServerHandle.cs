@@ -59,7 +59,7 @@ namespace v2rayN.HttpProxyHandler
 
                     if (server == null)
                     {
-                        string prefixes = string.Format("http://{0}:{1}/pac/", "+", Global.pacPort);
+                        string prefixes = string.Format("http://{0}:{1}/pac/", address, Global.pacPort);
                         Utils.SaveLog("Webserver prefixes " + prefixes);
 
                         HttpWebServer ws = new HttpWebServer(SendResponse, prefixes);
