@@ -23,21 +23,42 @@ namespace v2rayN.Handler
         private bool enabled_;
         public bool Enable
         {
-            get { return enabled_; }
-            set { enabled_ = value; }
+            get
+            {
+                return enabled_;
+            }
+            set
+            {
+                enabled_ = value;
+            }
         }
 
         public bool UpdateUI;
 
-        public ulong TotalUp { get; private set; }
+        public ulong TotalUp
+        {
+            get; private set;
+        }
 
-        public ulong TotalDown { get; private set; }
+        public ulong TotalDown
+        {
+            get; private set;
+        }
 
-        public List<Mode.ServerStatistics> Statistic { get; set; }
+        public List<Mode.ServerStatistics> Statistic
+        {
+            get; set;
+        }
 
-        public ulong Up { get; private set; }
+        public ulong Up
+        {
+            get; private set;
+        }
 
-        public ulong Down { get; private set; }
+        public ulong Down
+        {
+            get; private set;
+        }
 
         private string logPath_;
 
@@ -213,7 +234,7 @@ namespace v2rayN.Handler
                     Utils.ToHumanReadable(TotalUp, out up_amount, out up_unit);
                     Utils.ToHumanReadable(TotalDown, out down_amount, out down_unit);
 
-                    overallWriter.WriteLine($"LastUpdate {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    overallWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyyMMdd")} {DateTime.Now.ToLongTimeString()}");
                     overallWriter.WriteLine($"UP {string.Format("{0:f2}", up_amount)}{up_unit} {TotalUp}");
                     overallWriter.WriteLine($"DOWN {string.Format("{0:f2}", down_amount)}{down_unit} {TotalDown}");
                     foreach (var s in Statistic)
@@ -228,7 +249,7 @@ namespace v2rayN.Handler
             }
 
             // 当天流量记录文件
-            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToLongDateString()}.txt");
+            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyyMMdd")}.txt");
             if (!File.Exists(dailyPath))
             {
                 File.Create(dailyPath);
@@ -237,7 +258,7 @@ namespace v2rayN.Handler
             {
                 using (var dailyWriter = new StreamWriter(dailyPath))
                 {
-                    dailyWriter.WriteLine($"LastUpdate {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    dailyWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyyMMdd")} {DateTime.Now.ToLongTimeString()}");
                     foreach (var s in Statistic)
                     {
                         dailyWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.path} {s.host} {s.todayUp} {s.todayDown}");
@@ -323,7 +344,7 @@ namespace v2rayN.Handler
             }
 
             // 当天流量记录文件
-            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToLongDateString()}.txt");
+            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyyMMdd")}.txt");
             if (File.Exists(dailyPath))
             {
                 try
