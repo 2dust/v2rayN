@@ -21,7 +21,11 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            if (InitServer("127.0.0.1"))
+            if (InitServer("*"))
+            {
+                pacPort = Global.pacPort;
+            }
+            else if (InitServer("127.0.0.1"))
             {
                 pacPort = Global.pacPort;
             }
