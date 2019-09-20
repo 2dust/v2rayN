@@ -234,7 +234,7 @@ namespace v2rayN.Handler
                     Utils.ToHumanReadable(TotalUp, out up_amount, out up_unit);
                     Utils.ToHumanReadable(TotalDown, out down_amount, out down_unit);
 
-                    overallWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyyMMdd")} {DateTime.Now.ToLongTimeString()}");
+                    overallWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyy-MM-dd")} {DateTime.Now.ToLongTimeString()}");
                     overallWriter.WriteLine($"UP {string.Format("{0:f2}", up_amount)}{up_unit} {TotalUp}");
                     overallWriter.WriteLine($"DOWN {string.Format("{0:f2}", down_amount)}{down_unit} {TotalDown}");
                     foreach (var s in Statistic)
@@ -249,7 +249,7 @@ namespace v2rayN.Handler
             }
 
             // 当天流量记录文件
-            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyyMMdd")}.txt");
+            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
             if (!File.Exists(dailyPath))
             {
                 File.Create(dailyPath);
@@ -258,7 +258,7 @@ namespace v2rayN.Handler
             {
                 using (var dailyWriter = new StreamWriter(dailyPath))
                 {
-                    dailyWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyyMMdd")} {DateTime.Now.ToLongTimeString()}");
+                    dailyWriter.WriteLine($"LastUpdate {DateTime.Now.ToString("yyyy-MM-dd")} {DateTime.Now.ToLongTimeString()}");
                     foreach (var s in Statistic)
                     {
                         dailyWriter.WriteLine($"* {s.name} {s.address} {s.port} {s.path} {s.host} {s.todayUp} {s.todayDown}");
@@ -344,7 +344,7 @@ namespace v2rayN.Handler
             }
 
             // 当天流量记录文件
-            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyyMMdd")}.txt");
+            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
             if (File.Exists(dailyPath))
             {
                 try
