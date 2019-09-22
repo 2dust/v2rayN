@@ -21,15 +21,16 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            if (InitServer("*"))
-            {
-                pacPort = Global.pacPort;
-            }
-            else if (InitServer("127.0.0.1"))
-            {
-                pacPort = Global.pacPort;
-            }
-            else if (InitServerB("127.0.0.1"))
+            //if (InitServer("*"))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
+            //else if (InitServer("127.0.0.1"))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
+            //else if (InitServerB("127.0.0.1"))
+            if (InitServerB("127.0.0.1"))
             {
                 pacPort = Global.pacPort;
             }
@@ -66,8 +67,8 @@ namespace v2rayN.HttpProxyHandler
                         string prefixes = string.Format("http://{0}:{1}/pac/", address, Global.pacPort);
                         Utils.SaveLog("Webserver prefixes " + prefixes);
 
-                        HttpWebServer ws = new HttpWebServer(SendResponse, prefixes);
-                        ws.Run();
+                        server = new HttpWebServer(SendResponse, prefixes);
+                        server.Run();
 
                         //pacPort = Global.pacPort;
                     }
@@ -98,6 +99,7 @@ namespace v2rayN.HttpProxyHandler
                     if (serverB == null)
                     {
                         serverB = new HttpWebServerB(Global.pacPort, SendResponse);
+                        serverB.Run();
                         //pacPort = Global.pacPort;
                     }
                 }
