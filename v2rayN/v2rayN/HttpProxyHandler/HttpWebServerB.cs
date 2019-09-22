@@ -32,61 +32,134 @@ namespace v2rayN.HttpProxyHandler
             }
 
             Utils.SaveLog("WebserverB running...");
-            AsyncCallback callback = null;
-            listener.BeginAcceptTcpClient(callback = ((ares) =>
+            //AsyncCallback callback = null;
+            //listener.BeginAcceptTcpClient(callback = ((ares) =>
+            //{
+            //    try
+            //    {
+            //        if (listener != null)
+            //        {
+            //            TcpClient tcpClient = listener.EndAcceptTcpClient(ares);
+
+
+            //            if (tcpClient != null && _responderMethod != null)
+            //            {
+            //                string pac = _responderMethod(tcpClient);
+
+            //                NetworkStream netStream = tcpClient.GetStream();
+            //                if (netStream.CanRead)
+            //                {
+            //                    // Reads NetworkStream into a byte buffer.
+            //                    byte[] bytes = new byte[tcpClient.ReceiveBufferSize];
+
+            //                    // Read can return anything from 0 to numBytesToRead. 
+            //                    // This method blocks until at least one byte is read.
+            //                    netStream.Read(bytes, 0, (int)tcpClient.ReceiveBufferSize);
+
+            //                    // Returns the data received from the host to the console.
+            //                    string returndata = Encoding.UTF8.GetString(bytes);
+            //                    if (!Utils.IsNullOrEmpty(returndata)
+            //                        && returndata.IndexOf("/pac/") >= 0
+            //                        && netStream.CanWrite)
+            //                    {
+            //                        BinaryWriter writer = new BinaryWriter(netStream);
+
+            //                        Byte[] sendBytes = ASCIIEncoding.ASCII.GetBytes(writeSuccess(pac) + pac);
+            //                        writer.Write(sendBytes, 0, sendBytes.Length);
+            //                        //writer.Flush();
+
+            //                        writer.Close();
+            //                    }
+            //                }
+
+            //                netStream.Close();
+            //                tcpClient.Close();
+            //            }
+            //        }
+            //        listener.BeginAcceptTcpClient(callback, listener);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Utils.SaveLog(ex.Message, ex);
+            //    }
+            //    //Console.WriteLine("Client connected completed");
+
+            //}), null);
+        }
+
+        public void Run()
+        {
+            ThreadPool.QueueUserWorkItem((o) =>
             {
+                Utils.SaveLog("Webserver running...");
                 try
                 {
-                    if (listener != null)
+                    while (true)
                     {
-                        TcpClient tcpClient = listener.EndAcceptTcpClient(ares);
-                        listener.BeginAcceptTcpClient(callback, null);
-
-                        if (tcpClient != null && _responderMethod != null)
+                        ThreadPool.QueueUserWorkItem((c) =>
                         {
-                            string pac = _responderMethod(tcpClient);
-
-                            NetworkStream netStream = tcpClient.GetStream();
-                            if (netStream.CanRead)
+                            try
                             {
-                                // Reads NetworkStream into a byte buffer.
-                                byte[] bytes = new byte[tcpClient.ReceiveBufferSize];
-
-                                // Read can return anything from 0 to numBytesToRead. 
-                                // This method blocks until at least one byte is read.
-                                netStream.Read(bytes, 0, (int)tcpClient.ReceiveBufferSize);
-
-                                // Returns the data received from the host to the console.
-                                string returndata = Encoding.UTF8.GetString(bytes);
-                                if (!Utils.IsNullOrEmpty(returndata)
-                                    && returndata.IndexOf("/pac/") >= 0
-                                    && netStream.CanWrite)
+                                if (listener != null)
                                 {
-                                    BinaryWriter writer = new BinaryWriter(netStream);
-                                    //writeSuccess(writer, pac);
+                                    TcpClient tcpClient = listener.AcceptTcpClient();
 
-                                    Byte[] sendBytes = ASCIIEncoding.ASCII.GetBytes(writeSuccess(pac));
-                                    writer.Write(sendBytes, 0, sendBytes.Length);
-                                    writer.Flush();
+                                    if (tcpClient != null && _responderMethod != null)
+                                    {
+                                        string pac = _responderMethod(tcpClient);
 
-                                    writer.Close();
+                                        NetworkStream netStream = tcpClient.GetStream();
+                                        if (netStream.CanRead)
+                                        {
+                                            // Reads NetworkStream into a byte buffer.
+                                            byte[] bytes = new byte[tcpClient.ReceiveBufferSize];
+
+                                            // Read can return anything from 0 to numBytesToRead. 
+                                            // This method blocks until at least one byte is read.
+                                            netStream.Read(bytes, 0, (int)tcpClient.ReceiveBufferSize);
+
+                                            // Returns the data received from the host to the console.
+                                            string returndata = Encoding.UTF8.GetString(bytes);
+                                            if (!Utils.IsNullOrEmpty(returndata)
+                                                && returndata.IndexOf("/pac/") >= 0
+                                                && netStream.CanWrite)
+                                            {
+
+                                           
+                                                //BinaryWriter writer = new BinaryWriter(netStream);
+                                                
+                                                Byte[] sendBytes = Encoding.UTF8.GetBytes(writeSuccess(pac)  );
+                                                netStream.Write(sendBytes, 0, sendBytes.Length);
+                                              sendBytes = Encoding.UTF8.GetBytes(  pac);
+                                                netStream.Write(sendBytes, 0, sendBytes.Length);
+                                                //writer.Flush();
+
+                                                //writer.Close();
+                                                Console.WriteLine("Connection accepted22.");
+                                            }
+                                        }
+
+                                        netStream.Close();
+                                        tcpClient.Close();
+                                    }
                                 }
                             }
-
-                            netStream.Close();
-                            tcpClient.Close();
-                        }
+                            catch (Exception ex)
+                            {
+                                Utils.SaveLog(ex.Message, ex);
+                            }
+                        });
                     }
                 }
                 catch (Exception ex)
                 {
                     Utils.SaveLog(ex.Message, ex);
-                }
-                //Console.WriteLine("Client connected completed");
+                } // suppress any exceptions
+            });
 
-            }), null);
+
+
         }
-
 
         public void Stop()
         {
@@ -96,7 +169,7 @@ namespace v2rayN.HttpProxyHandler
                 listener = null;
             }
         }
-        
+
 
         //private static void writeSuccess(BinaryWriter writer, string pac)
         //{
@@ -114,19 +187,14 @@ namespace v2rayN.HttpProxyHandler
 
         private static string writeSuccess(string pac)
         {
-            StringBuilder sb = new StringBuilder();
-            string content_type = "application/x-ns-proxy-autoconfig";
 
-            sb.Append("HTTP/1.0 200 OK");
-            sb.AppendLine();
-            sb.Append(String.Format("Content-Type:{0};", content_type));
-            sb.AppendLine();
-            //sb.Append("Connection: close");
-            //sb.AppendLine();
-            sb.Append(pac);
-            sb.AppendLine();
+            string responseHead = String.Format(@"HTTP/1.1 200 OK
+Content-Type: application/x-ns-proxy-autoconfig
+Content-Length: {0}
+Connection: Close
+", Encoding.UTF8.GetBytes(pac).Length);
 
-            return sb.ToString();
+            return responseHead;
         }
 
     }
