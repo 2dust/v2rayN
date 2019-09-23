@@ -8,9 +8,9 @@ namespace v2rayN.HttpProxyHandler
     public class HttpWebServer
     {
         private HttpListener _listener;
-        private Func<HttpListenerRequest, string> _responderMethod;
+        private Func<string, string> _responderMethod;
 
-        public HttpWebServer(string[] prefixes, Func<HttpListenerRequest, string> method)
+        public HttpWebServer(string[] prefixes, Func<string, string> method)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        public HttpWebServer(Func<HttpListenerRequest, string> method, params string[] prefixes)
+        public HttpWebServer(Func<string, string> method, params string[] prefixes)
             : this(prefixes, method) { }
 
         public void Run()
@@ -60,8 +60,9 @@ namespace v2rayN.HttpProxyHandler
                             var ctx = c as HttpListenerContext;
                             try
                             {
-                                string rstr = _responderMethod(ctx.Request);
-                                byte[] buf = ASCIIEncoding.ASCII.GetBytes(rstr);
+                                string address = ctx.Request.LocalEndPoint.Address.ToString();
+                                string rstr = _responderMethod(address);
+                                byte[] buf = Encoding.ASCII.GetBytes(rstr);
                                 ctx.Response.StatusCode = 200;
                                 ctx.Response.ContentType = "application/x-ns-proxy-autoconfig";
                                 ctx.Response.ContentLength64 = buf.Length;

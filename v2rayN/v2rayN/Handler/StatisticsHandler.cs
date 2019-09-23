@@ -70,7 +70,7 @@ namespace v2rayN.Handler
             enabled_ = config.enableStatistics;
             UpdateUI = false;
             updateFunc_ = update;
-            logPath_ = Utils.GetPath($"{Global.StatisticLogDirectory}\\");
+            logPath_ = Utils.GetPath(Global.StatisticLogDirectory);
             Statistic = new List<Mode.ServerStatistics>();
             exitFlag_ = false;
 
@@ -282,11 +282,11 @@ namespace v2rayN.Handler
             /// UP [readable string] [amount]
             /// DOWN [readable string] [amount]
             /// 每行每个数据空格分隔
-            ///
-            var overallPath = Path.Combine(logPath_, Global.StatisticLogOverall);
-            if (File.Exists(overallPath))
+
+            try
             {
-                try
+                var overallPath = Path.Combine(logPath_, Global.StatisticLogOverall);
+                if (File.Exists(overallPath))
                 {
                     using (var overallReader = new StreamReader(overallPath))
                     {
@@ -335,20 +335,22 @@ namespace v2rayN.Handler
                                 }
                             }
                         }
+
                     }
                 }
-                catch (Exception ex)
-                {
-                    Utils.SaveLog(ex.Message, ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
             }
 
-            // 当天流量记录文件
-            var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
-            if (File.Exists(dailyPath))
+            try
             {
-                try
+                // 当天流量记录文件
+                var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
+                if (File.Exists(dailyPath))
                 {
+
                     using (var dailyReader = new StreamReader(dailyPath))
                     {
                         while (!dailyReader.EndOfStream)
@@ -386,10 +388,10 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Utils.SaveLog(ex.Message, ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
             }
         }
 
