@@ -17,6 +17,13 @@ namespace v2rayN.HttpProxyHandler
     {
         private static int pacPort = 0;
         private static HttpWebServer server;
+        public bool IsRunning
+        {
+            get
+            {
+                return (server != null && pacPort > 0);
+            }
+        }
 
         public static void Init(Config config)
         {
@@ -68,7 +75,6 @@ namespace v2rayN.HttpProxyHandler
             return true;
         }
 
-
         public static string SendResponse(string address)
         {
             try
@@ -117,6 +123,7 @@ namespace v2rayN.HttpProxyHandler
             //}
         }
 
+
         private static string GetPacList(string address)
         {
             var port = Global.sysAgentPort;
@@ -144,5 +151,6 @@ namespace v2rayN.HttpProxyHandler
             }
             return "No pac content";
         }
+
     }
 }
