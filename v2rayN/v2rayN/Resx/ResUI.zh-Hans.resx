@@ -343,7 +343,7 @@
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
     <value>总上传</value>
   </data>
-  <data name="uploadSpeed" xml:space="preserve">
-    <value>上传</value>
+  <data name="StartPacFailed" xml:space="preserve">
+    <value>PAC服务启动失败,请用管理员启动</value>
   </data>
 </root>

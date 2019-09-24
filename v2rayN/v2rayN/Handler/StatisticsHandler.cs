@@ -285,6 +285,7 @@ namespace v2rayN.Handler
 
             try
             {
+                Utils.SaveLog(logPath_ + Global.StatisticLogOverall);
                 var overallPath = Path.Combine(logPath_, Global.StatisticLogOverall);
                 if (File.Exists(overallPath))
                 {
@@ -346,7 +347,7 @@ namespace v2rayN.Handler
 
             try
             {
-                // 当天流量记录文件
+                Utils.SaveLog(logPath_ + $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
                 var dailyPath = Path.Combine(logPath_, $"{DateTime.Now.ToString("yyyy-MM-dd")}.txt");
                 if (File.Exists(dailyPath))
                 {

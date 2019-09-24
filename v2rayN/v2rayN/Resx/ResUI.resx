@@ -343,7 +343,7 @@
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
     <value>Total upload traffic</value>
   </data>
-  <data name="uploadSpeed" xml:space="preserve">
-    <value>UP</value>
+  <data name="StartPacFailed" xml:space="preserve">
+    <value>PAC failed to start. Pls with an administrator.</value>
   </data>
 </root>

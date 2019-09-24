@@ -17,7 +17,8 @@ namespace v2rayN.HttpProxyHandler
     {
         private static int pacPort = 0;
         private static HttpWebServer server;
-        public bool IsRunning
+
+        public static bool IsRunning
         {
             get
             {
@@ -42,7 +43,7 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        public static bool InitServer(string address)
+        private static bool InitServer(string address)
         {
             try
             {
