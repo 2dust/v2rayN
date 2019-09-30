@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using v2rayN.Mode;
 using v2rayN.Properties;
@@ -28,19 +26,22 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            if (InitServer("*"))
-            {
-                pacPort = Global.pacPort;
-            }
-            else if (InitServer("127.0.0.1"))
-            {
-                pacPort = Global.pacPort;
-            }
-            else
-            {
-                Utils.SaveLog("Webserver init failed ");
-                pacPort = 0;
-            }
+            var serverB = new HttpWebServerB(Global.pacPort, SendResponse);
+            pacPort = Global.pacPort;
+
+            //if (InitServer("*"))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
+            //else if (InitServer("127.0.0.1"))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
+            //else
+            //{
+            //    Utils.SaveLog("Webserver init failed ");
+            //    pacPort = 0;
+            //}
         }
 
         private static bool InitServer(string address)

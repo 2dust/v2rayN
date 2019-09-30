@@ -75,7 +75,7 @@ namespace v2rayN.HttpProxyHandler
         public static List<string> ParseResult(string response)
         {
             byte[] bytes = Convert.FromBase64String(response);
-            string content = Encoding.ASCII.GetString(bytes);
+            string content = Encoding.UTF8.GetString(bytes);
             List<string> valid_lines = new List<string>();
             using (var sr = new StringReader(content))
             {

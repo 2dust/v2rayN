@@ -62,7 +62,7 @@ namespace v2rayN.HttpProxyHandler
                             {
                                 string address = ctx.Request.LocalEndPoint.Address.ToString();
                                 string rstr = _responderMethod(address);
-                                byte[] buf = Encoding.ASCII.GetBytes(rstr);
+                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
                                 ctx.Response.StatusCode = 200;
                                 ctx.Response.ContentType = "application/x-ns-proxy-autoconfig";
                                 ctx.Response.ContentLength64 = buf.Length;
