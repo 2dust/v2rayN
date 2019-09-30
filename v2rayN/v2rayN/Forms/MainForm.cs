@@ -392,6 +392,8 @@ namespace v2rayN.Forms
                     }
                 }
             }
+            notifyMain.Icon = GetNotifyIcon();
+
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -1019,7 +1021,7 @@ namespace v2rayN.Forms
         {
             //this.WindowState = FormWindowState.Minimized;
             this.Hide();
-            this.notifyMain.Icon = this.Icon;
+            //this.notifyMain.Icon = this.Icon;
             this.notifyMain.Visible = true;
             this.ShowInTaskbar = false;
 
