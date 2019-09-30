@@ -26,22 +26,20 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            var serverB = new HttpWebServerB(Global.pacPort, SendResponse);
-            pacPort = Global.pacPort;
 
-            //if (InitServer("*"))
-            //{
-            //    pacPort = Global.pacPort;
-            //}
-            //else if (InitServer("127.0.0.1"))
-            //{
-            //    pacPort = Global.pacPort;
-            //}
-            //else
-            //{
-            //    Utils.SaveLog("Webserver init failed ");
-            //    pacPort = 0;
-            //}
+            if (InitServer("*"))
+            {
+                pacPort = Global.pacPort;
+            }
+            else if (InitServer("127.0.0.1"))
+            {
+                pacPort = Global.pacPort;
+            }
+            else
+            {
+                Utils.SaveLog("Webserver init failed ");
+                pacPort = 0;
+            }
         }
 
         private static bool InitServer(string address)
