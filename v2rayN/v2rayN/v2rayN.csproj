@@ -182,6 +182,7 @@
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\V2rayUpdateHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpWebServer.cs" />
+    <Compile Include="HttpProxyHandler\HttpWebServerB.cs" />
     <Compile Include="HttpProxyHandler\PACFileWatcherHandle.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
     <Compile Include="HttpProxyHandler\PACListHandle.cs" />
@@ -426,6 +427,7 @@
     </Content>
     <EmbeddedResource Include="LIB\netstandard.dll" />
     <Content Include="Resources\help.png" />
+    <None Include="Resources\notify.png" />
     <Content Include="Resources\privoxy_conf.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

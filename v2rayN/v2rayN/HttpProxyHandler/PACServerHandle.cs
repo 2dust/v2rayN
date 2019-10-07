@@ -15,23 +15,27 @@ namespace v2rayN.HttpProxyHandler
     {
         private static int pacPort = 0;
         private static HttpWebServer server;
+        private static HttpWebServerB serverB;
 
         public static bool IsRunning
         {
             get
             {
-                return (server != null && pacPort > 0);
+                return (pacPort > 0);
             }
         }
 
         public static void Init(Config config)
         {
-
-            if (InitServer("*"))
+            //if (InitServer("*"))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
+            if (InitServer("127.0.0.1"))
             {
                 pacPort = Global.pacPort;
             }
-            else if (InitServer("127.0.0.1"))
+            else if (InitServerB("127.0.0.1"))
             {
                 pacPort = Global.pacPort;
             }
@@ -70,6 +74,34 @@ namespace v2rayN.HttpProxyHandler
             catch (Exception ex)
             {
                 Utils.SaveLog("Webserver InitServer " + ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public static bool InitServerB(string address)
+        {
+            try
+            {
+                if (pacPort != Global.pacPort)
+                {
+                    if (serverB != null)
+                    {
+                        serverB.Stop();
+                        serverB = null;
+                    }
+
+                    if (serverB == null)
+                    {
+                        serverB = new HttpWebServerB(Global.pacPort, SendResponse);
+                        //pacPort = Global.pacPort;
+                    }
+                }
+                Utils.SaveLog("WebserverB at " + address);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("WebserverB InitServer " + ex.Message);
                 return false;
             }
             return true;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -402,6 +403,47 @@ namespace v2rayN.Forms
                 Utils.SetClipboardData(e.ClickedItem.Text);
             }
         }
+
+        private Icon GetNotifyIcon()
+        {
+            try
+            {
+                var color = ColorTranslator.FromHtml("#3399CC");
+                var index = config.sysAgentEnabled ? config.listenerType : 0;
+                if (index > 0)
+                {
+                    color = (new Color[] { Color.Red, Color.Orange, Color.DarkGreen, Color.Purple })[index - 1];
+                    //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
+                }
+
+
+                var width = 128;
+                var height = 128;
+
+                var bitmap = new Bitmap(width, height);
+                var graphics = Graphics.FromImage(bitmap);
+                var drawBrush = new SolidBrush(color);
+
+                graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
+                var zoom = 16;
+                graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
+
+                bitmap.Save(Utils.GetPath("temp_icon.ico"), System.Drawing.Imaging.ImageFormat.Icon);
+
+                Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
+
+                drawBrush.Dispose();
+                graphics.Dispose();
+                bitmap.Dispose();
+
+                return createdIcon;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return this.Icon;
+            }
+        }
         #endregion
 
         #region v2ray 操作
@@ -417,6 +459,7 @@ namespace v2rayN.Forms
             }
             v2rayHandler.LoadV2ray(config);
             Global.reloadV2ray = false;
+            ConfigHandler.ToJsonFile(config);
 
             ChangeSysAgent(config.sysAgentEnabled);
             DisplayToolStatus();
@@ -569,9 +612,6 @@ namespace v2rayN.Forms
             //刷新
             RefreshServers();
             LoadV2ray();
-
-            // save to config file
-            ConfigHandler.ToJsonFile(config);
         }
 
         private void menuCopyServer_Click(object sender, EventArgs e)
@@ -1562,5 +1602,6 @@ namespace v2rayN.Forms
 
 
         #endregion
+              
     }
 }
