@@ -1,0 +1,34 @@
+﻿{
+	"log": {
+		"access": "/var/log/v2ray/access.log",
+		"error": "/var/log/v2ray/error.log",
+		"loglevel": "warning"
+	},
+	"inbounds": [{
+		"port": 10086,
+		"protocol": "vmess",
+		"settings": {
+			"clients": [{
+				"id": "23ad6b10-8d1a-40f7-8ad0-e3e35cd38297",
+				"level": 1,
+				"alterId": 64,
+				"email": "t@t.tt"
+			}]
+		},
+		"streamSettings": {
+			"network": "tcp"
+		}
+	}],
+	"outbound": [{
+		"protocol": "freedom",
+		"settings": {}
+	}, {
+		"protocol": "blackhole",
+		"settings": {},
+		"tag": "block"
+	}],
+	"routing": {
+		"domainStrategy": "IPIfNonMatch",
+		"rules": []
+	}
+}

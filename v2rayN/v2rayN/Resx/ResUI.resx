@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
+    <value>Batch export subscription to clipboard successfully</value>
+  </data>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>Batch export share URL to clipboard successfully</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Failed to import custom configuration server</value>
+  </data>
+  <data name="FillCorrectAlterId" xml:space="preserve">
+    <value>Please fill in the correct format extra ID</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Please fill in the correct format server port</value>
+  </data>
+  <data name="FillKcpParameters" xml:space="preserve">
+    <value>Please fill in the KCP parameters correctly</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Please fill in the local listening port</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Please fill in the password</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Please fill in the server address</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>Please fill in the user ID</value>
+  </data>
+  <data name="NeedHttpGlobalProxy" xml:space="preserve">
+    <value> This feature relies on the Http global proxy, please set it correctly first.</value>
+  </data>
+  <data name="NonVmessService" xml:space="preserve">
+    <value> non-Vmess service, this feature is invalid</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Scan completed, no valid QR code found</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value> operation failed, please check retry</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Please Fill Remarks</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Please select the encryption method</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Please select an agreement</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Please select the server first</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Successfully imported custom configuration server</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>Imported bulk URL from clipboard successfully</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>The client configuration file is saved at: {0}</value>
+  </data>
+  <data name="SaveServerConfigurationIn" xml:space="preserve">
+    <value>The server configuration file is saved at: {0}</value>
+  </data>
+  <data name="SpeedServerTips" xml:space="preserve">
+    <value>Note: After this function relies on the Http global proxy test, please manually adjust the Http global proxy and active node!</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Scan import URL successfully</value>
+  </data>
+  <data name="DownloadYesNo" xml:space="preserve">
+    <value>Whether to download? {0}</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Are you sure to remove the server?</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Please check the server settings first</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value> configuration format is incorrect</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Failed to convert configuration file</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Failed to generate default configuration file</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value> Failed to get the default configuration</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Failed to read configuration file</value>
+  </data>
+  <data name="IncorrectClientConfiguration" xml:space="preserve">
+    <value> is not the correct client configuration file, please check</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value> is not the correct configuration, please check</value>
+  </data>
+  <data name="IncorrectServerConfiguration" xml:space="preserve">
+    <value> is not the correct server configuration file, please check</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>Initial Configuration</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Non-vmess or ss protocol</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Successful configuration
+{0}</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>V2ray-core not found, download address: {0}</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Start service ({0})......</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="LvAlias" xml:space="preserve">
+    <value>Alias</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Subs</value>
+  </data>
+  <data name="LvTestResults" xml:space="preserve">
+    <value>Test Results</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="MsgClearSubscription" xml:space="preserve">
+    <value>Clear original subscription content</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Download V2rayCore successfully</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Failed to import subscription content</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Get the subscription content successfully</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>No valid subscriptions set</value>
+  </data>
+  <data name="MsgPACUpdateFailed" xml:space="preserve">
+    <value>PAC update failed</value>
+  </data>
+  <data name="MsgPACUpdateSuccessfully" xml:space="preserve">
+    <value>PAC update succeeded</value>
+  </data>
+  <data name="MsgParsingV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Resolve V2rayCore successfully</value>
+  </data>
+  <data name="MsgSimplifyPAC" xml:space="preserve">
+    <value>Simplify PAC Success</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Start getting subscriptions</value>
+  </data>
+  <data name="MsgStartUpdatingPAC" xml:space="preserve">
+    <value>Start updating PAC...</value>
+  </data>
+  <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
+    <value>Start updating V2rayCore...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Subscription content decoding failed (non-BASE64 code)</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>is unpacking...</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Update subscription end</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Update subscription starts</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Update V2rayCore successfully</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>Update V2rayCore successfully! Restarting service...</value>
+  </data>
+  <data name="MediumFresh" xml:space="preserve">
+    <value>MediumFresh</value>
+  </data>
+  <data name="QuickFresh" xml:space="preserve">
+    <value>QuickFresh</value>
+  </data>
+  <data name="SlowFresh" xml:space="preserve">
+    <value>SlowFresh</value>
+  </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>DOWN</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Today download traffic</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Today upload traffic</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total download traffic</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total upload traffic</value>
+  </data>
+  <data name="StartPacFailed" xml:space="preserve">
+    <value>PAC failed to start. Pls with an administrator.</value>
+  </data>
+</root>
