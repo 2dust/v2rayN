@@ -42,6 +42,10 @@ namespace v2rayN.Forms
                 cmbprotocol.Text = config.inbound[0].protocol.ToString();
                 chkudpEnabled.Checked = config.inbound[0].udpEnabled;
                 chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
+
+                txtlocalPort2.Text = "socks + 1";
+                cmbprotocol2.Text = "http";
+
                 if (config.inbound.Count > 1)
                 {
                     txtlocalPort2.Text = config.inbound[1].localPort.ToString();
