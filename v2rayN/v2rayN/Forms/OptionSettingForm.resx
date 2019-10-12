@@ -357,9 +357,6 @@
   <data name="cmbprotocol2.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="cmbprotocol2.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;cmbprotocol2.Name" xml:space="preserve">
     <value>cmbprotocol2</value>
   </data>
@@ -387,9 +384,6 @@
   <data name="label3.Text" xml:space="preserve">
     <value>protocol</value>
   </data>
-  <data name="label3.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
   </data>
@@ -410,9 +404,6 @@
   </data>
   <data name="txtlocalPort2.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
-  </data>
-  <data name="txtlocalPort2.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="&gt;&gt;txtlocalPort2.Name" xml:space="preserve">
     <value>txtlocalPort2</value>
