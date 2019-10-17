@@ -100,12 +100,14 @@ namespace v2rayN.Handler
                 ServicePointManager.DefaultConnectionLimit = 256;
                 if (UpdateCompleted != null)
                 {
-                    UpdateCompleted(this, new ResultEventArgs(false, url));
+                    UpdateCompleted(this, new ResultEventArgs(false, "Downloading..."));
                 }
 
                 progressPercentage = -1;
 
                 WebClientEx ws = new WebClientEx();
+                ws.Proxy = new WebProxy(Global.Loopback, Global.sysAgentPort);
+
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
                 ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));
@@ -216,6 +218,6 @@ namespace v2rayN.Handler
             }
         }
 
-        
+
     }
 }

@@ -276,6 +276,7 @@ namespace v2rayN.Handler
             {
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 myHttpWebRequest.Timeout = 5000;
+                myHttpWebRequest.Proxy = new WebProxy(Global.Loopback, Global.sysAgentPort);
 
                 var timer = new Stopwatch();
                 timer.Start();

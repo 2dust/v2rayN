@@ -99,7 +99,7 @@ namespace v2rayN.HttpProxyHandler
                 }
                 else
                 {
-                    privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", "127.0.0.1");
+                    privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", Global.Loopback);
                 }
                 FileManager.ByteArrayToFile(Utils.GetTempPath(_uniqueConfigFile), Encoding.UTF8.GetBytes(privoxyConfig));
 

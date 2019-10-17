@@ -319,16 +319,15 @@ namespace v2rayN.Forms
 
         private void DisplayToolStatus()
         {
-            var localIP = "127.0.0.1";
             toolSslSocksPort.Text =
             toolSslHttpPort.Text =
             toolSslPacPort.Text = "NONE";
 
-            toolSslSocksPort.Text = $"{localIP}:{config.inbound[0].localPort}";
+            toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
 
             if (config.sysAgentEnabled)
             {
-                toolSslHttpPort.Text = $"{localIP}:{Global.sysAgentPort}";
+                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.sysAgentPort}";
                 if (config.listenerType == 2 || config.listenerType == 4)
                 {
                     if (PACServerHandle.IsRunning)
@@ -607,7 +606,7 @@ namespace v2rayN.Forms
 
         private void menuRealPingServer_Click(object sender, EventArgs e)
         {
-            if (!config.sysAgentEnabled || config.listenerType != 1)
+            if (!config.sysAgentEnabled)
             {
                 UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
                 return;
@@ -622,7 +621,7 @@ namespace v2rayN.Forms
 
         private void menuSpeedServer_Click(object sender, EventArgs e)
         {
-            if (!config.sysAgentEnabled || config.listenerType != 1)
+            if (!config.sysAgentEnabled)
             {
                 UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
                 return;

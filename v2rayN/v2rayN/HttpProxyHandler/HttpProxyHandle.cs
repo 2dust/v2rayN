@@ -47,7 +47,7 @@ namespace v2rayN.HttpProxyHandler
                     {
                         PACServerHandle.Stop();
                         PACFileWatcherHandle.StopWatch();
-                        SysProxyHandle.SetIEProxy(true, true, "127.0.0.1:" + port, null);
+                        SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}", null);
                     }
                     else if (type == 2)
                     {
@@ -168,8 +168,8 @@ namespace v2rayN.HttpProxyHandler
 
         public static string GetPacUrl()
         {
-            string pacUrl = string.Format("http://127.0.0.1:{0}/pac/?t={1}", Global.pacPort,
-                          GetTimestamp(DateTime.Now));
+            string pacUrl = $"http://{Global.Loopback}:{Global.pacPort}/pac/?t={GetTimestamp(DateTime.Now)}";
+
 
             return pacUrl;
         }
