@@ -362,7 +362,7 @@ namespace v2rayN.Forms
                     color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange })[index - 1];
                     //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
                 }
-                
+
                 var width = 128;
                 var height = 128;
 
@@ -1044,7 +1044,7 @@ namespace v2rayN.Forms
         #endregion
 
         #region 后台测速
-        
+
         private void SetTestResult(int k, string txt)
         {
             config.vmess[k].testResult = txt;
@@ -1298,7 +1298,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                v2rayUpdateHandle.DownloadFileAsync(config, url);
+                                v2rayUpdateHandle.DownloadFileAsync(config, url, false);
                             }
                         }));
                     }
@@ -1536,6 +1536,6 @@ namespace v2rayN.Forms
 
         #endregion
 
-       
+
     }
 }

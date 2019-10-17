@@ -232,7 +232,7 @@ namespace v2rayN.Handler
 
                 testCounter++;
 
-                v2rayUpdateHandle2.DownloadFileAsync(_config, url);
+                v2rayUpdateHandle2.DownloadFileAsync(_config, url,true);
 
                 return 0;
             }
