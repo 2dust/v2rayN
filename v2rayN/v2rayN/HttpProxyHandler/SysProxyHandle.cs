@@ -49,14 +49,14 @@ namespace v2rayN.HttpProxyHandler
 
         public static void SetIEProxy(bool enable, bool global, string proxyServer, string pacURL)
         {
-            Read();
+            //Read();
 
-            if (!_userSettings.UserSettingsRecorded)
-            {
-                // record user settings
-                ExecSysproxy("query");
-                ParseQueryStr(_queryStr);
-            }
+            //if (!_userSettings.UserSettingsRecorded)
+            //{
+            //    // record user settings
+            //    ExecSysproxy("query");
+            //    ParseQueryStr(_queryStr);
+            //}
 
             string arguments;
             if (enable)
@@ -71,17 +71,19 @@ namespace v2rayN.HttpProxyHandler
             else
             {
                 // restore user settings
-                var flags = _userSettings.Flags;
-                var proxy_server = _userSettings.ProxyServer ?? "-";
-                var bypass_list = _userSettings.BypassList ?? "-";
-                var pac_url = _userSettings.PacUrl ?? "-";
-                arguments = string.Format("set {0} {1} {2} {3}", flags, proxy_server, bypass_list, pac_url);
+                //var flags = _userSettings.Flags;
+                //var proxy_server = _userSettings.ProxyServer ?? "-";
+                //var bypass_list = _userSettings.BypassList ?? "-";
+                //var pac_url = _userSettings.PacUrl ?? "-";
+                ////arguments = string.Format("set {0} {1} {2} {3}", flags, proxy_server, bypass_list, pac_url);
+                //set null settings
+                arguments = string.Format("set {0} {1} {2} {3}", 1, "-", "<local>", @"http://127.0.0.1");
 
                 // have to get new settings
-                _userSettings.UserSettingsRecorded = false;
+                //_userSettings.UserSettingsRecorded = false;
             }
 
-            Save();
+            //Save();
             ExecSysproxy(arguments);
         }
 
