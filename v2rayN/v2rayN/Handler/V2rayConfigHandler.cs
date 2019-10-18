@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using v2rayN.Mode;
-using System.Net;
-using System.Text;
 using System.Linq;
+using System.Net;
+using v2rayN.Base;
+using v2rayN.Mode;
 
 namespace v2rayN.Handler
 {

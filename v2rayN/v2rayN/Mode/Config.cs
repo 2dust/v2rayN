@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using v2rayN.Base;
 
 namespace v2rayN.Mode
 {

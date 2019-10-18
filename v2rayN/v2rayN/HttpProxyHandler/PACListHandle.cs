@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Properties;
 

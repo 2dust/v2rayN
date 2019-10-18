@@ -5,6 +5,7 @@ using System.Text;
 using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Tool;
+using v2rayN.Base;
 
 namespace v2rayN.HttpProxyHandler
 {

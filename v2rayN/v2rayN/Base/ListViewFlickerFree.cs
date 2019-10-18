@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace v2rayN.Forms
+namespace v2rayN.Base
 {
     class ListViewFlickerFree : ListView
     {

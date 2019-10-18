@@ -18,6 +18,7 @@ using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 using System.Security.Principal;
+using v2rayN.Base;
 
 namespace v2rayN
 {

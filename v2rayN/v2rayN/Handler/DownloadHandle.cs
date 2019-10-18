@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
-using Newtonsoft.Json;
+using v2rayN.Base;
 using v2rayN.Mode;
-using v2rayN.Properties;
-using v2rayN.HttpProxyHandler;
-using System.Diagnostics;
 
 namespace v2rayN.Handler
 {
     /// <summary>
-    ///Update V2ray Core 
+    ///Download
     /// </summary>
-    class V2rayUpdateHandle
+    class DownloadHandle
     {
         public event EventHandler<ResultEventArgs> AbsoluteCompleted;
 

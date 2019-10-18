@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
+using v2rayN.Base;
 
 namespace v2rayN.Forms
 {
@@ -15,7 +16,7 @@ namespace v2rayN.Forms
     {
         private V2rayHandler v2rayHandler;
         private PACListHandle pacListHandle;
-        private V2rayUpdateHandle v2rayUpdateHandle;
+        private DownloadHandle downloadHandle;
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
 
@@ -1279,10 +1280,10 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
         {
-            if (v2rayUpdateHandle == null)
+            if (downloadHandle == null)
             {
-                v2rayUpdateHandle = new V2rayUpdateHandle();
-                v2rayUpdateHandle.AbsoluteCompleted += (sender2, args) =>
+                downloadHandle = new DownloadHandle();
+                downloadHandle.AbsoluteCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
@@ -1298,7 +1299,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                v2rayUpdateHandle.DownloadFileAsync(config, url, false);
+                                downloadHandle.DownloadFileAsync(config, url, false);
                             }
                         }));
                     }
@@ -1307,7 +1308,7 @@ namespace v2rayN.Forms
                         AppendText(false, args.Msg);
                     }
                 };
-                v2rayUpdateHandle.UpdateCompleted += (sender2, args) =>
+                downloadHandle.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
@@ -1318,7 +1319,7 @@ namespace v2rayN.Forms
                         {
                             CloseV2ray();
 
-                            string fileName = v2rayUpdateHandle.DownloadFileName;
+                            string fileName = downloadHandle.DownloadFileName;
                             fileName = Utils.GetPath(fileName);
                             using (ZipArchive archive = ZipFile.OpenRead(fileName))
                             {
@@ -1346,14 +1347,14 @@ namespace v2rayN.Forms
                         AppendText(false, args.Msg);
                     }
                 };
-                v2rayUpdateHandle.Error += (sender2, args) =>
+                downloadHandle.Error += (sender2, args) =>
                 {
                     AppendText(true, args.GetException().Message);
                 };
             }
 
             AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
-            v2rayUpdateHandle.AbsoluteV2rayCore(config);
+            downloadHandle.AbsoluteV2rayCore(config);
         }
 
         private void tsbCheckUpdatePACList_Click(object sender, EventArgs e)
@@ -1473,8 +1474,8 @@ namespace v2rayN.Forms
                     continue;
                 }
 
-                V2rayUpdateHandle v2rayUpdateHandle3 = new V2rayUpdateHandle();
-                v2rayUpdateHandle3.UpdateCompleted += (sender2, args) =>
+                DownloadHandle downloadHandle3 = new DownloadHandle();
+                downloadHandle3.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
@@ -1503,12 +1504,12 @@ namespace v2rayN.Forms
                         AppendText(false, args.Msg);
                     }
                 };
-                v2rayUpdateHandle3.Error += (sender2, args) =>
+                downloadHandle3.Error += (sender2, args) =>
                 {
                     AppendText(true, args.GetException().Message);
                 };
 
-                v2rayUpdateHandle3.WebDownloadString(url);
+                downloadHandle3.WebDownloadString(url);
                 AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
+using v2rayN.Base;
 
 namespace v2rayN.Forms
 {
@@ -381,8 +382,8 @@ namespace v2rayN.Forms
             for (int k = 0; k < lstUrl.Count; k++)
             {
                 var txt = lstTxt[k];
-                V2rayUpdateHandle v2rayUpdateHandle3 = new V2rayUpdateHandle();
-                v2rayUpdateHandle3.UpdateCompleted += (sender2, args) =>
+                DownloadHandle downloadHandle = new DownloadHandle();
+                downloadHandle.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
@@ -398,12 +399,12 @@ namespace v2rayN.Forms
                         AppendText(false, args.Msg);
                     }
                 };
-                v2rayUpdateHandle3.Error += (sender2, args) =>
+                downloadHandle.Error += (sender2, args) =>
                 {
                     AppendText(true, args.GetException().Message);
                 };
 
-                v2rayUpdateHandle3.WebDownloadString(lstUrl[k]);
+                downloadHandle.WebDownloadString(lstUrl[k]);
             }
         }
         void AppendText(bool notify, string text)

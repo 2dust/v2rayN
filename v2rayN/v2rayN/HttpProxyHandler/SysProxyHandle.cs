@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
+using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Tool;
