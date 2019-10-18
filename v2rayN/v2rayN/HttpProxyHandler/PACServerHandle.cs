@@ -31,11 +31,11 @@ namespace v2rayN.HttpProxyHandler
             //{
             //    pacPort = Global.pacPort;
             //}
-            if (InitServer("127.0.0.1"))
+            if (InitServer(Global.Loopback))
             {
                 pacPort = Global.pacPort;
             }
-            else if (InitServerB("127.0.0.1"))
+            else if (InitServerB(Global.Loopback))
             {
                 pacPort = Global.pacPort;
             }

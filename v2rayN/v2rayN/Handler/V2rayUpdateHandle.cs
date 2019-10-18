@@ -92,7 +92,7 @@ namespace v2rayN.Handler
         }
 
 
-        public void DownloadFileAsync(Config config, string url)
+        public void DownloadFileAsync(Config config, string url, bool blProxy)
         {
             try
             {
@@ -100,12 +100,17 @@ namespace v2rayN.Handler
                 ServicePointManager.DefaultConnectionLimit = 256;
                 if (UpdateCompleted != null)
                 {
-                    UpdateCompleted(this, new ResultEventArgs(false, url));
+                    UpdateCompleted(this, new ResultEventArgs(false, "Downloading..."));
                 }
 
                 progressPercentage = -1;
 
                 WebClientEx ws = new WebClientEx();
+                if (blProxy)
+                {
+                    ws.Proxy = new WebProxy(Global.Loopback, Global.sysAgentPort);
+                }
+
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
                 ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));
@@ -216,6 +221,6 @@ namespace v2rayN.Handler
             }
         }
 
-        
+
     }
 }

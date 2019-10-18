@@ -95,7 +95,7 @@ namespace v2rayN.Handler
             {
                 Global.statePort = GetFreePort();
 
-                channel_ = new Channel($"127.0.0.1:{Global.statePort}", ChannelCredentials.Insecure);
+                channel_ = new Channel($"{Global.Loopback}:{Global.statePort}", ChannelCredentials.Insecure);
                 channel_.ConnectAsync();
                 client_ = new StatsService.StatsServiceClient(channel_);
             }

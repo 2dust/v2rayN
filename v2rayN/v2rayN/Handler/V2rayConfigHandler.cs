@@ -159,7 +159,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    inbound.listen = "127.0.0.1";
+                    inbound.listen = Global.Loopback;
                 }
                 //开启udp
                 inbound.settings.udp = config.inbound[0].udpEnabled;

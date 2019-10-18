@@ -147,10 +147,10 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
+        public const string Loopback = "127.0.0.1";
 
         public const string InboundAPITagName = "api";
-        public const string InboundProxyTagName = "proxy";
-        public const string Loopback = "127.0.0.1";
+        public const string InboundProxyTagName = "proxy";  
         public const string InboundAPIProtocal = "dokodemo-door";
      
         public enum StatisticsFreshRate
