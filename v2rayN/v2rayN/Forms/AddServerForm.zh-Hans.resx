@@ -191,13 +191,13 @@
     <value>89, 12</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>伪装类型(type)</value>
+    <value>伪装类型</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
-    <value>伪装域名(host)</value>
+    <value>伪装域名</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
@@ -221,7 +221,7 @@
     <value>107, 12</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>传输协议(network)</value>
+    <value>传输协议</value>
   </data>
   <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 143</value>
@@ -233,25 +233,25 @@
     <value>83, 12</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>别名(remarks)</value>
+    <value>别名</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>加密方式(security)</value>
+    <value>加密方式</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>额外ID(alterId)</value>
+    <value>额外ID</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>用户ID(id)</value>
+    <value>用户ID</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -263,7 +263,7 @@
     <value>83, 12</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>地址(address)</value>
+    <value>地址</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
@@ -297,5 +297,11 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>编辑或添加[VMess]服务器</value>
+  </data>
+  <data name="lbAdvanced.Text" xml:space="preserve">
+    <value>进阶设置</value>
+  </data>
+  <data name="lbBase.Text" xml:space="preserve">
+    <value>基础设置</value>
   </data>
 </root>
