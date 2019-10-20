@@ -31,10 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServerForm));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lbAdvanced = new System.Windows.Forms.Label();
+            this.lbBase = new System.Windows.Forms.Label();
             this.btnGUID = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbAdvanced = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.panTlsMore = new System.Windows.Forms.Panel();
@@ -64,7 +65,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtAlterId = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
@@ -78,11 +78,10 @@
             this.MenuItemImportClient = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemImportServer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbBase = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panTlsMore.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.menuServer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,7 +95,11 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.lbAdvanced);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.label25);
+            this.groupBox1.Controls.Add(this.btnClose);
+            this.groupBox1.Controls.Add(this.lbBase);
+            this.groupBox1.Controls.Add(this.btnOK);
             this.groupBox1.Controls.Add(this.btnGUID);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -109,21 +112,19 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtAlterId);
-            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtId);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtPort);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtAddress);
             this.groupBox1.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
-            // lbAdvanced
+            // lbBase
             // 
-            resources.ApplyResources(this.lbAdvanced, "lbAdvanced");
-            this.lbAdvanced.Name = "lbAdvanced";
+            resources.ApplyResources(this.lbBase, "lbBase");
+            this.lbBase.Name = "lbBase";
             // 
             // btnGUID
             // 
@@ -139,6 +140,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lbAdvanced);
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.panTlsMore);
@@ -159,6 +161,11 @@
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // lbAdvanced
+            // 
+            resources.ApplyResources(this.lbAdvanced, "lbAdvanced");
+            this.lbAdvanced.Name = "lbAdvanced";
             // 
             // label24
             // 
@@ -334,6 +341,7 @@
             // label6
             // 
             resources.ApplyResources(this.label6, "label6");
+            this.label6.BackColor = System.Drawing.SystemColors.Control;
             this.label6.Name = "label6";
             // 
             // label5
@@ -345,11 +353,6 @@
             // 
             resources.ApplyResources(this.txtAlterId, "txtAlterId");
             this.txtAlterId.Name = "txtAlterId";
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
             // 
             // txtId
             // 
@@ -383,8 +386,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.btnClose);
-            this.panel2.Controls.Add(this.btnOK);
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
@@ -430,17 +431,16 @@
             resources.ApplyResources(this.MenuItemImportClipboard, "MenuItemImportClipboard");
             this.MenuItemImportClipboard.Click += new System.EventHandler(this.MenuItemImportClipboard_Click);
             // 
-            // lbBase
+            // label25
             // 
-            resources.ApplyResources(this.lbBase, "lbBase");
-            this.lbBase.Name = "lbBase";
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
             // 
             // AddServerForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.Controls.Add(this.lbBase);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuServer);
@@ -453,7 +453,6 @@
             this.groupBox2.PerformLayout();
             this.panTlsMore.ResumeLayout(false);
             this.panTlsMore.PerformLayout();
-            this.panel2.ResumeLayout(false);
             this.menuServer.ResumeLayout(false);
             this.menuServer.PerformLayout();
             this.ResumeLayout(false);
@@ -470,7 +469,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtAlterId;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtPort;
@@ -513,5 +511,6 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label lbAdvanced;
         private System.Windows.Forms.Label lbBase;
+        private System.Windows.Forms.Label label25;
     }
 }
