@@ -155,10 +155,10 @@ namespace v2rayN.Forms
             lvServers.HeaderStyle = ColumnHeaderStyle.Nonclickable;
 
             lvServers.Columns.Add("", 30, HorizontalAlignment.Center);
-            lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvAlias"), 100, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvAddress"), 120, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvPort"), 50, HorizontalAlignment.Left);
+            lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70, HorizontalAlignment.Left);
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50, HorizontalAlignment.Left);
@@ -166,10 +166,10 @@ namespace v2rayN.Forms
 
             if (statistics != null && statistics.Enable)
             {
-                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
                 lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70, HorizontalAlignment.Left);
                 lvServers.Columns.Add(UIRes.I18N("LvTodayDownloadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
             }
         }
 
@@ -208,21 +208,22 @@ namespace v2rayN.Forms
 
                     lvItem = new ListViewItem(new string[]
                     {
-                    def,
-                    ((EConfigType)item.configType).ToString(),
-                    item.remarks,
+                    def,            
+                     item.remarks,
                     item.address,
                     item.port.ToString(),
+                    ((EConfigType)item.configType).ToString(),
+                   
                     //item.id,
                     //item.alterId.ToString(),
                     item.security,
                     item.network,
                     item.getSubRemarks(config),
                     item.testResult,
-                    totalUp,
-                    totalDown,
                     todayUp,
-                    todayDown
+                    todayDown,
+                    totalUp,
+                    totalDown
                     });
                 }
                 else
