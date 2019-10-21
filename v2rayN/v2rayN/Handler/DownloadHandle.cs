@@ -87,7 +87,7 @@ namespace v2rayN.Handler
         }
 
 
-        public void DownloadFileAsync(Config config, string url, bool blProxy)
+        public void DownloadFileAsync(Config config, string url, WebProxy webProxy)
         {
             try
             {
@@ -101,9 +101,9 @@ namespace v2rayN.Handler
                 progressPercentage = -1;
 
                 WebClientEx ws = new WebClientEx();
-                if (blProxy)
+                if (webProxy != null)
                 {
-                    ws.Proxy = new WebProxy(Global.Loopback, Global.sysAgentPort);
+                    ws.Proxy = webProxy;// new WebProxy(Global.Loopback, Global.httpPort);
                 }
 
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;

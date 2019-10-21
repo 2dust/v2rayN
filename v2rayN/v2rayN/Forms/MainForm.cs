@@ -328,7 +328,7 @@ namespace v2rayN.Forms
 
             if (config.sysAgentEnabled)
             {
-                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.sysAgentPort}";
+                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
                 if (config.listenerType == 2 || config.listenerType == 4)
                 {
                     if (PACServerHandle.IsRunning)
@@ -1252,7 +1252,7 @@ namespace v2rayN.Forms
         {
             if (isChecked)
             {
-                if (HttpProxyHandle.RestartHttpAgent(config, true))
+                if (HttpProxyHandle.RestartHttpAgent(config, false))
                 {
                     ChangePACButtonStatus(config.listenerType);
                 }
@@ -1299,7 +1299,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, false);
+                                downloadHandle.DownloadFileAsync(config, url, null);
                             }
                         }));
                     }

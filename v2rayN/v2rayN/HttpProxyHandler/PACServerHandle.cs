@@ -67,7 +67,6 @@ namespace v2rayN.HttpProxyHandler
                         server = new HttpWebServer(SendResponse, prefixes);
                         server.Run();
 
-                        //pacPort = Global.pacPort;
                     }
                 }
                 Utils.SaveLog("Webserver at " + address);
@@ -95,7 +94,6 @@ namespace v2rayN.HttpProxyHandler
                     if (serverB == null)
                     {
                         serverB = new HttpWebServerB(Global.pacPort, SendResponse);
-                        //pacPort = Global.pacPort;
                     }
                 }
                 Utils.SaveLog("WebserverB at " + address);
@@ -159,7 +157,7 @@ namespace v2rayN.HttpProxyHandler
 
         private static string GetPacList(string address)
         {
-            var port = Global.sysAgentPort;
+            var port = Global.httpPort;
             if (port <= 0)
             {
                 return "No port";

@@ -102,6 +102,13 @@ namespace v2rayN
         /// </summary>
         public const string StreamSecurity = "tls";
 
+        public const string InboundSocks = "socks";
+        public const string InboundHttp = "http";
+        public const string Loopback = "127.0.0.1";
+        public const string InboundAPITagName = "api";
+        public const string InboundAPIProtocal = "dokodemo-door";
+
+
         /// <summary>
         /// vmess
         /// </summary>
@@ -147,12 +154,6 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
-        public const string Loopback = "127.0.0.1";
-
-        public const string InboundAPITagName = "api";
-        public const string InboundProxyTagName = "proxy";  
-        public const string InboundAPIProtocal = "dokodemo-door";
-     
         public enum StatisticsFreshRate
         {
             quick = 1000,
@@ -177,17 +178,17 @@ namespace v2rayN
         public static bool sysAgent { get; set; }
 
         /// <summary>
-        /// socks端口号
+        /// socks端口
         /// </summary>
         public static int socksPort { get; set; }
 
         /// <summary>
-        /// 全局代理端口(http)
+        /// http端口
         /// </summary>
-        public static int sysAgentPort { get; set; }
+        public static int httpPort { get; set; }
 
         /// <summary>
-        /// PAC监听端口号
+        /// PAC端口
         /// </summary>
         public static int pacPort { get; set; }
 

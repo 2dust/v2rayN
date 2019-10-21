@@ -45,7 +45,7 @@ namespace v2rayN.Forms
                 chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
 
                 txtlocalPort2.Text = "socks + 1";
-                cmbprotocol2.Text = "http";
+                cmbprotocol2.Text = Global.InboundHttp;
 
                 if (config.inbound.Count > 1)
                 {

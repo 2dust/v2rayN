@@ -192,7 +192,7 @@ namespace v2rayN.Handler
                     name = nStr[1];
                     type = nStr[3];
 
-                    if (name == Global.InboundProxyTagName)
+                    if (name == Global.agentTag)
                     {
                         if (type == "uplink")
                         {

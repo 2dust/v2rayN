@@ -23,7 +23,7 @@ namespace v2rayN.HttpProxyHandler
             {
                 if (type != 0)
                 {
-                    var port = Global.sysAgentPort;
+                    var port = Global.httpPort;
                     if (port <= 0)
                     {
                         return false;
@@ -74,7 +74,7 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                int localPort = config.GetLocalPort("socks");
+                int localPort = config.GetLocalPort(Global.InboundSocks);
                 if (localPort > 0)
                 {
                     PrivoxyHandler.Instance.Start(localPort, config);
@@ -82,8 +82,8 @@ namespace v2rayN.HttpProxyHandler
                     {
                         Global.sysAgent = true;
                         Global.socksPort = localPort;
-                        Global.sysAgentPort = PrivoxyHandler.Instance.RunningPort;
-                        Global.pacPort = Global.sysAgentPort + 1;
+                        Global.httpPort = PrivoxyHandler.Instance.RunningPort;
+                        Global.pacPort = config.GetLocalPort("pac");
                     }
                 }
             }
@@ -100,16 +100,12 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                ////开启全局代理则关闭
-                //if (Global.sysAgent)
-                //{
                 PrivoxyHandler.Instance.Stop();
 
                 Global.sysAgent = false;
                 Global.socksPort = 0;
-                Global.sysAgentPort = 0;
+                Global.httpPort = 0;
                 Global.pacPort = 0;
-                //}
             }
             catch
             {
@@ -131,7 +127,7 @@ namespace v2rayN.HttpProxyHandler
             }
             else
             {
-                int localPort = config.GetLocalPort("socks");
+                int localPort = config.GetLocalPort(Global.InboundSocks);
                 if (localPort != Global.socksPort)
                 {
                     isRestart = true;

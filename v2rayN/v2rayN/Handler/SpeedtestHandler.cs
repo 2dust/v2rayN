@@ -88,7 +88,7 @@ namespace v2rayN.Handler
                     }
                 }
 
-                Thread.Sleep(1);
+                Thread.Sleep(100);
 
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace v2rayN.Handler
                     }
                 }
 
-                Thread.Sleep(1);
+                Thread.Sleep(100);
 
             }
             catch (Exception ex)
@@ -132,6 +132,12 @@ namespace v2rayN.Handler
         {
             try
             {
+                string msg = string.Empty;
+
+                Global.reloadV2ray = true;
+                _v2rayHandler.LoadV2ray(_config, _selecteds);
+
+                var httpPort = _config.GetLocalPort("speedtest");
                 for (int k = 0; k < _selecteds.Count; k++)
                 {
                     int index = _selecteds[k];
@@ -139,20 +145,12 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
+
                     try
                     {
-                        if (ConfigHandler.SetDefaultServer(ref _config, index) == 0)
-                        {
-                            _v2rayHandler.LoadV2ray(_config);
-                        }
-                        else
-                        {
-                            return;
-                        }
-                        Thread.Sleep(1000 * 5);
-
+                        var webProxy = new WebProxy(Global.Loopback, httpPort + index);
                         int responseTime = -1;
-                        var status = GetRealPingTime(Global.SpeedPingTestUrl, out responseTime);
+                        var status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
                         if (!Utils.IsNullOrEmpty(status))
                         {
                             _updateFunc(index, string.Format("{0}", status));
@@ -166,9 +164,12 @@ namespace v2rayN.Handler
                     {
                         Utils.SaveLog(ex.Message, ex);
                     }
+                    Thread.Sleep(100);
                 }
 
-                Thread.Sleep(1);
+                Global.reloadV2ray = true;
+                _v2rayHandler.LoadV2ray(_config);
+                Thread.Sleep(100);
 
             }
             catch (Exception ex)
@@ -183,6 +184,9 @@ namespace v2rayN.Handler
             {
                 return;
             }
+
+            Global.reloadV2ray = true;
+            _v2rayHandler.LoadV2ray(_config, _selecteds);
 
             string url = Global.SpeedTestUrl;
             testCounter = 0;
@@ -213,6 +217,7 @@ namespace v2rayN.Handler
                     }
                 };
             }
+
             if (ServerSpeedTestSub(testCounter, url) != 0)
             {
                 return;
@@ -223,23 +228,19 @@ namespace v2rayN.Handler
         {
             if (index >= _selecteds.Count)
             {
-                return -1;
-            }
-
-            if (ConfigHandler.SetDefaultServer(ref _config, _selecteds[index]) == 0)
-            {
+                Global.reloadV2ray = true;
                 _v2rayHandler.LoadV2ray(_config);
-
-                testCounter++;
-
-                downloadHandle2.DownloadFileAsync(_config, url,true);
-
-                return 0;
-            }
-            else
-            {
                 return -1;
             }
+
+            var httpPort = _config.GetLocalPort("speedtest");
+            index = _selecteds[index];
+            
+            testCounter++;
+            var webProxy = new WebProxy(Global.Loopback, httpPort + index);
+            downloadHandle2.DownloadFileAsync(_config, url, webProxy);
+
+            return 0;
         }
 
         private int GetTcpingTime(string url, int port)
@@ -267,7 +268,7 @@ namespace v2rayN.Handler
             return responseTime;
         }
 
-        private string GetRealPingTime(string url, out int responseTime)
+        private string GetRealPingTime(string url, WebProxy webProxy, out int responseTime)
         {
             string msg = string.Empty;
             responseTime = -1;
@@ -276,7 +277,7 @@ namespace v2rayN.Handler
             {
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 myHttpWebRequest.Timeout = 5000;
-                myHttpWebRequest.Proxy = new WebProxy(Global.Loopback, Global.sysAgentPort);
+                myHttpWebRequest.Proxy = webProxy;//new WebProxy(Global.Loopback, Global.httpPort);
 
                 var timer = new Stopwatch();
                 timer.Start();
