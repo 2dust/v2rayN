@@ -34,7 +34,6 @@ namespace v2rayN.HttpProxyHandler
                 _privoxyJob = new Job();
 
                 FileManager.UncompressFile(Utils.GetTempPath("v2ray_privoxy.exe"), Resources.privoxy_exe);
-                FileManager.UncompressFile(Utils.GetTempPath("mgwz.dll"), Resources.mgwz_dll);
             }
             catch (IOException ex)
             {

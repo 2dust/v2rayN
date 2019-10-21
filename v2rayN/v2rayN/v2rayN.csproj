@@ -198,6 +198,11 @@
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
     <Compile Include="Mode\EConfigType.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resx\ResUI.zh-Hans.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -319,14 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -342,6 +342,8 @@
     </Compile>
     <Protobuf Include="Protos\Statistics.proto" />
     <None Include="Resources\abp.js.gz" />
+    <None Include="Resources\grpc_csharp_ext.x64.dll.gz" />
+    <None Include="Resources\grpc_csharp_ext.x86.dll.gz" />
     <None Include="Resources\pac.txt.gz" />
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
@@ -392,7 +394,6 @@
     <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\mgwz.dll.gz" />
     <None Include="Resources\privoxy.exe.gz" />
     <None Include="Resources\restart.png" />
   </ItemGroup>
@@ -420,12 +421,6 @@
     <EmbeddedResource Include="LIB\System.Runtime.CompilerServices.Unsafe.dll" />
     <EmbeddedResource Include="LIB\zxing.dll" />
     <EmbeddedResource Include="LIB\zxing.presentation.dll" />
-    <Content Include="grpc_csharp_ext.x64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="grpc_csharp_ext.x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="LIB\netstandard.dll" />
     <Content Include="Resources\help.png" />
     <None Include="Resources\notify.png" />
