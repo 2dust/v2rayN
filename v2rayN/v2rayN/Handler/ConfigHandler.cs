@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using v2rayN.Mode;
+using v2rayN.Base;
 
 namespace v2rayN.Handler
 {

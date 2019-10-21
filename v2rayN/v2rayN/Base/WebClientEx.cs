@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace v2rayN.HttpProxyHandler
+namespace v2rayN.Base
 {
     class WebClientEx : WebClient
     {

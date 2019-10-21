@@ -10,21 +10,6 @@ namespace v2rayN.HttpProxyHandler
     /// </summary>
     class HttpProxyHandle
     {
-        private static string GetTimestamp(DateTime value)
-        {
-            return value.ToString("MMddHHmmssfff");
-        }
-
-        public static void ReSetPACProxy(Config config)
-        {
-            if (config.listenerType == 2)
-            {
-                //SysProxyHandle.SetIEProxy(false, false, null, null);
-                //PACServerHandle.Stop();
-            }
-            Update(config, false);
-        }
-
         public static bool Update(Config config, bool forceDisable)
         {
             int type = config.listenerType;
@@ -46,7 +31,6 @@ namespace v2rayN.HttpProxyHandler
                     if (type == 1)
                     {
                         PACServerHandle.Stop();
-                        PACFileWatcherHandle.StopWatch();
                         SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}", null);
                     }
                     else if (type == 2)
@@ -55,12 +39,10 @@ namespace v2rayN.HttpProxyHandler
                         SysProxyHandle.SetIEProxy(true, false, null, pacUrl);
                         PACServerHandle.Stop();
                         PACServerHandle.Init(config);
-                        PACFileWatcherHandle.StartWatch(config);
                     }
                     else if (type == 3)
                     {
                         PACServerHandle.Stop();
-                        PACFileWatcherHandle.StopWatch();
                         SysProxyHandle.SetIEProxy(false, false, null, null);
                     }
                     else if (type == 4)
@@ -69,14 +51,12 @@ namespace v2rayN.HttpProxyHandler
                         SysProxyHandle.SetIEProxy(false, false, null, null);
                         PACServerHandle.Stop();
                         PACServerHandle.Init(config);
-                        PACFileWatcherHandle.StartWatch(config);
                     }
                 }
                 else
                 {
                     SysProxyHandle.SetIEProxy(false, false, null, null);
                     PACServerHandle.Stop();
-                    PACFileWatcherHandle.StopWatch();
                 }
             }
             catch (Exception ex)
@@ -168,9 +148,7 @@ namespace v2rayN.HttpProxyHandler
 
         public static string GetPacUrl()
         {
-            string pacUrl = $"http://{Global.Loopback}:{Global.pacPort}/pac/?t={GetTimestamp(DateTime.Now)}";
-
-
+            string pacUrl = $"http://{Global.Loopback}:{Global.pacPort}/pac/?t={ DateTime.Now.ToString("HHmmss")}";
             return pacUrl;
         }
     }

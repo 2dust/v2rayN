@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace v2rayN
+namespace v2rayN.Base
 {
     static class StringEx
     {

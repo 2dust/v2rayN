@@ -11,7 +11,7 @@ namespace v2rayN.Handler
 {
     class SpeedtestHandler
     {
-        private V2rayUpdateHandle v2rayUpdateHandle2;
+        private DownloadHandle downloadHandle2;
         private Config _config;
         private V2rayHandler _v2rayHandler;
         private List<int> _selecteds;
@@ -186,10 +186,10 @@ namespace v2rayN.Handler
 
             string url = Global.SpeedTestUrl;
             testCounter = 0;
-            if (v2rayUpdateHandle2 == null)
+            if (downloadHandle2 == null)
             {
-                v2rayUpdateHandle2 = new V2rayUpdateHandle();
-                v2rayUpdateHandle2.UpdateCompleted += (sender2, args) =>
+                downloadHandle2 = new DownloadHandle();
+                downloadHandle2.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
@@ -204,7 +204,7 @@ namespace v2rayN.Handler
                         _updateFunc(ItemIndex, args.Msg);
                     }
                 };
-                v2rayUpdateHandle2.Error += (sender2, args) =>
+                downloadHandle2.Error += (sender2, args) =>
                 {
                     _updateFunc(ItemIndex, args.GetException().Message);
                     if (ServerSpeedTestSub(testCounter, url) != 0)
@@ -232,7 +232,7 @@ namespace v2rayN.Handler
 
                 testCounter++;
 
-                v2rayUpdateHandle2.DownloadFileAsync(_config, url,true);
+                downloadHandle2.DownloadFileAsync(_config, url,true);
 
                 return 0;
             }

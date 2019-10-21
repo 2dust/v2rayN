@@ -114,6 +114,7 @@
       <HintPath>LIB\System.Memory.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -140,7 +141,7 @@
     <Compile Include="Forms\AddServer4Form.Designer.cs">
       <DependentUpon>AddServer4Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ListViewFlickerFree.cs">
+    <Compile Include="Base\ListViewFlickerFree.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.cs">
@@ -181,17 +182,16 @@
     </Compile>
     <Compile Include="Handler\SpeedtestHandler.cs" />
     <Compile Include="Handler\StatisticsHandler.cs" />
-    <Compile Include="Handler\V2rayUpdateHandle.cs" />
-    <Compile Include="HttpProxyHandler\HttpWebServer.cs" />
-    <Compile Include="HttpProxyHandler\HttpWebServerB.cs" />
-    <Compile Include="HttpProxyHandler\PACFileWatcherHandle.cs" />
+    <Compile Include="Handler\DownloadHandle.cs" />
+    <Compile Include="Base\HttpWebServer.cs" />
+    <Compile Include="Base\HttpWebServerB.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
     <Compile Include="HttpProxyHandler\PACListHandle.cs" />
     <Compile Include="HttpProxyHandler\PACServerHandle.cs" />
     <Compile Include="HttpProxyHandler\ProxySetting.cs" />
     <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />
-    <Compile Include="HttpProxyHandler\WebClientEx.cs">
+    <Compile Include="Base\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Mode\EMove.cs" />
@@ -208,7 +208,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResUI.resx</DependentUpon>
     </Compile>
-    <Compile Include="StringEx.cs">
+    <Compile Include="Base\StringEx.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Forms\AddServerForm.cs">
