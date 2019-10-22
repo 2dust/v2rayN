@@ -28,14 +28,14 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            //if (InitServer("*"))
-            //{
-            //    pacPort = Global.pacPort;
-            //}
-            if (InitServer(Global.Loopback))
+            if (InitServer("*"))
             {
                 pacPort = Global.pacPort;
             }
+            //else if (InitServer(Global.Loopback))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
             else if (InitServerB(Global.Loopback))
             {
                 pacPort = Global.pacPort;

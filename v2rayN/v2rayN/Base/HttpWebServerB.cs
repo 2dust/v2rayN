@@ -62,6 +62,7 @@ namespace v2rayN.Base
                         if (_responderMethod != null)
                         {
                             var address = ((IPEndPoint)socket.Client.LocalEndPoint).Address.ToString();
+                            Utils.SaveLog("WebserverB Request " + address);
                             string pac = _responderMethod(address);
 
                             if (inputStream.CanWrite)

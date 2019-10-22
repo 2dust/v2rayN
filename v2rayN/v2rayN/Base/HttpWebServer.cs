@@ -61,6 +61,7 @@ namespace v2rayN.Base
                             try
                             {
                                 string address = ctx.Request.LocalEndPoint.Address.ToString();
+                                Utils.SaveLog("Webserver Request " + address);
                                 string rstr = _responderMethod(address);
                                 byte[] buf = Encoding.UTF8.GetBytes(rstr);
                                 ctx.Response.StatusCode = 200;
