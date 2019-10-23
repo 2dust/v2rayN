@@ -105,6 +105,7 @@ namespace v2rayN.Handler
             GrpcInit();
 
             workThread_ = new Thread(new ThreadStart(Run));
+            workThread_.IsBackground = true;
             workThread_.Start();
         }
 

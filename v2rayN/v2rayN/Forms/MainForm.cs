@@ -33,6 +33,13 @@ namespace v2rayN.Forms
             Application.ApplicationExit += (sender, args) =>
             {
                 Utils.ClearTempPath();
+
+                v2rayHandler.V2rayStop();
+                HttpProxyHandle.CloseHttpAgent(config);
+                PACServerHandle.Stop();
+
+                ConfigHandler.SaveConfig(ref config);
+                statistics?.SaveToFile();
                 statistics?.Close();
             };
         }
@@ -79,18 +86,9 @@ namespace v2rayN.Forms
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-
-                statistics?.SaveToFile();
-
                 HideForm();
                 return;
-            }
-            if (e.CloseReason == CloseReason.ApplicationExitCall)
-            {
-                ConfigHandler.SaveConfig(ref config);
-                statistics?.SaveToFile();
-                statistics?.Close();
-            }
+            } 
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -117,7 +115,7 @@ namespace v2rayN.Forms
             {
                 case WM_QUERYENDSESSION:
                     Utils.SaveLog("Windows shutdown UnsetProxy");
-                    //CloseV2ray();
+                 
                     ConfigHandler.ToJsonFile(config);
                     statistics?.SaveToFile();
                     ProxySetting.UnsetProxy();
@@ -1006,16 +1004,11 @@ namespace v2rayN.Forms
         }
 
         private void menuExit_Click(object sender, EventArgs e)
-        {
-            CloseV2ray();
+        {        
 
             this.Visible = false;
-            this.Close();
-
-            statistics?.Close();
-
-            //this.Dispose();
-            //System.Environment.Exit(System.Environment.ExitCode);
+            this.Close();            
+             
             Application.Exit();
         }
 

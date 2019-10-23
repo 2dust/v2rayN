@@ -28,6 +28,8 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
+            Global.pacPort = config.GetLocalPort("pac");
+
             if (InitServer("*"))
             {
                 pacPort = Global.pacPort;
@@ -122,18 +124,23 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Stop()
         {
-            //try
-            //{
-            //    if (server != null)
-            //    {
-            //        server.Stop();
-            //        server = null;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utils.SaveLog("Webserver Stop " + ex.Message);
-            //}
+            try
+            {
+                if (server != null)
+                {
+                    server.Stop();
+                    server = null;
+                }
+                if (serverB != null)
+                {
+                    serverB.Stop();
+                    serverB = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("Webserver Stop " + ex.Message);
+            }
 
             //try
             //{

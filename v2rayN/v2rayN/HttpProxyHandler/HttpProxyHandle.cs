@@ -30,33 +30,33 @@ namespace v2rayN.HttpProxyHandler
                     }
                     if (type == 1)
                     {
-                        PACServerHandle.Stop();
+                        //PACServerHandle.Stop();
                         SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}", null);
                     }
                     else if (type == 2)
                     {
                         string pacUrl = GetPacUrl();
                         SysProxyHandle.SetIEProxy(true, false, null, pacUrl);
-                        PACServerHandle.Stop();
+                        //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                     else if (type == 3)
                     {
-                        PACServerHandle.Stop();
+                        //PACServerHandle.Stop();
                         SysProxyHandle.SetIEProxy(false, false, null, null);
                     }
                     else if (type == 4)
                     {
                         string pacUrl = GetPacUrl();
                         SysProxyHandle.SetIEProxy(false, false, null, null);
-                        PACServerHandle.Stop();
+                        //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                 }
                 else
                 {
                     SysProxyHandle.SetIEProxy(false, false, null, null);
-                    PACServerHandle.Stop();
+                    //PACServerHandle.Stop();
                 }
             }
             catch (Exception ex)
@@ -104,8 +104,7 @@ namespace v2rayN.HttpProxyHandler
 
                 Global.sysAgent = false;
                 Global.socksPort = 0;
-                Global.httpPort = 0;
-                Global.pacPort = 0;
+                Global.httpPort = 0; 
             }
             catch
             {

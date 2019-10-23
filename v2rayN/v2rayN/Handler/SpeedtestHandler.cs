@@ -37,16 +37,19 @@ namespace v2rayN.Handler
             if (actionType == "ping")
             {
                 _workThread = new Thread(new ThreadStart(RunPing));
+                _workThread.IsBackground = true;
                 _workThread.Start();
             }
             if (actionType == "tcping")
             {
                 _workThread = new Thread(new ThreadStart(RunTcping));
+                _workThread.IsBackground = true;
                 _workThread.Start();
             }
             else if (actionType == "realping")
             {
                 _workThread = new Thread(new ThreadStart(RunRealPing));
+                _workThread.IsBackground = true;
                 _workThread.Start();
             }
             else if (actionType == "speedtest")
