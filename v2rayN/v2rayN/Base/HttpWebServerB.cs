@@ -41,6 +41,7 @@ namespace v2rayN.Base
             {
                 if (!listener.Pending())
                 {
+                    Thread.Sleep(100);
                     continue;
                 }
 
