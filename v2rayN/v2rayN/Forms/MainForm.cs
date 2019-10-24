@@ -35,6 +35,7 @@ namespace v2rayN.Forms
                 Utils.ClearTempPath();
 
                 v2rayHandler.V2rayStop();
+                HttpProxyHandle.Update(config, true);
                 HttpProxyHandle.CloseHttpAgent(config);
                 PACServerHandle.Stop();
 
