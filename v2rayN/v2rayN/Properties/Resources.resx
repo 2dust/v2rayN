@@ -127,11 +127,14 @@
   <data name="checkupdate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\checkupdate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="grpc_csharp_ext_x64_dll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\grpc_csharp_ext.x64.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="grpc_csharp_ext_x86_dll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\grpc_csharp_ext.x86.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="help" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mgwz_dll" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\mgwz.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="minimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\minimize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

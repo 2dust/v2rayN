@@ -196,8 +196,20 @@
   <data name="tabPage3.Text" xml:space="preserve">
     <value>  代理的Domain或IP  </value>
   </data>
+  <data name="txtUserdirect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>628, 404</value>
+  </data>
+  <data name="tabPage4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 410</value>
+  </data>
   <data name="tabPage4.Text" xml:space="preserve">
     <value>  直连的Domain或IP  </value>
+  </data>
+  <data name="txtUserblock.Size" type="System.Drawing.Size, System.Drawing">
+    <value>628, 404</value>
+  </data>
+  <data name="tabPage5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 410</value>
   </data>
   <data name="tabPage5.Text" xml:space="preserve">
     <value>  阻止的Domain或IP  </value>
@@ -207,7 +219,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSetDefRountingRule.Location" type="System.Drawing.Point, System.Drawing">
-    <value>381, 43</value>
+    <value>7, 60</value>
   </data>
   <data name="btnSetDefRountingRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 23</value>
@@ -215,12 +227,12 @@
   <data name="btnSetDefRountingRule.Text" xml:space="preserve">
     <value>一键设置默认自定义路由规则</value>
   </data>
-  <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 20</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="labRoutingTips.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="labRoutingTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 96</value>
   </data>
   <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
     <value>383, 12</value>
@@ -228,11 +240,23 @@
   <data name="labRoutingTips.Text" xml:space="preserve">
     <value>*设置的规则，用逗号(,)隔开;支持Domain(纯字符串/正则/子域名)和IP</value>
   </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>规则加载次序:自定义的代理/直连/阻止,选择的路由模式</value>
+  </data>
+  <data name="cmbdomainStrategy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>81, 30</value>
+  </data>
+  <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 20</value>
+  </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>域名策略</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>295, 34</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -252,14 +276,35 @@
   <data name="cmbroutingMode.Items3" xml:space="preserve">
     <value>绕过局域网及大陆地址</value>
   </data>
+  <data name="cmbroutingMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>372, 30</value>
+  </data>
   <data name="cmbroutingMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 20</value>
+    <value>244, 20</value>
   </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>  Core:路由设置  </value>
   </data>
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
+  </data>
+  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="lbFreshrate.Text" xml:space="preserve">
+    <value>统计刷新频率</value>
+  </data>
+  <data name="lbCacheDays.Size" type="System.Drawing.Size, System.Drawing">
+    <value>305, 12</value>
+  </data>
+  <data name="lbCacheDays.Text" xml:space="preserve">
+    <value>缓存天数（0-30， 0关闭缓存单独每天的数据使用情况）</value>
+  </data>
+  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>384, 16</value>
+  </data>
+  <data name="chkEnableStatistics.Text" xml:space="preserve">
+    <value>启用统计（实时网速显示和使用流量显示，需要重启v2rayN客户端）</value>
   </data>
   <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 16</value>
@@ -287,14 +332,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
-  </data>
-  <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计（实时网速显示和使用流量显示，需要重启v2rayN客户端）</value>
-  </data>
-  <data name="lbCacheDays.Text" xml:space="preserve">
-    <value>缓存天数（0-30， 0关闭缓存单独每天的数据使用情况）</value>
-  </data>
-  <data name="lbFreshrate.Text" xml:space="preserve">
-    <value>统计刷新频率</value>
   </data>
 </root>

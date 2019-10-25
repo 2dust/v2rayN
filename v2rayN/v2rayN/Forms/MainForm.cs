@@ -33,6 +33,14 @@ namespace v2rayN.Forms
             Application.ApplicationExit += (sender, args) =>
             {
                 Utils.ClearTempPath();
+
+                v2rayHandler.V2rayStop();
+                HttpProxyHandle.Update(config, true);
+                HttpProxyHandle.CloseHttpAgent(config);
+                PACServerHandle.Stop();
+
+                ConfigHandler.SaveConfig(ref config);
+                statistics?.SaveToFile();
                 statistics?.Close();
             };
         }
@@ -79,18 +87,9 @@ namespace v2rayN.Forms
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-
-                statistics?.SaveToFile();
-
                 HideForm();
                 return;
-            }
-            if (e.CloseReason == CloseReason.ApplicationExitCall)
-            {
-                ConfigHandler.SaveConfig(ref config);
-                statistics?.SaveToFile();
-                statistics?.Close();
-            }
+            } 
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -117,7 +116,7 @@ namespace v2rayN.Forms
             {
                 case WM_QUERYENDSESSION:
                     Utils.SaveLog("Windows shutdown UnsetProxy");
-                    //CloseV2ray();
+                 
                     ConfigHandler.ToJsonFile(config);
                     statistics?.SaveToFile();
                     ProxySetting.UnsetProxy();
@@ -329,7 +328,7 @@ namespace v2rayN.Forms
 
             if (config.sysAgentEnabled)
             {
-                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.sysAgentPort}";
+                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
                 if (config.listenerType == 2 || config.listenerType == 4)
                 {
                     if (PACServerHandle.IsRunning)
@@ -1007,16 +1006,11 @@ namespace v2rayN.Forms
         }
 
         private void menuExit_Click(object sender, EventArgs e)
-        {
-            CloseV2ray();
+        {        
 
             this.Visible = false;
-            this.Close();
-
-            statistics?.Close();
-
-            //this.Dispose();
-            //System.Environment.Exit(System.Environment.ExitCode);
+            this.Close();            
+             
             Application.Exit();
         }
 
@@ -1253,7 +1247,7 @@ namespace v2rayN.Forms
         {
             if (isChecked)
             {
-                if (HttpProxyHandle.RestartHttpAgent(config, true))
+                if (HttpProxyHandle.RestartHttpAgent(config, false))
                 {
                     ChangePACButtonStatus(config.listenerType);
                 }
@@ -1300,7 +1294,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, false);
+                                downloadHandle.DownloadFileAsync(config, url, null);
                             }
                         }));
                     }

@@ -39,8 +39,15 @@ namespace v2rayN.Base
 
             while (true)
             {
+                if (!listener.Pending())
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
+
                 TcpClient socket = listener.AcceptTcpClient();
                 Thread thread = new Thread(new ParameterizedThreadStart(ProcessThread));
+                thread.IsBackground = true;
                 thread.Start(socket);
                 Thread.Sleep(1);
             }
@@ -62,6 +69,7 @@ namespace v2rayN.Base
                         if (_responderMethod != null)
                         {
                             var address = ((IPEndPoint)socket.Client.LocalEndPoint).Address.ToString();
+                            Utils.SaveLog("WebserverB Request " + address);
                             string pac = _responderMethod(address);
 
                             if (inputStream.CanWrite)

@@ -24,8 +24,6 @@ namespace v2rayN.HttpProxyHandler
         private static string _uniqueConfigFile;
         private static Job _privoxyJob;
         private Process _process;
-        private int _runningPort;
-        private bool _isRunning;
 
         static PrivoxyHandler()
         {
@@ -36,7 +34,6 @@ namespace v2rayN.HttpProxyHandler
                 _privoxyJob = new Job();
 
                 FileManager.UncompressFile(Utils.GetTempPath("v2ray_privoxy.exe"), Resources.privoxy_exe);
-                FileManager.UncompressFile(Utils.GetTempPath("mgwz.dll"), Resources.mgwz_dll);
             }
             catch (IOException ex)
             {
@@ -66,18 +63,7 @@ namespace v2rayN.HttpProxyHandler
 
         public int RunningPort
         {
-            get
-            {
-                return _runningPort;
-            }
-        }
-
-        public bool IsRunning
-        {
-            get
-            {
-                return _isRunning;
-            }
+            get; set;
         }
 
         public void Start(int localPort, Config config)
@@ -90,9 +76,9 @@ namespace v2rayN.HttpProxyHandler
                     KillProcess(p);
                 }
                 string privoxyConfig = Resources.privoxy_conf;
-                _runningPort = GetFreePort(localPort);
+                RunningPort = config.GetLocalPort(Global.InboundHttp);
                 privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", localPort.ToString());
-                privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", _runningPort.ToString());
+                privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());
                 if (config.allowLANConn)
                 {
                     privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", "0.0.0.0");
@@ -123,7 +109,7 @@ namespace v2rayN.HttpProxyHandler
                  * when ss exit unexpectedly, this process will be forced killed by system.
                  */
                 _privoxyJob.AddProcess(_process.Handle);
-                _isRunning = true;
+
             }
         }
 
@@ -134,7 +120,7 @@ namespace v2rayN.HttpProxyHandler
                 KillProcess(_process);
                 _process.Dispose();
                 _process = null;
-                _isRunning = false;
+                RunningPort = 0;
             }
         }
 
@@ -191,25 +177,5 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        private int GetFreePort(int localPort)
-        {
-            int defaultPort = 8123;
-            try
-            {
-                //// TCP stack please do me a favor
-                //TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-                //l.Start();
-                //var port = ((IPEndPoint)l.LocalEndpoint).Port;
-                //l.Stop();
-                //return port;
-                return localPort + 1;
-            }
-            catch (Exception ex)
-            {
-                // in case access denied
-                Utils.SaveLog(ex.Message, ex);
-                return defaultPort;
-            }
-        }
     }
 }

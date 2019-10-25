@@ -53,6 +53,27 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
+        /// 载入V2ray
+        /// </summary>
+        public void LoadV2ray(Config config, List<int> _selecteds)
+        {
+            if (Global.reloadV2ray)
+            {
+                string msg = string.Empty;
+                string fileName = Utils.GetPath(v2rayConfigRes);
+                if (V2rayConfigHandler.GenerateClientSpeedtestConfig(config, _selecteds, fileName, out msg) != 0)
+                {
+                    ShowMsg(false, msg);
+                }
+                else
+                {
+                    ShowMsg(true, msg);
+                    V2rayRestart();
+                }
+            }
+        }
+
+        /// <summary>
         /// V2ray重启
         /// </summary>
         private void V2rayRestart()
@@ -118,7 +139,7 @@ namespace v2rayN.Handler
                     }
                 }
                 if (Utils.IsNullOrEmpty(fileName))
-                {       
+                {
                     string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2ray/v2ray-core/releases");
                     ShowMsg(true, msg);
                     return;

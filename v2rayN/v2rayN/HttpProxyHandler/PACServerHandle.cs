@@ -28,14 +28,16 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
-            //if (InitServer("*"))
-            //{
-            //    pacPort = Global.pacPort;
-            //}
-            if (InitServer(Global.Loopback))
+            Global.pacPort = config.GetLocalPort("pac");
+
+            if (InitServer("*"))
             {
                 pacPort = Global.pacPort;
             }
+            //else if (InitServer(Global.Loopback))
+            //{
+            //    pacPort = Global.pacPort;
+            //}
             else if (InitServerB(Global.Loopback))
             {
                 pacPort = Global.pacPort;
@@ -67,7 +69,6 @@ namespace v2rayN.HttpProxyHandler
                         server = new HttpWebServer(SendResponse, prefixes);
                         server.Run();
 
-                        //pacPort = Global.pacPort;
                     }
                 }
                 Utils.SaveLog("Webserver at " + address);
@@ -95,7 +96,6 @@ namespace v2rayN.HttpProxyHandler
                     if (serverB == null)
                     {
                         serverB = new HttpWebServerB(Global.pacPort, SendResponse);
-                        //pacPort = Global.pacPort;
                     }
                 }
                 Utils.SaveLog("WebserverB at " + address);
@@ -124,18 +124,23 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Stop()
         {
-            //try
-            //{
-            //    if (server != null)
-            //    {
-            //        server.Stop();
-            //        server = null;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utils.SaveLog("Webserver Stop " + ex.Message);
-            //}
+            try
+            {
+                if (server != null)
+                {
+                    server.Stop();
+                    server = null;
+                }
+                if (serverB != null)
+                {
+                    serverB.Stop();
+                    serverB = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("Webserver Stop " + ex.Message);
+            }
 
             //try
             //{
@@ -159,7 +164,7 @@ namespace v2rayN.HttpProxyHandler
 
         private static string GetPacList(string address)
         {
-            var port = Global.sysAgentPort;
+            var port = Global.httpPort;
             if (port <= 0)
             {
                 return "No port";

@@ -6,7 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using v2rayN.Mode;
+using v2rayN.Properties;
 using v2rayN.Protos.Statistics;
+using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -66,6 +68,23 @@ namespace v2rayN.Handler
 
         public StatisticsHandler(Mode.Config config, Action<ulong, ulong, ulong, ulong, List<Mode.ServerStatistics>> update)
         {
+            try
+            {
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x64.dll"), Resources.grpc_csharp_ext_x64_dll);
+                }
+                else
+                {
+                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x86.dll"), Resources.grpc_csharp_ext_x86_dll);
+                }
+            }
+            catch (IOException ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+
+            }
+
             config_ = config;
             enabled_ = config.enableStatistics;
             UpdateUI = false;
@@ -86,6 +105,7 @@ namespace v2rayN.Handler
             GrpcInit();
 
             workThread_ = new Thread(new ThreadStart(Run));
+            workThread_.IsBackground = true;
             workThread_.Start();
         }
 
@@ -192,7 +212,7 @@ namespace v2rayN.Handler
                     name = nStr[1];
                     type = nStr[3];
 
-                    if (name == Global.InboundProxyTagName)
+                    if (name == Global.agentTag)
                     {
                         if (type == "uplink")
                         {
