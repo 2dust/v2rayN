@@ -655,7 +655,7 @@ namespace v2rayN.Handler
                 if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
                 {
                     var apiRoutingRule = new Mode.RulesItem();
-                    apiRoutingRule.inboundTag = tag;
+                    apiRoutingRule.inboundTag = new List<string> { tag };
                     apiRoutingRule.outboundTag = tag;
                     apiRoutingRule.type = "field";
                     v2rayConfig.routing.rules.Add(apiRoutingRule);
@@ -1430,7 +1430,7 @@ namespace v2rayN.Handler
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
                     var rule = new Mode.RulesItem();
-                    rule.inboundTag = inbound.tag;
+                    rule.inboundTag = new List<string> { inbound.tag };
                     rule.outboundTag = v2rayConfigCopy.outbounds[0].tag;
                     rule.type = "field";
                     v2rayConfig.routing.rules.Add(rule);

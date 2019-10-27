@@ -89,7 +89,7 @@ namespace v2rayN.Forms
                 e.Cancel = true;
                 HideForm();
                 return;
-            } 
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -109,24 +109,24 @@ namespace v2rayN.Forms
             //config.uiItem.mainQRCodeWidth = splitContainer1.SplitterDistance;
         }
 
-        private const int WM_QUERYENDSESSION = 0x0011;
-        protected override void WndProc(ref Message m)
-        {
-            switch (m.Msg)
-            {
-                case WM_QUERYENDSESSION:
-                    Utils.SaveLog("Windows shutdown UnsetProxy");
-                 
-                    ConfigHandler.ToJsonFile(config);
-                    statistics?.SaveToFile();
-                    ProxySetting.UnsetProxy();
-                    m.Result = (IntPtr)1;
-                    break;
-                default:
-                    base.WndProc(ref m);
-                    break;
-            }
-        }
+        //private const int WM_QUERYENDSESSION = 0x0011;
+        //protected override void WndProc(ref Message m)
+        //{
+        //    switch (m.Msg)
+        //    {
+        //        case WM_QUERYENDSESSION:
+        //            Utils.SaveLog("Windows shutdown UnsetProxy");
+
+        //            ConfigHandler.ToJsonFile(config);
+        //            statistics?.SaveToFile();
+        //            ProxySetting.UnsetProxy();
+        //            m.Result = (IntPtr)1;
+        //            break;
+        //        default:
+        //            base.WndProc(ref m);
+        //            break;
+        //    }
+        //}
         #endregion
 
         #region 显示服务器 listview 和 menu
@@ -593,44 +593,43 @@ namespace v2rayN.Forms
 
         private void menuPingServer_Click(object sender, EventArgs e)
         {
-            GetLvSelectedIndex();
-            ClearTestResult();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "ping", UpdateSpeedtestHandler);
+            Speedtest("ping");
         }
         private void menuTcpingServer_Click(object sender, EventArgs e)
         {
-            GetLvSelectedIndex();
-            ClearTestResult();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "tcping", UpdateSpeedtestHandler);
+            Speedtest("tcping");
         }
 
         private void menuRealPingServer_Click(object sender, EventArgs e)
         {
-            if (!config.sysAgentEnabled)
-            {
-                UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
-                return;
-            }
+            //if (!config.sysAgentEnabled)
+            //{
+            //    UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
+            //    return;
+            //}
 
-            UI.Show(UIRes.I18N("SpeedServerTips"));
+            //UI.Show(UIRes.I18N("SpeedServerTips"));
 
-            GetLvSelectedIndex();
-            ClearTestResult();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "realping", UpdateSpeedtestHandler);
+            Speedtest("realping");
         }
 
         private void menuSpeedServer_Click(object sender, EventArgs e)
         {
-            if (!config.sysAgentEnabled)
-            {
-                UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
-                return;
-            }
+            //if (!config.sysAgentEnabled)
+            //{
+            //    UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
+            //    return;
+            //}
 
-            UI.Show(UIRes.I18N("SpeedServerTips"));
+            //UI.Show(UIRes.I18N("SpeedServerTips"));
 
+            Speedtest("speedtest");
+        }
+        private void Speedtest(string actionType)
+        {
             GetLvSelectedIndex();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "speedtest", UpdateSpeedtestHandler);
+            ClearTestResult();
+            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
@@ -1005,11 +1004,11 @@ namespace v2rayN.Forms
         }
 
         private void menuExit_Click(object sender, EventArgs e)
-        {        
+        {
 
             this.Visible = false;
-            this.Close();            
-             
+            this.Close();
+
             Application.Exit();
         }
 

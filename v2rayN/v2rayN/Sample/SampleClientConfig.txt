@@ -76,7 +76,7 @@
 		"domainStrategy": "IPIfNonMatch",
 		"rules": [
 				{
-                    "inboundTag": "api",
+                    "inboundTag": ["api"],
                     "outboundTag": "api",
                     "type": "field"
                 }

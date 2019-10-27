@@ -310,7 +310,7 @@ namespace v2rayN.Mode
         /// </summary>
         public string port { get; set; }
 
-        public string inboundTag { get; set; }
+        public List<string> inboundTag { get; set; }
         /// <summary>
         /// 
         /// </summary>
