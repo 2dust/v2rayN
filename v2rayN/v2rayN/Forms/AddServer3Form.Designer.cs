@@ -174,6 +174,7 @@
             // 
             this.MenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemImportClipboard});
+            this.MenuItem1.Image = global::v2rayN.Properties.Resources.option;
             this.MenuItem1.Name = "MenuItem1";
             resources.ApplyResources(this.MenuItem1, "MenuItem1");
             // 
@@ -212,7 +213,6 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TextBox txtRemarks;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label label3;
@@ -227,5 +227,6 @@
         private System.Windows.Forms.MenuStrip menuServer;
         private System.Windows.Forms.ToolStripMenuItem MenuItem1;
         private System.Windows.Forms.ToolStripMenuItem menuItemImportClipboard;
+        private System.Windows.Forms.Label label6;
     }
 }
