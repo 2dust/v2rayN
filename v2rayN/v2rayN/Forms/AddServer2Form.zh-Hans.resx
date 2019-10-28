@@ -124,13 +124,10 @@
     <value>*手填,方便识别管理</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>别名(remarks)</value>
+    <value>别名:</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>地址(address)</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>服务器</value>
+    <value>IP地址:</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>

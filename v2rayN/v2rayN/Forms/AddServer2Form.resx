@@ -252,8 +252,11 @@
   <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
+  </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 38</value>
+    <value>36, 35</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 18</value>
@@ -279,20 +282,23 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 88</value>
+    <value>39, 89</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 17</value>
+    <value>92, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Address</value>
+    <value>Address:</value>
+  </data>
+  <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomRight</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -319,13 +325,10 @@
     <value>3, 4, 3, 4</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>679, 301</value>
+    <value>679, 294</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Server</value>
   </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
@@ -373,7 +376,7 @@
     <value>7, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>679, 315</value>
+    <value>679, 308</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>

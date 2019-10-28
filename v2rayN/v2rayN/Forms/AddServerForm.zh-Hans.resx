@@ -188,7 +188,7 @@
     <value>传输协议:</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>备注:</value>
+    <value>别名:</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>加密方式:</value>
