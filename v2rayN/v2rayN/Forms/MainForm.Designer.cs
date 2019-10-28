@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.lvServers = new v2rayN.Base.ListViewFlickerFree();
             this.cmsLv = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,6 @@
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
-            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentEnabled = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,13 +143,18 @@
             resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
+            // 
             // lvServers
             // 
             this.lvServers.ContextMenuStrip = this.cmsLv;
             resources.ApplyResources(this.lvServers, "lvServers");
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
-            this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
@@ -360,11 +365,6 @@
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
-            // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 

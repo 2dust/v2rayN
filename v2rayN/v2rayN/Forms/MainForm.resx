@@ -351,7 +351,7 @@
     <value>0, 0</value>
   </data>
   <data name="lvServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>885, 235</value>
+    <value>860, 235</value>
   </data>
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -360,7 +360,7 @@
     <value>lvServers</value>
   </data>
   <data name="&gt;&gt;lvServers.Type" xml:space="preserve">
-    <value>v2rayN.Forms.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -405,7 +405,7 @@
     <value>889, 235</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>885</value>
+    <value>860</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

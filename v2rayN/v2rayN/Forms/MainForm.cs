@@ -1093,7 +1093,7 @@ namespace v2rayN.Forms
                         todayDown_ = Utils.HumanFy(statistics[index].todayDown);
                     }
 
-                    datas.Add(new string[] { totalUp_, totalDown_, todayUp_, todayDown_ });
+                    datas.Add(new string[] {todayUp_, todayDown_, totalUp_, totalDown_});
                 }
 
                 lvServers.Invoke((MethodInvoker)delegate

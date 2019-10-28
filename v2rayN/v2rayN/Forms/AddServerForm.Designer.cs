@@ -31,7 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServerForm));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.lbBase = new System.Windows.Forms.Label();
+            this.btnOK = new System.Windows.Forms.Button();
             this.btnGUID = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -72,16 +74,15 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnOK = new System.Windows.Forms.Button();
             this.menuServer = new System.Windows.Forms.MenuStrip();
             this.MenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemImportClient = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemImportServer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panTlsMore.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.menuServer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,12 +98,9 @@
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.label25);
-            this.groupBox1.Controls.Add(this.btnClose);
             this.groupBox1.Controls.Add(this.lbBase);
-            this.groupBox1.Controls.Add(this.btnOK);
             this.groupBox1.Controls.Add(this.btnGUID);
             this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.cmbNetwork);
@@ -121,10 +119,22 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
+            // 
             // lbBase
             // 
             resources.ApplyResources(this.lbBase, "lbBase");
             this.lbBase.Name = "lbBase";
+            // 
+            // btnOK
+            // 
+            resources.ApplyResources(this.btnOK, "btnOK");
+            this.btnOK.Name = "btnOK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnGUID
             // 
@@ -386,15 +396,10 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnClose);
+            this.panel2.Controls.Add(this.btnOK);
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
-            // 
-            // btnOK
-            // 
-            resources.ApplyResources(this.btnOK, "btnOK");
-            this.btnOK.Name = "btnOK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // menuServer
             // 
@@ -431,11 +436,6 @@
             resources.ApplyResources(this.MenuItemImportClipboard, "MenuItemImportClipboard");
             this.MenuItemImportClipboard.Click += new System.EventHandler(this.MenuItemImportClipboard_Click);
             // 
-            // label25
-            // 
-            resources.ApplyResources(this.label25, "label25");
-            this.label25.Name = "label25";
-            // 
             // AddServerForm
             // 
             resources.ApplyResources(this, "$this");
@@ -444,6 +444,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuServer);
+            this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddServerForm";
             this.Load += new System.EventHandler(this.AddServerForm_Load);
@@ -453,6 +454,7 @@
             this.groupBox2.PerformLayout();
             this.panTlsMore.ResumeLayout(false);
             this.panTlsMore.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.menuServer.ResumeLayout(false);
             this.menuServer.PerformLayout();
             this.ResumeLayout(false);
