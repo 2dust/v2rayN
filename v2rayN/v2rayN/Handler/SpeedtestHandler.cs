@@ -238,7 +238,7 @@ namespace v2rayN.Handler
 
             var httpPort = _config.GetLocalPort("speedtest");
             index = _selecteds[index];
-            
+
             testCounter++;
             var webProxy = new WebProxy(Global.Loopback, httpPort + index);
             downloadHandle2.DownloadFileAsync(_config, url, webProxy);
@@ -252,7 +252,7 @@ namespace v2rayN.Handler
 
             try
             {
-                IPHostEntry ipHostInfo = System.Net.Dns.Resolve(url);
+                IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
 
                 var timer = new Stopwatch();
