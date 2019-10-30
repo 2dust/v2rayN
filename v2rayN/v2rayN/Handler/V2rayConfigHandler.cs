@@ -688,10 +688,20 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                string addressFileName = config.address();
                 if (File.Exists(fileName))
                 {
                     File.Delete(fileName);
+                }
+
+                string addressFileName = config.address();
+                if (!File.Exists(addressFileName))
+                {
+                    addressFileName = Path.Combine(Utils.GetTempPath(), addressFileName);
+                }
+                if (!File.Exists(addressFileName))
+                {
+                    msg = UIRes.I18N("FailedGenDefaultConfiguration");
+                    return -1;
                 }
                 File.Copy(addressFileName, fileName);
 

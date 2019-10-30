@@ -515,11 +515,11 @@ namespace v2rayN.Handler
         {
             string newFileName = string.Empty;
             newFileName = string.Format("{0}.json", Utils.GetGUID());
-            newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
+            //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
 
             try
             {
-                File.Copy(fileName, newFileName);
+                File.Copy(fileName, Path.Combine(Utils.GetTempPath(), newFileName));
             }
             catch
             {
