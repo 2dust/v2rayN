@@ -29,13 +29,13 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        private const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
+
 
         private static readonly IEnumerable<char> IgnoredLineBegins = new[] { '!', '[' };
 
         public void UpdatePACFromGFWList(Config config)
         {
-            string url = GFWLIST_URL;
+            string url = Global.GFWLIST_URL;
             if (!Utils.IsNullOrEmpty(config.urlGFWList))
             {
                 url = config.urlGFWList;

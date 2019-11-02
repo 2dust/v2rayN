@@ -121,6 +121,10 @@ namespace v2rayN.Handler
             //{
             //    config.pacPort = 8888;
             //}
+            if (Utils.IsNullOrEmpty(config.urlGFWList))
+            {
+                config.urlGFWList = Global.GFWLIST_URL;
+            }
 
             if (config.subItem == null)
             {
@@ -579,7 +583,7 @@ namespace v2rayN.Handler
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
-           
+
             if (index >= 0)
             {
                 //修改

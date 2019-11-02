@@ -140,6 +140,8 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
                 _v2rayHandler.LoadV2ray(_config, _selecteds);
 
+                Thread.Sleep(5000);
+
                 var httpPort = _config.GetLocalPort("speedtest");
                 for (int k = 0; k < _selecteds.Count; k++)
                 {
@@ -190,6 +192,8 @@ namespace v2rayN.Handler
 
             Global.reloadV2ray = true;
             _v2rayHandler.LoadV2ray(_config, _selecteds);
+
+            Thread.Sleep(5000);
 
             string url = Global.SpeedTestUrl;
             testCounter = 0;

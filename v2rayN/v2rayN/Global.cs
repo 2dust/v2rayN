@@ -25,6 +25,8 @@ namespace v2rayN
         /// </summary>
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
+        public const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
+
         /// <summary>
         /// PromotionUrl
         /// </summary>
