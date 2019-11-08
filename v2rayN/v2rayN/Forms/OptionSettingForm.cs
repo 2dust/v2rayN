@@ -44,7 +44,7 @@ namespace v2rayN.Forms
                 chkudpEnabled.Checked = config.inbound[0].udpEnabled;
                 chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
 
-                txtlocalPort2.Text = "socks + 1";
+                txtlocalPort2.Text = $"{config.inbound[0].localPort + 1}";
                 cmbprotocol2.Text = Global.InboundHttp;
 
                 if (config.inbound.Count > 1)
@@ -127,7 +127,7 @@ namespace v2rayN.Forms
             cbFreshrate.DisplayMember = "Text";
             cbFreshrate.ValueMember = "ID";
 
-            switch(config.statisticsFreshRate)
+            switch (config.statisticsFreshRate)
             {
                 case (int)Global.StatisticsFreshRate.quick:
                     cbFreshrate.SelectedItem = cbSource[0];
@@ -369,10 +369,14 @@ namespace v2rayN.Forms
 
         private void btnSetDefRountingRule_Click(object sender, EventArgs e)
         {
+            txtUseragent.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.agentTag);
+            txtUserdirect.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.directTag);
+            txtUserblock.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.blockTag);
+
             var lstUrl = new List<string>();
-            lstUrl.Add(Global.CustomRoutingListUrl + "proxy");
-            lstUrl.Add(Global.CustomRoutingListUrl + "direct");
-            lstUrl.Add(Global.CustomRoutingListUrl + "block");
+            lstUrl.Add(Global.CustomRoutingListUrl + Global.agentTag);
+            lstUrl.Add(Global.CustomRoutingListUrl + Global.directTag);
+            lstUrl.Add(Global.CustomRoutingListUrl + Global.blockTag);
 
             var lstTxt = new List<TextBox>();
             lstTxt.Add(txtUseragent);
@@ -415,7 +419,13 @@ namespace v2rayN.Forms
 
     class ComboItem
     {
-        public int ID { get; set; }
-        public string Text { get; set; }
+        public int ID
+        {
+            get; set;
+        }
+        public string Text
+        {
+            get; set;
+        }
     }
 }

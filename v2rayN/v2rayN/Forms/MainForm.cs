@@ -405,7 +405,7 @@ namespace v2rayN.Forms
             }
             v2rayHandler.LoadV2ray(config);
             Global.reloadV2ray = false;
-            ConfigHandler.ToJsonFile(config);
+            ConfigHandler.SaveConfig(ref config, false);
 
             ChangeSysAgent(config.sysAgentEnabled);
             DisplayToolStatus();
@@ -416,7 +416,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void CloseV2ray()
         {
-            ConfigHandler.ToJsonFile(config);
+            ConfigHandler.SaveConfig(ref config, false);
 
             ChangeSysAgent(false);
 
@@ -1234,6 +1234,7 @@ namespace v2rayN.Forms
                         break;
                 }
             }
+            ConfigHandler.SaveConfig(ref config, false);
             DisplayToolStatus();
         }
 
@@ -1399,7 +1400,7 @@ namespace v2rayN.Forms
 
         private void tsbPromotion_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.PromotionUrl);
+            System.Diagnostics.Process.Start($"{Global.PromotionUrl}?t={DateTime.Now.Ticks}");
         }
         #endregion
 

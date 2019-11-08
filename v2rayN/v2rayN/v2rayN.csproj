@@ -150,6 +150,12 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RoutingRuleSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SubSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,6 +292,9 @@
       <DependentUpon>QRCodeControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.resx">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -340,6 +349,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Sample\custom_routing_block" />
+    <EmbeddedResource Include="Sample\custom_routing_direct" />
+    <EmbeddedResource Include="Sample\custom_routing_proxy" />
     <Protobuf Include="Protos\Statistics.proto" />
     <None Include="Resources\abp.js.gz" />
     <None Include="Resources\grpc_csharp_ext.x64.dll.gz" />

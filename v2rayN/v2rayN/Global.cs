@@ -63,6 +63,8 @@ namespace v2rayN
         /// </summary>
         public const string BlankPacFileName = "v2rayN.Sample.BlankPac.txt";
 
+        public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
+
 
         /// <summary>
         /// 默认加密方式
@@ -98,7 +100,7 @@ namespace v2rayN
         /// 阻止 tag值
         /// </summary>
         public const string blockTag = "block";
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -172,32 +174,50 @@ namespace v2rayN
         /// <summary>
         /// 是否需要重启服务V2ray
         /// </summary>
-        public static bool reloadV2ray { get; set; }
+        public static bool reloadV2ray
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 是否开启全局代理(http)
         /// </summary>
-        public static bool sysAgent { get; set; }
+        public static bool sysAgent
+        {
+            get; set;
+        }
 
         /// <summary>
         /// socks端口
         /// </summary>
-        public static int socksPort { get; set; }
+        public static int socksPort
+        {
+            get; set;
+        }
 
         /// <summary>
         /// http端口
         /// </summary>
-        public static int httpPort { get; set; }
+        public static int httpPort
+        {
+            get; set;
+        }
 
         /// <summary>
         /// PAC端口
         /// </summary>
-        public static int pacPort { get; set; }
+        public static int pacPort
+        {
+            get; set;
+        }
 
         /// <summary>
         ///  
         /// </summary>
-        public static int statePort { get; set; }
+        public static int statePort
+        {
+            get; set;
+        }
 
         #endregion
 

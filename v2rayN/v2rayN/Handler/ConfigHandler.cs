@@ -307,9 +307,9 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static int SaveConfig(ref Config config)
+        public static int SaveConfig(ref Config config, bool reload = true)
         {
-            Global.reloadV2ray = true;
+            Global.reloadV2ray = reload;
 
             ToJsonFile(config);
 
@@ -320,7 +320,7 @@ namespace v2rayN.Handler
         /// 存储文件
         /// </summary>
         /// <param name="config"></param>
-        public static void ToJsonFile(Config config)
+        private static void ToJsonFile(Config config)
         {
             Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
