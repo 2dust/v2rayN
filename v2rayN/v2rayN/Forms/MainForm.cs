@@ -35,7 +35,7 @@ namespace v2rayN.Forms
                 Utils.ClearTempPath();
 
                 v2rayHandler.V2rayStop();
-                HttpProxyHandle.Update(config, true);
+
                 HttpProxyHandle.CloseHttpAgent(config);
                 PACServerHandle.Stop();
 
@@ -325,7 +325,7 @@ namespace v2rayN.Forms
 
             toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
 
-            if (config.sysAgentEnabled)
+            if (config.listenerType != 0)
             {
                 toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
                 if (config.listenerType == 2 || config.listenerType == 4)
@@ -340,8 +340,8 @@ namespace v2rayN.Forms
                     }
                 }
             }
-            notifyMain.Icon = GetNotifyIcon();
 
+            notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -350,46 +350,7 @@ namespace v2rayN.Forms
                 Utils.SetClipboardData(e.ClickedItem.Text);
             }
         }
-
-        private Icon GetNotifyIcon()
-        {
-            try
-            {
-                var color = ColorTranslator.FromHtml("#3399CC");
-                var index = config.sysAgentEnabled ? config.listenerType : 0;
-                if (index > 0)
-                {
-                    color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange })[index - 1];
-                    //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
-                }
-
-                var width = 128;
-                var height = 128;
-
-                var bitmap = new Bitmap(width, height);
-                var graphics = Graphics.FromImage(bitmap);
-                var drawBrush = new SolidBrush(color);
-
-                graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
-                var zoom = 16;
-                graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
-
-                bitmap.Save(Utils.GetPath("temp_icon.ico"), System.Drawing.Imaging.ImageFormat.Icon);
-
-                Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
-
-                drawBrush.Dispose();
-                graphics.Dispose();
-                bitmap.Dispose();
-
-                return createdIcon;
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                return this.Icon;
-            }
-        }
+        
         #endregion
 
         #region v2ray 操作
@@ -407,8 +368,7 @@ namespace v2rayN.Forms
             Global.reloadV2ray = false;
             ConfigHandler.SaveConfig(ref config, false);
 
-            ChangeSysAgent(config.sysAgentEnabled);
-            DisplayToolStatus();
+            ChangePACButtonStatus(config.listenerType);
         }
 
         /// <summary>
@@ -418,7 +378,7 @@ namespace v2rayN.Forms
         {
             ConfigHandler.SaveConfig(ref config, false);
 
-            ChangeSysAgent(false);
+            ChangePACButtonStatus(0);
 
             v2rayHandler.V2rayStop();
         }
@@ -635,79 +595,13 @@ namespace v2rayN.Forms
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
         {
             int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess)
-            {
-                UI.Show(UIRes.I18N("NonVmessService"));
-                return;
-            }
-
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            fileDialog.Filter = "Config|*.json";
-            fileDialog.FilterIndex = 2;
-            fileDialog.RestoreDirectory = true;
-            if (fileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-            Config configCopy = Utils.DeepCopy<Config>(config);
-            configCopy.index = index;
-            string msg;
-            if (V2rayConfigHandler.Export2ClientConfig(configCopy, fileName, out msg) != 0)
-            {
-                UI.Show(msg);
-            }
-            else
-            {
-                UI.Show(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
-            }
+            MainFormHandler.Instance.Export2ClientConfig(index, config);
         }
 
         private void menuExport2ServerConfig_Click(object sender, EventArgs e)
         {
             int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess)
-            {
-                UI.Show(UIRes.I18N("NonVmessService"));
-                return;
-            }
-
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            fileDialog.Filter = "Config|*.json";
-            fileDialog.FilterIndex = 2;
-            fileDialog.RestoreDirectory = true;
-            if (fileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-            Config configCopy = Utils.DeepCopy<Config>(config);
-            configCopy.index = index;
-            string msg;
-            if (V2rayConfigHandler.Export2ServerConfig(configCopy, fileName, out msg) != 0)
-            {
-                UI.Show(msg);
-            }
-            else
-            {
-                UI.Show(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
-            }
+            MainFormHandler.Instance.Export2ServerConfig(index, config);
         }
 
         private void menuExport2ShareUrl_Click(object sender, EventArgs e)
@@ -962,7 +856,7 @@ namespace v2rayN.Forms
         /// <param name="msg"></param>
         private void ShowMsg(string msg)
         {
-            if (txtMsgBox.Lines.Length > 500)
+            if (txtMsgBox.Lines.Length > 999)
             {
                 ClearMsg();
             }
@@ -1020,6 +914,7 @@ namespace v2rayN.Forms
             this.Activate();
             //this.notifyIcon1.Visible = false;
             this.ShowInTaskbar = true;
+            this.txtMsgBox.ScrollToCaret();
 
             SetVisibleCore(true);
         }
@@ -1171,97 +1066,58 @@ namespace v2rayN.Forms
             Utils.SetClipboardData(HttpProxyHandle.GetPacUrl());
         }
 
-        private void menuSysAgentEnabled_Click(object sender, EventArgs e)
+        private void menuNotEnabledHttp_Click(object sender, EventArgs e)
         {
-            bool isChecked = !config.sysAgentEnabled;
-            config.sysAgentEnabled = isChecked;
-            ChangeSysAgent(isChecked);
+            SetListenerType(0);
         }
 
         private void menuGlobal_Click(object sender, EventArgs e)
         {
-            config.listenerType = 1;
-            ChangePACButtonStatus(config.listenerType);
+            SetListenerType(1);
         }
 
         private void menuGlobalPAC_Click(object sender, EventArgs e)
         {
-            config.listenerType = 2;
-            ChangePACButtonStatus(config.listenerType);
+            SetListenerType(2);
         }
 
         private void menuKeep_Click(object sender, EventArgs e)
         {
-            config.listenerType = 3;
-            ChangePACButtonStatus(config.listenerType);
+            SetListenerType(3);
         }
 
         private void menuKeepPAC_Click(object sender, EventArgs e)
         {
-            config.listenerType = 4;
-            ChangePACButtonStatus(config.listenerType);
+            SetListenerType(4);
+        }
+
+        private void SetListenerType(int type)
+        {
+            config.listenerType = type;
+            ChangePACButtonStatus(type);
         }
 
         private void ChangePACButtonStatus(int type)
         {
-            if (HttpProxyHandle.Update(config, false))
+            if (type != 0)
             {
-                switch (type)
-                {
-                    case 1:
-                        menuGlobal.Checked = true;
-                        menuGlobalPAC.Checked = false;
-                        menuKeep.Checked = false;
-                        menuKeepPAC.Checked = false;
-                        break;
-                    case 2:
-                        menuGlobal.Checked = false;
-                        menuGlobalPAC.Checked = true;
-                        menuKeep.Checked = false;
-                        menuKeepPAC.Checked = false;
-                        break;
-                    case 3:
-                        menuGlobal.Checked = false;
-                        menuGlobalPAC.Checked = false;
-                        menuKeep.Checked = true;
-                        menuKeepPAC.Checked = false;
-                        break;
-                    case 4:
-                        menuGlobal.Checked = false;
-                        menuGlobalPAC.Checked = false;
-                        menuKeep.Checked = false;
-                        menuKeepPAC.Checked = true;
-                        break;
-                }
+                HttpProxyHandle.RestartHttpAgent(config, false);
             }
+            else
+            {
+                HttpProxyHandle.CloseHttpAgent(config);
+            }
+
+            for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
+            {
+                var item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
+                item.Checked = (type == k);
+            }
+
             ConfigHandler.SaveConfig(ref config, false);
             DisplayToolStatus();
         }
 
-        /// <summary>
-        /// 改变系统代理
-        /// </summary>
-        /// <param name="isChecked"></param>
-        private void ChangeSysAgent(bool isChecked)
-        {
-            if (isChecked)
-            {
-                if (HttpProxyHandle.RestartHttpAgent(config, false))
-                {
-                    ChangePACButtonStatus(config.listenerType);
-                }
-            }
-            else
-            {
-                HttpProxyHandle.Update(config, true);
-                HttpProxyHandle.CloseHttpAgent(config);
-            }
-
-            menuSysAgentEnabled.Checked =
-            menuSysAgentMode.Enabled = isChecked;
-
-            DisplayToolStatus();
-        }
         #endregion
 
 
@@ -1400,7 +1256,7 @@ namespace v2rayN.Forms
 
         private void tsbPromotion_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start($"{Global.PromotionUrl}?t={DateTime.Now.Ticks}");
+            System.Diagnostics.Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
         #endregion
 
@@ -1528,9 +1384,7 @@ namespace v2rayN.Forms
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
         }
 
-
         #endregion
-
 
     }
 }

@@ -1,5 +1,4 @@
-﻿using Grpc.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -69,7 +68,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void RunPing()
+        private void RunPing()
         {
             try
             {
@@ -100,7 +99,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void RunTcping()
+        private void RunTcping()
         {
             try
             {
@@ -131,7 +130,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void RunRealPing()
+        private void RunRealPing()
         {
             try
             {
@@ -308,7 +307,5 @@ namespace v2rayN.Handler
             return msg;
 
         }
-
-
     }
 }

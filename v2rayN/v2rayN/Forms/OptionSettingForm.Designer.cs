@@ -33,6 +33,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cmblistenerType = new System.Windows.Forms.ComboBox();
             this.chksniffingEnabled2 = new System.Windows.Forms.CheckBox();
             this.chksniffingEnabled = new System.Windows.Forms.CheckBox();
             this.txtremoteDNS = new System.Windows.Forms.TextBox();
@@ -60,14 +62,13 @@
             this.txtUserdirect = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.txtUserblock = new System.Windows.Forms.TextBox();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.cmbroutingMode = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnSetDefRountingRule = new System.Windows.Forms.Button();
             this.labRoutingTips = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.cmbdomainStrategy = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.cmbroutingMode = new System.Windows.Forms.ComboBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.chkKcpcongestion = new System.Windows.Forms.CheckBox();
             this.txtKcpwriteBufferSize = new System.Windows.Forms.TextBox();
@@ -104,6 +105,7 @@
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage8.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
@@ -138,6 +140,8 @@
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.cmblistenerType);
             this.groupBox1.Controls.Add(this.chksniffingEnabled2);
             this.groupBox1.Controls.Add(this.chksniffingEnabled);
             this.groupBox1.Controls.Add(this.txtremoteDNS);
@@ -158,6 +162,24 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
+            // 
+            // cmblistenerType
+            // 
+            resources.ApplyResources(this.cmblistenerType, "cmblistenerType");
+            this.cmblistenerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmblistenerType.FormattingEnabled = true;
+            this.cmblistenerType.Items.AddRange(new object[] {
+            resources.GetString("cmblistenerType.Items"),
+            resources.GetString("cmblistenerType.Items1"),
+            resources.GetString("cmblistenerType.Items2"),
+            resources.GetString("cmblistenerType.Items3"),
+            resources.GetString("cmblistenerType.Items4")});
+            this.cmblistenerType.Name = "cmblistenerType";
             // 
             // chksniffingEnabled2
             // 
@@ -296,6 +318,7 @@
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage8);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             // 
@@ -335,16 +358,32 @@
             resources.ApplyResources(this.txtUserblock, "txtUserblock");
             this.txtUserblock.Name = "txtUserblock";
             // 
+            // tabPage8
+            // 
+            resources.ApplyResources(this.tabPage8, "tabPage8");
+            this.tabPage8.Controls.Add(this.cmbroutingMode);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // cmbroutingMode
+            // 
+            resources.ApplyResources(this.cmbroutingMode, "cmbroutingMode");
+            this.cmbroutingMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbroutingMode.FormattingEnabled = true;
+            this.cmbroutingMode.Items.AddRange(new object[] {
+            resources.GetString("cmbroutingMode.Items"),
+            resources.GetString("cmbroutingMode.Items1"),
+            resources.GetString("cmbroutingMode.Items2"),
+            resources.GetString("cmbroutingMode.Items3")});
+            this.cmbroutingMode.Name = "cmbroutingMode";
+            // 
             // panel3
             // 
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Controls.Add(this.btnSetDefRountingRule);
             this.panel3.Controls.Add(this.labRoutingTips);
-            this.panel3.Controls.Add(this.label4);
             this.panel3.Controls.Add(this.cmbdomainStrategy);
             this.panel3.Controls.Add(this.label15);
-            this.panel3.Controls.Add(this.label12);
-            this.panel3.Controls.Add(this.cmbroutingMode);
             this.panel3.Name = "panel3";
             // 
             // btnSetDefRountingRule
@@ -359,12 +398,6 @@
             resources.ApplyResources(this.labRoutingTips, "labRoutingTips");
             this.labRoutingTips.ForeColor = System.Drawing.Color.Brown;
             this.labRoutingTips.Name = "labRoutingTips";
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.ForeColor = System.Drawing.Color.Brown;
-            this.label4.Name = "label4";
             // 
             // cmbdomainStrategy
             // 
@@ -381,23 +414,6 @@
             // 
             resources.ApplyResources(this.label15, "label15");
             this.label15.Name = "label15";
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            // 
-            // cmbroutingMode
-            // 
-            resources.ApplyResources(this.cmbroutingMode, "cmbroutingMode");
-            this.cmbroutingMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbroutingMode.FormattingEnabled = true;
-            this.cmbroutingMode.Items.AddRange(new object[] {
-            resources.GetString("cmbroutingMode.Items"),
-            resources.GetString("cmbroutingMode.Items1"),
-            resources.GetString("cmbroutingMode.Items2"),
-            resources.GetString("cmbroutingMode.Items3")});
-            this.cmbroutingMode.Name = "cmbroutingMode";
             // 
             // tabPage6
             // 
@@ -592,6 +608,7 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage8.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tabPage6.ResumeLayout(false);
@@ -660,7 +677,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ComboBox cmbdomainStrategy;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox cmbroutingMode;
         private System.Windows.Forms.CheckBox chksniffingEnabled;
         private System.Windows.Forms.CheckBox chksniffingEnabled2;
@@ -670,6 +686,8 @@
         private System.Windows.Forms.Label lbCacheDays;
         private System.Windows.Forms.ComboBox cbFreshrate;
         private System.Windows.Forms.Label lbFreshrate;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cmblistenerType;
+        private System.Windows.Forms.TabPage tabPage8;
     }
 }

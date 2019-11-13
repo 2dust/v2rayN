@@ -64,6 +64,8 @@ namespace v2rayN.Forms
 
             //remoteDNS
             txtremoteDNS.Text = config.remoteDNS;
+
+            cmblistenerType.SelectedIndex = config.listenerType;
         }
 
         /// <summary>
@@ -250,7 +252,8 @@ namespace v2rayN.Forms
 
             //remoteDNS
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
-
+            
+            config.listenerType = cmblistenerType.SelectedIndex;
             return 0;
         }
 
@@ -372,6 +375,7 @@ namespace v2rayN.Forms
             txtUseragent.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.agentTag);
             txtUserdirect.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.directTag);
             txtUserblock.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.blockTag);
+            cmbroutingMode.SelectedIndex = 3;
 
             var lstUrl = new List<string>();
             lstUrl.Add(Global.CustomRoutingListUrl + Global.agentTag);

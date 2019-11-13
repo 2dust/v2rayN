@@ -291,7 +291,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 556</value>
+    <value>448, 534</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -333,7 +333,7 @@
     <value>lvServers</value>
   </data>
   <data name="&gt;&gt;lvServers.Type" xml:space="preserve">
-    <value>v2rayN.Forms.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -422,11 +422,11 @@
   <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="menuSysAgentEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+  <data name="menuNotEnabledHttp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 22</value>
   </data>
-  <data name="menuSysAgentEnabled.Text" xml:space="preserve">
-    <value>Enable Http proxy</value>
+  <data name="menuNotEnabledHttp.Text" xml:space="preserve">
+    <value>Not Enabled Http Proxy</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>547, 22</value>
@@ -456,7 +456,7 @@
     <value>264, 22</value>
   </data>
   <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>Http proxy mode</value>
+    <value>Http proxy</value>
   </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -1118,16 +1118,16 @@
   <data name="&gt;&gt;notifyMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;menuSysAgentEnabled.Name" xml:space="preserve">
-    <value>menuSysAgentEnabled</value>
-  </data>
-  <data name="&gt;&gt;menuSysAgentEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;menuSysAgentMode.Name" xml:space="preserve">
     <value>menuSysAgentMode</value>
   </data>
   <data name="&gt;&gt;menuSysAgentMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuNotEnabledHttp.Name" xml:space="preserve">
+    <value>menuNotEnabledHttp</value>
+  </data>
+  <data name="&gt;&gt;menuNotEnabledHttp.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuGlobal.Name" xml:space="preserve">

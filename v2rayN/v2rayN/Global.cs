@@ -5,14 +5,10 @@ namespace v2rayN
     {
         #region 常量
 
-        /// <summary>
-        /// 更新链接
-        /// </summary>
-        public const string UpdateUrl = @"https://github.com/2dust/v2rayN/releases";
-        /// <summary>
-        /// 关于链接
-        /// </summary>
+
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
+        public const string UpdateUrl = AboutUrl + @"/releases";
+
 
         /// <summary>
         /// SpeedTestUrl
@@ -30,7 +26,7 @@ namespace v2rayN
         /// <summary>
         /// PromotionUrl
         /// </summary>
-        public const string PromotionUrl = @"https://1.2345345.xyz/ads.html";
+        public const string PromotionUrl = @"aHR0cHM6Ly8xLjIzNDQ1Ni54eXovYWRzLmh0bWw=";
 
         /// <summary>
         /// 本软件配置文件名

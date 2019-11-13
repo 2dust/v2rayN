@@ -60,12 +60,12 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
+            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuSysAgentEnabled = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNotEnabledHttp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGlobal = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGlobalPAC = new System.Windows.Forms.ToolStripMenuItem();
             this.menuKeep = new System.Windows.Forms.ToolStripMenuItem();
@@ -355,17 +355,17 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
-            // 
             // tsbServer
             // 
             this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
+            // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 
@@ -378,7 +378,6 @@
             this.cmsMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             resources.ApplyResources(this.cmsMain, "cmsMain");
             this.cmsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuSysAgentEnabled,
             this.menuSysAgentMode,
             this.menuServers,
             this.menuAddServers2,
@@ -391,21 +390,22 @@
             this.cmsMain.ShowCheckMargin = true;
             this.cmsMain.ShowImageMargin = false;
             // 
-            // menuSysAgentEnabled
-            // 
-            this.menuSysAgentEnabled.Name = "menuSysAgentEnabled";
-            resources.ApplyResources(this.menuSysAgentEnabled, "menuSysAgentEnabled");
-            this.menuSysAgentEnabled.Click += new System.EventHandler(this.menuSysAgentEnabled_Click);
-            // 
             // menuSysAgentMode
             // 
             this.menuSysAgentMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuNotEnabledHttp,
             this.menuGlobal,
             this.menuGlobalPAC,
             this.menuKeep,
             this.menuKeepPAC});
             this.menuSysAgentMode.Name = "menuSysAgentMode";
             resources.ApplyResources(this.menuSysAgentMode, "menuSysAgentMode");
+            // 
+            // menuNotEnabledHttp
+            // 
+            this.menuNotEnabledHttp.Name = "menuNotEnabledHttp";
+            resources.ApplyResources(this.menuNotEnabledHttp, "menuNotEnabledHttp");
+            this.menuNotEnabledHttp.Click += new System.EventHandler(this.menuNotEnabledHttp_Click);
             // 
             // menuGlobal
             // 
@@ -818,7 +818,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuGlobal;
         private System.Windows.Forms.ToolStripMenuItem menuGlobalPAC;
         private System.Windows.Forms.ToolStripMenuItem menuKeep;
-        private System.Windows.Forms.ToolStripMenuItem menuSysAgentEnabled;
         private System.Windows.Forms.ToolStripMenuItem menuCopyPACUrl;
         private System.Windows.Forms.ToolStripMenuItem menuAddCustomServer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -868,6 +867,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuRemoveDuplicateServer;
         private System.Windows.Forms.ToolStripMenuItem menuTcpingServer;
         private System.Windows.Forms.ToolStripMenuItem menuRealPingServer;
+        private System.Windows.Forms.ToolStripMenuItem menuNotEnabledHttp;
     }
 }
 

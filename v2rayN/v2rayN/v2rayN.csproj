@@ -150,12 +150,6 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RoutingRuleSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
-      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\SubSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +180,7 @@
     <Compile Include="Forms\SubSettingControl.Designer.cs">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handler\MainFormHandler.cs" />
     <Compile Include="Handler\SpeedtestHandler.cs" />
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\DownloadHandle.cs" />
@@ -291,9 +286,6 @@
     <EmbeddedResource Include="Forms\QRCodeControl.zh-Hans.resx">
       <DependentUpon>QRCodeControl.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.resx">
-      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>

@@ -10,7 +10,7 @@ namespace v2rayN.HttpProxyHandler
     /// </summary>
     class HttpProxyHandle
     {
-        public static bool Update(Config config, bool forceDisable)
+        private static bool Update(Config config, bool forceDisable)
         {
             int type = config.listenerType;
 
@@ -70,7 +70,7 @@ namespace v2rayN.HttpProxyHandler
         /// 启用系统代理(http)
         /// </summary>
         /// <param name="config"></param>
-        public static void StartHttpAgent(Config config)
+        private static void StartHttpAgent(Config config)
         {
             try
             {
@@ -100,11 +100,13 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
+                Update(config, true);
+
                 PrivoxyHandler.Instance.Stop();
 
                 Global.sysAgent = false;
                 Global.socksPort = 0;
-                Global.httpPort = 0; 
+                Global.httpPort = 0;
             }
             catch
             {
@@ -116,7 +118,7 @@ namespace v2rayN.HttpProxyHandler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="forced"></param>
-        public static bool RestartHttpAgent(Config config, bool forced)
+        public static void RestartHttpAgent(Config config, bool forced)
         {
             bool isRestart = false;
             //强制重启或者socks端口变化
@@ -136,9 +138,8 @@ namespace v2rayN.HttpProxyHandler
             {
                 CloseHttpAgent(config);
                 StartHttpAgent(config);
-                return true;
             }
-            return false;
+            Update(config, false);
         }
 
         public static string GetPacUrl()

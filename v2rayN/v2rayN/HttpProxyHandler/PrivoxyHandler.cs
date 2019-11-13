@@ -68,31 +68,33 @@ namespace v2rayN.HttpProxyHandler
 
         public void Start(int localPort, Config config)
         {
-            if (_process == null)
+            try
             {
-                Process[] existingPrivoxy = Process.GetProcessesByName("v2ray_privoxy");
-                foreach (Process p in existingPrivoxy.Where(IsChildProcess))
+                if (_process == null)
                 {
-                    KillProcess(p);
-                }
-                string privoxyConfig = Resources.privoxy_conf;
-                RunningPort = config.GetLocalPort(Global.InboundHttp);
-                privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", localPort.ToString());
-                privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());
-                if (config.allowLANConn)
-                {
-                    privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", "0.0.0.0");
-                }
-                else
-                {
-                    privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", Global.Loopback);
-                }
-                FileManager.ByteArrayToFile(Utils.GetTempPath(_uniqueConfigFile), Encoding.UTF8.GetBytes(privoxyConfig));
+                    Process[] existingPrivoxy = Process.GetProcessesByName("v2ray_privoxy");
+                    foreach (Process p in existingPrivoxy.Where(IsChildProcess))
+                    {
+                        KillProcess(p);
+                    }
+                    string privoxyConfig = Resources.privoxy_conf;
+                    RunningPort = config.GetLocalPort(Global.InboundHttp);
+                    privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", localPort.ToString());
+                    privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());
+                    if (config.allowLANConn)
+                    {
+                        privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", "0.0.0.0");
+                    }
+                    else
+                    {
+                        privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_IP__", Global.Loopback);
+                    }
+                    FileManager.ByteArrayToFile(Utils.GetTempPath(_uniqueConfigFile), Encoding.UTF8.GetBytes(privoxyConfig));
 
-                _process = new Process
-                {
-                    // Configure the process using the StartInfo properties.
-                    StartInfo =
+                    _process = new Process
+                    {
+                        // Configure the process using the StartInfo properties.
+                        StartInfo =
                     {
                         FileName = "v2ray_privoxy.exe",
                         Arguments = _uniqueConfigFile,
@@ -101,15 +103,20 @@ namespace v2rayN.HttpProxyHandler
                         UseShellExecute = true,
                         CreateNoWindow = true
                     }
-                };
-                _process.Start();
+                    };
+                    _process.Start();
 
-                /*
-                 * Add this process to job obj associated with this ss process, so that
-                 * when ss exit unexpectedly, this process will be forced killed by system.
-                 */
-                _privoxyJob.AddProcess(_process.Handle);
+                    /*
+                     * Add this process to job obj associated with this ss process, so that
+                     * when ss exit unexpectedly, this process will be forced killed by system.
+                     */
+                    _privoxyJob.AddProcess(_process.Handle);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
             }
         }
 
