@@ -244,7 +244,7 @@ namespace v2rayN.Handler
 
             testCounter++;
             var webProxy = new WebProxy(Global.Loopback, httpPort + index);
-            downloadHandle2.DownloadFileAsync(_config, url, webProxy);
+            downloadHandle2.DownloadFileAsync(_config, url, webProxy, 30);
 
             return 0;
         }

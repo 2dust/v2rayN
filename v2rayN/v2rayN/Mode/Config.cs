@@ -145,26 +145,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
-        /// <summary>
-        /// 统计数据缓存天数 [0, 30]
-        ///     * 0 关闭单独每天使用流量的缓存
-        ///     * 无论如何不会关闭总流量的缓存
-        /// </summary>
-        private uint cacheDays;
-        public uint CacheDays
-        {
-            get
-            {
-                return cacheDays;
-            }
-            set
-            {
-                if (value < 0) cacheDays = 0;
-                else if (value > 30) cacheDays = 30;
-                else cacheDays = value;
-            }
-        }
+         
 
         /// <summary>
         /// 自定义远程DNS
@@ -337,6 +318,16 @@ namespace v2rayN.Mode
             return vmess[index].getSummary();
         }
 
+        public string getItemId()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+
+            return vmess[index].getItemId();
+        }
+
         #endregion
 
     }
@@ -420,6 +411,14 @@ namespace v2rayN.Mode
             }
             return subid.Substring(0, 4);
         }
+
+        public string getItemId()
+        {
+            var itemId = $"{address}{port}{requestHost}{path}";
+            itemId = Utils.Base64Encode(itemId);
+            return itemId;
+        }
+
         /// <summary>
         /// 版本(现在=2)
         /// </summary>

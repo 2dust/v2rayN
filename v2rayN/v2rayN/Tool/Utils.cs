@@ -443,15 +443,6 @@ namespace v2rayN
             return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
         }
 
-        public static bool IsIdenticalServer(Mode.ServerStatistics a, Mode.ServerStatistics b)
-        {
-            return (a.address == b.address
-                    && a.port == b.port
-                    && a.path == b.path
-                    && a.host == b.host
-                );
-        }
-
         #endregion
 
         #region 开机自动启动

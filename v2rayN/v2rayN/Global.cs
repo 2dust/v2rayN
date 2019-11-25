@@ -13,7 +13,7 @@ namespace v2rayN
         /// <summary>
         /// SpeedTestUrl
         /// </summary>
-        public const string SpeedTestUrl = @"http://speedtest-sfo2.digitalocean.com/10mb.test";
+        public const string SpeedTestUrl = @"http://speedtest-sgp1.digitalocean.com/10mb.test";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
 
         /// <summary>
@@ -160,8 +160,7 @@ namespace v2rayN
             medium = 2000,
             slow = 3000
         }
-        public const string StatisticLogDirectory = "Statistics";
-        public const string StatisticLogOverall = "overall.txt";
+        public const string StatisticLogOverall = "StatisticLogOverall.json";
 
         #endregion
 

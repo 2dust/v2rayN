@@ -115,8 +115,6 @@ namespace v2rayN.Forms
             var enableStatistics = config.enableStatistics;
             chkEnableStatistics.Checked = enableStatistics;
 
-            tbCacheDays.Text = config.CacheDays.ToString();
-
 
             var cbSource = new ComboItem[]
             {
@@ -332,13 +330,6 @@ namespace v2rayN.Forms
 
             var lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
-
-            uint days = 0;
-            var valid = uint.TryParse(tbCacheDays.Text, out days);
-            if (!valid)
-                days = 7;
-            config.CacheDays = days;
-
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
 
             //if(lastEnableStatistics != config.enableStatistics)
