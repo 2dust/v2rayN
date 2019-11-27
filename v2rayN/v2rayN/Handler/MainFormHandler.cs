@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -46,23 +47,25 @@ namespace v2rayN.Handler
                     //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
                 }
 
-                var width = 128;
-                var height = 128;
-
+                //var width = 128;
+                //var height = 128;
+                var width = 16;
+                var height = 16;
+                MemoryStream stream = new MemoryStream();
                 var bitmap = new Bitmap(width, height);
                 var graphics = Graphics.FromImage(bitmap);
                 var drawBrush = new SolidBrush(color);
 
                 graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
                 var zoom = 16;
-                graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
-
-                Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
-
+                graphics.DrawImage(new Bitmap(Properties.Resources.notify, 16, 16), 0, 0);
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                //Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
+                Icon createdIcon = PngIconConverter.IconFromImage(Image.FromStream(stream));
                 drawBrush.Dispose();
                 graphics.Dispose();
                 bitmap.Dispose();
-
+                stream.Dispose();
                 return createdIcon;
             }
             catch (Exception ex)
@@ -150,6 +153,6 @@ namespace v2rayN.Handler
             }
         }
 
-        
+
     }
 }

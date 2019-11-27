@@ -181,6 +181,7 @@
       <DependentUpon>SubSettingControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Handler\MainFormHandler.cs" />
+    <Compile Include="Handler\PngIconConverter.cs" />
     <Compile Include="Handler\SpeedtestHandler.cs" />
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\DownloadHandle.cs" />
