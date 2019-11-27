@@ -96,6 +96,7 @@ namespace v2rayN.Handler
                 }
 
                 progressPercentage = -1;
+                totalBytesToReceive = 0;
 
                 WebClientEx ws = new WebClientEx();
                 DownloadTimeout = downloadTimeout;
@@ -106,8 +107,7 @@ namespace v2rayN.Handler
 
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
-                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));
-                totalBytesToReceive = 0;
+                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));             
             }
             catch (Exception ex)
             {
@@ -122,14 +122,6 @@ namespace v2rayN.Handler
         {
             if (UpdateCompleted != null)
             {
-                if (DownloadTimeout != -1)
-                {
-                    if ((DateTime.Now - totalDatetime).TotalSeconds > DownloadTimeout)
-                    {
-                        ((WebClientEx)sender).CancelAsync();
-                    }
-                }
-
                 if (totalBytesToReceive == 0)
                 {
                     totalDatetime = DateTime.Now;
@@ -138,6 +130,13 @@ namespace v2rayN.Handler
                 }
                 totalBytesToReceive = e.BytesReceived;
 
+                if (DownloadTimeout != -1)
+                {
+                    if ((DateTime.Now - totalDatetime).TotalSeconds > DownloadTimeout)
+                    {
+                        ((WebClientEx)sender).CancelAsync();
+                    }
+                }
                 if (progressPercentage != e.ProgressPercentage && e.ProgressPercentage % 10 == 0)
                 {
                     progressPercentage = e.ProgressPercentage;
