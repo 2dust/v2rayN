@@ -268,6 +268,7 @@ namespace v2rayN.Forms
         {
             menuServers.DropDownItems.Clear();
 
+            List<ToolStripMenuItem> lst = new List<ToolStripMenuItem>();
             for (int k = 0; k < config.vmess.Count; k++)
             {
                 VmessItem item = config.vmess[k];
@@ -280,8 +281,9 @@ namespace v2rayN.Forms
                     ts.Checked = true;
                 }
                 ts.Click += new EventHandler(ts_Click);
-                menuServers.DropDownItems.Add(ts);
+                lst.Add(ts);
             }
+            menuServers.DropDownItems.AddRange(lst.ToArray());
         }
 
         private void ts_Click(object sender, EventArgs e)
@@ -314,7 +316,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            qrCodeControl.showQRCode(index, config);
+            //qrCodeControl.showQRCode(index, config);
         }
 
         private void DisplayToolStatus()
@@ -388,6 +390,26 @@ namespace v2rayN.Forms
         #endregion
 
         #region 功能按钮
+
+        private void lvServers_Click(object sender, EventArgs e)
+        {
+            int index = -1;
+            try
+            {
+                if (lvServers.SelectedIndices.Count > 0)
+                {
+                    index = lvServers.SelectedIndices[0];
+                }
+            }
+            catch
+            {
+            }
+            if (index < 0)
+            {
+                return;
+            }
+            qrCodeControl.showQRCode(index, config);
+        }
 
         private void lvServers_DoubleClick(object sender, EventArgs e)
         {
@@ -1370,6 +1392,7 @@ namespace v2rayN.Forms
         }
 
         #endregion
+
 
     }
 }

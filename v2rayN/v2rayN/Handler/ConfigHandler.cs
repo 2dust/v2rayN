@@ -122,10 +122,10 @@ namespace v2rayN.Handler
             {
                 config.urlGFWList = Global.GFWLIST_URL;
             }
-            if (Utils.IsNullOrEmpty(config.remoteDNS))
-            {
-                config.remoteDNS = "1.1.1.1";
-            }
+            //if (Utils.IsNullOrEmpty(config.remoteDNS))
+            //{
+            //    config.remoteDNS = "1.1.1.1";
+            //}
 
             if (config.subItem == null)
             {
