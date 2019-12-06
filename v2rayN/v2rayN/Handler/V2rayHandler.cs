@@ -150,6 +150,7 @@ namespace v2rayN.Handler
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
                 p.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
