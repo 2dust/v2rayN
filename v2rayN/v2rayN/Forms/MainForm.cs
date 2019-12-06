@@ -9,6 +9,7 @@ using v2rayN.Handler;
 using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
 using v2rayN.Base;
+using System.Net;
 
 namespace v2rayN.Forms
 {
@@ -1366,7 +1367,14 @@ namespace v2rayN.Forms
                     AppendText(true, args.GetException().Message);
                 };
 
-                downloadHandle3.WebDownloadString(url);
+                IWebProxy proxy = null;
+
+                if (config.index >= 0 && config.vmess.Count > 0)
+                {
+                    proxy = new WebProxy(Global.Loopback, config.GetLocalPort(Global.InboundHttp));
+                }
+
+                downloadHandle3.WebDownloadString(url, proxy);
                 AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
 

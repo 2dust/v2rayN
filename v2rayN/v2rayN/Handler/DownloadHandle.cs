@@ -188,7 +188,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public void WebDownloadString(string url)
+        public void WebDownloadString(string url, IWebProxy proxy = null)
         {
             string source = string.Empty;
             try
@@ -196,6 +196,12 @@ namespace v2rayN.Handler
                 SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
+
+                if (proxy != null)
+                {
+                    ws.Proxy = proxy;
+                }
+
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
                 ws.DownloadStringAsync(new Uri(url));
             }
