@@ -580,10 +580,9 @@
             // 
             // tsMain
             // 
-            this.tsMain.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbServer,
-            this.toolStripSeparator4,
             this.tsbSub,
             this.toolStripSeparator8,
             this.tsbOptionSetting,
@@ -593,6 +592,7 @@
             this.tsbCheckUpdate,
             this.toolStripSeparator10,
             this.tsbHelp,
+            this.toolStripSeparator4,
             this.tsbPromotion,
             this.toolStripSeparator11,
             this.tsbClose});
@@ -644,6 +644,7 @@
             // 
             // tsbReload
             // 
+            this.tsbReload.Image = global::v2rayN.Properties.Resources.restart;
             resources.ApplyResources(this.tsbReload, "tsbReload");
             this.tsbReload.Name = "tsbReload";
             this.tsbReload.Click += new System.EventHandler(this.tsbReload_Click);
@@ -742,6 +743,7 @@
             // 
             // tsbClose
             // 
+            this.tsbClose.Image = global::v2rayN.Properties.Resources.minimize;
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
