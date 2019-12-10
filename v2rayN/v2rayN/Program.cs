@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using v2rayN.Forms;
+using v2rayN.Properties;
+using v2rayN.Tool;
 
 namespace v2rayN
 {
@@ -26,14 +28,20 @@ namespace v2rayN
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
+         
+            //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             Process instance = RunningInstance();
             if (instance == null)
-            {
-                Utils.SaveLog("v2rayN start up");
+            {                
+                if (!UnzipLibs())
+                {
+                    UI.Show($"Error preparing the environment(准备运行环境出错)");
+                    return;
+                }
 
+                Utils.SaveLog("v2rayN start up");
+                
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
@@ -48,27 +56,27 @@ namespace v2rayN
             }
         }
 
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            try
-            {
-                string resourceName = "v2rayN.LIB." + new AssemblyName(args.Name).Name + ".dll";
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-                {
-                    if (stream == null)
-                    {
-                        return null;
-                    }
-                    byte[] assemblyData = new byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        //private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        //{
+        //    try
+        //    {
+        //        string resourceName = "v2rayN.LIB." + new AssemblyName(args.Name).Name + ".dll";
+        //        using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+        //        {
+        //            if (stream == null)
+        //            {
+        //                return null;
+        //            }
+        //            byte[] assemblyData = new byte[stream.Length];
+        //            stream.Read(assemblyData, 0, assemblyData.Length);
+        //            return Assembly.Load(assemblyData);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //}
 
         /// <summary> 
         /// 获取正在运行的实例，没有运行的实例返回null; 
@@ -100,5 +108,20 @@ namespace v2rayN
             Utils.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject);
         }
 
+        static bool UnzipLibs()
+        {
+            var fileName = Utils.GetPath("libs.zip");
+            if (!FileManager.ByteArrayToFile(fileName, Resources.libs))
+            {
+                return false;
+            }
+
+            if (!FileManager.ZipExtractToFile(fileName))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
