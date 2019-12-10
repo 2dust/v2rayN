@@ -8,26 +8,46 @@ namespace v2rayN.HttpProxyHandler
     {
         public static bool UnsetProxy()
         {
-            return SetProxy(null, null);
-        }
-        public static bool SetProxy(string strProxy)
-        {
-            return SetProxy(strProxy, null);
+            return SetProxy(null, null, 1);
         }
 
-        public static bool SetProxy(string strProxy, string exceptions)
+        public static bool SetProxy(string strProxy, string exceptions, int type)
         {
             InternetPerConnOptionList list = new InternetPerConnOptionList();
 
-            int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
+            int optionCount = 1;
+            if (type == 1)
+            {
+                optionCount = 1;
+            }
+            else if (type == 2 || type == 4)
+            {
+                optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
+            }
+
+            int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
+            PerConnOption m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
+            if (type == 2)
+            {
+                m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY);
+                m_Option = PerConnOption.INTERNET_PER_CONN_PROXY_SERVER;
+            }
+            else if (type == 4)
+            {
+                m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_AUTO_PROXY_URL);
+                m_Option = PerConnOption.INTERNET_PER_CONN_AUTOCONFIG_URL;
+            }
+
+            //int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
             InternetConnectionOption[] options = new InternetConnectionOption[optionCount];
             // USE a proxy server ...
             options[0].m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
-            options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
+            //options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
+            options[0].m_Value.m_Int = m_Int;
             // use THIS proxy server
             if (optionCount > 1)
             {
-                options[1].m_Option = PerConnOption.INTERNET_PER_CONN_PROXY_SERVER;
+                options[1].m_Option = m_Option;
                 options[1].m_Value.m_StringPtr = Marshal.StringToHGlobalAuto(strProxy);
                 // except for these addresses ...
                 if (optionCount > 2)
@@ -181,7 +201,7 @@ namespace v2rayN.HttpProxyHandler
             string ProxyServer = rk.GetValue("ProxyServer").ToString();
             rk.Close();
             return ProxyServer;
-            
+
         }
     }
 }
