@@ -30,6 +30,7 @@ namespace v2rayN.Forms
             this.WindowState = FormWindowState.Minimized;
             HideForm();
             this.Text = Utils.GetVersion();
+            Global.processJob = new Job();
 
             Application.ApplicationExit += (sender, args) =>
             {

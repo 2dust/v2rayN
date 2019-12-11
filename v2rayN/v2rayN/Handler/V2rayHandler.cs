@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -147,6 +148,7 @@ namespace v2rayN.Handler
 
                 Process p = new Process();
                 p.StartInfo.FileName = fileName;
+                p.StartInfo.WorkingDirectory = Utils.StartupPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -162,6 +164,8 @@ namespace v2rayN.Handler
                 p.Start();
                 p.BeginOutputReadLine();
                 processId = p.Id;
+
+                Global.processJob.AddProcess(p.Handle);
             }
             catch (Exception ex)
             {

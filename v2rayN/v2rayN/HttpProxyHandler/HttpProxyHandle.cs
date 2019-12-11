@@ -77,7 +77,7 @@ namespace v2rayN.HttpProxyHandler
                 int localPort = config.GetLocalPort(Global.InboundSocks);
                 if (localPort > 0)
                 {
-                    PrivoxyHandler.Instance.Start(localPort, config);
+                    PrivoxyHandler.Instance.Restart(localPort, config);
                     if (PrivoxyHandler.Instance.RunningPort > 0)
                     {
                         Global.sysAgent = true;
