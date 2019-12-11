@@ -230,7 +230,6 @@
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Handler\QRCodeHelper.cs" />
-    <Compile Include="Handler\RoutingRuleHandler.cs" />
     <Compile Include="Mode\VmessQRCode.cs" />
     <Compile Include="Mode\V2rayTcpRequest.cs" />
     <Compile Include="Handler\ConfigHandler.cs" />

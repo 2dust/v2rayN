@@ -131,6 +131,10 @@ namespace v2rayN.Handler
             {
                 config.subItem = new List<SubItem>();
             }
+            if (config.userPacRule == null)
+            {
+                config.userPacRule = new List<string>();
+            }
 
             if (config == null
                 || config.index < 0

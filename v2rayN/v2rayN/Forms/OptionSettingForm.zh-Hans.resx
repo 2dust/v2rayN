@@ -123,6 +123,21 @@
   <data name="tabPage1.Text" xml:space="preserve">
     <value>  Core:基础设置  </value>
   </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:路由设置  </value>
+  </data>
+  <data name="tabPage6.Text" xml:space="preserve">
+    <value>  Core:KCP设置  </value>
+  </data>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>*设置用户PAC规则，用逗号(,)隔开</value>
+  </data>
+  <data name="tabPage9.Text" xml:space="preserve">
+    <value>  用户PAC设置  </value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -213,9 +228,6 @@
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>本地监听端口</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:路由设置  </value>
   </data>
   <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 89</value>
@@ -315,23 +327,11 @@
   <data name="label15.Text" xml:space="preserve">
     <value>域名策略</value>
   </data>
-  <data name="tabPage6.Text" xml:space="preserve">
-    <value>  Core:KCP设置  </value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
   <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
   </data>
   <data name="lbFreshrate.Text" xml:space="preserve">
     <value>统计刷新频率</value>
-  </data>
-  <data name="lbCacheDays.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 12</value>
-  </data>
-  <data name="lbCacheDays.Text" xml:space="preserve">
-    <value>缓存天数（0-30， 0关闭缓存单独每天的数据使用情况）</value>
   </data>
   <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
     <value>384, 16</value>
