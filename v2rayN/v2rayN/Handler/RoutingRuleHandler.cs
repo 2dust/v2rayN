@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace v2rayN.Handler
@@ -42,7 +43,7 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                string value = str.Replace("\",", "").Replace("\"", "").Replace(",", "").Replace("\r\n", "").Replace(" ", "");
+                string value = str.Replace("\",", "").Replace("\"", "").Replace(",", "").Replace(Environment.NewLine, "").Replace(" ", "");
                 lstPac.Add(value);
             }
 

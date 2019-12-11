@@ -887,9 +887,9 @@ namespace v2rayN.Forms
                 ClearMsg();
             }
             this.txtMsgBox.AppendText(msg);
-            if (!msg.EndsWith("\r\n"))
+            if (!msg.EndsWith(Environment.NewLine))
             {
-                this.txtMsgBox.AppendText("\r\n");
+                this.txtMsgBox.AppendText(Environment.NewLine);
             }
         }
 

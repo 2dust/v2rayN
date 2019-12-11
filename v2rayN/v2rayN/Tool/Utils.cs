@@ -155,7 +155,7 @@ namespace v2rayN
             {
                 if (wrap)
                 {
-                    return string.Join(",\r\n", lst.ToArray());
+                    return string.Join("," + Environment.NewLine, lst.ToArray());
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace v2rayN
         {
             try
             {
-                str = str.Replace("\r\n", "");
+                str = str.Replace(Environment.NewLine, "");
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
             catch
@@ -214,8 +214,8 @@ namespace v2rayN
             try
             {
                 plainText = plainText.TrimEx()
+                  .Replace(Environment.NewLine, "")
                   .Replace("\n", "")
-                  .Replace("\r\n", "")
                   .Replace("\r", "")
                   .Replace(" ", "");
 
@@ -854,7 +854,7 @@ namespace v2rayN
 
                 SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
                 SwWrite.Write(strContent);
-                SwWrite.WriteLine("\r\n");
+                SwWrite.WriteLine(Environment.NewLine);
                 SwWrite.WriteLine(" ");
                 SwWrite.Flush();
                 SwWrite.Close();
