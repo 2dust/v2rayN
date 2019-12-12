@@ -287,6 +287,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.zh-Hans.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>

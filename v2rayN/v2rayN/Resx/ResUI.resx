@@ -269,7 +269,7 @@
     <value>Clear original subscription content</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Download V2rayCore successfully</value>
+    <value>Download V2ray successfully</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>Failed to import subscription content</value>
@@ -287,7 +287,7 @@
     <value>PAC update succeeded</value>
   </data>
   <data name="MsgParsingV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Resolve V2rayCore successfully</value>
+    <value>Resolve V2ray successfully</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
     <value>Simplify PAC Success</value>
@@ -299,7 +299,7 @@
     <value>Start updating PAC...</value>
   </data>
   <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>Start updating V2rayCore...</value>
+    <value>Start updating V2ray...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Subscription content decoding failed (non-BASE64 code)</value>

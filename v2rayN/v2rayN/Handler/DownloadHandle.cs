@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using v2rayN.Base;
@@ -37,17 +38,69 @@ namespace v2rayN.Handler
             }
         }
 
-        private string latestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
-        private const string coreURL = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
         private int progressPercentage = -1;
         private long totalBytesToReceive = 0;
         private DateTime totalDatetime = new DateTime();
         private int DownloadTimeout = -1;
 
+
+
+        #region v2rayN
+
+        private string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
+        private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
+
+        public void AbsoluteV2rayN(Config config)
+        {
+            Utils.SetSecurityProtocol();
+            WebRequest request = WebRequest.Create(nLatestUrl);
+            request.BeginGetResponse(new AsyncCallback(OnResponseV2rayN), request);
+        }
+
+        private void OnResponseV2rayN(IAsyncResult ar)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
+                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);
+                string redirectUrl = response.ResponseUri.AbsoluteUri;
+                string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
+
+                var curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
+                if (curVersion == version)
+                {
+                    if (AbsoluteCompleted != null)
+                    {
+                        AbsoluteCompleted(this, new ResultEventArgs(false, "Already the latest version"));
+                    }
+                }
+
+                string url = string.Format(nUrl, version);
+                if (AbsoluteCompleted != null)
+                {
+                    AbsoluteCompleted(this, new ResultEventArgs(true, url));
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+
+                if (Error != null)
+                    Error(this, new ErrorEventArgs(ex));
+            }
+        }
+
+        #endregion
+
+        #region Core
+
+        private string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
+        private const string coreUrl = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
+
         public void AbsoluteV2rayCore(Config config)
         {
-            SetSecurityProtocol();
-            WebRequest request = WebRequest.Create(latestUrl);
+            Utils.SetSecurityProtocol();
+            WebRequest request = WebRequest.Create(coreLatestUrl);
             request.BeginGetResponse(new AsyncCallback(OnResponseV2rayCore), request);
         }
 
@@ -69,7 +122,7 @@ namespace v2rayN.Handler
                 {
                     osBit = "32";
                 }
-                string url = string.Format(coreURL, version, osBit);
+                string url = string.Format(coreUrl, version, osBit);
                 if (AbsoluteCompleted != null)
                 {
                     AbsoluteCompleted(this, new ResultEventArgs(true, url));
@@ -84,12 +137,15 @@ namespace v2rayN.Handler
             }
         }
 
+        #endregion
+
+        #region Download 
 
         public void DownloadFileAsync(Config config, string url, WebProxy webProxy, int downloadTimeout)
         {
             try
             {
-                SetSecurityProtocol();
+                Utils.SetSecurityProtocol();
                 if (UpdateCompleted != null)
                 {
                     UpdateCompleted(this, new ResultEventArgs(false, "Downloading..."));
@@ -107,7 +163,7 @@ namespace v2rayN.Handler
 
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
-                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));             
+                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));
             }
             catch (Exception ex)
             {
@@ -193,7 +249,7 @@ namespace v2rayN.Handler
             string source = string.Empty;
             try
             {
-                SetSecurityProtocol();
+                Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
@@ -232,13 +288,6 @@ namespace v2rayN.Handler
             }
         }
 
-        private void SetSecurityProtocol()
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
-                                       | SecurityProtocolType.Tls
-                                       | SecurityProtocolType.Tls11
-                                       | SecurityProtocolType.Tls12;
-            ServicePointManager.DefaultConnectionLimit = 256;
-        }
+        #endregion
     }
 }

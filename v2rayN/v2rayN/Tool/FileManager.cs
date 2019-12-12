@@ -89,5 +89,31 @@ namespace v2rayN.Tool
             }
             return true;
         }
+
+        public static bool ZipExtractToFullFile(string fileName)
+        {
+            try
+            {
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (entry.Length == 0)
+                            continue;
+
+                        string entryOuputPath = Utils.GetPath(entry.FullName);
+                        FileInfo fileInfo = new FileInfo(entryOuputPath);
+                        fileInfo.Directory.Create();
+                        entry.ExtractToFile(entryOuputPath, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return false;
+            }
+            return true;
+        }
     }
 }
