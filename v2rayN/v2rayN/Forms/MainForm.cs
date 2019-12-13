@@ -11,13 +11,14 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using v2rayN.Tool;
 using System.Diagnostics;
+using v2rayN.Properties;
+using Newtonsoft.Json;
 
 namespace v2rayN.Forms
 {
     public partial class MainForm : BaseForm
     {
-        private V2rayHandler v2rayHandler;
-        private PACListHandle pacListHandle;
+        private V2rayHandler v2rayHandler;     
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
 
@@ -1272,13 +1273,21 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdatePACList_Click(object sender, EventArgs e)
         {
+            DownloadHandle pacListHandle = null;
             if (pacListHandle == null)
             {
-                pacListHandle = new PACListHandle();
+                pacListHandle = new DownloadHandle();
                 pacListHandle.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
+                        var result = args.Msg;
+                        if (Utils.IsNullOrEmpty(result))
+                        {
+                            return;
+                        }
+                        pacListHandle.GenPacFile(result);
+
                         AppendText(false, UIRes.I18N("MsgPACUpdateSuccessfully"));
                     }
                     else
@@ -1292,7 +1301,7 @@ namespace v2rayN.Forms
                 };
             }
             AppendText(false, UIRes.I18N("MsgStartUpdatingPAC"));
-            pacListHandle.UpdatePACFromGFWList(config);
+            pacListHandle.WebDownloadString(config.urlGFWList);
         }
 
         private void tsbCheckClearPACList_Click(object sender, EventArgs e)
@@ -1425,8 +1434,6 @@ namespace v2rayN.Forms
                 downloadHandle3.WebDownloadString(url);
                 AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
-
-
         }
 
         #endregion

@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using v2rayN.Base;
 using v2rayN.Mode;
+using v2rayN.Properties;
 
 namespace v2rayN.Handler
 {
@@ -286,6 +290,47 @@ namespace v2rayN.Handler
                 if (Error != null)
                     Error(this, new ErrorEventArgs(ex));
             }
+        }
+
+        #endregion
+
+        #region PAC
+
+        public string GenPacFile(string result)
+        {
+            try
+            {
+                File.WriteAllText(Utils.GetTempPath("gfwlist.txt"), result, Encoding.UTF8);
+                List<string> lines = ParsePacResult(result);
+                string abpContent = Utils.UnGzip(Resources.abp_js);
+                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines, Formatting.Indented));
+                File.WriteAllText(Utils.GetPath(Global.pacFILE), abpContent, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return ex.Message;
+            }
+            return string.Empty;
+        }
+
+        private List<string> ParsePacResult(string response)
+        {
+            IEnumerable<char> IgnoredLineBegins = new[] { '!', '[' };
+
+            byte[] bytes = Convert.FromBase64String(response);
+            string content = Encoding.UTF8.GetString(bytes);
+            List<string> valid_lines = new List<string>();
+            using (var sr = new StringReader(content))
+            {
+                foreach (var line in sr.NonWhiteSpaceLines())
+                {
+                    if (line.BeginWithAny(IgnoredLineBegins))
+                        continue;
+                    valid_lines.Add(line);
+                }
+            }
+            return valid_lines;
         }
 
         #endregion

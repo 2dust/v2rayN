@@ -403,6 +403,8 @@ namespace v2rayN.Handler
                     //远程服务器地址和端口
                     serversItem.address = config.address();
                     serversItem.port = config.port();
+                    serversItem.method = null;
+                    serversItem.password = null;
 
                     if (!Utils.IsNullOrEmpty(config.security())
                         && !Utils.IsNullOrEmpty(config.id()))

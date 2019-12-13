@@ -187,7 +187,6 @@
     <Compile Include="Base\HttpWebServer.cs" />
     <Compile Include="Base\HttpWebServerB.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
-    <Compile Include="HttpProxyHandler\PACListHandle.cs" />
     <Compile Include="HttpProxyHandler\PACServerHandle.cs" />
     <Compile Include="HttpProxyHandler\ProxySetting.cs" />
     <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />

@@ -823,6 +823,9 @@
   <data name="tsbCheckClearPACList.Text" xml:space="preserve">
     <value>Simplify PAC (please set Core route)</value>
   </data>
+  <data name="tsbCheckClearPACList.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
