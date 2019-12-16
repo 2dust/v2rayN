@@ -70,14 +70,22 @@ namespace v2rayN.HttpProxyHandler
             // copy the array over into that spot in memory ...
             for (int i = 0; i < options.Length; ++i)
             {
-                IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
-                Marshal.StructureToPtr(options[i], opt, false);
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    IntPtr opt = new IntPtr(optionsPtr.ToInt64() + (i * optSize));
+                    Marshal.StructureToPtr(options[i], opt, false);
+                }
+                else
+                {
+                    IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
+                    Marshal.StructureToPtr(options[i], opt, false);
+                }
             }
 
-            list.options = optionsPtr;
+            list.options = optionsPtr;i
 
             // and then make a pointer out of the whole list
-            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((Int32)list.dwSize);
+            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
