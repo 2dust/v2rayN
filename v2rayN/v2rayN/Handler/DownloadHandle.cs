@@ -77,6 +77,7 @@ namespace v2rayN.Handler
                     {
                         AbsoluteCompleted(this, new ResultEventArgs(false, "Already the latest version"));
                     }
+                    return;
                 }
 
                 string url = string.Format(nUrl, version);
