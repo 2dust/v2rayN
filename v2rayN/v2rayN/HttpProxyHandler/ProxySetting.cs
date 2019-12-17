@@ -82,7 +82,7 @@ namespace v2rayN.HttpProxyHandler
                 }
             }
 
-            list.options = optionsPtr;i
+            list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
             IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
