@@ -18,7 +18,7 @@ namespace v2rayN.Forms
 {
     public partial class MainForm : BaseForm
     {
-        private V2rayHandler v2rayHandler;     
+        private V2rayHandler v2rayHandler;
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
 
@@ -966,9 +966,9 @@ namespace v2rayN.Forms
         }
         private void ClearTestResult()
         {
-            for (int k = 0; k < config.vmess.Count; k++)
+            for (int k = 0; k < lvSelecteds.Count; k++)
             {
-                SetTestResult(k, "");
+                SetTestResult(lvSelecteds[k], "");
             }
         }
         private void UpdateSpeedtestHandler(int index, string msg)

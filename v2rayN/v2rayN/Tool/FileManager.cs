@@ -77,8 +77,17 @@ namespace v2rayN.Tool
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
                         if (entry.Length == 0)
+                        {
                             continue;
-                        entry.ExtractToFile(Utils.GetPath(entry.Name), true);
+                        }
+                        try
+                        {
+                            entry.ExtractToFile(Utils.GetPath(entry.Name), true);
+                        }
+                        catch (IOException ex)
+                        {
+                            Utils.SaveLog(ex.Message, ex);
+                        }
                     }
                 }
             }
