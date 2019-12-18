@@ -62,9 +62,9 @@ namespace v2rayUpgrade
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Upgrade Failed(升级失败)");
+                MessageBox.Show("Upgrade Failed(升级失败)." + ex.StackTrace);
                 return;
             }
 
