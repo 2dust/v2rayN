@@ -221,7 +221,7 @@ namespace v2rayN.Handler
                 if (!p.HasExited)
                 {
                     p.Kill();
-                    p.WaitForExit();
+                    p.WaitForExit(100);
                 }
             }
             catch (Exception ex)

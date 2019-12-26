@@ -363,6 +363,8 @@ namespace v2rayN.Forms
         /// </summary>
         private void LoadV2ray()
         {
+            tsbReload.Enabled = false;
+
             if (Global.reloadV2ray)
             {
                 ClearMsg();
@@ -373,6 +375,8 @@ namespace v2rayN.Forms
             statistics?.SaveToFile();
 
             ChangePACButtonStatus(config.listenerType);
+
+            tsbReload.Enabled = true;
         }
 
         /// <summary>
