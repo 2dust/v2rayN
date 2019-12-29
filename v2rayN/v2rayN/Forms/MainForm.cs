@@ -1369,12 +1369,67 @@ namespace v2rayN.Forms
         private void tsbSubSetting_Click(object sender, EventArgs e)
         {
             SubSettingForm fm = new SubSettingForm();
+            fm.SubUpdate_Event += new SubUpdate_Delegate(SubUpdate_Single);
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 RefreshServers();
             }
         }
+        public delegate void SubUpdate_Delegate(SubItem item, int index);
+        private void SubUpdate_Single(SubItem item, int index=-1)
+        {
+            if (index == -1) index = config.subItem.IndexOf(item)+1;
+            string id = config.subItem[index - 1].id.TrimEx();
+            string url = config.subItem[index - 1].url.TrimEx();
+            string hashCode = $"{index}->";
+            if (config.subItem[index - 1].enabled == false)
+            {
+                return;
+            }
+            if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
+            {
+                AppendText(false, $"{hashCode}{UIRes.I18N("MsgNoValidSubscription")}");
+                return;
+            }
 
+            DownloadHandle downloadHandle3 = new DownloadHandle();
+            downloadHandle3.UpdateCompleted += (sender2, args) =>
+            {
+                if (args.Success)
+                {
+                    AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
+                    var result = Utils.Base64Decode(args.Msg);
+                    if (Utils.IsNullOrEmpty(result))
+                    {
+                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");
+                        return;
+                    }
+
+                    ConfigHandler.RemoveServerViaSubid(ref config, id);
+                    AppendText(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
+                    RefreshServers();
+                    if (AddBatchServers(result, id) == 0)
+                    {
+                    }
+                    else
+                    {
+                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgFailedImportSubscription")}");
+                    }
+                    AppendText(false, $"{hashCode}{UIRes.I18N("MsgUpdateSubscriptionEnd")}");
+                }
+                else
+                {
+                    AppendText(false, args.Msg);
+                }
+            };
+            downloadHandle3.Error += (sender2, args) =>
+            {
+                AppendText(true, args.GetException().Message);
+            };
+
+            downloadHandle3.WebDownloadString(url);
+            AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
+        }
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
             AppendText(false, UIRes.I18N("MsgUpdateSubscriptionStart"));
@@ -1387,56 +1442,57 @@ namespace v2rayN.Forms
 
             for (int k = 1; k <= config.subItem.Count; k++)
             {
-                string id = config.subItem[k - 1].id.TrimEx();
-                string url = config.subItem[k - 1].url.TrimEx();
-                string hashCode = $"{k}->";
-                if (config.subItem[k - 1].enabled == false)
-                {
-                    continue;
-                }
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
-                {
-                    AppendText(false, $"{hashCode}{UIRes.I18N("MsgNoValidSubscription")}");
-                    continue;
-                }
+                SubUpdate_Single(config.subItem[k - 1], k);
+                //string id = config.subItem[k - 1].id.TrimEx();
+                //string url = config.subItem[k - 1].url.TrimEx();
+                //string hashCode = $"{k}->";
+                //if (config.subItem[k - 1].enabled == false)
+                //{
+                //    continue;
+                //}
+                //if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
+                //{
+                //    AppendText(false, $"{hashCode}{UIRes.I18N("MsgNoValidSubscription")}");
+                //    continue;
+                //}
 
-                DownloadHandle downloadHandle3 = new DownloadHandle();
-                downloadHandle3.UpdateCompleted += (sender2, args) =>
-                {
-                    if (args.Success)
-                    {
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
-                        var result = Utils.Base64Decode(args.Msg);
-                        if (Utils.IsNullOrEmpty(result))
-                        {
-                            AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");
-                            return;
-                        }
+                //DownloadHandle downloadHandle3 = new DownloadHandle();
+                //downloadHandle3.UpdateCompleted += (sender2, args) =>
+                //{
+                //    if (args.Success)
+                //    {
+                //        AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
+                //        var result = Utils.Base64Decode(args.Msg);
+                //        if (Utils.IsNullOrEmpty(result))
+                //        {
+                //            AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");
+                //            return;
+                //        }
 
-                        ConfigHandler.RemoveServerViaSubid(ref config, id);
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
-                        RefreshServers();
-                        if (AddBatchServers(result, id) == 0)
-                        {
-                        }
-                        else
-                        {
-                            AppendText(false, $"{hashCode}{UIRes.I18N("MsgFailedImportSubscription")}");
-                        }
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgUpdateSubscriptionEnd")}");
-                    }
-                    else
-                    {
-                        AppendText(false, args.Msg);
-                    }
-                };
-                downloadHandle3.Error += (sender2, args) =>
-                {
-                    AppendText(true, args.GetException().Message);
-                };
+                //        ConfigHandler.RemoveServerViaSubid(ref config, id);
+                //        AppendText(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
+                //        RefreshServers();
+                //        if (AddBatchServers(result, id) == 0)
+                //        {
+                //        }
+                //        else
+                //        {
+                //            AppendText(false, $"{hashCode}{UIRes.I18N("MsgFailedImportSubscription")}");
+                //        }
+                //        AppendText(false, $"{hashCode}{UIRes.I18N("MsgUpdateSubscriptionEnd")}");
+                //    }
+                //    else
+                //    {
+                //        AppendText(false, args.Msg);
+                //    }
+                //};
+                //downloadHandle3.Error += (sender2, args) =>
+                //{
+                //    AppendText(true, args.GetException().Message);
+                //};
 
-                downloadHandle3.WebDownloadString(url);
-                AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
+                //downloadHandle3.WebDownloadString(url);
+                //AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
         }
 

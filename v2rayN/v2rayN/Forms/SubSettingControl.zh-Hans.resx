@@ -118,23 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnUpdate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>685, 24</value>
+  </data>
+  <data name="btnUpdate.Text" xml:space="preserve">
+    <value>更新</value>
+  </data>
   <data name="chkEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 16</value>
+    <value>59, 19</value>
   </data>
   <data name="chkEnabled.Text" xml:space="preserve">
     <value>启用</value>
+  </data>
+  <data name="btnRemove.Location" type="System.Drawing.Point, System.Drawing">
+    <value>594, 24</value>
   </data>
   <data name="btnRemove.Text" xml:space="preserve">
     <value>移除</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+    <value>37, 15</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>备注</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 12</value>
+    <value>85, 15</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>地址 (url)</value>

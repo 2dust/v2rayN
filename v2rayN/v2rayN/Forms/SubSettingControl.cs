@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Mode;
+using v2rayN.Handler;
+using static v2rayN.Forms.MainForm;
 
 namespace v2rayN.Forms
 {
@@ -57,6 +59,14 @@ namespace v2rayN.Forms
             if (OnButtonClicked != null)
             {
                 OnButtonClicked(sender, e);
+            }
+        }
+        public event SubUpdate_Delegate SubUpdate_Event;
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (subItem != null)
+            {
+                SubUpdate_Event(subItem, -1);
             }
         }
     }

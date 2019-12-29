@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using static v2rayN.Forms.MainForm;
 
 namespace v2rayN.Forms
 {
@@ -28,6 +29,7 @@ namespace v2rayN.Forms
         /// <summary>
         /// 刷新列表
         /// </summary>
+        public event SubUpdate_Delegate SubUpdate_Event;
         private void RefreshSubsView()
         {
             panCon.Controls.Clear();
@@ -51,6 +53,7 @@ namespace v2rayN.Forms
             {
                 var item = config.subItem[k];
                 SubSettingControl control = new SubSettingControl();
+                control.SubUpdate_Event += new SubUpdate_Delegate(SubUpdate_Notice);
                 control.OnButtonClicked += Control_OnButtonClicked;
                 control.subItem = item;
                 control.Dock = DockStyle.Top;
@@ -61,7 +64,10 @@ namespace v2rayN.Forms
                 lstControls.Add(control);
             }
         }
-
+        private void SubUpdate_Notice(SubItem item, int index)
+        {
+            SubUpdate_Event(item, index);
+        }
         private void Control_OnButtonClicked(object sender, EventArgs e)
         {
             RefreshSubsView();
