@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using v2rayN.Base;
 using v2rayN.Mode;
+using v2rayN.Properties;
 
 namespace v2rayN.Handler
 {
@@ -37,17 +42,70 @@ namespace v2rayN.Handler
             }
         }
 
-        private string latestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
-        private const string coreURL = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
         private int progressPercentage = -1;
         private long totalBytesToReceive = 0;
         private DateTime totalDatetime = new DateTime();
         private int DownloadTimeout = -1;
 
+
+
+        #region v2rayN
+
+        private string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
+        private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
+
+        public void AbsoluteV2rayN(Config config)
+        {
+            Utils.SetSecurityProtocol();
+            WebRequest request = WebRequest.Create(nLatestUrl);
+            request.BeginGetResponse(new AsyncCallback(OnResponseV2rayN), request);
+        }
+
+        private void OnResponseV2rayN(IAsyncResult ar)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
+                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);
+                string redirectUrl = response.ResponseUri.AbsoluteUri;
+                string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
+
+                var curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
+                if (curVersion == version)
+                {
+                    if (AbsoluteCompleted != null)
+                    {
+                        AbsoluteCompleted(this, new ResultEventArgs(false, "Already the latest version"));
+                    }
+                    return;
+                }
+
+                string url = string.Format(nUrl, version);
+                if (AbsoluteCompleted != null)
+                {
+                    AbsoluteCompleted(this, new ResultEventArgs(true, url));
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+
+                if (Error != null)
+                    Error(this, new ErrorEventArgs(ex));
+            }
+        }
+
+        #endregion
+
+        #region Core
+
+        private string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
+        private const string coreUrl = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
+
         public void AbsoluteV2rayCore(Config config)
         {
-            SetSecurityProtocol();
-            WebRequest request = WebRequest.Create(latestUrl);
+            Utils.SetSecurityProtocol();
+            WebRequest request = WebRequest.Create(coreLatestUrl);
             request.BeginGetResponse(new AsyncCallback(OnResponseV2rayCore), request);
         }
 
@@ -69,7 +127,7 @@ namespace v2rayN.Handler
                 {
                     osBit = "32";
                 }
-                string url = string.Format(coreURL, version, osBit);
+                string url = string.Format(coreUrl, version, osBit);
                 if (AbsoluteCompleted != null)
                 {
                     AbsoluteCompleted(this, new ResultEventArgs(true, url));
@@ -84,12 +142,15 @@ namespace v2rayN.Handler
             }
         }
 
+        #endregion
+
+        #region Download 
 
         public void DownloadFileAsync(Config config, string url, WebProxy webProxy, int downloadTimeout)
         {
             try
             {
-                SetSecurityProtocol();
+                Utils.SetSecurityProtocol();
                 if (UpdateCompleted != null)
                 {
                     UpdateCompleted(this, new ResultEventArgs(false, "Downloading..."));
@@ -107,7 +168,7 @@ namespace v2rayN.Handler
 
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
-                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));             
+                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(DownloadFileName));
             }
             catch (Exception ex)
             {
@@ -193,7 +254,7 @@ namespace v2rayN.Handler
             string source = string.Empty;
             try
             {
-                SetSecurityProtocol();
+                Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
@@ -232,13 +293,47 @@ namespace v2rayN.Handler
             }
         }
 
-        private void SetSecurityProtocol()
+        #endregion
+
+        #region PAC
+
+        public string GenPacFile(string result)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
-                                       | SecurityProtocolType.Tls
-                                       | SecurityProtocolType.Tls11
-                                       | SecurityProtocolType.Tls12;
-            ServicePointManager.DefaultConnectionLimit = 256;
+            try
+            {
+                File.WriteAllText(Utils.GetTempPath("gfwlist.txt"), result, Encoding.UTF8);
+                List<string> lines = ParsePacResult(result);
+                string abpContent = Utils.UnGzip(Resources.abp_js);
+                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines, Formatting.Indented));
+                File.WriteAllText(Utils.GetPath(Global.pacFILE), abpContent, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return ex.Message;
+            }
+            return string.Empty;
         }
+
+        private List<string> ParsePacResult(string response)
+        {
+            IEnumerable<char> IgnoredLineBegins = new[] { '!', '[' };
+
+            byte[] bytes = Convert.FromBase64String(response);
+            string content = Encoding.UTF8.GetString(bytes);
+            List<string> valid_lines = new List<string>();
+            using (var sr = new StringReader(content))
+            {
+                foreach (var line in sr.NonWhiteSpaceLines())
+                {
+                    if (line.BeginWithAny(IgnoredLineBegins))
+                        continue;
+                    valid_lines.Add(line);
+                }
+            }
+            return valid_lines;
+        }
+
+        #endregion
     }
 }

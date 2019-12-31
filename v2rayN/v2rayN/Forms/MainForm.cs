@@ -9,14 +9,16 @@ using v2rayN.Handler;
 using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
 using v2rayN.Base;
+using v2rayN.Tool;
+using System.Diagnostics;
+using v2rayN.Properties;
+using Newtonsoft.Json;
 
 namespace v2rayN.Forms
 {
     public partial class MainForm : BaseForm
     {
         private V2rayHandler v2rayHandler;
-        private PACListHandle pacListHandle;
-        private DownloadHandle downloadHandle;
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
 
@@ -29,11 +31,10 @@ namespace v2rayN.Forms
             this.WindowState = FormWindowState.Minimized;
             HideForm();
             this.Text = Utils.GetVersion();
+            Global.processJob = new Job();
 
             Application.ApplicationExit += (sender, args) =>
             {
-                Utils.ClearTempPath();
-
                 v2rayHandler.V2rayStop();
 
                 HttpProxyHandle.CloseHttpAgent(config);
@@ -362,6 +363,8 @@ namespace v2rayN.Forms
         /// </summary>
         private void LoadV2ray()
         {
+            tsbReload.Enabled = false;
+
             if (Global.reloadV2ray)
             {
                 ClearMsg();
@@ -372,6 +375,8 @@ namespace v2rayN.Forms
             statistics?.SaveToFile();
 
             ChangePACButtonStatus(config.listenerType);
+
+            tsbReload.Enabled = true;
         }
 
         /// <summary>
@@ -885,9 +890,9 @@ namespace v2rayN.Forms
                 ClearMsg();
             }
             this.txtMsgBox.AppendText(msg);
-            if (!msg.EndsWith("\r\n"))
+            if (!msg.EndsWith(Environment.NewLine))
             {
-                this.txtMsgBox.AppendText("\r\n");
+                this.txtMsgBox.AppendText(Environment.NewLine);
             }
         }
 
@@ -965,9 +970,9 @@ namespace v2rayN.Forms
         }
         private void ClearTestResult()
         {
-            for (int k = 0; k < config.vmess.Count; k++)
+            for (int k = 0; k < lvSelecteds.Count; k++)
             {
-                SetTestResult(k, "");
+                SetTestResult(lvSelecteds[k], "");
             }
         }
         private void UpdateSpeedtestHandler(int index, string msg)
@@ -1132,11 +1137,74 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateN_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.UpdateUrl);
+            //System.Diagnostics.Process.Start(Global.UpdateUrl);
+            DownloadHandle downloadHandle = null;
+            if (downloadHandle == null)
+            {
+                downloadHandle = new DownloadHandle();
+                downloadHandle.AbsoluteCompleted += (sender2, args) =>
+                {
+                    if (args.Success)
+                    {
+                        AppendText(false, UIRes.I18N("MsgParsingV2rayCoreSuccessfully"));
+
+                        string url = args.Msg;
+                        this.Invoke((MethodInvoker)(delegate
+                        {
+
+                            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                downloadHandle.DownloadFileAsync(config, url, null, -1);
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        AppendText(false, args.Msg);
+                    }
+                };
+                downloadHandle.UpdateCompleted += (sender2, args) =>
+                {
+                    if (args.Success)
+                    {
+                        AppendText(false, UIRes.I18N("MsgDownloadV2rayCoreSuccessfully"));
+
+                        try
+                        {
+                            var fileName = Utils.GetPath(downloadHandle.DownloadFileName);
+                            var process = Process.Start("v2rayUpgrade.exe", fileName);
+                            if (process.Id > 0)
+                            {
+                                menuExit_Click(null, null);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendText(false, ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        AppendText(false, args.Msg);
+                    }
+                };
+                downloadHandle.Error += (sender2, args) =>
+                {
+                    AppendText(true, args.GetException().Message);
+                };
+            }
+
+            AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
+            downloadHandle.AbsoluteV2rayN(config);
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
         {
+            DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
             {
                 downloadHandle = new DownloadHandle();
@@ -1178,15 +1246,8 @@ namespace v2rayN.Forms
 
                             string fileName = downloadHandle.DownloadFileName;
                             fileName = Utils.GetPath(fileName);
-                            using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                            {
-                                foreach (ZipArchiveEntry entry in archive.Entries)
-                                {
-                                    if (entry.Length == 0)
-                                        continue;
-                                    entry.ExtractToFile(Utils.GetPath(entry.Name), true);
-                                }
-                            }
+                            FileManager.ZipExtractToFile(fileName);
+
                             AppendText(false, UIRes.I18N("MsgUpdateV2rayCoreSuccessfullyMore"));
 
                             Global.reloadV2ray = true;
@@ -1216,13 +1277,21 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdatePACList_Click(object sender, EventArgs e)
         {
+            DownloadHandle pacListHandle = null;
             if (pacListHandle == null)
             {
-                pacListHandle = new PACListHandle();
+                pacListHandle = new DownloadHandle();
                 pacListHandle.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
+                        var result = args.Msg;
+                        if (Utils.IsNullOrEmpty(result))
+                        {
+                            return;
+                        }
+                        pacListHandle.GenPacFile(result);
+
                         AppendText(false, UIRes.I18N("MsgPACUpdateSuccessfully"));
                     }
                     else
@@ -1236,7 +1305,7 @@ namespace v2rayN.Forms
                 };
             }
             AppendText(false, UIRes.I18N("MsgStartUpdatingPAC"));
-            pacListHandle.UpdatePACFromGFWList(config);
+            pacListHandle.WebDownloadString(config.urlGFWList);
         }
 
         private void tsbCheckClearPACList_Click(object sender, EventArgs e)
@@ -1369,8 +1438,6 @@ namespace v2rayN.Forms
                 downloadHandle3.WebDownloadString(url);
                 AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
-
-
         }
 
         #endregion

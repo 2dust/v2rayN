@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -22,7 +23,8 @@ namespace v2rayN.Handler
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
         private List<string> lstV2ray;
         public event ProcessDelegate ProcessEvent;
-        private int processId = 0;
+        //private int processId = 0;
+        private Process _process;
 
         public V2rayHandler()
         {
@@ -89,27 +91,49 @@ namespace v2rayN.Handler
         {
             try
             {
-                bool blExist = true;
-                if (processId > 0)
+                if (_process != null)
                 {
-                    Process p1 = Process.GetProcessById(processId);
-                    if (p1 != null)
-                    {
-                        p1.Kill();
-                        blExist = false;
-                    }
+                    KillProcess(_process);
+                    _process.Dispose();
+                    _process = null;
                 }
-                if (blExist)
+                else
                 {
                     foreach (string vName in lstV2ray)
                     {
-                        Process[] killPro = Process.GetProcessesByName(vName);
-                        foreach (Process p in killPro)
+                        Process[] existing = Process.GetProcessesByName(vName);
+                        foreach (Process p in existing)
                         {
-                            p.Kill();
+                            var path = p.MainModule.FileName;
+                            if (path == $"{Utils.GetPath(vName)}.exe")
+                            {
+                                KillProcess(p);
+                            }
                         }
                     }
                 }
+
+                //bool blExist = true;
+                //if (processId > 0)
+                //{
+                //    Process p1 = Process.GetProcessById(processId);
+                //    if (p1 != null)
+                //    {
+                //        p1.Kill();
+                //        blExist = false;
+                //    }
+                //}
+                //if (blExist)
+                //{
+                //    foreach (string vName in lstV2ray)
+                //    {
+                //        Process[] killPro = Process.GetProcessesByName(vName);
+                //        foreach (Process p in killPro)
+                //        {
+                //            p.Kill();
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -147,9 +171,11 @@ namespace v2rayN.Handler
 
                 Process p = new Process();
                 p.StartInfo.FileName = fileName;
+                p.StartInfo.WorkingDirectory = Utils.StartupPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
                 p.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
@@ -160,7 +186,10 @@ namespace v2rayN.Handler
                 });
                 p.Start();
                 p.BeginOutputReadLine();
-                processId = p.Id;
+                //processId = p.Id;
+                _process = p;
+
+                Global.processJob.AddProcess(p.Handle);
             }
             catch (Exception ex)
             {
@@ -182,5 +211,23 @@ namespace v2rayN.Handler
                 ProcessEvent(notify, msg);
             }
         }
+
+        private void KillProcess(Process p)
+        {
+            try
+            {
+                p.CloseMainWindow();
+                p.WaitForExit(100);
+                if (!p.HasExited)
+                {
+                    p.Kill();
+                    p.WaitForExit(100);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+        }         
     }
 }

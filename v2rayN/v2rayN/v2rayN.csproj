@@ -187,10 +187,8 @@
     <Compile Include="Base\HttpWebServer.cs" />
     <Compile Include="Base\HttpWebServerB.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
-    <Compile Include="HttpProxyHandler\PACListHandle.cs" />
     <Compile Include="HttpProxyHandler\PACServerHandle.cs" />
     <Compile Include="HttpProxyHandler\ProxySetting.cs" />
-    <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />
     <Compile Include="Base\WebClientEx.cs">
       <SubType>Component</SubType>
@@ -231,7 +229,6 @@
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Handler\QRCodeHelper.cs" />
-    <Compile Include="Handler\RoutingRuleHandler.cs" />
     <Compile Include="Mode\VmessQRCode.cs" />
     <Compile Include="Mode\V2rayTcpRequest.cs" />
     <Compile Include="Handler\ConfigHandler.cs" />
@@ -289,6 +286,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.zh-Hans.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
@@ -331,6 +329,7 @@
     <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="LIB\libs.zip" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -346,11 +345,7 @@
     <EmbeddedResource Include="Sample\custom_routing_proxy" />
     <Protobuf Include="Protos\Statistics.proto" />
     <None Include="Resources\abp.js.gz" />
-    <None Include="Resources\grpc_csharp_ext.x64.dll.gz" />
-    <None Include="Resources\grpc_csharp_ext.x86.dll.gz" />
     <None Include="Resources\pac.txt.gz" />
-    <None Include="Resources\sysproxy.exe.gz" />
-    <None Include="Resources\sysproxy64.exe.gz" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resx\ResUI.zh-Hans.resx">
@@ -416,16 +411,18 @@
     <None Include="Resources\sub.png" />
     <None Include="Resources\checkupdate.png" />
     <None Include="Resources\about.png" />
-    <EmbeddedResource Include="LIB\Google.Protobuf.dll" />
-    <EmbeddedResource Include="LIB\Grpc.Core.Api.dll" />
-    <EmbeddedResource Include="LIB\Grpc.Core.dll" />
-    <EmbeddedResource Include="LIB\Newtonsoft.Json.dll" />
-    <EmbeddedResource Include="LIB\System.Buffers.dll" />
-    <EmbeddedResource Include="LIB\System.Memory.dll" />
-    <EmbeddedResource Include="LIB\System.Runtime.CompilerServices.Unsafe.dll" />
-    <EmbeddedResource Include="LIB\zxing.dll" />
-    <EmbeddedResource Include="LIB\zxing.presentation.dll" />
-    <EmbeddedResource Include="LIB\netstandard.dll" />
+    <None Include="LIB\Google.Protobuf.dll" />
+    <None Include="LIB\Grpc.Core.Api.dll" />
+    <None Include="LIB\Grpc.Core.dll" />
+    <None Include="LIB\Newtonsoft.Json.dll" />
+    <None Include="LIB\System.Buffers.dll" />
+    <None Include="LIB\System.Memory.dll" />
+    <None Include="LIB\System.Runtime.CompilerServices.Unsafe.dll" />
+    <None Include="LIB\zxing.dll" />
+    <None Include="LIB\zxing.presentation.dll" />
+    <None Include="LIB\netstandard.dll" />
+    <Content Include="LIB\grpc_csharp_ext.x64.dll" />
+    <Content Include="LIB\grpc_csharp_ext.x86.dll" />
     <Content Include="Resources\help.png" />
     <None Include="Resources\notify.png" />
     <Content Include="Resources\privoxy_conf.txt" />

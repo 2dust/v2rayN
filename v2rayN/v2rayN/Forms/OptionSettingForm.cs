@@ -22,6 +22,8 @@ namespace v2rayN.Forms
             InitKCP();
 
             InitGUI();
+
+            InitUserPAC();
         }
 
         /// <summary>
@@ -142,6 +144,11 @@ namespace v2rayN.Forms
 
         }
 
+        private void InitUserPAC()
+        {
+            txtuserPacRule.Text = Utils.List2String(config.userPacRule, true);
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (SaveBase() != 0)
@@ -160,6 +167,11 @@ namespace v2rayN.Forms
             }
 
             if (SaveGUI() != 0)
+            {
+                return;
+            }
+
+            if (SaveUserPAC() != 0)
             {
                 return;
             }
@@ -250,7 +262,7 @@ namespace v2rayN.Forms
 
             //remoteDNS
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
-            
+
             config.listenerType = cmblistenerType.SelectedIndex;
             return 0;
         }
@@ -344,6 +356,15 @@ namespace v2rayN.Forms
             return 0;
         }
 
+        private int SaveUserPAC()
+        {
+            string userPacRule = txtuserPacRule.Text.TrimEx();
+            userPacRule = userPacRule.Replace("\"", "");
+
+            config.userPacRule = Utils.String2List(userPacRule);
+
+            return 0;
+        }
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

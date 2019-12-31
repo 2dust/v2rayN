@@ -169,6 +169,11 @@ namespace v2rayN.Mode
             get; set;
         }
 
+        public List<string> userPacRule
+        {
+            get; set;
+        }      
+
         #region 函数
 
         public string address()

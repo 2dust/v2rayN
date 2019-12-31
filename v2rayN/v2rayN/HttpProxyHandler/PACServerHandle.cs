@@ -17,6 +17,7 @@ namespace v2rayN.HttpProxyHandler
         private static int pacPort = 0;
         private static HttpWebServer server;
         private static HttpWebServerB serverB;
+        private static Config _config;
 
         public static bool IsRunning
         {
@@ -28,6 +29,7 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
+            _config = config;
             Global.pacPort = config.GetLocalPort("pac");
 
             if (InitServer("*"))
@@ -161,7 +163,6 @@ namespace v2rayN.HttpProxyHandler
             //}
         }
 
-
         private static string GetPacList(string address)
         {
             var port = Global.httpPort;
@@ -182,6 +183,18 @@ namespace v2rayN.HttpProxyHandler
                 }
                 var pac = File.ReadAllText(strPacfile, Encoding.UTF8);
                 pac = pac.Replace("__PROXY__", proxy);
+
+                if (_config.userPacRule.Count > 0)
+                {
+                    var keyWords = "var rules = [";
+                    if (pac.IndexOf(keyWords) >= 0)
+                    {
+                        var userPac = string.Join($"\",{Environment.NewLine}\"", _config.userPacRule.ToArray());
+                        userPac = string.Format("\"{0}\",", userPac);
+                        pac = pac.Replace(keyWords, keyWords + userPac);
+                    }
+                }
+
                 return pac;
             }
             catch

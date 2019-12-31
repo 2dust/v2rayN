@@ -155,7 +155,7 @@ namespace v2rayN
             {
                 if (wrap)
                 {
-                    return string.Join(",\r\n", lst.ToArray());
+                    return string.Join("," + Environment.NewLine, lst.ToArray());
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace v2rayN
         {
             try
             {
-                str = str.Replace("\r\n", "");
+                str = str.Replace(Environment.NewLine, "");
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
             catch
@@ -214,8 +214,8 @@ namespace v2rayN
             try
             {
                 plainText = plainText.TrimEx()
+                  .Replace(Environment.NewLine, "")
                   .Replace("\n", "")
-                  .Replace("\r\n", "")
                   .Replace("\r", "")
                   .Replace(" ", "");
 
@@ -657,7 +657,14 @@ namespace v2rayN
             return lstIPAddress;
         }
 
-
+        public static void SetSecurityProtocol()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+                                       | SecurityProtocolType.Tls
+                                       | SecurityProtocolType.Tls11
+                                       | SecurityProtocolType.Tls12;
+            ServicePointManager.DefaultConnectionLimit = 256;
+        }
         #endregion
 
         #region 杂项
@@ -779,16 +786,13 @@ namespace v2rayN
 
         #region TempPath
 
-        private static string _tempPath = null;
-
         // return path to store temporary files
         public static string GetTempPath()
         {
-            if (_tempPath == null)
+            string _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
+            if (!Directory.Exists(_tempPath))
             {
-                Directory.CreateDirectory(Path.Combine(StartupPath(), "v2ray_win_temp"));
-                // don't use "/", it will fail when we call explorer /select xxx/ss_win_temp\xxx.log
-                _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
+                Directory.CreateDirectory(_tempPath);
             }
             return _tempPath;
         }
@@ -796,13 +800,7 @@ namespace v2rayN
         public static string GetTempPath(string filename)
         {
             return Path.Combine(GetTempPath(), filename);
-        }
-
-        public static void ClearTempPath()
-        {
-            //Directory.Delete(GetTempPath(), true);
-            //_tempPath = null;
-        }
+        }              
 
         public static string UnGzip(byte[] buf)
         {
@@ -854,7 +852,7 @@ namespace v2rayN
 
                 SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
                 SwWrite.Write(strContent);
-                SwWrite.WriteLine("\r\n");
+                SwWrite.WriteLine(Environment.NewLine);
                 SwWrite.WriteLine(" ");
                 SwWrite.Flush();
                 SwWrite.Close();

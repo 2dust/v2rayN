@@ -6,7 +6,7 @@ namespace v2rayN.HttpProxyHandler
     /// <summary>
     /// 系统代理(http)总处理
     /// 启动privoxy提供http协议
-    /// 使用SysProxy设置IE系统代理或者PAC模式
+    /// 设置IE系统代理或者PAC模式
     /// </summary>
     class HttpProxyHandle
     {
@@ -31,31 +31,31 @@ namespace v2rayN.HttpProxyHandler
                     if (type == 1)
                     {
                         //PACServerHandle.Stop();
-                        SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}", null);
+                        ProxySetting.SetProxy($"{Global.Loopback}:{port}", Global.IEProxyExceptions, 2);
                     }
                     else if (type == 2)
                     {
                         string pacUrl = GetPacUrl();
-                        SysProxyHandle.SetIEProxy(true, false, null, pacUrl);
+                        ProxySetting.SetProxy(pacUrl, "", 4);
                         //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                     else if (type == 3)
                     {
                         //PACServerHandle.Stop();
-                        SysProxyHandle.SetIEProxy(false, false, null, null);
+                        ProxySetting.UnsetProxy();
                     }
                     else if (type == 4)
                     {
                         string pacUrl = GetPacUrl();
-                        SysProxyHandle.SetIEProxy(false, false, null, null);
+                        ProxySetting.UnsetProxy();
                         //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                 }
                 else
                 {
-                    SysProxyHandle.SetIEProxy(false, false, null, null);
+                    ProxySetting.UnsetProxy();
                     //PACServerHandle.Stop();
                 }
             }
@@ -77,7 +77,7 @@ namespace v2rayN.HttpProxyHandler
                 int localPort = config.GetLocalPort(Global.InboundSocks);
                 if (localPort > 0)
                 {
-                    PrivoxyHandler.Instance.Start(localPort, config);
+                    PrivoxyHandler.Instance.Restart(localPort, config);
                     if (PrivoxyHandler.Instance.RunningPort > 0)
                     {
                         Global.sysAgent = true;

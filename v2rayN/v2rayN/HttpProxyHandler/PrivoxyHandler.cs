@@ -22,28 +22,22 @@ namespace v2rayN.HttpProxyHandler
 
         private static int _uid;
         private static string _uniqueConfigFile;
-        private static Job _privoxyJob;
         private Process _process;
+        private static string _privoxyName = "v2ray_privoxy";
 
         static PrivoxyHandler()
         {
             try
             {
-                _uid = Application.StartupPath.GetHashCode(); // Currently we use ss's StartupPath to identify different Privoxy instance.
+                _uid = Application.StartupPath.GetHashCode();
                 _uniqueConfigFile = string.Format("privoxy_{0}.conf", _uid);
-                _privoxyJob = new Job();
 
-                FileManager.UncompressFile(Utils.GetTempPath("v2ray_privoxy.exe"), Resources.privoxy_exe);
+                FileManager.UncompressFile(Utils.GetTempPath($"{_privoxyName}.exe"), Resources.privoxy_exe);
             }
             catch (IOException ex)
             {
                 Utils.SaveLog(ex.Message, ex);
             }
-        }
-
-        private PrivoxyHandler()
-        {
-
         }
 
         /// <summary>
@@ -66,17 +60,20 @@ namespace v2rayN.HttpProxyHandler
             get; set;
         }
 
+        public void Restart(int localPort, Config config)
+        {
+            Stop();
+            Start(localPort, config);
+        }
+
+
         public void Start(int localPort, Config config)
         {
             try
             {
                 if (_process == null)
                 {
-                    Process[] existingPrivoxy = Process.GetProcessesByName("v2ray_privoxy");
-                    foreach (Process p in existingPrivoxy.Where(IsChildProcess))
-                    {
-                        KillProcess(p);
-                    }
+
                     string privoxyConfig = Resources.privoxy_conf;
                     RunningPort = config.GetLocalPort(Global.InboundHttp);
                     privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", localPort.ToString());
@@ -96,7 +93,7 @@ namespace v2rayN.HttpProxyHandler
                         // Configure the process using the StartInfo properties.
                         StartInfo =
                     {
-                        FileName = "v2ray_privoxy.exe",
+                        FileName = $"{_privoxyName}.exe",
                         Arguments = _uniqueConfigFile,
                         WorkingDirectory = Utils.GetTempPath(),
                         WindowStyle = ProcessWindowStyle.Hidden,
@@ -110,12 +107,13 @@ namespace v2rayN.HttpProxyHandler
                      * Add this process to job obj associated with this ss process, so that
                      * when ss exit unexpectedly, this process will be forced killed by system.
                      */
-                    _privoxyJob.AddProcess(_process.Handle);
 
+                    Global.processJob.AddProcess(_process.Handle);
                 }
             }
             catch (Exception ex)
             {
+                RunningPort = 0;
                 Utils.SaveLog(ex.Message, ex);
             }
         }
@@ -129,6 +127,14 @@ namespace v2rayN.HttpProxyHandler
                 _process = null;
                 RunningPort = 0;
             }
+            else
+            {
+                Process[] existingPrivoxy = Process.GetProcessesByName(_privoxyName);
+                foreach (Process p in existingPrivoxy.Where(IsChildProcess))
+                {
+                    KillProcess(p);
+                }
+            }
         }
 
         private static void KillProcess(Process p)
@@ -140,7 +146,7 @@ namespace v2rayN.HttpProxyHandler
                 if (!p.HasExited)
                 {
                     p.Kill();
-                    p.WaitForExit();
+                    p.WaitForExit(100);
                 }
             }
             catch (Exception ex)
@@ -168,7 +174,7 @@ namespace v2rayN.HttpProxyHandler
                  */
                 var path = process.MainModule.FileName;
 
-                return Utils.GetTempPath("v2ray_privoxy.exe").Equals(path);
+                return Utils.GetTempPath($"{_privoxyName}.exe").Equals(path);
 
             }
             catch (Exception ex)

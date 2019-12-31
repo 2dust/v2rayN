@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "v2rayN", "v2rayN\v2rayN.csproj", "{0A9785E6-D256-4B73-9757-4EF59955FD1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "v2rayUpgrade", "v2rayUpgrade\v2rayUpgrade.csproj", "{F82BE52A-155C-492C-9E0A-1E917EC62C78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,14 @@ Global
 		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|x86.ActiveCfg = Release|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|x86.Build.0 = Debug|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|x86.ActiveCfg = Release|Any CPU
+		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -91,6 +91,10 @@
             this.txturlGFWList = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.txtuserPacRule = new System.Windows.Forms.TextBox();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -107,6 +111,8 @@
             this.panel3.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,6 +130,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPage9);
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -551,6 +558,31 @@
             this.chkAutoRun.Name = "chkAutoRun";
             this.chkAutoRun.UseVisualStyleBackColor = true;
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.txtuserPacRule);
+            this.tabPage9.Controls.Add(this.panel4);
+            resources.ApplyResources(this.tabPage9, "tabPage9");
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // txtuserPacRule
+            // 
+            resources.ApplyResources(this.txtuserPacRule, "txtuserPacRule");
+            this.txtuserPacRule.Name = "txtuserPacRule";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.label4);
+            resources.ApplyResources(this.panel4, "panel4");
+            this.panel4.Name = "panel4";
+            // 
+            // label4
+            // 
+            this.label4.ForeColor = System.Drawing.Color.Brown;
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnClose);
@@ -601,6 +633,9 @@
             this.tabPage6.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
+            this.panel4.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -673,5 +708,9 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox cmblistenerType;
         private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.TextBox txtuserPacRule;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label4;
     }
 }

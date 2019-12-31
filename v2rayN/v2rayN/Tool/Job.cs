@@ -54,7 +54,7 @@ namespace v2rayN
 
             if (!succ)
             {
-                //Logging.Error("Failed to call AssignProcessToJobObject! GetLastError=" + Marshal.GetLastWin32Error());
+                Utils.SaveLog("Failed to call AssignProcessToJobObject! GetLastError=" + Marshal.GetLastWin32Error());
             }
 
             return succ;

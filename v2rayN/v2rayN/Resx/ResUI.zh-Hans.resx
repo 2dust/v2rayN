@@ -269,7 +269,7 @@
     <value>清除原订阅内容</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>下载V2rayCore成功</value>
+    <value>下载V2ray成功</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>导入订阅内容失败</value>
@@ -287,7 +287,7 @@
     <value>PAC更新成功</value>
   </data>
   <data name="MsgParsingV2rayCoreSuccessfully" xml:space="preserve">
-    <value>解析V2rayCore成功</value>
+    <value>解析V2ray成功</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
     <value>简化PAC成功</value>
@@ -299,7 +299,7 @@
     <value>开始更新PAC...</value>
   </data>
   <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>开始更新V2rayCore...</value>
+    <value>开始更新V2ray...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>订阅内容解码失败(非BASE64码)</value>

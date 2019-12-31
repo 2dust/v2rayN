@@ -182,6 +182,7 @@ namespace v2rayN.Handler
             }
         }
 
+
         private void RunSpeedTest()
         {
             if (_config.vmess.Count <= 0)
@@ -244,7 +245,7 @@ namespace v2rayN.Handler
 
             testCounter++;
             var webProxy = new WebProxy(Global.Loopback, httpPort + index);
-            downloadHandle2.DownloadFileAsync(_config, url, webProxy, 30);
+            downloadHandle2.DownloadFileAsync(_config, url, webProxy, 20);
 
             return 0;
         }

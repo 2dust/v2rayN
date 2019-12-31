@@ -43,22 +43,22 @@ namespace v2rayN.Handler
 
         public StatisticsHandler(Mode.Config config, Action<ulong, ulong, List<ServerStatItem>> update)
         {
-            try
-            {
-                if (Environment.Is64BitOperatingSystem)
-                {
-                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x64.dll"), Resources.grpc_csharp_ext_x64_dll);
-                }
-                else
-                {
-                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x86.dll"), Resources.grpc_csharp_ext_x86_dll);
-                }
-            }
-            catch (IOException ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
+            //try
+            //{
+            //    if (Environment.Is64BitOperatingSystem)
+            //    {
+            //        FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x64.dll"), Resources.grpc_csharp_ext_x64_dll);
+            //    }
+            //    else
+            //    {
+            //        FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x86.dll"), Resources.grpc_csharp_ext_x86_dll);
+            //    }
+            //}
+            //catch (IOException ex)
+            //{
+            //    Utils.SaveLog(ex.Message, ex);
 
-            }
+            //}
 
             config_ = config;
             Enable = config.enableStatistics;

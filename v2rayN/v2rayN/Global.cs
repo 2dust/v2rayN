@@ -26,7 +26,7 @@ namespace v2rayN
         /// <summary>
         /// PromotionUrl
         /// </summary>
-        public const string PromotionUrl = @"aHR0cHM6Ly8xLjIzNDQ1Ni54eXovYWRzLmh0bWw=";
+        public const string PromotionUrl = @"aHR0cHM6Ly8xLjIzNDQ1Ni54eXovYWJjLmh0bWw=";
 
         /// <summary>
         /// 本软件配置文件名
@@ -162,6 +162,8 @@ namespace v2rayN
         }
         public const string StatisticLogOverall = "StatisticLogOverall.json";
 
+        public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
+
         #endregion
 
         #region 全局变量
@@ -210,6 +212,11 @@ namespace v2rayN
         ///  
         /// </summary>
         public static int statePort
+        {
+            get; set;
+        }
+
+        public static Job processJob
         {
             get; set;
         }

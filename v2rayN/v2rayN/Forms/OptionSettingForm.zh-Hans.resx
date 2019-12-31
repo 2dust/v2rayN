@@ -120,9 +120,6 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -214,14 +211,11 @@
   <data name="label2.Text" xml:space="preserve">
     <value>本地监听端口</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:路由设置  </value>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>  Core:基础设置  </value>
   </data>
-  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 89</value>
-  </data>
-  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>642, 481</value>
+  <data name="txtUseragent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>628, 449</value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 455</value>
@@ -229,7 +223,7 @@
   <data name="tabPage3.Text" xml:space="preserve">
     <value>  1.代理的Domain或IP  </value>
   </data>
-  <data name="txtUseragent.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="txtUserdirect.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 449</value>
   </data>
   <data name="tabPage4.Size" type="System.Drawing.Size, System.Drawing">
@@ -238,7 +232,7 @@
   <data name="tabPage4.Text" xml:space="preserve">
     <value>  2.直连的Domain或IP  </value>
   </data>
-  <data name="txtUserdirect.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="txtUserblock.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 449</value>
   </data>
   <data name="tabPage5.Size" type="System.Drawing.Size, System.Drawing">
@@ -246,15 +240,6 @@
   </data>
   <data name="tabPage5.Text" xml:space="preserve">
     <value>  3.阻止的Domain或IP  </value>
-  </data>
-  <data name="txtUserblock.Size" type="System.Drawing.Size, System.Drawing">
-    <value>628, 449</value>
-  </data>
-  <data name="tabPage8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>634, 455</value>
-  </data>
-  <data name="tabPage8.Text" xml:space="preserve">
-    <value>  4.预定义规则  </value>
   </data>
   <data name="cmbroutingMode.Items" xml:space="preserve">
     <value>全局</value>
@@ -274,8 +259,17 @@
   <data name="cmbroutingMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>244, 20</value>
   </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>642, 72</value>
+  <data name="tabPage8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 455</value>
+  </data>
+  <data name="tabPage8.Text" xml:space="preserve">
+    <value>  4.预定义规则  </value>
+  </data>
+  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 89</value>
+  </data>
+  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>642, 481</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnSetDefRountingRule.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -315,23 +309,20 @@
   <data name="label15.Text" xml:space="preserve">
     <value>域名策略</value>
   </data>
+  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>642, 72</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:路由设置  </value>
+  </data>
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
   </data>
   <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
   </data>
   <data name="lbFreshrate.Text" xml:space="preserve">
     <value>统计刷新频率</value>
-  </data>
-  <data name="lbCacheDays.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 12</value>
-  </data>
-  <data name="lbCacheDays.Text" xml:space="preserve">
-    <value>缓存天数（0-30， 0关闭缓存单独每天的数据使用情况）</value>
   </data>
   <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
     <value>384, 16</value>
@@ -356,6 +347,15 @@
   </data>
   <data name="chkAutoRun.Text" xml:space="preserve">
     <value>开机自动启动(可能会不成功)</value>
+  </data>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>*设置用户PAC规则，用逗号(,)隔开</value>
+  </data>
+  <data name="tabPage9.Text" xml:space="preserve">
+    <value>  用户PAC设置  </value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>

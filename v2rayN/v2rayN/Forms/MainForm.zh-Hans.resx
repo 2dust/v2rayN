@@ -432,7 +432,7 @@
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
-    <value>检查更新PAC (需要Http代理)</value>
+    <value>检查更新PAC</value>
   </data>
   <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>

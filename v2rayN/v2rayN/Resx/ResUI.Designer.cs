@@ -394,7 +394,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download V2rayCore successfully 的本地化字符串。
+        ///   查找类似 Download V2ray successfully 的本地化字符串。
         /// </summary>
         internal static string MsgDownloadV2rayCoreSuccessfully {
             get {
@@ -448,7 +448,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Resolve V2rayCore successfully 的本地化字符串。
+        ///   查找类似 Resolve V2ray successfully 的本地化字符串。
         /// </summary>
         internal static string MsgParsingV2rayCoreSuccessfully {
             get {
@@ -484,7 +484,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Start updating V2rayCore... 的本地化字符串。
+        ///   查找类似 Start updating V2ray... 的本地化字符串。
         /// </summary>
         internal static string MsgStartUpdatingV2rayCore {
             get {
