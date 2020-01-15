@@ -52,6 +52,7 @@ namespace v2rayUpgrade
             var fileName = GetPath(_tempFileName);
             try
             {
+                File.Delete(fileName);
                 File.Copy(_args[0], fileName);
                 if (!File.Exists(fileName))
                 {
