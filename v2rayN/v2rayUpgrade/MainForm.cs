@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace v2rayUpgrade
@@ -16,6 +9,7 @@ namespace v2rayUpgrade
     public partial class MainForm : Form
     {
         private string[] _args;
+        private string _tempFileName = "v2rayUpgradeTemp.zip";
 
 
         public MainForm(string[] args)
@@ -35,9 +29,37 @@ namespace v2rayUpgrade
             {
                 return;
             }
+
             try
             {
-                var fileName = _args[0];
+                Process[] existing = Process.GetProcessesByName("v2rayN");
+                foreach (Process p in existing)
+                {
+                    var path = p.MainModule.FileName;
+                    if (path == GetPath("v2rayN.exe"))
+                    {
+                        p.Kill();
+                        p.WaitForExit(100);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to close v2rayN(关闭v2rayN失败)." + ex.StackTrace);
+                return;
+            }
+
+            var fileName = GetPath(_tempFileName);
+            try
+            {
+                File.Delete(fileName);
+                File.Copy(_args[0], fileName);
+                if (!File.Exists(fileName))
+                {
+                    MessageBox.Show("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
+                    return;
+                }
+
                 var startKey = "v2rayN/";
 
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
@@ -66,6 +88,10 @@ namespace v2rayUpgrade
             {
                 MessageBox.Show("Upgrade Failed(升级失败)." + ex.StackTrace);
                 return;
+            }
+            finally
+            {
+                File.Delete(fileName);
             }
 
             MessageBox.Show("Upgrade  successed(升级成功)");

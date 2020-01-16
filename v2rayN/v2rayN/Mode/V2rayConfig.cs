@@ -281,6 +281,11 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public bool enabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int concurrency { get; set; }
     }
 
     public class Response

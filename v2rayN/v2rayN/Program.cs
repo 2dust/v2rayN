@@ -28,20 +28,20 @@ namespace v2rayN
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-         
+
             //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             Process instance = RunningInstance();
             if (instance == null)
-            {                
+            {
                 if (!UnzipLibs())
                 {
                     UI.Show($"Error preparing the environment(准备运行环境出错)");
                     return;
                 }
 
-                Utils.SaveLog("v2rayN start up");
-                
+                Utils.SaveLog("v2rayN start up " + Utils.GetVersion());
+
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);

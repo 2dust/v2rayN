@@ -354,6 +354,7 @@ namespace v2rayN.Handler
 
                     //Mux
                     outbound.mux.enabled = config.muxEnabled;
+                    outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
 
                     //远程服务器底层传输配置
                     StreamSettings streamSettings = outbound.streamSettings;
@@ -384,6 +385,8 @@ namespace v2rayN.Handler
                     serversItem.level = 1;
 
                     outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
+                    
 
                     outbound.protocol = "shadowsocks";
                     outbound.settings.vnext = null;
@@ -418,6 +421,7 @@ namespace v2rayN.Handler
                     }
 
                     outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
 
                     outbound.protocol = "socks";
                     outbound.settings.vnext = null;
