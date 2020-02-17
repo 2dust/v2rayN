@@ -222,6 +222,12 @@
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>不是正确的配置，请检查</value>
   </data>
+  <data name="IncorrectconfigurationSSR" xml:space="preserve">
+    <value>不受支持或识别失败。</value>
+  </data>
+  <data name="IncorrectconfigurationSSRError" xml:space="preserve">
+    <value>发生内部错误。</value>
+  </data>
   <data name="IncorrectServerConfiguration" xml:space="preserve">
     <value>不是正确的服务端配置文件，请检查</value>
   </data>

@@ -222,6 +222,12 @@
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value> is not the correct configuration, please check</value>
   </data>
+  <data name="IncorrectconfigurationSSR" xml:space="preserve">
+    <value> is not supported.</value>
+  </data>
+  <data name="IncorrectconfigurationSSRError" xml:space="preserve">
+    <value>An error occurred.</value>
+  </data>
   <data name="IncorrectServerConfiguration" xml:space="preserve">
     <value> is not the correct server configuration file, please check</value>
   </data>

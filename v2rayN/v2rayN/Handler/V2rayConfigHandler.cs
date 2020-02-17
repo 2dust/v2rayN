@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using v2rayN.Base;
 using v2rayN.Mode;
 
@@ -1215,7 +1216,7 @@ namespace v2rayN.Handler
                     msg = UIRes.I18N("ConfigurationFormatIncorrect");
 
                     vmessItem.configType = (int)EConfigType.Shadowsocks;
-                    result = result.Substring(Global.ssProtocol.Length);
+                    result = result.Substring(Global.ssProtocol.Length); // strip
                     //remark
                     int indexRemark = result.IndexOf("#");
                     if (indexRemark > 0)
@@ -1254,6 +1255,61 @@ namespace v2rayN.Handler
                     vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
                     vmessItem.security = arr21[0];
                     vmessItem.id = arr21[1];
+                }
+                else if (result.StartsWith(Global.ssrProtocol))
+                {
+                    vmessItem.configType = (int)EConfigType.Shadowsocks;
+                    if (result.Length <= Global.ssrProtocol.Length)
+                    {
+                        return null;
+                    }
+                    result = result.Substring(Global.ssrProtocol.Length);
+
+                    //part decode
+                    // thanks to https://html50.github.io/ssr2jsonBat/
+                    result = result.Replace("-", "+").Replace("_", "/"); // TODO: review ss:// works.
+                    string text = Utils.Base64Decode(result);
+                    try
+                    {
+                        string[] arr = text.Split(':');
+                        
+                        string ip = arr[0];
+                        string port = arr[1];
+                        string protocol = arr[2];
+                        string method = arr[3];
+                        string obfs = arr[4];
+                        string[] base64two = arr[5].Split(new string[] { "/?"}, StringSplitOptions.RemoveEmptyEntries);
+                        string password = Utils.Base64Decode(base64two[0]);
+                        string remark = "";
+
+                        string arr2 = base64two[1];
+                        string _remark = Regex.Match(arr2, "remarks=([^&]*)").Groups[1].Value;
+                        _remark = _remark.Replace("-", "+").Replace("_", "/"); // necessary
+                        remark = Utils.Base64Decode(_remark);
+                        
+                        if (method == "chacha20-ietf") { method = "chacha20-ietf-poly1305"; } // ssr alia
+                        string[] v2ray_supported = Global.ssProtocols_via_v2ray.Split(';');
+                        if (!v2ray_supported.Contains(method.ToLower()) ||
+                            protocol != "origin" ||
+                            obfs != "plain")
+                        {
+                            // TODO: Counters and then report to user
+                            msg = UIRes.I18N("IncorrectconfigurationSSR");
+                            return null; // skip
+                        }
+                        
+                        vmessItem.address = ip;
+                        vmessItem.port = Convert.ToInt32(port);
+                        vmessItem.security = method;
+                        vmessItem.id = password;
+                        vmessItem.remarks = remark;
+                    }
+                    catch
+                    {
+                        System.Diagnostics.Debug.Fail(text);
+                        msg = UIRes.I18N("IncorrectconfigurationSSRError");
+                        return null;
+                    }
                 }
                 else if (result.StartsWith(Global.socksProtocol))
                 {
