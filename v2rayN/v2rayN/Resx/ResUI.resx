@@ -344,6 +344,6 @@
     <value>Total upload traffic</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
-    <value>PAC failed to start. Pls with an administrator.</value>
+    <value>PAC failed to start. Run it with Admin right.</value>
   </data>
 </root>

@@ -152,9 +152,9 @@ namespace v2rayN.Handler
             {
                 //查找v2ray文件是否存在
                 string fileName = string.Empty;
-                for (int k = 0; k < lstV2ray.Count; k++)
+                foreach (string name in lstV2ray)
                 {
-                    string vName = string.Format("{0}.exe", lstV2ray[k]);
+                    string vName = string.Format("{0}.exe", name);
                     vName = Utils.GetPath(vName);
                     if (File.Exists(vName))
                     {

@@ -657,7 +657,7 @@
     <value>49, 17</value>
   </data>
   <data name="toolSslSocksPortLab.Text" xml:space="preserve">
-    <value>SOCKS5</value>
+    <value>SOCKS5:</value>
   </data>
   <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
@@ -675,7 +675,7 @@
     <value>36, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
-    <value>HTTP</value>
+    <value>HTTP:</value>
   </data>
   <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
@@ -693,7 +693,7 @@
     <value>30, 17</value>
   </data>
   <data name="toolSslPacPortLab.Text" xml:space="preserve">
-    <value>PAC</value>
+    <value>PAC:</value>
   </data>
   <data name="toolSslPacPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>

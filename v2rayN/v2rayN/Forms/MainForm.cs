@@ -324,7 +324,7 @@ namespace v2rayN.Forms
         {
             toolSslSocksPort.Text =
             toolSslHttpPort.Text =
-            toolSslPacPort.Text = "NONE";
+            toolSslPacPort.Text = "OFF";
 
             toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
 

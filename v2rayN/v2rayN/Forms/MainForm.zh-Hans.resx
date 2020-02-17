@@ -420,19 +420,19 @@
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
-    <value>检查更新v2rayN</value>
+    <value>v2rayN</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>检查更新v2rayCore</value>
+    <value>v2rayCore</value>
   </data>
   <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
-    <value>检查更新PAC</value>
+    <value>PAC</value>
   </data>
   <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>

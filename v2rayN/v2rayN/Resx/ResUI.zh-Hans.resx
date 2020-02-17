@@ -254,7 +254,7 @@
     <value>端口</value>
   </data>
   <data name="LvServiceType" xml:space="preserve">
-    <value>服务类型</value>
+    <value>类型</value>
   </data>
   <data name="LvSubscription" xml:space="preserve">
     <value>订阅</value>
