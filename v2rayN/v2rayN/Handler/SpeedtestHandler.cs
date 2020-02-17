@@ -124,7 +124,7 @@ namespace v2rayN.Handler
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
                             int responseTime = -1;
-                            string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
+                            string status = GetRealPingTime(_config.speedPingTestUrl, webProxy, out responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? string.Format("{0}ms", responseTime) : string.Format("{0}", status);
                             _updateFunc(itemIndex, output);
                         }
@@ -160,7 +160,7 @@ namespace v2rayN.Handler
 
             Thread.Sleep(5000);
 
-            string url = Global.SpeedTestUrl;
+            string url = _config.speedTestUrl;
             testCounter = 0;
             if (downloadHandle2 == null)
             {

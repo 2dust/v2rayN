@@ -124,6 +124,14 @@ namespace v2rayN.Handler
             //{
             //    config.pacPort = 8888;
             //}
+            if (Utils.IsNullOrEmpty(config.speedTestUrl))
+            {
+                config.speedTestUrl = Global.SpeedTestUrl;
+            }
+            if (Utils.IsNullOrEmpty(config.speedPingTestUrl))
+            {
+                config.speedPingTestUrl = Global.SpeedPingTestUrl;
+            }
             if (Utils.IsNullOrEmpty(config.urlGFWList))
             {
                 config.urlGFWList = Global.GFWLIST_URL;
