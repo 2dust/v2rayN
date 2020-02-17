@@ -167,10 +167,10 @@ namespace v2rayN.Forms
 
             if (statistics != null && statistics.Enable)
             {
-                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
-                lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70, HorizontalAlignment.Left);
                 lvServers.Columns.Add(UIRes.I18N("LvTodayDownloadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
+                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
             }
         }
 
