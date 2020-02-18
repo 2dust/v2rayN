@@ -198,13 +198,13 @@ namespace v2rayN.Forms
                 ListViewItem lvItem = null;
                 if (statistics != null && statistics.Enable)
                 {
-                    var index = statistics.Statistic.FindIndex(item_ => item_.itemId == item.getItemId());
-                    if (index != -1)
+                    var sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
+                    if (sItem != null)
                     {
-                        totalUp = Utils.HumanFy(statistics.Statistic[index].totalUp);
-                        totalDown = Utils.HumanFy(statistics.Statistic[index].totalDown);
-                        todayUp = Utils.HumanFy(statistics.Statistic[index].todayUp);
-                        todayDown = Utils.HumanFy(statistics.Statistic[index].todayDown);
+                        totalUp = Utils.HumanFy(sItem.totalUp);
+                        totalDown = Utils.HumanFy(sItem.totalDown);
+                        todayUp = Utils.HumanFy(sItem.todayUp);
+                        todayDown = Utils.HumanFy(sItem.todayDown);
                     }
 
                     lvItem = new ListViewItem(new string[]
@@ -220,10 +220,10 @@ namespace v2rayN.Forms
                     item.network,
                     item.getSubRemarks(config),
                     item.testResult,
-                    totalUp,
-                    totalDown,
+                    todayDown,
                     todayUp,
-                    todayDown
+                    totalDown,
+                    totalUp
                     });
                 }
                 else
@@ -241,10 +241,6 @@ namespace v2rayN.Forms
                     item.network,
                     item.getSubRemarks(config),
                     item.testResult
-                    //totalUp,
-                    //totalDown,
-                    //todayUp,
-                    //todayDown,
                    });
                 }
 
