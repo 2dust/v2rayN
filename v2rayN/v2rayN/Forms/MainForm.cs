@@ -809,9 +809,10 @@ namespace v2rayN.Forms
         private void menuAddServers_Click(object sender, EventArgs e)
         {
             string clipboardData = Utils.GetClipboardData();
-            if (AddBatchServers(clipboardData) == 0)
+            int result = AddBatchServers(clipboardData);
+            if (result > 0)
             {
-                UI.Show(UIRes.I18N("SuccessfullyImportedServerViaClipboard"));
+                UI.Show(string.Format(UIRes.I18N("SuccessfullyImportedServerViaClipboard"), result));
             }
         }
 
@@ -823,16 +824,19 @@ namespace v2rayN.Forms
 
         private int AddBatchServers(string clipboardData, string subid = "")
         {
-            if (ConfigHandler.AddBatchServers(ref config, clipboardData, subid) != 0)
+            int counter;
+            int _Add()
+            {
+                return ConfigHandler.AddBatchServers(ref config, clipboardData, subid);
+            }
+            counter = _Add();
+            if (counter < 1)
             {
                 clipboardData = Utils.Base64Decode(clipboardData);
-                if (ConfigHandler.AddBatchServers(ref config, clipboardData, subid) != 0)
-                {
-                    return -1;
-                }
+                counter = _Add();
             }
             RefreshServers();
-            return 0;
+            return counter;
         }
 
         #endregion
@@ -1356,7 +1360,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                if (AddBatchServers(result) == 0)
+                if (AddBatchServers(result) > 0)
                 {
                     UI.Show(UIRes.I18N("SuccessfullyImportedServerViaScan"));
                 }
@@ -1416,7 +1420,7 @@ namespace v2rayN.Forms
                         ConfigHandler.RemoveServerViaSubid(ref config, id);
                         AppendText(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
                         RefreshServers();
-                        if (AddBatchServers(result, id) == 0)
+                        if (AddBatchServers(result, id) > 0)
                         {
                         }
                         else

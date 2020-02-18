@@ -728,7 +728,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Imported bulk URL from clipboard successfully 的本地化字符串。
+        ///   查找类似 {0} servers have been imported from clipboard. 的本地化字符串。
         /// </summary>
         internal static string SuccessfullyImportedServerViaClipboard {
             get {

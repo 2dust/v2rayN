@@ -175,7 +175,7 @@
     <value>Successfully imported custom configuration server</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>Imported bulk URL from clipboard successfully</value>
+    <value>{0} servers have been imported from clipboard.</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>

@@ -175,7 +175,7 @@
     <value>成功导入自定义配置服务器</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>从剪贴板导入批量URL成功</value>
+    <value>成功从剪贴板导入 {0} 个服务器</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。在自定义配置inbound中有socks port等于设置中的port时，系统代理才可用</value>

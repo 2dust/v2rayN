@@ -724,7 +724,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="clipboardData"></param>
         /// <param name="subid"></param>
-        /// <returns></returns>
+        /// <returns>成功导入的数量</returns>
         public static int AddBatchServers(ref Config config, string clipboardData, string subid = "")
         {
             if (Utils.IsNullOrEmpty(clipboardData))
@@ -779,11 +779,7 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            if (countServers > 0)
-            {
-                return 0;
-            }
-            return -1;
+            return countServers;
         }
 
         /// <summary>
