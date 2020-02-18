@@ -646,6 +646,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Servers deduplication completed. Old: {0}, New: {1}. 的本地化字符串。
+        /// </summary>
+        internal static string RemoveDuplicateServerResult {
+            get {
+                return ResourceManager.GetString("RemoveDuplicateServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Are you sure to remove the server? 的本地化字符串。
         /// </summary>
         internal static string RemoveServer {

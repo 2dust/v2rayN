@@ -346,4 +346,7 @@
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC服务启动失败,请用管理员启动</value>
   </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>服务器去重完成。原数量: {0}，现数量: {1}</value>
+  </data>
 </root>

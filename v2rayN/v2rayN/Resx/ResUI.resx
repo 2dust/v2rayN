@@ -346,4 +346,7 @@
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC failed to start. Run it with Admin right.</value>
   </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+  </data>
 </root>

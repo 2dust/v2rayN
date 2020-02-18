@@ -546,6 +546,8 @@ namespace v2rayN.Forms
         {
             List<Mode.VmessItem> servers = null;
             Utils.DedupServerList(config.vmess, out servers);
+            int oldCount = config.vmess.Count;
+            int newCount = servers.Count;
             if (servers != null)
             {
                 config.vmess = servers;
@@ -553,6 +555,7 @@ namespace v2rayN.Forms
             //刷新
             RefreshServers();
             LoadV2ray();
+            UI.Show(string.Format(UIRes.I18N("RemoveDuplicateServerResult"), oldCount, newCount));
         }
 
         private void menuCopyServer_Click(object sender, EventArgs e)
