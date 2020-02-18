@@ -469,6 +469,6 @@
 </value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
-    <value>  关闭  </value>
+    <value>  关闭窗口  </value>
   </data>
 </root>
