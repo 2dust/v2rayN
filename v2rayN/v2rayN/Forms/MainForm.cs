@@ -1467,8 +1467,12 @@ namespace v2rayN.Forms
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
         }
 
+
         #endregion
 
-
+        private void tsbV2rayWebsite_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Global.v2rayWebsiteUrl);
+        }
     }
 }

@@ -107,6 +107,7 @@
             this.tsbCheckUpdateN = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateCore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdatePACList = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCheckClearPACList = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbHelp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -117,7 +118,7 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbV2rayWebsite = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -196,7 +197,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -684,6 +684,11 @@
             resources.ApplyResources(this.tsbCheckUpdatePACList, "tsbCheckUpdatePACList");
             this.tsbCheckUpdatePACList.Click += new System.EventHandler(this.tsbCheckUpdatePACList_Click);
             // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
+            // 
             // tsbCheckClearPACList
             // 
             this.tsbCheckClearPACList.Name = "tsbCheckClearPACList";
@@ -698,6 +703,7 @@
             // tsbHelp
             // 
             this.tsbHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbV2rayWebsite,
             this.tsbAbout,
             this.toolStripSeparator12,
             this.tsbLanguageDef,
@@ -748,10 +754,11 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
-            // toolStripSeparator13
+            // tsbV2rayWebsite
             // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
+            this.tsbV2rayWebsite.Name = "tsbV2rayWebsite";
+            resources.ApplyResources(this.tsbV2rayWebsite, "tsbV2rayWebsite");
+            this.tsbV2rayWebsite.Click += new System.EventHandler(this.tsbV2rayWebsite_Click);
             // 
             // MainForm
             // 
@@ -877,6 +884,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuRealPingServer;
         private System.Windows.Forms.ToolStripMenuItem menuNotEnabledHttp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripMenuItem tsbV2rayWebsite;
     }
 }
 
