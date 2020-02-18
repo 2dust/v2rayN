@@ -156,7 +156,7 @@
     <value>447, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard</value>
+    <value>Import bulk URL from clipboard (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
@@ -231,25 +231,25 @@
     <value>447, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
-    <value>Test server ping (multiple choice)(Ctrl+P)</value>
+    <value>Test server ping (multiple choice) (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
-    <value>Test server tcping (multiple choice)(Ctrl+O)</value>
+    <value>Test server tcping (multiple choice) (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
-    <value>Test server real ping (multiple choice)(Ctrl+R)</value>
+    <value>Test server real ping (multiple choice) (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>Test server speed (multiple choice)(Ctrl+T)</value>
+    <value>Test server speed (multiple choice) (Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>444, 6</value>
@@ -270,7 +270,7 @@
     <value>447, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
-    <value>Batch export share URL to clipboard (multiple choice)</value>
+    <value>Batch export share URL to clipboard (multiple choice) (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
@@ -291,7 +291,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 534</value>
+    <value>448, 556</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -654,7 +654,7 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 17</value>
+    <value>52, 17</value>
   </data>
   <data name="toolSslSocksPortLab.Text" xml:space="preserve">
     <value>SOCKS5:</value>
@@ -666,13 +666,13 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 17</value>
+    <value>195, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 17</value>
+    <value>39, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
     <value>HTTP:</value>
@@ -684,13 +684,13 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 17</value>
+    <value>195, 17</value>
   </data>
   <data name="toolSslPacPortLab.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 17</value>
+    <value>33, 17</value>
   </data>
   <data name="toolSslPacPortLab.Text" xml:space="preserve">
     <value>PAC:</value>
@@ -702,7 +702,7 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 17</value>
+    <value>195, 17</value>
   </data>
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>

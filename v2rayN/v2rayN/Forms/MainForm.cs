@@ -464,7 +464,7 @@ namespace v2rayN.Forms
             }
         }
 
-        private void lvServers_KeyDown(object sender, KeyEventArgs e)
+        private void lvServers_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Control)
             {
@@ -472,6 +472,12 @@ namespace v2rayN.Forms
                 {
                     case Keys.A:
                         menuSelectAll_Click(null, null);
+                        break;
+                    case Keys.C:
+                        menuExport2ShareUrl_Click(null, null);
+                        break;
+                    case Keys.V:
+                        menuAddServers_Click(null, null);
                         break;
                     case Keys.P:
                         menuPingServer_Click(null, null);
@@ -1059,7 +1065,7 @@ namespace v2rayN.Forms
             }
             if (ConfigHandler.MoveServer(ref config, index, eMove) == 0)
             {
-                //刷新
+                //TODO: reload is not good.
                 RefreshServers();
                 LoadV2ray();
             }
