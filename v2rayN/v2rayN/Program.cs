@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using v2rayN.Forms;
 using v2rayN.Properties;
@@ -31,6 +32,7 @@ namespace v2rayN
 
             //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
+            Thread.Sleep(300); // 尽量避免切换语言后提示“已经运行”
             Process instance = RunningInstance();
             if (instance == null)
             {
