@@ -977,9 +977,9 @@ namespace v2rayN.Forms
         }
         private void ClearTestResult()
         {
-            for (int k = 0; k < lvSelecteds.Count; k++)
+            foreach (int s in lvSelecteds)
             {
-                SetTestResult(lvSelecteds[k], "");
+                SetTestResult(s, "");
             }
         }
         private void UpdateSpeedtestHandler(int index, string msg)
