@@ -468,7 +468,7 @@ namespace v2rayN.Mode
             get; set;
         }
         /// <summary>
-        /// tcp,kcp,ws
+        /// tcp,kcp,ws,h2,quic
         /// </summary>
         public string network
         {
