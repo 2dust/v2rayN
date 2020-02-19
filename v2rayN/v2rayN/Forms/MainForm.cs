@@ -1024,10 +1024,10 @@ namespace v2rayN.Forms
                             lvServers.SuspendLayout();
 
                             var indexStart = 9;
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalUp);
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalDown);
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayUp);
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayDown);
+                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayUp);
+                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalDown);
+                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalUp);
 
                             lvServers.ResumeLayout();
                         });
