@@ -237,9 +237,9 @@ namespace v2rayN.Handler
                     rulesIP.outboundTag = tag;
                     rulesIP.ip = new List<string>();
 
-                    for (int k = 0; k < userRule.Count; k++)
+                    foreach (string u in userRule)
                     {
-                        string url = userRule[k].TrimEx();
+                        string url = u.TrimEx();
                         if (Utils.IsNullOrEmpty(url))
                         {
                             continue;
@@ -1424,9 +1424,8 @@ namespace v2rayN.Handler
 
 
                 var httpPort = configCopy.GetLocalPort("speedtest");
-                for (int k = 0; k < selecteds.Count; k++)
+                foreach (int index in selecteds)
                 {
-                    int index = selecteds[k];
                     if (configCopy.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;

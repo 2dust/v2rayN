@@ -171,19 +171,19 @@
     <value>447, 22</value>
   </data>
   <data name="menuRemoveServer.Text" xml:space="preserve">
-    <value>Remove selected server (multiple choice) (Delete)</value>
+    <value>Remove selected servers (Delete)</value>
   </data>
   <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
-    <value>Remove duplicate server</value>
+    <value>Remove duplicate servers</value>
   </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
-    <value>Copy selected server</value>
+    <value>Clone selected server</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
@@ -231,25 +231,25 @@
     <value>447, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
-    <value>Test server ping (multiple choice) (Ctrl+P)</value>
+    <value>Test servers ping (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
-    <value>Test server tcping (multiple choice) (Ctrl+O)</value>
+    <value>Test servers with tcping (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
-    <value>Test server real ping (multiple choice) (Ctrl+R)</value>
+    <value>Test servers real delay (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>Test server speed (multiple choice) (Ctrl+T)</value>
+    <value>Test servers download speed (Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>444, 6</value>
@@ -270,13 +270,13 @@
     <value>447, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
-    <value>Batch export share URL to clipboard (multiple choice) (Ctrl+C)</value>
+    <value>Export share URLs to clipboard (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
   </data>
   <data name="menuExport2SubContent.Text" xml:space="preserve">
-    <value>Batch export subscription content to clipboard (multiple choice)</value>
+    <value>Export subscription (base64) share to clipboard</value>
   </data>
   <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>

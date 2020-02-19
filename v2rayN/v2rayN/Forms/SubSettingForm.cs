@@ -47,9 +47,8 @@ namespace v2rayN.Forms
                 }
             }
 
-            for (int k = 0; k < config.subItem.Count; k++)
+            foreach (var item in config.subItem)
             {
-                var item = config.subItem[k];
                 SubSettingControl control = new SubSettingControl();
                 control.OnButtonClicked += Control_OnButtonClicked;
                 control.subItem = item;

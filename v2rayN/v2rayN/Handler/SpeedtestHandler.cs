@@ -72,9 +72,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                for (int k = 0; k < _selecteds.Count; k++)
+                foreach (int index in _selecteds)
                 {
-                    int index = _selecteds[k];
                     if (_config.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;
@@ -141,9 +140,8 @@ namespace v2rayN.Handler
                 Thread.Sleep(5000);
 
                 var httpPort = _config.GetLocalPort("speedtest");
-                for (int k = 0; k < _selecteds.Count; k++)
+                foreach (int index in _selecteds)
                 {
-                    int index = _selecteds[k];
                     if (_config.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;

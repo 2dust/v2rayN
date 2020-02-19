@@ -247,7 +247,7 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
-        /// 复制服务器
+        /// 克隆服务器
         /// </summary>
         /// <param name="config"></param>
         /// <param name="index"></param>

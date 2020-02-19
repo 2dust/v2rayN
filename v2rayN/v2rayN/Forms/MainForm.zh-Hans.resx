@@ -173,7 +173,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
-    <value>复制所选服务器</value>
+    <value>克隆所选服务器</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>

@@ -652,9 +652,9 @@ namespace v2rayN.Forms
             GetLvSelectedIndex();
 
             StringBuilder sb = new StringBuilder();
-            for (int k = 0; k < lvSelecteds.Count; k++)
+            foreach (int v in lvSelecteds)
             {
-                string url = ConfigHandler.GetVmessQRCode(config, lvSelecteds[k]);
+                string url = ConfigHandler.GetVmessQRCode(config, v);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -674,9 +674,9 @@ namespace v2rayN.Forms
             GetLvSelectedIndex();
 
             StringBuilder sb = new StringBuilder();
-            for (int k = 0; k < lvSelecteds.Count; k++)
+            foreach (int v in lvSelecteds)
             {
-                string url = ConfigHandler.GetVmessQRCode(config, lvSelecteds[k]);
+                string url = ConfigHandler.GetVmessQRCode(config, v);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
