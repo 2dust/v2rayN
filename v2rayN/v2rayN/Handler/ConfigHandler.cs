@@ -274,7 +274,7 @@ namespace v2rayN.Handler
             vmessItem.streamSecurity = config.vmess[index].streamSecurity;
             vmessItem.remarks = string.Format("{0}-clone", config.vmess[index].remarks);
 
-            config.vmess.Add(vmessItem);
+            config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
 
             ToJsonFile(config);
 
