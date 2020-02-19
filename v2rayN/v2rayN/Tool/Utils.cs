@@ -323,14 +323,32 @@ namespace v2rayN
         public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
         {
             var list = new List<Mode.VmessItem>();
+            source.Reverse(); // Remove the early items first
+
+            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
+            {
+                return o.configVersion == n.configVersion &&
+                    o.configType == n.configType &&
+                    o.address == n.address &&
+                    o.port == n.port &&
+                    o.id == n.id &&
+                    o.alterId == n.alterId &&
+                    o.security == n.security &&
+                    o.network == n.network &&
+                    o.headerType == n.headerType &&
+                    o.requestHost == n.requestHost &&
+                    o.path == n.path &&
+                    o.streamSecurity == n.streamSecurity;
+                // skip (will remove) different remarks
+            }
             foreach (var item in source)
             {
-                if (!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
+                if (!list.Exists(i => _isAdded(i, item)))
                 {
                     list.Add(item);
                 }
             }
-
+            list.Reverse();
             result = list;
         }
 
