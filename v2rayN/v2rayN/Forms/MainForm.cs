@@ -479,6 +479,12 @@ namespace v2rayN.Forms
                     case Keys.V:
                         menuAddServers_Click(null, null);
                         break;
+                    case Keys.U:
+                        menuMoveTop_Click(null, null);
+                        break;
+                    case Keys.D:
+                        menuMoveBottom_Click(null, null);
+                        break;
                     case Keys.P:
                         menuPingServer_Click(null, null);
                         break;
@@ -493,20 +499,23 @@ namespace v2rayN.Forms
                         break;
                 }
             }
-            switch (e.KeyCode)
+            else
             {
-                case Keys.Enter:
-                    menuSetDefaultServer_Click(null, null);
-                    break;
-                case Keys.Delete:
-                    menuRemoveServer_Click(null, null);
-                    break;
-                case Keys.U:
-                    menuMoveUp_Click(null, null);
-                    break;
-                case Keys.D:
-                    menuMoveDown_Click(null, null);
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.Enter:
+                        menuSetDefaultServer_Click(null, null);
+                        break;
+                    case Keys.Delete:
+                        menuRemoveServer_Click(null, null);
+                        break;
+                    case Keys.U:
+                        menuMoveUp_Click(null, null);
+                        break;
+                    case Keys.D:
+                        menuMoveDown_Click(null, null);
+                        break;
+                }
             }
         }
 
