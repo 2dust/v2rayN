@@ -107,6 +107,7 @@
             this.tsbCheckUpdateN = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateCore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdatePACList = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCheckClearPACList = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbHelp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -117,7 +118,6 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -684,6 +684,11 @@
             resources.ApplyResources(this.tsbCheckUpdatePACList, "tsbCheckUpdatePACList");
             this.tsbCheckUpdatePACList.Click += new System.EventHandler(this.tsbCheckUpdatePACList_Click);
             // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
+            // 
             // tsbCheckClearPACList
             // 
             this.tsbCheckClearPACList.Name = "tsbCheckClearPACList";
@@ -747,11 +752,6 @@
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            resources.ApplyResources(this.toolStripSeparator13, "toolStripSeparator13");
             // 
             // MainForm
             // 
