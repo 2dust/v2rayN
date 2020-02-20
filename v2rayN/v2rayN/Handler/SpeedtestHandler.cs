@@ -253,8 +253,12 @@ namespace v2rayN.Handler
 
             try
             {
-                IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress ipAddress;
+                if (!System.Net.IPAddress.TryParse(url, out ipAddress))
+                {
+                    IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
+                    ipAddress = ipHostInfo.AddressList[0];
+                }
 
                 var timer = new Stopwatch();
                 timer.Start();
