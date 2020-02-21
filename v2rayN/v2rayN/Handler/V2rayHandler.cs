@@ -202,14 +202,11 @@ namespace v2rayN.Handler
         /// <summary>
         /// 消息委托
         /// </summary>
-        /// <param name="notify"></param>
-        /// <param name="msg"></param>
-        private void ShowMsg(bool notify, string msg)
+        /// <param name="updateToTrayTooltip">是否更新托盘图标的工具提示</param>
+        /// <param name="msg">输出到日志框</param>
+        private void ShowMsg(bool updateToTrayTooltip, string msg)
         {
-            if (ProcessEvent != null)
-            {
-                ProcessEvent(notify, msg);
-            }
+            ProcessEvent?.Invoke(updateToTrayTooltip, msg);
         }
 
         private void KillProcess(Process p)

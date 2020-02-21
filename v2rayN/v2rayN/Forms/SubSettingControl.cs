@@ -54,10 +54,7 @@ namespace v2rayN.Forms
                 subItem.url = string.Empty;
             }
 
-            if (OnButtonClicked != null)
-            {
-                OnButtonClicked(sender, e);
-            }
+            OnButtonClicked?.Invoke(sender, e);
         }
     }
 }
