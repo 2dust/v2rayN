@@ -236,10 +236,16 @@
 {0}</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>未找到v2ray-core,下载地址:{0}</value>
+    <value>找不到 v2ray-core，下载地址: {0}</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} 已是最新版本。</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} 已是最新版本。</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>启动服务({0})......</value>
+    <value>启动服务({0})...</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>地址</value>

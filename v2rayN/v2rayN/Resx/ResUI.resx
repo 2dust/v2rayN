@@ -236,10 +236,16 @@
 {0}</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>V2ray-core not found, download address: {0}</value>
+    <value>V2ray-core not found, please download: {0}</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} already up to date.</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} already up to date.</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})......</value>
+    <value>Start service ({0})...</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Address</value>

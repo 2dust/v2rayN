@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Properties;
@@ -75,7 +76,8 @@ namespace v2rayN.Handler
                 {
                     if (AbsoluteCompleted != null)
                     {
-                        AbsoluteCompleted(this, new ResultEventArgs(false, "Already the latest version"));
+                        string message = string.Format(UIRes.I18N("IsLatestN"), curVersion);
+                        AbsoluteCompleted(this, new ResultEventArgs(false, message));
                     }
                     return;
                 }
@@ -108,7 +110,42 @@ namespace v2rayN.Handler
             WebRequest request = WebRequest.Create(coreLatestUrl);
             request.BeginGetResponse(new AsyncCallback(OnResponseV2rayCore), request);
         }
+        /// <summary>
+        /// 获取V2RayCore版本
+        /// </summary>
+        public string getV2rayVersion()
+        {
+            try
+            {
+                string filePath = Utils.GetPath("V2ray.exe");
+                if (!File.Exists(filePath))
+                {
+                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2ray/v2ray-core/releases");
+                    //ShowMsg(true, msg);
+                    return "";
+                }
 
+                Process p = new Process();
+                p.StartInfo.FileName = filePath;
+                p.StartInfo.Arguments = "-version";
+                p.StartInfo.WorkingDirectory = Utils.StartupPath();
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+                p.Start();
+                p.WaitForExit(5000);
+                string echo = p.StandardOutput.ReadToEnd();
+                string version = Regex.Match(echo, "V2Ray ([0-9.]+) \\(").Groups[1].Value;
+                return version;
+            }
+
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return "";
+            }
+        }
         private void OnResponseV2rayCore(IAsyncResult ar)
         {
             try
@@ -118,15 +155,18 @@ namespace v2rayN.Handler
                 string redirectUrl = response.ResponseUri.AbsoluteUri;
                 string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
 
-                string osBit = string.Empty;
-                if (Environment.Is64BitProcess)
+                string curVersion = "v" + getV2rayVersion();
+                if (curVersion == version)
                 {
-                    osBit = "64";
+                    if (AbsoluteCompleted != null)
+                    {
+                        string message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
+                        AbsoluteCompleted(this, new ResultEventArgs(false, message));
+                    }
+                    return;
                 }
-                else
-                {
-                    osBit = "32";
-                }
+
+                string osBit = Environment.Is64BitProcess ? "64" : "32";
                 string url = string.Format(coreUrl, version, osBit);
                 if (AbsoluteCompleted != null)
                 {

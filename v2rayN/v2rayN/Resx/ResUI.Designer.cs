@@ -268,6 +268,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 {0} already up to date. 的本地化字符串。
+        /// </summary>
+        internal static string IsLatestCore {
+            get {
+                return ResourceManager.GetString("IsLatestCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} already up to date. 的本地化字符串。
+        /// </summary>
+        internal static string IsLatestN {
+            get {
+                return ResourceManager.GetString("IsLatestN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         internal static string LvAddress {
@@ -574,7 +592,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2ray-core not found, download address: {0} 的本地化字符串。
+        ///   查找类似 V2ray-core not found, please download: {0} 的本地化字符串。
         /// </summary>
         internal static string NotFoundCore {
             get {
@@ -709,7 +727,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Start service ({0})...... 的本地化字符串。
+        ///   查找类似 Start service ({0})... 的本地化字符串。
         /// </summary>
         internal static string StartService {
             get {
