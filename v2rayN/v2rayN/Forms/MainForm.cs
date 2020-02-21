@@ -1217,7 +1217,7 @@ namespace v2rayN.Forms
             }
 
             AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
-            downloadHandle.AbsoluteV2rayN(config);
+            downloadHandle.CheckUpdateAsync("v2rayN");
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
@@ -1290,7 +1290,7 @@ namespace v2rayN.Forms
             }
 
             AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
-            downloadHandle.AbsoluteV2rayCore(config);
+            downloadHandle.CheckUpdateAsync("Core");
         }
 
         private void tsbCheckUpdatePACList_Click(object sender, EventArgs e)

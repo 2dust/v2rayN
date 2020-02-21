@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Properties;
@@ -48,68 +50,45 @@ namespace v2rayN.Handler
         private DateTime totalDatetime = new DateTime();
         private int DownloadTimeout = -1;
 
+        #region Check for updates
 
-
-        #region v2rayN
-
-        private string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
+        private readonly string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
         private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
-
-        public void AbsoluteV2rayN(Config config)
-        {
-            Utils.SetSecurityProtocol();
-            WebRequest request = WebRequest.Create(nLatestUrl);
-            request.BeginGetResponse(new AsyncCallback(OnResponseV2rayN), request);
-        }
-
-        private void OnResponseV2rayN(IAsyncResult ar)
-        {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);
-                string redirectUrl = response.ResponseUri.AbsoluteUri;
-                string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
-
-                var curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
-                if (curVersion == version)
-                {
-                    if (AbsoluteCompleted != null)
-                    {
-                        string message = string.Format(UIRes.I18N("IsLatestN"), curVersion);
-                        AbsoluteCompleted(this, new ResultEventArgs(false, message));
-                    }
-                    return;
-                }
-
-                string url = string.Format(nUrl, version);
-                if (AbsoluteCompleted != null)
-                {
-                    AbsoluteCompleted(this, new ResultEventArgs(true, url));
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-
-                if (Error != null)
-                    Error(this, new ErrorEventArgs(ex));
-            }
-        }
-
-        #endregion
-
-        #region Core
-
-        private string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
+        private readonly string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
         private const string coreUrl = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
 
-        public void AbsoluteV2rayCore(Config config)
+        public async Task CheckUpdateAsync(string type)
         {
             Utils.SetSecurityProtocol();
-            WebRequest request = WebRequest.Create(coreLatestUrl);
-            request.BeginGetResponse(new AsyncCallback(OnResponseV2rayCore), request);
+            WebRequestHandler webRequestHandler = new WebRequestHandler();
+            webRequestHandler.AllowAutoRedirect = false;
+            HttpClient httpClient = new HttpClient(webRequestHandler);
+
+            string url;
+            if (type == "Core")
+            {
+                url = coreLatestUrl;
+            }
+            else if (type == "v2rayN")
+            {
+                url = nLatestUrl;
+            }
+            else
+            {
+                throw new ArgumentException("Type");
+            }
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            if (response.StatusCode.ToString() == "Redirect")
+            {
+                responseHandler(type, response.Headers.Location.ToString());
+            }
+            else
+            {
+                Utils.SaveLog("StatusCode error: " + url);
+                return;
+            }
         }
+
         /// <summary>
         /// 获取V2RayCore版本
         /// </summary>
@@ -146,39 +125,44 @@ namespace v2rayN.Handler
                 return "";
             }
         }
-        private void OnResponseV2rayCore(IAsyncResult ar)
+        private void responseHandler(string type, string redirectUrl)
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)ar.AsyncState;
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);
-                string redirectUrl = response.ResponseUri.AbsoluteUri;
                 string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
 
-                string curVersion = "v" + getV2rayVersion();
+                string curVersion;
+                string message;
+                string url;
+                if (type == "Core") {
+                    curVersion = "v" + getV2rayVersion();
+                    message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
+                    string osBit = Environment.Is64BitProcess ? "64" : "32";
+                    url = string.Format(coreUrl, version, osBit);
+                }
+                else if (type == "v2rayN") {
+                    curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
+                    message = string.Format(UIRes.I18N("IsLatestN"), curVersion);
+                    url = string.Format(nUrl, version);
+                }
+                else
+                {
+                    throw new ArgumentException("Type");
+                }
+
                 if (curVersion == version)
                 {
-                    if (AbsoluteCompleted != null)
-                    {
-                        string message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
-                        AbsoluteCompleted(this, new ResultEventArgs(false, message));
-                    }
+                    AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
                     return;
                 }
 
-                string osBit = Environment.Is64BitProcess ? "64" : "32";
-                string url = string.Format(coreUrl, version, osBit);
-                if (AbsoluteCompleted != null)
-                {
-                    AbsoluteCompleted(this, new ResultEventArgs(true, url));
-                }
+                AbsoluteCompleted?.Invoke(this, new ResultEventArgs(true, url));
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
 
-                if (Error != null)
-                    Error(this, new ErrorEventArgs(ex));
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -191,10 +175,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol();
-                if (UpdateCompleted != null)
-                {
-                    UpdateCompleted(this, new ResultEventArgs(false, "Downloading..."));
-                }
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, "Downloading..."));
 
                 progressPercentage = -1;
                 totalBytesToReceive = 0;
@@ -214,8 +195,7 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
 
-                if (Error != null)
-                    Error(this, new ErrorEventArgs(ex));
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -280,8 +260,7 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
 
-                if (Error != null)
-                    Error(this, new ErrorEventArgs(ex));
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -314,10 +293,7 @@ namespace v2rayN.Handler
                     || Utils.IsNullOrEmpty(e.Error.ToString()))
                 {
                     string source = e.Result;
-                    if (UpdateCompleted != null)
-                    {
-                        UpdateCompleted(this, new ResultEventArgs(true, source));
-                    }
+                    UpdateCompleted?.Invoke(this, new ResultEventArgs(true, source));
                 }
                 else
                 {
@@ -328,8 +304,7 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
 
-                if (Error != null)
-                    Error(this, new ErrorEventArgs(ex));
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
