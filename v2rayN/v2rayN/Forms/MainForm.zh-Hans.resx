@@ -146,7 +146,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
-    <value>从剪贴板导入批量URL</value>
+    <value>从剪贴板导入批量URL (Ctrl+Q) </value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
@@ -340,7 +340,7 @@
     <value>195, 22</value>
   </data>
   <data name="menuAddServers2.Text" xml:space="preserve">
-    <value>从剪贴板导入批量URL</value>
+    <value>从剪贴板导入批量URL (Ctrl+Q)</value>
   </data>
   <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>

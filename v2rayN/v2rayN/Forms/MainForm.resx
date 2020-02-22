@@ -156,7 +156,7 @@
     <value>447, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard</value>
+    <value>Import bulk URL from clipboard (Ctrl+Q)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 22</value>
@@ -278,20 +278,8 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Batch export subscription content to clipboard (multiple choice)</value>
   </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 556</value>
+    <value>448, 534</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -412,6 +400,18 @@
   </data>
   <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -933,7 +933,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>65</value>
+    <value>70</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>

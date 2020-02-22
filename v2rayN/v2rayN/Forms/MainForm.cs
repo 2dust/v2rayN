@@ -489,6 +489,9 @@ namespace v2rayN.Forms
                     case Keys.S:
                         menuScanScreen_Click(null, null);
                         break;
+                    case Keys.Q:
+                        menuAddServers_Click(null, null);
+                        break;
                     case Keys.T:
                         menuSpeedServer_Click(null, null);
                         break;
