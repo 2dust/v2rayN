@@ -835,6 +835,11 @@ namespace v2rayN.Forms
             return 0;
         }
 
+        private void update_subscription_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess();
+        }
+
         #endregion
 
 
@@ -1377,6 +1382,14 @@ namespace v2rayN.Forms
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
+            UpdateSubscriptionProcess();
+        }
+
+        /// <summary>
+        /// the subscription update process
+        /// </summary>
+        private void UpdateSubscriptionProcess()
+        {
             AppendText(false, UIRes.I18N("MsgUpdateSubscriptionStart"));
 
             if (config.subItem == null || config.subItem.Count <= 0)
@@ -1439,7 +1452,6 @@ namespace v2rayN.Forms
                 AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
         }
-
         #endregion
 
         #region Language
@@ -1458,8 +1470,9 @@ namespace v2rayN.Forms
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
         }
 
+
         #endregion
 
-
+        
     }
 }
