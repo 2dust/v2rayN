@@ -162,7 +162,7 @@
     <value>447, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
-    <value>Scan QR code on the screen</value>
+    <value>Scan QR code on the screen (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>444, 6</value>

@@ -488,6 +488,9 @@ namespace v2rayN.Forms
                     case Keys.R:
                         menuRealPingServer_Click(null, null);
                         break;
+                    case Keys.S:
+                        menuScanScreen_Click(null, null);
+                        break;
                     case Keys.T:
                         menuSpeedServer_Click(null, null);
                         break;

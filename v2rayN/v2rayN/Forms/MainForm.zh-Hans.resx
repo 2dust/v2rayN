@@ -152,7 +152,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
-    <value>扫描屏幕上的二维码</value>
+    <value>扫描屏幕上的二维码 (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 6</value>
