@@ -7,7 +7,7 @@ namespace v2rayN
     {
         public static void Show(string msg)
         {
-            MessageBox.Show(msg);
+            MessageBox.Show(msg, "v2rayN", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public static DialogResult ShowYesNo(string msg)

@@ -72,9 +72,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                for (int k = 0; k < _selecteds.Count; k++)
+                foreach (int index in _selecteds)
                 {
-                    int index = _selecteds[k];
                     if (_config.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;
@@ -103,9 +102,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                for (int k = 0; k < _selecteds.Count; k++)
+                foreach (int index in _selecteds)
                 {
-                    int index = _selecteds[k];
                     if (_config.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;
@@ -121,7 +119,7 @@ namespace v2rayN.Handler
                     }
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(10);
 
             }
             catch (Exception ex)
@@ -142,9 +140,8 @@ namespace v2rayN.Handler
                 Thread.Sleep(5000);
 
                 var httpPort = _config.GetLocalPort("speedtest");
-                for (int k = 0; k < _selecteds.Count; k++)
+                foreach (int index in _selecteds)
                 {
-                    int index = _selecteds[k];
                     if (_config.vmess[index].configType == (int)EConfigType.Custom)
                     {
                         continue;
@@ -256,14 +253,24 @@ namespace v2rayN.Handler
 
             try
             {
-                IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress ipAddress;
+                if (!System.Net.IPAddress.TryParse(url, out ipAddress))
+                {
+                    IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
+                    ipAddress = ipHostInfo.AddressList[0];
+                }
 
                 var timer = new Stopwatch();
                 timer.Start();
 
-                Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.Connect(new IPEndPoint(ipAddress, port));
+                var endPoint = new IPEndPoint(ipAddress, port);
+                Socket clientSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                IAsyncResult result = clientSocket.BeginConnect(endPoint, null, null);
+                if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
+                    throw new TimeoutException("connect timeout (5s): " + url);
+                clientSocket.EndConnect(result);
+
                 timer.Stop();
                 responseTime = timer.Elapsed.Milliseconds;
                 clientSocket.Close();

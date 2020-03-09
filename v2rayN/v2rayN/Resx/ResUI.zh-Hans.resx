@@ -175,7 +175,7 @@
     <value>成功导入自定义配置服务器</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>从剪贴板导入批量URL成功</value>
+    <value>成功从剪贴板导入 {0} 个服务器</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。在自定义配置inbound中有socks port等于设置中的port时，系统代理才可用</value>
@@ -236,10 +236,16 @@
 {0}</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>未找到v2ray-core,下载地址:{0}</value>
+    <value>找不到 v2ray-core，下载地址: {0}</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} 已是最新版本。</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} 已是最新版本。</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>启动服务({0})......</value>
+    <value>启动服务({0})...</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>地址</value>
@@ -254,7 +260,7 @@
     <value>端口</value>
   </data>
   <data name="LvServiceType" xml:space="preserve">
-    <value>服务类型</value>
+    <value>类型</value>
   </data>
   <data name="LvSubscription" xml:space="preserve">
     <value>订阅</value>
@@ -345,5 +351,8 @@
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC服务启动失败,请用管理员启动</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>服务器去重完成。原数量: {0}，现数量: {1}</value>
   </data>
 </root>

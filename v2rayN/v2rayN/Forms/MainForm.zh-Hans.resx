@@ -146,7 +146,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
-    <value>从剪贴板导入批量URL</value>
+    <value>从剪贴板导入批量URL (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
@@ -161,7 +161,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuRemoveServer.Text" xml:space="preserve">
-    <value>移除所选服务器(多选)   (Delete)</value>
+    <value>移除所选服务器(多选) (Delete)</value>
   </data>
   <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
@@ -173,13 +173,13 @@
     <value>278, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
-    <value>复制所选服务器</value>
+    <value>克隆所选服务器</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuSetDefaultServer.Text" xml:space="preserve">
-    <value>设为活动服务器   (Enter)</value>
+    <value>设为活动服务器 (Enter)</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 6</value>
@@ -188,31 +188,31 @@
     <value>278, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>上移至顶</value>
+    <value>上移至顶 (Ctrl+U)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
-    <value>上移      (U)</value>
+    <value>上移 (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuMoveDown.Text" xml:space="preserve">
-    <value>下移      (D)</value>
+    <value>下移 (D)</value>
   </data>
   <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>下移至底</value>
+    <value>下移至底 (Ctrl+D)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuSelectAll.Text" xml:space="preserve">
-    <value>全选      (Ctrl+A)</value>
+    <value>全选 (Ctrl+A)</value>
   </data>
   <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 6</value>
@@ -221,25 +221,25 @@
     <value>278, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
-    <value>测试服务器延迟Ping(多选)(Ctrl+P)</value>
+    <value>测试服务器延迟Ping(多选) (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
-    <value>测试服务器延迟Tcping(多选)(Ctrl+O)</value>
+    <value>测试服务器延迟Tcping(多选) (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
-    <value>测试服务器真连接延迟(多选)(Ctrl+R)</value>
+    <value>测试服务器真连接延迟(多选) (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>测试服务器速度(多选)(Ctrl+T)</value>
+    <value>测试服务器速度(多选) (Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 6</value>
@@ -260,7 +260,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
-    <value>批量导出分享URL至剪贴板(多选)</value>
+    <value>批量导出分享URL至剪贴板(多选) (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
@@ -420,19 +420,19 @@
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
-    <value>检查更新v2rayN</value>
+    <value>v2rayN</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>检查更新v2rayCore</value>
+    <value>v2rayCore</value>
   </data>
   <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
   </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
-    <value>检查更新PAC</value>
+    <value>PAC</value>
   </data>
   <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 22</value>
@@ -446,8 +446,11 @@
   <data name="tsbCheckUpdate.Text" xml:space="preserve">
     <value>  检查更新  </value>
   </data>
+  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
+    <value>V2Ray 官网</value>
+  </data>
   <data name="tsbAbout.Text" xml:space="preserve">
-    <value>关于</value>
+    <value>v2rayN 项目</value>
   </data>
   <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 53</value>
@@ -469,6 +472,6 @@
 </value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
-    <value>  关闭  </value>
+    <value>  关闭窗口  </value>
   </data>
 </root>

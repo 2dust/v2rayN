@@ -175,7 +175,7 @@
     <value>Successfully imported custom configuration server</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>Imported bulk URL from clipboard successfully</value>
+    <value>{0} servers have been imported from clipboard.</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
@@ -236,10 +236,16 @@
 {0}</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>V2ray-core not found, download address: {0}</value>
+    <value>V2ray-core not found, please download: {0}</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} already up to date.</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} already up to date.</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})......</value>
+    <value>Start service ({0})...</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Address</value>
@@ -344,6 +350,9 @@
     <value>Total upload traffic</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
-    <value>PAC failed to start. Pls with an administrator.</value>
+    <value>PAC failed to start. Run it with Admin right.</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
   </data>
 </root>

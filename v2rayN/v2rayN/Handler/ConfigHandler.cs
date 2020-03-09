@@ -247,7 +247,7 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
-        /// 复制服务器
+        /// 克隆服务器
         /// </summary>
         /// <param name="config"></param>
         /// <param name="index"></param>
@@ -274,7 +274,7 @@ namespace v2rayN.Handler
             vmessItem.streamSecurity = config.vmess[index].streamSecurity;
             vmessItem.remarks = string.Format("{0}-clone", config.vmess[index].remarks);
 
-            config.vmess.Add(vmessItem);
+            config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
 
             ToJsonFile(config);
 
@@ -724,7 +724,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="clipboardData"></param>
         /// <param name="subid"></param>
-        /// <returns></returns>
+        /// <returns>成功导入的数量</returns>
         public static int AddBatchServers(ref Config config, string clipboardData, string subid = "")
         {
             if (Utils.IsNullOrEmpty(clipboardData))
@@ -779,11 +779,7 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            if (countServers > 0)
-            {
-                return 0;
-            }
-            return -1;
+            return countServers;
         }
 
         /// <summary>
