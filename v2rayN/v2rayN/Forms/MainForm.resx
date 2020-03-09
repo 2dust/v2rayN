@@ -162,7 +162,7 @@
     <value>355, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
-    <value>Scan QR code on the screen</value>
+    <value>Scan QR code on the screen (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>352, 6</value>
@@ -198,13 +198,13 @@
     <value>355, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>Move to top (Ctrl+U)</value>
+    <value>Move to top (T)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
-    <value>Upward (U)</value>
+    <value>Up (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -216,7 +216,7 @@
     <value>355, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>Move to bottom (Ctrl+D)</value>
+    <value>Move to bottom (B)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>

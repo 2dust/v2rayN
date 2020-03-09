@@ -464,7 +464,7 @@ namespace v2rayN.Forms
             }
         }
 
-        private void lvServers_KeyUp(object sender, KeyEventArgs e)
+        private void lvServers_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
             {
@@ -479,12 +479,6 @@ namespace v2rayN.Forms
                     case Keys.V:
                         menuAddServers_Click(null, null);
                         break;
-                    case Keys.U:
-                        menuMoveTop_Click(null, null);
-                        break;
-                    case Keys.D:
-                        menuMoveBottom_Click(null, null);
-                        break;
                     case Keys.P:
                         menuPingServer_Click(null, null);
                         break;
@@ -493,6 +487,9 @@ namespace v2rayN.Forms
                         break;
                     case Keys.R:
                         menuRealPingServer_Click(null, null);
+                        break;
+                    case Keys.S:
+                        menuScanScreen_Click(null, null);
                         break;
                     case Keys.T:
                         menuSpeedServer_Click(null, null);
@@ -508,6 +505,12 @@ namespace v2rayN.Forms
                         break;
                     case Keys.Delete:
                         menuRemoveServer_Click(null, null);
+                        break;
+                    case Keys.T:
+                        menuMoveTop_Click(null, null);
+                        break;
+                    case Keys.B:
+                        menuMoveBottom_Click(null, null);
                         break;
                     case Keys.U:
                         menuMoveUp_Click(null, null);

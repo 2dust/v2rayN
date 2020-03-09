@@ -152,7 +152,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
-    <value>扫描屏幕上的二维码</value>
+    <value>扫描屏幕上的二维码 (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 6</value>
@@ -188,7 +188,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>上移至顶 (Ctrl+U)</value>
+    <value>上移至顶 (T)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
@@ -206,7 +206,7 @@
     <value>278, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>下移至底 (Ctrl+D)</value>
+    <value>下移至底 (B)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 22</value>
