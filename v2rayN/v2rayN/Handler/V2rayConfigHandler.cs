@@ -446,8 +446,15 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                var host = config.requestHost();
-
+                string host;
+                if (streamSettings.network != "quic")
+                {
+                    host = config.requestHost();
+                }
+                else
+                {
+                    host = config.address();
+                }
                 //if tls
                 if (config.streamSecurity() == Global.StreamSecurity)
                 {
