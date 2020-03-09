@@ -129,151 +129,151 @@
     <value>327, 17</value>
   </metadata>
   <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddVmessServer.Text" xml:space="preserve">
     <value>Add [VMess] server</value>
   </data>
   <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
     <value>Add [Shadowsocks] server</value>
   </data>
   <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddSocksServer.Text" xml:space="preserve">
     <value>Add [Socks] server</value>
   </data>
   <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddCustomServer.Text" xml:space="preserve">
     <value>Add a custom configuration server</value>
   </data>
   <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
     <value>Import bulk URL from clipboard (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
     <value>Scan QR code on the screen</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuRemoveServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRemoveServer.Text" xml:space="preserve">
     <value>Remove selected servers (Delete)</value>
   </data>
   <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
     <value>Remove duplicate servers</value>
   </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
     <value>Clone selected server</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSetDefaultServer.Text" xml:space="preserve">
     <value>Set as active server (Enter)</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
     <value>Move to top (Ctrl+U)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
     <value>Upward (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveDown.Text" xml:space="preserve">
     <value>Down (D)</value>
   </data>
   <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
     <value>Move to bottom (Ctrl+D)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSelectAll.Text" xml:space="preserve">
     <value>Select All (Ctrl+A)</value>
   </data>
   <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
     <value>Test servers ping (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
     <value>Test servers with tcping (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
     <value>Test servers real delay (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
     <value>Test servers download speed (Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ClientConfig.Text" xml:space="preserve">
     <value>Export selected server for client configuration</value>
   </data>
   <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ServerConfig.Text" xml:space="preserve">
     <value>Export selected server for server configuration</value>
   </data>
   <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
     <value>Export share URLs to clipboard (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 22</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
@@ -291,7 +291,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 556</value>
+    <value>356, 534</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -841,17 +841,17 @@
   <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
   </data>
-  <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
-    <value>V2Ray Website</value>
-  </data>
   <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 22</value>
   </data>
   <data name="tsbAbout.Text" xml:space="preserve">
     <value>v2rayN Project</value>
+  </data>
+  <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
+    <value>V2Ray Website</value>
   </data>
   <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 6</value>
@@ -1373,6 +1373,12 @@
   <data name="&gt;&gt;tsbHelp.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
+    <value>tsbV2rayWebsite</value>
+  </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tsbAbout.Name" xml:space="preserve">
     <value>tsbAbout</value>
   </data>
@@ -1414,12 +1420,6 @@
   </data>
   <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
-    <value>tsbV2rayWebsite</value>
-  </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>
