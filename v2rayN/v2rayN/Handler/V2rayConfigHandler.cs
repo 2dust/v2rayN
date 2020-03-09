@@ -446,15 +446,7 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                string host;
-                if (streamSettings.network != "quic")
-                {
-                    host = config.requestHost();
-                }
-                else
-                {
-                    host = config.address();
-                }
+                var host = config.requestHost();               
                 //if tls
                 if (config.streamSecurity() == Global.StreamSecurity)
                 {
@@ -548,7 +540,7 @@ namespace v2rayN.Handler
                         quicsettings.key = config.path();
                         quicsettings.header = new Header();
                         quicsettings.header.type = config.headerType();
-
+                        streamSettings.tlsSettings.serverName = config.address();
                         streamSettings.quicSettings = quicsettings;
                         break;
                     default:
