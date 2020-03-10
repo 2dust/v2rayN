@@ -668,7 +668,8 @@ namespace v2rayN.Forms
             if (sb.Length > 0)
             {
                 Utils.SetClipboardData(sb.ToString());
-                UI.Show(UIRes.I18N("BatchExportURLSuccessfully"));
+                AppendText(false, UIRes.I18N("BatchExportURLSuccessfully"));
+                //UI.Show(UIRes.I18N("BatchExportURLSuccessfully"));
             }
         }
 
