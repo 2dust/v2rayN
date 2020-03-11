@@ -541,7 +541,9 @@ namespace v2rayN.Handler
                         quicsettings.header = new Header();
                         quicsettings.header.type = config.headerType();
                         streamSettings.quicSettings = quicsettings;
-                        streamSettings.tlsSettings.serverName = config.address();                       
+                        if (config.streamSecurity() == Global.StreamSecurity){
+                            streamSettings.tlsSettings.serverName = config.address();  
+                        }              
                         break;
                     default:
                         //tcp带http伪装
