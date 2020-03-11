@@ -1459,7 +1459,7 @@ namespace v2rayN.Handler
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), configCopy.getSummary());
             }
-            catch (Exception ex)
+            catch
             {
                 msg = UIRes.I18N("FailedGenDefaultConfiguration");
                 return -1;

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -138,40 +139,38 @@ namespace v2rayN.Handler
                 _v2rayHandler.LoadV2ray(_config, _selecteds);
 
                 Thread.Sleep(5000);
-
                 var httpPort = _config.GetLocalPort("speedtest");
-                foreach (int index in _selecteds)
+                Task[] tasks = new Task[_selecteds.Count];
+                int i = -1;
+                foreach (int itemIndex in _selecteds)
                 {
-                    if (_config.vmess[index].configType == (int)EConfigType.Custom)
+                    if (_config.vmess[itemIndex].configType == (int)EConfigType.Custom)
                     {
                         continue;
                     }
 
-                    try
-                    {
-                        var webProxy = new WebProxy(Global.Loopback, httpPort + index);
-                        int responseTime = -1;
-                        var status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
-                        if (!Utils.IsNullOrEmpty(status))
+                    i++;
+                    tasks[i] = Task.Factory.StartNew(() => {
+                        try
                         {
-                            _updateFunc(index, string.Format("{0}", status));
+                            WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
+                            int responseTime = -1;
+                            var status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
+                            string output = Utils.IsNullOrEmpty(status) ? string.Format("{0}ms", responseTime) : string.Format("{0}", status);
+                            _updateFunc(itemIndex, output);
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            _updateFunc(index, string.Format("{0}ms", responseTime));
+                            Utils.SaveLog(ex.Message, ex);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                    }
-                    Thread.Sleep(100);
+                    });
+                    //Thread.Sleep(100);
                 }
+                Task.WaitAll(tasks);
 
                 Global.reloadV2ray = true;
                 _v2rayHandler.LoadV2ray(_config);
                 Thread.Sleep(100);
-
             }
             catch (Exception ex)
             {
@@ -286,7 +285,6 @@ namespace v2rayN.Handler
         {
             string msg = string.Empty;
             responseTime = -1;
-
             try
             {
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -313,7 +311,6 @@ namespace v2rayN.Handler
                 msg = ex.Message;
             }
             return msg;
-
         }
     }
 }
