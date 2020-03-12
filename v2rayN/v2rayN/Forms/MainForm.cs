@@ -352,6 +352,13 @@ namespace v2rayN.Forms
 
         #endregion
 
+        #region http proxy 操作
+        private void RestartHttpProxy()
+        {
+            HttpProxyHandle.RestartHttpAgent(config, true);
+        }
+        #endregion
+
         #region v2ray 操作
 
         /// <summary>
@@ -703,6 +710,7 @@ namespace v2rayN.Forms
                 //刷新
                 RefreshServers();
                 LoadV2ray();
+                RestartHttpProxy();
             }
         }
 
