@@ -121,6 +121,11 @@ namespace v2rayN.HttpProxyHandler
         public static void RestartHttpAgent(Config config, bool forced)
         {
             bool isRestart = false;
+            if (config.listenerType == 0)
+            {
+                // 关闭http proxy时，直接返回
+                return;
+            }
             //强制重启或者socks端口变化
             if (forced)
             {
