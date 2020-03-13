@@ -119,151 +119,151 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuAddVmessServer.Text" xml:space="preserve">
     <value>添加[VMess]服务器</value>
   </data>
   <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
     <value>添加[Shadowsocks]服务器</value>
   </data>
   <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuAddSocksServer.Text" xml:space="preserve">
     <value>添加[Socks]服务器</value>
   </data>
   <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuAddCustomServer.Text" xml:space="preserve">
     <value>添加自定义配置服务器</value>
   </data>
   <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
     <value>从剪贴板导入批量URL (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
     <value>扫描屏幕上的二维码 (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
+    <value>297, 6</value>
   </data>
   <data name="menuRemoveServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuRemoveServer.Text" xml:space="preserve">
     <value>移除所选服务器(多选) (Delete)</value>
   </data>
   <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
     <value>移除重复的服务器</value>
   </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
     <value>克隆所选服务器</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuSetDefaultServer.Text" xml:space="preserve">
     <value>设为活动服务器 (Enter)</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
+    <value>297, 6</value>
   </data>
   <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
     <value>上移至顶 (T)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
     <value>上移 (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuMoveDown.Text" xml:space="preserve">
     <value>下移 (D)</value>
   </data>
   <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
     <value>下移至底 (B)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuSelectAll.Text" xml:space="preserve">
     <value>全选 (Ctrl+A)</value>
   </data>
   <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
+    <value>297, 6</value>
   </data>
   <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
     <value>测试服务器延迟Ping(多选) (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
     <value>测试服务器延迟Tcping(多选) (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
     <value>测试服务器真连接延迟(多选) (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
     <value>测试服务器速度(多选) (Ctrl+T)</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 6</value>
+    <value>297, 6</value>
   </data>
   <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuExport2ClientConfig.Text" xml:space="preserve">
     <value>导出所选服务器为客户端配置</value>
   </data>
   <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuExport2ServerConfig.Text" xml:space="preserve">
     <value>导出所选服务器为服务端配置</value>
   </data>
   <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
     <value>批量导出分享URL至剪贴板(多选) (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 22</value>
+    <value>300, 22</value>
   </data>
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>批量导出订阅内容至剪贴板(多选)</value>
@@ -275,7 +275,7 @@
     <value>  服务器  </value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>279, 534</value>
+    <value>301, 534</value>
   </data>
   <data name="lvServers.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -295,34 +295,46 @@
 </value>
   </data>
   <data name="menuNotEnabledHttp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 22</value>
+    <value>316, 22</value>
   </data>
   <data name="menuNotEnabledHttp.Text" xml:space="preserve">
     <value>关闭Http代理</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 22</value>
+    <value>316, 22</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
-    <value>开启Http代理,并自动配置代理服务器(全局模式)</value>
+    <value>开启Http代理,并自动配置系统代理(全局模式)</value>
   </data>
   <data name="menuGlobalPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 22</value>
+    <value>316, 22</value>
   </data>
   <data name="menuGlobalPAC.Text" xml:space="preserve">
-    <value>开启PAC,并自动配置PAC(PAC模式)</value>
+    <value>开启PAC,并自动配置系统代理(PAC模式)</value>
   </data>
   <data name="menuKeep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 22</value>
+    <value>316, 22</value>
   </data>
   <data name="menuKeep.Text" xml:space="preserve">
-    <value>仅开启Http代理,不自动配置代理服务器(直连模式)</value>
+    <value>仅开启Http代理,并清除系统代理</value>
   </data>
   <data name="menuKeepPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 22</value>
+    <value>316, 22</value>
   </data>
   <data name="menuKeepPAC.Text" xml:space="preserve">
-    <value>仅开启PAC,不自动配置PAC</value>
+    <value>仅开启PAC,并清除系统代理</value>
+  </data>
+  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>316, 22</value>
+  </data>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>仅开启Http代理,不改变系统代理</value>
+  </data>
+  <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>316, 22</value>
+  </data>
+  <data name="menuKeepPACNothing.Text" xml:space="preserve">
+    <value>仅开启PAC,不改变系统代理</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -402,7 +414,7 @@
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
         QDfSDbQvuSb1AicFjJrwkxcN0FIolOuamv5VE2E+gLaPayWchEcE+hhTXVPhIoQmDcFYbKpoJtwEdX4X
         jgIrXfTwnzb6dBw22BaJVdjJmWQs1/SdBRtE0U5cBXW2oSFRO0HtSEeW2FZ1wsq9sjuRdTDVAXnNuWLY
         6JnAl0sYa/Q5q1dhq35ci+Bkq2HJvbZpxGeybAAuw4Fq+cnW1wPITgHFYxvBUw+qHEIL1yq1vDKhVlH3
@@ -417,25 +429,28 @@
     <value>  重启服务  </value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>223, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
     <value>v2rayN</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>223, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
     <value>v2rayCore</value>
   </data>
   <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>223, 22</value>
   </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
     <value>PAC</value>
   </data>
+  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 6</value>
+  </data>
   <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 22</value>
+    <value>223, 22</value>
   </data>
   <data name="tsbCheckClearPACList.Text" xml:space="preserve">
     <value>简化PAC (请设置Core路由)</value>
@@ -446,11 +461,11 @@
   <data name="tsbCheckUpdate.Text" xml:space="preserve">
     <value>  检查更新  </value>
   </data>
-  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
-    <value>V2Ray 官网</value>
-  </data>
   <data name="tsbAbout.Text" xml:space="preserve">
     <value>v2rayN 项目</value>
+  </data>
+  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
+    <value>V2Ray 官网</value>
   </data>
   <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 53</value>
@@ -467,9 +482,12 @@
   <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
         GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
 </value>
+  </data>
+  <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 53</value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
     <value>  关闭窗口  </value>

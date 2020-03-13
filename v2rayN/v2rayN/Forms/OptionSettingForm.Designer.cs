@@ -118,32 +118,33 @@
             // 
             // btnClose
             // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // tabControl1
             // 
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage9);
-            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBox1);
             resources.ApplyResources(this.tabPage1, "tabPage1");
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.cmblistenerType);
             this.groupBox1.Controls.Add(this.chksniffingEnabled2);
@@ -164,7 +165,6 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtlocalPort);
             this.groupBox1.Controls.Add(this.label2);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -175,6 +175,7 @@
             // 
             // cmblistenerType
             // 
+            resources.ApplyResources(this.cmblistenerType, "cmblistenerType");
             this.cmblistenerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmblistenerType.FormattingEnabled = true;
             this.cmblistenerType.Items.AddRange(new object[] {
@@ -182,8 +183,9 @@
             resources.GetString("cmblistenerType.Items1"),
             resources.GetString("cmblistenerType.Items2"),
             resources.GetString("cmblistenerType.Items3"),
-            resources.GetString("cmblistenerType.Items4")});
-            resources.ApplyResources(this.cmblistenerType, "cmblistenerType");
+            resources.GetString("cmblistenerType.Items4"),
+            resources.GetString("cmblistenerType.Items5"),
+            resources.GetString("cmblistenerType.Items6")});
             this.cmblistenerType.Name = "cmblistenerType";
             // 
             // chksniffingEnabled2
@@ -229,12 +231,12 @@
             // 
             // cmbprotocol2
             // 
+            resources.ApplyResources(this.cmbprotocol2, "cmbprotocol2");
             this.cmbprotocol2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbprotocol2.FormattingEnabled = true;
             this.cmbprotocol2.Items.AddRange(new object[] {
             resources.GetString("cmbprotocol2.Items"),
             resources.GetString("cmbprotocol2.Items1")});
-            resources.ApplyResources(this.cmbprotocol2, "cmbprotocol2");
             this.cmbprotocol2.Name = "cmbprotocol2";
             // 
             // label3
@@ -249,8 +251,8 @@
             // 
             // cmbprotocol
             // 
-            this.cmbprotocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.cmbprotocol, "cmbprotocol");
+            this.cmbprotocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbprotocol.FormattingEnabled = true;
             this.cmbprotocol.Items.AddRange(new object[] {
             resources.GetString("cmbprotocol.Items"),
@@ -276,6 +278,7 @@
             // 
             // cmbloglevel
             // 
+            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbloglevel.FormattingEnabled = true;
             this.cmbloglevel.Items.AddRange(new object[] {
@@ -284,7 +287,6 @@
             resources.GetString("cmbloglevel.Items2"),
             resources.GetString("cmbloglevel.Items3"),
             resources.GetString("cmbloglevel.Items4")});
-            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.Name = "cmbloglevel";
             // 
             // label5
@@ -304,33 +306,33 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.groupBox2);
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.tabControl2);
             this.groupBox2.Controls.Add(this.panel3);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
             // tabControl2
             // 
+            resources.ApplyResources(this.tabControl2, "tabControl2");
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage8);
-            resources.ApplyResources(this.tabControl2, "tabControl2");
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.txtUseragent);
             resources.ApplyResources(this.tabPage3, "tabPage3");
+            this.tabPage3.Controls.Add(this.txtUseragent);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
@@ -341,8 +343,8 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.txtUserdirect);
             resources.ApplyResources(this.tabPage4, "tabPage4");
+            this.tabPage4.Controls.Add(this.txtUserdirect);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
@@ -353,8 +355,8 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.txtUserblock);
             resources.ApplyResources(this.tabPage5, "tabPage5");
+            this.tabPage5.Controls.Add(this.txtUserblock);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
@@ -365,13 +367,14 @@
             // 
             // tabPage8
             // 
-            this.tabPage8.Controls.Add(this.cmbroutingMode);
             resources.ApplyResources(this.tabPage8, "tabPage8");
+            this.tabPage8.Controls.Add(this.cmbroutingMode);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // cmbroutingMode
             // 
+            resources.ApplyResources(this.cmbroutingMode, "cmbroutingMode");
             this.cmbroutingMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbroutingMode.FormattingEnabled = true;
             this.cmbroutingMode.Items.AddRange(new object[] {
@@ -379,16 +382,15 @@
             resources.GetString("cmbroutingMode.Items1"),
             resources.GetString("cmbroutingMode.Items2"),
             resources.GetString("cmbroutingMode.Items3")});
-            resources.ApplyResources(this.cmbroutingMode, "cmbroutingMode");
             this.cmbroutingMode.Name = "cmbroutingMode";
             // 
             // panel3
             // 
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Controls.Add(this.btnSetDefRountingRule);
             this.panel3.Controls.Add(this.labRoutingTips);
             this.panel3.Controls.Add(this.cmbdomainStrategy);
             this.panel3.Controls.Add(this.label15);
-            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
             // 
             // btnSetDefRountingRule
@@ -400,19 +402,19 @@
             // 
             // labRoutingTips
             // 
-            this.labRoutingTips.ForeColor = System.Drawing.Color.Brown;
             resources.ApplyResources(this.labRoutingTips, "labRoutingTips");
+            this.labRoutingTips.ForeColor = System.Drawing.Color.Brown;
             this.labRoutingTips.Name = "labRoutingTips";
             // 
             // cmbdomainStrategy
             // 
+            resources.ApplyResources(this.cmbdomainStrategy, "cmbdomainStrategy");
             this.cmbdomainStrategy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbdomainStrategy.FormattingEnabled = true;
             this.cmbdomainStrategy.Items.AddRange(new object[] {
             resources.GetString("cmbdomainStrategy.Items"),
             resources.GetString("cmbdomainStrategy.Items1"),
             resources.GetString("cmbdomainStrategy.Items2")});
-            resources.ApplyResources(this.cmbdomainStrategy, "cmbdomainStrategy");
             this.cmbdomainStrategy.Name = "cmbdomainStrategy";
             // 
             // label15
@@ -422,6 +424,7 @@
             // 
             // tabPage6
             // 
+            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Controls.Add(this.chkKcpcongestion);
             this.tabPage6.Controls.Add(this.txtKcpwriteBufferSize);
             this.tabPage6.Controls.Add(this.label10);
@@ -435,7 +438,6 @@
             this.tabPage6.Controls.Add(this.label7);
             this.tabPage6.Controls.Add(this.txtKcpmtu);
             this.tabPage6.Controls.Add(this.label6);
-            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
@@ -507,6 +509,7 @@
             // 
             // tabPage7
             // 
+            resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Controls.Add(this.cbFreshrate);
             this.tabPage7.Controls.Add(this.lbFreshrate);
             this.tabPage7.Controls.Add(this.chkEnableStatistics);
@@ -514,15 +517,14 @@
             this.tabPage7.Controls.Add(this.txturlGFWList);
             this.tabPage7.Controls.Add(this.label13);
             this.tabPage7.Controls.Add(this.chkAutoRun);
-            resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // cbFreshrate
             // 
+            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
             this.cbFreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFreshrate.FormattingEnabled = true;
-            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
             this.cbFreshrate.Name = "cbFreshrate";
             // 
             // lbFreshrate
@@ -560,9 +562,9 @@
             // 
             // tabPage9
             // 
+            resources.ApplyResources(this.tabPage9, "tabPage9");
             this.tabPage9.Controls.Add(this.txtuserPacRule);
             this.tabPage9.Controls.Add(this.panel4);
-            resources.ApplyResources(this.tabPage9, "tabPage9");
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
@@ -573,21 +575,21 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.label4);
             resources.ApplyResources(this.panel4, "panel4");
+            this.panel4.Controls.Add(this.label4);
             this.panel4.Name = "panel4";
             // 
             // label4
             // 
-            this.label4.ForeColor = System.Drawing.Color.Brown;
             resources.ApplyResources(this.label4, "label4");
+            this.label4.ForeColor = System.Drawing.Color.Brown;
             this.label4.Name = "label4";
             // 
             // panel2
             // 
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK

@@ -131,16 +131,22 @@
     <value>关闭Http代理</value>
   </data>
   <data name="cmblistenerType.Items1" xml:space="preserve">
-    <value>开启Http代理,并自动配置代理服务器(全局模式)</value>
+    <value>开启Http代理,并自动配置系统代理(全局模式)</value>
   </data>
   <data name="cmblistenerType.Items2" xml:space="preserve">
-    <value>开启PAC,并自动配置PAC(PAC模式)</value>
+    <value>开启PAC,并自动配置系统代理(PAC模式)</value>
   </data>
   <data name="cmblistenerType.Items3" xml:space="preserve">
-    <value>仅开启Http代理,不自动配置代理服务器(直连模式)</value>
+    <value>仅开启Http代理,并清除系统代理</value>
   </data>
   <data name="cmblistenerType.Items4" xml:space="preserve">
-    <value>仅开启PAC,不自动配置PAC</value>
+    <value>仅开启PAC,并清除系统代理</value>
+  </data>
+  <data name="cmblistenerType.Items5" xml:space="preserve">
+    <value>仅开启Http代理,不改变系统代理</value>
+  </data>
+  <data name="cmblistenerType.Items6" xml:space="preserve">
+    <value>仅开启PAC,不改变系统代理</value>
   </data>
   <data name="chksniffingEnabled2.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 16</value>

@@ -31,31 +31,45 @@ namespace v2rayN.HttpProxyHandler
                     if (type == 1)
                     {
                         //PACServerHandle.Stop();
-                        ProxySetting.SetProxy($"{Global.Loopback}:{port}", Global.IEProxyExceptions, 2);
+                        //ProxySetting.SetProxy($"{Global.Loopback}:{port}", Global.IEProxyExceptions, 2);
+                        SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}");
                     }
                     else if (type == 2)
                     {
                         string pacUrl = GetPacUrl();
-                        ProxySetting.SetProxy(pacUrl, "", 4);
+                        //ProxySetting.SetProxy(pacUrl, "", 4);
+                        SysProxyHandle.SetIEProxy(true, false, pacUrl);
                         //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                     else if (type == 3)
                     {
                         //PACServerHandle.Stop();
-                        ProxySetting.UnsetProxy();
+                        SysProxyHandle.ResetIEProxy();
                     }
                     else if (type == 4)
                     {
                         string pacUrl = GetPacUrl();
-                        ProxySetting.UnsetProxy();
+                        SysProxyHandle.ResetIEProxy();
+                        //PACServerHandle.Stop();
+                        PACServerHandle.Init(config);
+                    }
+                    else if (type == 5)
+                    {
+                        //PACServerHandle.Stop();
+                        //SysProxyHandle.ResetIEProxy();
+                    }
+                    else if (type == 6)
+                    {
+                        string pacUrl = GetPacUrl();
+                        //SysProxyHandle.ResetIEProxy();
                         //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
                 }
                 else
                 {
-                    ProxySetting.UnsetProxy();
+                    SysProxyHandle.ResetIEProxy();
                     //PACServerHandle.Stop();
                 }
             }

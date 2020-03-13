@@ -195,6 +195,7 @@
     <Compile Include="Base\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="Mode\EMove.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
@@ -345,6 +346,8 @@
     <EmbeddedResource Include="Sample\custom_routing_block" />
     <EmbeddedResource Include="Sample\custom_routing_direct" />
     <EmbeddedResource Include="Sample\custom_routing_proxy" />
+    <None Include="Resources\sysproxy.exe.gz" />
+    <None Include="Resources\sysproxy64.exe.gz" />
     <Protobuf Include="Protos\Statistics.proto" />
     <None Include="Resources\abp.js.gz" />
     <None Include="Resources\pac.txt.gz" />

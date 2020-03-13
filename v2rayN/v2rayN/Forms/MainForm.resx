@@ -423,34 +423,46 @@
     <value>NoControl</value>
   </data>
   <data name="menuNotEnabledHttp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 22</value>
+    <value>411, 22</value>
   </data>
   <data name="menuNotEnabledHttp.Text" xml:space="preserve">
     <value>Not Enabled Http Proxy</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 22</value>
+    <value>411, 22</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
-    <value>Open Http proxy and automatically configure proxy server (global mode)</value>
+    <value>Open Http proxy and set the system proxy (global mode)</value>
   </data>
   <data name="menuGlobalPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 22</value>
+    <value>411, 22</value>
   </data>
   <data name="menuGlobalPAC.Text" xml:space="preserve">
-    <value>Open PAC and automatically configure PAC (PAC mode)</value>
+    <value>Open PAC and set the system proxy (PAC mode)</value>
   </data>
   <data name="menuKeep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 22</value>
+    <value>411, 22</value>
   </data>
   <data name="menuKeep.Text" xml:space="preserve">
-    <value>Only open Http proxy, do not automatically configure proxy server (direct mode)</value>
+    <value>Only open Http proxy and clear the proxy settings</value>
   </data>
   <data name="menuKeepPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 22</value>
+    <value>411, 22</value>
   </data>
   <data name="menuKeepPAC.Text" xml:space="preserve">
-    <value>Only open PAC, do not automatically configure PAC</value>
+    <value>Only open PAC and clear the proxy settings</value>
+  </data>
+  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>Only open Http proxy and do nothing</value>
+  </data>
+  <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeepPACNothing.Text" xml:space="preserve">
+    <value>Only open PAC and do nothing</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -492,7 +504,7 @@
     <value>Exit</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 142</value>
+    <value>265, 164</value>
   </data>
   <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
     <value>cmsMain</value>
@@ -1163,6 +1175,18 @@
   <data name="&gt;&gt;menuKeepPAC.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;menuKeepNothing.Name" xml:space="preserve">
+    <value>menuKeepNothing</value>
+  </data>
+  <data name="&gt;&gt;menuKeepNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPACNothing.Name" xml:space="preserve">
+    <value>menuKeepPACNothing</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPACNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;menuServers.Name" xml:space="preserve">
     <value>menuServers</value>
   </data>
@@ -1373,16 +1397,16 @@
   <data name="&gt;&gt;tsbHelp.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
-    <value>tsbV2rayWebsite</value>
-  </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tsbAbout.Name" xml:space="preserve">
     <value>tsbAbout</value>
   </data>
   <data name="&gt;&gt;tsbAbout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
+    <value>tsbV2rayWebsite</value>
+  </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">

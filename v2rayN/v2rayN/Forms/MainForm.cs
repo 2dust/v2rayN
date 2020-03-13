@@ -327,7 +327,7 @@ namespace v2rayN.Forms
             if (config.listenerType != 0)
             {
                 toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
-                if (config.listenerType == 2 || config.listenerType == 4)
+                if (config.listenerType % 2 == 0)
                 {
                     if (PACServerHandle.IsRunning)
                     {
@@ -350,13 +350,6 @@ namespace v2rayN.Forms
             }
         }
 
-        #endregion
-
-        #region http proxy 操作
-        private void RestartHttpProxy()
-        {
-            HttpProxyHandle.RestartHttpAgent(config, true);
-        }
         #endregion
 
         #region v2ray 操作
@@ -710,7 +703,7 @@ namespace v2rayN.Forms
                 //刷新
                 RefreshServers();
                 LoadV2ray();
-                RestartHttpProxy();
+                HttpProxyHandle.RestartHttpAgent(config, true);
             }
         }
 
@@ -1112,27 +1105,30 @@ namespace v2rayN.Forms
         {
             SetListenerType(0);
         }
-
         private void menuGlobal_Click(object sender, EventArgs e)
         {
             SetListenerType(1);
         }
-
         private void menuGlobalPAC_Click(object sender, EventArgs e)
         {
             SetListenerType(2);
         }
-
         private void menuKeep_Click(object sender, EventArgs e)
         {
             SetListenerType(3);
         }
-
         private void menuKeepPAC_Click(object sender, EventArgs e)
         {
             SetListenerType(4);
         }
-
+        private void menuKeepNothing_Click(object sender, EventArgs e)
+        {
+            SetListenerType(5);
+        }
+        private void menuKeepPACNothing_Click(object sender, EventArgs e)
+        {
+            SetListenerType(6);
+        }
         private void SetListenerType(int type)
         {
             config.listenerType = type;
