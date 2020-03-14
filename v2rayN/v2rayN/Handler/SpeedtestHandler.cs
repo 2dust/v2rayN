@@ -35,19 +35,19 @@ namespace v2rayN.Handler
 
             if (actionType == "ping")
             {
-                Task.Factory.StartNew(() => RunPing());
+                Task.Run(() => RunPing());
             }
             if (actionType == "tcping")
             {
-                Task.Factory.StartNew(() => RunTcping());
+                Task.Run(() => RunTcping());
             }
             else if (actionType == "realping")
             {
-                Task.Factory.StartNew(() => RunRealPing());
+                Task.Run(() => RunRealPing());
             }
             else if (actionType == "speedtest")
             {
-                Task.Factory.StartNew(() => RunSpeedTest());
+                Task.Run(() => RunSpeedTest());
             }
         }
 
@@ -119,7 +119,7 @@ namespace v2rayN.Handler
                     }
 
                     i++;
-                    tasks[i] = Task.Factory.StartNew(() => {
+                    tasks[i] = Task.Run(() => {
                         try
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);

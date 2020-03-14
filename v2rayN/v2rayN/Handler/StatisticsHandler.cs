@@ -67,7 +67,7 @@ namespace v2rayN.Handler
 
             GrpcInit();
 
-            Task.Factory.StartNew(() => Run());
+            Task.Run(() => Run());
         }
 
         private void GrpcInit()
