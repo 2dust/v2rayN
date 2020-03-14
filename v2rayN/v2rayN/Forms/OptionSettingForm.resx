@@ -748,7 +748,7 @@
     <value>16</value>
   </data>
   <data name="lbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>30, 92</value>
+    <value>30, 87</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>groupBox1</value>
