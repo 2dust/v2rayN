@@ -118,58 +118,103 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>547, 291</value>
+  </data>
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Edit or add a [Socks] server</value>
+  </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
     <value>396, 17</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
   </data>
-  <data name="txtSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 84</value>
+  <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
+    <value>303, 17</value>
   </data>
-  <data name="txtSecurity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 21</value>
+  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="txtSecurity.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 35</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 196</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 31</value>
   </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 88</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>User(Optional)</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Server address</value>
   </data>
-  <data name="txtId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 117</value>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="txtId.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
-    <value>*</value>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 158</value>
   </data>
-  <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 21</value>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 12</value>
   </data>
-  <data name="txtId.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="label13.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>* Fill in manually</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 60</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 12</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Server port</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -189,29 +234,23 @@
   <data name="label3.Text" xml:space="preserve">
     <value>Password(Optional)</value>
   </data>
-  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>337, 158</value>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 12</value>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 88</value>
   </data>
-  <data name="label13.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 12</value>
   </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>* Fill in manually</value>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
-  <data name="txtRemarks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 154</value>
-  </data>
-  <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 21</value>
-  </data>
-  <data name="txtRemarks.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="label4.Text" xml:space="preserve">
+    <value>User(Optional)</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -228,92 +267,29 @@
   <data name="label6.Text" xml:space="preserve">
     <value>Alias (remarks)</value>
   </data>
-  <data name="txtPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 56</value>
+  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>162, 21</value>
   </data>
-  <data name="txtPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 21</value>
+  <data name="MenuItem1.Text" xml:space="preserve">
+    <value>Import configuration file</value>
   </data>
-  <data name="txtPort.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="menuItemImportClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>235, 22</value>
   </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="menuItemImportClipboard.Text" xml:space="preserve">
+    <value>Import URL from clipboard</value>
   </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 60</value>
+  <data name="menuServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 12</value>
+  <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 25</value>
   </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="menuServer.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Server port</value>
-  </data>
-  <data name="txtAddress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 27</value>
-  </data>
-  <data name="txtAddress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>359, 21</value>
-  </data>
-  <data name="txtAddress.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 31</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 12</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Server address</value>
-  </data>
-  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 35</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 196</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 17</value>
-  </data>
-  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>&amp;OK</value>
-  </data>
-  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 231</value>
-  </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 60</value>
-  </data>
-  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="menuServer.TrayLocation" type="System.Drawing.Point, System.Drawing">
+    <value>17, 17</value>
   </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -327,40 +303,64 @@
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="menuServer.TrayLocation" type="System.Drawing.Point, System.Drawing">
-    <value>17, 17</value>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
-  <data name="menuItemImportClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 22</value>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 231</value>
   </data>
-  <data name="menuItemImportClipboard.Text" xml:space="preserve">
-    <value>Import URL from clipboard</value>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>547, 60</value>
   </data>
-  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 21</value>
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="MenuItem1.Text" xml:space="preserve">
-    <value>Import configuration file</value>
+  <data name="txtAddress.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 27</value>
   </data>
-  <data name="menuServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="txtAddress.Size" type="System.Drawing.Size, System.Drawing">
+    <value>359, 21</value>
   </data>
-  <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>547, 25</value>
+  <data name="txtAddress.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="menuServer.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="txtId.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 117</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="txtId.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value>*</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+  <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 21</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>547, 291</value>
+  <data name="txtId.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Edit or add a [Socks] server</value>
+  <data name="txtPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 56</value>
+  </data>
+  <data name="txtPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 21</value>
+  </data>
+  <data name="txtPort.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="txtRemarks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 154</value>
+  </data>
+  <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 21</value>
+  </data>
+  <data name="txtRemarks.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="txtSecurity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 84</value>
+  </data>
+  <data name="txtSecurity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 21</value>
+  </data>
+  <data name="txtSecurity.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
   </data>
 </root>

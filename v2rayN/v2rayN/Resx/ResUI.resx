@@ -123,8 +123,35 @@
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Batch export share URL to clipboard successfully</value>
   </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Please check the server settings first</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value> configuration format is incorrect</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
+  </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>DOWN</value>
+  </data>
+  <data name="DownloadYesNo" xml:space="preserve">
+    <value>Whether to download? {0}</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Failed to convert configuration file</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Failed to generate default configuration file</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value> Failed to get the default configuration</value>
+  </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
     <value>Failed to import custom configuration server</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Failed to read configuration file</value>
   </data>
   <data name="FillCorrectAlterId" xml:space="preserve">
     <value>Please fill in the correct format extra ID</value>
@@ -147,75 +174,6 @@
   <data name="FillUUID" xml:space="preserve">
     <value>Please fill in the user ID</value>
   </data>
-  <data name="NeedHttpGlobalProxy" xml:space="preserve">
-    <value> This feature relies on the Http global proxy, please set it correctly first.</value>
-  </data>
-  <data name="NonVmessService" xml:space="preserve">
-    <value> non-Vmess service, this feature is invalid</value>
-  </data>
-  <data name="NoValidQRcodeFound" xml:space="preserve">
-    <value>Scan completed, no valid QR code found</value>
-  </data>
-  <data name="OperationFailed" xml:space="preserve">
-    <value> operation failed, please check retry</value>
-  </data>
-  <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Please Fill Remarks</value>
-  </data>
-  <data name="PleaseSelectEncryption" xml:space="preserve">
-    <value>Please select the encryption method</value>
-  </data>
-  <data name="PleaseSelectProtocol" xml:space="preserve">
-    <value>Please select an agreement</value>
-  </data>
-  <data name="PleaseSelectServer" xml:space="preserve">
-    <value>Please select the server first</value>
-  </data>
-  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Successfully imported custom configuration server</value>
-  </data>
-  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} servers have been imported from clipboard.</value>
-  </data>
-  <data name="CustomServerTips" xml:space="preserve">
-    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
-  </data>
-  <data name="SaveClientConfigurationIn" xml:space="preserve">
-    <value>The client configuration file is saved at: {0}</value>
-  </data>
-  <data name="SaveServerConfigurationIn" xml:space="preserve">
-    <value>The server configuration file is saved at: {0}</value>
-  </data>
-  <data name="SpeedServerTips" xml:space="preserve">
-    <value>Note: After this function relies on the Http global proxy test, please manually adjust the Http global proxy and active node!</value>
-  </data>
-  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import URL successfully</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>Whether to download? {0}</value>
-  </data>
-  <data name="RemoveServer" xml:space="preserve">
-    <value>Are you sure to remove the server?</value>
-  </data>
-  <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the server settings first</value>
-  </data>
-  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value> configuration format is incorrect</value>
-  </data>
-  <data name="FailedConversionConfiguration" xml:space="preserve">
-    <value>Failed to convert configuration file</value>
-  </data>
-  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
-    <value>Failed to generate default configuration file</value>
-  </data>
-  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value> Failed to get the default configuration</value>
-  </data>
-  <data name="FailedReadConfiguration" xml:space="preserve">
-    <value>Failed to read configuration file</value>
-  </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
     <value> is not the correct client configuration file, please check</value>
   </data>
@@ -228,24 +186,11 @@
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
   </data>
-  <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-vmess or ss protocol</value>
-  </data>
-  <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Successful configuration
-{0}</value>
-  </data>
-  <data name="NotFoundCore" xml:space="preserve">
-    <value>V2ray-core not found, please download: {0}</value>
-  </data>
-  <data name="IsLatestN" xml:space="preserve">
-    <value>{0} already up to date.</value>
-  </data>
   <data name="IsLatestCore" xml:space="preserve">
     <value>{0} already up to date.</value>
   </data>
-  <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})...</value>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} already up to date.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Address</value>
@@ -268,8 +213,23 @@
   <data name="LvTestResults" xml:space="preserve">
     <value>Test Results</value>
   </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Today download traffic</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Today upload traffic</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total download traffic</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total upload traffic</value>
+  </data>
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Transport</value>
+  </data>
+  <data name="MediumFresh" xml:space="preserve">
+    <value>MediumFresh</value>
   </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>Clear original subscription content</value>
@@ -325,34 +285,74 @@
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
     <value>Update V2rayCore successfully! Restarting service...</value>
   </data>
-  <data name="MediumFresh" xml:space="preserve">
-    <value>MediumFresh</value>
+  <data name="NeedHttpGlobalProxy" xml:space="preserve">
+    <value> This feature relies on the Http global proxy, please set it correctly first.</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Non-vmess or ss protocol</value>
+  </data>
+  <data name="NonVmessService" xml:space="preserve">
+    <value> non-Vmess service, this feature is invalid</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>V2ray-core not found, please download: {0}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Scan completed, no valid QR code found</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value> operation failed, please check retry</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Please Fill Remarks</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Please select the encryption method</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Please select an agreement</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Please select the server first</value>
   </data>
   <data name="QuickFresh" xml:space="preserve">
     <value>QuickFresh</value>
   </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Are you sure to remove the server?</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>The client configuration file is saved at: {0}</value>
+  </data>
+  <data name="SaveServerConfigurationIn" xml:space="preserve">
+    <value>The server configuration file is saved at: {0}</value>
+  </data>
   <data name="SlowFresh" xml:space="preserve">
     <value>SlowFresh</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>DOWN</value>
-  </data>
-  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
-    <value>Today download traffic</value>
-  </data>
-  <data name="LvTodayUploadDataAmount" xml:space="preserve">
-    <value>Today upload traffic</value>
-  </data>
-  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
-    <value>Total download traffic</value>
-  </data>
-  <data name="LvTotalUploadDataAmount" xml:space="preserve">
-    <value>Total upload traffic</value>
+  <data name="SpeedServerTips" xml:space="preserve">
+    <value>Note: After this function relies on the Http global proxy test, please manually adjust the Http global proxy and active node!</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC failed to start. Run it with Admin right.</value>
   </data>
-  <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+  <data name="StartService" xml:space="preserve">
+    <value>Start service ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Successful configuration
+{0}</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Successfully imported custom configuration server</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>{0} servers have been imported from clipboard.</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Scan import URL successfully</value>
   </data>
 </root>

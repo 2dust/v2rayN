@@ -117,51 +117,63 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Text" xml:space="preserve">
+    <value>编辑或添加[VMess]服务器</value>
+  </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>服务器</value>
   </data>
   <data name="btnGUID.Text" xml:space="preserve">
     <value>生成(&amp;G)</value>
   </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>*手填,方便识别管理</value>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
+  </data>
+  <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 171</value>
+  </data>
+  <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
+    <value>211, 20</value>
+  </data>
+  <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 143</value>
+  </data>
+  <data name="cmbSecurity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>211, 20</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>不清楚则保持默认值</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 12</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
   </data>
-  <data name="label24.Text" xml:space="preserve">
-    <value>3)QUIC 加密密钥</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>地址(address)</value>
   </data>
-  <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 12</value>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 12</value>
   </data>
-  <data name="label23.Text" xml:space="preserve">
-    <value>4)QUIC 加密方式</value>
+  <data name="label10.Text" xml:space="preserve">
+    <value>伪装域名(host)</value>
   </data>
-  <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 12</value>
   </data>
-  <data name="label22.Text" xml:space="preserve">
-    <value>默认true</value>
+  <data name="label11.Text" xml:space="preserve">
+    <value>伪装类型(type)</value>
   </data>
-  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 12</value>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 12</value>
   </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>3)h2 host中间逗号(,)隔开</value>
+  <data name="label12.Text" xml:space="preserve">
+    <value>*tcp或kcp或QUIC伪装类型,默认none</value>
   </data>
-  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 12</value>
-  </data>
-  <data name="label19.Text" xml:space="preserve">
-    <value>路径(path)</value>
+  <data name="label13.Text" xml:space="preserve">
+    <value>*手填,方便识别管理</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
@@ -175,83 +187,11 @@
   <data name="label15.Text" xml:space="preserve">
     <value>底层传输安全</value>
   </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 12</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>*tcp或kcp或QUIC伪装类型,默认none</value>
-  </data>
-  <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 58</value>
-  </data>
-  <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>334, 51</value>
-  </data>
-  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 12</value>
-  </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>伪装类型(type)</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 12</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>伪装域名(host)</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 12</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>*默认tcp,选错会无法连接</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 12</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>*随便选,建议(auto)</value>
-  </data>
-  <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 171</value>
-  </data>
-  <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 20</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 12</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>传输协议(network)</value>
-  </data>
-  <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 143</value>
-  </data>
-  <data name="cmbSecurity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 20</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 12</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>别名(remarks)</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 12</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>加密方式(security)</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 12</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>额外ID(alterId)</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>用户ID(id)</value>
+  <data name="label19.Text" xml:space="preserve">
+    <value>路径(path)</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -259,14 +199,71 @@
   <data name="label2.Text" xml:space="preserve">
     <value>端口(port)</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 12</value>
+  </data>
+  <data name="label20.Text" xml:space="preserve">
+    <value>3)h2 host中间逗号(,)隔开</value>
+  </data>
+  <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label22.Text" xml:space="preserve">
+    <value>默认true</value>
+  </data>
+  <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="label23.Text" xml:space="preserve">
+    <value>4)QUIC 加密方式</value>
+  </data>
+  <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="label24.Text" xml:space="preserve">
+    <value>3)QUIC 加密密钥</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>用户ID(id)</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>额外ID(alterId)</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 12</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>加密方式(security)</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 12</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>地址(address)</value>
+  <data name="label6.Text" xml:space="preserve">
+    <value>别名(remarks)</value>
   </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>确定(&amp;O)</value>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 12</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>传输协议(network)</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 12</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>*随便选,建议(auto)</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 12</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>*默认tcp,选错会无法连接</value>
   </data>
   <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 21</value>
@@ -280,6 +277,12 @@
   <data name="MenuItemImportClient.Text" xml:space="preserve">
     <value>导入客户端配置</value>
   </data>
+  <data name="MenuItemImportClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="MenuItemImportClipboard.Text" xml:space="preserve">
+    <value>从剪贴板导入URL</value>
+  </data>
   <data name="MenuItemImportServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 22</value>
   </data>
@@ -289,13 +292,10 @@
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 6</value>
   </data>
-  <data name="MenuItemImportClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 22</value>
+  <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>124, 58</value>
   </data>
-  <data name="MenuItemImportClipboard.Text" xml:space="preserve">
-    <value>从剪贴板导入URL</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>编辑或添加[VMess]服务器</value>
+  <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>334, 51</value>
   </data>
 </root>
