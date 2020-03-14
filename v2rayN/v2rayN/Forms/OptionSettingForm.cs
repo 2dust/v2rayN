@@ -77,8 +77,7 @@ namespace v2rayN.Forms
         {
             //路由
             cmbdomainStrategy.Text = config.domainStrategy;
-            int routingMode = 0;
-            int.TryParse(config.routingMode, out routingMode);
+            int.TryParse(config.routingMode, out int routingMode);
             cmbroutingMode.SelectedIndex = routingMode;
 
             txtUseragent.Text = Utils.List2String(config.useragent, true);

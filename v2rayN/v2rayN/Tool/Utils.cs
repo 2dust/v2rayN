@@ -314,9 +314,7 @@ namespace v2rayN
 
         public static string HumanFy(ulong amount)
         {
-            double result;
-            string unit;
-            ToHumanReadable(amount, out result, out unit);
+            ToHumanReadable(amount, out double result, out string unit);
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 

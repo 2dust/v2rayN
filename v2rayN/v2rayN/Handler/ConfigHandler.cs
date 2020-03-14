@@ -753,7 +753,6 @@ namespace v2rayN.Handler
             string[] arrData = clipboardData.Split(Environment.NewLine.ToCharArray());
             foreach (string str in arrData)
             {
-                string msg;
                 //maybe sub
                 if (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol))
                 {
@@ -763,7 +762,7 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(str, out msg);
+                VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(str, out string msg);
                 if (vmessItem == null)
                 {
                     continue;

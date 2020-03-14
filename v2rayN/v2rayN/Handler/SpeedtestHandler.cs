@@ -221,8 +221,7 @@ namespace v2rayN.Handler
 
             try
             {
-                IPAddress ipAddress;
-                if (!System.Net.IPAddress.TryParse(url, out ipAddress))
+                if (!System.Net.IPAddress.TryParse(url, out IPAddress ipAddress))
                 {
                     IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
                     ipAddress = ipHostInfo.AddressList[0];

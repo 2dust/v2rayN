@@ -120,11 +120,9 @@ namespace v2rayN.Handler
                         {
                             string itemId = config_.getItemId();
                             ServerStatItem serverStatItem = GetServerStatItem(itemId);
-                            ulong up = 0,
-                                 down = 0;
 
                             //TODO: parse output
-                            ParseOutput(res.Stat, out up, out down);
+                            ParseOutput(res.Stat, out ulong up, out ulong down);
 
                             serverStatItem.todayUp += up;
                             serverStatItem.todayDown += down;
