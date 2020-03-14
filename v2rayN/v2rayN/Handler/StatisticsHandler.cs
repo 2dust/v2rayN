@@ -1,15 +1,12 @@
 ﻿using Grpc.Core;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using v2rayN.Mode;
-using v2rayN.Properties;
 using v2rayN.Protos.Statistics;
-using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
