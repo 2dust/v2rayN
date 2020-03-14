@@ -124,7 +124,7 @@ namespace v2rayN
             int result = -1;
             try
             {
-                using (StreamWriter file = System.IO.File.CreateText(filePath))
+                using (StreamWriter file = File.CreateText(filePath))
                 {
                     //JsonSerializer serializer = new JsonSerializer();
                     JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
@@ -194,7 +194,7 @@ namespace v2rayN
         {
             try
             {
-                byte[] plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
                 return Convert.ToBase64String(plainTextBytes);
             }
             catch (Exception ex)
@@ -364,7 +364,7 @@ namespace v2rayN
         {
             try
             {
-                int var1 = Utils.ToInt(oText);
+                int var1 = ToInt(oText);
                 return true;
             }
             catch
@@ -533,7 +533,7 @@ namespace v2rayN
         public static string GetPath(string fileName)
         {
             string startupPath = StartupPath();
-            if (Utils.IsNullOrEmpty(fileName))
+            if (IsNullOrEmpty(fileName))
             {
                 return startupPath;
             }
@@ -833,7 +833,7 @@ namespace v2rayN
                         sb.Write(buffer, 0, n);
                     }
                 }
-                return System.Text.Encoding.UTF8.GetString(sb.ToArray());
+                return Encoding.UTF8.GetString(sb.ToArray());
             }
         }
 

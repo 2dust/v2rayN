@@ -128,7 +128,7 @@ namespace v2rayN.HttpProxyHandler
             public InternetConnectionOptionValue m_Value;
             static InternetConnectionOption()
             {
-                InternetConnectionOption.Size = Marshal.SizeOf(typeof(InternetConnectionOption));
+                Size = Marshal.SizeOf(typeof(InternetConnectionOption));
             }
 
             // Nested Types

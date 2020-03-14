@@ -960,7 +960,7 @@ namespace v2rayN.Forms
 
         private void notifyMain_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 ShowForm();
             }
@@ -1370,12 +1370,12 @@ namespace v2rayN.Forms
 
         private void tsbAbout_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.AboutUrl);
+            Process.Start(Global.AboutUrl);
         }
 
         private void tsbPromotion_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+            Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
         #endregion
 
@@ -1507,7 +1507,7 @@ namespace v2rayN.Forms
 
         private void tsbV2rayWebsite_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.v2rayWebsiteUrl);
+            Process.Start(Global.v2rayWebsiteUrl);
         }
     }
 }
