@@ -51,18 +51,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Close()
-        {
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-        }
-
-        private void RunPing()
+        private void RunPingSub(Action<int> updateFun)
         {
             try
             {
@@ -74,38 +63,7 @@ namespace v2rayN.Handler
                     }
                     try
                     {
-                        long time = Utils.Ping(_config.vmess[index].address);
-                        _updateFunc(index, string.Format("{0}ms", time));
-                    }
-                    catch (Exception ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                    }
-                }
-
-                Thread.Sleep(100);
-
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-        }
-
-        private void RunTcping()
-        {
-            try
-            {
-                foreach (int index in _selecteds)
-                {
-                    if (_config.vmess[index].configType == (int)EConfigType.Custom)
-                    {
-                        continue;
-                    }
-                    try
-                    {
-                        var time = GetTcpingTime(_config.vmess[index].address, _config.vmess[index].port);
-                        _updateFunc(index, string.Format("{0}ms", time));
+                        updateFun(index);
                     }
                     catch (Exception ex)
                     {
@@ -114,12 +72,30 @@ namespace v2rayN.Handler
                 }
 
                 Thread.Sleep(10);
-
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
             }
+        }
+
+
+        private void RunPing()
+        {
+            RunPingSub((int index) =>
+            {
+                long time = Utils.Ping(_config.vmess[index].address);
+                _updateFunc(index, string.Format("{0}ms", time));
+            });
+        }
+
+        private void RunTcping()
+        {
+            RunPingSub((int index) =>
+            {
+                int time = GetTcpingTime(_config.vmess[index].address, _config.vmess[index].port);
+                _updateFunc(index, string.Format("{0}ms", time));
+            });
         }
 
         private void RunRealPing()
