@@ -112,10 +112,10 @@ namespace v2rayN.Forms
             txturlGFWList.Text = config.urlGFWList;
 
             chkAllowLANConn.Checked = config.allowLANConn;
+            chkEnableStatistics.Checked = config.enableStatistics;
+            chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
 
 
-            var enableStatistics = config.enableStatistics;
-            chkEnableStatistics.Checked = enableStatistics;
 
 
             var cbSource = new ComboItem[]
@@ -343,6 +343,7 @@ namespace v2rayN.Forms
             var lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
+            config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
             //if(lastEnableStatistics != config.enableStatistics)
             //{

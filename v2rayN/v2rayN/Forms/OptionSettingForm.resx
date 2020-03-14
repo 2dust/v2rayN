@@ -1305,6 +1305,36 @@
   <data name="chkAllowLANConn.Text" xml:space="preserve">
     <value>Allow connections from the LAN</value>
   </data>
+  <data name="chkKeepOlderDedupl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkKeepOlderDedupl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 110</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 16</value>
+  </data>
+  <data name="chkKeepOlderDedupl.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
+    <value>Keep older when deduplication</value>
+  </data>
+  <data name="&gt;&gt;chkKeepOlderDedupl.Name" xml:space="preserve">
+    <value>chkKeepOlderDedupl</value>
+  </data>
+  <data name="&gt;&gt;chkKeepOlderDedupl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkKeepOlderDedupl.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;chkKeepOlderDedupl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
     <value>161, 84</value>
   </data>

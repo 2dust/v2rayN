@@ -320,10 +320,10 @@ namespace v2rayN
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
-        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
+        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result, bool keepOlder)
         {
             var list = new List<Mode.VmessItem>();
-            source.Reverse(); // Remove the early items first
+            if (!keepOlder) source.Reverse(); // Remove the early items first
 
             bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
             {
@@ -348,7 +348,7 @@ namespace v2rayN
                     list.Add(item);
                 }
             }
-            list.Reverse();
+            if (!keepOlder) list.Reverse();
             result = list;
         }
 

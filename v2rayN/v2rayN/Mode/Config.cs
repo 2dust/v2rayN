@@ -139,6 +139,14 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 去重时优先保留较旧（顶部）节点
+        /// </summary>
+        public bool keepOlderDedupl
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// 视图刷新率
         /// </summary>
         public int statisticsFreshRate

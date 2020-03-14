@@ -369,4 +369,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
+    <value>去重时保留序号较小的项</value>
+  </data>
 </root>
