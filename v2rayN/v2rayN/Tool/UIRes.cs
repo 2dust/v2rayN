@@ -10,7 +10,7 @@ namespace v2rayN
 
         static string LoadString(ResourceManager resMgr, string key)
         {
-            var value = resMgr.GetString(key);
+            string value = resMgr.GetString(key);
             if (value == null)
             {
                 throw new KeyNotFoundException($"key: {key}");

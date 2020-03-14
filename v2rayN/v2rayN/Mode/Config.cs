@@ -427,7 +427,7 @@ namespace v2rayN.Mode
 
         public string getItemId()
         {
-            var itemId = $"{address}{port}{requestHost}{path}";
+            string itemId = $"{address}{port}{requestHost}{path}";
             itemId = Utils.Base64Encode(itemId);
             return itemId;
         }

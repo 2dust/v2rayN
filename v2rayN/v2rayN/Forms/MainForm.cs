@@ -198,7 +198,7 @@ namespace v2rayN.Forms
                 ListViewItem lvItem = null;
                 if (statistics != null && statistics.Enable)
                 {
-                    var sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
+                    ServerStatItem sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
                     if (sItem != null)
                     {
                         totalUp = Utils.HumanFy(sItem.totalUp);
@@ -424,7 +424,7 @@ namespace v2rayN.Forms
 
             if (config.vmess[index].configType == (int)EConfigType.Vmess)
             {
-                var fm = new AddServerForm
+                AddServerForm fm = new AddServerForm
                 {
                     EditIndex = index
                 };
@@ -437,7 +437,7 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Shadowsocks)
             {
-                var fm = new AddServer3Form
+                AddServer3Form fm = new AddServer3Form
                 {
                     EditIndex = index
                 };
@@ -449,7 +449,7 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Socks)
             {
-                var fm = new AddServer4Form
+                AddServer4Form fm = new AddServer4Form
                 {
                     EditIndex = index
                 };
@@ -461,7 +461,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                var fm2 = new AddServer2Form
+                AddServer2Form fm2 = new AddServer2Form
                 {
                     EditIndex = index
                 };
@@ -646,7 +646,7 @@ namespace v2rayN.Forms
         {
             GetLvSelectedIndex();
             ClearTestResult();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
@@ -814,7 +814,7 @@ namespace v2rayN.Forms
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer3Form
+            AddServer3Form fm = new AddServer3Form
             {
                 EditIndex = -1
             };
@@ -829,7 +829,7 @@ namespace v2rayN.Forms
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer4Form
+            AddServer4Form fm = new AddServer4Form
             {
                 EditIndex = -1
             };
@@ -1038,14 +1038,14 @@ namespace v2rayN.Forms
                 List<string[]> datas = new List<string[]>();
                 for (int i = 0; i < config.vmess.Count; i++)
                 {
-                    var index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
+                    int index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
                     if (index != -1)
                     {
                         lvServers.Invoke((MethodInvoker)delegate
                         {
                             lvServers.SuspendLayout();
 
-                            var indexStart = 9;
+                            int indexStart = 9;
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayDown);
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayUp);
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalDown);
@@ -1165,7 +1165,7 @@ namespace v2rayN.Forms
 
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
-                var item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
+                ToolStripMenuItem item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
                 item.Checked = (type == k);
             }
 
@@ -1218,8 +1218,8 @@ namespace v2rayN.Forms
 
                         try
                         {
-                            var fileName = Utils.GetPath(downloadHandle.DownloadFileName);
-                            var process = Process.Start("v2rayUpgrade.exe", fileName);
+                            string fileName = Utils.GetPath(downloadHandle.DownloadFileName);
+                            Process process = Process.Start("v2rayUpgrade.exe", fileName);
                             if (process.Id > 0)
                             {
                                 menuExit_Click(null, null);
@@ -1328,7 +1328,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        var result = args.Msg;
+                        string result = args.Msg;
                         if (Utils.IsNullOrEmpty(result))
                         {
                             return;
@@ -1449,7 +1449,7 @@ namespace v2rayN.Forms
                     if (args.Success)
                     {
                         AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
-                        var result = Utils.Base64Decode(args.Msg);
+                        string result = Utils.Base64Decode(args.Msg);
                         if (Utils.IsNullOrEmpty(result))
                         {
                             AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");

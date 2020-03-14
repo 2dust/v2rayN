@@ -35,7 +35,7 @@ namespace v2rayUpgrade
                 Process[] existing = Process.GetProcessesByName("v2rayN");
                 foreach (Process p in existing)
                 {
-                    var path = p.MainModule.FileName;
+                    string path = p.MainModule.FileName;
                     if (path == GetPath("v2rayN.exe"))
                     {
                         p.Kill();
@@ -49,7 +49,7 @@ namespace v2rayUpgrade
                 return;
             }
 
-            var fileName = GetPath(_tempFileName);
+            string fileName = GetPath(_tempFileName);
             try
             {
                 File.Delete(fileName);
@@ -60,7 +60,7 @@ namespace v2rayUpgrade
                     return;
                 }
 
-                var startKey = "v2rayN/";
+                string startKey = "v2rayN/";
 
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
                 {
@@ -70,7 +70,7 @@ namespace v2rayUpgrade
                         {
                             continue;
                         }
-                        var fullName = entry.FullName;
+                        string fullName = entry.FullName;
                         if (fullName.StartsWith(startKey))
                         {
                             fullName = fullName.Substring(startKey.Length, fullName.Length - startKey.Length);

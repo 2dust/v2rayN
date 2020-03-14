@@ -35,7 +35,7 @@ namespace v2rayN.Forms
 
             for (int k = config.subItem.Count - 1; k >= 0; k--)
             {
-                var item = config.subItem[k];
+                SubItem item = config.subItem[k];
                 if (Utils.IsNullOrEmpty(item.remarks)
                     && Utils.IsNullOrEmpty(item.url))
                 {
@@ -47,7 +47,7 @@ namespace v2rayN.Forms
                 }
             }
 
-            foreach (var item in config.subItem)
+            foreach (SubItem item in config.subItem)
             {
                 SubSettingControl control = new SubSettingControl();
                 control.OnButtonClicked += Control_OnButtonClicked;
@@ -98,7 +98,7 @@ namespace v2rayN.Forms
 
         private void AddSub()
         {
-            var subItem = new SubItem
+            SubItem subItem = new SubItem
             {
                 id = string.Empty,
                 remarks = "remarks",

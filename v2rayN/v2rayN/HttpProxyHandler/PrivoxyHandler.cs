@@ -172,7 +172,7 @@ namespace v2rayN.HttpProxyHandler
                 /*
                  * Under PortableMode, we could identify it by the path of v2ray_privoxy.exe.
                  */
-                var path = process.MainModule.FileName;
+                string path = process.MainModule.FileName;
 
                 return Utils.GetTempPath($"{_privoxyName}.exe").Equals(path);
 

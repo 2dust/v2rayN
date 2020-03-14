@@ -60,19 +60,19 @@ namespace v2rayN.Base
         {
             try
             {
-                var socket = obj as TcpClient;
+                TcpClient socket = obj as TcpClient;
 
-                var inputStream = new BufferedStream(socket.GetStream());
-                var outputStream = new StreamWriter(new BufferedStream(socket.GetStream()));
+                BufferedStream inputStream = new BufferedStream(socket.GetStream());
+                StreamWriter outputStream = new StreamWriter(new BufferedStream(socket.GetStream()));
                 if (inputStream.CanRead)
                 {
-                    var data = ReadStream(inputStream);
+                    string data = ReadStream(inputStream);
 
                     if (data.Contains("/pac/"))
                     {
                         if (_responderMethod != null)
                         {
-                            var address = ((IPEndPoint)socket.Client.LocalEndPoint).Address.ToString();
+                            string address = ((IPEndPoint)socket.Client.LocalEndPoint).Address.ToString();
                             Utils.SaveLog("WebserverB Request " + address);
                             string pac = _responderMethod(address);
 
@@ -122,7 +122,7 @@ namespace v2rayN.Base
 
         private void WriteStream(StreamWriter outputStream, string pac)
         {
-            var content_type = "application/x-ns-proxy-autoconfig";
+            string content_type = "application/x-ns-proxy-autoconfig";
             outputStream.WriteLine("HTTP/1.1 200 OK");
             outputStream.WriteLine(String.Format("Content-Type:{0}", content_type));
             outputStream.WriteLine("Connection: close");

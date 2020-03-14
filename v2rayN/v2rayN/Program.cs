@@ -112,7 +112,7 @@ namespace v2rayN
 
         static bool UnzipLibs()
         {
-            var fileName = Utils.GetPath("libs.zip");
+            string fileName = Utils.GetPath("libs.zip");
             if (!FileManager.ByteArrayToFile(fileName, Resources.libs))
             {
                 return false;

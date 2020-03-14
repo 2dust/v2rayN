@@ -149,7 +149,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 //端口
                 inbound.port = config.inbound[0].localPort;
                 inbound.protocol = config.inbound[0].protocol;
@@ -327,7 +327,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var outbound = v2rayConfig.outbounds[0];
+                Outbounds outbound = v2rayConfig.outbounds[0];
                 if (config.configType() == (int)EConfigType.Vmess)
                 {
                     VnextItem vnextItem;
@@ -420,7 +420,7 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(config.security())
                         && !Utils.IsNullOrEmpty(config.id()))
                     {
-                        var socksUsersItem = new SocksUsersItem
+                        SocksUsersItem socksUsersItem = new SocksUsersItem
                         {
                             user = config.security(),
                             pass = config.id(),
@@ -456,7 +456,7 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                var host = config.requestHost();               
+                string host = config.requestHost();               
                 //if tls
                 if (config.streamSecurity() == Global.StreamSecurity)
                 {
@@ -659,10 +659,10 @@ namespace v2rayN.Handler
         {
             if (config.enableStatistics)
             {
-                var tag = Global.InboundAPITagName;
-                var apiObj = new API();
-                var policyObj = new Policy();
-                var policySystemSetting = new SystemPolicy();
+                string tag = Global.InboundAPITagName;
+                API apiObj = new API();
+                Policy policyObj = new Policy();
+                SystemPolicy policySystemSetting = new SystemPolicy();
 
                 string[] services = { "StatsService" };
 
@@ -679,8 +679,8 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
                 {
-                    var apiInbound = new Inbounds();
-                    var apiInboundSettings = new Inboundsettings();
+                    Inbounds apiInbound = new Inbounds();
+                    Inboundsettings apiInboundSettings = new Inboundsettings();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
                     apiInbound.port = Global.statePort;
@@ -692,7 +692,7 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
                 {
-                    var apiRoutingRule = new RulesItem
+                    RulesItem apiRoutingRule = new RulesItem
                     {
                         inboundTag = new List<string> { tag },
                         outboundTag = tag,
@@ -832,7 +832,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 UsersItem usersItem;
                 if (inbound.settings.clients.Count <= 0)
                 {
@@ -921,7 +921,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var outbound = v2rayConfig.outbounds[0];
+                Outbounds outbound = v2rayConfig.outbounds[0];
                 if (outbound == null
                     || Utils.IsNullOrEmpty(outbound.protocol)
                     || outbound.protocol != "vmess"
@@ -1067,7 +1067,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 if (inbound == null
                     || Utils.IsNullOrEmpty(inbound.protocol)
                     || inbound.protocol != "vmess"
@@ -1458,7 +1458,7 @@ namespace v2rayN.Handler
                 dns(configCopy, ref v2rayConfig);
 
 
-                var httpPort = configCopy.GetLocalPort("speedtest");
+                int httpPort = configCopy.GetLocalPort("speedtest");
                 foreach (int index in selecteds)
                 {
                     if (configCopy.vmess[index].configType == (int)EConfigType.Custom)
@@ -1468,7 +1468,7 @@ namespace v2rayN.Handler
 
                     configCopy.index = index;
 
-                    var inbound = new Inbounds
+                    Inbounds inbound = new Inbounds
                     {
                         listen = Global.Loopback,
                         port = httpPort + index,
@@ -1478,12 +1478,12 @@ namespace v2rayN.Handler
                     v2rayConfig.inbounds.Add(inbound);
 
 
-                    var v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
+                    V2rayConfig v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
                     outbound(configCopy, ref v2rayConfigCopy);
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
-                    var rule = new RulesItem
+                    RulesItem rule = new RulesItem
                     {
                         inboundTag = new List<string> { inbound.tag },
                         outboundTag = v2rayConfigCopy.outbounds[0].tag,

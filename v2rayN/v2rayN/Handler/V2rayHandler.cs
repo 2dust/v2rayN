@@ -104,7 +104,7 @@ namespace v2rayN.Handler
                         Process[] existing = Process.GetProcessesByName(vName);
                         foreach (Process p in existing)
                         {
-                            var path = p.MainModule.FileName;
+                            string path = p.MainModule.FileName;
                             if (path == $"{Utils.GetPath(vName)}.exe")
                             {
                                 KillProcess(p);

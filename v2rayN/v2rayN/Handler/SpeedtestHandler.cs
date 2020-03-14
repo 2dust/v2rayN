@@ -108,7 +108,7 @@ namespace v2rayN.Handler
                 _v2rayHandler.LoadV2ray(_config, _selecteds);
 
                 Thread.Sleep(5000);
-                var httpPort = _config.GetLocalPort("speedtest");
+                int httpPort = _config.GetLocalPort("speedtest");
                 Task[] tasks = new Task[_selecteds.Count];
                 int i = -1;
                 foreach (int itemIndex in _selecteds)
@@ -124,7 +124,7 @@ namespace v2rayN.Handler
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
                             int responseTime = -1;
-                            var status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
+                            string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? string.Format("{0}ms", responseTime) : string.Format("{0}", status);
                             _updateFunc(itemIndex, output);
                         }
@@ -205,11 +205,11 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            var httpPort = _config.GetLocalPort("speedtest");
+            int httpPort = _config.GetLocalPort("speedtest");
             index = _selecteds[index];
 
             testCounter++;
-            var webProxy = new WebProxy(Global.Loopback, httpPort + index);
+            WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + index);
             downloadHandle2.DownloadFileAsync(_config, url, webProxy, 20);
 
             return 0;
@@ -217,7 +217,7 @@ namespace v2rayN.Handler
 
         private int GetTcpingTime(string url, int port)
         {
-            var responseTime = -1;
+            int responseTime = -1;
 
             try
             {
@@ -228,10 +228,10 @@ namespace v2rayN.Handler
                     ipAddress = ipHostInfo.AddressList[0];
                 }
 
-                var timer = new Stopwatch();
+                Stopwatch timer = new Stopwatch();
                 timer.Start();
 
-                var endPoint = new IPEndPoint(ipAddress, port);
+                IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
                 Socket clientSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 IAsyncResult result = clientSocket.BeginConnect(endPoint, null, null);
@@ -260,7 +260,7 @@ namespace v2rayN.Handler
                 myHttpWebRequest.Timeout = 5000;
                 myHttpWebRequest.Proxy = webProxy;//new WebProxy(Global.Loopback, Global.httpPort);
 
-                var timer = new Stopwatch();
+                Stopwatch timer = new Stopwatch();
                 timer.Start();
 
                 HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();

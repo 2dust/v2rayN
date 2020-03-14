@@ -118,8 +118,8 @@ namespace v2rayN.Handler
 
                         if (res != null)
                         {
-                            var itemId = config_.getItemId();
-                            var serverStatItem = GetServerStatItem(itemId);
+                            string itemId = config_.getItemId();
+                            ServerStatItem serverStatItem = GetServerStatItem(itemId);
                             ulong up = 0,
                                  down = 0;
 
@@ -167,8 +167,8 @@ namespace v2rayN.Handler
                     serverStatistics_.server = new List<ServerStatItem>();
                 }
 
-                var ticks = DateTime.Now.Date.Ticks;
-                foreach (var item in serverStatistics_.server)
+                long ticks = DateTime.Now.Date.Ticks;
+                foreach (ServerStatItem item in serverStatistics_.server)
                 {
                     if (item.dateNow != ticks)
                     {
@@ -198,8 +198,8 @@ namespace v2rayN.Handler
 
         private ServerStatItem GetServerStatItem(string itemId)
         {
-            var ticks = DateTime.Now.Date.Ticks;
-            var cur = Statistic.FindIndex(item => item.itemId == itemId);
+            long ticks = DateTime.Now.Date.Ticks;
+            int cur = Statistic.FindIndex(item => item.itemId == itemId);
             if (cur < 0)
             {
                 Statistic.Add(new ServerStatItem
@@ -229,12 +229,12 @@ namespace v2rayN.Handler
             try
             {
 
-                foreach (var stat in source)
+                foreach (Stat stat in source)
                 {
-                    var name = stat.Name;
-                    var value = stat.Value;
-                    var nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    var type = "";
+                    string name = stat.Name;
+                    long value = stat.Value;
+                    string[] nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string type = "";
 
                     name = name.Trim();
 
@@ -268,7 +268,7 @@ namespace v2rayN.Handler
                 // TCP stack please do me a favor
                 TcpListener l = new TcpListener(IPAddress.Loopback, 0);
                 l.Start();
-                var port = ((IPEndPoint)l.LocalEndpoint).Port;
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
                 l.Stop();
                 return port;
             }

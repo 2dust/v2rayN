@@ -69,10 +69,10 @@ namespace v2rayN.HttpProxyHandler
             else
             {
                 // restore user settings
-                var flags = _userSettings.Flags;
-                var proxy_server = _userSettings.ProxyServer ?? "-";
-                var bypass_list = _userSettings.BypassList ?? "-";
-                var pac_url = _userSettings.PacUrl ?? "-";
+                string flags = _userSettings.Flags;
+                string proxy_server = _userSettings.ProxyServer ?? "-";
+                string bypass_list = _userSettings.BypassList ?? "-";
+                string pac_url = _userSettings.PacUrl ?? "-";
                 arguments = $"set {flags} {proxy_server} {bypass_list} {pac_url}";
 
                 // have to get new settings
@@ -110,7 +110,7 @@ namespace v2rayN.HttpProxyHandler
             using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
             using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
             {
-                using (var process = new Process())
+                using (Process process = new Process())
                 {
                     // Configure the process using the StartInfo properties.
                     process.StartInfo.FileName = Utils.GetTempPath("sysproxy.exe");
@@ -167,10 +167,10 @@ namespace v2rayN.HttpProxyHandler
                         // log the arguments
                         throw new Exception(process.StartInfo.Arguments);
                     }
-                    var stderr = error.ToString();
-                    var stdout = output.ToString();
+                    string stderr = error.ToString();
+                    string stdout = output.ToString();
 
-                    var exitCode = process.ExitCode;
+                    int exitCode = process.ExitCode;
                     if (exitCode != (int)RET_ERRORS.RET_NO_ERROR)
                     {
                         throw new Exception(stderr);

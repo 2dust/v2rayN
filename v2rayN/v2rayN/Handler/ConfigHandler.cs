@@ -375,7 +375,7 @@ namespace v2rayN.Handler
                 }
                 else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
                 {
-                    var remark = string.Empty;
+                    string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(vmessItem.remarks))
                     {
                         remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
@@ -390,7 +390,7 @@ namespace v2rayN.Handler
                 }
                 else if (vmessItem.configType == (int)EConfigType.Socks)
                 {
-                    var remark = string.Empty;
+                    string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(vmessItem.remarks))
                     {
                         remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
@@ -803,7 +803,7 @@ namespace v2rayN.Handler
         public static int AddSubItem(ref Config config, string url)
         {
             //already exists
-            foreach (var sub in config.subItem)
+            foreach (SubItem sub in config.subItem)
             {
                 if (url == sub.url)
                 {
@@ -811,7 +811,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            var subItem = new SubItem
+            SubItem subItem = new SubItem
             {
                 id = string.Empty,
                 remarks = "import sub",

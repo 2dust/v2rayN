@@ -114,7 +114,7 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                var pac = GetPacList(address);
+                string pac = GetPacList(address);
                 return pac;
             }
             catch (Exception ex)
@@ -165,7 +165,7 @@ namespace v2rayN.HttpProxyHandler
 
         private static string GetPacList(string address)
         {
-            var port = Global.httpPort;
+            int port = Global.httpPort;
             if (port <= 0)
             {
                 return "No port";
@@ -174,22 +174,22 @@ namespace v2rayN.HttpProxyHandler
             {
                 List<string> lstProxy = new List<string>();
                 lstProxy.Add(string.Format("PROXY {0}:{1};", address, port));
-                var proxy = string.Join("", lstProxy.ToArray());
+                string proxy = string.Join("", lstProxy.ToArray());
 
                 string strPacfile = Utils.GetPath(Global.pacFILE);
                 if (!File.Exists(strPacfile))
                 {
                     FileManager.UncompressFile(strPacfile, Resources.pac_txt);
                 }
-                var pac = File.ReadAllText(strPacfile, Encoding.UTF8);
+                string pac = File.ReadAllText(strPacfile, Encoding.UTF8);
                 pac = pac.Replace("__PROXY__", proxy);
 
                 if (_config.userPacRule.Count > 0)
                 {
-                    var keyWords = "var rules = [";
+                    string keyWords = "var rules = [";
                     if (pac.IndexOf(keyWords) >= 0)
                     {
-                        var userPac = string.Join($"\",{Environment.NewLine}\"", _config.userPacRule.ToArray());
+                        string userPac = string.Join($"\",{Environment.NewLine}\"", _config.userPacRule.ToArray());
                         userPac = string.Format("\"{0}\",", userPac);
                         pac = pac.Replace(keyWords, keyWords + userPac);
                     }
