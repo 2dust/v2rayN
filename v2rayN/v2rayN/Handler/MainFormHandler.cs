@@ -100,7 +100,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            Config configCopy = Utils.DeepCopy<Config>(config);
+            Config configCopy = Utils.DeepCopy(config);
             configCopy.index = index;
             string msg;
             if (V2rayConfigHandler.Export2ClientConfig(configCopy, fileName, out msg) != 0)
@@ -141,7 +141,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            Config configCopy = Utils.DeepCopy<Config>(config);
+            Config configCopy = Utils.DeepCopy(config);
             configCopy.index = index;
             string msg;
             if (V2rayConfigHandler.Export2ServerConfig(configCopy, fileName, out msg) != 0)

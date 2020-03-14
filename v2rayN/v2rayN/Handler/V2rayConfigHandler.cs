@@ -660,9 +660,9 @@ namespace v2rayN.Handler
             if (config.enableStatistics)
             {
                 var tag = Global.InboundAPITagName;
-                var apiObj = new Mode.API();
-                var policyObj = new Mode.Policy();
-                var policySystemSetting = new Mode.SystemPolicy();
+                var apiObj = new API();
+                var policyObj = new Policy();
+                var policySystemSetting = new SystemPolicy();
 
                 string[] services = { "StatsService" };
 
@@ -679,8 +679,8 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
                 {
-                    var apiInbound = new Mode.Inbounds();
-                    var apiInboundSettings = new Mode.Inboundsettings();
+                    var apiInbound = new Inbounds();
+                    var apiInboundSettings = new Inboundsettings();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
                     apiInbound.port = Global.statePort;
@@ -692,7 +692,7 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
                 {
-                    var apiRoutingRule = new Mode.RulesItem
+                    var apiRoutingRule = new RulesItem
                     {
                         inboundTag = new List<string> { tag },
                         outboundTag = tag,
@@ -1437,7 +1437,7 @@ namespace v2rayN.Handler
 
                 msg = UIRes.I18N("InitialConfiguration");
 
-                Config configCopy = Utils.DeepCopy<Config>(config);             
+                Config configCopy = Utils.DeepCopy(config);             
 
                 string result = Utils.GetEmbedText(SampleClient);
                 if (Utils.IsNullOrEmpty(result))
@@ -1483,7 +1483,7 @@ namespace v2rayN.Handler
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
-                    var rule = new Mode.RulesItem
+                    var rule = new RulesItem
                     {
                         inboundTag = new List<string> { inbound.tag },
                         outboundTag = v2rayConfigCopy.outbounds[0].tag,

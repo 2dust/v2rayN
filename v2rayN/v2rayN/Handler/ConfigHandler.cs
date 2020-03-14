@@ -436,7 +436,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy<VmessItem>(config.vmess[index]);
+                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
                         config.vmess.RemoveAt(index);
                         config.vmess.Insert(0, vmess);
                         if (index < config.index)
@@ -459,7 +459,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy<VmessItem>(config.vmess[index]);
+                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
                         config.vmess.RemoveAt(index);
                         config.vmess.Insert(index - 1, vmess);
                         if (index == config.index + 1)
@@ -479,7 +479,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy<VmessItem>(config.vmess[index]);
+                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
                         config.vmess.RemoveAt(index);
                         config.vmess.Insert(index + 1, vmess);
                         if (index == config.index - 1)
@@ -498,7 +498,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy<VmessItem>(config.vmess[index]);
+                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
                         config.vmess.RemoveAt(index);
                         config.vmess.Add(vmess);
                         if (index < config.index)
