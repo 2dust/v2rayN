@@ -124,15 +124,6 @@
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;txtremoteDNS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl2.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;labRoutingTips.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
     <value>30, 176</value>
@@ -143,35 +134,11 @@
   <data name="tabPage4.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 460</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="tabPage6.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;txtKcpwriteBufferSize.Name" xml:space="preserve">
-    <value>txtKcpwriteBufferSize</value>
-  </data>
-  <data name="&gt;&gt;txtlocalPort.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;lbFreshrate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="label3.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;chkAllowLANConn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage6.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="txtKcpmtu.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -181,18 +148,6 @@
   </data>
   <data name="txtKcpuplinkCapacity.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;label15.Name" xml:space="preserve">
-    <value>label15</value>
-  </data>
-  <data name="&gt;&gt;txtuserPacRule.Parent" xml:space="preserve">
-    <value>tabPage9</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -210,17 +165,8 @@
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;txtKcptti.Name" xml:space="preserve">
-    <value>txtKcptti</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Name" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
   <data name="tabPage9.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;cmblistenerType.Name" xml:space="preserve">
-    <value>cmblistenerType</value>
   </data>
   <data name="tabPage3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -236,12 +182,6 @@
   </data>
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="txtUserblock.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -261,29 +201,17 @@
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>281, 12</value>
   </data>
-  <data name="&gt;&gt;labRoutingTips.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
   <data name="chksniffingEnabled2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>tti</value>
   </data>
-  <data name="&gt;&gt;tabPage6.Name" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
   <data name="chkudpEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 16</value>
   </data>
-  <data name="&gt;&gt;tabPage9.Name" xml:space="preserve">
-    <value>tabPage9</value>
-  </data>
   <data name="txtUserdirect.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 454</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.Parent" xml:space="preserve">
-    <value>tabPage7</value>
   </data>
   <data name="cmblistenerType.Items4" xml:space="preserve">
     <value>Only open PAC, do not automatically configure PAC</value>
@@ -303,9 +231,6 @@
   <data name="txtKcptti.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>648, 573</value>
   </data>
@@ -318,14 +243,8 @@
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
   </data>
-  <data name="&gt;&gt;txtKcpdownlinkCapacity.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
-  </data>
-  <data name="&gt;&gt;btnSetDefRountingRule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmblistenerType.Items6" xml:space="preserve">
     <value>Only open PAC and do nothing</value>
@@ -333,14 +252,8 @@
   <data name="chkAllowIn2.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 63</value>
   </data>
-  <data name="&gt;&gt;tabPage4.Parent" xml:space="preserve">
-    <value>tabControl2</value>
-  </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
-  </data>
-  <data name="&gt;&gt;txtUserdirect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="txtUserdirect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -348,17 +261,11 @@
   <data name="chkudpEnabled2.Text" xml:space="preserve">
     <value>Enable UDP</value>
   </data>
-  <data name="&gt;&gt;txtlocalPort2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>648, 573</value>
@@ -366,23 +273,11 @@
   <data name="txtUseragent.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtuserPacRule.MaxLength" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;panel4.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="cmbroutingMode.Items1" xml:space="preserve">
     <value>Bypassing the LAN address</value>
-  </data>
-  <data name="&gt;&gt;chkAllowIn2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmbroutingMode.Items3" xml:space="preserve">
     <value>Bypassing LAN and mainland address</value>
@@ -396,29 +291,14 @@
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;txtKcpmtu.Name" xml:space="preserve">
-    <value>txtKcpmtu</value>
-  </data>
-  <data name="&gt;&gt;lbFreshrate.Name" xml:space="preserve">
-    <value>lbFreshrate</value>
-  </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
   </data>
   <data name="chkEnableStatistics.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
   </data>
-  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="label16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>tabPage6</value>
   </data>
   <data name="cmblistenerType.Items3" xml:space="preserve">
     <value>Only open Http proxy, do not automatically configure proxy server (direct mode)</value>
@@ -426,41 +306,8 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;txtKcpwriteBufferSize.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
   <data name="chksniffingEnabled2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Parent" xml:space="preserve">
-    <value>tabControl2</value>
-  </data>
-  <data name="&gt;&gt;btnSetDefRountingRule.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkmuxEnabled.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;cmbdomainStrategy.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;chkAllowLANConn.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtuserPacRule.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>tabPage6</value>
   </data>
   <data name="tabPage8.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -474,32 +321,14 @@
   <data name="txtuserPacRule.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txturlGFWList.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="chkKcpcongestion.Text" xml:space="preserve">
     <value>congestion</value>
   </data>
-  <data name="&gt;&gt;txtUseragent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbprotocol2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;cmbdomainStrategy.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tabPage8.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
-  </data>
-  <data name="&gt;&gt;txtKcptti.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
@@ -507,29 +336,11 @@
   <data name="cmbloglevel.Items1" xml:space="preserve">
     <value>info</value>
   </data>
-  <data name="&gt;&gt;txtUseragent.Name" xml:space="preserve">
-    <value>txtUseragent</value>
-  </data>
-  <data name="&gt;&gt;tabPage4.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;chkEnableStatistics.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
   <data name="tabPage7.Text" xml:space="preserve">
     <value>v2rayN settings</value>
   </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;chklogEnabled.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="cmblistenerType.Items" xml:space="preserve">
     <value>Not Enabled Http Proxy</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="chksniffingEnabled2.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -540,21 +351,6 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
   </data>
-  <data name="&gt;&gt;chkudpEnabled2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tabPage4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbdomainStrategy.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtKcpdownlinkCapacity.Name" xml:space="preserve">
-    <value>txtKcpdownlinkCapacity</value>
-  </data>
   <data name="chkAutoRun.Text" xml:space="preserve">
     <value>Boot automatically</value>
   </data>
@@ -564,9 +360,6 @@
   <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;txtKcpwriteBufferSize.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="label16.Text" xml:space="preserve">
     <value>Http proxy</value>
   </data>
@@ -575,9 +368,6 @@
   </data>
   <data name="chksniffingEnabled2.Text" xml:space="preserve">
     <value>Turn on Sniffing</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>tabPage6</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
     <value>355, 16</value>
@@ -600,9 +390,6 @@
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 29</value>
   </data>
-  <data name="&gt;&gt;label16.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtlocalPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 21</value>
   </data>
@@ -611,9 +398,6 @@
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>Custom DNS (multiple, separated by commas (,))</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>tabControl1</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -624,29 +408,14 @@
   <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 579</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
   <data name="cmbloglevel.Items2" xml:space="preserve">
     <value>warning</value>
-  </data>
-  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;txturlGFWList.Parent" xml:space="preserve">
-    <value>tabPage7</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lbFreshrate.Text" xml:space="preserve">
     <value>Statistics freshrate</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="chkAllowIn2.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 16</value>
@@ -675,20 +444,8 @@
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="&gt;&gt;txtKcpuplinkCapacity.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
   <data name="chksniffingEnabled.Text" xml:space="preserve">
     <value>Turn on Sniffing</value>
-  </data>
-  <data name="&gt;&gt;cmbloglevel.Name" xml:space="preserve">
-    <value>cmbloglevel</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 28</value>
@@ -708,38 +465,17 @@
   <data name="cmbroutingMode.Location" type="System.Drawing.Point, System.Drawing">
     <value>21, 17</value>
   </data>
-  <data name="&gt;&gt;labRoutingTips.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmblistenerType.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label16.Name" xml:space="preserve">
-    <value>label16</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtlocalPort2.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
-  <data name="&gt;&gt;chkmuxEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label4.Text" xml:space="preserve">
     <value>*Set user pac rules, separated by commas (,)</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled.Name" xml:space="preserve">
-    <value>chksniffingEnabled</value>
-  </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="chkmuxEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>174, 16</value>
@@ -750,14 +486,8 @@
   <data name="lbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
     <value>30, 87</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 104</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
-    <value>tabPage2</value>
   </data>
   <data name="cmbprotocol2.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 20</value>
@@ -765,32 +495,14 @@
   <data name="cmbprotocol2.Items" xml:space="preserve">
     <value>socks</value>
   </data>
-  <data name="&gt;&gt;tabPage5.Name" xml:space="preserve">
-    <value>tabPage5</value>
-  </data>
   <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
     <value>558, 16</value>
-  </data>
-  <data name="&gt;&gt;txtKcpmtu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmblistenerType.Size" type="System.Drawing.Size, System.Drawing">
     <value>464, 20</value>
   </data>
-  <data name="&gt;&gt;cmbprotocol2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
   <data name="labRoutingTips.Text" xml:space="preserve">
     <value>*Set the rules, separated by commas (,); support Domain (pure string / regular / subdomain) and IP</value>
-  </data>
-  <data name="&gt;&gt;txtUseragent.Parent" xml:space="preserve">
-    <value>tabPage3</value>
   </data>
   <data name="lbFreshrate.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -798,41 +510,17 @@
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
-  <data name="&gt;&gt;cmbloglevel.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
   <data name="chksniffingEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>468, 27</value>
   </data>
-  <data name="&gt;&gt;label13.Name" xml:space="preserve">
-    <value>label13</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.Name" xml:space="preserve">
-    <value>chkAutoRun</value>
-  </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
-  </data>
-  <data name="&gt;&gt;txtuserPacRule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <data name="tabControl2.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="chkmuxEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 129</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled.Name" xml:space="preserve">
-    <value>chkudpEnabled</value>
   </data>
   <data name="txtKcptti.Location" type="System.Drawing.Point, System.Drawing">
     <value>345, 24</value>
@@ -843,41 +531,11 @@
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 204</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;txtKcpdownlinkCapacity.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;txtKcpreadBufferSize.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;tabPage6.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnOK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtremoteDNS.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;btnSetDefRountingRule.Name" xml:space="preserve">
-    <value>btnSetDefRountingRule</value>
-  </data>
   <data name="txtUserblock.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;txturlGFWList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
   <data name="chkKcpcongestion.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 16</value>
-  </data>
-  <data name="&gt;&gt;cmbroutingMode.Parent" xml:space="preserve">
-    <value>tabPage8</value>
   </data>
   <data name="chklogEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -885,32 +543,14 @@
   <data name="cmbprotocol2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
   <data name="tabPage7.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;txtlocalPort.Name" xml:space="preserve">
-    <value>txtlocalPort</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbFreshrate.Parent" xml:space="preserve">
-    <value>tabPage7</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 17</value>
   </data>
   <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;labRoutingTips.Name" xml:space="preserve">
-    <value>labRoutingTips</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabPage3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -921,12 +561,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>protocol</value>
   </data>
-  <data name="&gt;&gt;cmblistenerType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl2.Name" xml:space="preserve">
-    <value>tabControl2</value>
-  </data>
   <data name="chkudpEnabled2.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 16</value>
   </data>
@@ -935,9 +569,6 @@
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 12</value>
-  </data>
-  <data name="&gt;&gt;cmbloglevel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmbloglevel.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 20</value>
@@ -951,35 +582,14 @@
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="&gt;&gt;label13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkAllowLANConn.Name" xml:space="preserve">
-    <value>chkAllowLANConn</value>
-  </data>
   <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage9.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;tabPage8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="chkAllowLANConn.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 38</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled2.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="chkudpEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -987,26 +597,14 @@
   <data name="chkudpEnabled2.Location" type="System.Drawing.Point, System.Drawing">
     <value>369, 62</value>
   </data>
-  <data name="&gt;&gt;cmbprotocol.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="tabPage3.Text" xml:space="preserve">
     <value>1.Proxy Domain or IP</value>
-  </data>
-  <data name="&gt;&gt;btnSetDefRountingRule.Parent" xml:space="preserve">
-    <value>panel3</value>
   </data>
   <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 579</value>
-  </data>
-  <data name="&gt;&gt;tabPage8.Parent" xml:space="preserve">
-    <value>tabControl2</value>
-  </data>
-  <data name="&gt;&gt;chkAllowIn2.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1017,23 +615,8 @@
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
-  <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="txtUserdirect.MaxLength" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;txtKcpuplinkCapacity.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtKcpmtu.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
   </data>
   <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 20</value>
@@ -1041,17 +624,11 @@
   <data name="txtlocalPort2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;txtUseragent.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="txtUseragent.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
   <data name="chklogEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="tabPage8.Text" xml:space="preserve">
     <value>4.Pre-defined rules</value>
@@ -1059,17 +636,11 @@
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 12</value>
   </data>
-  <data name="&gt;&gt;chkEnableStatistics.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="cmbprotocol.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>431, 12</value>
-  </data>
-  <data name="&gt;&gt;cmbprotocol.Name" xml:space="preserve">
-    <value>cmbprotocol</value>
   </data>
   <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
     <value>648, 37</value>
@@ -1079,12 +650,6 @@
   </data>
   <data name="chkEnableStatistics.Text" xml:space="preserve">
     <value>Enable Statistics(Realtime net speed and traffic data amount. Need restart v2rayN client)</value>
-  </data>
-  <data name="&gt;&gt;tabControl2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Listening port</value>
@@ -1098,14 +663,8 @@
   <data name="tabPage4.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;cbFreshrate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtUserblock.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="txturlGFWList.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1113,23 +672,8 @@
   <data name="cmbprotocol2.Location" type="System.Drawing.Point, System.Drawing">
     <value>257, 60</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage7.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbprotocol2.Name" xml:space="preserve">
-    <value>cmbprotocol2</value>
-  </data>
   <data name="cmblistenerType.Items1" xml:space="preserve">
     <value>Open Http proxy and automatically configure proxy server (global mode)</value>
-  </data>
-  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
-    <value>groupBox2</value>
   </data>
   <data name="txtremoteDNS.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1143,20 +687,8 @@
   <data name="chkudpEnabled2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>panel4</value>
-  </data>
   <data name="chksniffingEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;chkKcpcongestion.Name" xml:space="preserve">
-    <value>chkKcpcongestion</value>
-  </data>
-  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;chkKcpcongestion.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="cmbprotocol.Location" type="System.Drawing.Point, System.Drawing">
     <value>257, 25</value>
@@ -1164,23 +696,11 @@
   <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 84</value>
   </data>
-  <data name="&gt;&gt;cmblistenerType.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
   <data name="chkAllowIn2.Text" xml:space="preserve">
     <value>listening port 2</value>
-  </data>
-  <data name="&gt;&gt;txtKcpmtu.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;chkAllowIn2.Name" xml:space="preserve">
-    <value>chkAllowIn2</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>tabPage2</value>
   </data>
   <data name="cmbroutingMode.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1194,26 +714,8 @@
   <data name="chkAllowIn2.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
-  <data name="&gt;&gt;tabPage8.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txtUserdirect.Parent" xml:space="preserve">
-    <value>tabPage4</value>
-  </data>
-  <data name="&gt;&gt;txtKcpwriteBufferSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage9.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="txturlGFWList.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 100</value>
-  </data>
-  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cmbloglevel.Items3" xml:space="preserve">
     <value>error</value>
@@ -1221,38 +723,17 @@
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;txtuserPacRule.Name" xml:space="preserve">
-    <value>txtuserPacRule</value>
-  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 12</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;chkEnableStatistics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 460</value>
   </data>
-  <data name="&gt;&gt;txtlocalPort2.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>662, 10</value>
   </data>
-  <data name="&gt;&gt;txtlocalPort2.Name" xml:space="preserve">
-    <value>txtlocalPort2</value>
-  </data>
   <data name="chkAutoRun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;tabPage7.Name" xml:space="preserve">
-    <value>tabPage7</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1260,14 +741,8 @@
   <data name="tabControl2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;txtremoteDNS.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 579</value>
-  </data>
-  <data name="&gt;&gt;txtKcpuplinkCapacity.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1286,18 +761,6 @@
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;txtUserdirect.Name" xml:space="preserve">
-    <value>txtUserdirect</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled2.Name" xml:space="preserve">
-    <value>chkudpEnabled2</value>
-  </data>
-  <data name="&gt;&gt;tabControl2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;txtUserdirect.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="txtuserPacRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>648, 536</value>
@@ -1323,38 +786,8 @@
   <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
     <value>Keep older when deduplication</value>
   </data>
-  <data name="&gt;&gt;chkKeepOlderDedupl.Name" xml:space="preserve">
-    <value>chkKeepOlderDedupl</value>
-  </data>
-  <data name="&gt;&gt;chkKeepOlderDedupl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkKeepOlderDedupl.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
-  <data name="&gt;&gt;chkKeepOlderDedupl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
     <value>161, 84</value>
-  </data>
-  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;chkKcpcongestion.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;tabPage5.Parent" xml:space="preserve">
-    <value>tabControl2</value>
-  </data>
-  <data name="&gt;&gt;txtKcpreadBufferSize.Name" xml:space="preserve">
-    <value>txtKcpreadBufferSize</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>panel2</value>
   </data>
   <data name="txtremoteDNS.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1362,29 +795,11 @@
   <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;tabPage6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tabPage9.Text" xml:space="preserve">
     <value>User PAC settings</value>
   </data>
-  <data name="&gt;&gt;label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbFreshrate.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
-  <data name="&gt;&gt;cmbprotocol2.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;cmbprotocol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Log level</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
-    <value>tabControl1</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>protocol</value>
@@ -1392,29 +807,17 @@
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;tabPage4.Name" xml:space="preserve">
-    <value>tabPage4</value>
-  </data>
   <data name="lbFreshrate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="tabPage6.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;chkAutoRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="cmbdomainStrategy.Items" xml:space="preserve">
     <value>AsIs</value>
   </data>
   <data name="chkEnableStatistics.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 62</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
-    <value>tabPage7</value>
   </data>
   <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 486</value>
@@ -1424,9 +827,6 @@
   </data>
   <data name="cbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 20</value>
-  </data>
-  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
     <value>42, 98</value>
@@ -1452,17 +852,8 @@
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;txtUserblock.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;cmbroutingMode.Name" xml:space="preserve">
-    <value>cmbroutingMode</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -1515,38 +906,14 @@
   <data name="cmbloglevel.Items" xml:space="preserve">
     <value>debug</value>
   </data>
-  <data name="&gt;&gt;lbFreshrate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 615</value>
-  </data>
-  <data name="&gt;&gt;txtUserblock.Name" xml:space="preserve">
-    <value>txtUserblock</value>
   </data>
   <data name="btnSetDefRountingRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 23</value>
   </data>
-  <data name="&gt;&gt;txtKcpreadBufferSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
   <data name="txtKcpwriteBufferSize.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
-  </data>
-  <data name="&gt;&gt;tabPage5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>Custom GFWList address (please fill in the blank without customization)</value>
@@ -1563,32 +930,14 @@
   <data name="tabPage4.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;cmbdomainStrategy.Name" xml:space="preserve">
-    <value>cmbdomainStrategy</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>OptionSettingForm</value>
-  </data>
   <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;txtlocalPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>&amp;OK</value>
   </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="txtuserPacRule.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 40</value>
-  </data>
-  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;txtKcpuplinkCapacity.Name" xml:space="preserve">
-    <value>txtKcpuplinkCapacity</value>
   </data>
   <data name="cmbdomainStrategy.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 10</value>
@@ -1596,47 +945,20 @@
   <data name="chkAutoRun.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;chklogEnabled.Name" xml:space="preserve">
-    <value>chklogEnabled</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled2.Name" xml:space="preserve">
-    <value>chksniffingEnabled2</value>
-  </data>
   <data name="txtUserblock.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 67</value>
   </data>
-  <data name="&gt;&gt;cmbroutingMode.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;panel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
     <value>Domain strategy</value>
   </data>
-  <data name="&gt;&gt;txtUserblock.Parent" xml:space="preserve">
-    <value>tabPage5</value>
-  </data>
-  <data name="&gt;&gt;chkudpEnabled2.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="cmbdomainStrategy.Items1" xml:space="preserve">
     <value>IPIfNonMatch</value>
-  </data>
-  <data name="&gt;&gt;cmbloglevel.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1644,35 +966,11 @@
   <data name="tabPage5.Text" xml:space="preserve">
     <value>3.Block Domain or IP</value>
   </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
     <value>236, 66</value>
   </data>
-  <data name="&gt;&gt;chkAllowLANConn.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
-  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chklogEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="lbFreshrate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;txtremoteDNS.Name" xml:space="preserve">
-    <value>txtremoteDNS</value>
   </data>
   <data name="tabPage9.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 579</value>
@@ -1683,26 +981,14 @@
   <data name="cmblistenerType.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
   </data>
-  <data name="&gt;&gt;tabPage7.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="label10.Text" xml:space="preserve">
     <value>writeBufferSize</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtUserblock.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="chksniffingEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -1713,26 +999,11 @@
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>193, 162</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;chkmuxEnabled.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;txtlocalPort2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="cbFreshrate.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
-  </data>
-  <data name="&gt;&gt;txtKcpdownlinkCapacity.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel4.Name" xml:space="preserve">
-    <value>panel4</value>
   </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>Core: Routing settings</value>
@@ -1752,17 +1023,11 @@
   <data name="cmbloglevel.Location" type="System.Drawing.Point, System.Drawing">
     <value>257, 158</value>
   </data>
-  <data name="&gt;&gt;tabPage8.Name" xml:space="preserve">
-    <value>tabPage8</value>
-  </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>236, 104</value>
-  </data>
-  <data name="&gt;&gt;txturlGFWList.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="cmblistenerType.Items2" xml:space="preserve">
     <value>Open PAC and automatically configure PAC (PAC mode)</value>
@@ -1772,9 +1037,6 @@
   </data>
   <data name="chkEnableStatistics.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;panel4.Parent" xml:space="preserve">
-    <value>tabPage9</value>
   </data>
   <data name="txtKcpreadBufferSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 21</value>
@@ -1797,9 +1059,6 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>662, 675</value>
   </data>
-  <data name="&gt;&gt;chkEnableStatistics.Name" xml:space="preserve">
-    <value>chkEnableStatistics</value>
-  </data>
   <data name="cmbdomainStrategy.Items2" xml:space="preserve">
     <value>IPOnDemand</value>
   </data>
@@ -1809,17 +1068,8 @@
   <data name="cmbloglevel.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;cbFreshrate.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Settings</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="tabPage6.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -1836,44 +1086,17 @@
   <data name="txtKcpuplinkCapacity.Location" type="System.Drawing.Point, System.Drawing">
     <value>111, 62</value>
   </data>
-  <data name="&gt;&gt;tabPage9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
   <data name="txtUseragent.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 454</value>
-  </data>
-  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
-    <value>groupBox2</value>
   </data>
   <data name="cmblistenerType.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 94</value>
   </data>
-  <data name="&gt;&gt;btnOK.Name" xml:space="preserve">
-    <value>btnOK</value>
-  </data>
   <data name="btnSetDefRountingRule.Text" xml:space="preserve">
     <value>Set default custom routing rules</value>
   </data>
-  <data name="&gt;&gt;txtKcptti.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;txturlGFWList.Name" xml:space="preserve">
-    <value>txturlGFWList</value>
-  </data>
-  <data name="&gt;&gt;chkmuxEnabled.Name" xml:space="preserve">
-    <value>chkmuxEnabled</value>
-  </data>
   <data name="cmbloglevel.Items4" xml:space="preserve">
     <value>none</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>tabPage6</value>
   </data>
   <data name="chkAllowIn2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1887,9 +1110,6 @@
   <data name="txtUserblock.MaxLength" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;cmbroutingMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -1902,12 +1122,6 @@
   <data name="tabPage7.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;cmbprotocol.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;txtlocalPort.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
   <data name="chklogEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 16</value>
   </data>
@@ -1917,14 +1131,8 @@
   <data name="cmbroutingMode.Items" xml:space="preserve">
     <value>Global</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
-  </data>
-  <data name="&gt;&gt;chkAllowIn2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="txtUseragent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1935,26 +1143,11 @@
   <data name="label11.Text" xml:space="preserve">
     <value>readBufferSize</value>
   </data>
-  <data name="&gt;&gt;txtKcptti.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnSetDefRountingRule.Location" type="System.Drawing.Point, System.Drawing">
     <value>322, 10</value>
   </data>
-  <data name="&gt;&gt;chklogEnabled.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="txtKcpuplinkCapacity.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 21</value>
-  </data>
-  <data name="&gt;&gt;txtKcpreadBufferSize.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="txtlocalPort.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1971,67 +1164,28 @@
   <data name="tabPage4.Text" xml:space="preserve">
     <value>2.Direct Domain or IP</value>
   </data>
-  <data name="&gt;&gt;tabPage7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="chksniffingEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="tabPage9.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;chkKcpcongestion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chksniffingEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtlocalPort2.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 60</value>
-  </data>
-  <data name="&gt;&gt;cbFreshrate.Name" xml:space="preserve">
-    <value>cbFreshrate</value>
   </data>
   <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 16</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>tabPage6</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
   <data name="txtKcpmtu.Location" type="System.Drawing.Point, System.Drawing">
     <value>111, 24</value>
-  </data>
-  <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
-    <value>panel2</value>
   </data>
   <data name="txtuserPacRule.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
   </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 10</value>
   </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
 </root>

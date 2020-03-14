@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;picQRCode.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 441</value>
@@ -134,9 +131,6 @@
   <data name="chkShow.Text" xml:space="preserve">
     <value>Sharing panel</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="chkShow.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 16</value>
   </data>
@@ -148,12 +142,6 @@
   </data>
   <data name="txtUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 371</value>
-  </data>
-  <data name="&gt;&gt;chkShow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picQRCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtUrl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -174,35 +162,8 @@
   <data name="picQRCode.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="&gt;&gt;txtUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtUrl.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;chkShow.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 16</value>
-  </data>
-  <data name="&gt;&gt;txtUrl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkShow.Name" xml:space="preserve">
-    <value>chkShow</value>
-  </data>
-  <data name="&gt;&gt;picQRCode.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;txtUrl.Name" xml:space="preserve">
-    <value>txtUrl</value>
-  </data>
-  <data name="&gt;&gt;chkShow.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;picQRCode.Name" xml:space="preserve">
-    <value>picQRCode</value>
   </data>
   <data name="txtUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 70</value>
@@ -216,7 +177,7 @@
   <data name="chkShow.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
 </root>
