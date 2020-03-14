@@ -85,10 +85,12 @@ namespace v2rayN.Handler
                 return;
             }
 
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            fileDialog.Filter = "Config|*.json";
-            fileDialog.FilterIndex = 2;
-            fileDialog.RestoreDirectory = true;
+            SaveFileDialog fileDialog = new SaveFileDialog
+            {
+                Filter = "Config|*.json",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -124,10 +126,12 @@ namespace v2rayN.Handler
                 return;
             }
 
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            fileDialog.Filter = "Config|*.json";
-            fileDialog.FilterIndex = 2;
-            fileDialog.RestoreDirectory = true;
+            SaveFileDialog fileDialog = new SaveFileDialog
+            {
+                Filter = "Config|*.json",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;

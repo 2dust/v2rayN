@@ -271,8 +271,10 @@ namespace v2rayN.Forms
                 VmessItem item = config.vmess[k];
                 string name = item.getSummary();
 
-                ToolStripMenuItem ts = new ToolStripMenuItem(name);
-                ts.Tag = k;
+                ToolStripMenuItem ts = new ToolStripMenuItem(name)
+                {
+                    Tag = k
+                };
                 if (config.index.Equals(k))
                 {
                     ts.Checked = true;
@@ -422,8 +424,10 @@ namespace v2rayN.Forms
 
             if (config.vmess[index].configType == (int)EConfigType.Vmess)
             {
-                var fm = new AddServerForm();
-                fm.EditIndex = index;
+                var fm = new AddServerForm
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     //刷新
@@ -433,8 +437,10 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Shadowsocks)
             {
-                var fm = new AddServer3Form();
-                fm.EditIndex = index;
+                var fm = new AddServer3Form
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshServers();
@@ -443,8 +449,10 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Socks)
             {
-                var fm = new AddServer4Form();
-                fm.EditIndex = index;
+                var fm = new AddServer4Form
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshServers();
@@ -453,8 +461,10 @@ namespace v2rayN.Forms
             }
             else
             {
-                var fm2 = new AddServer2Form();
-                fm2.EditIndex = index;
+                var fm2 = new AddServer2Form
+                {
+                    EditIndex = index
+                };
                 if (fm2.ShowDialog() == DialogResult.OK)
                 {
                     //刷新
@@ -524,8 +534,10 @@ namespace v2rayN.Forms
 
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
-            AddServerForm fm = new AddServerForm();
-            fm.EditIndex = -1;
+            AddServerForm fm = new AddServerForm
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -772,9 +784,11 @@ namespace v2rayN.Forms
         {
             UI.Show(UIRes.I18N("CustomServerTips"));
 
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = false;
-            fileDialog.Filter = "Config|*.json|All|*.*";
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Config|*.json|All|*.*"
+            };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -800,8 +814,10 @@ namespace v2rayN.Forms
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer3Form();
-            fm.EditIndex = -1;
+            var fm = new AddServer3Form
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -813,8 +829,10 @@ namespace v2rayN.Forms
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer4Form();
-            fm.EditIndex = -1;
+            var fm = new AddServer4Form
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新

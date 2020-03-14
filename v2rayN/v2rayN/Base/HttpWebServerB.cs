@@ -17,8 +17,10 @@ namespace v2rayN.Base
             this.port = port;
             this._responderMethod = method;
 
-            Thread thread = new Thread(StartListen);
-            thread.IsBackground = true;
+            Thread thread = new Thread(StartListen)
+            {
+                IsBackground = true
+            };
             thread.Start();
         }
 
@@ -46,8 +48,10 @@ namespace v2rayN.Base
                 }
 
                 TcpClient socket = listener.AcceptTcpClient();
-                Thread thread = new Thread(new ParameterizedThreadStart(ProcessThread));
-                thread.IsBackground = true;
+                Thread thread = new Thread(new ParameterizedThreadStart(ProcessThread))
+                {
+                    IsBackground = true
+                };
                 thread.Start(socket);
                 Thread.Sleep(1);
             }

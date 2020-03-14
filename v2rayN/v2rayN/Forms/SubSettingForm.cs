@@ -98,10 +98,12 @@ namespace v2rayN.Forms
 
         private void AddSub()
         {
-            var subItem = new SubItem();
-            subItem.id = string.Empty;
-            subItem.remarks = "remarks";
-            subItem.url = "url";
+            var subItem = new SubItem
+            {
+                id = string.Empty,
+                remarks = "remarks",
+                url = "url"
+            };
             config.subItem.Add(subItem);
         }
     }

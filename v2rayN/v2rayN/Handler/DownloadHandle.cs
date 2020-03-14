@@ -60,8 +60,10 @@ namespace v2rayN.Handler
         public async Task CheckUpdateAsync(string type)
         {
             Utils.SetSecurityProtocol();
-            WebRequestHandler webRequestHandler = new WebRequestHandler();
-            webRequestHandler.AllowAutoRedirect = false;
+            WebRequestHandler webRequestHandler = new WebRequestHandler
+            {
+                AllowAutoRedirect = false
+            };
             HttpClient httpClient = new HttpClient(webRequestHandler);
 
             string url;
