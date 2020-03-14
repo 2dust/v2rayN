@@ -15,7 +15,6 @@ namespace v2rayN.Handler
         private Config _config;
         private V2rayHandler _v2rayHandler;
         private List<int> _selecteds;
-        private Thread _workThread;
         Action<int, string> _updateFunc;
 
         private int testCounter = 0;
@@ -36,25 +35,19 @@ namespace v2rayN.Handler
 
             if (actionType == "ping")
             {
-                _workThread = new Thread(new ThreadStart(RunPing));
-                _workThread.IsBackground = true;
-                _workThread.Start();
+                Task.Factory.StartNew(() => RunPing());
             }
             if (actionType == "tcping")
             {
-                _workThread = new Thread(new ThreadStart(RunTcping));
-                _workThread.IsBackground = true;
-                _workThread.Start();
+                Task.Factory.StartNew(() => RunTcping());
             }
             else if (actionType == "realping")
             {
-                _workThread = new Thread(new ThreadStart(RunRealPing));
-                _workThread.IsBackground = true;
-                _workThread.Start();
+                Task.Factory.StartNew(() => RunRealPing());
             }
             else if (actionType == "speedtest")
             {
-                RunSpeedTest();
+                Task.Factory.StartNew(() => RunSpeedTest());
             }
         }
 

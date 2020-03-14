@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Protos.Statistics;
@@ -18,7 +19,6 @@ namespace v2rayN.Handler
         private ServerStatistics serverStatistics_;
         private Channel channel_;
         private StatsService.StatsServiceClient client_;
-        private Thread workThread_;
         private bool exitFlag_;
 
         Action<ulong, ulong, List<ServerStatItem>> updateFunc_;
@@ -70,9 +70,7 @@ namespace v2rayN.Handler
 
             GrpcInit();
 
-            workThread_ = new Thread(new ThreadStart(Run));
-            workThread_.IsBackground = true;
-            workThread_.Start();
+            Task.Factory.StartNew(() => Run());
         }
 
         private void GrpcInit()
