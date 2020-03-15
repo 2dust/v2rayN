@@ -485,24 +485,16 @@ namespace v2rayN
         /// </summary>
         /// <param name="run"></param>
         /// <returns></returns>
-        public static int SetAutoRun(bool run)
+        public static void SetAutoRun(bool run)
         {
             try
             {
-                if (run)
-                {
-                    string exePath = GetExePath();
-                    RegWriteValue(autoRunRegPath, autoRunName, exePath);
-                }
-                else
-                {
-                    RegWriteValue(autoRunRegPath, autoRunName, "");
-                }
+                string exePath = GetExePath();
+                RegWriteValue(autoRunRegPath, autoRunName, run ? exePath : "");
             }
             catch
             {
             }
-            return 0;
         }
 
         /// <summary>
@@ -551,15 +543,7 @@ namespace v2rayN
 
         public static string StartupPath()
         {
-            try
-            {
-                string exePath = GetExePath();
-                return exePath.Substring(0, exePath.LastIndexOf("\\", StringComparison.Ordinal));
-            }
-            catch
-            {
-                return Application.StartupPath;
-            }
+            return Application.StartupPath;
         }
 
         public static string RegReadValue(string path, string name, string def)
