@@ -121,7 +121,7 @@ namespace v2rayN
         /// <returns></returns>
         public static int ToJsonFile(Object obj, string filePath)
         {
-            int result = -1;
+            int result;
             try
             {
                 using (StreamWriter file = File.CreateText(filePath))
@@ -883,7 +883,6 @@ namespace v2rayN
 
         public static string ScanScreen()
         {
-            string ret = string.Empty;
             try
             {
                 foreach (Screen screen in Screen.AllScreens)
@@ -921,7 +920,7 @@ namespace v2rayN
                             Result result = reader.decode(bitmap);
                             if (result != null)
                             {
-                                ret = result.Text;
+                                string ret = result.Text;
                                 return ret;
                             }
                         }

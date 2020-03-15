@@ -43,7 +43,6 @@ namespace v2rayN
                 if (extendedInfoPtr != IntPtr.Zero)
                 {
                     Marshal.FreeHGlobal(extendedInfoPtr);
-                    extendedInfoPtr = IntPtr.Zero;
                 }
             }
         }

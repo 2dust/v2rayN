@@ -27,8 +27,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int GenerateClientConfig(Config config, string fileName, bool blExport, out string msg)
         {
-            msg = string.Empty;
-
             try
             {
                 //检查GUI设置
@@ -713,8 +711,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int GenerateClientCustomConfig(Config config, string fileName, out string msg)
         {
-            msg = string.Empty;
-
             try
             {
                 //检查GUI设置
@@ -768,8 +764,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int GenerateServerConfig(Config config, string fileName, out string msg)
         {
-            msg = string.Empty;
-
             try
             {
                 //检查GUI设置
@@ -1358,7 +1352,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int Export2ClientConfig(Config config, string fileName, out string msg)
         {
-            msg = string.Empty;
             return GenerateClientConfig(config, fileName, true, out msg);
         }
 
@@ -1371,7 +1364,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int Export2ServerConfig(Config config, string fileName, out string msg)
         {
-            msg = string.Empty;
             return GenerateServerConfig(config, fileName, out msg);
         }
 
@@ -1421,8 +1413,6 @@ namespace v2rayN.Handler
 
         public static int GenerateClientSpeedtestConfig(Config config, List<int> selecteds, string fileName, out string msg)
         {
-            msg = string.Empty;
-
             try
             {
                 if (config == null
