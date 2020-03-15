@@ -609,7 +609,7 @@ namespace v2rayN
             long roundtripTime = -1;
             try
             {
-                int timeout = 120;
+                int timeout = 30;
                 int echoNum = 2;
                 Ping pingSender = new Ping();
                 for (int i = 0; i < echoNum; i++)
