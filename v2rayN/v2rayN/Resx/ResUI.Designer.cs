@@ -106,6 +106,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Downloading... 的本地化字符串。
+        /// </summary>
+        internal static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DOWN 的本地化字符串。
         /// </summary>
         internal static string downloadSpeed {

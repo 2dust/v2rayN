@@ -177,7 +177,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol();
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, "Downloading..."));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;
                 totalBytesToReceive = 0;

@@ -132,6 +132,9 @@
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
   <data name="downloadSpeed" xml:space="preserve">
     <value>DOWN</value>
   </data>
