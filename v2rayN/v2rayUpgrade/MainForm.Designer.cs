@@ -41,7 +41,7 @@
             this.btnClose.Location = new System.Drawing.Point(367, 118);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(184, 89);
-            this.btnClose.TabIndex = 6;
+            this.btnClose.TabIndex = 1;
             this.btnClose.Text = "&Exit(退出)";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -52,7 +52,7 @@
             this.btnOK.Location = new System.Drawing.Point(81, 118);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(184, 89);
-            this.btnOK.TabIndex = 7;
+            this.btnOK.TabIndex = 0;
             this.btnOK.Text = "&Upgrade(升级)";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -89,7 +89,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "v2rayUpgrade";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
