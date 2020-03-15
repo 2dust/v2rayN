@@ -804,7 +804,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("FailedImportedCustomServer"));
+                UI.ShowWarning(UIRes.I18N("FailedImportedCustomServer"));
             }
         }
 
@@ -1391,7 +1391,7 @@ namespace v2rayN.Forms
             string result = Convert.ToString(e.UserState);
             if (Utils.IsNullOrEmpty(result))
             {
-                UI.Show(UIRes.I18N("NoValidQRcodeFound"));
+                UI.ShowWarning(UIRes.I18N("NoValidQRcodeFound"));
             }
             else
             {

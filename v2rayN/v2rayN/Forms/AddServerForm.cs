@@ -166,7 +166,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
         }
 
@@ -233,7 +233,7 @@ namespace v2rayN.Forms
             }
             if (vmessItem == null)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
                 return;
             }
 
@@ -261,7 +261,7 @@ namespace v2rayN.Forms
             VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
             if (vmessItem == null)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
                 return;
             }
 

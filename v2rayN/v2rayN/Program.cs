@@ -38,7 +38,7 @@ namespace v2rayN
             {
                 if (!UnzipLibs())
                 {
-                    UI.Show($"Error preparing the environment(准备运行环境出错)");
+                    UI.ShowError($"Error preparing the environment(准备运行环境出错)");
                     return;
                 }
 
@@ -54,7 +54,7 @@ namespace v2rayN
             }
             else
             {
-                UI.Show($"v2rayN is already running(v2rayN已经运行)");
+                UI.ShowWarning($"v2rayN is already running(v2rayN已经运行)");
             }
         }
 
