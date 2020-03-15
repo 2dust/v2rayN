@@ -226,7 +226,7 @@
     <value>23</value>
   </data>
   <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>Boot automatically</value>
+    <value>Automatically start at system startup</value>
   </data>
   <data name="chkEnableStatistics.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -244,7 +244,7 @@
     <value>29</value>
   </data>
   <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>Enable Statistics(Realtime net speed and traffic data amount. Need restart v2rayN client)</value>
+    <value>Enable Statistics (Realtime netspeed and traffic records. Require restart the v2rayN client)</value>
   </data>
   <data name="chkKcpcongestion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
