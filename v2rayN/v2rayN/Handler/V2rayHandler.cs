@@ -43,8 +43,7 @@ namespace v2rayN.Handler
             if (Global.reloadV2ray)
             {
                 string fileName = Utils.GetPath(v2rayConfigRes);
-                string msg;
-                if (V2rayConfigHandler.GenerateClientConfig(config, fileName, false, out msg) != 0)
+                if (V2rayConfigHandler.GenerateClientConfig(config, fileName, false, out string msg) != 0)
                 {
                     ShowMsg(false, msg);
                 }
@@ -64,8 +63,7 @@ namespace v2rayN.Handler
             if (Global.reloadV2ray)
             {
                 string fileName = Utils.GetPath(v2rayConfigRes);
-                string msg;
-                if (V2rayConfigHandler.GenerateClientSpeedtestConfig(config, _selecteds, fileName, out msg) != 0)
+                if (V2rayConfigHandler.GenerateClientSpeedtestConfig(config, _selecteds, fileName, out string msg) != 0)
                 {
                     ShowMsg(false, msg);
                 }
