@@ -115,6 +115,20 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 自定义服务器下载测速url
+        /// </summary>
+        public string speedTestUrl
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 自定义“服务器真连接延迟”测试url
+        /// </summary>
+        public string speedPingTestUrl
+        {
+            get; set;
+        }
+        /// <summary>
         /// 自定义GFWList url
         /// </summary>
         public string urlGFWList
@@ -134,6 +148,14 @@ namespace v2rayN.Mode
         /// 启用实时网速和流量统计
         /// </summary>
         public bool enableStatistics
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 去重时优先保留较旧（顶部）节点
+        /// </summary>
+        public bool keepOlderDedupl
         {
             get; set;
         }
@@ -419,7 +441,7 @@ namespace v2rayN.Mode
 
         public string getItemId()
         {
-            var itemId = $"{address}{port}{requestHost}{path}";
+            string itemId = $"{address}{port}{requestHost}{path}";
             itemId = Utils.Base64Encode(itemId);
             return itemId;
         }

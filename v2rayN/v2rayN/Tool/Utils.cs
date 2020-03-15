@@ -39,7 +39,7 @@ namespace v2rayN
 
             try
             {
-                var assembly = Assembly.GetExecutingAssembly();
+                Assembly assembly = Assembly.GetExecutingAssembly();
                 using (Stream stream = assembly.GetManifestResourceStream(res))
                 using (StreamReader reader = new StreamReader(stream))
                 {
@@ -124,7 +124,7 @@ namespace v2rayN
             int result = -1;
             try
             {
-                using (StreamWriter file = System.IO.File.CreateText(filePath))
+                using (StreamWriter file = File.CreateText(filePath))
                 {
                     //JsonSerializer serializer = new JsonSerializer();
                     JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
@@ -194,7 +194,7 @@ namespace v2rayN
         {
             try
             {
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
                 return Convert.ToBase64String(plainTextBytes);
             }
             catch (Exception ex)
@@ -272,20 +272,20 @@ namespace v2rayN
         /// <param name="unit">单位</param>
         public static void ToHumanReadable(ulong amount, out double result, out string unit)
         {
-            var factor = 1024u;
-            var KBs = amount / factor;
+            uint factor = 1024u;
+            ulong KBs = amount / factor;
             if (KBs > 0)
             {
                 // multi KB
-                var MBs = KBs / factor;
+                ulong MBs = KBs / factor;
                 if (MBs > 0)
                 {
                     // multi MB
-                    var GBs = MBs / factor;
+                    ulong GBs = MBs / factor;
                     if (GBs > 0)
                     {
                         // multi GB
-                        var TBs = GBs / factor;
+                        ulong TBs = GBs / factor;
                         if (TBs > 0)
                         {
                             // 你是魔鬼吗？ 用这么多流量
@@ -314,23 +314,39 @@ namespace v2rayN
 
         public static string HumanFy(ulong amount)
         {
-            double result;
-            string unit;
-            ToHumanReadable(amount, out result, out unit);
+            ToHumanReadable(amount, out double result, out string unit);
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
-        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
+        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result, bool keepOlder)
         {
-            var list = new List<Mode.VmessItem>();
-            foreach (var item in source)
+            List<Mode.VmessItem> list = new List<Mode.VmessItem>();
+            if (!keepOlder) source.Reverse(); // Remove the early items first
+
+            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
             {
-                if (!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
+                return o.configVersion == n.configVersion &&
+                    o.configType == n.configType &&
+                    o.address == n.address &&
+                    o.port == n.port &&
+                    o.id == n.id &&
+                    o.alterId == n.alterId &&
+                    o.security == n.security &&
+                    o.network == n.network &&
+                    o.headerType == n.headerType &&
+                    o.requestHost == n.requestHost &&
+                    o.path == n.path &&
+                    o.streamSecurity == n.streamSecurity;
+                // skip (will remove) different remarks
+            }
+            foreach (Mode.VmessItem item in source)
+            {
+                if (!list.Exists(i => _isAdded(i, item)))
                 {
                     list.Add(item);
                 }
             }
-
+            if (!keepOlder) list.Reverse();
             result = list;
         }
 
@@ -348,7 +364,7 @@ namespace v2rayN
         {
             try
             {
-                int var1 = Utils.ToInt(oText);
+                int var1 = ToInt(oText);
                 return true;
             }
             catch
@@ -392,7 +408,7 @@ namespace v2rayN
             //可能是CIDR
             if (ip.IndexOf(@"/") > 0)
             {
-                var cidr = ip.Split('/');
+                string[] cidr = ip.Split('/');
                 if (cidr.Length == 2)
                 {
                     if (!IsNumberic(cidr[0]))
@@ -497,7 +513,7 @@ namespace v2rayN
         {
             try
             {
-                var value = RegReadValue(autoRunRegPath, autoRunName, "");
+                string value = RegReadValue(autoRunRegPath, autoRunName, "");
                 string exePath = GetExePath();
                 if (value?.Equals(exePath) == true)
                 {
@@ -517,7 +533,7 @@ namespace v2rayN
         public static string GetPath(string fileName)
         {
             string startupPath = StartupPath();
-            if (Utils.IsNullOrEmpty(fileName))
+            if (IsNullOrEmpty(fileName))
             {
                 return startupPath;
             }
@@ -817,7 +833,7 @@ namespace v2rayN
                         sb.Write(buffer, 0, n);
                     }
                 }
-                return System.Text.Encoding.UTF8.GetString(sb.ToArray());
+                return Encoding.UTF8.GetString(sb.ToArray());
             }
         }
 
@@ -899,10 +915,10 @@ namespace v2rayN
                                                 GraphicsUnit.Pixel);
                             }
 
-                            var source = new BitmapLuminanceSource(target);
-                            var bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                            BitmapLuminanceSource source = new BitmapLuminanceSource(target);
+                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                             QRCodeReader reader = new QRCodeReader();
-                            var result = reader.decode(bitmap);
+                            Result result = reader.decode(bitmap);
                             if (result != null)
                             {
                                 ret = result.Text;

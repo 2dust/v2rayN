@@ -60,8 +60,10 @@ namespace v2rayN.Handler
         public async Task CheckUpdateAsync(string type)
         {
             Utils.SetSecurityProtocol();
-            WebRequestHandler webRequestHandler = new WebRequestHandler();
-            webRequestHandler.AllowAutoRedirect = false;
+            WebRequestHandler webRequestHandler = new WebRequestHandler
+            {
+                AllowAutoRedirect = false
+            };
             HttpClient httpClient = new HttpClient(webRequestHandler);
 
             string url;
@@ -337,9 +339,9 @@ namespace v2rayN.Handler
             byte[] bytes = Convert.FromBase64String(response);
             string content = Encoding.UTF8.GetString(bytes);
             List<string> valid_lines = new List<string>();
-            using (var sr = new StringReader(content))
+            using (StringReader sr = new StringReader(content))
             {
-                foreach (var line in sr.NonWhiteSpaceLines())
+                foreach (string line in sr.NonWhiteSpaceLines())
                 {
                     if (line.BeginWithAny(IgnoredLineBegins))
                         continue;

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace v2rayN
 {

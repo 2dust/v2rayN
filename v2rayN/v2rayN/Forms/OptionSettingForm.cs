@@ -77,8 +77,7 @@ namespace v2rayN.Forms
         {
             //路由
             cmbdomainStrategy.Text = config.domainStrategy;
-            int routingMode = 0;
-            int.TryParse(config.routingMode, out routingMode);
+            int.TryParse(config.routingMode, out int routingMode);
             cmbroutingMode.SelectedIndex = routingMode;
 
             txtUseragent.Text = Utils.List2String(config.useragent, true);
@@ -112,13 +111,13 @@ namespace v2rayN.Forms
             txturlGFWList.Text = config.urlGFWList;
 
             chkAllowLANConn.Checked = config.allowLANConn;
+            chkEnableStatistics.Checked = config.enableStatistics;
+            chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
 
 
-            var enableStatistics = config.enableStatistics;
-            chkEnableStatistics.Checked = enableStatistics;
 
 
-            var cbSource = new ComboItem[]
+            ComboItem[] cbSource = new ComboItem[]
             {
                 new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = UIRes.I18N("QuickFresh")},
                 new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = UIRes.I18N("MediumFresh")},
@@ -340,9 +339,10 @@ namespace v2rayN.Forms
 
             config.allowLANConn = chkAllowLANConn.Checked;
 
-            var lastEnableStatistics = config.enableStatistics;
+            bool lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
+            config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
             //if(lastEnableStatistics != config.enableStatistics)
             //{
@@ -389,25 +389,25 @@ namespace v2rayN.Forms
             txtUserblock.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.blockTag);
             cmbroutingMode.SelectedIndex = 3;
 
-            var lstUrl = new List<string>();
+            List<string> lstUrl = new List<string>();
             lstUrl.Add(Global.CustomRoutingListUrl + Global.agentTag);
             lstUrl.Add(Global.CustomRoutingListUrl + Global.directTag);
             lstUrl.Add(Global.CustomRoutingListUrl + Global.blockTag);
 
-            var lstTxt = new List<TextBox>();
+            List<TextBox> lstTxt = new List<TextBox>();
             lstTxt.Add(txtUseragent);
             lstTxt.Add(txtUserdirect);
             lstTxt.Add(txtUserblock);
 
             for (int k = 0; k < lstUrl.Count; k++)
             {
-                var txt = lstTxt[k];
+                TextBox txt = lstTxt[k];
                 DownloadHandle downloadHandle = new DownloadHandle();
                 downloadHandle.UpdateCompleted += (sender2, args) =>
                 {
                     if (args.Success)
                     {
-                        var result = args.Msg;
+                        string result = args.Msg;
                         if (Utils.IsNullOrEmpty(result))
                         {
                             return;

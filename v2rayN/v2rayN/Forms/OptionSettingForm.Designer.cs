@@ -84,6 +84,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkKeepOlderDedupl = new System.Windows.Forms.CheckBox();
             this.cbFreshrate = new System.Windows.Forms.ComboBox();
             this.lbFreshrate = new System.Windows.Forms.Label();
             this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
@@ -510,6 +511,7 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.chkKeepOlderDedupl);
             this.tabPage7.Controls.Add(this.cbFreshrate);
             this.tabPage7.Controls.Add(this.lbFreshrate);
             this.tabPage7.Controls.Add(this.chkEnableStatistics);
@@ -519,6 +521,12 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkKeepOlderDedupl
+            // 
+            resources.ApplyResources(this.chkKeepOlderDedupl, "chkKeepOlderDedupl");
+            this.chkKeepOlderDedupl.Name = "chkKeepOlderDedupl";
+            this.chkKeepOlderDedupl.UseVisualStyleBackColor = true;
             // 
             // cbFreshrate
             // 
@@ -714,5 +722,6 @@
         private System.Windows.Forms.TextBox txtuserPacRule;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkKeepOlderDedupl;
     }
 }

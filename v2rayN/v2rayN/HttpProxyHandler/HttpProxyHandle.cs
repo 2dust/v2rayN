@@ -23,7 +23,7 @@ namespace v2rayN.HttpProxyHandler
             {
                 if (type != 0)
                 {
-                    var port = Global.httpPort;
+                    int port = Global.httpPort;
                     if (port <= 0)
                     {
                         return false;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Text;
 using System.Windows.Forms;
 using v2rayN.Handler;
@@ -11,8 +9,6 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using v2rayN.Tool;
 using System.Diagnostics;
-using v2rayN.Properties;
-using Newtonsoft.Json;
 
 namespace v2rayN.Forms
 {
@@ -198,7 +194,7 @@ namespace v2rayN.Forms
                 ListViewItem lvItem = null;
                 if (statistics != null && statistics.Enable)
                 {
-                    var sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
+                    ServerStatItem sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
                     if (sItem != null)
                     {
                         totalUp = Utils.HumanFy(sItem.totalUp);
@@ -271,8 +267,10 @@ namespace v2rayN.Forms
                 VmessItem item = config.vmess[k];
                 string name = item.getSummary();
 
-                ToolStripMenuItem ts = new ToolStripMenuItem(name);
-                ts.Tag = k;
+                ToolStripMenuItem ts = new ToolStripMenuItem(name)
+                {
+                    Tag = k
+                };
                 if (config.index.Equals(k))
                 {
                     ts.Checked = true;
@@ -422,8 +420,10 @@ namespace v2rayN.Forms
 
             if (config.vmess[index].configType == (int)EConfigType.Vmess)
             {
-                var fm = new AddServerForm();
-                fm.EditIndex = index;
+                AddServerForm fm = new AddServerForm
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     //刷新
@@ -433,8 +433,10 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Shadowsocks)
             {
-                var fm = new AddServer3Form();
-                fm.EditIndex = index;
+                AddServer3Form fm = new AddServer3Form
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshServers();
@@ -443,8 +445,10 @@ namespace v2rayN.Forms
             }
             else if (config.vmess[index].configType == (int)EConfigType.Socks)
             {
-                var fm = new AddServer4Form();
-                fm.EditIndex = index;
+                AddServer4Form fm = new AddServer4Form
+                {
+                    EditIndex = index
+                };
                 if (fm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshServers();
@@ -453,8 +457,10 @@ namespace v2rayN.Forms
             }
             else
             {
-                var fm2 = new AddServer2Form();
-                fm2.EditIndex = index;
+                AddServer2Form fm2 = new AddServer2Form
+                {
+                    EditIndex = index
+                };
                 if (fm2.ShowDialog() == DialogResult.OK)
                 {
                     //刷新
@@ -524,8 +530,10 @@ namespace v2rayN.Forms
 
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
-            AddServerForm fm = new AddServerForm();
-            fm.EditIndex = -1;
+            AddServerForm fm = new AddServerForm
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -558,8 +566,7 @@ namespace v2rayN.Forms
 
         private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
         {
-            List<Mode.VmessItem> servers = null;
-            Utils.DedupServerList(config.vmess, out servers);
+            Utils.DedupServerList(config.vmess, out List<VmessItem> servers, config.keepOlderDedupl);
             int oldCount = config.vmess.Count;
             int newCount = servers.Count;
             if (servers != null)
@@ -635,7 +642,7 @@ namespace v2rayN.Forms
         {
             GetLvSelectedIndex();
             ClearTestResult();
-            var statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
@@ -773,9 +780,11 @@ namespace v2rayN.Forms
         {
             UI.Show(UIRes.I18N("CustomServerTips"));
 
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = false;
-            fileDialog.Filter = "Config|*.json|All|*.*";
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Config|*.json|All|*.*"
+            };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -801,8 +810,10 @@ namespace v2rayN.Forms
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer3Form();
-            fm.EditIndex = -1;
+            AddServer3Form fm = new AddServer3Form
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -814,8 +825,10 @@ namespace v2rayN.Forms
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer4Form();
-            fm.EditIndex = -1;
+            AddServer4Form fm = new AddServer4Form
+            {
+                EditIndex = -1
+            };
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -943,7 +956,7 @@ namespace v2rayN.Forms
 
         private void notifyMain_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 ShowForm();
             }
@@ -1021,14 +1034,14 @@ namespace v2rayN.Forms
                 List<string[]> datas = new List<string[]>();
                 for (int i = 0; i < config.vmess.Count; i++)
                 {
-                    var index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
+                    int index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
                     if (index != -1)
                     {
                         lvServers.Invoke((MethodInvoker)delegate
                         {
                             lvServers.SuspendLayout();
 
-                            var indexStart = 9;
+                            int indexStart = 9;
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayDown);
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayUp);
                             lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalDown);
@@ -1148,7 +1161,7 @@ namespace v2rayN.Forms
 
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
-                var item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
+                ToolStripMenuItem item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
                 item.Checked = (type == k);
             }
 
@@ -1201,8 +1214,8 @@ namespace v2rayN.Forms
 
                         try
                         {
-                            var fileName = Utils.GetPath(downloadHandle.DownloadFileName);
-                            var process = Process.Start("v2rayUpgrade.exe", fileName);
+                            string fileName = Utils.GetPath(downloadHandle.DownloadFileName);
+                            Process process = Process.Start("v2rayUpgrade.exe", fileName);
                             if (process.Id > 0)
                             {
                                 menuExit_Click(null, null);
@@ -1311,7 +1324,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        var result = args.Msg;
+                        string result = args.Msg;
                         if (Utils.IsNullOrEmpty(result))
                         {
                             return;
@@ -1353,12 +1366,12 @@ namespace v2rayN.Forms
 
         private void tsbAbout_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.AboutUrl);
+            Process.Start(Global.AboutUrl);
         }
 
         private void tsbPromotion_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+            Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
         #endregion
 
@@ -1432,7 +1445,7 @@ namespace v2rayN.Forms
                     if (args.Success)
                     {
                         AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
-                        var result = Utils.Base64Decode(args.Msg);
+                        string result = Utils.Base64Decode(args.Msg);
                         if (Utils.IsNullOrEmpty(result))
                         {
                             AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");
@@ -1490,7 +1503,7 @@ namespace v2rayN.Forms
 
         private void tsbV2rayWebsite_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(Global.v2rayWebsiteUrl);
+            Process.Start(Global.v2rayWebsiteUrl);
         }
     }
 }

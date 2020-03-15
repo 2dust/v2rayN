@@ -149,7 +149,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 //端口
                 inbound.port = config.inbound[0].localPort;
                 inbound.protocol = config.inbound[0].protocol;
@@ -226,16 +226,20 @@ namespace v2rayN.Handler
                     && userRule.Count > 0)
                 {
                     //Domain
-                    RulesItem rulesDomain = new RulesItem();
-                    rulesDomain.type = "field";
-                    rulesDomain.outboundTag = tag;
-                    rulesDomain.domain = new List<string>();
+                    RulesItem rulesDomain = new RulesItem
+                    {
+                        type = "field",
+                        outboundTag = tag,
+                        domain = new List<string>()
+                    };
 
                     //IP
-                    RulesItem rulesIP = new RulesItem();
-                    rulesIP.type = "field";
-                    rulesIP.outboundTag = tag;
-                    rulesIP.ip = new List<string>();
+                    RulesItem rulesIP = new RulesItem
+                    {
+                        type = "field",
+                        outboundTag = tag,
+                        ip = new List<string>()
+                    };
 
                     foreach (string u in userRule)
                     {
@@ -283,10 +287,12 @@ namespace v2rayN.Handler
                     //IP
                     if (ipOrDomain == "ip" || ipOrDomain == "")
                     {
-                        RulesItem rulesItem = new RulesItem();
-                        rulesItem.type = "field";
-                        rulesItem.outboundTag = Global.directTag;
-                        rulesItem.ip = new List<string>();
+                        RulesItem rulesItem = new RulesItem
+                        {
+                            type = "field",
+                            outboundTag = Global.directTag,
+                            ip = new List<string>()
+                        };
                         rulesItem.ip.Add($"geoip:{code}");
 
                         v2rayConfig.routing.rules.Add(rulesItem);
@@ -294,10 +300,12 @@ namespace v2rayN.Handler
 
                     if (ipOrDomain == "domain" || ipOrDomain == "")
                     {
-                        RulesItem rulesItem = new RulesItem();
-                        rulesItem.type = "field";
-                        rulesItem.outboundTag = Global.directTag;
-                        rulesItem.domain = new List<string>();
+                        RulesItem rulesItem = new RulesItem
+                        {
+                            type = "field",
+                            outboundTag = Global.directTag,
+                            domain = new List<string>()
+                        };
                         rulesItem.domain.Add($"geosite:{code}");
                         v2rayConfig.routing.rules.Add(rulesItem);
                     }
@@ -319,7 +327,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var outbound = v2rayConfig.outbounds[0];
+                Outbounds outbound = v2rayConfig.outbounds[0];
                 if (config.configType() == (int)EConfigType.Vmess)
                 {
                     VnextItem vnextItem;
@@ -412,10 +420,12 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(config.security())
                         && !Utils.IsNullOrEmpty(config.id()))
                     {
-                        var socksUsersItem = new SocksUsersItem();
-                        socksUsersItem.user = config.security();
-                        socksUsersItem.pass = config.id();
-                        socksUsersItem.level = 1;
+                        SocksUsersItem socksUsersItem = new SocksUsersItem
+                        {
+                            user = config.security(),
+                            pass = config.id(),
+                            level = 1
+                        };
 
                         serversItem.users = new List<SocksUsersItem>() { socksUsersItem };
                     }
@@ -446,14 +456,16 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                var host = config.requestHost();               
+                string host = config.requestHost();               
                 //if tls
                 if (config.streamSecurity() == Global.StreamSecurity)
                 {
                     streamSettings.security = config.streamSecurity();
 
-                    TlsSettings tlsSettings = new TlsSettings();
-                    tlsSettings.allowInsecure = config.allowInsecure();
+                    TlsSettings tlsSettings = new TlsSettings
+                    {
+                        allowInsecure = config.allowInsecure()
+                    };
                     if (!string.IsNullOrWhiteSpace(host))
                     {
                         tlsSettings.serverName = host;
@@ -466,9 +478,11 @@ namespace v2rayN.Handler
                 {
                     //kcp基本配置暂时是默认值，用户能自己设置伪装类型
                     case "kcp":
-                        KcpSettings kcpSettings = new KcpSettings();
-                        kcpSettings.mtu = config.kcpItem.mtu;
-                        kcpSettings.tti = config.kcpItem.tti;
+                        KcpSettings kcpSettings = new KcpSettings
+                        {
+                            mtu = config.kcpItem.mtu,
+                            tti = config.kcpItem.tti
+                        };
                         if (iobound.Equals("out"))
                         {
                             kcpSettings.uplinkCapacity = config.kcpItem.uplinkCapacity;
@@ -488,20 +502,26 @@ namespace v2rayN.Handler
                         kcpSettings.congestion = config.kcpItem.congestion;
                         kcpSettings.readBufferSize = config.kcpItem.readBufferSize;
                         kcpSettings.writeBufferSize = config.kcpItem.writeBufferSize;
-                        kcpSettings.header = new Header();
-                        kcpSettings.header.type = config.headerType();
+                        kcpSettings.header = new Header
+                        {
+                            type = config.headerType()
+                        };
                         streamSettings.kcpSettings = kcpSettings;
                         break;
                     //ws
                     case "ws":
-                        WsSettings wsSettings = new WsSettings();
-                        wsSettings.connectionReuse = true;
+                        WsSettings wsSettings = new WsSettings
+                        {
+                            connectionReuse = true
+                        };
 
                         string path = config.path();
                         if (!string.IsNullOrWhiteSpace(host))
                         {
-                            wsSettings.headers = new Headers();
-                            wsSettings.headers.Host = host;
+                            wsSettings.headers = new Headers
+                            {
+                                Host = host
+                            };
                         }
                         if (!string.IsNullOrWhiteSpace(path))
                         {
@@ -535,11 +555,15 @@ namespace v2rayN.Handler
                         break;
                     //quic
                     case "quic":
-                        QuicSettings quicsettings = new QuicSettings();
-                        quicsettings.security = host;
-                        quicsettings.key = config.path();
-                        quicsettings.header = new Header();
-                        quicsettings.header.type = config.headerType();
+                        QuicSettings quicsettings = new QuicSettings
+                        {
+                            security = host,
+                            key = config.path(),
+                            header = new Header
+                            {
+                                type = config.headerType()
+                            }
+                        };
                         streamSettings.quicSettings = quicsettings;
                         if (config.streamSecurity() == Global.StreamSecurity)
                         {
@@ -550,10 +574,14 @@ namespace v2rayN.Handler
                         //tcp带http伪装
                         if (config.headerType().Equals(Global.TcpHeaderHttp))
                         {
-                            TcpSettings tcpSettings = new TcpSettings();
-                            tcpSettings.connectionReuse = true;
-                            tcpSettings.header = new Header();
-                            tcpSettings.header.type = config.headerType();
+                            TcpSettings tcpSettings = new TcpSettings
+                            {
+                                connectionReuse = true,
+                                header = new Header
+                                {
+                                    type = config.headerType()
+                                }
+                            };
 
                             if (iobound.Equals("out"))
                             {
@@ -616,8 +644,10 @@ namespace v2rayN.Handler
                     //}
                 }
                 //servers.Add("localhost");
-                v2rayConfig.dns = new Mode.Dns();
-                v2rayConfig.dns.servers = servers;
+                v2rayConfig.dns = new Mode.Dns
+                {
+                    servers = servers
+                };
             }
             catch
             {
@@ -629,10 +659,10 @@ namespace v2rayN.Handler
         {
             if (config.enableStatistics)
             {
-                var tag = Global.InboundAPITagName;
-                var apiObj = new Mode.API();
-                var policyObj = new Mode.Policy();
-                var policySystemSetting = new Mode.SystemPolicy();
+                string tag = Global.InboundAPITagName;
+                API apiObj = new API();
+                Policy policyObj = new Policy();
+                SystemPolicy policySystemSetting = new SystemPolicy();
 
                 string[] services = { "StatsService" };
 
@@ -649,8 +679,8 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
                 {
-                    var apiInbound = new Mode.Inbounds();
-                    var apiInboundSettings = new Mode.Inboundsettings();
+                    Inbounds apiInbound = new Inbounds();
+                    Inboundsettings apiInboundSettings = new Inboundsettings();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
                     apiInbound.port = Global.statePort;
@@ -662,10 +692,12 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
                 {
-                    var apiRoutingRule = new Mode.RulesItem();
-                    apiRoutingRule.inboundTag = new List<string> { tag };
-                    apiRoutingRule.outboundTag = tag;
-                    apiRoutingRule.type = "field";
+                    RulesItem apiRoutingRule = new RulesItem
+                    {
+                        inboundTag = new List<string> { tag },
+                        outboundTag = tag,
+                        type = "field"
+                    };
                     v2rayConfig.routing.rules.Add(apiRoutingRule);
                 }
             }
@@ -800,7 +832,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 UsersItem usersItem;
                 if (inbound.settings.clients.Count <= 0)
                 {
@@ -889,7 +921,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var outbound = v2rayConfig.outbounds[0];
+                Outbounds outbound = v2rayConfig.outbounds[0];
                 if (outbound == null
                     || Utils.IsNullOrEmpty(outbound.protocol)
                     || outbound.protocol != "vmess"
@@ -1035,7 +1067,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var inbound = v2rayConfig.inbounds[0];
+                Inbounds inbound = v2rayConfig.inbounds[0];
                 if (inbound == null
                     || Utils.IsNullOrEmpty(inbound.protocol)
                     || inbound.protocol != "vmess"
@@ -1345,9 +1377,10 @@ namespace v2rayN.Handler
 
         private static VmessItem ResolveVmess4Kitsunebi(string result)
         {
-            VmessItem vmessItem = new VmessItem();
-
-            vmessItem.configType = (int)EConfigType.Vmess;
+            VmessItem vmessItem = new VmessItem
+            {
+                configType = (int)EConfigType.Vmess
+            };
             result = result.Substring(Global.vmessProtocol.Length);
             int indexSplit = result.IndexOf("?");
             if (indexSplit > 0)
@@ -1404,7 +1437,7 @@ namespace v2rayN.Handler
 
                 msg = UIRes.I18N("InitialConfiguration");
 
-                Config configCopy = Utils.DeepCopy<Config>(config);             
+                Config configCopy = Utils.DeepCopy(config);             
 
                 string result = Utils.GetEmbedText(SampleClient);
                 if (Utils.IsNullOrEmpty(result))
@@ -1425,7 +1458,7 @@ namespace v2rayN.Handler
                 dns(configCopy, ref v2rayConfig);
 
 
-                var httpPort = configCopy.GetLocalPort("speedtest");
+                int httpPort = configCopy.GetLocalPort("speedtest");
                 foreach (int index in selecteds)
                 {
                     if (configCopy.vmess[index].configType == (int)EConfigType.Custom)
@@ -1435,23 +1468,27 @@ namespace v2rayN.Handler
 
                     configCopy.index = index;
 
-                    var inbound = new Inbounds();
-                    inbound.listen = Global.Loopback;
-                    inbound.port = httpPort + index;
-                    inbound.protocol = Global.InboundHttp;
+                    Inbounds inbound = new Inbounds
+                    {
+                        listen = Global.Loopback,
+                        port = httpPort + index,
+                        protocol = Global.InboundHttp
+                    };
                     inbound.tag = Global.InboundHttp + inbound.port.ToString();
                     v2rayConfig.inbounds.Add(inbound);
 
 
-                    var v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
+                    V2rayConfig v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
                     outbound(configCopy, ref v2rayConfigCopy);
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
-                    var rule = new Mode.RulesItem();
-                    rule.inboundTag = new List<string> { inbound.tag };
-                    rule.outboundTag = v2rayConfigCopy.outbounds[0].tag;
-                    rule.type = "field";
+                    RulesItem rule = new RulesItem
+                    {
+                        inboundTag = new List<string> { inbound.tag },
+                        outboundTag = v2rayConfigCopy.outbounds[0].tag,
+                        type = "field"
+                    };
                     v2rayConfig.routing.rules.Add(rule);
                 }
 
@@ -1459,7 +1496,7 @@ namespace v2rayN.Handler
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), configCopy.getSummary());
             }
-            catch (Exception ex)
+            catch
             {
                 msg = UIRes.I18N("FailedGenDefaultConfiguration");
                 return -1;

@@ -22,7 +22,7 @@ namespace v2rayN.Base
                 int MaxWidth = 0;
                 Graphics graphics = this.CreateGraphics();
                 Font font = this.Font;
-                ListView.ListViewItemCollection items = this.Items;
+                ListViewItemCollection items = this.Items;
 
                 string str;
                 int width;

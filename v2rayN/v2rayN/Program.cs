@@ -26,7 +26,7 @@ namespace v2rayN
             }
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
 
@@ -46,7 +46,7 @@ namespace v2rayN
 
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -100,7 +100,7 @@ namespace v2rayN
             return null;
         }
 
-        static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             Utils.SaveLog("Application_ThreadException", e.Exception);
         }
@@ -112,7 +112,7 @@ namespace v2rayN
 
         static bool UnzipLibs()
         {
-            var fileName = Utils.GetPath("libs.zip");
+            string fileName = Utils.GetPath("libs.zip");
             if (!FileManager.ByteArrayToFile(fileName, Resources.libs))
             {
                 return false;
