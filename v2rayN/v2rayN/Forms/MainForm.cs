@@ -1237,7 +1237,7 @@ namespace v2rayN.Forms
                 };
             }
 
-            AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
+            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayN"));
             downloadHandle.CheckUpdateAsync("v2rayN");
         }
 
@@ -1310,7 +1310,7 @@ namespace v2rayN.Forms
                 };
             }
 
-            AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
+            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayCore"));
             downloadHandle.CheckUpdateAsync("Core");
         }
 

@@ -265,10 +265,10 @@
     <value>开始获取订阅内容</value>
   </data>
   <data name="MsgStartUpdatingPAC" xml:space="preserve">
-    <value>开始更新PAC...</value>
+    <value>开始更新 PAC...</value>
   </data>
-  <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>开始更新V2ray...</value>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>开始更新 {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>订阅内容解码失败(非BASE64码)</value>

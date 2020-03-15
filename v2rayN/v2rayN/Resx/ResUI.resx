@@ -267,8 +267,8 @@
   <data name="MsgStartUpdatingPAC" xml:space="preserve">
     <value>Start updating PAC...</value>
   </data>
-  <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>Start updating V2ray...</value>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Start updating {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Subscription content decoding failed (non-BASE64 code)</value>
