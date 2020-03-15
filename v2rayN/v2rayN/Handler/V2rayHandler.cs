@@ -28,9 +28,11 @@ namespace v2rayN.Handler
 
         public V2rayHandler()
         {
-            lstV2ray = new List<string>();
-            lstV2ray.Add("wv2ray");
-            lstV2ray.Add("v2ray");
+            lstV2ray = new List<string>
+            {
+                "wv2ray",
+                "v2ray"
+            };
         }
 
         /// <summary>

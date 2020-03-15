@@ -172,8 +172,10 @@ namespace v2rayN.HttpProxyHandler
             }
             try
             {
-                List<string> lstProxy = new List<string>();
-                lstProxy.Add(string.Format("PROXY {0}:{1};", address, port));
+                List<string> lstProxy = new List<string>
+                {
+                    string.Format("PROXY {0}:{1};", address, port)
+                };
                 string proxy = string.Join("", lstProxy.ToArray());
 
                 string strPacfile = Utils.GetPath(Global.pacFILE);
