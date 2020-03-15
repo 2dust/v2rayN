@@ -1411,7 +1411,7 @@ namespace v2rayN.Handler
         #region Gen speedtest config
 
 
-        public static int GenerateClientSpeedtestConfig(Config config, List<int> selecteds, string fileName, out string msg)
+        public static string GenerateClientSpeedtestConfigString(Config config, List<int> selecteds, out string msg)
         {
             try
             {
@@ -1422,7 +1422,7 @@ namespace v2rayN.Handler
                     )
                 {
                     msg = UIRes.I18N("CheckServerSettings");
-                    return -1;
+                    return "";
                 }
 
                 msg = UIRes.I18N("InitialConfiguration");
@@ -1433,20 +1433,21 @@ namespace v2rayN.Handler
                 if (Utils.IsNullOrEmpty(result))
                 {
                     msg = UIRes.I18N("FailedGetDefaultConfiguration");
-                    return -1;
+                    return "";
                 }
 
                 V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = UIRes.I18N("FailedGenDefaultConfiguration");
-                    return -1;
+                    return "";
                 }
 
                 log(configCopy, ref v2rayConfig, false);
                 //routing(config, ref v2rayConfig);
                 dns(configCopy, ref v2rayConfig);
 
+                v2rayConfig.inbounds.RemoveAt(0); // Remove "proxy" service for speedtest, avoiding port conflicts.
 
                 int httpPort = configCopy.GetLocalPort("speedtest");
                 foreach (int index in selecteds)
@@ -1482,16 +1483,14 @@ namespace v2rayN.Handler
                     v2rayConfig.routing.rules.Add(rule);
                 }
 
-                Utils.ToJsonFile(v2rayConfig, fileName);
-
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), configCopy.getSummary());
+                return Utils.ToJson(v2rayConfig);
             }
             catch
             {
                 msg = UIRes.I18N("FailedGenDefaultConfiguration");
-                return -1;
+                return "";
             }
-            return 0;
         }
 
         #endregion

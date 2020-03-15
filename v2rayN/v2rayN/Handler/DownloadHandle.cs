@@ -172,7 +172,7 @@ namespace v2rayN.Handler
 
         #region Download 
 
-        public void DownloadFileAsync(Config config, string url, WebProxy webProxy, int downloadTimeout)
+        public void DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
         {
             try
             {

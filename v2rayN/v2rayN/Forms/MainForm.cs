@@ -1197,7 +1197,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, null, -1);
+                                downloadHandle.DownloadFileAsync(url, null, -1);
                             }
                         }));
                     }
@@ -1263,7 +1263,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, null, -1);
+                                downloadHandle.DownloadFileAsync(url, null, -1);
                             }
                         }));
                     }
