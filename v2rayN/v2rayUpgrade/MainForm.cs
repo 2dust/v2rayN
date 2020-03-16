@@ -8,28 +8,24 @@ namespace v2rayUpgrade
 {
     public partial class MainForm : Form
     {
-        private string[] _args;
-        private string _tempFileName = "v2rayUpgradeTemp.zip";
-
+        private readonly string defaultFilename = "v2ray-windows.zip";
+        private string fileName;
 
         public MainForm(string[] args)
         {
             InitializeComponent();
-            _args = args;
+            if (args.Length > 0)
+            {
+                fileName = args[0];
+            }
         }
-
-        private void MainForm_Load(object sender, EventArgs e)
+        private void showWarn(string message)
         {
-
+            MessageBox.Show(message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (_args.Length <= 0)
-            {
-                return;
-            }
-
             try
             {
                 Process[] existing = Process.GetProcessesByName("v2rayN");
@@ -45,19 +41,24 @@ namespace v2rayUpgrade
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to close v2rayN(关闭v2rayN失败)." + ex.StackTrace);
+                showWarn("Failed to close v2rayN(关闭v2rayN失败)." + ex.StackTrace);
                 return;
             }
 
-            string fileName = GetPath(_tempFileName);
             try
             {
-                File.Delete(fileName);
-                File.Copy(_args[0], fileName);
+
                 if (!File.Exists(fileName))
                 {
-                    MessageBox.Show("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
-                    return;
+                    if (File.Exists(defaultFilename))
+                    {
+                        fileName = defaultFilename;
+                    }
+                    else
+                    {
+                        showWarn("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
+                        return;
+                    }
                 }
 
                 string startKey = "v2rayN/";
@@ -86,23 +87,13 @@ namespace v2rayUpgrade
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Upgrade Failed(升级失败)." + ex.StackTrace);
+                showWarn("Upgrade Failed(升级失败)." + ex.StackTrace);
                 return;
             }
-            finally
-            {
-                File.Delete(fileName);
-            }
 
-            MessageBox.Show("Upgrade  successed(升级成功)");
+            Process.Start("v2rayN.exe");
+            MessageBox.Show("Upgrade successed(升级成功)", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            try
-            {
-                Process.Start("v2rayN.exe");
-            }
-            catch
-            {
-            }
             Close();
         }
 
@@ -118,15 +109,7 @@ namespace v2rayUpgrade
 
         public static string StartupPath()
         {
-            try
-            {
-                string exePath = GetExePath();
-                return exePath.Substring(0, exePath.LastIndexOf("\\", StringComparison.Ordinal));
-            }
-            catch
-            {
-                return Application.StartupPath;
-            }
+            return Application.StartupPath;
         }
         public static string GetPath(string fileName)
         {

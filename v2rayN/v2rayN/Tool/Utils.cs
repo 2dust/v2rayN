@@ -121,7 +121,7 @@ namespace v2rayN
         /// <returns></returns>
         public static int ToJsonFile(Object obj, string filePath)
         {
-            int result = -1;
+            int result;
             try
             {
                 using (StreamWriter file = File.CreateText(filePath))
@@ -485,24 +485,16 @@ namespace v2rayN
         /// </summary>
         /// <param name="run"></param>
         /// <returns></returns>
-        public static int SetAutoRun(bool run)
+        public static void SetAutoRun(bool run)
         {
             try
             {
-                if (run)
-                {
-                    string exePath = GetExePath();
-                    RegWriteValue(autoRunRegPath, autoRunName, exePath);
-                }
-                else
-                {
-                    RegWriteValue(autoRunRegPath, autoRunName, "");
-                }
+                string exePath = GetExePath();
+                RegWriteValue(autoRunRegPath, autoRunName, run ? exePath : "");
             }
             catch
             {
             }
-            return 0;
         }
 
         /// <summary>
@@ -551,15 +543,7 @@ namespace v2rayN
 
         public static string StartupPath()
         {
-            try
-            {
-                string exePath = GetExePath();
-                return exePath.Substring(0, exePath.LastIndexOf("\\", StringComparison.Ordinal));
-            }
-            catch
-            {
-                return Application.StartupPath;
-            }
+            return Application.StartupPath;
         }
 
         public static string RegReadValue(string path, string name, string def)
@@ -625,7 +609,7 @@ namespace v2rayN
             long roundtripTime = -1;
             try
             {
-                int timeout = 120;
+                int timeout = 30;
                 int echoNum = 2;
                 Ping pingSender = new Ping();
                 for (int i = 0; i < echoNum; i++)
@@ -883,7 +867,6 @@ namespace v2rayN
 
         public static string ScanScreen()
         {
-            string ret = string.Empty;
             try
             {
                 foreach (Screen screen in Screen.AllScreens)
@@ -921,7 +904,7 @@ namespace v2rayN
                             Result result = reader.decode(bitmap);
                             if (result != null)
                             {
-                                ret = result.Text;
+                                string ret = result.Text;
                                 return ret;
                             }
                         }

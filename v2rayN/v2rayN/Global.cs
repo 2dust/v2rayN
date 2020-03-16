@@ -221,6 +221,10 @@ namespace v2rayN
         {
             get; set;
         }
+        public static System.Threading.Mutex mutexObj
+        {
+            get; set;
+        }
 
         #endregion
 

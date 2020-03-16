@@ -132,6 +132,9 @@
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
   <data name="downloadSpeed" xml:space="preserve">
     <value>DOWN</value>
   </data>
@@ -264,8 +267,8 @@
   <data name="MsgStartUpdatingPAC" xml:space="preserve">
     <value>Start updating PAC...</value>
   </data>
-  <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>Start updating V2ray...</value>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Start updating {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Subscription content decoding failed (non-BASE64 code)</value>

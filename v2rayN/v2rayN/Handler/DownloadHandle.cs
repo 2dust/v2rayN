@@ -172,12 +172,12 @@ namespace v2rayN.Handler
 
         #region Download 
 
-        public void DownloadFileAsync(Config config, string url, WebProxy webProxy, int downloadTimeout)
+        public void DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
         {
             try
             {
                 Utils.SetSecurityProtocol();
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, "Downloading..."));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;
                 totalBytesToReceive = 0;

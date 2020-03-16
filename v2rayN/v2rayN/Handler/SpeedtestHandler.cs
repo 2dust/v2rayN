@@ -100,14 +100,14 @@ namespace v2rayN.Handler
 
         private void RunRealPing()
         {
+            int pid = -1;
             try
             {
                 string msg = string.Empty;
 
-                Global.reloadV2ray = true;
-                _v2rayHandler.LoadV2ray(_config, _selecteds);
+                pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
 
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
                 int httpPort = _config.GetLocalPort("speedtest");
                 Task[] tasks = new Task[_selecteds.Count];
                 int i = -1;
@@ -119,7 +119,8 @@ namespace v2rayN.Handler
                     }
 
                     i++;
-                    tasks[i] = Task.Run(() => {
+                    tasks[i] = Task.Run(() =>
+                    {
                         try
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
@@ -137,28 +138,28 @@ namespace v2rayN.Handler
                 }
                 Task.WaitAll(tasks);
 
-                Global.reloadV2ray = true;
-                _v2rayHandler.LoadV2ray(_config);
                 Thread.Sleep(100);
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
             }
+            finally
+            {
+                if (pid > 0) _v2rayHandler.V2rayStopPid(pid);
+            }
         }
-
 
         private void RunSpeedTest()
         {
+            int pid = -1;
+
             if (_config.vmess.Count <= 0)
             {
                 return;
             }
 
-            Global.reloadV2ray = true;
-            _v2rayHandler.LoadV2ray(_config, _selecteds);
-
-            Thread.Sleep(5000);
+            pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
 
             string url = _config.speedTestUrl;
             testCounter = 0;
@@ -167,53 +168,35 @@ namespace v2rayN.Handler
                 downloadHandle2 = new DownloadHandle();
                 downloadHandle2.UpdateCompleted += (sender2, args) =>
                 {
-                    if (args.Success)
-                    {
-                        _updateFunc(ItemIndex, args.Msg);
-                        if (ServerSpeedTestSub(testCounter, url) != 0)
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        _updateFunc(ItemIndex, args.Msg);
-                    }
+                    _updateFunc(ItemIndex, args.Msg);
+                    if (args.Success) StartNext();
                 };
                 downloadHandle2.Error += (sender2, args) =>
                 {
                     _updateFunc(ItemIndex, args.GetException().Message);
-                    if (ServerSpeedTestSub(testCounter, url) != 0)
-                    {
-                        return;
-                    }
+                    StartNext();
                 };
             }
 
-            if (ServerSpeedTestSub(testCounter, url) != 0)
+            StartNext();
+
+            void StartNext()
             {
-                return;
+                if (testCounter >= _selecteds.Count)
+                {
+                    if (pid > 0) _v2rayHandler.V2rayStopPid(pid);
+                    return;
+                }
+
+                int httpPort = _config.GetLocalPort("speedtest");
+                int index = _selecteds[testCounter];
+
+                testCounter++;
+                WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + index);
+                downloadHandle2.DownloadFileAsync(url, webProxy, 20);
             }
         }
 
-        private int ServerSpeedTestSub(int index, string url)
-        {
-            if (index >= _selecteds.Count)
-            {
-                Global.reloadV2ray = true;
-                _v2rayHandler.LoadV2ray(_config);
-                return -1;
-            }
-
-            int httpPort = _config.GetLocalPort("speedtest");
-            index = _selecteds[index];
-
-            testCounter++;
-            WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + index);
-            downloadHandle2.DownloadFileAsync(_config, url, webProxy, 20);
-
-            return 0;
-        }
 
         private int GetTcpingTime(string url, int port)
         {

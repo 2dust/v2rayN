@@ -804,7 +804,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("FailedImportedCustomServer"));
+                UI.ShowWarning(UIRes.I18N("FailedImportedCustomServer"));
             }
         }
 
@@ -1197,7 +1197,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, null, -1);
+                                downloadHandle.DownloadFileAsync(url, null, -1);
                             }
                         }));
                     }
@@ -1237,7 +1237,7 @@ namespace v2rayN.Forms
                 };
             }
 
-            AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
+            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayN"));
             downloadHandle.CheckUpdateAsync("v2rayN");
         }
 
@@ -1263,7 +1263,7 @@ namespace v2rayN.Forms
                             }
                             else
                             {
-                                downloadHandle.DownloadFileAsync(config, url, null, -1);
+                                downloadHandle.DownloadFileAsync(url, null, -1);
                             }
                         }));
                     }
@@ -1310,7 +1310,7 @@ namespace v2rayN.Forms
                 };
             }
 
-            AppendText(false, UIRes.I18N("MsgStartUpdatingV2rayCore"));
+            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayCore"));
             downloadHandle.CheckUpdateAsync("Core");
         }
 
@@ -1391,7 +1391,7 @@ namespace v2rayN.Forms
             string result = Convert.ToString(e.UserState);
             if (Utils.IsNullOrEmpty(result))
             {
-                UI.Show(UIRes.I18N("NoValidQRcodeFound"));
+                UI.ShowWarning(UIRes.I18N("NoValidQRcodeFound"));
             }
             else
             {

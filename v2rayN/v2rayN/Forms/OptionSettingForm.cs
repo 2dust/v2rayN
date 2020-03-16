@@ -181,7 +181,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
         }
 
@@ -389,15 +389,19 @@ namespace v2rayN.Forms
             txtUserblock.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.blockTag);
             cmbroutingMode.SelectedIndex = 3;
 
-            List<string> lstUrl = new List<string>();
-            lstUrl.Add(Global.CustomRoutingListUrl + Global.agentTag);
-            lstUrl.Add(Global.CustomRoutingListUrl + Global.directTag);
-            lstUrl.Add(Global.CustomRoutingListUrl + Global.blockTag);
+            List<string> lstUrl = new List<string>
+            {
+                Global.CustomRoutingListUrl + Global.agentTag,
+                Global.CustomRoutingListUrl + Global.directTag,
+                Global.CustomRoutingListUrl + Global.blockTag
+            };
 
-            List<TextBox> lstTxt = new List<TextBox>();
-            lstTxt.Add(txtUseragent);
-            lstTxt.Add(txtUserdirect);
-            lstTxt.Add(txtUserblock);
+            List<TextBox> lstTxt = new List<TextBox>
+            {
+                txtUseragent,
+                txtUserdirect,
+                txtUserblock
+            };
 
             for (int k = 0; k < lstUrl.Count; k++)
             {

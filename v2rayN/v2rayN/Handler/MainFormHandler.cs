@@ -101,7 +101,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                UI.Show(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
+                UI.ShowWarning(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
             }
         }
 
@@ -141,7 +141,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                UI.Show(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
+                UI.ShowWarning(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
             }
         }
 

@@ -132,6 +132,9 @@
   <data name="CustomServerTips" xml:space="preserve">
     <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。在自定义配置inbound中有socks port等于设置中的port时，系统代理才可用</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>下载开始...</value>
+  </data>
   <data name="downloadSpeed" xml:space="preserve">
     <value>下载</value>
   </data>
@@ -262,10 +265,10 @@
     <value>开始获取订阅内容</value>
   </data>
   <data name="MsgStartUpdatingPAC" xml:space="preserve">
-    <value>开始更新PAC...</value>
+    <value>开始更新 PAC...</value>
   </data>
-  <data name="MsgStartUpdatingV2rayCore" xml:space="preserve">
-    <value>开始更新V2ray...</value>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>开始更新 {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>订阅内容解码失败(非BASE64码)</value>

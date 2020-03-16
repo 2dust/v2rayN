@@ -540,8 +540,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddCustomServer(ref Config config, string fileName)
         {
-            string newFileName = string.Empty;
-            newFileName = string.Format("{0}.json", Utils.GetGUID());
+            string newFileName = string.Format("{0}.json", Utils.GetGUID());
             //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
 
             try
