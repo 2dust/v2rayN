@@ -21,7 +21,7 @@ namespace v2rayN.Base
             {
                 ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => { return true; };
                 request = (HttpWebRequest)base.GetWebRequest(address);
-                request.ProtocolVersion = HttpVersion.Version10;
+                //request.ProtocolVersion = HttpVersion.Version10;
             }
             else
             {
