@@ -9,6 +9,7 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using v2rayN.Tool;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace v2rayN.Forms
 {
@@ -238,6 +239,12 @@ namespace v2rayN.Forms
                     item.getSubRemarks(config),
                     item.testResult
                    });
+                }
+                if (config.index.Equals(k))
+                {
+                    //lvItem.Checked = true;
+                    lvItem.ForeColor = Color.Blue;
+                    lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
                 }
 
                 if (lvItem != null) lvServers.Items.Add(lvItem);
