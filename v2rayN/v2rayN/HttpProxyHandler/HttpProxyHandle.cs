@@ -114,7 +114,10 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                Update(config, true);
+                if (config.listenerType != 5 && config.listenerType != 6)
+                {
+                    Update(config, true);
+                }
 
                 PrivoxyHandler.Instance.Stop();
 
