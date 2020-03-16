@@ -57,7 +57,7 @@ namespace v2rayN.Handler
         private readonly string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
         private const string coreUrl = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
 
-        public async Task CheckUpdateAsync(string type)
+        public async void CheckUpdateAsync(string type)
         {
             Utils.SetSecurityProtocol();
             WebRequestHandler webRequestHandler = new WebRequestHandler
