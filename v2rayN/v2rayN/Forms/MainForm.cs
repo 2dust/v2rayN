@@ -240,6 +240,10 @@ namespace v2rayN.Forms
                     item.testResult
                    });
                 }
+                if (k % 2 == 1) // 隔行着色
+                {
+                    lvItem.BackColor = Color.WhiteSmoke;
+                }
                 if (config.index.Equals(k))
                 {
                     //lvItem.Checked = true;
