@@ -334,10 +334,12 @@ namespace v2rayN.Forms
 
             toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
 
-            if (config.listenerType != 0)
+            if (config.listenerType != (int)ListenerType.noHttpProxy)
             {
                 toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
-                if (config.listenerType % 2 == 0)
+                if (config.listenerType == ListenerType.GlobalPac ||
+                    config.listenerType == ListenerType.PacOpenAndClear ||
+                    config.listenerType == ListenerType.PacOpenOnly)
                 {
                     if (PACServerHandle.IsRunning)
                     {
@@ -1133,41 +1135,41 @@ namespace v2rayN.Forms
 
         private void menuNotEnabledHttp_Click(object sender, EventArgs e)
         {
-            SetListenerType(0);
+            SetListenerType(ListenerType.noHttpProxy);
         }
         private void menuGlobal_Click(object sender, EventArgs e)
         {
-            SetListenerType(1);
+            SetListenerType(ListenerType.GlobalHttp);
         }
         private void menuGlobalPAC_Click(object sender, EventArgs e)
         {
-            SetListenerType(2);
+            SetListenerType(ListenerType.GlobalPac);
         }
         private void menuKeep_Click(object sender, EventArgs e)
         {
-            SetListenerType(3);
+            SetListenerType(ListenerType.HttpOpenAndClear);
         }
         private void menuKeepPAC_Click(object sender, EventArgs e)
         {
-            SetListenerType(4);
+            SetListenerType(ListenerType.PacOpenAndClear);
         }
         private void menuKeepNothing_Click(object sender, EventArgs e)
         {
-            SetListenerType(5);
+            SetListenerType(ListenerType.HttpOpenOnly);
         }
         private void menuKeepPACNothing_Click(object sender, EventArgs e)
         {
-            SetListenerType(6);
+            SetListenerType(ListenerType.PacOpenOnly);
         }
-        private void SetListenerType(int type)
+        private void SetListenerType(ListenerType type)
         {
             config.listenerType = type;
             ChangePACButtonStatus(type);
         }
 
-        private void ChangePACButtonStatus(int type)
+        private void ChangePACButtonStatus(ListenerType type)
         {
-            if (type != 0)
+            if (type != ListenerType.noHttpProxy)
             {
                 HttpProxyHandle.RestartHttpAgent(config, false);
             }
@@ -1179,7 +1181,7 @@ namespace v2rayN.Forms
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
                 ToolStripMenuItem item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
-                item.Checked = (type == k);
+                item.Checked = ((int)type == k);
             }
 
             ConfigHandler.SaveConfig(ref config, false);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Base;
+using v2rayN.HttpProxyHandler;
 
 namespace v2rayN.Forms
 {
@@ -67,7 +68,7 @@ namespace v2rayN.Forms
             //remoteDNS
             txtremoteDNS.Text = config.remoteDNS;
 
-            cmblistenerType.SelectedIndex = config.listenerType;
+            cmblistenerType.SelectedIndex = (int)config.listenerType;
         }
 
         /// <summary>
@@ -262,7 +263,8 @@ namespace v2rayN.Forms
             //remoteDNS
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
-            config.listenerType = cmblistenerType.SelectedIndex;
+            config.listenerType = (ListenerType)Enum.ToObject(typeof(ListenerType), cmblistenerType.SelectedIndex);
+
             return 0;
         }
 
