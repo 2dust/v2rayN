@@ -184,7 +184,7 @@
     <value>cmsMain</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 186</value>
+    <value>265, 164</value>
   </data>
   <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -714,6 +714,18 @@
     <value>Test servers with tcping (Ctrl+O)</value>
   </data>
   <data name="&gt;&gt;menuTcpingServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuUpdateSubscriptions.Name" xml:space="preserve">
+    <value>menuUpdateSubscriptions</value>
+  </data>
+  <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
+    <value>Update subscriptions</value>
+  </data>
+  <data name="&gt;&gt;menuUpdateSubscriptions.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;notifyMain.Name" xml:space="preserve">
@@ -1465,17 +1477,5 @@
   </data>
   <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;update_subscription.Name" xml:space="preserve">
-    <value>update_subscription</value>
-  </data>
-  <data name="update_subscription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="update_subscription.Text" xml:space="preserve">
-    <value>update subscription</value>
-  </data>
-  <data name="&gt;&gt;update_subscription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

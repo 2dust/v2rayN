@@ -883,7 +883,7 @@ namespace v2rayN.Forms
             return counter;
         }
 
-        private void update_subscription_Click(object sender, EventArgs e)
+        private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
         {
             UpdateSubscriptionProcess();
         }
