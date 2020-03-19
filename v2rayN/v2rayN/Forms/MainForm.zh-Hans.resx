@@ -495,4 +495,7 @@
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray 官网</value>
   </data>
+  <data name="update_subscription.Text" xml:space="preserve">
+    <value>更新订阅</value>
+  </data>
 </root>

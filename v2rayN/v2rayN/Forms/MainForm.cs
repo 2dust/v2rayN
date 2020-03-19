@@ -883,6 +883,11 @@ namespace v2rayN.Forms
             return counter;
         }
 
+        private void update_subscription_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess();
+        }
+
         #endregion
 
 
@@ -1427,6 +1432,14 @@ namespace v2rayN.Forms
         }
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess();
+        }
+
+        /// <summary>
+        /// the subscription update process
+        /// </summary>
+        private void UpdateSubscriptionProcess()
         {
             AppendText(false, UIRes.I18N("MsgUpdateSubscriptionStart"));
 
