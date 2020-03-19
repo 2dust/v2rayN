@@ -10,6 +10,7 @@ using v2rayN.Base;
 using v2rayN.Tool;
 using System.Diagnostics;
 using System.Drawing;
+using System.Net;
 
 namespace v2rayN.Forms
 {
@@ -1185,6 +1186,22 @@ namespace v2rayN.Forms
 
         #region CheckUpdate
 
+        private void askToDownload(DownloadHandle downloadHandle, string url)
+        {
+            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
+            {
+                if (httpProxyTest() > 0)
+                {
+                    int httpPort = config.GetLocalPort(Global.InboundHttp);
+                    WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
+                    downloadHandle.DownloadFileAsync(url, webProxy, 60);
+                }
+                else
+                {
+                    downloadHandle.DownloadFileAsync(url, null, 60);
+                }
+            }
+        }
         private void tsbCheckUpdateN_Click(object sender, EventArgs e)
         {
             //System.Diagnostics.Process.Start(Global.UpdateUrl);
@@ -1201,15 +1218,7 @@ namespace v2rayN.Forms
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
                         {
-
-                            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.No)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                downloadHandle.DownloadFileAsync(url, null, -1);
-                            }
+                            askToDownload(downloadHandle, url);
                         }));
                     }
                     else
@@ -1267,15 +1276,7 @@ namespace v2rayN.Forms
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
                         {
-
-                            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.No)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                downloadHandle.DownloadFileAsync(url, null, -1);
-                            }
+                            askToDownload(downloadHandle, url);
                         }));
                     }
                     else
@@ -1519,9 +1520,13 @@ namespace v2rayN.Forms
 
         private void tsbTestMe_Click(object sender, EventArgs e)
         {
-            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
-            string result = statistics.RunAvailabilityCheck() + "ms";
+            string result = httpProxyTest() + "ms";
             AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
+        }
+        private int httpProxyTest()
+        {
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
+            return statistics.RunAvailabilityCheck();
         }
     }
 }

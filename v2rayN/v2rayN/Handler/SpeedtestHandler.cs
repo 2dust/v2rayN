@@ -156,7 +156,7 @@ namespace v2rayN.Handler
             {
                 int httpPort = _config.GetLocalPort(Global.InboundHttp);
 
-                Task<int> t = Task.Factory.StartNew(() =>
+                Task<int> t = Task.Run(() =>
                 {
                     try
                     {
