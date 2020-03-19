@@ -1516,5 +1516,12 @@ namespace v2rayN.Forms
         {
             Process.Start(Global.v2rayWebsiteUrl);
         }
+
+        private void tsbTestMe_Click(object sender, EventArgs e)
+        {
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
+            string result = statistics.RunAvailabilityCheck() + "ms";
+            AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
+        }
     }
 }

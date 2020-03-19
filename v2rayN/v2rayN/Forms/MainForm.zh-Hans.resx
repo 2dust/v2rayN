@@ -489,6 +489,9 @@
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>更新订阅</value>
   </data>
+  <data name="tsbTestMe.Text" xml:space="preserve">
+    <value>测试状态</value>
+  </data>
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray 官网</value>
   </data>

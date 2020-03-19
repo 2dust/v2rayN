@@ -103,6 +103,7 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptionSetting = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbTestMe = new System.Windows.Forms.ToolStripButton();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCheckUpdate = new System.Windows.Forms.ToolStripDropDownButton();
@@ -606,6 +607,7 @@
             this.toolStripSeparator8,
             this.tsbOptionSetting,
             this.toolStripSeparator5,
+            this.tsbTestMe,
             this.tsbReload,
             this.toolStripSeparator7,
             this.tsbCheckUpdate,
@@ -659,6 +661,13 @@
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
+            // 
+            // tsbTestMe
+            // 
+            this.tsbTestMe.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbTestMe.Name = "tsbTestMe";
+            resources.ApplyResources(this.tsbTestMe, "tsbTestMe");
+            this.tsbTestMe.Click += new System.EventHandler(this.tsbTestMe_Click);
             // 
             // tsbReload
             // 
@@ -811,7 +820,7 @@
 
         }
 
-        #endregion
+#endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -902,6 +911,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuNotEnabledHttp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem tsbV2rayWebsite;
+        private System.Windows.Forms.ToolStripButton tsbTestMe;
         private System.Windows.Forms.ToolStripMenuItem menuKeepNothing;
         private System.Windows.Forms.ToolStripMenuItem menuKeepPACNothing;
     }

@@ -780,5 +780,14 @@ namespace v2rayN.Resx {
                 return ResourceManager.GetString("SuccessfullyImportedServerViaScan", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 The ping of current service: {0} 的本地化字符串。
+        /// </summary>
+        internal static string TestMeOutput {
+            get {
+                return ResourceManager.GetString("TestMeOutput", resourceCulture);
+            }
+        }
     }
 }
