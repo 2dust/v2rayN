@@ -35,25 +35,32 @@ namespace v2rayN.Base
 
         private void StartListen()
         {
-            listener = new TcpListener(IPAddress.Any, port);
-            listener.Start();
-            Utils.SaveLog("WebserverB running...");
-
-            while (true)
+            try
             {
-                if (!listener.Pending())
-                {
-                    Thread.Sleep(100);
-                    continue;
-                }
+                listener = new TcpListener(IPAddress.Any, port);
+                listener.Start();
+                Utils.SaveLog("WebserverB running...");
 
-                TcpClient socket = listener.AcceptTcpClient();
-                Thread thread = new Thread(new ParameterizedThreadStart(ProcessThread))
+                while (true)
                 {
-                    IsBackground = true
-                };
-                thread.Start(socket);
-                Thread.Sleep(1);
+                    if (!listener.Pending())
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
+
+                    TcpClient socket = listener.AcceptTcpClient();
+                    Thread thread = new Thread(new ParameterizedThreadStart(ProcessThread))
+                    {
+                        IsBackground = true
+                    };
+                    thread.Start(socket);
+                    Thread.Sleep(1);
+                }
+            }
+            catch
+            {
+                Utils.SaveLog("WebserverB start fail.");
             }
         }
         private void ProcessThread(object obj)
