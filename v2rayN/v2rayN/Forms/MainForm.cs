@@ -193,8 +193,12 @@ namespace v2rayN.Forms
 
                 VmessItem item = config.vmess[k];
 
-                ListViewItem lvItem = null;
-                if (statistics != null && statistics.Enable)
+                void _addSubItem(ListViewItem i, string name, string text)
+                {
+                    i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
+                }
+                bool stats = statistics != null && statistics.Enable;
+                if (stats)
                 {
                     ServerStatItem sItem = statistics.Statistic.Find(item_ => item_.itemId == item.getItemId());
                     if (sItem != null)
@@ -204,43 +208,27 @@ namespace v2rayN.Forms
                         todayUp = Utils.HumanFy(sItem.todayUp);
                         todayDown = Utils.HumanFy(sItem.todayDown);
                     }
-
-                    lvItem = new ListViewItem(new string[]
-                    {
-                    def,
-                    ((EConfigType)item.configType).ToString(),
-                    item.remarks,
-                    item.address,
-                    item.port.ToString(),
-                    //item.id,
-                    //item.alterId.ToString(),
-                    item.security,
-                    item.network,
-                    item.getSubRemarks(config),
-                    item.testResult,
-                    todayDown,
-                    todayUp,
-                    totalDown,
-                    totalUp
-                    });
                 }
-                else
+                ListViewItem lvItem = new ListViewItem();
+                _addSubItem(lvItem, "enabled", def);
+                _addSubItem(lvItem, "type", ((EConfigType)item.configType).ToString());
+                _addSubItem(lvItem, "remarks", item.remarks);
+                _addSubItem(lvItem, "address", item.address);
+                _addSubItem(lvItem, "port", item.port.ToString());
+                //_addSubItem(lvItem, "id", item.id);
+                //_addSubItem(lvItem, "alterId", item.alterId.ToString());
+                _addSubItem(lvItem, "security", item.security);
+                _addSubItem(lvItem, "network", item.network);
+                _addSubItem(lvItem, "SubRemarks", item.getSubRemarks(config));
+                _addSubItem(lvItem, "testResult", item.testResult);
+                if (stats)
                 {
-                    lvItem = new ListViewItem(new string[]
-                   {
-                    def,
-                    ((EConfigType)item.configType).ToString(),
-                    item.remarks,
-                    item.address,
-                    item.port.ToString(),
-                    //item.id,
-                    //item.alterId.ToString(),
-                    item.security,
-                    item.network,
-                    item.getSubRemarks(config),
-                    item.testResult
-                   });
+                    _addSubItem(lvItem, "todayDown", todayDown);
+                    _addSubItem(lvItem, "todayUp", todayUp);
+                    _addSubItem(lvItem, "totalDown", totalDown);
+                    _addSubItem(lvItem, "totalUp", totalUp);
                 }
+
                 if (k % 2 == 1) // 隔行着色
                 {
                     lvItem.BackColor = Color.WhiteSmoke;
@@ -1021,7 +1009,7 @@ namespace v2rayN.Forms
         private void SetTestResult(int k, string txt)
         {
             config.vmess[k].testResult = txt;
-            lvServers.Items[k].SubItems[8].Text = txt;
+            lvServers.Items[k].SubItems["testResult"].Text = txt;
         }
         private void ClearTestResult()
         {
@@ -1060,11 +1048,10 @@ namespace v2rayN.Forms
                         {
                             lvServers.SuspendLayout();
 
-                            int indexStart = 9;
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayDown);
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].todayUp);
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalDown);
-                            lvServers.Items[i].SubItems[indexStart++].Text = Utils.HumanFy(statistics[index].totalUp);
+                            lvServers.Items[i].SubItems["todayDown"].Text = Utils.HumanFy(statistics[index].todayDown);
+                            lvServers.Items[i].SubItems["todayUp"].Text = Utils.HumanFy(statistics[index].todayUp);
+                            lvServers.Items[i].SubItems["totalDown"].Text = Utils.HumanFy(statistics[index].totalDown);
+                            lvServers.Items[i].SubItems["totalUp"].Text = Utils.HumanFy(statistics[index].totalUp);
 
                             lvServers.ResumeLayout();
                         });
