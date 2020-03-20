@@ -371,7 +371,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void LoadV2ray()
         {
-            tsbReload.Enabled = false;
+            tsbService.Enabled = false;
 
             if (Global.reloadV2ray)
             {
@@ -384,7 +384,7 @@ namespace v2rayN.Forms
 
             ChangePACButtonStatus(config.listenerType);
 
-            tsbReload.Enabled = true;
+            tsbService.Enabled = true;
         }
 
         /// <summary>
@@ -1522,7 +1522,7 @@ namespace v2rayN.Forms
         private void SetCurrentLanguage(string value)
         {
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
-            Application.Restart();
+            //Application.Restart();
         }
 
 

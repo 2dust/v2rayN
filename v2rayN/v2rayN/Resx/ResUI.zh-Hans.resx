@@ -359,6 +359,6 @@
     <value>扫描导入URL成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>当前服务的访问延迟: {0}</value>
+    <value>当前服务的真连接延迟: {0}</value>
   </data>
 </root>
