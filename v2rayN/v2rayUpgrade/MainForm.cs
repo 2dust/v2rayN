@@ -62,6 +62,8 @@ namespace v2rayUpgrade
                     }
                 }
 
+                string thisAppOldFile = Application.ExecutablePath + ".tmp";
+                File.Delete(thisAppOldFile);
                 string startKey = "v2rayN/";
 
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
@@ -76,6 +78,10 @@ namespace v2rayUpgrade
                         if (fullName.StartsWith(startKey))
                         {
                             fullName = fullName.Substring(startKey.Length, fullName.Length - startKey.Length);
+                        }
+                        if (Application.ExecutablePath.ToLower() == GetPath(fullName).ToLower())
+                        {
+                            File.Move(Application.ExecutablePath, thisAppOldFile);
                         }
 
                         string entryOuputPath = GetPath(fullName);
