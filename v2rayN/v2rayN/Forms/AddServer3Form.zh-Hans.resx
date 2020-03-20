@@ -153,7 +153,4 @@
   <data name="menuItemImportClipboard.Text" xml:space="preserve">
     <value>从剪贴板导入URL</value>
   </data>
-  <data name="menuItemScanScreen.Text" xml:space="preserve">
-    <value>扫描屏幕上的二维码</value>
-  </data>
 </root>

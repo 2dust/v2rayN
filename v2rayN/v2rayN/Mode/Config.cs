@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using v2rayN.Base;
+using v2rayN.HttpProxyHandler;
+
 
 namespace v2rayN.Mode
 {
@@ -107,9 +109,9 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 监听状态 0-not 1-http 2-PAC
+        /// 监听状态
         /// </summary>
-        public int listenerType
+        public ListenerType listenerType
         {
             get; set;
         }

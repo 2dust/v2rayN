@@ -9,6 +9,8 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using v2rayN.Tool;
 using System.Diagnostics;
+using System.Drawing;
+using System.Net;
 
 namespace v2rayN.Forms
 {
@@ -239,6 +241,16 @@ namespace v2rayN.Forms
                     item.testResult
                    });
                 }
+                if (k % 2 == 1) // 隔行着色
+                {
+                    lvItem.BackColor = Color.WhiteSmoke;
+                }
+                if (config.index.Equals(k))
+                {
+                    //lvItem.Checked = true;
+                    lvItem.ForeColor = Color.Blue;
+                    lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
+                }
 
                 if (lvItem != null) lvServers.Items.Add(lvItem);
             }
@@ -322,10 +334,12 @@ namespace v2rayN.Forms
 
             toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
 
-            if (config.listenerType != 0)
+            if (config.listenerType != (int)ListenerType.noHttpProxy)
             {
                 toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
-                if (config.listenerType % 2 == 0)
+                if (config.listenerType == ListenerType.GlobalPac ||
+                    config.listenerType == ListenerType.PacOpenAndClear ||
+                    config.listenerType == ListenerType.PacOpenOnly)
                 {
                     if (PACServerHandle.IsRunning)
                     {
@@ -640,7 +654,7 @@ namespace v2rayN.Forms
         }
         private void Speedtest(string actionType)
         {
-            GetLvSelectedIndex();
+            if (GetLvSelectedIndex() < 0) return;
             ClearTestResult();
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
@@ -869,6 +883,11 @@ namespace v2rayN.Forms
             }
             RefreshServers();
             return counter;
+        }
+
+        private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess();
         }
 
         #endregion
@@ -1116,41 +1135,41 @@ namespace v2rayN.Forms
 
         private void menuNotEnabledHttp_Click(object sender, EventArgs e)
         {
-            SetListenerType(0);
+            SetListenerType(ListenerType.noHttpProxy);
         }
         private void menuGlobal_Click(object sender, EventArgs e)
         {
-            SetListenerType(1);
+            SetListenerType(ListenerType.GlobalHttp);
         }
         private void menuGlobalPAC_Click(object sender, EventArgs e)
         {
-            SetListenerType(2);
+            SetListenerType(ListenerType.GlobalPac);
         }
         private void menuKeep_Click(object sender, EventArgs e)
         {
-            SetListenerType(3);
+            SetListenerType(ListenerType.HttpOpenAndClear);
         }
         private void menuKeepPAC_Click(object sender, EventArgs e)
         {
-            SetListenerType(4);
+            SetListenerType(ListenerType.PacOpenAndClear);
         }
         private void menuKeepNothing_Click(object sender, EventArgs e)
         {
-            SetListenerType(5);
+            SetListenerType(ListenerType.HttpOpenOnly);
         }
         private void menuKeepPACNothing_Click(object sender, EventArgs e)
         {
-            SetListenerType(6);
+            SetListenerType(ListenerType.PacOpenOnly);
         }
-        private void SetListenerType(int type)
+        private void SetListenerType(ListenerType type)
         {
             config.listenerType = type;
             ChangePACButtonStatus(type);
         }
 
-        private void ChangePACButtonStatus(int type)
+        private void ChangePACButtonStatus(ListenerType type)
         {
-            if (type != 0)
+            if (type != ListenerType.noHttpProxy)
             {
                 HttpProxyHandle.RestartHttpAgent(config, false);
             }
@@ -1162,7 +1181,7 @@ namespace v2rayN.Forms
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
                 ToolStripMenuItem item = ((ToolStripMenuItem)menuSysAgentMode.DropDownItems[k]);
-                item.Checked = (type == k);
+                item.Checked = ((int)type == k);
             }
 
             ConfigHandler.SaveConfig(ref config, false);
@@ -1174,6 +1193,22 @@ namespace v2rayN.Forms
 
         #region CheckUpdate
 
+        private void askToDownload(DownloadHandle downloadHandle, string url)
+        {
+            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
+            {
+                if (httpProxyTest() > 0)
+                {
+                    int httpPort = config.GetLocalPort(Global.InboundHttp);
+                    WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
+                    downloadHandle.DownloadFileAsync(url, webProxy, 60);
+                }
+                else
+                {
+                    downloadHandle.DownloadFileAsync(url, null, 60);
+                }
+            }
+        }
         private void tsbCheckUpdateN_Click(object sender, EventArgs e)
         {
             //System.Diagnostics.Process.Start(Global.UpdateUrl);
@@ -1190,15 +1225,7 @@ namespace v2rayN.Forms
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
                         {
-
-                            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.No)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                downloadHandle.DownloadFileAsync(url, null, -1);
-                            }
+                            askToDownload(downloadHandle, url);
                         }));
                     }
                     else
@@ -1215,7 +1242,7 @@ namespace v2rayN.Forms
                         try
                         {
                             string fileName = Utils.GetPath(downloadHandle.DownloadFileName);
-                            Process process = Process.Start("v2rayUpgrade.exe", fileName);
+                            Process process = Process.Start("v2rayUpgrade.exe", "\"" + fileName + "\"");
                             if (process.Id > 0)
                             {
                                 menuExit_Click(null, null);
@@ -1256,15 +1283,7 @@ namespace v2rayN.Forms
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
                         {
-
-                            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.No)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                downloadHandle.DownloadFileAsync(url, null, -1);
-                            }
+                            askToDownload(downloadHandle, url);
                         }));
                     }
                     else
@@ -1416,6 +1435,14 @@ namespace v2rayN.Forms
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
+            UpdateSubscriptionProcess();
+        }
+
+        /// <summary>
+        /// the subscription update process
+        /// </summary>
+        private void UpdateSubscriptionProcess()
+        {
             AppendText(false, UIRes.I18N("MsgUpdateSubscriptionStart"));
 
             if (config.subItem == null || config.subItem.Count <= 0)
@@ -1504,6 +1531,17 @@ namespace v2rayN.Forms
         private void tsbV2rayWebsite_Click(object sender, EventArgs e)
         {
             Process.Start(Global.v2rayWebsiteUrl);
+        }
+
+        private void tsbTestMe_Click(object sender, EventArgs e)
+        {
+            string result = httpProxyTest() + "ms";
+            AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
+        }
+        private int httpProxyTest()
+        {
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
+            return statistics.RunAvailabilityCheck();
         }
     }
 }

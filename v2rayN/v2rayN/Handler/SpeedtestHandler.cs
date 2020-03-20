@@ -150,6 +150,37 @@ namespace v2rayN.Handler
             }
         }
 
+        public int RunAvailabilityCheck() // alias: isLive
+        {
+            try
+            {
+                int httpPort = _config.GetLocalPort(Global.InboundHttp);
+
+                Task<int> t = Task.Run(() =>
+                {
+                    try
+                    {
+                        WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
+                        int responseTime = -1;
+                        string status = GetRealPingTime(Global.AvailabilityTestUrl, webProxy, out responseTime);
+                        bool noError = Utils.IsNullOrEmpty(status);
+                        return noError ? responseTime : -1;
+                    }
+                    catch (Exception ex)
+                    {
+                        Utils.SaveLog(ex.Message, ex);
+                        return -1;
+                    }
+                });
+                return t.Result;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return -1;
+            }
+        }
+
         private void RunSpeedTest()
         {
             int pid = -1;
