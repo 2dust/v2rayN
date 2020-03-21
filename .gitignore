@@ -5,10 +5,9 @@
 /v2rayN/.vs/
 /v2rayN/v2rayN/bin/Debug/app.publish
 /v2rayN/v2rayN/bin/Debug
-/v2rayN/v2rayN/obj/Debug
-/v2rayN/.vs/v2rayN/DesignTimeBuild
 /v2rayN/v2rayN/bin/Release
-/v2rayN/v2rayN/obj/Release
+/v2rayN/v2rayN/obj/
+/v2rayN/.vs/v2rayN/DesignTimeBuild
 /v2rayN/packages
 .vs/ProjectSettings.json
 .vs/slnx.sqlite
