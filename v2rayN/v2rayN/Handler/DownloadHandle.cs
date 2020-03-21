@@ -235,27 +235,12 @@ namespace v2rayN.Handler
             {
                 if (UpdateCompleted != null)
                 {
-                    if (e.Cancelled)
-                    {
-                        ((WebClientEx)sender).Dispose();
-                        TimeSpan ts = (DateTime.Now - totalDatetime);
-                        string speed = string.Format("<{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
-                        UpdateCompleted(this, new ResultEventArgs(true, speed));
-                        return;
-                    }
+                    if (e.Error != null) throw e.Error;
 
-                    if (e.Error == null
-                        || Utils.IsNullOrEmpty(e.Error.ToString()))
-                    {
-
-                        TimeSpan ts = (DateTime.Now - totalDatetime);
-                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
-                        UpdateCompleted(this, new ResultEventArgs(true, speed));
-                    }
-                    else
-                    {
-                        throw e.Error;
-                    }
+                    ((WebClientEx)sender).Dispose();
+                    TimeSpan ts = (DateTime.Now - totalDatetime);
+                    string speed = string.Format("<{0} MB/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
+                    UpdateCompleted(this, new ResultEventArgs(true, speed));
                 }
             }
             catch (Exception ex)
