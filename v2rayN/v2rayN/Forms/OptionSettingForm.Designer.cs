@@ -186,7 +186,9 @@
             resources.GetString("cmblistenerType.Items3"),
             resources.GetString("cmblistenerType.Items4"),
             resources.GetString("cmblistenerType.Items5"),
-            resources.GetString("cmblistenerType.Items6")});
+            resources.GetString("cmblistenerType.Items6"),
+            resources.GetString("cmblistenerType.Items7"),
+            resources.GetString("cmblistenerType.Items8")});
             this.cmblistenerType.Name = "cmblistenerType";
             // 
             // chksniffingEnabled2

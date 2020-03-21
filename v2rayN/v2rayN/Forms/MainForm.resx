@@ -321,6 +321,12 @@
   <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
+  <data name="menuClearAndKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuClearAndKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
   <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
@@ -606,6 +612,12 @@
     <value>Check for updates</value>
   </data>
   <data name="&gt;&gt;menuKeepPACNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuClearAndKeepNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuClearAndKeepPACNothing.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuGlobal.Type" xml:space="preserve">
@@ -1024,6 +1036,12 @@
   <data name="&gt;&gt;menuKeepPACNothing.Name" xml:space="preserve">
     <value>menuKeepPACNothing</value>
   </data>
+  <data name="menuClearAndKeepNothing.Name" xml:space="preserve">
+    <value>menuClearAndKeepNothing</value>
+  </data>
+  <data name="menuClearAndKeepPACNothing.Name" xml:space="preserve">
+    <value>menuClearAndKeepPACNothing</value>
+  </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
     <value>Check for updated PAC (need the HTTP proxy are ON)</value>
   </data>
@@ -1098,6 +1116,12 @@
   </data>
   <data name="menuKeepPACNothing.Text" xml:space="preserve">
     <value>Only open PAC and do nothing</value>
+  </data>
+  <data name="menuClearAndKeepNothing.Text" xml:space="preserve">
+    <value>Only open Http proxy and clear the proxy settings once</value>
+  </data>
+  <data name="menuClearAndKeepPACNothing.Text" xml:space="preserve">
+    <value>Only open PAC and clear the proxy settings once</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>

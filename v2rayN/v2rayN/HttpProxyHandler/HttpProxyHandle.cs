@@ -14,7 +14,9 @@ namespace v2rayN.HttpProxyHandler
         HttpOpenAndClear = 3,
         PacOpenAndClear = 4,
         HttpOpenOnly = 5,
-        PacOpenOnly = 6
+        PacOpenOnly = 6,
+        HttpOpenAndClearOnce = 7,
+        PacOpenAndClearOnce = 8
     }
     /// <summary>
     /// 系统代理(http)总处理
@@ -67,12 +69,12 @@ namespace v2rayN.HttpProxyHandler
                         //PACServerHandle.Stop();
                         PACServerHandle.Init(config);
                     }
-                    else if (type == ListenerType.HttpOpenOnly)
+                    else if (type == ListenerType.HttpOpenOnly || type == ListenerType.HttpOpenAndClearOnce)
                     {
                         //PACServerHandle.Stop();
                         //SysProxyHandle.ResetIEProxy();
                     }
-                    else if (type == ListenerType.PacOpenOnly)
+                    else if (type == ListenerType.PacOpenOnly || type == ListenerType.PacOpenAndClearOnce)
                     {
                         string pacUrl = GetPacUrl();
                         //SysProxyHandle.ResetIEProxy();
@@ -127,7 +129,7 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                if (config.listenerType != ListenerType.HttpOpenOnly && config.listenerType != ListenerType.PacOpenOnly)
+                if (config.listenerType != ListenerType.HttpOpenOnly && config.listenerType != ListenerType.PacOpenOnly && config.listenerType != ListenerType.HttpOpenAndClearOnce && config.listenerType != ListenerType.PacOpenAndClearOnce)
                 {
                     Update(config, true);
                 }

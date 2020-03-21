@@ -420,6 +420,12 @@
   <data name="cmblistenerType.Items6" xml:space="preserve">
     <value>Only open PAC and do nothing</value>
   </data>
+  <data name="cmblistenerType.Items7" xml:space="preserve">
+    <value>Only open Http proxy, and clear the system proxy once</value>
+  </data>
+  <data name="cmblistenerType.Items8" xml:space="preserve">
+    <value>Only open PAC, and clear the system proxy once</value>
+  </data>
   <data name="cmblistenerType.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 94</value>
   </data>

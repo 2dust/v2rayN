@@ -1161,6 +1161,16 @@ namespace v2rayN.Forms
         {
             SetListenerType(ListenerType.PacOpenOnly);
         }
+        private void MenuClearAndKeepNothing_Click(object sender, EventArgs e)
+        {
+            SysProxyHandle.ResetIEProxy();
+            SetListenerType(ListenerType.HttpOpenAndClearOnce);
+        }
+        private void MenuClearAndKeepPACNothing_Click(object sender, EventArgs e)
+        {
+            SysProxyHandle.ResetIEProxy();
+            SetListenerType(ListenerType.PacOpenAndClearOnce);
+        }
         private void SetListenerType(ListenerType type)
         {
             config.listenerType = type;

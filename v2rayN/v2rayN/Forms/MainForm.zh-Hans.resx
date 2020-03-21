@@ -336,6 +336,18 @@
   <data name="menuKeepPACNothing.Text" xml:space="preserve">
     <value>仅开启PAC,不改变系统代理</value>
   </data>
+  <data name="menuClearAndKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>316, 22</value>
+  </data>
+  <data name="menuClearAndKeepNothing.Text" xml:space="preserve">
+    <value>仅开启Http代理,并清除系统代理一次</value>
+  </data>
+  <data name="menuClearAndKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>316, 22</value>
+  </data>
+  <data name="menuClearAndKeepPACNothing.Text" xml:space="preserve">
+    <value>仅开启PAC,并清除系统代理一次</value>
+  </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
   </data>

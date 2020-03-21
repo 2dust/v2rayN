@@ -72,6 +72,8 @@
             this.menuKeepPAC = new System.Windows.Forms.ToolStripMenuItem();
             this.menuKeepNothing = new System.Windows.Forms.ToolStripMenuItem();
             this.menuKeepPACNothing = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuClearAndKeepNothing = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuClearAndKeepPACNothing = new System.Windows.Forms.ToolStripMenuItem();
             this.menuServers = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddServers2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScanScreen2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -411,7 +413,9 @@
             this.menuKeep,
             this.menuKeepPAC,
             this.menuKeepNothing,
-            this.menuKeepPACNothing});
+            this.menuKeepPACNothing,
+            this.menuClearAndKeepNothing,
+            this.menuClearAndKeepPACNothing});
             this.menuSysAgentMode.Name = "menuSysAgentMode";
             // 
             // menuNotEnabledHttp
@@ -455,6 +459,18 @@
             resources.ApplyResources(this.menuKeepPACNothing, "menuKeepPACNothing");
             this.menuKeepPACNothing.Name = "menuKeepPACNothing";
             this.menuKeepPACNothing.Click += new System.EventHandler(this.menuKeepPACNothing_Click);
+            // 
+            // menuClearAndKeepNothing
+            // 
+            resources.ApplyResources(this.menuClearAndKeepNothing, "menuClearAndKeepNothing");
+            this.menuClearAndKeepNothing.Name = "menuClearAndKeepNothing";
+            this.menuClearAndKeepNothing.Click += new System.EventHandler(this.MenuClearAndKeepNothing_Click);
+            // 
+            // menuClearAndKeepPACNothing
+            // 
+            resources.ApplyResources(this.menuClearAndKeepPACNothing, "menuClearAndKeepPACNothing");
+            this.menuClearAndKeepPACNothing.Name = "menuClearAndKeepPACNothing";
+            this.menuClearAndKeepPACNothing.Click += new System.EventHandler(this.MenuClearAndKeepPACNothing_Click);
             // 
             // menuServers
             // 
@@ -933,6 +949,8 @@
         private System.Windows.Forms.ToolStripDropDownButton tsbService;
         private System.Windows.Forms.ToolStripMenuItem tsbReload;
         private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
+        private System.Windows.Forms.ToolStripMenuItem menuClearAndKeepNothing;
+        private System.Windows.Forms.ToolStripMenuItem menuClearAndKeepPACNothing;
     }
 }
 

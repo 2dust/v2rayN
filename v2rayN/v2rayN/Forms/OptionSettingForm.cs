@@ -176,6 +176,9 @@ namespace v2rayN.Forms
                 return;
             }
 
+            if (config.listenerType == ListenerType.HttpOpenAndClearOnce || config.listenerType == ListenerType.PacOpenAndClearOnce) {
+                SysProxyHandle.ResetIEProxy();
+            }
             if (ConfigHandler.SaveConfig(ref config) == 0)
             {
                 this.DialogResult = DialogResult.OK;

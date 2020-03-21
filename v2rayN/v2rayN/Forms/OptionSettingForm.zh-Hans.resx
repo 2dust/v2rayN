@@ -228,6 +228,12 @@
   <data name="cmblistenerType.Items6" xml:space="preserve">
     <value>仅开启PAC,不改变系统代理</value>
   </data>
+  <data name="cmblistenerType.Items7" xml:space="preserve">
+    <value>仅开启Http代理,并清除系统代理一次</value>
+  </data>
+  <data name="cmblistenerType.Items8" xml:space="preserve">
+    <value>仅开启PAC,并清除系统代理一次</value>
+  </data>
   <data name="cmbroutingMode.Items" xml:space="preserve">
     <value>全局</value>
   </data>
