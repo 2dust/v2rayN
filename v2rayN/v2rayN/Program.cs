@@ -33,11 +33,6 @@ namespace v2rayN
 
             if (!IsDuplicateInstance())
             {
-                if (!UnzipLibs())
-                {
-                    UI.ShowError($"Error preparing the environment(准备运行环境出错)");
-                    return;
-                }
 
                 Utils.SaveLog("v2rayN start up " + Utils.GetVersion());
 
@@ -99,22 +94,6 @@ namespace v2rayN
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Utils.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject);
-        }
-
-        static bool UnzipLibs()
-        {
-            string fileName = Utils.GetPath("libs.zip");
-            if (!FileManager.ByteArrayToFile(fileName, Resources.libs))
-            {
-                return false;
-            }
-
-            if (!FileManager.ZipExtractToFile(fileName))
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
