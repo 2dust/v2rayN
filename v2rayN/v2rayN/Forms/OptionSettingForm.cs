@@ -440,6 +440,11 @@ namespace v2rayN.Forms
         {
             labRoutingTips.Text = text;
         }
+
+        private void linkLabelRoutingDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.v2ray.com/chapter_02/03_routing.html#routingobject");
+        }
     }
 
     class ComboItem

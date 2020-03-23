@@ -109,17 +109,14 @@ namespace v2rayN.Handler
 
                 //Thread.Sleep(5000);
                 int httpPort = _config.GetLocalPort("speedtest");
-                Task[] tasks = new Task[_selecteds.Count];
-                int i = -1;
+                List<Task> tasks = new List<Task>();
                 foreach (int itemIndex in _selecteds)
                 {
                     if (_config.vmess[itemIndex].configType == (int)EConfigType.Custom)
                     {
                         continue;
                     }
-
-                    i++;
-                    tasks[i] = Task.Run(() =>
+                    tasks.Add(Task.Run(() =>
                     {
                         try
                         {
@@ -133,12 +130,10 @@ namespace v2rayN.Handler
                         {
                             Utils.SaveLog(ex.Message, ex);
                         }
-                    });
+                    }));
                     //Thread.Sleep(100);
                 }
-                Task.WaitAll(tasks);
-
-                Thread.Sleep(100);
+                Task.WaitAll(tasks.ToArray());
             }
             catch (Exception ex)
             {

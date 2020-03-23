@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
@@ -129,9 +126,11 @@
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnSetDefRountingRule.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnSetDefRountingRule.Location" type="System.Drawing.Point, System.Drawing">
     <value>351, 14</value>
   </data>
@@ -201,12 +200,6 @@
   <data name="chkudpEnabled2.Text" xml:space="preserve">
     <value>开启UDP</value>
   </data>
-  <data name="cmbdomainStrategy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 14</value>
-  </data>
-  <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 20</value>
-  </data>
   <data name="cmblistenerType.Items" xml:space="preserve">
     <value>关闭Http代理</value>
   </data>
@@ -273,9 +266,6 @@
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>域名策略</value>
-  </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
@@ -303,6 +293,7 @@
   <data name="label5.Text" xml:space="preserve">
     <value>日志等级</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="labRoutingTips.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -320,6 +311,9 @@
   </data>
   <data name="lbFreshrate.Text" xml:space="preserve">
     <value>统计刷新频率</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
+    <value>域名解析策略</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 72</value>
