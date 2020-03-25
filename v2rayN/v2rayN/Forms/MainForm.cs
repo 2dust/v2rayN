@@ -209,8 +209,7 @@ namespace v2rayN.Forms
                         todayDown = Utils.HumanFy(sItem.todayDown);
                     }
                 }
-                ListViewItem lvItem = new ListViewItem();
-                _addSubItem(lvItem, "enabled", def);
+                ListViewItem lvItem = new ListViewItem(def);
                 _addSubItem(lvItem, "type", ((EConfigType)item.configType).ToString());
                 _addSubItem(lvItem, "remarks", item.remarks);
                 _addSubItem(lvItem, "address", item.address);
