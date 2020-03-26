@@ -36,6 +36,23 @@ namespace v2rayN.Forms
             chklogEnabled.Checked = config.logEnabled;
             cmbloglevel.Text = config.loglevel;
 
+            //代理转发
+            chktransitEnabled.Checked = config.transitEnabled;
+            ConfigHandler.LoadConfig(ref config);
+            if (config.vmess == null)
+            {
+                TransitList.Items.Add(null);
+            }
+            else
+            {
+                for (int i = 0; i < config.vmess.Count; i++)
+                {
+                    TransitList.Items.Add(i.ToString() + ' ' + config.vmess[i].remarks);
+                }
+            }
+            TransitList.Text = config.transitSetting.ToString() + ' ' + config.vmess[config.transitSetting].remarks;
+
+
             //Mux
             chkmuxEnabled.Checked = config.muxEnabled;
 
@@ -196,6 +213,11 @@ namespace v2rayN.Forms
             bool logEnabled = chklogEnabled.Checked;
             string loglevel = cmbloglevel.Text.TrimEx();
 
+            //代理转发
+            //bool logEnabled = chklogEnabled.Checked;
+            System.Text.RegularExpressions.Match matchNumber = System.Text.RegularExpressions.Regex.Match(TransitList.Text, "(^[0-9]+)");
+            int transitSetting = Convert.ToInt32(matchNumber.Value);
+
             //Mux
             bool muxEnabled = chkmuxEnabled.Checked;
 
@@ -256,6 +278,10 @@ namespace v2rayN.Forms
             //日志     
             config.logEnabled = logEnabled;
             config.loglevel = loglevel;
+
+            //代理转发
+            config.transitEnabled = chktransitEnabled.Checked;
+            config.transitSetting = transitSetting;
 
             //Mux
             config.muxEnabled = muxEnabled;

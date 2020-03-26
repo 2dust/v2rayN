@@ -323,9 +323,129 @@ namespace v2rayN.Handler
         /// <returns></returns>
         private static int outbound(Config config, ref V2rayConfig v2rayConfig)
         {
+            int configIndex = config.index;
+            Outbounds outbound;
             try
             {
-                Outbounds outbound = v2rayConfig.outbounds[0];
+                if(config.transitEnabled)
+                {
+                    config.index = config.transitSetting;
+                    outbound = v2rayConfig.outbounds[0];
+                    if (config.configType() == (int)EConfigType.Vmess)
+                    {
+                        VnextItem vnextItem;
+                        if (outbound.settings.vnext.Count <= 0)
+                        {
+                            vnextItem = new VnextItem();
+                            outbound.settings.vnext.Add(vnextItem);
+                        }
+                        else
+                        {
+                            vnextItem = outbound.settings.vnext[0];
+                        }
+                        //远程服务器地址和端口
+                        vnextItem.address = config.address();
+                        vnextItem.port = config.port();
+
+                        UsersItem usersItem;
+                        if (vnextItem.users.Count <= 0)
+                        {
+                            usersItem = new UsersItem();
+                            vnextItem.users.Add(usersItem);
+                        }
+                        else
+                        {
+                            usersItem = vnextItem.users[0];
+                        }
+                        //远程服务器用户ID
+                        usersItem.id = config.id();
+                        usersItem.alterId = config.alterId();
+                        usersItem.email = Global.userEMail;
+                        usersItem.security = config.security();
+
+                        //Mux
+                        outbound.mux.enabled = config.muxEnabled;
+                        outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
+
+                        outbound.protocol = "vmess";
+                        outbound.settings.servers = null;
+                    }
+                    else if (config.configType() == (int)EConfigType.Shadowsocks)
+                    {
+                        ServersItem serversItem;
+                        if (outbound.settings.servers.Count <= 0)
+                        {
+                            serversItem = new ServersItem();
+                            outbound.settings.servers.Add(serversItem);
+                        }
+                        else
+                        {
+                            serversItem = outbound.settings.servers[0];
+                        }
+                        //远程服务器地址和端口
+                        serversItem.address = config.address();
+                        serversItem.port = config.port();
+                        serversItem.password = config.id();
+                        serversItem.method = config.security();
+
+                        serversItem.ota = false;
+                        serversItem.level = 1;
+
+                        outbound.mux.enabled = false;
+                        outbound.mux.concurrency = -1;
+
+
+                        outbound.protocol = "shadowsocks";
+                        outbound.settings.vnext = null;
+                    }
+                    else if (config.configType() == (int)EConfigType.Socks)
+                    {
+                        ServersItem serversItem;
+                        if (outbound.settings.servers.Count <= 0)
+                        {
+                            serversItem = new ServersItem();
+                            outbound.settings.servers.Add(serversItem);
+                        }
+                        else
+                        {
+                            serversItem = outbound.settings.servers[0];
+                        }
+                        //远程服务器地址和端口
+                        serversItem.address = config.address();
+                        serversItem.port = config.port();
+                        serversItem.method = null;
+                        serversItem.password = null;
+
+                        if (!Utils.IsNullOrEmpty(config.security())
+                            && !Utils.IsNullOrEmpty(config.id()))
+                        {
+                            SocksUsersItem socksUsersItem = new SocksUsersItem
+                            {
+                                user = config.security(),
+                                pass = config.id(),
+                                level = 1
+                            };
+
+                            serversItem.users = new List<SocksUsersItem>() { socksUsersItem };
+                        }
+
+                        outbound.mux.enabled = false;
+                        outbound.mux.concurrency = -1;
+
+                        outbound.protocol = "socks";
+                        outbound.settings.vnext = null;
+                    }
+
+                    outbound = v2rayConfig.outbounds[1];
+                    config.index = configIndex;
+                }
+                else
+                {
+                    v2rayConfig.outbounds.RemoveAt(0);
+                    outbound = v2rayConfig.outbounds[0];
+                    outbound.tag = "proxy";
+                }
+                
                 if (config.configType() == (int)EConfigType.Vmess)
                 {
                     VnextItem vnextItem;

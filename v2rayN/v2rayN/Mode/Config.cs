@@ -37,6 +37,22 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 允许代理转发
+        /// </summary>
+        public bool transitEnabled
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 日志等级
+        /// </summary>
+        public int transitSetting
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// 活动配置序号
         /// </summary>
         public int index

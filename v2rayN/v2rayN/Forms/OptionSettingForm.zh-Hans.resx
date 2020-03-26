@@ -188,6 +188,9 @@
   <data name="chksniffingEnabled2.Text" xml:space="preserve">
     <value>开启流量探测</value>
   </data>
+  <data name="chktransitEnabled.Text" xml:space="preserve">
+    <value>代理转发</value>
+  </data>
   <data name="chkudpEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 16</value>
   </data>

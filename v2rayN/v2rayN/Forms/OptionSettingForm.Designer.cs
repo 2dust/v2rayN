@@ -1,4 +1,6 @@
-﻿namespace v2rayN.Forms
+﻿using v2rayN.Handler;
+
+namespace v2rayN.Forms
 {
     partial class OptionSettingForm
     {
@@ -33,6 +35,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.TransitList = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.cmblistenerType = new System.Windows.Forms.ComboBox();
             this.chksniffingEnabled2 = new System.Windows.Forms.CheckBox();
@@ -99,6 +103,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chktransitEnabled = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -145,6 +150,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chktransitEnabled);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.TransitList);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.cmblistenerType);
             this.groupBox1.Controls.Add(this.chksniffingEnabled2);
@@ -168,6 +176,18 @@
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // TransitList
+            // 
+            this.TransitList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.TransitList.FormattingEnabled = true;
+            resources.ApplyResources(this.TransitList, "TransitList");
+            this.TransitList.Name = "TransitList";
             // 
             // label16
             // 
@@ -614,6 +634,12 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // chktransitEnabled
+            // 
+            resources.ApplyResources(this.chktransitEnabled, "chktransitEnabled");
+            this.chktransitEnabled.Name = "chktransitEnabled";
+            this.chktransitEnabled.UseVisualStyleBackColor = true;
+            // 
             // OptionSettingForm
             // 
             resources.ApplyResources(this, "$this");
@@ -725,5 +751,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkKeepOlderDedupl;
         private System.Windows.Forms.LinkLabel linkLabelRoutingDoc;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox TransitList;
+        private System.Windows.Forms.CheckBox chktransitEnabled;
     }
 }

@@ -187,6 +187,8 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Mux mux { get; set; }
+
+        public ProxySettings proxySettings { get; set; }
     }
 
     public class Outboundsettings
@@ -515,6 +517,14 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Header header { get; set; }
+    }
+
+    public class ProxySettings
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string tag { get; set; }
     }
 
 }
