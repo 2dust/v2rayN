@@ -32,8 +32,8 @@ namespace v2rayN.Forms
                     txtUrl.Text = string.Empty;
                     return;
                 }
-                picQRCode.Image = QRCodeHelper.GetQRCode(url);
                 txtUrl.Text = url;
+                picQRCode.Image = QRCodeHelper.GetQRCode(url);                
             }
         }
 
