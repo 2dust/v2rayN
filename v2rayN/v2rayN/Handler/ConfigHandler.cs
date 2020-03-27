@@ -276,18 +276,19 @@ namespace v2rayN.Handler
             VmessItem vmessItem = new VmessItem
             {
                 configVersion = config.vmess[index].configVersion,
-                configType = config.vmess[index].configType,
                 address = config.vmess[index].address,
                 port = config.vmess[index].port,
                 id = config.vmess[index].id,
                 alterId = config.vmess[index].alterId,
                 security = config.vmess[index].security,
                 network = config.vmess[index].network,
+                remarks = string.Format("{0}-clone", config.vmess[index].remarks),
                 headerType = config.vmess[index].headerType,
                 requestHost = config.vmess[index].requestHost,
                 path = config.vmess[index].path,
                 streamSecurity = config.vmess[index].streamSecurity,
-                remarks = string.Format("{0}-clone", config.vmess[index].remarks)
+                allowInsecure = config.vmess[index].allowInsecure,
+                configType = config.vmess[index].configType
             };
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
