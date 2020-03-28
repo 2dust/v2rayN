@@ -151,7 +151,8 @@ namespace v2rayN.Forms
             lvServers.View = View.Details;
             lvServers.Scrollable = true;
             lvServers.MultiSelect = true;
-            lvServers.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
+            this.lvServers.AllowColumnReorder = true;
 
             lvServers.Columns.Add("", 30, HorizontalAlignment.Center);
             lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80, HorizontalAlignment.Left);
@@ -1528,6 +1529,19 @@ namespace v2rayN.Forms
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
             return statistics.RunAvailabilityCheck();
+        }
+
+        private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (lvServers.Columns[e.Column].Tag == null)
+                lvServers.Columns[e.Column].Tag = true;
+            bool flag = (bool)lvServers.Columns[e.Column].Tag;
+            if (flag)
+                lvServers.Columns[e.Column].Tag = false;
+            else
+                lvServers.Columns[e.Column].Tag = true;
+            lvServers.ListViewItemSorter = new ListViewSort(e.Column, lvServers.Columns[e.Column].Tag);
+            lvServers.Sort();//对列表进行自定义排序  
         }
     }
 }
