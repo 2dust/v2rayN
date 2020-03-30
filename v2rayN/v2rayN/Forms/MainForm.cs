@@ -235,7 +235,7 @@ namespace v2rayN.Forms
                 if (config.index.Equals(k))
                 {
                     //lvItem.Checked = true;
-                    lvItem.ForeColor = Color.Blue;
+                    lvItem.ForeColor = Color.DodgerBlue;
                     lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
                 }
 
