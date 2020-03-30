@@ -358,7 +358,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void LoadV2ray()
         {
-            tsbService.Enabled = false;
+            tsbReload.Enabled = false;
 
             if (Global.reloadV2ray)
             {
@@ -371,7 +371,7 @@ namespace v2rayN.Forms
 
             ChangePACButtonStatus(config.listenerType);
 
-            tsbService.Enabled = true;
+            tsbReload.Enabled = true;
         }
 
         /// <summary>

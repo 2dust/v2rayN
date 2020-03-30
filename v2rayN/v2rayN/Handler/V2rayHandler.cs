@@ -69,7 +69,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                ShowMsg(true, msg);
+                ShowMsg(false, msg);
                 pid = V2rayStartNew(configStr);
                 //V2rayRestart();
                 // start with -config
@@ -175,7 +175,7 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(fileName))
             {
                 string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2ray/v2ray-core/releases");
-                ShowMsg(true, msg);
+                ShowMsg(false, msg);
             }
             return fileName;
         }

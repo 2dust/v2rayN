@@ -421,13 +421,13 @@
     <value>148, 22</value>
   </data>
   <data name="tsbReload.Text" xml:space="preserve">
-    <value>重启服务</value>
+    <value>  重启服务  </value>
   </data>
   <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
   </data>
   <data name="tsbTestMe.Text" xml:space="preserve">
-    <value>测试服务状态</value>
+    <value>测试当前服务状态</value>
   </data>
   <data name="tsbService.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

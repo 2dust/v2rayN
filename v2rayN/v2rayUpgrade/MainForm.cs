@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 using System.Windows.Forms;
 
 namespace v2rayUpgrade
@@ -46,9 +47,9 @@ namespace v2rayUpgrade
                     "Close it manually, or the upgrade may fail.(请手动关闭正在运行的v2rayN，否则可能升级失败。\n\n" + ex.StackTrace);
             }
 
+            StringBuilder sb = new StringBuilder();
             try
             {
-
                 if (!File.Exists(fileName))
                 {
                     if (File.Exists(defaultFilename))
@@ -66,35 +67,49 @@ namespace v2rayUpgrade
                 File.Delete(thisAppOldFile);
                 string startKey = "v2rayN/";
 
+
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
-                        if (entry.Length == 0)
+                        try
                         {
-                            continue;
-                        }
-                        string fullName = entry.FullName;
-                        if (fullName.StartsWith(startKey))
-                        {
-                            fullName = fullName.Substring(startKey.Length, fullName.Length - startKey.Length);
-                        }
-                        if (Application.ExecutablePath.ToLower() == GetPath(fullName).ToLower())
-                        {
-                            File.Move(Application.ExecutablePath, thisAppOldFile);
-                        }
+                            if (entry.Length == 0)
+                            {
+                                continue;
+                            }
+                            string fullName = entry.FullName;
+                            if (fullName.StartsWith(startKey))
+                            {
+                                fullName = fullName.Substring(startKey.Length, fullName.Length - startKey.Length);
+                            }
+                            if (Application.ExecutablePath.ToLower() == GetPath(fullName).ToLower())
+                            {
+                                File.Move(Application.ExecutablePath, thisAppOldFile);
+                            }
 
-                        string entryOuputPath = GetPath(fullName);
+                            string entryOuputPath = GetPath(fullName);
 
-                        FileInfo fileInfo = new FileInfo(entryOuputPath);
-                        fileInfo.Directory.Create();
-                        entry.ExtractToFile(entryOuputPath, true);
+                            FileInfo fileInfo = new FileInfo(entryOuputPath);
+                            fileInfo.Directory.Create();
+                            entry.ExtractToFile(entryOuputPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            sb.Append(ex.StackTrace);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 showWarn("Upgrade Failed(升级失败)." + ex.StackTrace);
+                return;
+            }
+            if (sb.Length > 0)
+            {
+                showWarn("Upgrade Failed,Hold ctrl + c to copy to clipboard.\n" +
+                    "(升级失败,按住ctrl+c可以复制到剪贴板)." + sb.ToString());
                 return;
             }
 
