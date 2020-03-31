@@ -178,6 +178,15 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
+        /// <summary>
+        /// 是否允许不安全连接
+        /// </summary>
+        public string defaultAllowInsecure
+        {
+            get; set;
+        }
+
         /// <summary>
         /// 订阅
         /// </summary>
