@@ -214,6 +214,7 @@ namespace v2rayN.Handler
                     }
                 });
                 p.Start();
+                p.PriorityClass = ProcessPriorityClass.High;
                 p.BeginOutputReadLine();
                 //processId = p.Id;
                 _process = p;
