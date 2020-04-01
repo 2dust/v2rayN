@@ -196,8 +196,7 @@ namespace v2rayN.Handler
             vmessItem.headerType = vmessItem.headerType.TrimEx();
             vmessItem.requestHost = vmessItem.requestHost.TrimEx();
             vmessItem.path = vmessItem.path.TrimEx();
-            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
-            vmessItem.allowInsecure = config.defaultAllowInsecure;
+            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();           
 
             if (index >= 0)
             {
@@ -211,6 +210,10 @@ namespace v2rayN.Handler
             else
             {
                 //添加
+                if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+                {
+                    vmessItem.allowInsecure = config.defaultAllowInsecure;
+                }
                 config.vmess.Add(vmessItem);
                 if (config.vmess.Count == 1)
                 {
