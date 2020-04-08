@@ -306,7 +306,7 @@ namespace v2rayN.Mode
         {
             if (index < 0 || Utils.IsNullOrEmpty(vmess[index].allowInsecure))
             {
-                return true;
+                return Convert.ToBoolean(defaultAllowInsecure);
             }
             return Convert.ToBoolean(vmess[index].allowInsecure);
         }

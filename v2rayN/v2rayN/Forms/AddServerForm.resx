@@ -529,7 +529,7 @@
     <value>32</value>
   </data>
   <data name="label22.Text" xml:space="preserve">
-    <value>Default value true</value>
+    <value>Default value false</value>
   </data>
   <data name="label23.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

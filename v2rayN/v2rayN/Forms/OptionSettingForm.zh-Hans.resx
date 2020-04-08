@@ -162,7 +162,7 @@
     <value>384, 16</value>
   </data>
   <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计（实时网速显示和使用流量显示，需要重启v2rayN客户端）</value>
+    <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
   </data>
   <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
     <value>去重时保留序号较小的项</value>
