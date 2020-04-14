@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
-    <value>Batch export subscription to clipboard successfully</value>
+    <value>Successfully exported subscription to clipboard in batch</value>
   </data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Batch export share URL to clipboard successfully</value>
+    <value>Successfully exported share URL to clipboard in batch</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
     <value>Please check the server settings first</value>
@@ -139,31 +139,31 @@
     <value>DOWN</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>Whether to download? {0}</value>
+    <value>Proceed to download? {0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
-    <value>Failed to convert configuration file</value>
+    <value>Failed to convert the configuration file</value>
   </data>
   <data name="FailedGenDefaultConfiguration" xml:space="preserve">
     <value>Failed to generate default configuration file</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value> Failed to get the default configuration</value>
+    <value> Failed to download the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Failed to import custom configuration server</value>
+    <value>Failed to import custom server configuration</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
   </data>
   <data name="FillCorrectAlterId" xml:space="preserve">
-    <value>Please fill in the correct format extra ID</value>
+    <value>Please fill in correctly formatted alterID</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>Please fill in the correct format server port</value>
+    <value>Please fill in correctly formatted server port</value>
   </data>
   <data name="FillKcpParameters" xml:space="preserve">
-    <value>Please fill in the KCP parameters correctly</value>
+    <value>Please fill in the correct KCP parameters</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>Please fill in the local listening port</value>
@@ -178,22 +178,22 @@
     <value>Please fill in the user ID</value>
   </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value> is not the correct client configuration file, please check</value>
+    <value> is not the correct client configuration file, please check again</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value> is not the correct configuration, please check</value>
+    <value> is not the correct configuration, please check again</value>
   </data>
   <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value> is not the correct server configuration file, please check</value>
+    <value> is not the correct server configuration file, please check again</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} is already up to date.</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} is already up to date.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Address</value>
@@ -217,16 +217,16 @@
     <value>Test Results</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
-    <value>Today download traffic</value>
+    <value>Today total download traffic</value>
   </data>
   <data name="LvTodayUploadDataAmount" xml:space="preserve">
-    <value>Today upload traffic</value>
+    <value>Today toal upload traffic</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
-    <value>Total download traffic</value>
+    <value>Total total download traffic</value>
   </data>
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
-    <value>Total upload traffic</value>
+    <value>Total total upload traffic</value>
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Transport</value>
@@ -235,34 +235,34 @@
     <value>MediumFresh</value>
   </data>
   <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Clear original subscription content</value>
+    <value>Clear the original subscription servers</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Download V2ray successfully</value>
+    <value>Downloaded V2ray successfully</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
-    <value>Failed to import subscription content</value>
+    <value>Failed to import subscription server</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Get the subscription content successfully</value>
+    <value>Successfully downloaded the subscription servers</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>No valid subscriptions set</value>
   </data>
   <data name="MsgPACUpdateFailed" xml:space="preserve">
-    <value>PAC update failed</value>
+    <value>PAC file update failed</value>
   </data>
   <data name="MsgPACUpdateSuccessfully" xml:space="preserve">
-    <value>PAC update succeeded</value>
+    <value>PAC file updated successfully</value>
   </data>
   <data name="MsgParsingV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Resolve V2ray successfully</value>
+    <value>Successfully parsed V2ray Core</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
-    <value>Simplify PAC Success</value>
+    <value>Successfully simplified PAC file</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
-    <value>Start getting subscriptions</value>
+    <value>Start downloading subscriptions</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
     <value>Start updating {0}...</value>
@@ -271,43 +271,43 @@
     <value>Start updating PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
-    <value>Subscription content decoding failed (non-BASE64 code)</value>
+    <value>Failed decoding Subscription content (non-BASE64 code)</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>is unpacking...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>Update subscription end</value>
+    <value>Subscription updated</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>Update subscription starts</value>
+    <value>Staring subscription update</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Update V2rayCore successfully</value>
+    <value>Successfully updated V2ray Core</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>Update V2rayCore successfully! Restarting service...</value>
+    <value>Successfully updated V2ray Core! Restarting service...</value>
   </data>
   <data name="NeedHttpGlobalProxy" xml:space="preserve">
-    <value> This feature relies on the Http global proxy, please set it correctly first.</value>
+    <value> This feature relies on the global HTTP proxy, please first enable it.</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-vmess or ss protocol</value>
+    <value>Not a Vmess or Shadowsocks protocol</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
     <value> non-Vmess service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>V2ray-core not found, please download: {0}</value>
+    <value>V2ray Core is not found, please download: {0}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
-    <value>Scan completed, no valid QR code found</value>
+    <value>Scan completed, but no valid QR code was found</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value> operation failed, please check retry</value>
+    <value> operation failed, please check settings and retry</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Please Fill Remarks</value>
+    <value>Please fill in Remarks</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
     <value>Please select the encryption method</value>
@@ -322,7 +322,7 @@
     <value>QuickFresh</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+    <value>Server deduplication removal completed. Old: {0}, New: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
     <value>Are you sure to remove the server?</value>
@@ -337,10 +337,10 @@
     <value>SlowFresh</value>
   </data>
   <data name="SpeedServerTips" xml:space="preserve">
-    <value>Note: After this function relies on the Http global proxy test, please manually adjust the Http global proxy and active node!</value>
+    <value>Note: After this function relies on the HTTP global proxy test, please manually adjust the HTTP global proxy and active node!</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
-    <value>PAC failed to start. Run it with Admin right.</value>
+    <value>PAC failed to start. Please run as Administrator.</value>
   </data>
   <data name="StartService" xml:space="preserve">
     <value>Start service ({0})...</value>
@@ -356,7 +356,7 @@
     <value>{0} servers have been imported from clipboard.</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import URL successfully</value>
+    <value>Successfully scaned import URL </value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>The ping of current service: {0}</value>
