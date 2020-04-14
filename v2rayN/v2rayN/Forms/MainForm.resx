@@ -132,31 +132,31 @@
     <value>355, 22</value>
   </data>
   <data name="menuAddVmessServer.Text" xml:space="preserve">
-    <value>Add [VMess] server</value>
+    <value>Add a [VMess] server</value>
   </data>
   <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
-    <value>Add [Shadowsocks] server</value>
+    <value>Add a [Shadowsocks] server</value>
   </data>
   <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuAddSocksServer.Text" xml:space="preserve">
-    <value>Add [Socks] server</value>
+    <value>Add a [Socks] server</value>
   </data>
   <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuAddCustomServer.Text" xml:space="preserve">
-    <value>Add a custom configuration server</value>
+    <value>Add a server with custom configuration</value>
   </data>
   <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard (Ctrl+V)</value>
+    <value>Import URL from clipboard in bulk (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -183,13 +183,13 @@
     <value>355, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
-    <value>Clone selected server</value>
+    <value>Duplicate selected server</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuSetDefaultServer.Text" xml:space="preserve">
-    <value>Set as active server (Enter)</value>
+    <value>Set as the active server (Enter)</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>352, 6</value>
@@ -231,7 +231,7 @@
     <value>355, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
-    <value>Test servers ping (Ctrl+P)</value>
+    <value>Test server with regular ping (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -243,13 +243,13 @@
     <value>355, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
-    <value>Test servers real delay (Ctrl+R)</value>
+    <value>Test servers' real latency (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>Test servers download speed (Ctrl+T)</value>
+    <value>Test servers' download speed (Ctrl+T)</value>
   </data>
   <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -264,25 +264,25 @@
     <value>355, 22</value>
   </data>
   <data name="menuExport2ClientConfig.Text" xml:space="preserve">
-    <value>Export selected server for client configuration</value>
+    <value>Export selected server as a client configuration</value>
   </data>
   <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuExport2ServerConfig.Text" xml:space="preserve">
-    <value>Export selected server for server configuration</value>
+    <value>Export selected server as a server configuration</value>
   </data>
   <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
-    <value>Export share URLs to clipboard (Ctrl+C)</value>
+    <value>Export server share URLs to clipboard (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
   <data name="menuExport2SubContent.Text" xml:space="preserve">
-    <value>Export subscription (base64) share to clipboard</value>
+    <value>Export subscription (base64) to clipboard</value>
   </data>
   <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -432,49 +432,49 @@
     <value>411, 22</value>
   </data>
   <data name="menuNotEnabledHttp.Text" xml:space="preserve">
-    <value>Not Enabled Http Proxy</value>
+    <value>Do not enable HTTP proxy</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
-    <value>Open Http proxy and set the system proxy (global mode)</value>
+    <value>Enable HTTP proxy and set as the system proxy (global mode)</value>
   </data>
   <data name="menuGlobalPAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuGlobalPAC.Text" xml:space="preserve">
-    <value>Open PAC and set the system proxy (PAC mode)</value>
+    <value>Enable PAC and set as the system proxy (PAC mode)</value>
   </data>
   <data name="menuKeep.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuKeep.Text" xml:space="preserve">
-    <value>Only open Http proxy and clear the proxy settings</value>
+    <value>Enable HTTP proxy only and clear current proxy settings</value>
   </data>
   <data name="menuKeepPAC.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuKeepPAC.Text" xml:space="preserve">
-    <value>Only open PAC and clear the proxy settings</value>
+    <value>Enable PAC only and clear current proxy settings</value>
   </data>
   <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
-    <value>Only open Http proxy and do nothing</value>
+    <value>Enable HTTP proxy only and do nothing</value>
   </data>
   <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 22</value>
   </data>
   <data name="menuKeepPACNothing.Text" xml:space="preserve">
-    <value>Only open PAC and do nothing</value>
+    <value>Enable PAC only and do nothing</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
   </data>
   <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>Http proxy</value>
+    <value>HTTP proxy</value>
   </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -486,7 +486,7 @@
     <value>264, 22</value>
   </data>
   <data name="menuAddServers2.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard</value>
+    <value>Import URL in bulk from clipboard</value>
   </data>
   <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -498,7 +498,7 @@
     <value>264, 22</value>
   </data>
   <data name="menuCopyPACUrl.Text" xml:space="preserve">
-    <value>Copy local PAC URL</value>
+    <value>Copy local loopback PAC URL</value>
   </data>
   <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -827,19 +827,19 @@
     <value>393, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
-    <value>v2rayN (this software)</value>
+    <value>v2rayN (v2ray Core Wrapper)</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>393, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>Update v2rayCore</value>
+    <value>Update V2ray Core</value>
   </data>
   <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
     <value>393, 22</value>
   </data>
   <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
-    <value>Check for updated PAC (need the HTTP proxy are ON)</value>
+    <value>Check for PAC update (need to enable HTTP proxy)</value>
   </data>
   <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
     <value>390, 6</value>
