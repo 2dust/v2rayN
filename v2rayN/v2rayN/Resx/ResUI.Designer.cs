@@ -475,11 +475,11 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Resolve V2ray successfully 的本地化字符串。
+        ///   查找类似 Resolve {0} successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgParsingV2rayCoreSuccessfully {
+        internal static string MsgParsingSuccessfully {
             get {
-                return ResourceManager.GetString("MsgParsingV2rayCoreSuccessfully", resourceCulture);
+                return ResourceManager.GetString("MsgParsingSuccessfully", resourceCulture);
             }
         }
         

@@ -255,8 +255,8 @@
   <data name="MsgPACUpdateSuccessfully" xml:space="preserve">
     <value>PAC更新成功</value>
   </data>
-  <data name="MsgParsingV2rayCoreSuccessfully" xml:space="preserve">
-    <value>解析V2ray成功</value>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>解析{0}成功</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
     <value>简化PAC成功</value>
