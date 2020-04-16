@@ -52,6 +52,14 @@ namespace v2rayN.Forms
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
 
+            if(!config.formMainSize.IsEmpty) {
+                this.Left = config.formMainSize.X;
+                this.Top = config.formMainSize.Y;
+                this.Width = config.formMainSize.Width;
+                this.Height = config.formMainSize.Height;
+            }
+            this.WindowState = config.windowState;
+
             if (config.enableStatistics)
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
@@ -87,6 +95,10 @@ namespace v2rayN.Forms
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                if (this.WindowState != FormWindowState.Maximized)
+                    config.formMainSize = new Rectangle(this.Left, this.Top, this.Width, this.Height);
+                config.windowState = this.WindowState;
+
                 e.Cancel = true;
                 HideForm();
                 return;
@@ -973,7 +985,6 @@ namespace v2rayN.Forms
 
         private void menuExit_Click(object sender, EventArgs e)
         {
-
             this.Visible = false;
             this.Close();
 
@@ -984,7 +995,7 @@ namespace v2rayN.Forms
         private void ShowForm()
         {
             this.Show();
-            this.WindowState = FormWindowState.Normal;
+            //this.WindowState = config.windowState;
             this.Activate();
             //this.notifyIcon1.Visible = false;
             this.ShowInTaskbar = true;

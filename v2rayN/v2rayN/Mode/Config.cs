@@ -37,6 +37,17 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 主窗口的大小和位置
+        /// </summary>
+        public System.Drawing.Rectangle formMainSize
+        {
+            get; set;
+        }
+        public System.Windows.Forms.FormWindowState windowState
+        {
+            get; set;
+        }
+        /// <summary>
         /// 活动配置序号
         /// </summary>
         public int index
