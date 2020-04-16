@@ -243,6 +243,7 @@ namespace v2rayN.Forms
 
                 if (lvItem != null) lvServers.Items.Add(lvItem);
             }
+            lvServers.EnsureVisible(config.index);
 
             //if (lvServers.Items.Count > 0)
             //{
@@ -988,6 +989,7 @@ namespace v2rayN.Forms
             //this.notifyIcon1.Visible = false;
             this.ShowInTaskbar = true;
             this.txtMsgBox.ScrollToCaret();
+            lvServers.EnsureVisible(config.index); // workaround
 
             SetVisibleCore(true);
         }
