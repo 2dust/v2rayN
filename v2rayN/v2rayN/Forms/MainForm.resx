@@ -333,7 +333,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;lvServers.Name" xml:space="preserve">
     <value>lvServers</value>
@@ -369,7 +369,7 @@
     <value>256, 331</value>
   </data>
   <data name="qrCodeControl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;qrCodeControl.Name" xml:space="preserve">
     <value>qrCodeControl</value>
@@ -405,7 +405,7 @@
     <value>686</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
     <value>splitContainer1</value>
@@ -543,7 +543,7 @@
     <value>952, 351</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Servers list</value>
@@ -579,7 +579,7 @@
     <value>946, 134</value>
   </data>
   <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
     <value>txtMsgBox</value>
@@ -678,7 +678,7 @@
     <value>946, 22</value>
   </data>
   <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="ssMain.Text" xml:space="preserve">
     <value>statusStrip1</value>
@@ -705,7 +705,7 @@
     <value>952, 176</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Informations</value>
@@ -732,7 +732,7 @@
     <value>952, 10</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
@@ -960,7 +960,7 @@
     <value>952, 56</value>
   </data>
   <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;tsMain.Name" xml:space="preserve">
     <value>tsMain</value>
