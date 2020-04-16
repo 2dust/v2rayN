@@ -18,6 +18,7 @@ namespace v2rayN.Base
         {
             try
             {
+                this.SuspendLayout();
                 Graphics graphics = this.CreateGraphics();
 
                 // 原生 ColumnHeaderAutoResizeStyle.ColumnContent 将忽略列头宽度
@@ -41,6 +42,7 @@ namespace v2rayN.Base
                     int strWidth = (int)graphics.MeasureString(MaxStr, font).Width;
                     c.Width = System.Math.Max(cWidth, strWidth);
                 }
+                this.ResumeLayout();
             }
             catch { }
         }

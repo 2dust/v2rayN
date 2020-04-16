@@ -158,6 +158,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void InitServersView()
         {
+            lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
             lvServers.GridLines = true;
@@ -184,6 +185,7 @@ namespace v2rayN.Forms
                 lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
                 lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
             }
+            lvServers.EndUpdate();
         }
 
         /// <summary>
@@ -191,6 +193,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServersView()
         {
+            lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
             for (int k = 0; k < config.vmess.Count; k++)
@@ -256,6 +259,7 @@ namespace v2rayN.Forms
                 if (lvItem != null) lvServers.Items.Add(lvItem);
             }
             lvServers.EnsureVisible(config.index);
+            lvServers.EndUpdate();
 
             //if (lvServers.Items.Count > 0)
             //{
@@ -994,11 +998,11 @@ namespace v2rayN.Forms
 
         private void ShowForm()
         {
-            this.Show();
+            this.ShowInTaskbar = true;
             //this.WindowState = config.windowState;
+            this.Show();
             this.Activate();
             //this.notifyIcon1.Visible = false;
-            this.ShowInTaskbar = true;
             this.txtMsgBox.ScrollToCaret();
             lvServers.EnsureVisible(config.index); // workaround
 
@@ -1039,11 +1043,7 @@ namespace v2rayN.Forms
         {
             lvServers.Invoke((MethodInvoker)delegate
             {
-                lvServers.SuspendLayout();
-
                 SetTestResult(index, msg);
-
-                lvServers.ResumeLayout();
             });
         }
 
@@ -1063,14 +1063,14 @@ namespace v2rayN.Forms
                     {
                         lvServers.Invoke((MethodInvoker)delegate
                         {
-                            lvServers.SuspendLayout();
+                            lvServers.BeginUpdate();
 
                             lvServers.Items[i].SubItems["todayDown"].Text = Utils.HumanFy(statistics[index].todayDown);
                             lvServers.Items[i].SubItems["todayUp"].Text = Utils.HumanFy(statistics[index].todayUp);
                             lvServers.Items[i].SubItems["totalDown"].Text = Utils.HumanFy(statistics[index].totalDown);
                             lvServers.Items[i].SubItems["totalUp"].Text = Utils.HumanFy(statistics[index].totalUp);
 
-                            lvServers.ResumeLayout();
+                            lvServers.EndUpdate();
                         });
                     }
                 }
