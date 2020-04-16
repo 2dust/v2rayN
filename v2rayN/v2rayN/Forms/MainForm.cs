@@ -144,7 +144,7 @@ namespace v2rayN.Forms
         private void StorageUI()
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
-            
+
             for (int k = 0; k < lvServers.Columns.Count; k++)
             {
                 ConfigHandler.AddformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
@@ -188,7 +188,7 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90);
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70);
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70,HorizontalAlignment.Right);
+            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70, HorizontalAlignment.Right);
 
             if (statistics != null && statistics.Enable)
             {
@@ -268,7 +268,6 @@ namespace v2rayN.Forms
 
                 if (lvItem != null) lvServers.Items.Add(lvItem);
             }
-            lvServers.EnsureVisible(config.index);
             lvServers.EndUpdate();
 
             //if (lvServers.Items.Count > 0)
@@ -1025,7 +1024,10 @@ namespace v2rayN.Forms
             this.ShowInTaskbar = true;
             //this.notifyIcon1.Visible = false;
             this.txtMsgBox.ScrollToCaret();
-            lvServers.EnsureVisible(config.index); // workaround
+            if (config.index >= 0 && config.index < lvServers.Items.Count)
+            {
+                lvServers.EnsureVisible(config.index); // workaround
+            }
 
             SetVisibleCore(true);
         }
