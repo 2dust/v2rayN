@@ -46,6 +46,8 @@ namespace v2rayN.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            splitContainer1.Panel2Collapsed = true;
+
             ConfigHandler.LoadConfig(ref config);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
@@ -1531,6 +1533,12 @@ namespace v2rayN.Forms
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
             return statistics.RunAvailabilityCheck();
+        }
+
+        private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            bool bShow = tsbQRCodeSwitch.Checked;
+            splitContainer1.Panel2Collapsed = !bShow;
         }
     }
 }

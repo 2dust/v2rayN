@@ -297,7 +297,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 578</value>
+    <value>356, 556</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -753,13 +753,13 @@
     <value>6, 56</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>Updates</value>
@@ -774,6 +774,21 @@
     <value>Subscriptions</value>
   </data>
   <data name="tsbSub.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
+  <data name="tsbQRCodeSwitch.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 53</value>
+  </data>
+  <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
+    <value>QR Code</value>
+  </data>
+  <data name="tsbQRCodeSwitch.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="tsbQRCodeSwitch.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
@@ -1342,6 +1357,12 @@
   </data>
   <data name="&gt;&gt;tsbSubUpdate.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbQRCodeSwitch.Name" xml:space="preserve">
+    <value>tsbQRCodeSwitch</value>
+  </data>
+  <data name="&gt;&gt;tsbQRCodeSwitch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
     <value>toolStripSeparator8</value>
