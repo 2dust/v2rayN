@@ -83,7 +83,6 @@ namespace v2rayN.Forms
         {
             InitServersView();
             RefreshServers();
-            lvServers.AutoResizeColumns();
 
             LoadV2ray();
 
@@ -150,6 +149,7 @@ namespace v2rayN.Forms
         private void RefreshServers()
         {
             RefreshServersView();
+            lvServers.AutoResizeColumns();
             RefreshServersMenu();
         }
 
