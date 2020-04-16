@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QRCodeControl));
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.picQRCode = new System.Windows.Forms.PictureBox();
-            this.chkShow = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,20 +46,12 @@
             this.picQRCode.Name = "picQRCode";
             this.picQRCode.TabStop = false;
             // 
-            // chkShow
-            // 
-            resources.ApplyResources(this.chkShow, "chkShow");
-            this.chkShow.Name = "chkShow";
-            this.chkShow.UseVisualStyleBackColor = true;
-            this.chkShow.CheckedChanged += new System.EventHandler(this.chkShow_CheckedChanged);
-            // 
             // QRCodeControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.picQRCode);
             this.Controls.Add(this.txtUrl);
-            this.Controls.Add(this.chkShow);
             this.Name = "QRCodeControl";
             this.Load += new System.EventHandler(this.QRCodeControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
@@ -73,6 +64,5 @@
 
         private System.Windows.Forms.TextBox txtUrl;
         private System.Windows.Forms.PictureBox picQRCode;
-        private System.Windows.Forms.CheckBox chkShow;
     }
 }

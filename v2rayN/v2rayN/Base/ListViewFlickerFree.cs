@@ -18,37 +18,31 @@ namespace v2rayN.Base
         {
             try
             {
-                int count = this.Columns.Count;
-                int MaxWidth = 0;
+                this.SuspendLayout();
                 Graphics graphics = this.CreateGraphics();
-                Font font = this.Font;
-                ListViewItemCollection items = this.Items;
 
-                string str;
-                int width;
-
+                // 原生 ColumnHeaderAutoResizeStyle.ColumnContent 将忽略列头宽度
                 this.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < this.Columns.Count; i++)
                 {
-                    str = this.Columns[i].Text;
-                    MaxWidth = this.Columns[i].Width;
+                    ColumnHeader c = this.Columns[i];
+                    int cWidth = c.Width;
+                    string MaxStr = "";
+                    Font font = this.Items[0].SubItems[0].Font;
 
-                    foreach (ListViewItem item in items)
+                    foreach (ListViewItem item in this.Items)
                     {
-                        str = item.SubItems[i].Text;
-                        width = (int)graphics.MeasureString(str, font).Width;
-                        if (width > MaxWidth)
-                        {
-                            MaxWidth = width;
-                        }
+                        // 整行视作相同字形，不单独计算每个单元格
+                        font = item.SubItems[i].Font;
+                        string str = item.SubItems[i].Text;
+                        if (str.Length > MaxStr.Length) // 未考虑非等宽问题
+                            MaxStr = str;
                     }
-                    if (i == 0)
-                    {
-                        this.Columns[i].Width = MaxWidth;
-                    }
-                    this.Columns[i].Width = MaxWidth;
+                    int strWidth = (int)graphics.MeasureString(MaxStr, font).Width;
+                    c.Width = System.Math.Max(cWidth, strWidth);
                 }
+                this.ResumeLayout();
             }
             catch { }
         }

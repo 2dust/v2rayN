@@ -61,8 +61,8 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
+            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,6 +102,7 @@
             this.tsbSub = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbSubSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbSubUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbQRCodeSwitch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptionSetting = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -148,6 +149,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.qrCodeControl);
+            this.splitContainer1.TabStop = false;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // lvServers
@@ -369,17 +371,17 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
-            // 
             // tsbServer
             // 
             this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
+            // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 
@@ -619,6 +621,7 @@
             this.tsbServer,
             this.toolStripSeparator4,
             this.tsbSub,
+            this.tsbQRCodeSwitch,
             this.toolStripSeparator8,
             this.tsbOptionSetting,
             this.toolStripSeparator5,
@@ -632,6 +635,7 @@
             this.tsbClose});
             resources.ApplyResources(this.tsMain, "tsMain");
             this.tsMain.Name = "tsMain";
+            this.tsMain.TabStop = true;
             // 
             // toolStripSeparator4
             // 
@@ -658,6 +662,15 @@
             this.tsbSubUpdate.Name = "tsbSubUpdate";
             resources.ApplyResources(this.tsbSubUpdate, "tsbSubUpdate");
             this.tsbSubUpdate.Click += new System.EventHandler(this.tsbSubUpdate_Click);
+            // 
+            // tsbQRCodeSwitch
+            // 
+            this.tsbQRCodeSwitch.CheckOnClick = true;
+            this.tsbQRCodeSwitch.ForeColor = System.Drawing.Color.Black;
+            this.tsbQRCodeSwitch.Image = global::v2rayN.Properties.Resources.qr_code;
+            resources.ApplyResources(this.tsbQRCodeSwitch, "tsbQRCodeSwitch");
+            this.tsbQRCodeSwitch.Name = "tsbQRCodeSwitch";
+            this.tsbQRCodeSwitch.CheckedChanged += new System.EventHandler(this.tsbQRCodeSwitch_CheckedChanged);
             // 
             // toolStripSeparator8
             // 
@@ -922,6 +935,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuKeepPACNothing;
         private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
+        private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
     }
 }
 

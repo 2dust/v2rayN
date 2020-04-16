@@ -285,14 +285,14 @@ namespace v2rayN
                     if (GBs > 0)
                     {
                         // multi GB
-                        ulong TBs = GBs / factor;
+                        /*ulong TBs = GBs / factor;
                         if (TBs > 0)
                         {
                             // 你是魔鬼吗？ 用这么多流量
                             result = TBs + GBs % factor / (factor + 0.0);
                             unit = "TB";
                             return;
-                        }
+                        }*/
                         result = GBs + MBs % factor / (factor + 0.0);
                         unit = "GB";
                         return;

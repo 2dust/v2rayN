@@ -46,9 +46,19 @@ namespace v2rayN.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            splitContainer1.Panel2Collapsed = true;
+
             ConfigHandler.LoadConfig(ref config);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
+
+            if(!config.formMainSize.IsEmpty) {
+                this.Left = config.formMainSize.X;
+                this.Top = config.formMainSize.Y;
+                this.Width = config.formMainSize.Width;
+                this.Height = config.formMainSize.Height;
+            }
+            this.WindowState = config.windowState;
 
             if (config.enableStatistics)
             {
@@ -73,7 +83,6 @@ namespace v2rayN.Forms
         {
             InitServersView();
             RefreshServers();
-            lvServers.AutoResizeColumns();
 
             LoadV2ray();
 
@@ -85,6 +94,10 @@ namespace v2rayN.Forms
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                if (this.WindowState != FormWindowState.Maximized)
+                    config.formMainSize = new Rectangle(this.Left, this.Top, this.Width, this.Height);
+                config.windowState = this.WindowState;
+
                 e.Cancel = true;
                 HideForm();
                 return;
@@ -136,6 +149,7 @@ namespace v2rayN.Forms
         private void RefreshServers()
         {
             RefreshServersView();
+            lvServers.AutoResizeColumns();
             RefreshServersMenu();
         }
 
@@ -144,6 +158,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void InitServersView()
         {
+            lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
             lvServers.GridLines = true;
@@ -170,6 +185,7 @@ namespace v2rayN.Forms
                 lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70, HorizontalAlignment.Left);
                 lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70, HorizontalAlignment.Left);
             }
+            lvServers.EndUpdate();
         }
 
         /// <summary>
@@ -177,6 +193,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServersView()
         {
+            lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
             for (int k = 0; k < config.vmess.Count; k++)
@@ -241,6 +258,8 @@ namespace v2rayN.Forms
 
                 if (lvItem != null) lvServers.Items.Add(lvItem);
             }
+            lvServers.EnsureVisible(config.index);
+            lvServers.EndUpdate();
 
             //if (lvServers.Items.Count > 0)
             //{
@@ -970,7 +989,6 @@ namespace v2rayN.Forms
 
         private void menuExit_Click(object sender, EventArgs e)
         {
-
             this.Visible = false;
             this.Close();
 
@@ -980,12 +998,13 @@ namespace v2rayN.Forms
 
         private void ShowForm()
         {
+            this.ShowInTaskbar = true;
+            //this.WindowState = config.windowState;
             this.Show();
-            this.WindowState = FormWindowState.Normal;
             this.Activate();
             //this.notifyIcon1.Visible = false;
-            this.ShowInTaskbar = true;
             this.txtMsgBox.ScrollToCaret();
+            lvServers.EnsureVisible(config.index); // workaround
 
             SetVisibleCore(true);
         }
@@ -1024,11 +1043,7 @@ namespace v2rayN.Forms
         {
             lvServers.Invoke((MethodInvoker)delegate
             {
-                lvServers.SuspendLayout();
-
                 SetTestResult(index, msg);
-
-                lvServers.ResumeLayout();
             });
         }
 
@@ -1048,14 +1063,14 @@ namespace v2rayN.Forms
                     {
                         lvServers.Invoke((MethodInvoker)delegate
                         {
-                            lvServers.SuspendLayout();
+                            lvServers.BeginUpdate();
 
                             lvServers.Items[i].SubItems["todayDown"].Text = Utils.HumanFy(statistics[index].todayDown);
                             lvServers.Items[i].SubItems["todayUp"].Text = Utils.HumanFy(statistics[index].todayUp);
                             lvServers.Items[i].SubItems["totalDown"].Text = Utils.HumanFy(statistics[index].totalDown);
                             lvServers.Items[i].SubItems["totalUp"].Text = Utils.HumanFy(statistics[index].totalUp);
 
-                            lvServers.ResumeLayout();
+                            lvServers.EndUpdate();
                         });
                     }
                 }
@@ -1209,7 +1224,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        AppendText(false, UIRes.I18N("MsgParsingV2rayCoreSuccessfully"));
+                        AppendText(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "v2rayN"));
 
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
@@ -1267,7 +1282,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        AppendText(false, UIRes.I18N("MsgParsingV2rayCoreSuccessfully"));
+                        AppendText(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "v2rayCore"));
 
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
@@ -1531,6 +1546,12 @@ namespace v2rayN.Forms
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
             return statistics.RunAvailabilityCheck();
+        }
+
+        private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            bool bShow = tsbQRCodeSwitch.Checked;
+            splitContainer1.Panel2Collapsed = !bShow;
         }
     }
 }
