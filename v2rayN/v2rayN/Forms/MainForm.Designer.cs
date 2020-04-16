@@ -665,6 +665,7 @@
             // 
             this.tsbQRCodeSwitch.CheckOnClick = true;
             this.tsbQRCodeSwitch.ForeColor = System.Drawing.Color.Black;
+            this.tsbQRCodeSwitch.Image = global::v2rayN.Properties.Resources.qr_code;
             resources.ApplyResources(this.tsbQRCodeSwitch, "tsbQRCodeSwitch");
             this.tsbQRCodeSwitch.Name = "tsbQRCodeSwitch";
             this.tsbQRCodeSwitch.CheckedChanged += new System.EventHandler(this.tsbQRCodeSwitch_CheckedChanged);

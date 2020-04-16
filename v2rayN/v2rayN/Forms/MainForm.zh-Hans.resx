@@ -511,6 +511,6 @@
     <value>  关闭窗口  </value>
   </data>
   <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
-    <value>分享二维码</value>
+    <value>  分享  </value>
   </data>
 </root>
