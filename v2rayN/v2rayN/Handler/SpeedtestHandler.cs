@@ -85,7 +85,7 @@ namespace v2rayN.Handler
             RunPingSub((int index) =>
             {
                 long time = Utils.Ping(_config.vmess[index].address);
-                _updateFunc(index, string.Format("{0}ms", time));
+                _updateFunc(index, FormatOut(time, "ms"));
             });
         }
 
@@ -94,7 +94,7 @@ namespace v2rayN.Handler
             RunPingSub((int index) =>
             {
                 int time = GetTcpingTime(_config.vmess[index].address, _config.vmess[index].port);
-                _updateFunc(index, string.Format("{0}ms", time));
+                _updateFunc(index, FormatOut(time, "ms"));
             });
         }
 
@@ -123,7 +123,7 @@ namespace v2rayN.Handler
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
                             int responseTime = -1;
                             string status = GetRealPingTime(_config.speedPingTestUrl, webProxy, out responseTime);
-                            string output = Utils.IsNullOrEmpty(status) ? string.Format("{0}ms", responseTime) : string.Format("{0}", status);
+                            string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : FormatOut(status, "");
                             _updateFunc(itemIndex, output);
                         }
                         catch (Exception ex)
@@ -288,6 +288,14 @@ namespace v2rayN.Handler
                 msg = ex.Message;
             }
             return msg;
+        }
+        private string FormatOut(object time, string unit)
+        {
+            if (time.ToString().Equals("-1"))
+            {
+                return "Timeout";
+            }
+            return string.Format("{0}{1}", time, unit).PadLeft(6, ' ');
         }
     }
 }

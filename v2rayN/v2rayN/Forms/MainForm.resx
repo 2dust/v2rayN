@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 17</value>
   </data>
   <metadata name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -342,21 +342,21 @@
     <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+    <value>scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;lvServers.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+  <data name="&gt;&gt;scMain.Panel1.Name" xml:space="preserve">
+    <value>scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;scMain.Panel1.Parent" xml:space="preserve">
+    <value>scMain</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="qrCodeControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -378,45 +378,45 @@
     <value>v2rayN.Forms.QRCodeControl, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;qrCodeControl.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+    <value>scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;qrCodeControl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+  <data name="&gt;&gt;scMain.Panel2.Name" xml:space="preserve">
+    <value>scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;scMain.Panel2.Parent" xml:space="preserve">
+    <value>scMain</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="splitContainer1.Panel2MinSize" type="System.Int32, mscorlib">
+  <data name="scMain.Panel2MinSize" type="System.Int32, mscorlib">
     <value>100</value>
   </data>
-  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>946, 331</value>
   </data>
-  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+  <data name="scMain.SplitterDistance" type="System.Int32, mscorlib">
     <value>686</value>
   </data>
-  <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
+  <data name="scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;scMain.Name" xml:space="preserve">
+    <value>scMain</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;scMain.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -780,10 +780,10 @@
     <value>Magenta</value>
   </data>
   <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 53</value>
+    <value>45, 53</value>
   </data>
   <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
-    <value>QR Code</value>
+    <value>Share</value>
   </data>
   <data name="tsbQRCodeSwitch.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>

@@ -119,6 +119,11 @@ namespace v2rayN.Handler
             {
                 config.uiItem = new UIItem();
             }
+            if (config.uiItem.mainLvColWidth == null)
+            {
+                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+            }
+
             //// 如果是用户升级，首次会有端口号为0的情况，不可用，这里处理
             //if (config.pacPort == 0)
             //{
@@ -196,7 +201,7 @@ namespace v2rayN.Handler
             vmessItem.headerType = vmessItem.headerType.TrimEx();
             vmessItem.requestHost = vmessItem.requestHost.TrimEx();
             vmessItem.path = vmessItem.path.TrimEx();
-            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();           
+            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
 
             if (index >= 0)
             {
@@ -884,5 +889,38 @@ namespace v2rayN.Handler
             ToJsonFile(config);
             return 0;
         }
+
+        public static int AddformMainLvColWidth(ref Config config, string name, int width)
+        {
+            if (config.uiItem.mainLvColWidth == null)
+            {
+                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+            }
+            if (config.uiItem.mainLvColWidth.ContainsKey(name))
+            {
+                config.uiItem.mainLvColWidth[name] = width;
+            }
+            else
+            {
+                config.uiItem.mainLvColWidth.Add(name, width);
+            }
+            return 0;
+        }
+        public static int GetformMainLvColWidth(ref Config config, string name, int width)
+        {
+            if (config.uiItem.mainLvColWidth == null)
+            {
+                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+            }
+            if (config.uiItem.mainLvColWidth.ContainsKey(name))
+            {
+                return config.uiItem.mainLvColWidth[name];
+            }
+            else
+            {
+                return width;
+            }
+        }
+
     }
 }
