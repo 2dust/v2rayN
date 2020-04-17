@@ -867,7 +867,7 @@
     <value>946, 22</value>
   </data>
   <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="ssMain.Text" xml:space="preserve">
     <value>statusStrip1</value>
@@ -878,38 +878,29 @@
   <data name="&gt;&gt;ssMain.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="&gt;&gt;toolSslBlank1.Name" xml:space="preserve">
     <value>toolSslBlank1</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
+    <value>161, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolSslBlank2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
   </data>
   <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
     <value>toolSslBlank2</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
+    <value>161, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolSslBlank3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
   </data>
   <data name="&gt;&gt;toolSslBlank3.Name" xml:space="preserve">
     <value>toolSslBlank3</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
+    <value>161, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -932,14 +923,11 @@
   <data name="&gt;&gt;toolSslHttpPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="&gt;&gt;toolSslHttpPortLab.Name" xml:space="preserve">
     <value>toolSslHttpPortLab</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 17</value>
+    <value>41, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
     <value>HTTP:</value>
@@ -956,14 +944,11 @@
   <data name="&gt;&gt;toolSslPacPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolSslPacPortLab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="&gt;&gt;toolSslPacPortLab.Name" xml:space="preserve">
     <value>toolSslPacPortLab</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 17</value>
+    <value>34, 17</value>
   </data>
   <data name="toolSslPacPortLab.Text" xml:space="preserve">
     <value>PAC:</value>
@@ -971,14 +956,11 @@
   <data name="&gt;&gt;toolSslPacPortLab.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolSslRouting.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;toolSslRouting.Name" xml:space="preserve">
     <value>toolSslRouting</value>
   </data>
   <data name="toolSslRouting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 17</value>
+    <value>92, 17</value>
   </data>
   <data name="toolSslRouting.Text" xml:space="preserve">
     <value>Routing Mode</value>
@@ -993,7 +975,7 @@
     <value>toolSslServerLatency</value>
   </data>
   <data name="toolSslServerLatency.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
+    <value>80, 17</value>
   </data>
   <data name="toolSslServerLatency.Text" xml:space="preserve">
     <value>Latency:</value>
@@ -1007,17 +989,11 @@
   <data name="&gt;&gt;toolSslServerLatency.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolSslServerSpeed.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
     <value>toolSslServerSpeed</value>
   </data>
-  <data name="toolSslServerSpeed.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 17</value>
+    <value>100, 17</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
@@ -1037,14 +1013,11 @@
   <data name="&gt;&gt;toolSslSocksPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolSslSocksPortLab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="&gt;&gt;toolSslSocksPortLab.Name" xml:space="preserve">
     <value>toolSslSocksPortLab</value>
   </data>
   <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 17</value>
+    <value>58, 17</value>
   </data>
   <data name="toolSslSocksPortLab.Text" xml:space="preserve">
     <value>SOCKS5:</value>
