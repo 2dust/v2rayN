@@ -85,10 +85,6 @@ namespace v2rayN.Handler
             {
                 config.domainStrategy = "IPIfNonMatch";
             }
-            if (Utils.IsNullOrEmpty(config.routingMode))
-            {
-                config.routingMode = "0";
-            }
             if (config.useragent == null)
             {
                 config.useragent = new List<string>();

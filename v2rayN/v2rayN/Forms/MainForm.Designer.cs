@@ -61,8 +61,8 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
+            this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,6 +94,7 @@
             this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslRouting = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerLatency = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -371,17 +372,17 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
-            // 
             // tsbServer
             // 
             this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
+            // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 
@@ -544,6 +545,7 @@
             this.toolSslPacPortLab,
             this.toolSslPacPort,
             this.toolSslBlank3,
+            this.toolSslRouting,
             this.toolSslServerLatency,
             this.toolSslServerSpeed,
             this.toolSslBlank4});
@@ -563,6 +565,7 @@
             // 
             // toolSslBlank1
             // 
+            this.toolSslBlank1.AutoToolTip = true;
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
             this.toolSslBlank1.Name = "toolSslBlank1";
             this.toolSslBlank1.Spring = true;
@@ -579,6 +582,7 @@
             // 
             // toolSslBlank2
             // 
+            this.toolSslBlank2.AutoToolTip = true;
             resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
             this.toolSslBlank2.Name = "toolSslBlank2";
             this.toolSslBlank2.Spring = true;
@@ -595,21 +599,37 @@
             // 
             // toolSslBlank3
             // 
+            this.toolSslBlank3.AutoToolTip = true;
             resources.ApplyResources(this.toolSslBlank3, "toolSslBlank3");
             this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Spring = true;
             // 
+            // toolSslRouting
+            // 
+            resources.ApplyResources(this.toolSslRouting, "toolSslRouting");
+            this.toolSslRouting.AutoToolTip = true;
+            this.toolSslRouting.IsLink = true;
+            this.toolSslRouting.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.toolSslRouting.LinkColor = System.Drawing.SystemColors.ControlText;
+            this.toolSslRouting.Margin = new System.Windows.Forms.Padding(0, 3, 8, 2);
+            this.toolSslRouting.Name = "toolSslRouting";
+            this.toolSslRouting.Spring = true;
+            this.toolSslRouting.Click += new System.EventHandler(this.toolSslRouting_Click);
+            // 
             // toolSslServerLatency
             // 
             resources.ApplyResources(this.toolSslServerLatency, "toolSslServerLatency");
+            this.toolSslServerLatency.IsLink = true;
+            this.toolSslServerLatency.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.toolSslServerLatency.LinkColor = System.Drawing.SystemColors.ControlText;
             this.toolSslServerLatency.Name = "toolSslServerLatency";
             this.toolSslServerLatency.Spring = true;
             this.toolSslServerLatency.Click += new System.EventHandler(this.toolSslServerLatency_Click);
             // 
             // toolSslServerSpeed
             // 
-            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
             this.toolSslServerSpeed.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
             this.toolSslServerSpeed.Name = "toolSslServerSpeed";
             this.toolSslServerSpeed.Click += new System.EventHandler(this.toolSslServerSpeed_Click);
             // 
@@ -946,6 +966,7 @@
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
         private System.Windows.Forms.ToolStripStatusLabel toolSslServerLatency;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslRouting;
     }
 }
 

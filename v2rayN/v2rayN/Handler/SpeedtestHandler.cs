@@ -145,7 +145,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public async Task<int> RunAvailabilityCheck() // alias: isLive
+        public int RunAvailabilityCheck() // alias: isLive
         {
             try
             {

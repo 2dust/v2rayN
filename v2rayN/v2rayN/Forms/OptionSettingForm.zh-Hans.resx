@@ -312,17 +312,20 @@
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 72</value>
   </data>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>  Core:基础设置  </value>
+  </data>
   <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 89</value>
   </data>
   <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 481</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
+  <data name="tabGUI.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:路由设置  </value>
+  <data name="tabKCP.Text" xml:space="preserve">
+    <value>  Core:KCP设置  </value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 455</value>
@@ -342,19 +345,16 @@
   <data name="tabPage5.Text" xml:space="preserve">
     <value>  3.阻止的Domain或IP  </value>
   </data>
-  <data name="tabPage6.Text" xml:space="preserve">
-    <value>  Core:KCP设置  </value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
   <data name="tabPage8.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 455</value>
   </data>
-  <data name="tabPage8.Text" xml:space="preserve">
+  <data name="tabPreDefinedRules.Text" xml:space="preserve">
     <value>  4.预定义规则  </value>
   </data>
-  <data name="tabPage9.Text" xml:space="preserve">
+  <data name="tabRouting.Text" xml:space="preserve">
+    <value>  Core:路由设置  </value>
+  </data>
+  <data name="tabUserPAC.Text" xml:space="preserve">
     <value>  用户PAC设置  </value>
   </data>
   <data name="txtUseragent.Size" type="System.Drawing.Size, System.Drawing">

@@ -363,11 +363,23 @@
   <data name="menuTcpingServer.Text" xml:space="preserve">
     <value>测试服务器延迟Tcping(多选) (Ctrl+O)</value>
   </data>
+  <data name="menuTestMe.Text" xml:space="preserve">
+    <value>测试当前服务节点状态</value>
+  </data>
   <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
   </data>
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
     <value>更新订阅</value>
+  </data>
+  <data name="toolSslRouting.Text" xml:space="preserve">
+    <value>路由模式</value>
+  </data>
+  <data name="toolSslServerLatency.Text" xml:space="preserve">
+    <value>延迟:</value>
+  </data>
+  <data name="toolSslServerLatency.ToolTipText" xml:space="preserve">
+    <value>当前 HTTP 代理的访问延迟。</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>网速显示未启用</value>

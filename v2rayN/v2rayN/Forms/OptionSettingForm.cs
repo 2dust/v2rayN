@@ -9,8 +9,10 @@ namespace v2rayN.Forms
 {
     public partial class OptionSettingForm : BaseForm
     {
-        public OptionSettingForm()
+        private string _tabOpened;
+        public OptionSettingForm(string tabOpened = "")
         {
+            _tabOpened = tabOpened;
             InitializeComponent();
         }
 
@@ -25,6 +27,18 @@ namespace v2rayN.Forms
             InitGUI();
 
             InitUserPAC();
+
+            var tab = tabControl1.TabPages[_tabOpened];
+            var tab2 = tabControl2.TabPages[_tabOpened];
+            if (tab != null)
+            {
+                tabControl1.SelectedTab = tab;
+            }
+            if (tab2 != null)
+            {
+                tabControl1.SelectedTab = tabRouting;
+                tabControl2.SelectedTab = tab2;
+            }
         }
 
         /// <summary>
@@ -78,8 +92,7 @@ namespace v2rayN.Forms
         {
             //路由
             cmbdomainStrategy.Text = config.domainStrategy;
-            int.TryParse(config.routingMode, out int routingMode);
-            cmbroutingMode.SelectedIndex = routingMode;
+            cmbroutingMode.SelectedIndex = config.routingMode;
 
             txtUseragent.Text = Utils.List2String(config.useragent, true);
             txtUserdirect.Text = Utils.List2String(config.userdirect, true);
@@ -276,7 +289,7 @@ namespace v2rayN.Forms
         {
             //路由            
             string domainStrategy = cmbdomainStrategy.Text;
-            string routingMode = cmbroutingMode.SelectedIndex.ToString();
+            int routingMode = cmbroutingMode.SelectedIndex;
 
             string useragent = txtUseragent.Text.TrimEx();
             string userdirect = txtUserdirect.Text.TrimEx();

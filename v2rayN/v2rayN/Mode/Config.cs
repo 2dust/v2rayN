@@ -71,7 +71,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// 路由模式
         /// </summary>
-        public string routingMode
+        public int routingMode
         {
             get; set;
         }

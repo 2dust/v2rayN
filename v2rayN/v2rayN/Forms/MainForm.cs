@@ -368,6 +368,24 @@ namespace v2rayN.Forms
                 }
             }
 
+            string routingStatus = "";
+            switch (config.routingMode)
+            {
+                case 0:
+                    routingStatus = UIRes.I18N("RoutingModeGlobal");
+                    break;
+                case 1:
+                    routingStatus = UIRes.I18N("RoutingModeBypassLAN");
+                    break;
+                case 2:
+                    routingStatus = UIRes.I18N("RoutingModeBypassCN");
+                    break;
+                case 3:
+                    routingStatus = UIRes.I18N("RoutingModeBypassLANCN");
+                    break;
+            }
+            toolSslRouting.Text = routingStatus;
+
             notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -762,7 +780,9 @@ namespace v2rayN.Forms
 
         private void tsbOptionSetting_Click(object sender, EventArgs e)
         {
-            OptionSettingForm fm = new OptionSettingForm();
+            string tab = "";
+            if (sender == toolSslRouting) tab = "tabPreDefinedRules";
+            OptionSettingForm fm = new OptionSettingForm(tab);
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
@@ -1588,13 +1608,13 @@ namespace v2rayN.Forms
 
         private async void toolSslServerLatencyRefresh()
         {
-            toolSslServerLatencySet("Measuring...");
+            toolSslServerLatencySet(UIRes.I18N("ServerLatencyChecking"));
             string result = await httpProxyTest() + "ms";
             toolSslServerLatencySet(result);
         }
         private void toolSslServerLatencySet(string text = "")
         {
-            toolSslServerLatency.Text = "Latency: " + text;
+            toolSslServerLatency.Text = string.Format(UIRes.I18N("toolSslServerLatency"), text);
         }
         private void toolSslServerLatency_Click(object sender, EventArgs e)
         {
@@ -1604,6 +1624,11 @@ namespace v2rayN.Forms
         private void toolSslServerSpeed_Click(object sender, EventArgs e)
         {
             //toolSslServerLatencyRefresh();
+        }
+
+        private void toolSslRouting_Click(object sender, EventArgs e)
+        {
+            tsbOptionSetting_Click(toolSslRouting, null);
         }
     }
 }
