@@ -11,6 +11,7 @@ using v2rayN.Tool;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace v2rayN.Forms
 {
@@ -379,8 +380,23 @@ namespace v2rayN.Forms
 
         #endregion
 
-        #region v2ray 操作
+        public static Task autoLatencyRefreshTask;
+        private void autoLatencyRefresh()
+        {
+            if (config.listenerType != ListenerType.noHttpProxy)
+            {
+                if (autoLatencyRefreshTask == null || autoLatencyRefreshTask.IsCompleted)
+                {
+                    autoLatencyRefreshTask = Task.Run(async delegate
+                    {
+                        await Task.Delay(2000);
+                        toolSslServerLatencyRefresh();
+                    });
+                }
+            }
+        }
 
+        #region v2ray 操作
         /// <summary>
         /// 载入V2ray
         /// </summary>
@@ -400,6 +416,8 @@ namespace v2rayN.Forms
             ChangePACButtonStatus(config.listenerType);
 
             tsbReload.Enabled = true;
+
+            autoLatencyRefresh();
         }
 
         /// <summary>
@@ -674,15 +692,15 @@ namespace v2rayN.Forms
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
-        private void tsbTestMe_Click(object sender, EventArgs e)
+        private async void menuTestMe_Click(object sender, EventArgs e)
         {
-            string result = httpProxyTest() + "ms";
+            string result = await httpProxyTest() + "ms";
             AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
         }
-        private int httpProxyTest()
+        private async Task<int> httpProxyTest()
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
-            return statistics.RunAvailabilityCheck();
+            return await Task.Run(() => statistics.RunAvailabilityCheck());
         }
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
@@ -783,6 +801,7 @@ namespace v2rayN.Forms
                 //刷新
                 RefreshServers();
                 LoadV2ray();
+                toolSslServerLatencySet();
             }
             return 0;
         }
@@ -1220,11 +1239,11 @@ namespace v2rayN.Forms
 
         #region CheckUpdate
 
-        private void askToDownload(DownloadHandle downloadHandle, string url)
+        private async void askToDownload(DownloadHandle downloadHandle, string url)
         {
             if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
             {
-                if (httpProxyTest() > 0)
+                if (await httpProxyTest() > 0)
                 {
                     int httpPort = config.GetLocalPort(Global.InboundHttp);
                     WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
@@ -1566,5 +1585,25 @@ namespace v2rayN.Forms
         #endregion
 
 
+
+        private async void toolSslServerLatencyRefresh()
+        {
+            toolSslServerLatencySet("Measuring...");
+            string result = await httpProxyTest() + "ms";
+            toolSslServerLatencySet(result);
+        }
+        private void toolSslServerLatencySet(string text = "")
+        {
+            toolSslServerLatency.Text = "Latency: " + text;
+        }
+        private void toolSslServerLatency_Click(object sender, EventArgs e)
+        {
+            toolSslServerLatencyRefresh();
+        }
+
+        private void toolSslServerSpeed_Click(object sender, EventArgs e)
+        {
+            //toolSslServerLatencyRefresh();
+        }
     }
 }

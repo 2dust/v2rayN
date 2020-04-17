@@ -55,7 +55,7 @@
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRealPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSpeedServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbTestMe = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTestMe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExport2ClientConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,6 +94,7 @@
             this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslServerLatency = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -196,14 +197,13 @@
             this.menuTcpingServer,
             this.menuRealPingServer,
             this.menuSpeedServer,
-            this.tsbTestMe,
+            this.menuTestMe,
             this.toolStripSeparator6,
             this.menuExport2ClientConfig,
             this.menuExport2ServerConfig,
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -335,11 +335,11 @@
             resources.ApplyResources(this.menuSpeedServer, "menuSpeedServer");
             this.menuSpeedServer.Click += new System.EventHandler(this.menuSpeedServer_Click);
             // 
-            // tsbTestMe
+            // menuTestMe
             // 
-            this.tsbTestMe.Name = "tsbTestMe";
-            resources.ApplyResources(this.tsbTestMe, "tsbTestMe");
-            this.tsbTestMe.Click += new System.EventHandler(this.tsbTestMe_Click);
+            this.menuTestMe.Name = "menuTestMe";
+            resources.ApplyResources(this.menuTestMe, "menuTestMe");
+            this.menuTestMe.Click += new System.EventHandler(this.menuTestMe_Click);
             // 
             // toolStripSeparator6
             // 
@@ -543,6 +543,7 @@
             this.toolSslPacPortLab,
             this.toolSslPacPort,
             this.toolSslBlank3,
+            this.toolSslServerLatency,
             this.toolSslServerSpeed,
             this.toolSslBlank4});
             resources.ApplyResources(this.ssMain, "ssMain");
@@ -597,11 +598,18 @@
             this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Spring = true;
             // 
+            // toolSslServerLatency
+            // 
+            resources.ApplyResources(this.toolSslServerLatency, "toolSslServerLatency");
+            this.toolSslServerLatency.Name = "toolSslServerLatency";
+            this.toolSslServerLatency.Click += new System.EventHandler(this.toolSslServerLatency_Click);
+            // 
             // toolSslServerSpeed
             // 
             resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
             this.toolSslServerSpeed.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslServerSpeed.Name = "toolSslServerSpeed";
+            this.toolSslServerSpeed.Click += new System.EventHandler(this.toolSslServerSpeed_Click);
             // 
             // toolSslBlank4
             // 
@@ -932,9 +940,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsbV2rayWebsite;
         private System.Windows.Forms.ToolStripMenuItem menuKeepNothing;
         private System.Windows.Forms.ToolStripMenuItem menuKeepPACNothing;
-        private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
+        private System.Windows.Forms.ToolStripMenuItem menuTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslServerLatency;
     }
 }
 
