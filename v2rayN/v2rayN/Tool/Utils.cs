@@ -168,7 +168,7 @@ namespace v2rayN
             }
         }
         /// <summary>
-        /// 逗号分隔的字符串,转List<string>
+        /// 换行或逗号分隔的字符串,转List<string>
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -176,7 +176,7 @@ namespace v2rayN
         {
             try
             {
-                str = str.Replace(Environment.NewLine, "");
+                str = str.Replace("\r", ",").Replace("\n", ","); // 用户复制的可能是\r、\n或\r\n
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
             catch

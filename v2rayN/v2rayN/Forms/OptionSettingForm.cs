@@ -373,7 +373,7 @@ namespace v2rayN.Forms
         private int SaveUserPAC()
         {
             string userPacRule = txtuserPacRule.Text.TrimEx();
-            userPacRule = userPacRule.Replace("\"", "");
+            userPacRule = userPacRule.Replace("\"", "").Replace("'", "");
 
             config.userPacRule = Utils.String2List(userPacRule);
 

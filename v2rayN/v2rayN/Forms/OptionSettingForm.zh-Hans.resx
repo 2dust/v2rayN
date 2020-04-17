@@ -282,7 +282,7 @@
     <value>协议</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>*设置用户PAC规则，用逗号(,)隔开</value>
+    <value>*用户PAC内的自定条目。用逗号(,)或换行隔开的匹配模式（pattern）。英文单引号、双引号将被忽略。</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
