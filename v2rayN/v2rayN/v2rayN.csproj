@@ -157,7 +157,6 @@
     </Compile>
     <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="Mode\EMove.cs" />
-    <Compile Include="Mode\EServerColName.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
     <Compile Include="Mode\EConfigType.cs" />
