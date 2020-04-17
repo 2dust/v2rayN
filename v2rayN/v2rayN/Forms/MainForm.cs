@@ -210,9 +210,9 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServersView()
         {
-            lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
+            List<ListViewItem> lst = new List<ListViewItem>();
             for (int k = 0; k < config.vmess.Count; k++)
             {
                 string def = string.Empty;
@@ -273,9 +273,9 @@ namespace v2rayN.Forms
                     lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
                 }
 
-                if (lvItem != null) lvServers.Items.Add(lvItem);
+                if (lvItem != null) lst.Add(lvItem);
             }
-            lvServers.EndUpdate();
+            lvServers.Items.AddRange(lst.ToArray());
 
             //if (lvServers.Items.Count > 0)
             //{
