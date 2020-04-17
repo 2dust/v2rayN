@@ -178,13 +178,6 @@ namespace v2rayN.Forms
             lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
-            lvServers.GridLines = true;
-            lvServers.FullRowSelect = true;
-            lvServers.View = View.Details;
-            lvServers.Scrollable = true;
-            lvServers.MultiSelect = true;
-            lvServers.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-
             lvServers.Columns.Add("", 30);
             lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
             lvServers.Columns.Add(UIRes.I18N("LvAlias"), 100);
