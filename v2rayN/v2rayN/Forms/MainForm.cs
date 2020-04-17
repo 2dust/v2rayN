@@ -188,7 +188,7 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90);
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70);
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70, HorizontalAlignment.Right);
+            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70);
 
             if (statistics != null && statistics.Enable)
             {
