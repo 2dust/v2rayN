@@ -127,9 +127,7 @@ namespace v2rayN.Forms
             chkAllowLANConn.Checked = config.allowLANConn;
             chkEnableStatistics.Checked = config.enableStatistics;
             chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
-
-
-
+            chkInterlaceColoring.Checked = config.interlaceColoring;
 
             ComboItem[] cbSource = new ComboItem[]
             {
@@ -358,6 +356,7 @@ namespace v2rayN.Forms
             config.enableStatistics = chkEnableStatistics.Checked;
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
+            config.interlaceColoring = chkInterlaceColoring.Checked;
 
             //if(lastEnableStatistics != config.enableStatistics)
             //{

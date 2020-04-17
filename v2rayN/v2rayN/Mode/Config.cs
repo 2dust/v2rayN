@@ -163,6 +163,14 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 服务器列表隔行着色
+        /// </summary>
+        public bool interlaceColoring
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// 视图刷新率
         /// </summary>
         public int statisticsFreshRate

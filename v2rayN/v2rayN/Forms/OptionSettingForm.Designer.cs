@@ -99,6 +99,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkInterlaceColoring = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -512,6 +513,7 @@
             // 
             // tabGUI
             // 
+            this.tabGUI.Controls.Add(this.chkInterlaceColoring);
             this.tabGUI.Controls.Add(this.chkKeepOlderDedupl);
             this.tabGUI.Controls.Add(this.cbFreshrate);
             this.tabGUI.Controls.Add(this.lbFreshrate);
@@ -613,6 +615,12 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // chkInterlaceColoring
+            // 
+            resources.ApplyResources(this.chkInterlaceColoring, "chkInterlaceColoring");
+            this.chkInterlaceColoring.Name = "chkInterlaceColoring";
+            this.chkInterlaceColoring.UseVisualStyleBackColor = true;
             // 
             // OptionSettingForm
             // 
@@ -725,5 +733,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkKeepOlderDedupl;
         private System.Windows.Forms.LinkLabel linkLabelRoutingDoc;
+        private System.Windows.Forms.CheckBox chkInterlaceColoring;
     }
 }

@@ -256,14 +256,14 @@ namespace v2rayN.Forms
                     _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp);
                 }
 
-                if (k % 2 == 1) // 隔行着色
+                if (config.interlaceColoring && k % 2 == 1) // 隔行着色
                 {
-                    lvItem.BackColor = Color.WhiteSmoke;
+                    lvItem.BackColor = SystemColors.Control;
                 }
                 if (config.index.Equals(k))
                 {
                     //lvItem.Checked = true;
-                    lvItem.ForeColor = Color.DodgerBlue;
+                    lvItem.ForeColor = SystemColors.MenuHighlight;
                     lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
                 }
 
