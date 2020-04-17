@@ -55,6 +55,8 @@ namespace v2rayN.Forms
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
+
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged);
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
@@ -342,6 +344,10 @@ namespace v2rayN.Forms
             //qrCodeControl.showQRCode(index, config);
         }
 
+        private void RefreshTaryIcon()
+        {
+            notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
+        }
         private void DisplayToolStatus()
         {
             toolSslSocksPort.Text =
@@ -386,7 +392,7 @@ namespace v2rayN.Forms
             }
             toolSslRouting.Text = routingStatus;
 
-            notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
+            RefreshTaryIcon();
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -1602,7 +1608,12 @@ namespace v2rayN.Forms
         }
 
 
+
         #endregion
+        private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+        {
+            RefreshTaryIcon();
+        }
 
 
 
