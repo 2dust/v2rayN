@@ -716,6 +716,18 @@
   <data name="&gt;&gt;menuTcpingServer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;menuTestMe.Name" xml:space="preserve">
+    <value>menuTestMe</value>
+  </data>
+  <data name="menuTestMe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuTestMe.Text" xml:space="preserve">
+    <value>Test current service status</value>
+  </data>
+  <data name="&gt;&gt;menuTestMe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;menuUpdateSubscriptions.Name" xml:space="preserve">
     <value>menuUpdateSubscriptions</value>
   </data>
@@ -873,7 +885,7 @@
     <value>toolSslBlank1</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 17</value>
+    <value>152, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -885,7 +897,7 @@
     <value>toolSslBlank2</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 17</value>
+    <value>152, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -897,7 +909,7 @@
     <value>toolSslBlank3</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 17</value>
+    <value>152, 17</value>
   </data>
   <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -959,6 +971,27 @@
   <data name="&gt;&gt;toolSslPacPortLab.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="toolSslServerLatency.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerLatency.Name" xml:space="preserve">
+    <value>toolSslServerLatency</value>
+  </data>
+  <data name="toolSslServerLatency.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 17</value>
+  </data>
+  <data name="toolSslServerLatency.Text" xml:space="preserve">
+    <value>Latency:</value>
+  </data>
+  <data name="toolSslServerLatency.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="toolSslServerLatency.ToolTipText" xml:space="preserve">
+    <value>The http proxy's latency time.</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerLatency.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -972,7 +1005,7 @@
     <value>No</value>
   </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 17</value>
+    <value>200, 17</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
@@ -1416,18 +1449,6 @@
     <value>Updates</value>
   </data>
   <data name="&gt;&gt;tsbSubUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbTestMe.Name" xml:space="preserve">
-    <value>tsbTestMe</value>
-  </data>
-  <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="tsbTestMe.Text" xml:space="preserve">
-    <value>Test current service status</value>
-  </data>
-  <data name="&gt;&gt;tsbTestMe.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">

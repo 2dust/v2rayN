@@ -55,14 +55,14 @@
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRealPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSpeedServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbTestMe = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTestMe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExport2ClientConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,6 +94,7 @@
             this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslServerLatency = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -196,7 +197,7 @@
             this.menuTcpingServer,
             this.menuRealPingServer,
             this.menuSpeedServer,
-            this.tsbTestMe,
+            this.menuTestMe,
             this.toolStripSeparator6,
             this.menuExport2ClientConfig,
             this.menuExport2ServerConfig,
@@ -335,11 +336,11 @@
             resources.ApplyResources(this.menuSpeedServer, "menuSpeedServer");
             this.menuSpeedServer.Click += new System.EventHandler(this.menuSpeedServer_Click);
             // 
-            // tsbTestMe
+            // menuTestMe
             // 
-            this.tsbTestMe.Name = "tsbTestMe";
-            resources.ApplyResources(this.tsbTestMe, "tsbTestMe");
-            this.tsbTestMe.Click += new System.EventHandler(this.tsbTestMe_Click);
+            this.menuTestMe.Name = "menuTestMe";
+            resources.ApplyResources(this.menuTestMe, "menuTestMe");
+            this.menuTestMe.Click += new System.EventHandler(this.menuTestMe_Click);
             // 
             // toolStripSeparator6
             // 
@@ -370,17 +371,17 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
+            // 
             // tsbServer
             // 
             this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
-            // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 
@@ -543,6 +544,7 @@
             this.toolSslPacPortLab,
             this.toolSslPacPort,
             this.toolSslBlank3,
+            this.toolSslServerLatency,
             this.toolSslServerSpeed,
             this.toolSslBlank4});
             resources.ApplyResources(this.ssMain, "ssMain");
@@ -597,11 +599,19 @@
             this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Spring = true;
             // 
+            // toolSslServerLatency
+            // 
+            resources.ApplyResources(this.toolSslServerLatency, "toolSslServerLatency");
+            this.toolSslServerLatency.Name = "toolSslServerLatency";
+            this.toolSslServerLatency.Spring = true;
+            this.toolSslServerLatency.Click += new System.EventHandler(this.toolSslServerLatency_Click);
+            // 
             // toolSslServerSpeed
             // 
             resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
             this.toolSslServerSpeed.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslServerSpeed.Name = "toolSslServerSpeed";
+            this.toolSslServerSpeed.Click += new System.EventHandler(this.toolSslServerSpeed_Click);
             // 
             // toolSslBlank4
             // 
@@ -932,9 +942,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsbV2rayWebsite;
         private System.Windows.Forms.ToolStripMenuItem menuKeepNothing;
         private System.Windows.Forms.ToolStripMenuItem menuKeepPACNothing;
-        private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
+        private System.Windows.Forms.ToolStripMenuItem menuTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslServerLatency;
     }
 }
 
