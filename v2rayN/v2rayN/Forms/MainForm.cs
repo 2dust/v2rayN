@@ -18,7 +18,7 @@ namespace v2rayN.Forms
     public partial class MainForm : BaseForm
     {
         private V2rayHandler v2rayHandler;
-        private List<int> lvSelecteds = new List<int>();
+        private List<int> lvSelecteds = new List<int>(); // 使用前需用 GetServerListSelectedConfigIndex 更新
         private StatisticsHandler statistics = null;
 
         #region Window 事件
@@ -319,11 +319,10 @@ namespace v2rayN.Forms
         private void RefreshQRCodePanel()
         {
             if (scMain.Panel2Collapsed) return; // saving cpu.
-            if (lvServers.SelectedIndices.Count > 0)
-            {
-                int index = lvServers.SelectedIndices[0];
-                qrCodeControl.showQRCode(index, config);
-            }
+
+            int index = GetServerListSelectedConfigIndex();
+            if (index < 0) return;
+            qrCodeControl.showQRCode(index, config);
         }
         private void RefreshTaryIcon()
         {
@@ -590,7 +589,6 @@ namespace v2rayN.Forms
 
         private void menuRemoveServer_Click(object sender, EventArgs e)
         {
-
             int index = GetServerListSelectedConfigIndex();
             if (index < 0) return;
 
