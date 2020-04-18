@@ -228,6 +228,7 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
+                lvItem.Tag = k;
                 _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
                 _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
@@ -815,7 +816,10 @@ namespace v2rayN.Forms
         }
 
         /// <summary>
-        /// 取得ListView选中的行
+        /// 获取服务器列表选中行的配置项（config）索引（index）
+        /// 
+        /// 返回值对应首个选中项，出错时返回-1
+        /// 多选选中请在调用此函数后检查 lvSelecteds
         /// </summary>
         /// <returns></returns>
         private int GetLvSelectedIndex()
@@ -830,9 +834,11 @@ namespace v2rayN.Forms
                     return index;
                 }
 
-                index = lvServers.SelectedIndices[0];
-                foreach (int i in lvServers.SelectedIndices)
+                index = Convert.ToInt32(lvServers.SelectedItems[0].Tag);
+                
+                foreach (int item in lvServers.SelectedIndices)
                 {
+                    int i = Convert.ToInt32(lvServers.Items[item].Tag);
                     lvSelecteds.Add(i);
                 }
                 return index;
