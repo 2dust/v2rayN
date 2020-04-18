@@ -1663,6 +1663,18 @@ namespace v2rayN.Forms
             s.Sorting = doIntSort;
 
             lvServers.Sort();
+            reInterlaceColoring();
+        }
+        private void reInterlaceColoring()
+        {
+            if (!config.interlaceColoring) return;
+            for (int k = 0; k < lvServers.Items.Count; k++)
+            {
+                if (config.interlaceColoring && k % 2 == 1)
+                    lvServers.Items[k].BackColor = SystemColors.Control;
+                else
+                    lvServers.Items[k].BackColor = lvServers.BackColor;
+            }
         }
     }
 }
