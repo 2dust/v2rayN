@@ -168,6 +168,8 @@ namespace v2rayN.Forms
         /// </summary>
         private void InitServersView()
         {
+            lvServers.ListViewItemSorter = new Sorter();
+
             lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
@@ -181,15 +183,18 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(EServerColName.subRemarks.ToString(), UIRes.I18N("LvSubscription"), 50);
             lvServers.Columns.Add(EServerColName.testResult.ToString(), UIRes.I18N("LvTestResults"), 70);
 
+            lvServers.Columns[EServerColName.port.ToString()].Tag = Global.sortMode.Numeric.ToString();
             if (statistics != null && statistics.Enable)
-            lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
-            this.lvServers.AllowColumnReorder = true;
-
             {
                 lvServers.Columns.Add(EServerColName.todayDown.ToString(), UIRes.I18N("LvTodayDownloadDataAmount"), 70);
                 lvServers.Columns.Add(EServerColName.todayUp.ToString(), UIRes.I18N("LvTodayUploadDataAmount"), 70);
                 lvServers.Columns.Add(EServerColName.totalDown.ToString(), UIRes.I18N("LvTotalDownloadDataAmount"), 70);
                 lvServers.Columns.Add(EServerColName.totalUp.ToString(), UIRes.I18N("LvTotalUploadDataAmount"), 70);
+
+                lvServers.Columns[EServerColName.todayDown.ToString()].Tag = Global.sortMode.Numeric.ToString();
+                lvServers.Columns[EServerColName.todayUp.ToString()].Tag = Global.sortMode.Numeric.ToString();
+                lvServers.Columns[EServerColName.totalDown.ToString()].Tag = Global.sortMode.Numeric.ToString();
+                lvServers.Columns[EServerColName.totalUp.ToString()].Tag = Global.sortMode.Numeric.ToString();
             }
             lvServers.EndUpdate();
         }
@@ -220,11 +225,11 @@ namespace v2rayN.Forms
                 {
                     var n = new ListViewItem.ListViewSubItem() { Text = text };
                     n.Name = name; // new don't accept it.
-                    n.Tag = tag;
+                    n.Tag = tag; // cell's data store.
                     i.SubItems.Add(n);
                 }
                 ListViewItem lvItem = new ListViewItem(def);
-                lvItem.Tag = k; // the Tag of items is config's index.
+                lvItem.Tag = k; // the Tag of line is config's index.
                 _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
                 _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
@@ -244,10 +249,10 @@ namespace v2rayN.Forms
                         todayUp = Utils.HumanFy(sItem.todayUp);
                         todayDown = Utils.HumanFy(sItem.todayDown);
                     }
-                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown, sItem.todayDown);
-                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp, sItem.todayUp);
-                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown, sItem.totalDown);
-                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp, sItem.totalUp);
+                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown, sItem?.todayDown);
+                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp, sItem?.todayUp);
+                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown, sItem?.totalDown);
+                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp, sItem?.totalUp);
                 }
 
                 if (config.interlaceColoring && k % 2 == 1) // 隔行着色
@@ -1633,15 +1638,31 @@ namespace v2rayN.Forms
 
         private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (lvServers.Columns[e.Column].Tag == null)
-                lvServers.Columns[e.Column].Tag = true;
-            bool flag = (bool)lvServers.Columns[e.Column].Tag;
-            if (flag)
-                lvServers.Columns[e.Column].Tag = false;
-            else
-                lvServers.Columns[e.Column].Tag = true;
-            lvServers.ListViewItemSorter = new ListViewSort(e.Column, lvServers.Columns[e.Column].Tag);
-            lvServers.Sort();//对列表进行自定义排序  
+            Sorter s = (Sorter)lvServers.ListViewItemSorter;
+            s.Column = e.Column;
+
+            int doIntSort;
+            if (lvServers.Columns[e.Column].Tag?.ToString() == Global.sortMode.Numeric.ToString()) // 数字正序
+            {
+                lvServers.Columns[e.Column].Tag = Global.sortMode.NumericB.ToString();
+                doIntSort = 1;
+            }
+            else if (lvServers.Columns[e.Column].Tag?.ToString() == Global.sortMode.NumericB.ToString()) // 数字倒序
+            {
+                lvServers.Columns[e.Column].Tag = Global.sortMode.Numeric.ToString();
+                doIntSort = 2;
+            }
+            else // 非数字
+            {
+                bool bGo = bool.TryParse(lvServers.Columns[e.Column].Tag?.ToString(), out bool bOk);
+                // 首个转换将失败，如果Tag是null或其他。
+                bool flag = bOk ? bGo : false;
+                lvServers.Columns[e.Column].Tag = !flag; // 首次则赋值true。
+                doIntSort = flag ? -1 : -2; // -1正序 -2倒序
+            }
+            s.Sorting = doIntSort;
+
+            lvServers.Sort();
         }
     }
 }

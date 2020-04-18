@@ -155,17 +155,18 @@
             // 
             // lvServers
             // 
+            this.lvServers.AllowColumnReorder = true;
             this.lvServers.ContextMenuStrip = this.cmsLv;
             resources.ApplyResources(this.lvServers, "lvServers");
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
-            this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
             this.lvServers.Name = "lvServers";
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
+            this.lvServers.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvServers_ColumnClick);
             this.lvServers.SelectedIndexChanged += new System.EventHandler(this.lvServers_SelectedIndexChanged);
             this.lvServers.DoubleClick += new System.EventHandler(this.lvServers_DoubleClick);
             this.lvServers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvServers_KeyDown);

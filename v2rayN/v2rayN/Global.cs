@@ -156,6 +156,16 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
+        /// <summary>
+        /// 表格列的排序方式
+        /// </summary>
+        public enum sortMode
+        {
+            Numeric,
+            NumericB,
+            // More, like natural numbers, string length, visual length, etc.
+        }
+
         public enum StatisticsFreshRate
         {
             quick = 1000,
