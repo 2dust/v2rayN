@@ -133,10 +133,6 @@ namespace v2rayN.Handler
             {
                 config.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
-            if (Utils.IsNullOrEmpty(config.urlGFWList))
-            {
-                config.urlGFWList = Global.GFWLIST_URL;
-            }
             //if (Utils.IsNullOrEmpty(config.remoteDNS))
             //{
             //    config.remoteDNS = "1.1.1.1";

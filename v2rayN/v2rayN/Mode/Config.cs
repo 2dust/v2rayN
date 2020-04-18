@@ -86,7 +86,7 @@ namespace v2rayN.Mode
         /// </summary>
         public string speedPingTestUrl { get; set; }
         /// <summary>
-        /// 自定义GFWList url
+        /// 自定义GFWList url。空白则使用 Global.GFWLIST_URL
         /// </summary>
         public string urlGFWList { get; set; }
 

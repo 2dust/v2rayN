@@ -1460,7 +1460,8 @@ namespace v2rayN.Forms
                 };
             }
             AppendText(false, UIRes.I18N("MsgStartUpdatingPAC"));
-            pacListHandle.WebDownloadString(config.urlGFWList);
+            string url = Utils.IsNullOrEmpty(config.urlGFWList) ? Global.GFWLIST_URL : config.urlGFWList;
+            pacListHandle.WebDownloadString(url);
         }
 
         private void tsbCheckClearPACList_Click(object sender, EventArgs e)

@@ -964,7 +964,7 @@
     <value>27</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
-    <value>Custom GFWList address (please fill in the blank without customization)</value>
+    <value>Custom GFWList address (use default value if leave blank)</value>
   </data>
   <data name="&gt;&gt;label13.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1915,10 +1915,7 @@
     <value>4</value>
   </data>
   <data name="txturlGFWList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 205</value>
-  </data>
-  <data name="txturlGFWList.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>32, 200</value>
   </data>
   <data name="&gt;&gt;txturlGFWList.Name" xml:space="preserve">
     <value>txturlGFWList</value>
@@ -1927,7 +1924,7 @@
     <value>tabGUI</value>
   </data>
   <data name="txturlGFWList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 100</value>
+    <value>541, 21</value>
   </data>
   <data name="txturlGFWList.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
