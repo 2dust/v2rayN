@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace v2rayN.Forms
 {
@@ -195,6 +196,13 @@ namespace v2rayN.Forms
                 lvServers.Columns[EServerColName.todayUp.ToString()].Tag = Global.sortMode.Numeric.ToString();
                 lvServers.Columns[EServerColName.totalDown.ToString()].Tag = Global.sortMode.Numeric.ToString();
                 lvServers.Columns[EServerColName.totalUp.ToString()].Tag = Global.sortMode.Numeric.ToString();
+            }
+
+            foreach (ColumnHeader c in lvServers.Columns)
+            {
+                if (config.uiItem.mainLvColLayout == null) break;
+                int i = config.uiItem.mainLvColLayout.IndexOf(c.Name);
+                if (i >= 0) c.DisplayIndex = i;
             }
             lvServers.EndUpdate();
         }
@@ -1681,11 +1689,23 @@ namespace v2rayN.Forms
         {
             ColumnHeader c = lvServers.Columns[e.ColumnIndex];
             ConfigHandler.AddformMainLvColWidth(ref config, c.Name, c.Width);
+            Task.Run(() => ConfigHandler.SaveConfig(ref config));
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
+            Task.Run(() => ConfigHandler.SaveConfig(ref config));
+        }
+
+        private async void lvServers_ColumnReordered(object sender, ColumnReorderedEventArgs e)
+        {
+            await Task.Delay(500);
+            var names = (from col in lvServers.Columns.Cast<ColumnHeader>()
+                         orderby col.DisplayIndex
+                         select col.Name).ToList();
+            config.uiItem.mainLvColLayout = names;
+            _ = Task.Run(() => ConfigHandler.SaveConfig(ref config));
         }
     }
 }

@@ -167,6 +167,7 @@
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
             this.lvServers.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvServers_ColumnClick);
+            this.lvServers.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvServers_ColumnReordered);
             this.lvServers.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvServers_ColumnWidthChanged);
             this.lvServers.SelectedIndexChanged += new System.EventHandler(this.lvServers_SelectedIndexChanged);
             this.lvServers.DoubleClick += new System.EventHandler(this.lvServers_DoubleClick);

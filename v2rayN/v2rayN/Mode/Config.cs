@@ -544,9 +544,8 @@ namespace v2rayN.Mode
     [Serializable]
     public class UIItem
     {
-         
-
         public System.Drawing.Size mainSize { get; set; }
         public Dictionary<string, int> mainLvColWidth { get; set; }
+        public List<string> mainLvColLayout { get; set; }
     }
 }
