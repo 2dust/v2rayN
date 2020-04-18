@@ -182,6 +182,9 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(EServerColName.testResult.ToString(), UIRes.I18N("LvTestResults"), 70);
 
             if (statistics != null && statistics.Enable)
+            lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
+            this.lvServers.AllowColumnReorder = true;
+
             {
                 lvServers.Columns.Add(EServerColName.todayDown.ToString(), UIRes.I18N("LvTodayDownloadDataAmount"), 70);
                 lvServers.Columns.Add(EServerColName.todayUp.ToString(), UIRes.I18N("LvTodayUploadDataAmount"), 70);
@@ -1626,6 +1629,19 @@ namespace v2rayN.Forms
         private void toolSslRouting_Click(object sender, EventArgs e)
         {
             tsbOptionSetting_Click(toolSslRouting, null);
+        }
+
+        private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (lvServers.Columns[e.Column].Tag == null)
+                lvServers.Columns[e.Column].Tag = true;
+            bool flag = (bool)lvServers.Columns[e.Column].Tag;
+            if (flag)
+                lvServers.Columns[e.Column].Tag = false;
+            else
+                lvServers.Columns[e.Column].Tag = true;
+            lvServers.ListViewItemSorter = new ListViewSort(e.Column, lvServers.Columns[e.Column].Tag);
+            lvServers.Sort();//对列表进行自定义排序  
         }
     }
 }
