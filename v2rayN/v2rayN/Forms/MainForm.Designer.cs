@@ -163,7 +163,6 @@
             this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
-            this.lvServers.MultiSelect = false;
             this.lvServers.Name = "lvServers";
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;

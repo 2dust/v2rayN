@@ -445,12 +445,19 @@ namespace v2rayN.Forms
         /// </summary>
         private void Closes()
         {
-            //ConfigHandler.SaveConfig(ref config, false); // ChangePACButtonStatus does it.
-            Task.Run(() => ChangePACButtonStatus(ListenerType.noHttpProxy));
-            Task.Run(() => v2rayHandler.V2rayStop());
-            Task.Run(() => PACServerHandle.Stop());
-            statistics?.SaveToFile();
-            statistics?.Close();
+            List<Task> tasks = new List<Task>
+            {
+                Task.Run(() => ConfigHandler.SaveConfig(ref config)),
+                Task.Run(() => HttpProxyHandle.CloseHttpAgent(config)),
+                Task.Run(() => v2rayHandler.V2rayStop()),
+                Task.Run(() => PACServerHandle.Stop()),
+                Task.Run(() =>
+                {
+                    statistics?.SaveToFile();
+                    statistics?.Close();
+                })
+            };
+            Task.WaitAll(tasks.ToArray());
         }
 
         #endregion
@@ -1130,6 +1137,7 @@ namespace v2rayN.Forms
                     int index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
                     if (index != -1)
                     {
+                        if (lvServers == null) return; // The app is exiting.
                         lvServers.Invoke((MethodInvoker)delegate
                         {
                             lvServers.BeginUpdate();
@@ -1259,7 +1267,11 @@ namespace v2rayN.Forms
 
             Global.reloadV2ray = false;
             ConfigHandler.SaveConfig(ref config);
-            DisplayToolStatus();
+
+            this.Invoke((MethodInvoker)(delegate
+            {
+                DisplayToolStatus();
+            }));
         }
 
         #endregion
