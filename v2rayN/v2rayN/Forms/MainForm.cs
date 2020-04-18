@@ -1143,21 +1143,24 @@ namespace v2rayN.Forms
                 {
                     toolSslServerSpeed.Text = string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down));
                 }));
-                List<string[]> datas = new List<string[]>();
                 for (int i = 0; i < config.vmess.Count; i++)
                 {
-                    int index = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
-                    if (index != -1)
+                    int statsIndex = statistics.FindIndex(item_ => item_.itemId == config.vmess[i].getItemId());
+                    List<int> l = GetServerListItemsByConfigIndex(i);
+
+                    if (statsIndex != -1 && l.Count > 0)
                     {
-                        if (lvServers == null) return; // The app is exiting.
-                        lvServers.Invoke((MethodInvoker)delegate
+                        this?.Invoke((MethodInvoker)delegate
                         {
                             lvServers.BeginUpdate();
 
-                            lvServers.Items[i].SubItems["todayDown"].Text = Utils.HumanFy(statistics[index].todayDown);
-                            lvServers.Items[i].SubItems["todayUp"].Text = Utils.HumanFy(statistics[index].todayUp);
-                            lvServers.Items[i].SubItems["totalDown"].Text = Utils.HumanFy(statistics[index].totalDown);
-                            lvServers.Items[i].SubItems["totalUp"].Text = Utils.HumanFy(statistics[index].totalUp);
+                            l.ForEach((listIndex) =>
+                            {
+                                lvServers.Items[listIndex].SubItems["todayDown"].Text = Utils.HumanFy(statistics[statsIndex].todayDown);
+                                lvServers.Items[listIndex].SubItems["todayUp"].Text = Utils.HumanFy(statistics[statsIndex].todayUp);
+                                lvServers.Items[listIndex].SubItems["totalDown"].Text = Utils.HumanFy(statistics[statsIndex].totalDown);
+                                lvServers.Items[listIndex].SubItems["totalUp"].Text = Utils.HumanFy(statistics[statsIndex].totalUp);
+                            });
 
                             lvServers.EndUpdate();
                         });
