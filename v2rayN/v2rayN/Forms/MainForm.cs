@@ -241,7 +241,7 @@ namespace v2rayN.Forms
                 _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
                 _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
-                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
+                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString(), item.port);
                 _addSubItem(lvItem, EServerColName.security.ToString(), item.security);
                 _addSubItem(lvItem, EServerColName.network.ToString(), item.network);
                 _addSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
