@@ -119,9 +119,7 @@ namespace v2rayN.Forms
         //            break;
         //    }
         //}
-        #endregion
 
-        #region 窗口大小和列宽等取/存
         private void RestoreUI()
         {
             scMain.Panel2Collapsed = true;
@@ -132,10 +130,10 @@ namespace v2rayN.Forms
                 this.Height = config.uiItem.mainSize.Height;
             }
 
-            foreach (ColumnHeader c in lvServers.Columns)
+            for (int k = 0; k < lvServers.Columns.Count; k++)
             {
-                var width = ConfigHandler.GetformMainLvColWidth(ref config, c.Name, c.Width);
-                c.Width = width;
+                var width = ConfigHandler.GetformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
+                lvServers.Columns[k].Width = width;
             }
         }
 
@@ -143,9 +141,9 @@ namespace v2rayN.Forms
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
 
-            foreach (ColumnHeader c in lvServers.Columns)
+            for (int k = 0; k < lvServers.Columns.Count; k++)
             {
-                ConfigHandler.AddformMainLvColWidth(ref config, c.Name, c.Width);
+                ConfigHandler.AddformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
             }
         }
 
@@ -230,22 +228,20 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
-                _addSubItem(lvItem, "type", ((EConfigType)item.configType).ToString());
-                _addSubItem(lvItem, "remarks", item.remarks);
-                _addSubItem(lvItem, "address", item.address);
-                _addSubItem(lvItem, "port", item.port.ToString());
-                //_addSubItem(lvItem, "id", item.id);
-                //_addSubItem(lvItem, "alterId", item.alterId.ToString());
-                _addSubItem(lvItem, "security", item.security);
-                _addSubItem(lvItem, "network", item.network);
-                _addSubItem(lvItem, "SubRemarks", item.getSubRemarks(config));
-                _addSubItem(lvItem, "testResult", item.testResult);
+                _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
+                _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
+                _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
+                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
+                _addSubItem(lvItem, EServerColName.security.ToString(), item.security);
+                _addSubItem(lvItem, EServerColName.network.ToString(), item.network);
+                _addSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
+                _addSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
                 if (stats)
                 {
-                    _addSubItem(lvItem, "todayDown", todayDown);
-                    _addSubItem(lvItem, "todayUp", todayUp);
-                    _addSubItem(lvItem, "totalDown", totalDown);
-                    _addSubItem(lvItem, "totalUp", totalUp);
+                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown);
+                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp);
+                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown);
+                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp);
                 }
 
                 if (config.interlaceColoring && k % 2 == 1) // 隔行着色
