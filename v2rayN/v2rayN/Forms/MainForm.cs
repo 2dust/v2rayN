@@ -1588,7 +1588,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
+                        //AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
                         string result = Utils.Base64Decode(args.Msg);
                         if (Utils.IsNullOrEmpty(result))
                         {

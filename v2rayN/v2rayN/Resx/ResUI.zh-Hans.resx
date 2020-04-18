@@ -274,13 +274,13 @@
     <value>订阅内容解码失败(非BASE64码)</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>正在解压......</value>
+    <value>正在解压...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>更新订阅结束</value>
+    <value>订阅内容已更新</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>更新订阅开始</value>
+    <value>开始更新订阅</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
     <value>更新V2rayCore成功</value>
