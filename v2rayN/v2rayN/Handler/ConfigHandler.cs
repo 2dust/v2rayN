@@ -334,26 +334,22 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
-        /// 保参数
+        /// 保存参数
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static int SaveConfig(ref Config config, bool reload = true)
+        public static int SaveConfig(ref Config config)
         {
-            Global.reloadV2ray = reload;
-
-            ToJsonFile(config);
-
-            return 0;
+            return ToJsonFile(config);
         }
 
         /// <summary>
         /// 存储文件
         /// </summary>
         /// <param name="config"></param>
-        private static void ToJsonFile(Config config)
+        private static int ToJsonFile(Config config)
         {
-            Utils.ToJsonFile(config, Utils.GetPath(configRes));
+            return Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
 
         /// <summary>

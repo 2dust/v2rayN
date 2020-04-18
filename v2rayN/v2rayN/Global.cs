@@ -171,7 +171,7 @@ namespace v2rayN
         #region 全局变量
 
         /// <summary>
-        /// 是否需要重启服务V2ray
+        /// 是否需要重启服务V2ray。如果为假，LoadV2ray()不做任何事。
         /// </summary>
         public static bool reloadV2ray
         {

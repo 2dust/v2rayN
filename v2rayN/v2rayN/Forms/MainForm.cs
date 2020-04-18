@@ -34,14 +34,7 @@ namespace v2rayN.Forms
 
             Application.ApplicationExit += (sender, args) =>
             {
-                v2rayHandler.V2rayStop();
-
-                HttpProxyHandle.CloseHttpAgent(config);
-                PACServerHandle.Stop();
-
-                ConfigHandler.SaveConfig(ref config);
-                statistics?.SaveToFile();
-                statistics?.Close();
+                Closes();
             };
         }
 
@@ -347,6 +340,7 @@ namespace v2rayN.Forms
         }
         private void DisplayToolStatus()
         {
+            ssMain.SuspendLayout();
             toolSslSocksPort.Text =
             toolSslHttpPort.Text =
             toolSslPacPort.Text = "OFF";
@@ -388,6 +382,7 @@ namespace v2rayN.Forms
                     break;
             }
             toolSslRouting.Text = routingStatus;
+            ssMain.ResumeLayout();
 
             RefreshTaryIcon();
         }
@@ -411,7 +406,10 @@ namespace v2rayN.Forms
                     autoLatencyRefreshTask = Task.Run(async delegate
                     {
                         await Task.Delay(2000);
-                        toolSslServerLatencyRefresh();
+                        this.Invoke((MethodInvoker)(delegate
+                        {
+                            toolSslServerLatencyRefresh();
+                        }));
                     });
                 }
             }
@@ -421,37 +419,42 @@ namespace v2rayN.Forms
         /// <summary>
         /// 载入V2ray
         /// </summary>
-        private void LoadV2ray()
+        private async void LoadV2ray()
         {
-            tsbReload.Enabled = false;
-
-            if (Global.reloadV2ray)
+            this.Invoke((MethodInvoker)(delegate
             {
-                ClearMsg();
-            }
-            v2rayHandler.LoadV2ray(config);
+                tsbReload.Enabled = false;
+
+                if (Global.reloadV2ray)
+                {
+                    ClearMsg();
+                }
+            }));
+            await v2rayHandler.LoadV2ray(config);
             Global.reloadV2ray = false;
-            ConfigHandler.SaveConfig(ref config, false);
+            ChangePACButtonStatus(config.listenerType);
+            //ConfigHandler.SaveConfig(ref config, false); // ChangePACButtonStatus does it.
             statistics?.SaveToFile();
 
-            ChangePACButtonStatus(config.listenerType);
+            this.Invoke((MethodInvoker)(delegate
+            {
+                tsbReload.Enabled = true;
 
-            tsbReload.Enabled = true;
-
-            autoLatencyRefresh();
+                autoLatencyRefresh();
+            }));
         }
 
         /// <summary>
-        /// 关闭V2ray
+        /// 关闭相关组件
         /// </summary>
-        private void CloseV2ray()
+        private void Closes()
         {
-            ConfigHandler.SaveConfig(ref config, false);
+            //ConfigHandler.SaveConfig(ref config, false); // ChangePACButtonStatus does it.
+            Task.Run(() => ChangePACButtonStatus(ListenerType.noHttpProxy));
+            Task.Run(() => v2rayHandler.V2rayStop());
+            Task.Run(() => PACServerHandle.Stop());
             statistics?.SaveToFile();
-
-            ChangePACButtonStatus(0);
-
-            v2rayHandler.V2rayStop();
+            statistics?.Close();
         }
 
         #endregion
@@ -785,13 +788,18 @@ namespace v2rayN.Forms
         {
             string tab = "";
             if (sender == toolSslRouting) tab = "tabPreDefinedRules";
+
             OptionSettingForm fm = new OptionSettingForm(tab);
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 //刷新
                 RefreshServers();
-                LoadV2ray();
-                HttpProxyHandle.RestartHttpAgent(config, true);
+                //Application.DoEvents();
+                Task.Run(() =>
+                {
+                    LoadV2ray();
+                    HttpProxyHandle.RestartHttpAgent(config, true);
+                });
             }
         }
 
@@ -1253,7 +1261,8 @@ namespace v2rayN.Forms
                 item.Checked = ((int)type == k);
             }
 
-            ConfigHandler.SaveConfig(ref config, false);
+            Global.reloadV2ray = false;
+            ConfigHandler.SaveConfig(ref config);
             DisplayToolStatus();
         }
 
@@ -1369,7 +1378,7 @@ namespace v2rayN.Forms
 
                         try
                         {
-                            CloseV2ray();
+                            Closes();
 
                             string fileName = downloadHandle.DownloadFileName;
                             fileName = Utils.GetPath(fileName);
