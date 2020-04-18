@@ -8,8 +8,6 @@ namespace v2rayN.Forms
 {
     public partial class SubSettingForm : BaseForm
     {
-        List<SubSettingControl> lstControls = new List<SubSettingControl>();
-
         public SubSettingForm()
         {
             InitializeComponent();
@@ -30,8 +28,8 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshSubsView()
         {
+            panCon.SuspendLayout();
             panCon.Controls.Clear();
-            lstControls.Clear();
 
             for (int k = config.subItem.Count - 1; k >= 0; k--)
             {
@@ -56,9 +54,8 @@ namespace v2rayN.Forms
 
                 panCon.Controls.Add(control);
                 panCon.Controls.SetChildIndex(control, 0);
-
-                lstControls.Add(control);
             }
+            panCon.ResumeLayout();
         }
 
         private void Control_OnButtonClicked(object sender, EventArgs e)
