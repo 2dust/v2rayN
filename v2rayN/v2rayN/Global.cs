@@ -162,7 +162,6 @@ namespace v2rayN
         public enum sortMode
         {
             Numeric,
-            NumericB,
             // More, like natural numbers, string length, visual length, etc.
         }
 

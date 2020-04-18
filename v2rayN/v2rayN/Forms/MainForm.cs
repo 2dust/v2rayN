@@ -1666,30 +1666,30 @@ namespace v2rayN.Forms
             tsbOptionSetting_Click(toolSslRouting, null);
         }
 
+        private int lastSortedColIndex = -1;
+        private bool lastSortedColDirection = false;
         private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             Sorter s = (Sorter)lvServers.ListViewItemSorter;
             s.Column = e.Column;
 
             int doIntSort;
-            if (lvServers.Columns[e.Column].Tag?.ToString() == Global.sortMode.Numeric.ToString()) // 数字正序
+            bool isNum = lvServers.Columns[e.Column].Tag?.ToString() == Global.sortMode.Numeric.ToString();
+            if (lastSortedColIndex < 0  // 首次
+                || (lastSortedColIndex >= 0 && lastSortedColIndex != e.Column) // 排序了其他列
+                || (lastSortedColIndex == e.Column && !lastSortedColDirection) // 已排序
+                )
             {
-                lvServers.Columns[e.Column].Tag = Global.sortMode.NumericB.ToString();
-                doIntSort = 1;
+                lastSortedColDirection = true;
+                doIntSort = isNum ? 1 : -1; // 正序
             }
-            else if (lvServers.Columns[e.Column].Tag?.ToString() == Global.sortMode.NumericB.ToString()) // 数字倒序
+            else
             {
-                lvServers.Columns[e.Column].Tag = Global.sortMode.Numeric.ToString();
-                doIntSort = 2;
+                lastSortedColDirection = false;
+                doIntSort = isNum ? 2 : -2; // 倒序
             }
-            else // 非数字
-            {
-                bool bGo = bool.TryParse(lvServers.Columns[e.Column].Tag?.ToString(), out bool bOk);
-                // 首个转换将失败，如果Tag是null或其他。
-                bool flag = bOk ? bGo : false;
-                lvServers.Columns[e.Column].Tag = !flag; // 首次则赋值true。
-                doIntSort = flag ? -1 : -2; // -1正序 -2倒序
-            }
+            lastSortedColIndex = e.Column;
+
             s.Sorting = doIntSort;
 
             lvServers.Sort();

@@ -19,8 +19,17 @@ namespace v2rayN.Base
             int doIntSort = Sorting;
             if (doIntSort > 0) // Tag will be number
             {
-                ulong.TryParse(l1.SubItems[Column].Tag?.ToString(), out ulong fl1);
-                ulong.TryParse(l2.SubItems[Column].Tag?.ToString(), out ulong fl2);
+                var data1 = l1.SubItems[Column].Tag;
+                var data2 = l2.SubItems[Column].Tag;
+                if(data1 == null & data2 == null)
+                {
+                    data1 = l1.SubItems[Column].Text;
+                    data2 = l2.SubItems[Column].Text;
+                    System.Diagnostics.Debug.WriteLine("Tag missing?");
+                }
+
+                ulong.TryParse(data1.ToString(), out ulong fl1);
+                ulong.TryParse(data2.ToString(), out ulong fl2);
 
                 if (doIntSort == 1)
                 {
