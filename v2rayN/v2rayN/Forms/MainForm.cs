@@ -627,12 +627,22 @@ namespace v2rayN.Forms
 
         private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
         {
+            VmessItem activeVm = null;
+            if (config.index >= 0) {
+                activeVm = config.vmess[config.index];
+            }
             Utils.DedupServerList(config.vmess, out List<VmessItem> servers, config.keepOlderDedupl);
             int oldCount = config.vmess.Count;
             int newCount = servers.Count;
             if (servers != null)
             {
                 config.vmess = servers;
+
+                if (activeVm != null)
+                {
+                    int index = Utils.ServerVmIndexof(config.vmess, activeVm);
+                    if (index >= 0) config.index = index; // restore to the correct value
+                }
             }
             //刷新
             RefreshServers();

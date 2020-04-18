@@ -318,6 +318,10 @@ namespace v2rayN
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
+        public static int ServerVmIndexof(List<Mode.VmessItem> source, Mode.VmessItem findIt)
+        {
+            return source.IndexOf(findIt);
+        }
         public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result, bool keepOlder)
         {
             List<Mode.VmessItem> list = new List<Mode.VmessItem>();
