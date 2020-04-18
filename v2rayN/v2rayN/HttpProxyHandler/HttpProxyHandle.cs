@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using v2rayN.Mode;
 
 namespace v2rayN.HttpProxyHandler
@@ -148,33 +149,36 @@ namespace v2rayN.HttpProxyHandler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="forced"></param>
-        public static void RestartHttpAgent(Config config, bool forced)
+        public static Task RestartHttpAgent(Config config, bool forced)
         {
-            bool isRestart = false;
-            if (config.listenerType == ListenerType.noHttpProxy)
-            {
-                // 关闭http proxy时，直接返回
-                return;
-            }
-            //强制重启或者socks端口变化
-            if (forced)
-            {
-                isRestart = true;
-            }
-            else
-            {
-                int localPort = config.GetLocalPort(Global.InboundSocks);
-                if (localPort != Global.socksPort)
+            return Task.Run(() =>
+            { 
+                bool isRestart = false;
+                if (config.listenerType == ListenerType.noHttpProxy)
+                {
+                    // 关闭http proxy时，直接返回
+                    return;
+                }
+                //强制重启或者socks端口变化
+                if (forced)
                 {
                     isRestart = true;
                 }
-            }
-            if (isRestart)
-            {
-                CloseHttpAgent(config);
-                StartHttpAgent(config);
-            }
-            Update(config, false);
+                else
+                {
+                    int localPort = config.GetLocalPort(Global.InboundSocks);
+                    if (localPort != Global.socksPort)
+                    {
+                        isRestart = true;
+                    }
+                }
+                if (isRestart)
+                {
+                    CloseHttpAgent(config);
+                    StartHttpAgent(config);
+                }
+                Update(config, false);
+            });
         }
 
         public static string GetPacUrl()
