@@ -55,10 +55,7 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        public int RunningPort
-        {
-            get; set;
-        }
+        public int RunningPort { get; set; }
 
         public void Restart(int localPort, Config config)
         {
