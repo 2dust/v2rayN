@@ -312,24 +312,18 @@ namespace v2rayN.Forms
 
         private void lvServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int index = -1;
-            try
-            {
-                if (lvServers.SelectedIndices.Count > 0)
-                {
-                    index = lvServers.SelectedIndices[0];
-                }
-            }
-            catch
-            {
-            }
-            if (index < 0)
-            {
-                return;
-            }
-            //qrCodeControl.showQRCode(index, config);
+            RefreshQRCodePanel();
         }
 
+        private void RefreshQRCodePanel()
+        {
+            if (scMain.Panel2Collapsed) return; // saving cpu.
+            if (lvServers.SelectedIndices.Count > 0)
+            {
+                int index = lvServers.SelectedIndices[0];
+                qrCodeControl.showQRCode(index, config);
+            }
+        }
         private void RefreshTaryIcon()
         {
             notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
@@ -463,26 +457,6 @@ namespace v2rayN.Forms
         #endregion
 
         #region 功能按钮
-
-        private void lvServers_Click(object sender, EventArgs e)
-        {
-            int index = -1;
-            try
-            {
-                if (lvServers.SelectedIndices.Count > 0)
-                {
-                    index = lvServers.SelectedIndices[0];
-                }
-            }
-            catch
-            {
-            }
-            if (index < 0)
-            {
-                return;
-            }
-            qrCodeControl.showQRCode(index, config);
-        }
 
         private void lvServers_DoubleClick(object sender, EventArgs e)
         {
@@ -1601,6 +1575,7 @@ namespace v2rayN.Forms
         {
             bool bShow = tsbQRCodeSwitch.Checked;
             scMain.Panel2Collapsed = !bShow;
+            RefreshQRCodePanel();
         }
         #endregion
 
@@ -1628,8 +1603,6 @@ namespace v2rayN.Forms
         {
             RefreshTaryIcon();
         }
-
-
 
         private async void toolSslServerLatencyRefresh()
         {

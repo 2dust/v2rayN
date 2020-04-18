@@ -167,7 +167,6 @@
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
             this.lvServers.SelectedIndexChanged += new System.EventHandler(this.lvServers_SelectedIndexChanged);
-            this.lvServers.Click += new System.EventHandler(this.lvServers_Click);
             this.lvServers.DoubleClick += new System.EventHandler(this.lvServers_DoubleClick);
             this.lvServers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvServers_KeyDown);
             // 
