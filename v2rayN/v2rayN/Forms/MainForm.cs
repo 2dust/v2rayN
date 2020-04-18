@@ -855,6 +855,27 @@ namespace v2rayN.Forms
                 return index;
             }
         }
+        /// <summary>
+        /// 获取服务器列表表示指定配置项的所有行的索引
+        /// 基于列表项的Tag属性
+        /// 
+        /// 出错时返回空。
+        /// </summary>
+        /// <returns></returns>
+        private List<int> GetServerListItemsByConfigIndex(int configIndex)
+        {
+            var l = new List<int>();
+            foreach (ListViewItem item in lvServers.Items)
+            {
+                string tagStr = item.Tag?.ToString();
+                if (int.TryParse(tagStr, out int tagInt)
+                    && tagInt == configIndex)
+                {
+                    l.Add(item.Index);
+                }
+            }
+            return l;
+        }
 
         private void menuAddCustomServer_Click(object sender, EventArgs e)
         {
@@ -1087,12 +1108,13 @@ namespace v2rayN.Forms
 
         #region 后台测速
 
-        private void SetTestResult(int k, string txt)
+        private void SetTestResult(int configIndex, string txt)
         {
-            if (k < lvServers.Items.Count)
+            var l = GetServerListItemsByConfigIndex(configIndex);
+            if (l.Count > 0)
             {
-                config.vmess[k].testResult = txt;
-                lvServers.Items[k].SubItems["testResult"].Text = txt;
+                config.vmess[configIndex].testResult = txt;
+                l.ForEach((listIndex) => lvServers.Items[listIndex].SubItems["testResult"].Text = txt);
             }
         }
         private void ClearTestResult()
