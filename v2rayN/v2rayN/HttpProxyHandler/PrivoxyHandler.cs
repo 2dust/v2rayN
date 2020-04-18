@@ -138,6 +138,7 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
+                if (p.HasExited) return; // someting, while the GUI app is exiting.
                 p.CloseMainWindow();
                 p.WaitForExit(100);
                 if (!p.HasExited)

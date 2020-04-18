@@ -413,6 +413,7 @@ namespace v2rayN.Forms
                 {
                     autoLatencyRefreshTask = Task.Run(async delegate
                     {
+                        if (!this.IsHandleCreated) return; // the GUI app is exiting.
                         await Task.Delay(2000);
                         this.Invoke((MethodInvoker)(delegate
                         {

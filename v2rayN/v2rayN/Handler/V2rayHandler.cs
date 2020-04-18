@@ -303,6 +303,7 @@ namespace v2rayN.Handler
         {
             try
             {
+                if (p.HasExited) return;
                 p.CloseMainWindow();
                 p.WaitForExit(100);
                 if (!p.HasExited)
