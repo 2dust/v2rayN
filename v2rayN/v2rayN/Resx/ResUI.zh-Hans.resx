@@ -259,7 +259,7 @@
     <value>解析{0}成功</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
-    <value>简化PAC成功</value>
+    <value>成功写入PAC</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>开始获取订阅内容</value>

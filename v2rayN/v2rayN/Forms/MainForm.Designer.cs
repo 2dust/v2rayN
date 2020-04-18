@@ -631,7 +631,6 @@
             // 
             // toolSslRouting
             // 
-            this.toolSslRouting.AutoToolTip = true;
             this.toolSslRouting.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolSslRouting.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslRouting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;

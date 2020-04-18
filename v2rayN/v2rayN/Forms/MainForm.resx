@@ -882,7 +882,7 @@
     <value>toolSslBlank1</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
+    <value>160, 21</value>
   </data>
   <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -891,7 +891,7 @@
     <value>toolSslBlank2</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
+    <value>160, 21</value>
   </data>
   <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -900,7 +900,7 @@
     <value>toolSslBlank3</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
+    <value>160, 21</value>
   </data>
   <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -964,6 +964,9 @@
   </data>
   <data name="toolSslRouting.Text" xml:space="preserve">
     <value>Routing Mode</value>
+  </data>
+  <data name="toolSslRouting.ToolTipText" xml:space="preserve">
+    <value>The Core's routing mode</value>
   </data>
   <data name="&gt;&gt;toolSslRouting.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1161,7 +1164,7 @@
     <value>393, 22</value>
   </data>
   <data name="tsbCheckClearPACList.Text" xml:space="preserve">
-    <value>Simplify PAC (need to set Core route)</value>
+    <value>Make PAC pass-through to Core route rules</value>
   </data>
   <data name="&gt;&gt;tsbCheckClearPACList.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -259,7 +259,7 @@
     <value>Resolve {0} successfully</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
-    <value>Simplify PAC Success</value>
+    <value>Write PAC success</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>Start getting subscriptions</value>

@@ -484,7 +484,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Simplify PAC Success 的本地化字符串。
+        ///   查找类似 Write PAC success 的本地化字符串。
         /// </summary>
         internal static string MsgSimplifyPAC {
             get {
