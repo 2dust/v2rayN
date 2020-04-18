@@ -572,6 +572,8 @@
             // toolSslBlank1
             // 
             this.toolSslBlank1.AutoToolTip = true;
+            this.toolSslBlank1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolSslBlank1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslBlank1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslBlank1.Name = "toolSslBlank1";
             this.toolSslBlank1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
@@ -595,6 +597,8 @@
             // toolSslBlank2
             // 
             this.toolSslBlank2.AutoToolTip = true;
+            this.toolSslBlank2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolSslBlank2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslBlank2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslBlank2.Name = "toolSslBlank2";
             this.toolSslBlank2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
@@ -618,6 +622,8 @@
             // toolSslBlank3
             // 
             this.toolSslBlank3.AutoToolTip = true;
+            this.toolSslBlank3.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolSslBlank3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslBlank3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
@@ -627,6 +633,8 @@
             // toolSslRouting
             // 
             this.toolSslRouting.AutoToolTip = true;
+            this.toolSslRouting.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolSslRouting.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslRouting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslRouting.IsLink = true;
             this.toolSslRouting.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
@@ -640,6 +648,8 @@
             // toolSslServerLatency
             // 
             resources.ApplyResources(this.toolSslServerLatency, "toolSslServerLatency");
+            this.toolSslServerLatency.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolSslServerLatency.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolSslServerLatency.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslServerLatency.IsLink = true;
             this.toolSslServerLatency.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
