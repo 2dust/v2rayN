@@ -187,7 +187,7 @@ namespace v2rayN.Forms
                 return;
             }
 
-            if (ConfigHandler.SaveConfig(ref config) == 0)
+            if (ConfigHandler.SaveConfigToFile(ref config) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }

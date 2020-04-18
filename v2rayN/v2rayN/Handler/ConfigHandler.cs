@@ -223,7 +223,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -264,7 +264,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -302,7 +302,7 @@ namespace v2rayN.Handler
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -328,26 +328,20 @@ namespace v2rayN.Handler
             config.index = index;
             Global.reloadV2ray = true;
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
 
         /// <summary>
-        /// 保存参数
+        /// 保存设置文件
         /// </summary>
         /// <param name="config"></param>
-        /// <returns></returns>
-        public static int SaveConfig(ref Config config)
+        public static int SaveConfigToFile(ref Config config)
         {
-            return ToJsonFile(config);
+            return Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
-
-        /// <summary>
-        /// 存储文件
-        /// </summary>
-        /// <param name="config"></param>
-        private static int ToJsonFile(Config config)
+        public static int SaveConfigToFile(Config config)
         {
             return Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
@@ -533,7 +527,7 @@ namespace v2rayN.Handler
             }
             Global.reloadV2ray = true;
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -572,7 +566,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -593,7 +587,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -634,7 +628,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -673,7 +667,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -854,7 +848,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
             return 0;
         }
 
@@ -878,7 +872,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
             return 0;
         }
 

@@ -441,7 +441,7 @@ namespace v2rayN.Forms
             await v2rayHandler.LoadV2ray(config);
             Global.reloadV2ray = false;
             ChangePACButtonStatus(config.listenerType);
-            //ConfigHandler.SaveConfig(ref config, false); // ChangePACButtonStatus does it.
+            //ConfigHandler.SaveConfigToFile(ref config, false); // ChangePACButtonStatus does it.
             statistics?.SaveToFile();
 
             this.Invoke((MethodInvoker)(delegate
@@ -459,7 +459,7 @@ namespace v2rayN.Forms
         {
             List<Task> tasks = new List<Task>
             {
-                Task.Run(() => ConfigHandler.SaveConfig(ref config)),
+                Task.Run(() => ConfigHandler.SaveConfigToFile(ref config)),
                 Task.Run(() => HttpProxyHandle.CloseHttpAgent(config)),
                 Task.Run(() => v2rayHandler.V2rayStop()),
                 Task.Run(() => PACServerHandle.Stop()),
@@ -1255,7 +1255,7 @@ namespace v2rayN.Forms
             }
 
             Global.reloadV2ray = false;
-            ConfigHandler.SaveConfig(ref config);
+            ConfigHandler.SaveConfigToFile(ref config);
 
             this.Invoke((MethodInvoker)(delegate
             {
@@ -1689,13 +1689,13 @@ namespace v2rayN.Forms
         {
             ColumnHeader c = lvServers.Columns[e.ColumnIndex];
             ConfigHandler.AddformMainLvColWidth(ref config, c.Name, c.Width);
-            Task.Run(() => ConfigHandler.SaveConfig(ref config));
+            Task.Run(() => ConfigHandler.SaveConfigToFile(ref config));
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
-            Task.Run(() => ConfigHandler.SaveConfig(ref config));
+            Task.Run(() => ConfigHandler.SaveConfigToFile(ref config));
         }
 
         private async void lvServers_ColumnReordered(object sender, ColumnReorderedEventArgs e)
@@ -1705,7 +1705,7 @@ namespace v2rayN.Forms
                          orderby col.DisplayIndex
                          select col.Name).ToList();
             config.uiItem.mainLvColLayout = names;
-            _ = Task.Run(() => ConfigHandler.SaveConfig(ref config));
+            _ = Task.Run(() => ConfigHandler.SaveConfigToFile(ref config));
         }
     }
 }
