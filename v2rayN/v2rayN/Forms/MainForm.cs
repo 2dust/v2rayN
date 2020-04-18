@@ -461,11 +461,8 @@ namespace v2rayN.Forms
 
         private void lvServers_DoubleClick(object sender, EventArgs e)
         {
-            int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
+            int index = GetServerListSelectedConfigIndex();
+            if (index < 0) return;
 
             if (config.vmess[index].configType == (int)EConfigType.Vmess)
             {
@@ -594,11 +591,9 @@ namespace v2rayN.Forms
         private void menuRemoveServer_Click(object sender, EventArgs e)
         {
 
-            int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
+            int index = GetServerListSelectedConfigIndex();
+            if (index < 0) return;
+
             if (UI.ShowYesNo(UIRes.I18N("RemoveServer")) == DialogResult.No)
             {
                 return;
@@ -630,11 +625,9 @@ namespace v2rayN.Forms
 
         private void menuCopyServer_Click(object sender, EventArgs e)
         {
-            int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
+            int index = GetServerListSelectedConfigIndex();
+            if (index < 0) return;
+
             if (ConfigHandler.CopyServer(ref config, index) == 0)
             {
                 //刷新
@@ -644,11 +637,9 @@ namespace v2rayN.Forms
 
         private void menuSetDefaultServer_Click(object sender, EventArgs e)
         {
-            int index = GetLvSelectedIndex();
-            if (index < 0)
-            {
-                return;
-            }
+            int index = GetServerListSelectedConfigIndex();
+            if (index < 0) return;
+
             SetDefaultServer(index);
         }
 
@@ -689,7 +680,7 @@ namespace v2rayN.Forms
         }
         private void Speedtest(string actionType)
         {
-            if (GetLvSelectedIndex() < 0) return;
+            if (GetServerListSelectedConfigIndex() < 0) return;
             ClearTestResult();
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
@@ -707,19 +698,19 @@ namespace v2rayN.Forms
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
         {
-            int index = GetLvSelectedIndex();
+            int index = GetServerListSelectedConfigIndex();
             MainFormHandler.Instance.Export2ClientConfig(index, config);
         }
 
         private void menuExport2ServerConfig_Click(object sender, EventArgs e)
         {
-            int index = GetLvSelectedIndex();
+            int index = GetServerListSelectedConfigIndex();
             MainFormHandler.Instance.Export2ServerConfig(index, config);
         }
 
         private void menuExport2ShareUrl_Click(object sender, EventArgs e)
         {
-            GetLvSelectedIndex();
+            GetServerListSelectedConfigIndex();
 
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
@@ -742,7 +733,7 @@ namespace v2rayN.Forms
 
         private void menuExport2SubContent_Click(object sender, EventArgs e)
         {
-            GetLvSelectedIndex();
+            GetServerListSelectedConfigIndex();
 
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
@@ -822,7 +813,7 @@ namespace v2rayN.Forms
         /// 多选选中请在调用此函数后检查 lvSelecteds
         /// </summary>
         /// <returns></returns>
-        private int GetLvSelectedIndex()
+        private int GetServerListSelectedConfigIndex()
         {
             int index = -1;
             lvSelecteds.Clear();
@@ -1166,7 +1157,7 @@ namespace v2rayN.Forms
 
         private void MoveServer(EMove eMove)
         {
-            int index = GetLvSelectedIndex();
+            int index = GetServerListSelectedConfigIndex();
             if (index < 0)
             {
                 UI.Show(UIRes.I18N("PleaseSelectServer"));
