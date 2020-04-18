@@ -119,7 +119,9 @@ namespace v2rayN.Forms
         //            break;
         //    }
         //}
+        #endregion
 
+        #region 窗口大小和列宽等取/存
         private void RestoreUI()
         {
             scMain.Panel2Collapsed = true;
@@ -130,10 +132,10 @@ namespace v2rayN.Forms
                 this.Height = config.uiItem.mainSize.Height;
             }
 
-            for (int k = 0; k < lvServers.Columns.Count; k++)
+            foreach (ColumnHeader c in lvServers.Columns)
             {
-                var width = ConfigHandler.GetformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
-                lvServers.Columns[k].Width = width;
+                var width = ConfigHandler.GetformMainLvColWidth(ref config, c.Name, c.Width);
+                c.Width = width;
             }
         }
 
@@ -141,9 +143,9 @@ namespace v2rayN.Forms
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
 
-            for (int k = 0; k < lvServers.Columns.Count; k++)
+            foreach (ColumnHeader c in lvServers.Columns)
             {
-                ConfigHandler.AddformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
+                ConfigHandler.AddformMainLvColWidth(ref config, c.Name, c.Width);
             }
         }
 
@@ -169,22 +171,22 @@ namespace v2rayN.Forms
             lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
-            lvServers.Columns.Add("", 30);
-            lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
-            lvServers.Columns.Add(UIRes.I18N("LvAlias"), 100);
-            lvServers.Columns.Add(UIRes.I18N("LvAddress"), 120);
-            lvServers.Columns.Add(UIRes.I18N("LvPort"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90);
-            lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70);
-            lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70);
+            lvServers.Columns.Add(EServerColName.def.ToString(), "", 30);
+            lvServers.Columns.Add(EServerColName.type.ToString(), UIRes.I18N("LvServiceType"), 80);
+            lvServers.Columns.Add(EServerColName.remarks.ToString(), UIRes.I18N("LvAlias"), 100);
+            lvServers.Columns.Add(EServerColName.address.ToString(), UIRes.I18N("LvAddress"), 120);
+            lvServers.Columns.Add(EServerColName.port.ToString(), UIRes.I18N("LvPort"), 50);
+            lvServers.Columns.Add(EServerColName.security.ToString(), UIRes.I18N("LvEncryptionMethod"), 90);
+            lvServers.Columns.Add(EServerColName.network.ToString(), UIRes.I18N("LvTransportProtocol"), 70);
+            lvServers.Columns.Add(EServerColName.subRemarks.ToString(), UIRes.I18N("LvSubscription"), 50);
+            lvServers.Columns.Add(EServerColName.testResult.ToString(), UIRes.I18N("LvTestResults"), 70);
 
             if (statistics != null && statistics.Enable)
             {
-                lvServers.Columns.Add(UIRes.I18N("LvTodayDownloadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70);
+                lvServers.Columns.Add(EServerColName.todayDown.ToString(), UIRes.I18N("LvTodayDownloadDataAmount"), 70);
+                lvServers.Columns.Add(EServerColName.todayUp.ToString(), UIRes.I18N("LvTodayUploadDataAmount"), 70);
+                lvServers.Columns.Add(EServerColName.totalDown.ToString(), UIRes.I18N("LvTotalDownloadDataAmount"), 70);
+                lvServers.Columns.Add(EServerColName.totalUp.ToString(), UIRes.I18N("LvTotalUploadDataAmount"), 70);
             }
             lvServers.EndUpdate();
         }
@@ -211,10 +213,23 @@ namespace v2rayN.Forms
 
                 VmessItem item = config.vmess[k];
 
-                void _addSubItem(ListViewItem i, string name, string text)
+                void _addSubItem(ListViewItem i, string name, string text, object tag = null)
                 {
-                    i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
+                    var n = new ListViewItem.ListViewSubItem() { Text = text };
+                    n.Name = name; // new don't accept it.
+                    n.Tag = tag;
+                    i.SubItems.Add(n);
                 }
+                ListViewItem lvItem = new ListViewItem(def);
+                lvItem.Tag = k; // the Tag of items is config's index.
+                _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
+                _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
+                _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
+                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
+                _addSubItem(lvItem, EServerColName.security.ToString(), item.security);
+                _addSubItem(lvItem, EServerColName.network.ToString(), item.network);
+                _addSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
+                _addSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
                 bool stats = statistics != null && statistics.Enable;
                 if (stats)
                 {
@@ -226,23 +241,10 @@ namespace v2rayN.Forms
                         todayUp = Utils.HumanFy(sItem.todayUp);
                         todayDown = Utils.HumanFy(sItem.todayDown);
                     }
-                }
-                ListViewItem lvItem = new ListViewItem(def);
-                lvItem.Tag = k;
-                _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
-                _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
-                _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
-                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
-                _addSubItem(lvItem, EServerColName.security.ToString(), item.security);
-                _addSubItem(lvItem, EServerColName.network.ToString(), item.network);
-                _addSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
-                _addSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
-                if (stats)
-                {
-                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown);
-                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp);
-                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown);
-                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp);
+                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown, sItem.todayDown);
+                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp, sItem.todayUp);
+                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown, sItem.totalDown);
+                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp, sItem.totalUp);
                 }
 
                 if (config.interlaceColoring && k % 2 == 1) // 隔行着色
