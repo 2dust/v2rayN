@@ -81,7 +81,6 @@ namespace v2rayN.Forms
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                StorageUI();
                 e.Cancel = true;
                 HideForm();
                 return;
@@ -139,6 +138,7 @@ namespace v2rayN.Forms
             }
         }
 
+        // Deprecated.
         private void StorageUI()
         {
             config.uiItem.mainSize = new Size(this.Width, this.Height);
@@ -1675,6 +1675,17 @@ namespace v2rayN.Forms
                 else
                     lvServers.Items[k].BackColor = lvServers.BackColor;
             }
+        }
+
+        private void lvServers_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+            ColumnHeader c = lvServers.Columns[e.ColumnIndex];
+            ConfigHandler.AddformMainLvColWidth(ref config, c.Name, c.Width);
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            config.uiItem.mainSize = new Size(this.Width, this.Height);
         }
     }
 }
