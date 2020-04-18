@@ -338,7 +338,7 @@ namespace v2rayN.Forms
         {
             if (scMain.Panel2Collapsed) return; // saving cpu.
 
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0) return;
             qrCodeControl.showQRCode(index, config);
         }
@@ -478,7 +478,7 @@ namespace v2rayN.Forms
 
         private void lvServers_DoubleClick(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0) return;
 
             if (config.vmess[index].configType == (int)EConfigType.Vmess)
@@ -607,7 +607,7 @@ namespace v2rayN.Forms
 
         private void menuRemoveServer_Click(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0) return;
 
             if (UI.ShowYesNo(UIRes.I18N("RemoveServer")) == DialogResult.No)
@@ -641,7 +641,7 @@ namespace v2rayN.Forms
 
         private void menuCopyServer_Click(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0) return;
 
             if (ConfigHandler.CopyServer(ref config, index) == 0)
@@ -653,7 +653,7 @@ namespace v2rayN.Forms
 
         private void menuSetDefaultServer_Click(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0) return;
 
             SetDefaultServer(index);
@@ -696,7 +696,7 @@ namespace v2rayN.Forms
         }
         private void Speedtest(string actionType)
         {
-            if (GetServerListSelectedConfigIndex() < 0) return;
+            if (GetConfigIndexFromServerListSelected() < 0) return;
             ClearTestResult();
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
         }
@@ -714,19 +714,19 @@ namespace v2rayN.Forms
 
         private void menuExport2ClientConfig_Click(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             MainFormHandler.Instance.Export2ClientConfig(index, config);
         }
 
         private void menuExport2ServerConfig_Click(object sender, EventArgs e)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             MainFormHandler.Instance.Export2ServerConfig(index, config);
         }
 
         private void menuExport2ShareUrl_Click(object sender, EventArgs e)
         {
-            GetServerListSelectedConfigIndex();
+            GetConfigIndexFromServerListSelected();
 
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
@@ -749,7 +749,7 @@ namespace v2rayN.Forms
 
         private void menuExport2SubContent_Click(object sender, EventArgs e)
         {
-            GetServerListSelectedConfigIndex();
+            GetConfigIndexFromServerListSelected();
 
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
@@ -825,11 +825,11 @@ namespace v2rayN.Forms
         /// <summary>
         /// 获取服务器列表选中行的配置项（config）索引（index）
         /// 
-        /// 返回值对应首个选中项，出错时返回-1
-        /// 多选选中请在调用此函数后检查 lvSelecteds
+        /// 返回值对应首个选中项，无选中或出错时返回-1
+        /// 访问多选请在调用此函数后访问 lvSelecteds
         /// </summary>
         /// <returns></returns>
-        private int GetServerListSelectedConfigIndex()
+        private int GetConfigIndexFromServerListSelected()
         {
             int index = -1;
             lvSelecteds.Clear();
@@ -1195,7 +1195,7 @@ namespace v2rayN.Forms
 
         private void MoveServer(EMove eMove)
         {
-            int index = GetServerListSelectedConfigIndex();
+            int index = GetConfigIndexFromServerListSelected();
             if (index < 0)
             {
                 UI.Show(UIRes.I18N("PleaseSelectServer"));
