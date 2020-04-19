@@ -41,7 +41,7 @@ namespace v2rayN.Base
                 listener.Start();
                 Utils.SaveLog("WebserverB running...");
 
-                while (true)
+                while (true && listener != null)
                 {
                     if (!listener.Pending())
                     {

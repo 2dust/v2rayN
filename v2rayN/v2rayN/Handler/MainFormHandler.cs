@@ -97,11 +97,11 @@ namespace v2rayN.Handler
             configCopy.index = index;
             if (V2rayConfigHandler.Export2ClientConfig(configCopy, fileName, out string msg) != 0)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
             }
             else
             {
-                UI.ShowWarning(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
+                UI.Show(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
             }
         }
 
@@ -137,11 +137,11 @@ namespace v2rayN.Handler
             configCopy.index = index;
             if (V2rayConfigHandler.Export2ServerConfig(configCopy, fileName, out string msg) != 0)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
             }
             else
             {
-                UI.ShowWarning(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
+                UI.Show(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
             }
         }
 

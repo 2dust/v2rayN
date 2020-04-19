@@ -259,7 +259,7 @@
     <value>Resolve {0} successfully</value>
   </data>
   <data name="MsgSimplifyPAC" xml:space="preserve">
-    <value>Simplify PAC Success</value>
+    <value>Write PAC success</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>Start getting subscriptions</value>
@@ -327,11 +327,26 @@
   <data name="RemoveServer" xml:space="preserve">
     <value>Are you sure to remove the server?</value>
   </data>
+  <data name="RoutingModeBypassCN" xml:space="preserve">
+    <value>Bypass CN</value>
+  </data>
+  <data name="RoutingModeBypassLAN" xml:space="preserve">
+    <value>Bypass LAN</value>
+  </data>
+  <data name="RoutingModeBypassLANCN" xml:space="preserve">
+    <value>Bypass LAN+CN</value>
+  </data>
+  <data name="RoutingModeGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>The server configuration file is saved at: {0}</value>
+  </data>
+  <data name="ServerLatencyChecking" xml:space="preserve">
+    <value>...</value>
   </data>
   <data name="SlowFresh" xml:space="preserve">
     <value>SlowFresh</value>
@@ -360,5 +375,8 @@
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>The ping of current service: {0}</value>
+  </data>
+  <data name="toolSslServerLatency" xml:space="preserve">
+    <value>Latency: {0}</value>
   </data>
 </root>

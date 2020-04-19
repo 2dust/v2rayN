@@ -150,24 +150,19 @@ namespace v2rayN.Handler
             try
             {
                 int httpPort = _config.GetLocalPort(Global.InboundHttp);
-
-                Task<int> t = Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
-                        int responseTime = -1;
-                        string status = GetRealPingTime(Global.AvailabilityTestUrl, webProxy, out responseTime);
-                        bool noError = Utils.IsNullOrEmpty(status);
-                        return noError ? responseTime : -1;
-                    }
-                    catch (Exception ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                        return -1;
-                    }
-                });
-                return t.Result;
+                    WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
+                    int responseTime = -1;
+                    string status = GetRealPingTime(Global.AvailabilityTestUrl, webProxy, out responseTime);
+                    bool noError = Utils.IsNullOrEmpty(status);
+                    return noError ? responseTime : -1;
+                }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                    return -1;
+                }
             }
             catch (Exception ex)
             {

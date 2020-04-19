@@ -156,6 +156,15 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
+        /// <summary>
+        /// 表格列的排序方式
+        /// </summary>
+        public enum sortMode
+        {
+            Numeric,
+            // More, like natural numbers, string length, visual length, etc.
+        }
+
         public enum StatisticsFreshRate
         {
             quick = 1000,
@@ -171,61 +180,37 @@ namespace v2rayN
         #region 全局变量
 
         /// <summary>
-        /// 是否需要重启服务V2ray
+        /// 是否需要重启服务V2ray。如果为假，LoadV2ray()不做任何事。
         /// </summary>
-        public static bool reloadV2ray
-        {
-            get; set;
-        }
+        public static bool reloadV2ray { get; set; }
 
         /// <summary>
         /// 是否开启全局代理(http)
         /// </summary>
-        public static bool sysAgent
-        {
-            get; set;
-        }
+        public static bool sysAgent { get; set; }
 
         /// <summary>
         /// socks端口
         /// </summary>
-        public static int socksPort
-        {
-            get; set;
-        }
+        public static int socksPort { get; set; }
 
         /// <summary>
         /// http端口
         /// </summary>
-        public static int httpPort
-        {
-            get; set;
-        }
+        public static int httpPort { get; set; }
 
         /// <summary>
         /// PAC端口
         /// </summary>
-        public static int pacPort
-        {
-            get; set;
-        }
+        public static int pacPort { get; set; }
 
         /// <summary>
         ///  
         /// </summary>
-        public static int statePort
-        {
-            get; set;
-        }
+        public static int statePort { get; set; }
 
-        public static Job processJob
-        {
-            get; set;
-        }
-        public static System.Threading.Mutex mutexObj
-        {
-            get; set;
-        }
+        public static Job processJob { get; set; }
+        public static System.Threading.Mutex mutexObj { get; set; }
 
         #endregion
 

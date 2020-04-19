@@ -168,7 +168,7 @@ namespace v2rayN
             }
         }
         /// <summary>
-        /// 逗号分隔的字符串,转List<string>
+        /// 换行或逗号分隔的字符串,转List<string>
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -176,7 +176,7 @@ namespace v2rayN
         {
             try
             {
-                str = str.Replace(Environment.NewLine, "");
+                str = str.Replace("\r", ",").Replace("\n", ","); // 用户复制的可能是\r、\n或\r\n
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
             catch
@@ -318,6 +318,10 @@ namespace v2rayN
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
+        public static int ServerVmIndexof(List<Mode.VmessItem> source, Mode.VmessItem findIt)
+        {
+            return source.IndexOf(findIt);
+        }
         public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result, bool keepOlder)
         {
             List<Mode.VmessItem> list = new List<Mode.VmessItem>();

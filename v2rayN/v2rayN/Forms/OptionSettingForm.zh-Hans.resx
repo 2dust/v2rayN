@@ -164,6 +164,9 @@
   <data name="chkEnableStatistics.Text" xml:space="preserve">
     <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
   </data>
+  <data name="chkInterlaceColoring.Text" xml:space="preserve">
+    <value>隔行着色</value>
+  </data>
   <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
     <value>去重时保留序号较小的项</value>
   </data>
@@ -249,7 +252,7 @@
     <value>227, 12</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
-    <value>自定义GFWList地址(不需自定义请填空白)</value>
+    <value>自定义GFWList地址(留空则使用默认值)</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 12</value>
@@ -279,7 +282,7 @@
     <value>协议</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>*设置用户PAC规则，用逗号(,)隔开</value>
+    <value>*用户PAC内的自定条目。用逗号(,)或换行隔开的匹配模式（pattern）。英文单引号、双引号将被忽略。</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -312,17 +315,20 @@
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 72</value>
   </data>
+  <data name="tabBasic.Text" xml:space="preserve">
+    <value>  Core:基础设置  </value>
+  </data>
   <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 89</value>
   </data>
   <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
     <value>642, 481</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
+  <data name="tabGUI.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:路由设置  </value>
+  <data name="tabKCP.Text" xml:space="preserve">
+    <value>  Core:KCP设置  </value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 455</value>
@@ -342,19 +348,16 @@
   <data name="tabPage5.Text" xml:space="preserve">
     <value>  3.阻止的Domain或IP  </value>
   </data>
-  <data name="tabPage6.Text" xml:space="preserve">
-    <value>  Core:KCP设置  </value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
   <data name="tabPage8.Size" type="System.Drawing.Size, System.Drawing">
     <value>634, 455</value>
   </data>
-  <data name="tabPage8.Text" xml:space="preserve">
+  <data name="tabPreDefinedRules.Text" xml:space="preserve">
     <value>  4.预定义规则  </value>
   </data>
-  <data name="tabPage9.Text" xml:space="preserve">
+  <data name="tabRouting.Text" xml:space="preserve">
+    <value>  Core:路由设置  </value>
+  </data>
+  <data name="tabUserPAC.Text" xml:space="preserve">
     <value>  用户PAC设置  </value>
   </data>
   <data name="txtUseragent.Size" type="System.Drawing.Size, System.Drawing">

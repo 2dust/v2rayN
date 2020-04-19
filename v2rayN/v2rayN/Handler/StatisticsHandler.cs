@@ -20,15 +20,9 @@ namespace v2rayN.Handler
 
         Action<ulong, ulong, List<ServerStatItem>> updateFunc_;
 
-        public bool Enable
-        {
-            get; set;
-        }
+        public bool Enable { get; set; }
 
-        public bool UpdateUI
-        {
-            get; set;
-        }
+        public bool UpdateUI { get; set; }
 
         public List<ServerStatItem> Statistic
         {

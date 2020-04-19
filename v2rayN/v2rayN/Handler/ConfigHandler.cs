@@ -85,10 +85,6 @@ namespace v2rayN.Handler
             {
                 config.domainStrategy = "IPIfNonMatch";
             }
-            if (Utils.IsNullOrEmpty(config.routingMode))
-            {
-                config.routingMode = "0";
-            }
             if (config.useragent == null)
             {
                 config.useragent = new List<string>();
@@ -136,10 +132,6 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.speedPingTestUrl))
             {
                 config.speedPingTestUrl = Global.SpeedPingTestUrl;
-            }
-            if (Utils.IsNullOrEmpty(config.urlGFWList))
-            {
-                config.urlGFWList = Global.GFWLIST_URL;
             }
             //if (Utils.IsNullOrEmpty(config.remoteDNS))
             //{
@@ -227,7 +219,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -268,7 +260,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -306,7 +298,7 @@ namespace v2rayN.Handler
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -332,32 +324,22 @@ namespace v2rayN.Handler
             config.index = index;
             Global.reloadV2ray = true;
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
 
         /// <summary>
-        /// 保参数
+        /// 保存设置文件
         /// </summary>
         /// <param name="config"></param>
-        /// <returns></returns>
-        public static int SaveConfig(ref Config config, bool reload = true)
+        public static int SaveConfigToFile(ref Config config)
         {
-            Global.reloadV2ray = reload;
-
-            ToJsonFile(config);
-
-            return 0;
+            return Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
-
-        /// <summary>
-        /// 存储文件
-        /// </summary>
-        /// <param name="config"></param>
-        private static void ToJsonFile(Config config)
+        public static int SaveConfigToFile(Config config)
         {
-            Utils.ToJsonFile(config, Utils.GetPath(configRes));
+            return Utils.ToJsonFile(config, Utils.GetPath(configRes));
         }
 
         /// <summary>
@@ -541,7 +523,7 @@ namespace v2rayN.Handler
             }
             Global.reloadV2ray = true;
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -580,7 +562,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -601,7 +583,7 @@ namespace v2rayN.Handler
                 Global.reloadV2ray = true;
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -642,7 +624,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -681,7 +663,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
 
             return 0;
         }
@@ -862,7 +844,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
             return 0;
         }
 
@@ -886,7 +868,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            SaveConfigToFile(config);
             return 0;
         }
 
