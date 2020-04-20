@@ -15,127 +15,197 @@ namespace v2rayN.Mode
         /// <summary>
         /// 本地监听
         /// </summary>
-        public List<InItem> inbound { get; set; }
+        public List<InItem> inbound
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 允许日志
         /// </summary>
-        public bool logEnabled { get; set; }
+        public bool logEnabled
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 日志等级
         /// </summary>
-        public string loglevel { get; set; }
+        public string loglevel
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 活动配置序号
         /// </summary>
-        public int index { get; set; }
+        public int index
+        {
+            get; set;
+        }
 
         /// <summary>
         /// vmess服务器信息
         /// </summary>
-        public List<VmessItem> vmess { get; set; }
+        public List<VmessItem> vmess
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 允许Mux多路复用
         /// </summary>
-        public bool muxEnabled { get; set; }
+        public bool muxEnabled
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 域名解析策略
         /// </summary>
-        public string domainStrategy { get; set; }
+        public string domainStrategy
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 路由模式
         /// </summary>
-        public int routingMode { get; set; }
+        public string routingMode
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 用户自定义需代理的网址或ip
         /// </summary>
-        public List<string> useragent { get; set; }
+        public List<string> useragent
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 用户自定义直连的网址或ip
         /// </summary>
-        public List<string> userdirect { get; set; }
+        public List<string> userdirect
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 用户自定义阻止的网址或ip
         /// </summary>
-        public List<string> userblock { get; set; }
+        public List<string> userblock
+        {
+            get; set;
+        }
 
         /// <summary>
         /// KcpItem
         /// </summary>
-        public KcpItem kcpItem { get; set; }
+        public KcpItem kcpItem
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 监听状态
         /// </summary>
-        public ListenerType listenerType { get; set; }
+        public ListenerType listenerType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 自定义服务器下载测速url
         /// </summary>
-        public string speedTestUrl { get; set; }
+        public string speedTestUrl
+        {
+            get; set;
+        }
         /// <summary>
         /// 自定义“服务器真连接延迟”测试url
         /// </summary>
-        public string speedPingTestUrl { get; set; }
+        public string speedPingTestUrl
+        {
+            get; set;
+        }
         /// <summary>
-        /// 自定义GFWList url。空白则使用 Global.GFWLIST_URL
+        /// 自定义GFWList url
         /// </summary>
-        public string urlGFWList { get; set; }
+        public string urlGFWList
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 允许来自局域网的连接
         /// </summary>
-        public bool allowLANConn { get; set; }
+        public bool allowLANConn
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 启用实时网速和流量统计
         /// </summary>
-        public bool enableStatistics { get; set; }
+        public bool enableStatistics
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 去重时优先保留较旧（顶部）节点
         /// </summary>
-        public bool keepOlderDedupl { get; set; }
-
-        /// <summary>
-        /// 服务器列表隔行着色
-        /// </summary>
-        public bool interlaceColoring { get; set; }
+        public bool keepOlderDedupl
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 视图刷新率
         /// </summary>
-        public int statisticsFreshRate { get; set; }
+        public int statisticsFreshRate
+        {
+            get; set;
+        }
 
 
         /// <summary>
         /// 自定义远程DNS
         /// </summary>
-        public string remoteDNS { get; set; }
+        public string remoteDNS
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 是否允许不安全连接
         /// </summary>
-        public string defaultAllowInsecure { get; set; }
+        public string defaultAllowInsecure
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 订阅
         /// </summary>
-        public List<SubItem> subItem { get; set; }
+        public List<SubItem> subItem
+        {
+            get; set;
+        }
         /// <summary>
         /// UI
         /// </summary>
-        public UIItem uiItem { get; set; }
+        public UIItem uiItem
+        {
+            get; set;
+        }
 
-        public List<string> userPacRule { get; set; }
+        public List<string> userPacRule
+        {
+            get; set;
+        }
 
         #region 函数
 
@@ -389,77 +459,125 @@ namespace v2rayN.Mode
         /// <summary>
         /// 版本(现在=2)
         /// </summary>
-        public int configVersion { get; set; }
+        public int configVersion
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 远程服务器地址
         /// </summary>
-        public string address { get; set; }
+        public string address
+        {
+            get; set;
+        }
         /// <summary>
         /// 远程服务器端口
         /// </summary>
-        public int port { get; set; }
+        public int port
+        {
+            get; set;
+        }
         /// <summary>
         /// 远程服务器ID
         /// </summary>
-        public string id { get; set; }
+        public string id
+        {
+            get; set;
+        }
         /// <summary>
         /// 远程服务器额外ID
         /// </summary>
-        public int alterId { get; set; }
+        public int alterId
+        {
+            get; set;
+        }
         /// <summary>
         /// 本地安全策略
         /// </summary>
-        public string security { get; set; }
+        public string security
+        {
+            get; set;
+        }
         /// <summary>
         /// tcp,kcp,ws,h2,quic
         /// </summary>
-        public string network { get; set; }
+        public string network
+        {
+            get; set;
+        }
         /// <summary>
         /// 备注或别名
         /// </summary>
-        public string remarks { get; set; }
+        public string remarks
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 伪装类型
         /// </summary>
-        public string headerType { get; set; }
+        public string headerType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 伪装的域名
         /// </summary>
-        public string requestHost { get; set; }
+        public string requestHost
+        {
+            get; set;
+        }
 
         /// <summary>
         /// ws h2 path
         /// </summary>
-        public string path { get; set; }
+        public string path
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 底层传输安全
         /// </summary>
-        public string streamSecurity { get; set; }
+        public string streamSecurity
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 是否允许不安全连接（用于客户端）
         /// </summary>
-        public string allowInsecure { get; set; }
+        public string allowInsecure
+        {
+            get; set;
+        }
 
 
         /// <summary>
         /// config type(1=normal,2=custom)
         /// </summary>
-        public int configType { get; set; }
+        public int configType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public string testResult { get; set; }
+        public string testResult
+        {
+            get; set;
+        }
 
         /// <summary>
         /// SubItem id
         /// </summary>
-        public string subid { get; set; }
+        public string subid
+        {
+            get; set;
+        }
     }
 
     [Serializable]
@@ -468,17 +586,26 @@ namespace v2rayN.Mode
         /// <summary>
         /// 本地监听端口
         /// </summary>
-        public int localPort { get; set; }
+        public int localPort
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 协议，默认为socks
         /// </summary>
-        public string protocol { get; set; }
+        public string protocol
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 允许udp
         /// </summary>
-        public bool udpEnabled { get; set; }
+        public bool udpEnabled
+        {
+            get; set;
+        }
 
         /// <summary>
         /// 开启流量探测
@@ -492,31 +619,52 @@ namespace v2rayN.Mode
         /// <summary>
         /// 
         /// </summary>
-        public int mtu { get; set; }
+        public int mtu
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int tti { get; set; }
+        public int tti
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int uplinkCapacity { get; set; }
+        public int uplinkCapacity
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int downlinkCapacity { get; set; }
+        public int downlinkCapacity
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public bool congestion { get; set; }
+        public bool congestion
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int readBufferSize { get; set; }
+        public int readBufferSize
+        {
+            get; set;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public int writeBufferSize { get; set; }
+        public int writeBufferSize
+        {
+            get; set;
+        }
     }
 
 
@@ -526,15 +674,27 @@ namespace v2rayN.Mode
         /// <summary>
         /// 
         /// </summary>
-        public string id { get; set; }
+        public string id
+        {
+            get; set;
+        }
+
         /// <summary>
         /// 备注
         /// </summary>
-        public string remarks { get; set; }
+        public string remarks
+        {
+            get; set;
+        }
+
         /// <summary>
         /// url
         /// </summary>
-        public string url { get; set; }
+        public string url
+        {
+            get; set;
+        }
+
         /// <summary>
         /// enable
         /// </summary>
@@ -544,8 +704,16 @@ namespace v2rayN.Mode
     [Serializable]
     public class UIItem
     {
-        public System.Drawing.Size mainSize { get; set; }
-        public Dictionary<string, int> mainLvColWidth { get; set; }
-        public List<string> mainLvColLayout { get; set; }
+         
+
+        public System.Drawing.Size mainSize
+        {
+            get; set;
+        }
+
+        public Dictionary<string, int> mainLvColWidth
+        {
+            get; set;
+        }
     }
 }

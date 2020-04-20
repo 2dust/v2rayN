@@ -5,7 +5,10 @@ namespace v2rayN.Base
 {
     class WebClientEx : WebClient
     {
-        public int Timeout { get; set; }
+        public int Timeout
+        {
+            get; set;
+        }
         public WebClientEx(int timeout = 3000)
         {
             Timeout = timeout;

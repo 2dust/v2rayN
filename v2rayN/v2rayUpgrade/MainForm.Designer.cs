@@ -60,6 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(79, 64);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(205, 15);
@@ -69,6 +70,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(79, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(471, 15);

@@ -195,15 +195,15 @@ namespace v2rayN.Handler
 
                     switch (config.routingMode)
                     {
-                        case 0:
+                        case "0":
                             break;
-                        case 1:
+                        case "1":
                             routingGeo("ip", "private", Global.directTag, ref v2rayConfig);
                             break;
-                        case 2:
+                        case "2":
                             routingGeo("", "cn", Global.directTag, ref v2rayConfig);
                             break;
-                        case 3:
+                        case "3":
                             routingGeo("ip", "private", Global.directTag, ref v2rayConfig);
                             routingGeo("", "cn", Global.directTag, ref v2rayConfig);
                             break;

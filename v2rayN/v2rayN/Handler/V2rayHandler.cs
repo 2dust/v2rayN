@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -39,18 +38,21 @@ namespace v2rayN.Handler
         /// <summary>
         /// 载入V2ray
         /// </summary>
-        public Task LoadV2ray(Config config)
+        public void LoadV2ray(Config config)
         {
-            return Task.Run(() =>
+            if (Global.reloadV2ray)
             {
-                if (!Global.reloadV2ray) return;
-
                 string fileName = Utils.GetPath(v2rayConfigRes);
-                bool bOk = V2rayConfigHandler.GenerateClientConfig(config, fileName, false, out string msg) == 0;
-                ShowMsg(bOk, msg);
-                if (bOk)
+                if (V2rayConfigHandler.GenerateClientConfig(config, fileName, false, out string msg) != 0)
+                {
+                    ShowMsg(false, msg);
+                }
+                else
+                {
+                    ShowMsg(true, msg);
                     V2rayRestart();
-            });
+                }
+            }
         }
 
         /// <summary>
@@ -303,7 +305,6 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (p.HasExited) return;
                 p.CloseMainWindow();
                 p.WaitForExit(100);
                 if (!p.HasExited)

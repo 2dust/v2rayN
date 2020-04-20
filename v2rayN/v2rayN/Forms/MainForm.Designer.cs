@@ -55,7 +55,7 @@
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRealPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSpeedServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTestMe = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbTestMe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExport2ClientConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,8 +94,6 @@
             this.toolSslPacPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslPacPort = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslRouting = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslServerLatency = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -155,21 +153,20 @@
             // 
             // lvServers
             // 
-            this.lvServers.AllowColumnReorder = true;
             this.lvServers.ContextMenuStrip = this.cmsLv;
             resources.ApplyResources(this.lvServers, "lvServers");
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
+            this.lvServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvServers.HideSelection = false;
             this.lvServers.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvServers.Items")))});
+            this.lvServers.MultiSelect = false;
             this.lvServers.Name = "lvServers";
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
-            this.lvServers.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvServers_ColumnClick);
-            this.lvServers.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvServers_ColumnReordered);
-            this.lvServers.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvServers_ColumnWidthChanged);
             this.lvServers.SelectedIndexChanged += new System.EventHandler(this.lvServers_SelectedIndexChanged);
+            this.lvServers.Click += new System.EventHandler(this.lvServers_Click);
             this.lvServers.DoubleClick += new System.EventHandler(this.lvServers_DoubleClick);
             this.lvServers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvServers_KeyDown);
             // 
@@ -199,7 +196,7 @@
             this.menuTcpingServer,
             this.menuRealPingServer,
             this.menuSpeedServer,
-            this.menuTestMe,
+            this.tsbTestMe,
             this.toolStripSeparator6,
             this.menuExport2ClientConfig,
             this.menuExport2ServerConfig,
@@ -338,11 +335,11 @@
             resources.ApplyResources(this.menuSpeedServer, "menuSpeedServer");
             this.menuSpeedServer.Click += new System.EventHandler(this.menuSpeedServer_Click);
             // 
-            // menuTestMe
+            // tsbTestMe
             // 
-            this.menuTestMe.Name = "menuTestMe";
-            resources.ApplyResources(this.menuTestMe, "menuTestMe");
-            this.menuTestMe.Click += new System.EventHandler(this.menuTestMe_Click);
+            this.tsbTestMe.Name = "tsbTestMe";
+            resources.ApplyResources(this.tsbTestMe, "tsbTestMe");
+            this.tsbTestMe.Click += new System.EventHandler(this.tsbTestMe_Click);
             // 
             // toolStripSeparator6
             // 
@@ -536,7 +533,6 @@
             // 
             // ssMain
             // 
-            this.ssMain.AllowItemReorder = true;
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolSslSocksPortLab,
             this.toolSslSocksPort,
@@ -547,124 +543,65 @@
             this.toolSslPacPortLab,
             this.toolSslPacPort,
             this.toolSslBlank3,
-            this.toolSslRouting,
-            this.toolSslServerLatency,
             this.toolSslServerSpeed,
             this.toolSslBlank4});
             resources.ApplyResources(this.ssMain, "ssMain");
             this.ssMain.Name = "ssMain";
-            this.ssMain.ShowItemToolTips = true;
-            this.ssMain.TabStop = true;
             this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
             // 
             // toolSslSocksPortLab
             // 
-            this.toolSslSocksPortLab.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslSocksPortLab.Name = "toolSslSocksPortLab";
-            this.toolSslSocksPortLab.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslSocksPortLab, "toolSslSocksPortLab");
+            this.toolSslSocksPortLab.Name = "toolSslSocksPortLab";
             // 
             // toolSslSocksPort
             // 
-            this.toolSslSocksPort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslSocksPort.Name = "toolSslSocksPort";
-            this.toolSslSocksPort.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslSocksPort, "toolSslSocksPort");
             // 
             // toolSslBlank1
             // 
-            this.toolSslBlank1.AutoToolTip = true;
-            this.toolSslBlank1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolSslBlank1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSslBlank1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslBlank1.Name = "toolSslBlank1";
-            this.toolSslBlank1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
+            this.toolSslBlank1.Name = "toolSslBlank1";
             this.toolSslBlank1.Spring = true;
             // 
             // toolSslHttpPortLab
             // 
-            this.toolSslHttpPortLab.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
-            this.toolSslHttpPortLab.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
+            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
             // 
             // toolSslHttpPort
             // 
-            this.toolSslHttpPort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslHttpPort.Name = "toolSslHttpPort";
-            this.toolSslHttpPort.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslHttpPort, "toolSslHttpPort");
             // 
             // toolSslBlank2
             // 
-            this.toolSslBlank2.AutoToolTip = true;
-            this.toolSslBlank2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolSslBlank2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSslBlank2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslBlank2.Name = "toolSslBlank2";
-            this.toolSslBlank2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
+            this.toolSslBlank2.Name = "toolSslBlank2";
             this.toolSslBlank2.Spring = true;
             // 
             // toolSslPacPortLab
             // 
-            this.toolSslPacPortLab.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
-            this.toolSslPacPortLab.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslPacPortLab, "toolSslPacPortLab");
+            this.toolSslPacPortLab.Name = "toolSslPacPortLab";
             // 
             // toolSslPacPort
             // 
-            this.toolSslPacPort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslPacPort.Name = "toolSslPacPort";
-            this.toolSslPacPort.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslPacPort, "toolSslPacPort");
             // 
             // toolSslBlank3
             // 
-            this.toolSslBlank3.AutoToolTip = true;
-            this.toolSslBlank3.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolSslBlank3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSslBlank3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslBlank3.Name = "toolSslBlank3";
-            this.toolSslBlank3.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.toolSslBlank3, "toolSslBlank3");
+            this.toolSslBlank3.Name = "toolSslBlank3";
             this.toolSslBlank3.Spring = true;
-            // 
-            // toolSslRouting
-            // 
-            this.toolSslRouting.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolSslRouting.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSslRouting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslRouting.IsLink = true;
-            this.toolSslRouting.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.toolSslRouting.LinkColor = System.Drawing.SystemColors.ControlText;
-            this.toolSslRouting.Margin = new System.Windows.Forms.Padding(0, 3, 5, 2);
-            this.toolSslRouting.Name = "toolSslRouting";
-            this.toolSslRouting.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            resources.ApplyResources(this.toolSslRouting, "toolSslRouting");
-            this.toolSslRouting.Click += new System.EventHandler(this.toolSslRouting_Click);
-            // 
-            // toolSslServerLatency
-            // 
-            resources.ApplyResources(this.toolSslServerLatency, "toolSslServerLatency");
-            this.toolSslServerLatency.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolSslServerLatency.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolSslServerLatency.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolSslServerLatency.IsLink = true;
-            this.toolSslServerLatency.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.toolSslServerLatency.LinkColor = System.Drawing.SystemColors.ControlText;
-            this.toolSslServerLatency.Margin = new System.Windows.Forms.Padding(0, 3, 5, 2);
-            this.toolSslServerLatency.Name = "toolSslServerLatency";
-            this.toolSslServerLatency.Click += new System.EventHandler(this.toolSslServerLatency_Click);
             // 
             // toolSslServerSpeed
             // 
+            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
             this.toolSslServerSpeed.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolSslServerSpeed.Name = "toolSslServerSpeed";
-            resources.ApplyResources(this.toolSslServerSpeed, "toolSslServerSpeed");
-            this.toolSslServerSpeed.Click += new System.EventHandler(this.toolSslServerSpeed_Click);
             // 
             // toolSslBlank4
             // 
@@ -882,7 +819,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.scMain.Panel1.ResumeLayout(false);
@@ -996,11 +932,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsbV2rayWebsite;
         private System.Windows.Forms.ToolStripMenuItem menuKeepNothing;
         private System.Windows.Forms.ToolStripMenuItem menuKeepPACNothing;
-        private System.Windows.Forms.ToolStripMenuItem menuTestMe;
+        private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslServerLatency;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslRouting;
     }
 }
 

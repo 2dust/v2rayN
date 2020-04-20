@@ -484,7 +484,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Write PAC success 的本地化字符串。
+        ///   查找类似 Simplify PAC Success 的本地化字符串。
         /// </summary>
         internal static string MsgSimplifyPAC {
             get {
@@ -691,42 +691,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Bypass CN 的本地化字符串。
-        /// </summary>
-        internal static string RoutingModeBypassCN {
-            get {
-                return ResourceManager.GetString("RoutingModeBypassCN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Bypass LAN 的本地化字符串。
-        /// </summary>
-        internal static string RoutingModeBypassLAN {
-            get {
-                return ResourceManager.GetString("RoutingModeBypassLAN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Bypass LAN+CN 的本地化字符串。
-        /// </summary>
-        internal static string RoutingModeBypassLANCN {
-            get {
-                return ResourceManager.GetString("RoutingModeBypassLANCN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Global 的本地化字符串。
-        /// </summary>
-        internal static string RoutingModeGlobal {
-            get {
-                return ResourceManager.GetString("RoutingModeGlobal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 The client configuration file is saved at: {0} 的本地化字符串。
         /// </summary>
         internal static string SaveClientConfigurationIn {
@@ -741,15 +705,6 @@ namespace v2rayN.Resx {
         internal static string SaveServerConfigurationIn {
             get {
                 return ResourceManager.GetString("SaveServerConfigurationIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 ... 的本地化字符串。
-        /// </summary>
-        internal static string ServerLatencyChecking {
-            get {
-                return ResourceManager.GetString("ServerLatencyChecking", resourceCulture);
             }
         }
         
@@ -832,15 +787,6 @@ namespace v2rayN.Resx {
         internal static string TestMeOutput {
             get {
                 return ResourceManager.GetString("TestMeOutput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Latency: {0} 的本地化字符串。
-        /// </summary>
-        internal static string toolSslServerLatency {
-            get {
-                return ResourceManager.GetString("toolSslServerLatency", resourceCulture);
             }
         }
     }

@@ -55,7 +55,10 @@ namespace v2rayN.HttpProxyHandler
             }
         }
 
-        public int RunningPort { get; set; }
+        public int RunningPort
+        {
+            get; set;
+        }
 
         public void Restart(int localPort, Config config)
         {
@@ -138,7 +141,6 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                if (p.HasExited) return; // someting, while the GUI app is exiting.
                 p.CloseMainWindow();
                 p.WaitForExit(100);
                 if (!p.HasExited)

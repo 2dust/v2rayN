@@ -97,7 +97,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ListViewSort.cs" />
     <Compile Include="Forms\AddServer4Form.cs">
       <SubType>Form</SubType>
     </Compile>

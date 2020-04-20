@@ -118,130 +118,192 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="scMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
+  </data>
   <metadata name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>327, 17</value>
   </metadata>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="cmsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>137, 17</value>
-  </metadata>
-  <metadata name="bgwScan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>498, 17</value>
-  </metadata>
-  <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>228, 18</value>
-  </metadata>
-  <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>409, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>108</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+  <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>952, 593</value>
+  <data name="menuAddVmessServer.Text" xml:space="preserve">
+    <value>Add [VMess] server</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+  <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MainForm</value>
+  <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
+    <value>Add [Shadowsocks] server</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>v2rayN</value>
+  <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="menuAddSocksServer.Text" xml:space="preserve">
+    <value>Add [Socks] server</value>
   </data>
-  <data name="&gt;&gt;bgwScan.Name" xml:space="preserve">
-    <value>bgwScan</value>
+  <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
   </data>
-  <data name="&gt;&gt;bgwScan.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="menuAddCustomServer.Text" xml:space="preserve">
+    <value>Add a custom configuration server</value>
   </data>
-  <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
-    <value>cmsLv</value>
+  <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuAddServers.Text" xml:space="preserve">
+    <value>Import bulk URL from clipboard (Ctrl+V)</value>
+  </data>
+  <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuScanScreen.Text" xml:space="preserve">
+    <value>Scan QR code on the screen (Ctrl+S)</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>352, 6</value>
+  </data>
+  <data name="menuRemoveServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuRemoveServer.Text" xml:space="preserve">
+    <value>Remove selected servers (Delete)</value>
+  </data>
+  <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
+    <value>Remove duplicate servers</value>
+  </data>
+  <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuCopyServer.Text" xml:space="preserve">
+    <value>Clone selected server</value>
+  </data>
+  <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuSetDefaultServer.Text" xml:space="preserve">
+    <value>Set as active server (Enter)</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>352, 6</value>
+  </data>
+  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuMoveTop.Text" xml:space="preserve">
+    <value>Move to top (T)</value>
+  </data>
+  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuMoveUp.Text" xml:space="preserve">
+    <value>Up (U)</value>
+  </data>
+  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuMoveDown.Text" xml:space="preserve">
+    <value>Down (D)</value>
+  </data>
+  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuMoveBottom.Text" xml:space="preserve">
+    <value>Move to bottom (B)</value>
+  </data>
+  <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuSelectAll.Text" xml:space="preserve">
+    <value>Select All (Ctrl+A)</value>
+  </data>
+  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>352, 6</value>
+  </data>
+  <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuPingServer.Text" xml:space="preserve">
+    <value>Test servers ping (Ctrl+P)</value>
+  </data>
+  <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuTcpingServer.Text" xml:space="preserve">
+    <value>Test servers with tcping (Ctrl+O)</value>
+  </data>
+  <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuRealPingServer.Text" xml:space="preserve">
+    <value>Test servers real delay (Ctrl+R)</value>
+  </data>
+  <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuSpeedServer.Text" xml:space="preserve">
+    <value>Test servers download speed (Ctrl+T)</value>
+  </data>
+  <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="tsbTestMe.Text" xml:space="preserve">
+    <value>Test current service status</value>
+  </data>
+  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>352, 6</value>
+  </data>
+  <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuExport2ClientConfig.Text" xml:space="preserve">
+    <value>Export selected server for client configuration</value>
+  </data>
+  <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuExport2ServerConfig.Text" xml:space="preserve">
+    <value>Export selected server for server configuration</value>
+  </data>
+  <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuExport2ShareUrl.Text" xml:space="preserve">
+    <value>Export share URLs to clipboard (Ctrl+C)</value>
+  </data>
+  <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuExport2SubContent.Text" xml:space="preserve">
+    <value>Export subscription (base64) share to clipboard</value>
+  </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 556</value>
   </data>
+  <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
+    <value>cmsLv</value>
+  </data>
   <data name="&gt;&gt;cmsLv.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
-    <value>cmsMain</value>
-  </data>
-  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 164</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 66</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>952, 351</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Servers list</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 417</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>952, 176</value>
-  </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Informations</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="lvServers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -266,515 +328,36 @@
   <data name="lvServers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;lvServers.Name" xml:space="preserve">
-    <value>lvServers</value>
-  </data>
-  <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
-    <value>scMain.Panel1</value>
-  </data>
   <data name="lvServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>686, 331</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;lvServers.Name" xml:space="preserve">
+    <value>lvServers</value>
   </data>
   <data name="&gt;&gt;lvServers.Type" xml:space="preserve">
     <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="&gt;&gt;lvServers.Parent" xml:space="preserve">
+    <value>scMain.Panel1</value>
+  </data>
   <data name="&gt;&gt;lvServers.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;menuAddCustomServer.Name" xml:space="preserve">
-    <value>menuAddCustomServer</value>
+  <data name="&gt;&gt;scMain.Panel1.Name" xml:space="preserve">
+    <value>scMain.Panel1</value>
   </data>
-  <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
+  <data name="&gt;&gt;scMain.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="menuAddCustomServer.Text" xml:space="preserve">
-    <value>Add a custom configuration server</value>
+  <data name="&gt;&gt;scMain.Panel1.Parent" xml:space="preserve">
+    <value>scMain</value>
   </data>
-  <data name="&gt;&gt;menuAddCustomServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuAddServers.Name" xml:space="preserve">
-    <value>menuAddServers</value>
-  </data>
-  <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuAddServers.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard (Ctrl+V)</value>
-  </data>
-  <data name="&gt;&gt;menuAddServers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuAddServers2.Name" xml:space="preserve">
-    <value>menuAddServers2</value>
-  </data>
-  <data name="menuAddServers2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuAddServers2.Text" xml:space="preserve">
-    <value>Import bulk URL from clipboard</value>
-  </data>
-  <data name="&gt;&gt;menuAddServers2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuAddShadowsocksServer.Name" xml:space="preserve">
-    <value>menuAddShadowsocksServer</value>
-  </data>
-  <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
-    <value>Add [Shadowsocks] server</value>
-  </data>
-  <data name="&gt;&gt;menuAddShadowsocksServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuAddSocksServer.Name" xml:space="preserve">
-    <value>menuAddSocksServer</value>
-  </data>
-  <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuAddSocksServer.Text" xml:space="preserve">
-    <value>Add [Socks] server</value>
-  </data>
-  <data name="&gt;&gt;menuAddSocksServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuAddVmessServer.Name" xml:space="preserve">
-    <value>menuAddVmessServer</value>
-  </data>
-  <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuAddVmessServer.Text" xml:space="preserve">
-    <value>Add [VMess] server</value>
-  </data>
-  <data name="&gt;&gt;menuAddVmessServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuCopyPACUrl.Name" xml:space="preserve">
-    <value>menuCopyPACUrl</value>
-  </data>
-  <data name="menuCopyPACUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuCopyPACUrl.Text" xml:space="preserve">
-    <value>Copy local PAC URL</value>
-  </data>
-  <data name="&gt;&gt;menuCopyPACUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuCopyServer.Name" xml:space="preserve">
-    <value>menuCopyServer</value>
-  </data>
-  <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuCopyServer.Text" xml:space="preserve">
-    <value>Clone selected server</value>
-  </data>
-  <data name="&gt;&gt;menuCopyServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuExit.Name" xml:space="preserve">
-    <value>menuExit</value>
-  </data>
-  <data name="menuExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuExit.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="&gt;&gt;menuExit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ClientConfig.Name" xml:space="preserve">
-    <value>menuExport2ClientConfig</value>
-  </data>
-  <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuExport2ClientConfig.Text" xml:space="preserve">
-    <value>Export selected server for client configuration</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ClientConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ServerConfig.Name" xml:space="preserve">
-    <value>menuExport2ServerConfig</value>
-  </data>
-  <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuExport2ServerConfig.Text" xml:space="preserve">
-    <value>Export selected server for server configuration</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ServerConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ShareUrl.Name" xml:space="preserve">
-    <value>menuExport2ShareUrl</value>
-  </data>
-  <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuExport2ShareUrl.Text" xml:space="preserve">
-    <value>Export share URLs to clipboard (Ctrl+C)</value>
-  </data>
-  <data name="&gt;&gt;menuExport2ShareUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuExport2SubContent.Name" xml:space="preserve">
-    <value>menuExport2SubContent</value>
-  </data>
-  <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuExport2SubContent.Text" xml:space="preserve">
-    <value>Export subscription (base64) share to clipboard</value>
-  </data>
-  <data name="&gt;&gt;menuExport2SubContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuGlobal.Name" xml:space="preserve">
-    <value>menuGlobal</value>
-  </data>
-  <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuGlobal.Text" xml:space="preserve">
-    <value>Open Http proxy and set the system proxy (global mode)</value>
-  </data>
-  <data name="&gt;&gt;menuGlobal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuGlobalPAC.Name" xml:space="preserve">
-    <value>menuGlobalPAC</value>
-  </data>
-  <data name="menuGlobalPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuGlobalPAC.Text" xml:space="preserve">
-    <value>Open PAC and set the system proxy (PAC mode)</value>
-  </data>
-  <data name="&gt;&gt;menuGlobalPAC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuKeep.Name" xml:space="preserve">
-    <value>menuKeep</value>
-  </data>
-  <data name="menuKeep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuKeep.Text" xml:space="preserve">
-    <value>Only open Http proxy and clear the proxy settings</value>
-  </data>
-  <data name="&gt;&gt;menuKeep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuKeepNothing.Name" xml:space="preserve">
-    <value>menuKeepNothing</value>
-  </data>
-  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuKeepNothing.Text" xml:space="preserve">
-    <value>Only open Http proxy and do nothing</value>
-  </data>
-  <data name="&gt;&gt;menuKeepNothing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuKeepPAC.Name" xml:space="preserve">
-    <value>menuKeepPAC</value>
-  </data>
-  <data name="menuKeepPAC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuKeepPAC.Text" xml:space="preserve">
-    <value>Only open PAC and clear the proxy settings</value>
-  </data>
-  <data name="&gt;&gt;menuKeepPAC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuKeepPACNothing.Name" xml:space="preserve">
-    <value>menuKeepPACNothing</value>
-  </data>
-  <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuKeepPACNothing.Text" xml:space="preserve">
-    <value>Only open PAC and do nothing</value>
-  </data>
-  <data name="&gt;&gt;menuKeepPACNothing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMoveBottom.Name" xml:space="preserve">
-    <value>menuMoveBottom</value>
-  </data>
-  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>Move to bottom (B)</value>
-  </data>
-  <data name="&gt;&gt;menuMoveBottom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMoveDown.Name" xml:space="preserve">
-    <value>menuMoveDown</value>
-  </data>
-  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuMoveDown.Text" xml:space="preserve">
-    <value>Down (D)</value>
-  </data>
-  <data name="&gt;&gt;menuMoveDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMoveTop.Name" xml:space="preserve">
-    <value>menuMoveTop</value>
-  </data>
-  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>Move to top (T)</value>
-  </data>
-  <data name="&gt;&gt;menuMoveTop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMoveUp.Name" xml:space="preserve">
-    <value>menuMoveUp</value>
-  </data>
-  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuMoveUp.Text" xml:space="preserve">
-    <value>Up (U)</value>
-  </data>
-  <data name="&gt;&gt;menuMoveUp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuNotEnabledHttp.Name" xml:space="preserve">
-    <value>menuNotEnabledHttp</value>
-  </data>
-  <data name="menuNotEnabledHttp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
-  </data>
-  <data name="menuNotEnabledHttp.Text" xml:space="preserve">
-    <value>Not Enabled Http Proxy</value>
-  </data>
-  <data name="&gt;&gt;menuNotEnabledHttp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuPingServer.Name" xml:space="preserve">
-    <value>menuPingServer</value>
-  </data>
-  <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuPingServer.Text" xml:space="preserve">
-    <value>Test servers ping (Ctrl+P)</value>
-  </data>
-  <data name="&gt;&gt;menuPingServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuRealPingServer.Name" xml:space="preserve">
-    <value>menuRealPingServer</value>
-  </data>
-  <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuRealPingServer.Text" xml:space="preserve">
-    <value>Test servers real delay (Ctrl+R)</value>
-  </data>
-  <data name="&gt;&gt;menuRealPingServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuRemoveDuplicateServer.Name" xml:space="preserve">
-    <value>menuRemoveDuplicateServer</value>
-  </data>
-  <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
-    <value>Remove duplicate servers</value>
-  </data>
-  <data name="&gt;&gt;menuRemoveDuplicateServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuRemoveServer.Name" xml:space="preserve">
-    <value>menuRemoveServer</value>
-  </data>
-  <data name="menuRemoveServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuRemoveServer.Text" xml:space="preserve">
-    <value>Remove selected servers (Delete)</value>
-  </data>
-  <data name="&gt;&gt;menuRemoveServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuScanScreen.Name" xml:space="preserve">
-    <value>menuScanScreen</value>
-  </data>
-  <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuScanScreen.Text" xml:space="preserve">
-    <value>Scan QR code on the screen (Ctrl+S)</value>
-  </data>
-  <data name="&gt;&gt;menuScanScreen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuScanScreen2.Name" xml:space="preserve">
-    <value>menuScanScreen2</value>
-  </data>
-  <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuScanScreen2.Text" xml:space="preserve">
-    <value>Scan QR code on the screen</value>
-  </data>
-  <data name="&gt;&gt;menuScanScreen2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuSelectAll.Name" xml:space="preserve">
-    <value>menuSelectAll</value>
-  </data>
-  <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuSelectAll.Text" xml:space="preserve">
-    <value>Select All (Ctrl+A)</value>
-  </data>
-  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuServers.Name" xml:space="preserve">
-    <value>menuServers</value>
-  </data>
-  <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuServers.Text" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="&gt;&gt;menuServers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuSetDefaultServer.Name" xml:space="preserve">
-    <value>menuSetDefaultServer</value>
-  </data>
-  <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuSetDefaultServer.Text" xml:space="preserve">
-    <value>Set as active server (Enter)</value>
-  </data>
-  <data name="&gt;&gt;menuSetDefaultServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuSpeedServer.Name" xml:space="preserve">
-    <value>menuSpeedServer</value>
-  </data>
-  <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuSpeedServer.Text" xml:space="preserve">
-    <value>Test servers download speed (Ctrl+T)</value>
-  </data>
-  <data name="&gt;&gt;menuSpeedServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuSysAgentMode.Name" xml:space="preserve">
-    <value>menuSysAgentMode</value>
-  </data>
-  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>Http proxy</value>
-  </data>
-  <data name="&gt;&gt;menuSysAgentMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuTcpingServer.Name" xml:space="preserve">
-    <value>menuTcpingServer</value>
-  </data>
-  <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuTcpingServer.Text" xml:space="preserve">
-    <value>Test servers with tcping (Ctrl+O)</value>
-  </data>
-  <data name="&gt;&gt;menuTcpingServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuTestMe.Name" xml:space="preserve">
-    <value>menuTestMe</value>
-  </data>
-  <data name="menuTestMe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
-  </data>
-  <data name="menuTestMe.Text" xml:space="preserve">
-    <value>Test current service status</value>
-  </data>
-  <data name="&gt;&gt;menuTestMe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuUpdateSubscriptions.Name" xml:space="preserve">
-    <value>menuUpdateSubscriptions</value>
-  </data>
-  <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
-  </data>
-  <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
-    <value>Update subscriptions</value>
-  </data>
-  <data name="&gt;&gt;menuUpdateSubscriptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;notifyMain.Name" xml:space="preserve">
-    <value>notifyMain</value>
-  </data>
-  <data name="notifyMain.Text" xml:space="preserve">
-    <value>v2rayN</value>
-  </data>
-  <data name="&gt;&gt;notifyMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 56</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>952, 10</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;scMain.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="qrCodeControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -782,62 +365,38 @@
   <data name="qrCodeControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;qrCodeControl.Name" xml:space="preserve">
-    <value>qrCodeControl</value>
-  </data>
-  <data name="&gt;&gt;qrCodeControl.Parent" xml:space="preserve">
-    <value>scMain.Panel2</value>
-  </data>
   <data name="qrCodeControl.Size" type="System.Drawing.Size, System.Drawing">
     <value>256, 331</value>
   </data>
   <data name="qrCodeControl.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;qrCodeControl.Name" xml:space="preserve">
+    <value>qrCodeControl</value>
+  </data>
   <data name="&gt;&gt;qrCodeControl.Type" xml:space="preserve">
     <value>v2rayN.Forms.QRCodeControl, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="&gt;&gt;qrCodeControl.Parent" xml:space="preserve">
+    <value>scMain.Panel2</value>
+  </data>
   <data name="&gt;&gt;qrCodeControl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="scMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
-  </data>
-  <data name="&gt;&gt;scMain.Name" xml:space="preserve">
-    <value>scMain</value>
-  </data>
-  <data name="&gt;&gt;scMain.Panel1.Name" xml:space="preserve">
-    <value>scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;scMain.Panel1.Parent" xml:space="preserve">
-    <value>scMain</value>
-  </data>
-  <data name="&gt;&gt;scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;scMain.Panel2.Name" xml:space="preserve">
     <value>scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;scMain.Panel2.Parent" xml:space="preserve">
-    <value>scMain</value>
-  </data>
   <data name="&gt;&gt;scMain.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scMain.Panel2.Parent" xml:space="preserve">
+    <value>scMain</value>
   </data>
   <data name="&gt;&gt;scMain.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="scMain.Panel2MinSize" type="System.Int32, mscorlib">
     <value>100</value>
-  </data>
-  <data name="&gt;&gt;scMain.Parent" xml:space="preserve">
-    <value>groupBox1</value>
   </data>
   <data name="scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>946, 331</value>
@@ -848,155 +407,260 @@
   <data name="scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;scMain.Name" xml:space="preserve">
+    <value>scMain</value>
+  </data>
   <data name="&gt;&gt;scMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scMain.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="ssMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 147</value>
+  <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="cmsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>137, 17</value>
+  </metadata>
+  <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;ssMain.Name" xml:space="preserve">
-    <value>ssMain</value>
+  <data name="menuNotEnabledHttp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
   </data>
-  <data name="&gt;&gt;ssMain.Parent" xml:space="preserve">
+  <data name="menuNotEnabledHttp.Text" xml:space="preserve">
+    <value>Not Enabled Http Proxy</value>
+  </data>
+  <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuGlobal.Text" xml:space="preserve">
+    <value>Open Http proxy and set the system proxy (global mode)</value>
+  </data>
+  <data name="menuGlobalPAC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuGlobalPAC.Text" xml:space="preserve">
+    <value>Open PAC and set the system proxy (PAC mode)</value>
+  </data>
+  <data name="menuKeep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeep.Text" xml:space="preserve">
+    <value>Only open Http proxy and clear the proxy settings</value>
+  </data>
+  <data name="menuKeepPAC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeepPAC.Text" xml:space="preserve">
+    <value>Only open PAC and clear the proxy settings</value>
+  </data>
+  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>Only open Http proxy and do nothing</value>
+  </data>
+  <data name="menuKeepPACNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 22</value>
+  </data>
+  <data name="menuKeepPACNothing.Text" xml:space="preserve">
+    <value>Only open PAC and do nothing</value>
+  </data>
+  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuSysAgentMode.Text" xml:space="preserve">
+    <value>Http proxy</value>
+  </data>
+  <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuServers.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="menuAddServers2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuAddServers2.Text" xml:space="preserve">
+    <value>Import bulk URL from clipboard</value>
+  </data>
+  <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuScanScreen2.Text" xml:space="preserve">
+    <value>Scan QR code on the screen</value>
+  </data>
+  <data name="menuCopyPACUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuCopyPACUrl.Text" xml:space="preserve">
+    <value>Copy local PAC URL</value>
+  </data>
+  <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
+    <value>Update subscriptions</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>261, 6</value>
+  </data>
+  <data name="menuExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 164</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
+    <value>cmsMain</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="notifyMain.Text" xml:space="preserve">
+    <value>v2rayN</value>
+  </data>
+  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <metadata name="bgwScan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>498, 17</value>
+  </metadata>
+  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 66</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>952, 351</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Servers list</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="txtMsgBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="txtMsgBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
+  </data>
+  <data name="txtMsgBox.MaxLength" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="txtMsgBox.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txtMsgBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="txtMsgBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>946, 134</value>
+  </data>
+  <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
+    <value>txtMsgBox</value>
+  </data>
+  <data name="&gt;&gt;txtMsgBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtMsgBox.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>946, 26</value>
+  <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>228, 18</value>
+  </metadata>
+  <data name="toolSslSocksPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
-  <data name="ssMain.Text" xml:space="preserve">
-    <value>statusStrip1</value>
+  <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 17</value>
   </data>
-  <data name="&gt;&gt;ssMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolSslSocksPortLab.Text" xml:space="preserve">
+    <value>SOCKS5:</value>
   </data>
-  <data name="&gt;&gt;ssMain.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslBlank1.Name" xml:space="preserve">
-    <value>toolSslBlank1</value>
+  <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
+    <value>195, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
-    <value>toolSslBlank2</value>
-  </data>
-  <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank3.Name" xml:space="preserve">
-    <value>toolSslBlank3</value>
-  </data>
-  <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 21</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank4.Name" xml:space="preserve">
-    <value>toolSslBlank4</value>
-  </data>
-  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPort.Name" xml:space="preserve">
-    <value>toolSslHttpPort</value>
-  </data>
-  <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPortLab.Name" xml:space="preserve">
-    <value>toolSslHttpPortLab</value>
+  <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 21</value>
+    <value>39, 17</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
     <value>HTTP:</value>
   </data>
-  <data name="&gt;&gt;toolSslHttpPortLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslPacPort.Name" xml:space="preserve">
-    <value>toolSslPacPort</value>
+  <data name="toolSslBlank2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
-  <data name="toolSslPacPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
+  <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslPacPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslPacPortLab.Name" xml:space="preserve">
-    <value>toolSslPacPortLab</value>
+  <data name="toolSslPacPortLab.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslPacPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 21</value>
+    <value>33, 17</value>
   </data>
   <data name="toolSslPacPortLab.Text" xml:space="preserve">
     <value>PAC:</value>
   </data>
-  <data name="&gt;&gt;toolSslPacPortLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolSslPacPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslRouting.Name" xml:space="preserve">
-    <value>toolSslRouting</value>
+  <data name="toolSslBlank3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
-  <data name="toolSslRouting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+  <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 17</value>
   </data>
-  <data name="toolSslRouting.Text" xml:space="preserve">
-    <value>Routing Mode</value>
-  </data>
-  <data name="toolSslRouting.ToolTipText" xml:space="preserve">
-    <value>The Core's routing mode</value>
-  </data>
-  <data name="&gt;&gt;toolSslRouting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolSslServerLatency.AutoSize" type="System.Boolean, mscorlib">
+  <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;toolSslServerLatency.Name" xml:space="preserve">
-    <value>toolSslServerLatency</value>
+  <data name="toolSslServerSpeed.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
-  <data name="toolSslServerLatency.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
-  </data>
-  <data name="toolSslServerLatency.Text" xml:space="preserve">
-    <value>Latency:</value>
-  </data>
-  <data name="toolSslServerLatency.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="toolSslServerLatency.ToolTipText" xml:space="preserve">
-    <value>The http proxy's latency time.</value>
-  </data>
-  <data name="&gt;&gt;toolSslServerLatency.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
-    <value>toolSslServerSpeed</value>
+  <data name="toolSslServerSpeed.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
   </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 21</value>
+    <value>220, 17</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
@@ -1004,333 +668,116 @@
   <data name="toolSslServerSpeed.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 17</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPort.Name" xml:space="preserve">
-    <value>toolSslSocksPort</value>
+  <data name="ssMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 151</value>
   </data>
-  <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
+  <data name="ssMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>946, 22</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPortLab.Name" xml:space="preserve">
-    <value>toolSslSocksPortLab</value>
+  <data name="ssMain.Text" xml:space="preserve">
+    <value>statusStrip1</value>
   </data>
-  <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 21</value>
+  <data name="&gt;&gt;ssMain.Name" xml:space="preserve">
+    <value>ssMain</value>
   </data>
-  <data name="toolSslSocksPortLab.Text" xml:space="preserve">
-    <value>SOCKS5:</value>
+  <data name="&gt;&gt;ssMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPortLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;ssMain.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
+  <data name="&gt;&gt;ssMain.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 6</value>
+  <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 417</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
-    <value>toolStripSeparator10</value>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>952, 176</value>
   </data>
-  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 56</value>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Informations</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
-    <value>toolStripSeparator11</value>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
-  <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 56</value>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">
-    <value>toolStripSeparator12</value>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 6</value>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 56</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator13.Name" xml:space="preserve">
-    <value>toolStripSeparator13</value>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>952, 10</value>
   </data>
-  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>390, 6</value>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 6</value>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
-    <value>toolStripSeparator3</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 6</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
-    <value>toolStripSeparator4</value>
-  </data>
+  <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>409, 17</value>
+  </metadata>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator5.Name" xml:space="preserve">
-    <value>toolStripSeparator5</value>
-  </data>
-  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 56</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator6.Name" xml:space="preserve">
-    <value>toolStripSeparator6</value>
-  </data>
-  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 6</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator7.Name" xml:space="preserve">
-    <value>toolStripSeparator7</value>
-  </data>
-  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 56</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
-    <value>toolStripSeparator8</value>
-  </data>
-  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 56</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">
-    <value>toolStripSeparator9</value>
-  </data>
-  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>352, 6</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbAbout.Name" xml:space="preserve">
-    <value>tsbAbout</value>
-  </data>
-  <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbAbout.Text" xml:space="preserve">
-    <value>v2rayN Project</value>
-  </data>
-  <data name="&gt;&gt;tsbAbout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckClearPACList.Name" xml:space="preserve">
-    <value>tsbCheckClearPACList</value>
-  </data>
-  <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>393, 22</value>
-  </data>
-  <data name="tsbCheckClearPACList.Text" xml:space="preserve">
-    <value>Make PAC pass-through to Core route rules</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckClearPACList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdate.Name" xml:space="preserve">
-    <value>tsbCheckUpdate</value>
-  </data>
-  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 53</value>
-  </data>
-  <data name="tsbCheckUpdate.Text" xml:space="preserve">
-    <value>Check for updates</value>
-  </data>
-  <data name="tsbCheckUpdate.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateCore.Name" xml:space="preserve">
-    <value>tsbCheckUpdateCore</value>
-  </data>
-  <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>393, 22</value>
-  </data>
-  <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>Update v2rayCore</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateCore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateN.Name" xml:space="preserve">
-    <value>tsbCheckUpdateN</value>
-  </data>
-  <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>393, 22</value>
-  </data>
-  <data name="tsbCheckUpdateN.Text" xml:space="preserve">
-    <value>v2rayN (this software)</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateN.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdatePACList.Name" xml:space="preserve">
-    <value>tsbCheckUpdatePACList</value>
-  </data>
-  <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>393, 22</value>
-  </data>
-  <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
-    <value>Check for updated PAC (need the HTTP proxy are ON)</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdatePACList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
-        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="tsbClose.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;tsbClose.Name" xml:space="preserve">
-    <value>tsbClose</value>
-  </data>
-  <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 53</value>
-  </data>
-  <data name="tsbClose.Text" xml:space="preserve">
-    <value> Close </value>
-  </data>
-  <data name="tsbClose.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsbHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;tsbHelp.Name" xml:space="preserve">
-    <value>tsbHelp</value>
-  </data>
-  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 53</value>
-  </data>
-  <data name="tsbHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="tsbHelp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="&gt;&gt;tsbHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbLanguageDef.Name" xml:space="preserve">
-    <value>tsbLanguageDef</value>
-  </data>
-  <data name="tsbLanguageDef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbLanguageDef.Text" xml:space="preserve">
-    <value>Language-[English]</value>
-  </data>
-  <data name="&gt;&gt;tsbLanguageDef.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbLanguageZhHans.Name" xml:space="preserve">
-    <value>tsbLanguageZhHans</value>
-  </data>
-  <data name="tsbLanguageZhHans.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbLanguageZhHans.Text" xml:space="preserve">
-    <value>语言-[中文简体]</value>
-  </data>
-  <data name="&gt;&gt;tsbLanguageZhHans.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsbOptionSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;tsbOptionSetting.Name" xml:space="preserve">
-    <value>tsbOptionSetting</value>
-  </data>
-  <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 53</value>
-  </data>
-  <data name="tsbOptionSetting.Text" xml:space="preserve">
+  <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="tsbOptionSetting.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 22</value>
   </data>
-  <data name="&gt;&gt;tsbOptionSetting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tsbSubUpdate.Text" xml:space="preserve">
+    <value>Updates</value>
   </data>
-  <data name="tsbPromotion.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;tsbPromotion.Name" xml:space="preserve">
-    <value>tsbPromotion</value>
+  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 53</value>
   </data>
-  <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 53</value>
+  <data name="tsbSub.Text" xml:space="preserve">
+    <value>Subscriptions</value>
   </data>
-  <data name="tsbPromotion.Text" xml:space="preserve">
-    <value>  Promotion  </value>
-  </data>
-  <data name="tsbPromotion.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="tsbSub.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
-  </data>
-  <data name="&gt;&gt;tsbPromotion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tsbQRCodeSwitch.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;tsbQRCodeSwitch.Name" xml:space="preserve">
-    <value>tsbQRCodeSwitch</value>
   </data>
   <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 53</value>
@@ -1344,8 +791,23 @@
   <data name="tsbQRCodeSwitch.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="&gt;&gt;tsbQRCodeSwitch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 56</value>
+  </data>
+  <data name="tsbOptionSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 53</value>
+  </data>
+  <data name="tsbOptionSetting.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="tsbOptionSetting.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 56</value>
   </data>
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1364,9 +826,6 @@
   <data name="tsbReload.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;tsbReload.Name" xml:space="preserve">
-    <value>tsbReload</value>
-  </data>
   <data name="tsbReload.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 53</value>
   </data>
@@ -1376,71 +835,56 @@
   <data name="tsbReload.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="&gt;&gt;tsbReload.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 56</value>
   </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 22</value>
+  </data>
+  <data name="tsbCheckUpdateN.Text" xml:space="preserve">
+    <value>v2rayN (this software)</value>
+  </data>
+  <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 22</value>
+  </data>
+  <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
+    <value>Update v2rayCore</value>
+  </data>
+  <data name="tsbCheckUpdatePACList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 22</value>
+  </data>
+  <data name="tsbCheckUpdatePACList.Text" xml:space="preserve">
+    <value>Check for updated PAC (need the HTTP proxy are ON)</value>
+  </data>
+  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>390, 6</value>
+  </data>
+  <data name="tsbCheckClearPACList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 22</value>
+  </data>
+  <data name="tsbCheckClearPACList.Text" xml:space="preserve">
+    <value>Simplify PAC (need to set Core route)</value>
+  </data>
+  <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;tsbServer.Name" xml:space="preserve">
-    <value>tsbServer</value>
+  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 53</value>
   </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
+  <data name="tsbCheckUpdate.Text" xml:space="preserve">
+    <value>Check for updates</value>
   </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="tsbCheckUpdate.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="&gt;&gt;tsbServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 56</value>
   </data>
-  <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
   </data>
-  <data name="&gt;&gt;tsbSub.Name" xml:space="preserve">
-    <value>tsbSub</value>
-  </data>
-  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 53</value>
-  </data>
-  <data name="tsbSub.Text" xml:space="preserve">
-    <value>Subscriptions</value>
-  </data>
-  <data name="tsbSub.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="&gt;&gt;tsbSub.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbSubSetting.Name" xml:space="preserve">
-    <value>tsbSubSetting</value>
-  </data>
-  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 22</value>
-  </data>
-  <data name="tsbSubSetting.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="&gt;&gt;tsbSubSetting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbSubUpdate.Name" xml:space="preserve">
-    <value>tsbSubUpdate</value>
-  </data>
-  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 22</value>
-  </data>
-  <data name="tsbSubUpdate.Text" xml:space="preserve">
-    <value>Updates</value>
-  </data>
-  <data name="&gt;&gt;tsbSubUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
-    <value>tsbV2rayWebsite</value>
+  <data name="tsbAbout.Text" xml:space="preserve">
+    <value>v2rayN Project</value>
   </data>
   <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 22</value>
@@ -1448,17 +892,69 @@
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray Website</value>
   </data>
-  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 6</value>
+  </data>
+  <data name="tsbLanguageDef.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbLanguageDef.Text" xml:space="preserve">
+    <value>Language-[English]</value>
+  </data>
+  <data name="tsbLanguageZhHans.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbLanguageZhHans.Text" xml:space="preserve">
+    <value>语言-[中文简体]</value>
+  </data>
+  <data name="tsbHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 53</value>
+  </data>
+  <data name="tsbHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="tsbHelp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
+  <data name="tsbPromotion.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 53</value>
+  </data>
+  <data name="tsbPromotion.Text" xml:space="preserve">
+    <value>  Promotion  </value>
+  </data>
+  <data name="tsbPromotion.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
+  <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 56</value>
+  </data>
+  <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
+        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="tsbClose.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 53</value>
+  </data>
+  <data name="tsbClose.Text" xml:space="preserve">
+    <value> Close </value>
+  </data>
+  <data name="tsbClose.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;tsMain.Name" xml:space="preserve">
-    <value>tsMain</value>
-  </data>
-  <data name="&gt;&gt;tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="tsMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>952, 56</value>
@@ -1466,43 +962,538 @@
   <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;tsMain.Name" xml:space="preserve">
+    <value>tsMain</value>
+  </data>
   <data name="&gt;&gt;tsMain.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="txtMsgBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="txtMsgBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
-  </data>
-  <data name="txtMsgBox.MaxLength" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="txtMsgBox.Multiline" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>108</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
-  <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
-    <value>txtMsgBox</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>952, 593</value>
   </data>
-  <data name="&gt;&gt;txtMsgBox.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
-  <data name="txtMsgBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>v2rayN</value>
   </data>
-  <data name="txtMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>946, 130</value>
+  <data name="&gt;&gt;menuAddVmessServer.Name" xml:space="preserve">
+    <value>menuAddVmessServer</value>
   </data>
-  <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;menuAddVmessServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtMsgBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;menuAddShadowsocksServer.Name" xml:space="preserve">
+    <value>menuAddShadowsocksServer</value>
   </data>
-  <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;menuAddShadowsocksServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuAddSocksServer.Name" xml:space="preserve">
+    <value>menuAddSocksServer</value>
+  </data>
+  <data name="&gt;&gt;menuAddSocksServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuAddCustomServer.Name" xml:space="preserve">
+    <value>menuAddCustomServer</value>
+  </data>
+  <data name="&gt;&gt;menuAddCustomServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuAddServers.Name" xml:space="preserve">
+    <value>menuAddServers</value>
+  </data>
+  <data name="&gt;&gt;menuAddServers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuScanScreen.Name" xml:space="preserve">
+    <value>menuScanScreen</value>
+  </data>
+  <data name="&gt;&gt;menuScanScreen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveServer.Name" xml:space="preserve">
+    <value>menuRemoveServer</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveDuplicateServer.Name" xml:space="preserve">
+    <value>menuRemoveDuplicateServer</value>
+  </data>
+  <data name="&gt;&gt;menuRemoveDuplicateServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuCopyServer.Name" xml:space="preserve">
+    <value>menuCopyServer</value>
+  </data>
+  <data name="&gt;&gt;menuCopyServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuSetDefaultServer.Name" xml:space="preserve">
+    <value>menuSetDefaultServer</value>
+  </data>
+  <data name="&gt;&gt;menuSetDefaultServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuMoveTop.Name" xml:space="preserve">
+    <value>menuMoveTop</value>
+  </data>
+  <data name="&gt;&gt;menuMoveTop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuMoveUp.Name" xml:space="preserve">
+    <value>menuMoveUp</value>
+  </data>
+  <data name="&gt;&gt;menuMoveUp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuMoveDown.Name" xml:space="preserve">
+    <value>menuMoveDown</value>
+  </data>
+  <data name="&gt;&gt;menuMoveDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuMoveBottom.Name" xml:space="preserve">
+    <value>menuMoveBottom</value>
+  </data>
+  <data name="&gt;&gt;menuMoveBottom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuSelectAll.Name" xml:space="preserve">
+    <value>menuSelectAll</value>
+  </data>
+  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">
+    <value>toolStripSeparator9</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuPingServer.Name" xml:space="preserve">
+    <value>menuPingServer</value>
+  </data>
+  <data name="&gt;&gt;menuPingServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuTcpingServer.Name" xml:space="preserve">
+    <value>menuTcpingServer</value>
+  </data>
+  <data name="&gt;&gt;menuTcpingServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuRealPingServer.Name" xml:space="preserve">
+    <value>menuRealPingServer</value>
+  </data>
+  <data name="&gt;&gt;menuRealPingServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuSpeedServer.Name" xml:space="preserve">
+    <value>menuSpeedServer</value>
+  </data>
+  <data name="&gt;&gt;menuSpeedServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbTestMe.Name" xml:space="preserve">
+    <value>tsbTestMe</value>
+  </data>
+  <data name="&gt;&gt;tsbTestMe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator6.Name" xml:space="preserve">
+    <value>toolStripSeparator6</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ClientConfig.Name" xml:space="preserve">
+    <value>menuExport2ClientConfig</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ClientConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ServerConfig.Name" xml:space="preserve">
+    <value>menuExport2ServerConfig</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ServerConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ShareUrl.Name" xml:space="preserve">
+    <value>menuExport2ShareUrl</value>
+  </data>
+  <data name="&gt;&gt;menuExport2ShareUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuExport2SubContent.Name" xml:space="preserve">
+    <value>menuExport2SubContent</value>
+  </data>
+  <data name="&gt;&gt;menuExport2SubContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbServer.Name" xml:space="preserve">
+    <value>tsbServer</value>
+  </data>
+  <data name="&gt;&gt;tsbServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notifyMain.Name" xml:space="preserve">
+    <value>notifyMain</value>
+  </data>
+  <data name="&gt;&gt;notifyMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuSysAgentMode.Name" xml:space="preserve">
+    <value>menuSysAgentMode</value>
+  </data>
+  <data name="&gt;&gt;menuSysAgentMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuNotEnabledHttp.Name" xml:space="preserve">
+    <value>menuNotEnabledHttp</value>
+  </data>
+  <data name="&gt;&gt;menuNotEnabledHttp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuGlobal.Name" xml:space="preserve">
+    <value>menuGlobal</value>
+  </data>
+  <data name="&gt;&gt;menuGlobal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuGlobalPAC.Name" xml:space="preserve">
+    <value>menuGlobalPAC</value>
+  </data>
+  <data name="&gt;&gt;menuGlobalPAC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuKeep.Name" xml:space="preserve">
+    <value>menuKeep</value>
+  </data>
+  <data name="&gt;&gt;menuKeep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPAC.Name" xml:space="preserve">
+    <value>menuKeepPAC</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPAC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuKeepNothing.Name" xml:space="preserve">
+    <value>menuKeepNothing</value>
+  </data>
+  <data name="&gt;&gt;menuKeepNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPACNothing.Name" xml:space="preserve">
+    <value>menuKeepPACNothing</value>
+  </data>
+  <data name="&gt;&gt;menuKeepPACNothing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuServers.Name" xml:space="preserve">
+    <value>menuServers</value>
+  </data>
+  <data name="&gt;&gt;menuServers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuAddServers2.Name" xml:space="preserve">
+    <value>menuAddServers2</value>
+  </data>
+  <data name="&gt;&gt;menuAddServers2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuScanScreen2.Name" xml:space="preserve">
+    <value>menuScanScreen2</value>
+  </data>
+  <data name="&gt;&gt;menuScanScreen2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuCopyPACUrl.Name" xml:space="preserve">
+    <value>menuCopyPACUrl</value>
+  </data>
+  <data name="&gt;&gt;menuCopyPACUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuUpdateSubscriptions.Name" xml:space="preserve">
+    <value>menuUpdateSubscriptions</value>
+  </data>
+  <data name="&gt;&gt;menuUpdateSubscriptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuExit.Name" xml:space="preserve">
+    <value>menuExit</value>
+  </data>
+  <data name="&gt;&gt;menuExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bgwScan.Name" xml:space="preserve">
+    <value>bgwScan</value>
+  </data>
+  <data name="&gt;&gt;bgwScan.Type" xml:space="preserve">
+    <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslSocksPortLab.Name" xml:space="preserve">
+    <value>toolSslSocksPortLab</value>
+  </data>
+  <data name="&gt;&gt;toolSslSocksPortLab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslSocksPort.Name" xml:space="preserve">
+    <value>toolSslSocksPort</value>
+  </data>
+  <data name="&gt;&gt;toolSslSocksPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank1.Name" xml:space="preserve">
+    <value>toolSslBlank1</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslHttpPortLab.Name" xml:space="preserve">
+    <value>toolSslHttpPortLab</value>
+  </data>
+  <data name="&gt;&gt;toolSslHttpPortLab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslHttpPort.Name" xml:space="preserve">
+    <value>toolSslHttpPort</value>
+  </data>
+  <data name="&gt;&gt;toolSslHttpPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
+    <value>toolSslBlank2</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslPacPortLab.Name" xml:space="preserve">
+    <value>toolSslPacPortLab</value>
+  </data>
+  <data name="&gt;&gt;toolSslPacPortLab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslPacPort.Name" xml:space="preserve">
+    <value>toolSslPacPort</value>
+  </data>
+  <data name="&gt;&gt;toolSslPacPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank3.Name" xml:space="preserve">
+    <value>toolSslBlank3</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
+    <value>toolSslServerSpeed</value>
+  </data>
+  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank4.Name" xml:space="preserve">
+    <value>toolSslBlank4</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbSub.Name" xml:space="preserve">
+    <value>tsbSub</value>
+  </data>
+  <data name="&gt;&gt;tsbSub.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbSubSetting.Name" xml:space="preserve">
+    <value>tsbSubSetting</value>
+  </data>
+  <data name="&gt;&gt;tsbSubSetting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbSubUpdate.Name" xml:space="preserve">
+    <value>tsbSubUpdate</value>
+  </data>
+  <data name="&gt;&gt;tsbSubUpdate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbQRCodeSwitch.Name" xml:space="preserve">
+    <value>tsbQRCodeSwitch</value>
+  </data>
+  <data name="&gt;&gt;tsbQRCodeSwitch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
+    <value>toolStripSeparator8</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbOptionSetting.Name" xml:space="preserve">
+    <value>tsbOptionSetting</value>
+  </data>
+  <data name="&gt;&gt;tsbOptionSetting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator5.Name" xml:space="preserve">
+    <value>toolStripSeparator5</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbReload.Name" xml:space="preserve">
+    <value>tsbReload</value>
+  </data>
+  <data name="&gt;&gt;tsbReload.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator7.Name" xml:space="preserve">
+    <value>toolStripSeparator7</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdate.Name" xml:space="preserve">
+    <value>tsbCheckUpdate</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateN.Name" xml:space="preserve">
+    <value>tsbCheckUpdateN</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateN.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateCore.Name" xml:space="preserve">
+    <value>tsbCheckUpdateCore</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateCore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdatePACList.Name" xml:space="preserve">
+    <value>tsbCheckUpdatePACList</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdatePACList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator13.Name" xml:space="preserve">
+    <value>toolStripSeparator13</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckClearPACList.Name" xml:space="preserve">
+    <value>tsbCheckClearPACList</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckClearPACList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
+    <value>toolStripSeparator10</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbHelp.Name" xml:space="preserve">
+    <value>tsbHelp</value>
+  </data>
+  <data name="&gt;&gt;tsbHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbAbout.Name" xml:space="preserve">
+    <value>tsbAbout</value>
+  </data>
+  <data name="&gt;&gt;tsbAbout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Name" xml:space="preserve">
+    <value>tsbV2rayWebsite</value>
+  </data>
+  <data name="&gt;&gt;tsbV2rayWebsite.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">
+    <value>toolStripSeparator12</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbLanguageDef.Name" xml:space="preserve">
+    <value>tsbLanguageDef</value>
+  </data>
+  <data name="&gt;&gt;tsbLanguageDef.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbLanguageZhHans.Name" xml:space="preserve">
+    <value>tsbLanguageZhHans</value>
+  </data>
+  <data name="&gt;&gt;tsbLanguageZhHans.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbPromotion.Name" xml:space="preserve">
+    <value>tsbPromotion</value>
+  </data>
+  <data name="&gt;&gt;tsbPromotion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
+    <value>toolStripSeparator11</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbClose.Name" xml:space="preserve">
+    <value>tsbClose</value>
+  </data>
+  <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MainForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
