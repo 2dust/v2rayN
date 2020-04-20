@@ -178,7 +178,7 @@ namespace v2rayN.Forms
             lvServers.View = View.Details;
             lvServers.Scrollable = true;
             lvServers.MultiSelect = true;
-            lvServers.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             lvServers.Columns.Add("", 30);
             lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
@@ -1563,8 +1563,22 @@ namespace v2rayN.Forms
         }
 
 
+
         #endregion
 
+        private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column < 0)
+            {
+                return;
+            }
+            //use linq
+            //var temp = config.vmess.AsQueryable();
 
+            //QueryableExtension
+            //temp.OrderBy("Code");
+
+           // temp.OrderByDescending("Code");
+        }
     }
 }
