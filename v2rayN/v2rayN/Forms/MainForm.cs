@@ -239,7 +239,7 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
-                _addSubItem(lvItem, EServerColName.type.ToString(), ((EConfigType)item.configType).ToString());
+                _addSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
                 _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
                 _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
@@ -377,6 +377,35 @@ namespace v2rayN.Forms
             }
         }
 
+        private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column < 0)
+            {
+                return;
+            }
+
+            try
+            {
+                var tag = lvServers.Columns[e.Column].Tag?.ToString();
+                bool asc = Utils.IsNullOrEmpty(tag) ? true : !Convert.ToBoolean(tag);
+                if (ConfigHandler.SortServers(ref config, (EServerColName)e.Column, asc) != 0)
+                {
+                    return;
+                }
+                lvServers.Columns[e.Column].Tag = Convert.ToString(asc);
+                RefreshServers();
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+
+            if (e.Column < 0)
+            {
+                return;
+            }
+            
+        }
         #endregion
 
         #region v2ray 操作
@@ -1566,19 +1595,5 @@ namespace v2rayN.Forms
 
         #endregion
 
-        private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            if (e.Column < 0)
-            {
-                return;
-            }
-            //use linq
-            //var temp = config.vmess.AsQueryable();
-
-            //QueryableExtension
-            //temp.OrderBy("Code");
-
-           // temp.OrderByDescending("Code");
-        }
     }
 }

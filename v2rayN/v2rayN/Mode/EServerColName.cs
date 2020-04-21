@@ -4,7 +4,7 @@ namespace v2rayN.Mode
     public enum EServerColName
     {
         def = 0,
-        type,
+        configType,
         remarks,
         address,
         port,

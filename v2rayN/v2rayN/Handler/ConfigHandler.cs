@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using v2rayN.Mode;
 using v2rayN.Base;
+using System.Linq;
+using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -922,5 +924,38 @@ namespace v2rayN.Handler
             }
         }
 
+        public static int SortServers(ref Config config, EServerColName name, bool asc)
+        {
+            if (config.vmess.Count <= 0)
+            {
+                return -1;
+            }
+            switch (name)
+            {
+                case EServerColName.configType:
+                case EServerColName.remarks:
+                case EServerColName.address:
+                case EServerColName.port:
+                case EServerColName.security:
+                case EServerColName.network:
+                case EServerColName.testResult:
+                    break;
+                default:
+                    return -1;
+            }
+            var items = config.vmess.AsQueryable();
+
+            if (asc)
+            {
+                config.vmess = items.OrderBy(name.ToString()).ToList();
+            }
+            else
+            {
+                config.vmess = items.OrderByDescending(name.ToString()).ToList();
+            }
+
+            ToJsonFile(config);
+            return 0;
+        }
     }
 }
