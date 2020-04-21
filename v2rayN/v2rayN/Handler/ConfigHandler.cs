@@ -943,6 +943,7 @@ namespace v2rayN.Handler
                 default:
                     return -1;
             }
+            string itemId = config.getItemId();
             var items = config.vmess.AsQueryable();
 
             if (asc)
@@ -952,6 +953,12 @@ namespace v2rayN.Handler
             else
             {
                 config.vmess = items.OrderByDescending(name.ToString()).ToList();
+            }
+
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
+            {
+                config.index = index_;
             }
 
             ToJsonFile(config);
