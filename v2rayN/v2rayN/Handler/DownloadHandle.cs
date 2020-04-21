@@ -228,19 +228,33 @@ namespace v2rayN.Handler
                 }
             }
         }
-
         void ws_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             try
             {
                 if (UpdateCompleted != null)
                 {
-                    if (e.Error != null) throw e.Error;
+                    if (e.Cancelled)
+                    {
+                        ((WebClientEx)sender).Dispose();
+                        TimeSpan ts = (DateTime.Now - totalDatetime);
+                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
+                        UpdateCompleted(this, new ResultEventArgs(true, speed));
+                        return;
+                    }
 
-                    ((WebClientEx)sender).Dispose();
-                    TimeSpan ts = (DateTime.Now - totalDatetime);
-                    string speed = string.Format("<{0} MB/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
-                    UpdateCompleted(this, new ResultEventArgs(true, speed));
+                    if (e.Error == null
+                        || Utils.IsNullOrEmpty(e.Error.ToString()))
+                    {
+
+                        TimeSpan ts = (DateTime.Now - totalDatetime);
+                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
+                        UpdateCompleted(this, new ResultEventArgs(true, speed));
+                    }
+                    else
+                    {
+                        throw e.Error;
+                    }
                 }
             }
             catch (Exception ex)

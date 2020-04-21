@@ -1257,11 +1257,11 @@ namespace v2rayN.Forms
                 {
                     int httpPort = config.GetLocalPort(Global.InboundHttp);
                     WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
-                    downloadHandle.DownloadFileAsync(url, webProxy, 60);
+                    downloadHandle.DownloadFileAsync(url, webProxy, 600);
                 }
                 else
                 {
-                    downloadHandle.DownloadFileAsync(url, null, 60);
+                    downloadHandle.DownloadFileAsync(url, null, 600);
                 }
             }
         }
