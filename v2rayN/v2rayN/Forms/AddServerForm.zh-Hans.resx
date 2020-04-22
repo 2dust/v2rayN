@@ -209,7 +209,7 @@
     <value>53, 12</value>
   </data>
   <data name="label22.Text" xml:space="preserve">
-    <value>默认false</value>
+    <value>允许自签证书(默认false)</value>
   </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
