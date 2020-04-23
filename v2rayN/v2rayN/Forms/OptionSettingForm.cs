@@ -69,6 +69,8 @@ namespace v2rayN.Forms
             txtremoteDNS.Text = config.remoteDNS;
 
             cmblistenerType.SelectedIndex = (int)config.listenerType;
+
+            chkdefAllowInsecure.Checked = config.defAllowInsecure;
         }
 
         /// <summary>
@@ -264,6 +266,8 @@ namespace v2rayN.Forms
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
             config.listenerType = (ListenerType)Enum.ToObject(typeof(ListenerType), cmblistenerType.SelectedIndex);
+
+            config.defAllowInsecure = chkdefAllowInsecure.Checked;
 
             return 0;
         }

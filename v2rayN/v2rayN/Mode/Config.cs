@@ -182,7 +182,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// 是否允许不安全连接
         /// </summary>
-        public string defaultAllowInsecure
+        public bool defAllowInsecure
         {
             get; set;
         }
@@ -306,7 +306,7 @@ namespace v2rayN.Mode
         {
             if (index < 0 || Utils.IsNullOrEmpty(vmess[index].allowInsecure))
             {
-                return Convert.ToBoolean(defaultAllowInsecure);
+                return defAllowInsecure;
             }
             return Convert.ToBoolean(vmess[index].allowInsecure);
         }
@@ -704,7 +704,7 @@ namespace v2rayN.Mode
     [Serializable]
     public class UIItem
     {
-         
+
 
         public System.Drawing.Size mainSize
         {

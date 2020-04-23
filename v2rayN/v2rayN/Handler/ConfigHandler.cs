@@ -147,10 +147,6 @@ namespace v2rayN.Handler
             //{
             //    config.remoteDNS = "1.1.1.1";
             //}
-            if (Utils.IsNullOrEmpty(config.defaultAllowInsecure))
-            {
-                config.defaultAllowInsecure = "false";
-            }
 
             if (config.subItem == null)
             {
@@ -219,7 +215,7 @@ namespace v2rayN.Handler
                 //添加
                 if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
                 {
-                    vmessItem.allowInsecure = config.defaultAllowInsecure;
+                    vmessItem.allowInsecure = config.defAllowInsecure.ToString();
                 }
                 config.vmess.Add(vmessItem);
                 if (config.vmess.Count == 1)
