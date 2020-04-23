@@ -1078,11 +1078,16 @@ namespace v2rayN.Forms
 
         private void SetTestResult(int k, string txt)
         {
-            if (k < lvServers.Items.Count)
+            try
             {
-                config.vmess[k].testResult = txt;
-                lvServers.Items[k].SubItems["testResult"].Text = txt;
+                if (k < lvServers.Items.Count)
+                {
+                    config.vmess[k].testResult = txt;
+                    lvServers.Items[k].SubItems["testResult"].Text = txt;
+                }
+
             }
+            catch { }
         }
         private void ClearTestResult()
         {
