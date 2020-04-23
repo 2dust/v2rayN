@@ -149,7 +149,7 @@
     <value>203, 12</value>
   </data>
   <data name="label21.Text" xml:space="preserve">
-    <value>允许不安全连接(allowInsecure)</value>
+    <value>允许不可信证书(allowInsecure)</value>
   </data>
   <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
     <value>223, 7</value>
