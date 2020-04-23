@@ -136,13 +136,15 @@ namespace v2rayN.Handler
                 string curVersion;
                 string message;
                 string url;
-                if (type == "Core") {
+                if (type == "Core")
+                {
                     curVersion = "v" + getV2rayVersion();
                     message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
                     url = string.Format(coreUrl, version, osBit);
                 }
-                else if (type == "v2rayN") {
+                else if (type == "v2rayN")
+                {
                     curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
                     message = string.Format(UIRes.I18N("IsLatestN"), curVersion);
                     url = string.Format(nUrl, version);
@@ -172,8 +174,9 @@ namespace v2rayN.Handler
 
         #region Download 
 
-        public void DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
+        public WebClientEx DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
         {
+            WebClientEx ws = new WebClientEx();
             try
             {
                 Utils.SetSecurityProtocol();
@@ -182,7 +185,7 @@ namespace v2rayN.Handler
                 progressPercentage = -1;
                 totalBytesToReceive = 0;
 
-                WebClientEx ws = new WebClientEx();
+                //WebClientEx ws = new WebClientEx();
                 DownloadTimeout = downloadTimeout;
                 if (webProxy != null)
                 {
@@ -199,6 +202,7 @@ namespace v2rayN.Handler
 
                 Error?.Invoke(this, new ErrorEventArgs(ex));
             }
+            return ws;
         }
 
         void ws_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
