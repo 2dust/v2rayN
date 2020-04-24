@@ -7,7 +7,7 @@ namespace v2rayN
 
 
         public const string v2rayWebsiteUrl = @"https://www.v2ray.com/";
-        public const string AboutUrl = @"https://github.com/2dust/v2rayN";
+        public const string AboutUrl = @"https://github.com/cg3s/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
 
 
@@ -28,7 +28,7 @@ namespace v2rayN
         /// <summary>
         /// PromotionUrl
         /// </summary>
-        public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
+        public const string PromotionUrl = @"aHR0cHM6Ly9naXRodWIuY29tL2NnM3MvdjJyYXlO";
 
         /// <summary>
         /// 本软件配置文件名
