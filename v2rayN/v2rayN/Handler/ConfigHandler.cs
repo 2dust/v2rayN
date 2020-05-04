@@ -960,5 +960,53 @@ namespace v2rayN.Handler
             ToJsonFile(config);
             return 0;
         }
+
+        public static void SortByStat(ref Config config, List<ServerStatItem> statistic, EServerColName col, bool asc)
+        {
+            Comparison<VmessItem> comparison = delegate(VmessItem x, VmessItem y)
+            {
+                ServerStatItem sItemA = statistic.Find(item_ => item_.itemId == x.getItemId());
+                ServerStatItem sItemB = statistic.Find(item_ => item_.itemId == y.getItemId());
+                ulong vala = 0;
+                ulong valb = 0;
+
+                var i4 = (asc ? 1 : -1);
+
+                switch (col)
+                {
+                    case EServerColName.todayDown:
+                        if (sItemA != null) vala = sItemA.todayDown;
+                        if (sItemB != null) valb = sItemB.todayDown;
+                        break;
+                    case EServerColName.todayUp:
+                        if (sItemA != null) vala = sItemA.todayUp;
+                        if (sItemB != null) valb = sItemB.todayUp;
+                        break;
+                    case EServerColName.totalDown:
+                        if (sItemA != null) vala = sItemA.totalDown;
+                        if (sItemB != null) valb = sItemB.totalDown;
+                        break;
+                    case EServerColName.totalUp:
+                        if (sItemA != null) vala = sItemA.totalUp;
+                        if (sItemB != null) valb = sItemB.totalUp;
+                        break;
+                }
+
+                return (int) (vala - valb) * i4;
+            };
+            if (config.vmess.Count > 0)
+            {
+                string itemId = config.getItemId();
+                config.vmess.Sort(comparison);
+
+                var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+                if (index_ >= 0)
+                {
+                    config.index = index_;
+                }
+
+                ToJsonFile(config);
+            }
+        }
     }
 }

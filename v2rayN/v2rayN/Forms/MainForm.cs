@@ -390,6 +390,11 @@ namespace v2rayN.Forms
                 bool asc = Utils.IsNullOrEmpty(tag) ? true : !Convert.ToBoolean(tag);
                 if (ConfigHandler.SortServers(ref config, (EServerColName)e.Column, asc) != 0)
                 {
+                    ConfigHandler.SortByStat(ref config, statistics.Statistic, (EServerColName) e.Column, asc);
+                    
+                    lvServers.Columns[e.Column].Tag = Convert.ToString(asc);
+                    RefreshServers();
+
                     return;
                 }
                 lvServers.Columns[e.Column].Tag = Convert.ToString(asc);
