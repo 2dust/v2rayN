@@ -335,6 +335,9 @@
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
+  <data name="lvServers.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="&gt;&gt;lvServers.Name" xml:space="preserve">
     <value>lvServers</value>
   </data>
@@ -370,6 +373,9 @@
   </data>
   <data name="qrCodeControl.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="qrCodeControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="&gt;&gt;qrCodeControl.Name" xml:space="preserve">
     <value>qrCodeControl</value>
@@ -548,6 +554,9 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Servers list</value>
   </data>
+  <data name="groupBox1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
   </data>
@@ -580,6 +589,9 @@
   </data>
   <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="txtMsgBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
     <value>txtMsgBox</value>
@@ -709,6 +721,9 @@
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Informations</value>
+  </data>
+  <data name="groupBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
