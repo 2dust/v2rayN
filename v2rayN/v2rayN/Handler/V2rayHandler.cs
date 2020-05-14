@@ -198,6 +198,7 @@ namespace v2rayN.Handler
                     {
                         FileName = fileName,
                         WorkingDirectory = Utils.StartupPath(),
+                        Arguments = "-confdir confs -c config.json",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
