@@ -49,5 +49,9 @@ namespace v2rayN.Mode
         /// 底层传输安全
         /// </summary>
         public string tls { get; set; } = string.Empty;
+        /// <summary>
+        /// 加密方式
+        /// </summary>
+        public string security { get; set; } = string.Empty;
     }    
 }

@@ -385,7 +385,8 @@ namespace v2rayN.Handler
                         type = vmessItem.headerType,
                         host = vmessItem.requestHost,
                         path = vmessItem.path,
-                        tls = vmessItem.streamSecurity
+                        tls = vmessItem.streamSecurity,
+                        security = vmessItem.security
                     };
 
                     url = Utils.ToJson(vmessQRCode);

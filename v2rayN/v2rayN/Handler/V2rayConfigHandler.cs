@@ -1234,6 +1234,11 @@ namespace v2rayN.Handler
                         vmessItem.requestHost = Utils.ToString(vmessQRCode.host);
                         vmessItem.path = Utils.ToString(vmessQRCode.path);
                         vmessItem.streamSecurity = Utils.ToString(vmessQRCode.tls);
+
+                        if (!Utils.IsNullOrEmpty(vmessQRCode.security))
+                        {
+                            vmessItem.security = Utils.ToString(vmessQRCode.security);
+                        }
                     }
 
                     ConfigHandler.UpgradeServerVersion(ref vmessItem);
