@@ -1298,7 +1298,16 @@ namespace v2rayN.Forms
                         try
                         {
                             string fileName = Utils.GetPath(downloadHandle.DownloadFileName);
-                            Process process = Process.Start("v2rayUpgrade.exe", "\"" + fileName + "\"");
+                            Process process = new Process
+                            {
+                                StartInfo = new ProcessStartInfo
+                                {
+                                    FileName = "v2rayUpgrade.exe",
+                                    Arguments = "\"" + fileName + "\"",
+                                    WorkingDirectory = Utils.StartupPath()
+                                }
+                            };
+                            process.Start();
                             if (process.Id > 0)
                             {
                                 menuExit_Click(null, null);
