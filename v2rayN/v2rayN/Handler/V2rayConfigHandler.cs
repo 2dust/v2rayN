@@ -1266,22 +1266,44 @@ namespace v2rayN.Handler
                         result = Utils.Base64Decode(result);
                     }
 
-                    string[] arr1 = result.Split('@');
-                    if (arr1.Length != 2)
+                    //密码中可能包含“@”，所以从后往前搜索
+                    int indexAddressAndPort = result.LastIndexOf("@");
+                    if (indexAddressAndPort < 0)
                     {
                         return null;
                     }
-                    string[] arr21 = arr1[0].Split(':');
-                    //string[] arr22 = arr1[1].Split(':');
-                    int indexPort = arr1[1].LastIndexOf(":");
-                    if (arr21.Length != 2 || indexPort < 0)
+                    string addressAndPort = result.Substring(indexAddressAndPort + 1);
+                    string securityAndId = result.Substring(0, indexAddressAndPort);
+
+                    //IPv6地址中包含“:”，所以从后往前搜索
+                    int indexPort = addressAndPort.LastIndexOf(":");
+                    if (indexPort < 0)
                     {
                         return null;
                     }
-                    vmessItem.address = arr1[1].Substring(0, indexPort);
-                    vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
-                    vmessItem.security = arr21[0];
-                    vmessItem.id = arr21[1];
+
+                    //加密方式中不包含“:”，所以从前往后搜索
+                    int indexId = securityAndId.IndexOf(":");
+                    if (indexId < 0)
+                    {
+                        return null;
+                    }
+
+                    string address = addressAndPort.Substring(0, indexPort);
+                    string port = addressAndPort.Substring(indexPort + 1);
+                    string security = securityAndId.Substring(0, indexId);
+                    string id = securityAndId.Substring(indexId + 1);
+
+                    //所有字段均不能为空
+                    if (address.Length == 0 || port.Length == 0 || security.Length == 0 || id.Length == 0)
+                    {
+                        return null;
+                    }
+
+                    vmessItem.address = address;
+                    vmessItem.port = Utils.ToInt(port);
+                    vmessItem.security = security;
+                    vmessItem.id = id;
                 }
                 else if (result.StartsWith(Global.socksProtocol))
                 {
