@@ -97,6 +97,16 @@
             this.txtuserPacRule = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.chkRegHotkeyAtStartup = new System.Windows.Forms.CheckBox();
+            this.txtHotkeyAddUserPAC = new System.Windows.Forms.TextBox();
+            this.lblHotkeyAddUserPAC = new System.Windows.Forms.Label();
+            this.txtHotkeyPACProxyMode = new System.Windows.Forms.TextBox();
+            this.lblHotkeyPACProxyMode = new System.Windows.Forms.Label();
+            this.txtHotkeyGlobalProxyMode = new System.Windows.Forms.TextBox();
+            this.lblHotkeyGlobalProxyMode = new System.Windows.Forms.Label();
+            this.txtHotkeyStopProxy = new System.Windows.Forms.TextBox();
+            this.lblHotkeyStopProxy = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -115,6 +125,7 @@
             this.tabPage7.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -134,6 +145,7 @@
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage9);
+            this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -603,6 +615,83 @@
             this.label4.ForeColor = System.Drawing.Color.Brown;
             this.label4.Name = "label4";
             // 
+            // tabPage10
+            // 
+            resources.ApplyResources(this.tabPage10, "tabPage10");
+            this.tabPage10.Controls.Add(this.chkRegHotkeyAtStartup);
+            this.tabPage10.Controls.Add(this.txtHotkeyAddUserPAC);
+            this.tabPage10.Controls.Add(this.lblHotkeyAddUserPAC);
+            this.tabPage10.Controls.Add(this.txtHotkeyPACProxyMode);
+            this.tabPage10.Controls.Add(this.lblHotkeyPACProxyMode);
+            this.tabPage10.Controls.Add(this.txtHotkeyGlobalProxyMode);
+            this.tabPage10.Controls.Add(this.lblHotkeyGlobalProxyMode);
+            this.tabPage10.Controls.Add(this.txtHotkeyStopProxy);
+            this.tabPage10.Controls.Add(this.lblHotkeyStopProxy);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // chkRegHotkeyAtStartup
+            // 
+            resources.ApplyResources(this.chkRegHotkeyAtStartup, "chkRegHotkeyAtStartup");
+            this.chkRegHotkeyAtStartup.Name = "chkRegHotkeyAtStartup";
+            this.chkRegHotkeyAtStartup.UseVisualStyleBackColor = true;
+            // 
+            // txtHotkeyAddUserPAC
+            // 
+            resources.ApplyResources(this.txtHotkeyAddUserPAC, "txtHotkeyAddUserPAC");
+            this.txtHotkeyAddUserPAC.BackColor = System.Drawing.SystemColors.Window;
+            this.txtHotkeyAddUserPAC.Name = "txtHotkeyAddUserPAC";
+            this.txtHotkeyAddUserPAC.ReadOnly = true;
+            this.txtHotkeyAddUserPAC.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyDown);
+            this.txtHotkeyAddUserPAC.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyUp);
+            // 
+            // lblHotkeyAddUserPAC
+            // 
+            resources.ApplyResources(this.lblHotkeyAddUserPAC, "lblHotkeyAddUserPAC");
+            this.lblHotkeyAddUserPAC.Name = "lblHotkeyAddUserPAC";
+            // 
+            // txtHotkeyPACProxyMode
+            // 
+            resources.ApplyResources(this.txtHotkeyPACProxyMode, "txtHotkeyPACProxyMode");
+            this.txtHotkeyPACProxyMode.BackColor = System.Drawing.SystemColors.Window;
+            this.txtHotkeyPACProxyMode.Name = "txtHotkeyPACProxyMode";
+            this.txtHotkeyPACProxyMode.ReadOnly = true;
+            this.txtHotkeyPACProxyMode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyDown);
+            this.txtHotkeyPACProxyMode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyUp);
+            // 
+            // lblHotkeyPACProxyMode
+            // 
+            resources.ApplyResources(this.lblHotkeyPACProxyMode, "lblHotkeyPACProxyMode");
+            this.lblHotkeyPACProxyMode.Name = "lblHotkeyPACProxyMode";
+            // 
+            // txtHotkeyGlobalProxyMode
+            // 
+            resources.ApplyResources(this.txtHotkeyGlobalProxyMode, "txtHotkeyGlobalProxyMode");
+            this.txtHotkeyGlobalProxyMode.BackColor = System.Drawing.SystemColors.Window;
+            this.txtHotkeyGlobalProxyMode.Name = "txtHotkeyGlobalProxyMode";
+            this.txtHotkeyGlobalProxyMode.ReadOnly = true;
+            this.txtHotkeyGlobalProxyMode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyDown);
+            this.txtHotkeyGlobalProxyMode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyUp);
+            // 
+            // lblHotkeyGlobalProxyMode
+            // 
+            resources.ApplyResources(this.lblHotkeyGlobalProxyMode, "lblHotkeyGlobalProxyMode");
+            this.lblHotkeyGlobalProxyMode.Name = "lblHotkeyGlobalProxyMode";
+            // 
+            // txtHotkeyStopProxy
+            // 
+            resources.ApplyResources(this.txtHotkeyStopProxy, "txtHotkeyStopProxy");
+            this.txtHotkeyStopProxy.BackColor = System.Drawing.SystemColors.Window;
+            this.txtHotkeyStopProxy.Name = "txtHotkeyStopProxy";
+            this.txtHotkeyStopProxy.ReadOnly = true;
+            this.txtHotkeyStopProxy.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HotkeyDown);
+            this.txtHotkeyStopProxy.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HotkeyUp);
+            // 
+            // lblHotkeyStopProxy
+            // 
+            resources.ApplyResources(this.lblHotkeyStopProxy, "lblHotkeyStopProxy");
+            this.lblHotkeyStopProxy.Name = "lblHotkeyStopProxy";
+            // 
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
@@ -656,6 +745,8 @@
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.panel4.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -734,5 +825,15 @@
         private System.Windows.Forms.CheckBox chkKeepOlderDedupl;
         private System.Windows.Forms.LinkLabel linkLabelRoutingDoc;
         private System.Windows.Forms.CheckBox chkdefAllowInsecure;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TextBox txtHotkeyAddUserPAC;
+        private System.Windows.Forms.Label lblHotkeyAddUserPAC;
+        private System.Windows.Forms.TextBox txtHotkeyPACProxyMode;
+        private System.Windows.Forms.Label lblHotkeyPACProxyMode;
+        private System.Windows.Forms.TextBox txtHotkeyGlobalProxyMode;
+        private System.Windows.Forms.Label lblHotkeyGlobalProxyMode;
+        private System.Windows.Forms.TextBox txtHotkeyStopProxy;
+        private System.Windows.Forms.Label lblHotkeyStopProxy;
+        private System.Windows.Forms.CheckBox chkRegHotkeyAtStartup;
     }
 }

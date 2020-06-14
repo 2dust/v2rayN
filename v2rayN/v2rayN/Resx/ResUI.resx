@@ -177,6 +177,12 @@
   <data name="FillUUID" xml:space="preserve">
     <value>Please fill in the user ID</value>
   </data>
+  <data name="HotkeyParseFailed" xml:space="preserve">
+    <value>Cannot parse hotkey: {0}</value>
+  </data>
+  <data name="HotkeyRegFailed" xml:space="preserve">
+    <value>Register hotkey failed</value>
+  </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
     <value> is not the correct client configuration file, please check</value>
   </data>

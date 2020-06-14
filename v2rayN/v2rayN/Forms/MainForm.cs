@@ -11,6 +11,7 @@ using v2rayN.Tool;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net;
+using v2rayN.Handler.Hotkey;
 
 namespace v2rayN.Forms
 {
@@ -19,6 +20,7 @@ namespace v2rayN.Forms
         private V2rayHandler v2rayHandler;
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
+        private QuicklyAddUserPACForm fmQuickAddUserPAC;
 
         #region Window 事件
 
@@ -49,6 +51,18 @@ namespace v2rayN.Forms
             ConfigHandler.LoadConfig(ref config);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
+            
+            v2rayHandler.StopProxyEvent += this.menuNotEnabledHttp_Click;
+            v2rayHandler.StartGlobalProxyModeEvent += this.menuGlobal_Click;
+            v2rayHandler.StartPACProxyModeEvent += this.menuGlobalPAC_Click;
+            v2rayHandler.ShowAddUserPACEvent += this.menuQuicklyAddUserPAC_Click;
+
+            Hotkeys.Init(v2rayHandler);
+            
+            if (config.hotkeyConfig.regHotkeyAtStartup)
+            {
+                HotkeyReg.RegAllHotkeys(config.hotkeyConfig);
+            }
 
             if (config.enableStatistics)
             {
@@ -1216,6 +1230,28 @@ namespace v2rayN.Forms
         private void menuKeepPACNothing_Click(object sender, EventArgs e)
         {
             SetListenerType(ListenerType.PacOpenOnly);
+        }
+        private void menuQuicklyAddUserPAC_Click(object sender, EventArgs e)
+        {
+            if (fmQuickAddUserPAC == null)
+            {
+                fmQuickAddUserPAC = new QuicklyAddUserPACForm();                
+            }
+
+            if (fmQuickAddUserPAC.Visible == false)
+            {                
+                fmQuickAddUserPAC.ShowDialog();                
+            }
+            else
+            {
+                fmQuickAddUserPAC.Activate();
+            }
+            
+            if (fmQuickAddUserPAC.DialogResult == DialogResult.OK)
+            {
+                //刷新
+                LoadV2ray();
+            }
         }
         private void SetListenerType(ListenerType type)
         {

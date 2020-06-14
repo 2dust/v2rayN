@@ -78,6 +78,7 @@
             this.menuScanScreen2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCopyPACUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuUpdateSubscriptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuQuicklyAddUserPAC = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.bgwScan = new System.ComponentModel.BackgroundWorker();
@@ -400,6 +401,7 @@
             this.menuScanScreen2,
             this.menuCopyPACUrl,
             this.menuUpdateSubscriptions,
+            this.menuQuicklyAddUserPAC,
             this.toolStripSeparator2,
             this.menuExit});
             this.cmsMain.Name = "contextMenuStrip1";
@@ -490,6 +492,12 @@
             this.menuUpdateSubscriptions.Name = "menuUpdateSubscriptions";
             resources.ApplyResources(this.menuUpdateSubscriptions, "menuUpdateSubscriptions");
             this.menuUpdateSubscriptions.Click += new System.EventHandler(this.menuUpdateSubscriptions_Click);
+            // 
+            // menuQuicklyAddUserPAC
+            // 
+            this.menuQuicklyAddUserPAC.Name = "menuQuicklyAddUserPAC";
+            resources.ApplyResources(this.menuQuicklyAddUserPAC, "menuQuicklyAddUserPAC");
+            this.menuQuicklyAddUserPAC.Click += new System.EventHandler(this.menuQuicklyAddUserPAC_Click);
             // 
             // toolStripSeparator2
             // 
@@ -936,6 +944,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
+        private System.Windows.Forms.ToolStripMenuItem menuQuicklyAddUserPAC;
     }
 }
 

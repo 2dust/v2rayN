@@ -18,11 +18,17 @@ namespace v2rayN.Handler
     /// <summary>
     /// v2ray进程处理类
     /// </summary>
-    class V2rayHandler
+    public class V2rayHandler
     {
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
         private List<string> lstV2ray;
         public event ProcessDelegate ProcessEvent;
+        
+        public event EventHandler StopProxyEvent;
+        public event EventHandler StartGlobalProxyModeEvent;
+        public event EventHandler StartPACProxyModeEvent;
+        public event EventHandler ShowAddUserPACEvent;
+
         //private int processId = 0;
         private Process _process;
 
@@ -299,6 +305,23 @@ namespace v2rayN.Handler
         private void ShowMsg(bool updateToTrayTooltip, string msg)
         {
             ProcessEvent?.Invoke(updateToTrayTooltip, msg);
+        }
+                
+        public void StopProxy()
+        {
+            StopProxyEvent?.Invoke(null, null);
+        }
+        public void StartUseGlobalProxyMode()
+        {
+            StartGlobalProxyModeEvent?.Invoke(null, null);
+        }
+        public void StartUsePACProxyMode()
+        {
+            StartPACProxyModeEvent?.Invoke(null, null);
+        }
+        public void ShowAddUserPACForm()
+        {
+            ShowAddUserPACEvent?.Invoke(null, null);
         }
 
         private void KillProcess(Process p)

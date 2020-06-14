@@ -156,6 +156,10 @@ namespace v2rayN.Handler
             {
                 config.userPacRule = new List<string>();
             }
+            if (config.hotkeyConfig == null)
+            {
+                config.hotkeyConfig = new HotkeyConfig();
+            }
 
             if (config == null
                 || config.index < 0

@@ -369,6 +369,57 @@
   <data name="label4.Text" xml:space="preserve">
     <value>*设置用户PAC规则，用逗号(,)隔开</value>
   </data>
+  <data name="tabPage10.Text" xml:space="preserve">
+    <value>  快捷键设置  </value>
+  </data>
+  <data name="chkRegHotkeyAtStartup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkRegHotkeyAtStartup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 160</value>
+  </data>
+  <data name="chkRegHotkeyAtStartup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="chkRegHotkeyAtStartup.Text" xml:space="preserve">
+    <value>启动时注册所有快捷键</value>
+  </data>
+  <data name="txtHotkeyAddUserPAC.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 121</value>
+  </data>
+  <data name="lblHotkeyAddUserPAC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="lblHotkeyAddUserPAC.Text" xml:space="preserve">
+    <value>添加用户PAC记录</value>
+  </data>
+  <data name="txtHotkeyPACProxyMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 85</value>
+  </data>
+  <data name="lblHotkeyPACProxyMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 12</value>
+  </data>
+  <data name="lblHotkeyPACProxyMode.Text" xml:space="preserve">
+    <value>开启使用PAC代理模式</value>
+  </data>
+  <data name="txtHotkeyGlobalProxyMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 50</value>
+  </data>
+  <data name="lblHotkeyGlobalProxyMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="lblHotkeyGlobalProxyMode.Text" xml:space="preserve">
+    <value>开启使用全局代理模式</value>
+  </data>
+  <data name="txtHotkeyStopProxy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 15</value>
+  </data>
+  <data name="lblHotkeyStopProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="lblHotkeyStopProxy.Text" xml:space="preserve">
+    <value>关闭代理服务</value>
+  </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>

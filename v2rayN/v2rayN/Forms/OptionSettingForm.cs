@@ -4,6 +4,10 @@ using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Base;
 using v2rayN.HttpProxyHandler;
+using System.Text;
+using static v2rayN.Handler.Hotkey.HotkeyReg;
+using v2rayN.Handler.Hotkey;
+using System.Drawing;
 
 namespace v2rayN.Forms
 {
@@ -25,6 +29,8 @@ namespace v2rayN.Forms
             InitGUI();
 
             InitUserPAC();
+
+            InitHotkey();
         }
 
         /// <summary>
@@ -151,6 +157,15 @@ namespace v2rayN.Forms
             txtuserPacRule.Text = Utils.List2String(config.userPacRule, true);
         }
 
+        private void InitHotkey()
+        {
+            txtHotkeyStopProxy.Text = config.hotkeyConfig.stopProxy;
+            txtHotkeyGlobalProxyMode.Text = config.hotkeyConfig.globalProxyMode;
+            txtHotkeyPACProxyMode.Text = config.hotkeyConfig.pacProxyMode;
+            txtHotkeyAddUserPAC.Text = config.hotkeyConfig.addUserPAC;
+            chkRegHotkeyAtStartup.Checked = config.hotkeyConfig.regHotkeyAtStartup;
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (SaveBase() != 0)
@@ -174,6 +189,11 @@ namespace v2rayN.Forms
             }
 
             if (SaveUserPAC() != 0)
+            {
+                return;
+            }
+
+            if (SaveHotkey() != 0)
             {
                 return;
             }
@@ -371,6 +391,23 @@ namespace v2rayN.Forms
 
             return 0;
         }
+
+        private int SaveHotkey()
+        {
+            if (!RegisterAllHotkeys())
+            {   
+                return -1;
+            }
+
+            config.hotkeyConfig.stopProxy = txtHotkeyStopProxy.Text;
+            config.hotkeyConfig.globalProxyMode = txtHotkeyGlobalProxyMode.Text;
+            config.hotkeyConfig.pacProxyMode = txtHotkeyPACProxyMode.Text;
+            config.hotkeyConfig.addUserPAC = txtHotkeyAddUserPAC.Text;
+            config.hotkeyConfig.regHotkeyAtStartup = chkRegHotkeyAtStartup.Checked;
+
+            return 0;
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -445,6 +482,92 @@ namespace v2rayN.Forms
         private void linkLabelRoutingDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.v2fly.org/chapter_02/03_routing.html");
+        }
+
+        /// <summary>
+        /// Capture hotkey - Press key
+        /// </summary>
+        private void HotkeyDown(object sender, KeyEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            //Combination key only
+            if (e.Modifiers != 0)
+            {
+                // XXX: Hotkey parsing depends on the sequence, more specifically, ModifierKeysConverter.
+                // Windows key is reserved by operating system, we deny this key.
+                if (e.Control)
+                {
+                    sb.Append("Ctrl+");
+                }
+                if (e.Alt)
+                {
+                    sb.Append("Alt+");
+                }
+                if (e.Shift)
+                {
+                    sb.Append("Shift+");
+                }
+
+                Keys keyvalue = (Keys)e.KeyValue;
+                if ((keyvalue >= Keys.PageUp && keyvalue <= Keys.Down) ||
+                    (keyvalue >= Keys.A && keyvalue <= Keys.Z) ||
+                    (keyvalue >= Keys.F1 && keyvalue <= Keys.F12))
+                {
+                    sb.Append(e.KeyCode);
+                }
+                else if (keyvalue >= Keys.D0 && keyvalue <= Keys.D9)
+                {
+                    sb.Append('D').Append((char)e.KeyValue);
+                }
+                else if (keyvalue >= Keys.NumPad0 && keyvalue <= Keys.NumPad9)
+                {
+                    sb.Append("NumPad").Append((char)(e.KeyValue - 48));
+                }
+            }
+            ((TextBox)sender).Text = sb.ToString();
+        }
+
+        /// <summary>
+        /// Capture hotkey - Release key
+        /// </summary>
+        private void HotkeyUp(object sender, KeyEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            var content = tb.Text.TrimEnd();
+            if (content.Length >= 1 && content[content.Length - 1] == '+')
+            {
+                tb.Text = "";
+            }
+        }
+
+        private bool RegisterAllHotkeys()
+        {
+            return
+                RegHotkeyFromString(txtHotkeyStopProxy.Text, "StopProxyCallback", result => HandleRegResult(txtHotkeyStopProxy.Text, lblHotkeyStopProxy, result))
+                && RegHotkeyFromString(txtHotkeyGlobalProxyMode.Text, "GlobalProxyModeCallback", result => HandleRegResult(txtHotkeyGlobalProxyMode.Text, lblHotkeyGlobalProxyMode, result))
+                && RegHotkeyFromString(txtHotkeyPACProxyMode.Text, "PACProxyModeCallback", result => HandleRegResult(txtHotkeyPACProxyMode.Text, lblHotkeyPACProxyMode, result))
+                && RegHotkeyFromString(txtHotkeyAddUserPAC.Text, "AddUserPACCallback", result => HandleRegResult(txtHotkeyAddUserPAC.Text, lblHotkeyAddUserPAC, result));
+        }
+
+        private void HandleRegResult(string hotkeyStr, Label label, HotkeyReg.RegResult result)
+        {
+            switch (result)
+            {
+                case RegResult.ParseError:                    
+                    UI.ShowWarning(string.Format(UIRes.I18N("HotkeyParseFailed"), hotkeyStr));
+                    break;
+                case RegResult.UnregSuccess:
+                    label.ResetBackColor();
+                    break;
+                case RegResult.RegSuccess:
+                    label.BackColor = Color.Green;
+                    break;
+                case RegResult.RegFailure:
+                    label.BackColor = Color.Red;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

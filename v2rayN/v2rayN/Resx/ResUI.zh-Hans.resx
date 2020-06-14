@@ -177,6 +177,12 @@
   <data name="FillUUID" xml:space="preserve">
     <value>请填写用户ID</value>
   </data>
+  <data name="HotkeyParseFailed" xml:space="preserve">
+    <value>无法识别的快捷键: {0}</value>
+  </data>
+  <data name="HotkeyRegFailed" xml:space="preserve">
+    <value>注册快捷键失败，请检查冲突或修改快捷键重试</value>
+  </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
     <value>不是正确的客户端配置文件，请检查</value>
   </data>

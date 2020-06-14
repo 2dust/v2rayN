@@ -241,6 +241,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Cannot parse hotkey: {0} 的本地化字符串。
+        /// </summary>
+        internal static string HotkeyParseFailed {
+            get {
+                return ResourceManager.GetString("HotkeyParseFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Register hotkey failed 的本地化字符串。
+        /// </summary>
+        internal static string HotkeyRegFailed {
+            get {
+                return ResourceManager.GetString("HotkeyRegFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似  is not the correct client configuration file, please check 的本地化字符串。
         /// </summary>
         internal static string IncorrectClientConfiguration {

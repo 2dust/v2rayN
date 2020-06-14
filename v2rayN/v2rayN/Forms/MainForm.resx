@@ -506,6 +506,12 @@
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
     <value>Update subscriptions</value>
   </data>
+  <data name="menuQuicklyAddUserPAC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 22</value>
+  </data>
+  <data name="menuQuicklyAddUserPAC.Text" xml:space="preserve">
+    <value>Quickly add user PAC rule</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>261, 6</value>
   </data>
@@ -516,7 +522,7 @@
     <value>Exit</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 164</value>
+    <value>265, 208</value>
   </data>
   <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
     <value>cmsMain</value>
@@ -1248,6 +1254,12 @@
     <value>menuUpdateSubscriptions</value>
   </data>
   <data name="&gt;&gt;menuUpdateSubscriptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuQuicklyAddUserPAC.Name" xml:space="preserve">
+    <value>menuQuicklyAddUserPAC</value>
+  </data>
+  <data name="&gt;&gt;menuQuicklyAddUserPAC.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">

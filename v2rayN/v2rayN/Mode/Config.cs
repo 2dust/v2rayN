@@ -207,6 +207,14 @@ namespace v2rayN.Mode
             get; set;
         }
 
+        /// <summary>
+        /// 快捷键设置
+        /// </summary>
+        public HotkeyConfig hotkeyConfig
+        {
+            get; set;
+        }
+
         #region 函数
 
         public string address()
@@ -714,6 +722,40 @@ namespace v2rayN.Mode
         public Dictionary<string, int> mainLvColWidth
         {
             get; set;
+        }
+    }
+
+    [Serializable]
+    public class HotkeyConfig
+    {
+        /// <summary>
+        /// 停止代理服务的快捷键
+        /// </summary>
+        public string stopProxy { get; set; }
+        /// <summary>
+        /// 开启使用全局代理服务的快捷键
+        /// </summary>
+        public string globalProxyMode { get; set; }
+        /// <summary>
+        /// 开启使用PAC代理模式的快捷键
+        /// </summary>
+        public string pacProxyMode { get; set; }
+        /// <summary>
+        /// 打开添加一条用户PAC规则窗口的快捷键
+        /// </summary>
+        public string addUserPAC { get; set; }
+        /// <summary>
+        /// 是否在程序启动时注册所有的快捷键
+        /// </summary>
+        public bool regHotkeyAtStartup { get; set; }
+
+        public HotkeyConfig()
+        {
+            stopProxy = "";
+            globalProxyMode = "";
+            pacProxyMode = "";
+            addUserPAC = "";
+            regHotkeyAtStartup = false;
         }
     }
 }
