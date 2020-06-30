@@ -54,8 +54,8 @@ namespace v2rayN.Handler
 
         private readonly string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
         private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
-        private readonly string coreLatestUrl = "https://github.com/v2ray/v2ray-core/releases/latest";
-        private const string coreUrl = "https://github.com/v2ray/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
+        private readonly string coreLatestUrl = "https://github.com/v2fly/v2ray-core/releases/latest";
+        private const string coreUrl = "https://github.com/v2fly/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
 
         public async void CheckUpdateAsync(string type)
         {
@@ -101,7 +101,7 @@ namespace v2rayN.Handler
                 string filePath = Utils.GetPath("V2ray.exe");
                 if (!File.Exists(filePath))
                 {
-                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2ray/v2ray-core/releases");
+                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2fly/v2ray-core/releases");
                     //ShowMsg(true, msg);
                     return "";
                 }
