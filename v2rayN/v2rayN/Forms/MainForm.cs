@@ -347,11 +347,12 @@ namespace v2rayN.Forms
             toolSslHttpPort.Text =
             toolSslPacPort.Text = "OFF";
 
-            toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
+            var listen = config.allowLANConn ? "0.0.0.0" : Global.Loopback;
+            toolSslSocksPort.Text = $"{listen}:{config.inbound[0].localPort}";
 
             if (config.listenerType != (int)ListenerType.noHttpProxy)
             {
-                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
+                toolSslHttpPort.Text = $"{listen}:{Global.httpPort}";
                 if (config.listenerType == ListenerType.GlobalPac ||
                     config.listenerType == ListenerType.PacOpenAndClear ||
                     config.listenerType == ListenerType.PacOpenOnly)
