@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using v2rayN.Base;
 using v2rayN.Mode;
 
@@ -392,7 +396,7 @@ namespace v2rayN.Handler
 
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
-                    
+
 
                     outbound.protocol = "shadowsocks";
                     outbound.settings.vnext = null;
@@ -454,7 +458,7 @@ namespace v2rayN.Handler
             {
                 //远程服务器底层传输配置
                 streamSettings.network = config.network();
-                string host = config.requestHost();               
+                string host = config.requestHost();
                 //if tls
                 if (config.streamSecurity() == Global.StreamSecurity)
                 {
@@ -1242,68 +1246,21 @@ namespace v2rayN.Handler
                 {
                     msg = UIRes.I18N("ConfigurationFormatIncorrect");
 
+                    vmessItem = ResolveSSLegacy(result);
+                    if (vmessItem == null)
+                    {
+                        vmessItem = ResolveSip002(result);
+                    }
+                    if (vmessItem == null)
+                    {
+                        return null;
+                    }
+                    if (vmessItem.address.Length == 0 || vmessItem.port == 0 || vmessItem.security.Length == 0 || vmessItem.id.Length == 0)
+                    {
+                        return null;
+                    }
+
                     vmessItem.configType = (int)EConfigType.Shadowsocks;
-                    result = result.Substring(Global.ssProtocol.Length);
-                    //remark
-                    int indexRemark = result.IndexOf("#");
-                    if (indexRemark > 0)
-                    {
-                        try
-                        {
-                            vmessItem.remarks = WebUtility.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
-                        }
-                        catch { }
-                        result = result.Substring(0, indexRemark);
-                    }
-                    //part decode
-                    int indexS = result.IndexOf("@");
-                    if (indexS > 0)
-                    {
-                        result = Utils.Base64Decode(result.Substring(0, indexS)) + result.Substring(indexS, result.Length - indexS);
-                    }
-                    else
-                    {
-                        result = Utils.Base64Decode(result);
-                    }
-
-                    //密码中可能包含“@”，所以从后往前搜索
-                    int indexAddressAndPort = result.LastIndexOf("@");
-                    if (indexAddressAndPort < 0)
-                    {
-                        return null;
-                    }
-                    string addressAndPort = result.Substring(indexAddressAndPort + 1);
-                    string securityAndId = result.Substring(0, indexAddressAndPort);
-
-                    //IPv6地址中包含“:”，所以从后往前搜索
-                    int indexPort = addressAndPort.LastIndexOf(":");
-                    if (indexPort < 0)
-                    {
-                        return null;
-                    }
-
-                    //加密方式中不包含“:”，所以从前往后搜索
-                    int indexId = securityAndId.IndexOf(":");
-                    if (indexId < 0)
-                    {
-                        return null;
-                    }
-
-                    string address = addressAndPort.Substring(0, indexPort);
-                    string port = addressAndPort.Substring(indexPort + 1);
-                    string security = securityAndId.Substring(0, indexId);
-                    string id = securityAndId.Substring(indexId + 1);
-
-                    //所有字段均不能为空
-                    if (address.Length == 0 || port.Length == 0 || security.Length == 0 || id.Length == 0)
-                    {
-                        return null;
-                    }
-
-                    vmessItem.address = address;
-                    vmessItem.port = Utils.ToInt(port);
-                    vmessItem.security = security;
-                    vmessItem.id = id;
                 }
                 else if (result.StartsWith(Global.socksProtocol))
                 {
@@ -1428,6 +1385,90 @@ namespace v2rayN.Handler
             return vmessItem;
         }
 
+        private static VmessItem ResolveSip002(string result)
+        {
+            Uri parsedUrl;
+            try
+            {
+                parsedUrl = new Uri(result);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+            VmessItem server = new VmessItem
+            {
+                remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
+                address = parsedUrl.IdnHost,
+                port = parsedUrl.Port,
+            };
+
+            // parse base64 UserInfo
+            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
+            string base64 = rawUserInfo.Replace('-', '+').Replace('_', '/');    // Web-safe base64 to normal base64
+            string userInfo;
+            try
+            {
+                userInfo = Encoding.UTF8.GetString(Convert.FromBase64String(
+                base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')));
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+            string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
+            if (userInfoParts.Length != 2)
+            {
+                return null;
+            }
+            server.security = userInfoParts[0];
+            server.id = userInfoParts[1];
+
+            NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
+            string[] pluginParts = (queryParameters["plugin"] ?? "").Split(new[] { ';' }, 2);
+            if (pluginParts.Length > 0)
+            {
+                return null;
+            }
+
+            return server;
+        }
+
+        private static readonly Regex UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase);
+        private static readonly Regex DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
+
+        private static VmessItem ResolveSSLegacy(string result)
+        {
+            var match = UrlFinder.Match(result);
+            if (!match.Success)
+                return null;
+
+            VmessItem server = new VmessItem();
+            var base64 = match.Groups["base64"].Value.TrimEnd('/');
+            var tag = match.Groups["tag"].Value;
+            if (!tag.IsNullOrEmpty())
+            {
+                server.remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
+            }
+            Match details;
+            try
+            {
+                details = DetailsParser.Match(Encoding.UTF8.GetString(Convert.FromBase64String(
+                    base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+            if (!details.Success)
+                return null;
+            server.security = details.Groups["method"].Value;
+            server.id = details.Groups["password"].Value;
+            server.address = details.Groups["hostname"].Value;
+            server.port = int.Parse(details.Groups["port"].Value);
+            return server;
+        }
+
         #endregion
 
         #region Gen speedtest config
@@ -1449,7 +1490,7 @@ namespace v2rayN.Handler
 
                 msg = UIRes.I18N("InitialConfiguration");
 
-                Config configCopy = Utils.DeepCopy(config);             
+                Config configCopy = Utils.DeepCopy(config);
 
                 string result = Utils.GetEmbedText(SampleClient);
                 if (Utils.IsNullOrEmpty(result))
