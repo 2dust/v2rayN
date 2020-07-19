@@ -1199,7 +1199,7 @@ namespace v2rayN.Handler
                     int indexSplit = result.IndexOf("?");
                     if (indexSplit > 0)
                     {
-                        vmessItem = ResolveVmess4Kitsunebi(result);
+                        vmessItem = ResolveVmess4Vmess(result) ?? ResolveVmess4Kitsunebi(result);
                     }
                     else
                     {
@@ -1425,8 +1425,7 @@ namespace v2rayN.Handler
             server.id = userInfoParts[1];
 
             NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
-            string[] pluginParts = (queryParameters["plugin"] ?? "").Split(new[] { ';' }, 2);
-            if (pluginParts.Length > 0)
+            if (queryParameters["plugin"] != null)
             {
                 return null;
             }
@@ -1469,6 +1468,81 @@ namespace v2rayN.Handler
             return server;
         }
 
+
+        private static VmessItem ResolveVmess4Vmess(string result)
+        {
+            VmessItem i = new VmessItem();
+
+            Uri u = new Uri(result);
+
+            var uinfo = u.UserInfo;
+            var uinfo12 = uinfo.Split(':');
+            if (uinfo12.Length != 2) return null;
+            var user = uinfo12[0];
+            var pass = uinfo12[1];
+            var passsp = pass.LastIndexOf('-');
+            var id = pass.Substring(0, passsp);
+            var aid = pass.Substring(passsp + 1);
+            i.address = u.IdnHost;
+            i.port = u.Port;
+            i.id = id;
+            i.alterId = int.Parse(aid);
+            i.remarks = u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+
+
+            var query = u.Query;
+
+            var q = HttpUtility.ParseQueryString(u.Query);
+
+            if (user.EndsWith("+tls"))
+            {
+                user = user.Split('+')[0];
+                i.streamSecurity = "tls";
+                // TODO tlsServerName
+            }
+            i.network = user;
+            switch (user)
+            {
+                case "tcp":
+                    string t1 = q["type"] ?? "none";
+                    i.headerType = t1;
+                    // TODO t = http, parse http option
+
+
+                    break;
+                case "kcp":
+                    string t2 = q["type"] ?? "none";
+                    i.headerType = t2;
+                    // TODO seed
+                    break;
+                case "ws":
+                    string p1 = q["path"] ?? "/";
+                    string h1 = q["host"] ?? "";
+                    i.requestHost = h1;
+                    i.path = p1;
+                    break;
+
+                case "http":
+                    i.network = "h2";
+                    string p2 = q["path"] ?? "/";
+                    string h2 = q["host"] ?? "";
+                    i.requestHost = h2;
+                    i.path = p2;
+                    break;
+
+                case "quic":
+                    string s = q["security"] ?? "none";
+                    string k = q["key"] ?? "";
+                    string t3 = q["type"] ?? "none";
+                    i.headerType = t3;
+                    i.requestHost = s;
+                    i.path = k;
+                    break;
+
+            }
+
+            return i;
+        }
         #endregion
 
         #region Gen speedtest config
