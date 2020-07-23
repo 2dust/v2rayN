@@ -1199,7 +1199,7 @@ namespace v2rayN.Handler
                     int indexSplit = result.IndexOf("?");
                     if (indexSplit > 0)
                     {
-                        vmessItem = ResolveVmess4Vmess(result) ?? ResolveVmess4Kitsunebi(result);
+                        vmessItem = ResolveStdVmess(result) ?? ResolveVmess4Kitsunebi(result);
                     }
                     else
                     {
@@ -1469,52 +1469,63 @@ namespace v2rayN.Handler
         }
 
 
-        private static VmessItem ResolveVmess4Vmess(string result)
+        private static readonly Regex StdVmessUserInfo = new Regex(
+            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})-(?<alterId>[0-9]+)$");
+
+        private static VmessItem ResolveStdVmess(string result)
         {
-            VmessItem i = new VmessItem();
+            VmessItem i = new VmessItem
+            {
+                configType = (int)EConfigType.Vmess,
+                security = "auto"
+            };
 
             Uri u = new Uri(result);
 
-            var uinfo = u.UserInfo;
-            var uinfo12 = uinfo.Split(':');
-            if (uinfo12.Length != 2) return null;
-            var user = uinfo12[0];
-            var pass = uinfo12[1];
-            var passsp = pass.LastIndexOf('-');
-            var id = pass.Substring(0, passsp);
-            var aid = pass.Substring(passsp + 1);
             i.address = u.IdnHost;
             i.port = u.Port;
-            i.id = id;
-            i.alterId = int.Parse(aid);
             i.remarks = u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-
-
-            var query = u.Query;
-
             var q = HttpUtility.ParseQueryString(u.Query);
 
-            if (user.EndsWith("+tls"))
+            var m = StdVmessUserInfo.Match(u.UserInfo);
+            if (!m.Success) return null;
+
+            i.id = m.Groups["id"].Value;
+            if (!int.TryParse(m.Groups["alterId"].Value, out int aid))
             {
-                user = user.Split('+')[0];
-                i.streamSecurity = "tls";
-                // TODO tlsServerName
+                return null;
             }
-            i.network = user;
-            switch (user)
+            i.alterId = aid;
+
+            if (m.Groups["streamSecurity"].Success)
+            {
+                i.streamSecurity = m.Groups["streamSecurity"].Value;
+            }
+            switch (i.streamSecurity)
+            {
+                case "tls":
+                    // TODO tls config
+                    break;
+                default:
+                    if (!string.IsNullOrWhiteSpace(i.streamSecurity))
+                        return null;
+                    break;
+            }
+
+            i.network = m.Groups["network"].Value;
+            switch (i.network)
             {
                 case "tcp":
                     string t1 = q["type"] ?? "none";
                     i.headerType = t1;
-                    // TODO t = http, parse http option
-
+                    // TODO http option
 
                     break;
                 case "kcp":
-                    string t2 = q["type"] ?? "none";
-                    i.headerType = t2;
-                    // TODO seed
+                    i.headerType = q["type"] ?? "none";
+                    // TODO kcp seed
                     break;
+
                 case "ws":
                     string p1 = q["path"] ?? "/";
                     string h1 = q["host"] ?? "";
@@ -1539,6 +1550,8 @@ namespace v2rayN.Handler
                     i.path = k;
                     break;
 
+                default:
+                    return null;
             }
 
             return i;
