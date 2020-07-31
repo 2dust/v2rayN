@@ -444,7 +444,7 @@ namespace v2rayN.Forms
 
         private void linkLabelRoutingDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.v2fly.org/chapter_02/03_routing.html");
+            System.Diagnostics.Process.Start("https://www.v2fly.org/config/routing.html");
         }
     }
 
