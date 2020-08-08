@@ -513,7 +513,7 @@ namespace v2rayN.Forms
                     LoadV2ray();
                 }
             }
-            else if (config.vmess[index].configType == (int)EConfigType.Vless)
+            else if (config.vmess[index].configType == (int)EConfigType.VLESS)
             {
                 AddServer5Form fm = new AddServer5Form
                 {

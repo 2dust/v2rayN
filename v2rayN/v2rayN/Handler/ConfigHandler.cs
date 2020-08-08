@@ -971,7 +971,7 @@ namespace v2rayN.Handler
         public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index)
         {
             vmessItem.configVersion = 2;
-            vmessItem.configType = (int)EConfigType.Vless;
+            vmessItem.configType = (int)EConfigType.VLESS;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();

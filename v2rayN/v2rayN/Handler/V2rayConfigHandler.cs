@@ -438,7 +438,7 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.socksProtocolLite;
                     outbound.settings.vnext = null;
                 }
-                else if (config.configType() == (int)EConfigType.Vless)
+                else if (config.configType() == (int)EConfigType.VLESS)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -466,6 +466,7 @@ namespace v2rayN.Handler
                     }
                     //远程服务器用户ID
                     usersItem.id = config.id();
+                    usersItem.alterId = 0;
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = config.security();
 
@@ -888,8 +889,20 @@ namespace v2rayN.Handler
 
                 //远程服务器用户ID
                 usersItem.id = config.id();
-                usersItem.alterId = config.alterId();
                 usersItem.email = Global.userEMail;
+
+                if (config.configType() == (int)EConfigType.Vmess)
+                {
+                    inbound.protocol = Global.vmessProtocolLite;
+                    usersItem.alterId = config.alterId();
+
+                }
+                else if (config.configType() == (int)EConfigType.VLESS)
+                {
+                    inbound.protocol = Global.vlessProtocolLite;
+                    usersItem.alterId = 0;
+                    inbound.settings.decryption = config.security();
+                }
 
                 //远程服务器底层传输配置
                 StreamSettings streamSettings = inbound.streamSettings;

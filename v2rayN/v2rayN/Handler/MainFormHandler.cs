@@ -72,7 +72,8 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess)
+            if (config.vmess[index].configType != (int)EConfigType.Vmess
+                && config.vmess[index].configType != (int)EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
@@ -112,7 +113,8 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess)
+            if (config.vmess[index].configType != (int)EConfigType.Vmess
+                && config.vmess[index].configType != (int)EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
