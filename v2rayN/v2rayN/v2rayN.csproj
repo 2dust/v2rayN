@@ -107,6 +107,12 @@
     <Compile Include="Base\ListViewFlickerFree.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\AddServer5Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddServer5Form.Designer.cs">
+      <DependentUpon>AddServer5Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +235,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddServer3Form.zh-Hans.resx">
       <DependentUpon>AddServer3Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddServer5Form.resx">
+      <DependentUpon>AddServer5Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddServer5Form.zh-Hans.resx">
+      <DependentUpon>AddServer5Form.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddServerForm.zh-Hans.resx">

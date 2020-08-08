@@ -6,6 +6,7 @@ namespace v2rayN.Mode
         Vmess = 1,
         Custom = 2,
         Shadowsocks = 3,
-        Socks = 4
+        Socks = 4,
+        Vless = 5
     }
 }

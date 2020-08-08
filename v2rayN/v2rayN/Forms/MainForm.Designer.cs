@@ -124,6 +124,7 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
+            this.menuAddVlessServer = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -176,6 +177,7 @@
             this.cmsLv.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsLv.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuAddVmessServer,
+            this.menuAddVlessServer,
             this.menuAddShadowsocksServer,
             this.menuAddSocksServer,
             this.menuAddCustomServer,
@@ -204,7 +206,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -373,7 +374,6 @@
             // 
             // tsbServer
             // 
-            this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
@@ -806,6 +806,12 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
+            // menuAddVlessServer
+            // 
+            this.menuAddVlessServer.Name = "menuAddVlessServer";
+            resources.ApplyResources(this.menuAddVlessServer, "menuAddVlessServer");
+            this.menuAddVlessServer.Click += new System.EventHandler(this.menuAddVlessServer_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -936,6 +942,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsbTestMe;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
+        private System.Windows.Forms.ToolStripMenuItem menuAddVlessServer;
     }
 }
 
