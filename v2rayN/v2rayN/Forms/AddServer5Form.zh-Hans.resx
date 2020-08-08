@@ -149,10 +149,10 @@
     <value>别名(remarks)</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 12</value>
+    <value>107, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>加密方式(decryption)</value>
+    <value>加密(encryption)</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
