@@ -960,5 +960,56 @@ namespace v2rayN.Handler
             ToJsonFile(config);
             return 0;
         }
+
+        /// <summary>
+        /// 添加服务器或编辑
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="vmessItem"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index)
+        {
+            vmessItem.configVersion = 2;
+            vmessItem.configType = (int)EConfigType.Vless;
+
+            vmessItem.address = vmessItem.address.TrimEx();
+            vmessItem.id = vmessItem.id.TrimEx();
+            vmessItem.security = vmessItem.security.TrimEx();
+            vmessItem.network = vmessItem.network.TrimEx();
+            vmessItem.headerType = vmessItem.headerType.TrimEx();
+            vmessItem.requestHost = vmessItem.requestHost.TrimEx();
+            vmessItem.path = vmessItem.path.TrimEx();
+            vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
+
+            if (index >= 0)
+            {
+                //修改
+                config.vmess[index] = vmessItem;
+                if (config.index.Equals(index))
+                {
+                    Global.reloadV2ray = true;
+                }
+            }
+            else
+            {
+                //添加
+                if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+                {
+                    vmessItem.allowInsecure = config.defAllowInsecure.ToString();
+                }
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
+            }
+
+            ToJsonFile(config);
+
+            return 0;
+        }
+
     }
 }

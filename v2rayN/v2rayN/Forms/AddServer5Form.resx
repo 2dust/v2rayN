@@ -306,9 +306,6 @@
   <data name="&gt;&gt;cmbHeaderType.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
   <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
     <value>toolStripSeparator1</value>
   </data>
@@ -393,8 +390,8 @@
   <data name="cmbNetwork.Items2" xml:space="preserve">
     <value>ws</value>
   </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>729, 60</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 66</value>
@@ -422,6 +419,9 @@
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
   </data>
   <data name="&gt;&gt;label20.Parent" xml:space="preserve">
     <value>groupBox2</value>
@@ -483,6 +483,9 @@
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
   </data>
+  <data name="label23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>350, 32</value>
   </data>
@@ -528,8 +531,8 @@
   <data name="&gt;&gt;label23.Name" xml:space="preserve">
     <value>label23</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="label21.Text" xml:space="preserve">
+    <value>allowInsecure</value>
   </data>
   <data name="cmbStreamSecurity.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 20</value>
@@ -552,8 +555,8 @@
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 12</value>
   </data>
   <data name="&gt;&gt;label5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -615,8 +618,8 @@
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="label23.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
   </data>
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -654,11 +657,8 @@
   <data name="&gt;&gt;panTlsMore.Name" xml:space="preserve">
     <value>panTlsMore</value>
   </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 60</value>
-  </data>
-  <data name="label21.Text" xml:space="preserve">
-    <value>allowInsecure</value>
+  <data name="label23.TabIndex" type="System.Int32, mscorlib">
+    <value>34</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -717,9 +717,6 @@
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 12</value>
   </data>
-  <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 21</value>
-  </data>
   <data name="txtPath.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -732,20 +729,14 @@
   <data name="cmbAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
     <value>91, 20</value>
   </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
-  </data>
   <data name="label19.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
-  </data>
-  <data name="&gt;&gt;txtRequestHost.Parent" xml:space="preserve">
-    <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;cmbStreamSecurity.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;label19.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>17</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Port</value>
@@ -795,6 +786,9 @@
   <data name="label8.Text" xml:space="preserve">
     <value>*Recommended (none)</value>
   </data>
+  <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 143</value>
+  </data>
   <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
@@ -812,9 +806,6 @@
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
   </data>
   <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -876,9 +867,6 @@
   <data name="cmbHeaderType.Items5" xml:space="preserve">
     <value>dtls</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 12</value>
-  </data>
   <data name="&gt;&gt;MenuItemImportServer.Name" xml:space="preserve">
     <value>MenuItemImportServer</value>
   </data>
@@ -887,6 +875,9 @@
   </data>
   <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
     <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;label19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 534</value>
@@ -915,8 +906,8 @@
   <data name="label17.Text" xml:space="preserve">
     <value>2)ws host</value>
   </data>
-  <data name="&gt;&gt;txtAddress.Name" xml:space="preserve">
-    <value>txtAddress</value>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -957,9 +948,6 @@
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 11</value>
-  </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
@@ -996,9 +984,6 @@
   <data name="txtPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>124, 157</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
@@ -1025,6 +1010,9 @@
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Camouflage type</value>
   </data>
   <data name="&gt;&gt;menuServer.Name" xml:space="preserve">
     <value>menuServer</value>
@@ -1071,8 +1059,8 @@
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Camouflage domain(host)</value>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1082,6 +1070,9 @@
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1094,6 +1085,9 @@
   </data>
   <data name="cmbHeaderType.Items3" xml:space="preserve">
     <value>utp</value>
+  </data>
+  <data name="&gt;&gt;txtAddress.Name" xml:space="preserve">
+    <value>txtAddress</value>
   </data>
   <data name="cmbAllowInsecure.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1109,6 +1103,9 @@
   </data>
   <data name="&gt;&gt;txtId.ZOrder" xml:space="preserve">
     <value>8</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1136,6 +1133,9 @@
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Camouflage domain(host)</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 12</value>
@@ -1206,9 +1206,6 @@
   <data name="MenuItemImportClient.Text" xml:space="preserve">
     <value>Import client configuration</value>
   </data>
-  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="label23.Text" xml:space="preserve">
     <value>4)QUIC securty</value>
   </data>
@@ -1239,8 +1236,8 @@
   <data name="&gt;&gt;txtPort.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>Camouflage type</value>
+  <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 11</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1248,8 +1245,8 @@
   <data name="&gt;&gt;panTlsMore.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="label23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 21</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>1)http host Separated by commas (,)</value>
@@ -1266,8 +1263,8 @@
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
-  <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 143</value>
+  <data name="&gt;&gt;txtRequestHost.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;menuServer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1296,8 +1293,11 @@
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
     <value>526, 197</value>
   </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

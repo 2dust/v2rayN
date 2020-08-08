@@ -180,6 +180,18 @@ namespace v2rayN.Forms
             this.DialogResult = DialogResult.Cancel;
         }
 
+        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string security = cmbStreamSecurity.Text;
+            if (Utils.IsNullOrEmpty(security))
+            {
+                panTlsMore.Hide();
+            }
+            else
+            {
+                panTlsMore.Show();
+            }
+        }
 
         #region 导入客户端/服务端配置
 
@@ -278,17 +290,5 @@ namespace v2rayN.Forms
         }
         #endregion
 
-        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string security = cmbStreamSecurity.Text;
-            if (Utils.IsNullOrEmpty(security))
-            {
-                panTlsMore.Hide();
-            }
-            else
-            {
-                panTlsMore.Show();
-            }
-        }
     }
 }

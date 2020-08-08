@@ -370,7 +370,7 @@ namespace v2rayN.Handler
                     StreamSettings streamSettings = outbound.streamSettings;
                     boundStreamSettings(config, "out", ref streamSettings);
 
-                    outbound.protocol = "vmess";
+                    outbound.protocol = Global.vmessProtocolLite;
                     outbound.settings.servers = null;
                 }
                 else if (config.configType() == (int)EConfigType.Shadowsocks)
@@ -398,7 +398,7 @@ namespace v2rayN.Handler
                     outbound.mux.concurrency = -1;
 
 
-                    outbound.protocol = "shadowsocks";
+                    outbound.protocol = Global.ssProtocolLite;
                     outbound.settings.vnext = null;
                 }
                 else if (config.configType() == (int)EConfigType.Socks)
@@ -435,8 +435,50 @@ namespace v2rayN.Handler
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
 
-                    outbound.protocol = "socks";
+                    outbound.protocol = Global.socksProtocolLite;
                     outbound.settings.vnext = null;
+                }
+                else if (config.configType() == (int)EConfigType.Vless)
+                {
+                    VnextItem vnextItem;
+                    if (outbound.settings.vnext.Count <= 0)
+                    {
+                        vnextItem = new VnextItem();
+                        outbound.settings.vnext.Add(vnextItem);
+                    }
+                    else
+                    {
+                        vnextItem = outbound.settings.vnext[0];
+                    }
+                    //远程服务器地址和端口
+                    vnextItem.address = config.address();
+                    vnextItem.port = config.port();
+
+                    UsersItem usersItem;
+                    if (vnextItem.users.Count <= 0)
+                    {
+                        usersItem = new UsersItem();
+                        vnextItem.users.Add(usersItem);
+                    }
+                    else
+                    {
+                        usersItem = vnextItem.users[0];
+                    }
+                    //远程服务器用户ID
+                    usersItem.id = config.id();
+                    usersItem.email = Global.userEMail;
+                    usersItem.encryption = config.security();
+
+                    //Mux
+                    outbound.mux.enabled = config.muxEnabled;
+                    outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
+
+                    //远程服务器底层传输配置
+                    StreamSettings streamSettings = outbound.streamSettings;
+                    boundStreamSettings(config, "out", ref streamSettings);
+
+                    outbound.protocol = Global.vlessProtocolLite;
+                    outbound.settings.servers = null;
                 }
             }
             catch
@@ -922,7 +964,7 @@ namespace v2rayN.Handler
                 Outbounds outbound = v2rayConfig.outbounds[0];
                 if (outbound == null
                     || Utils.IsNullOrEmpty(outbound.protocol)
-                    || outbound.protocol != "vmess"
+                    || outbound.protocol != Global.vmessProtocolLite
                     || outbound.settings == null
                     || outbound.settings.vnext == null
                     || outbound.settings.vnext.Count <= 0
@@ -1068,7 +1110,7 @@ namespace v2rayN.Handler
                 Inbounds inbound = v2rayConfig.inbounds[0];
                 if (inbound == null
                     || Utils.IsNullOrEmpty(inbound.protocol)
-                    || inbound.protocol != "vmess"
+                    || inbound.protocol != Global.vmessProtocolLite
                     || inbound.settings == null
                     || inbound.settings.clients == null
                     || inbound.settings.clients.Count <= 0)

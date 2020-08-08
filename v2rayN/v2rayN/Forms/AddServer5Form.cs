@@ -57,7 +57,7 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
-            cmbSecurity.Text = Global.DefaultSecurity;
+            cmbSecurity.Text = Global.None;
             cmbNetwork.Text = Global.DefaultNetwork;
             txtRemarks.Text = "";
 
@@ -152,7 +152,7 @@ namespace v2rayN.Forms
             vmessItem.streamSecurity = streamSecurity;
             vmessItem.allowInsecure = allowInsecure;
 
-            if (ConfigHandler.AddServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddVlessServer(ref config, vmessItem, EditIndex) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -172,6 +172,18 @@ namespace v2rayN.Forms
             this.DialogResult = DialogResult.Cancel;
         }
 
+        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string security = cmbStreamSecurity.Text;
+            if (Utils.IsNullOrEmpty(security))
+            {
+                panTlsMore.Hide();
+            }
+            else
+            {
+                panTlsMore.Show();
+            }
+        }
 
         #region 导入客户端/服务端配置
 
@@ -268,17 +280,5 @@ namespace v2rayN.Forms
         }
         #endregion
 
-        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string security = cmbStreamSecurity.Text;
-            if (Utils.IsNullOrEmpty(security))
-            {
-                panTlsMore.Hide();
-            }
-            else
-            {
-                panTlsMore.Show();
-            }
-        }
     }
 }

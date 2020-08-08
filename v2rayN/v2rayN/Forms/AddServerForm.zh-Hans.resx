@@ -167,7 +167,7 @@
     <value>3)h2 host中间逗号(,)隔开</value>
   </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 32</value>
+    <value>124, 32</value>
   </data>
   <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>211, 20</value>
