@@ -3,6 +3,8 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
+name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
 trigger:
 - master
 
@@ -22,12 +24,64 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'Build v2rayN'
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: Bash@3
+  displayName: 'Download v2ray-core package'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    targetType: 'inline'
+    script: curl -O 'https://cdn.jsdelivr.net/gh/v2ray/dist/v2ray-windows-64.zip'
+    workingDirectory: '$(System.ArtifactsDirectory)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive v2rayN Package'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/v2rayN/v2rayN/bin/Release'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/v2rayN.zip'
+    replaceExistingArchive: true
+
+- task: ExtractFiles@1
+  displayName: 'Extract v2ray-core file'
+  inputs:
+    archiveFilePatterns: '$(System.ArtifactsDirectory)/v2ray-windows-64.zip'
+    destinationFolder: '$(Build.SourcesDirectory)/v2rayN/v2rayN/bin/Release'
+    cleanDestinationFolder: false
+
+- task: ArchiveFiles@2
+  displayName: 'Archive v2rayN-full Package'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/v2rayN/v2rayN/bin/Release'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/v2rayN-full.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'publish artifact'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'tcrelease'
+    repositoryName: 'tony-cloud/v2rayN'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'userSpecifiedTag'
+    tag: '$(Build.SourceBranchName)-$(Build.SourceVersion)'
+    title: '$(Build.SourceBranchName)-$(Build.SourceVersion)'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: |
+      Build by azure pipeline automatically.
+      No release log specified.
+    assets: '$(Build.ArtifactStagingDirectory)/*.zip'
+    isDraft: true
+    isPreRelease: true
+    addChangeLog: false
