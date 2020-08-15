@@ -6,7 +6,9 @@
 name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 
 trigger:
-- master
+  branches:
+    include:
+    - '*'
 
 pool:
   vmImage: 'windows-latest'
