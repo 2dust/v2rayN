@@ -33,6 +33,7 @@ namespace v2rayN
 
             if (!IsDuplicateInstance())
             {
+                Global.EnableUilogs = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyUilogsEnabled, true);
 
                 Utils.SaveLog("v2rayN start up " + Utils.GetVersion());
 

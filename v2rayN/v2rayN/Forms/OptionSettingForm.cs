@@ -71,6 +71,8 @@ namespace v2rayN.Forms
             cmblistenerType.SelectedIndex = (int)config.listenerType;
 
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
+
+            uilogEnabled.Checked = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyUilogsEnabled, true);
         }
 
         /// <summary>
@@ -268,6 +270,9 @@ namespace v2rayN.Forms
             config.listenerType = (ListenerType)Enum.ToObject(typeof(ListenerType), cmblistenerType.SelectedIndex);
 
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
+
+            Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyUilogsEnabled, uilogEnabled.Checked, true);
+            Global.EnableUilogs = uilogEnabled.Checked;
 
             return 0;
         }

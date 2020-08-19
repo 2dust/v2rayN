@@ -595,6 +595,55 @@ namespace v2rayN
                 regKey?.Close();
             }
         }
+        public static void RegWriteValue(string path, string name, bool value,bool def)
+        {
+            RegistryKey regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.CreateSubKey(path);
+                if (value == def)
+                {
+                    regKey?.DeleteValue(name, false);
+                }
+                else
+                {
+                    regKey?.SetValue(name, value, RegistryValueKind.DWord);
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+        }
+        public static bool RegReadValue(string path, string name, bool def)
+        {
+            RegistryKey regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.OpenSubKey(path, false);
+                var valueobj = regKey?.GetValue(name);
+                var value = valueobj as int?;
+                if (!value.HasValue)
+                {
+                    return def;
+                }
+                else
+                {
+                    return value.Value == 1;
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+            return def;
+        }
         #endregion
 
         #region 测速
@@ -826,31 +875,35 @@ namespace v2rayN
         {
             try
             {
-                string path = Path.Combine(StartupPath(), "guiLogs");
-                string FilePath = Path.Combine(path, DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                if (!Directory.Exists(path))
+                if (Global.EnableUilogs)
                 {
-                    Directory.CreateDirectory(path);
-                }
-                if (!File.Exists(FilePath))
-                {
-                    FileStream FsCreate = new FileStream(FilePath, FileMode.Create);
-                    FsCreate.Close();
-                    FsCreate.Dispose();
-                }
-                FileStream FsWrite = new FileStream(FilePath, FileMode.Append, FileAccess.Write);
-                StreamWriter SwWrite = new StreamWriter(FsWrite);
+                    string path = Path.Combine(StartupPath(), "guiLogs");
+                    string FilePath = Path.Combine(path, DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    if (!File.Exists(FilePath))
+                    {
+                        FileStream FsCreate = new FileStream(FilePath, FileMode.Create);
+                        FsCreate.Close();
+                        FsCreate.Dispose();
+                    }
+                    FileStream FsWrite = new FileStream(FilePath, FileMode.Append, FileAccess.Write);
+                    StreamWriter SwWrite = new StreamWriter(FsWrite);
 
-                string strContent = ex.ToString();
+                    string strContent = ex.ToString();
 
-                SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
-                SwWrite.Write(strContent);
-                SwWrite.WriteLine(Environment.NewLine);
-                SwWrite.WriteLine(" ");
-                SwWrite.Flush();
-                SwWrite.Close();
+                    SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
+                    SwWrite.Write(strContent);
+                    SwWrite.WriteLine(Environment.NewLine);
+                    SwWrite.WriteLine(" ");
+                    SwWrite.Flush();
+                    SwWrite.Close();
+                }
             }
             catch { }
+    
         }
 
         #endregion

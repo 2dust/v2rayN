@@ -171,6 +171,12 @@ namespace v2rayN
         /// Language
         /// </summary>
         public const string MyRegKeyLanguage = "CurrentLanguage";
+
+        /// <summary>
+        /// uilogs
+        /// </summary>
+        public const string MyRegKeyUilogsEnabled = "UilogsEnabled";
+
         /// <summary>
         /// Icon
         /// </summary>
@@ -245,6 +251,10 @@ namespace v2rayN
         public static System.Threading.Mutex mutexObj
         {
             get; set;
+        }
+        public static bool EnableUilogs
+        {
+            get;set;
         }
 
         #endregion
