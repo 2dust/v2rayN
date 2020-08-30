@@ -6,7 +6,7 @@ namespace v2rayN
         #region 常量
 
 
-        public const string v2rayWebsiteUrl = @"https://www.v2ray.com/";
+        public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/cg3s/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
 
@@ -100,7 +100,7 @@ namespace v2rayN
         public const string blockTag = "block";
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string StreamSecurity = "tls";
 
@@ -116,13 +116,25 @@ namespace v2rayN
         /// </summary>
         public const string vmessProtocol = "vmess://";
         /// <summary>
+        /// vmess
+        /// </summary>
+        public const string vmessProtocolLite = "vmess";
+        /// <summary>
         /// shadowsocks
         /// </summary>
         public const string ssProtocol = "ss://";
         /// <summary>
+        /// shadowsocks
+        /// </summary>
+        public const string ssProtocolLite = "shadowsocks";
+        /// <summary>
         /// socks
         /// </summary>
         public const string socksProtocol = "socks://";
+        /// <summary>
+        /// socks
+        /// </summary>
+        public const string socksProtocolLite = "socks";
         /// <summary>
         /// http
         /// </summary>
@@ -131,6 +143,14 @@ namespace v2rayN
         /// https
         /// </summary>
         public const string httpsProtocol = "https://";
+        /// <summary>
+        /// vless
+        /// </summary>
+        public const string vlessProtocol = "vless://";
+        /// <summary>
+        /// vless
+        /// </summary>
+        public const string vlessProtocolLite = "vless";
 
         /// <summary>
         /// pac
@@ -211,7 +231,7 @@ namespace v2rayN
         }
 
         /// <summary>
-        ///  
+        ///
         /// </summary>
         public static int statePort
         {

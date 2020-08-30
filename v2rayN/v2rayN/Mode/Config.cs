@@ -422,6 +422,10 @@ namespace v2rayN.Mode
             {
                 summary += string.Format("{0}({1}:{2})", remarks, addr, port);
             }
+            if (configType == (int)EConfigType.VLESS)
+            {
+                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+            }
             else
             {
                 summary += string.Format("{0}", remarks);

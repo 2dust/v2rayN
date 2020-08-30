@@ -128,7 +128,7 @@
     <value>222, 16</value>
   </data>
   <data name="chkdefAllowInsecure.Text" xml:space="preserve">
-    <value>底层传输安全选tls时，默认允许不安全连接(allowInsecure)</value>
+    <value>底层传输安全选tls时，默认跳过证书验证(allowInsecure)</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>

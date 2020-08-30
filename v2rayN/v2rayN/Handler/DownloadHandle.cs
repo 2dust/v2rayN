@@ -101,7 +101,7 @@ namespace v2rayN.Handler
                 string filePath = Utils.GetPath("V2ray.exe");
                 if (!File.Exists(filePath))
                 {
-                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2ray/v2ray-core/releases");
+                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2fly/v2ray-core/releases");
                     //ShowMsg(true, msg);
                     return "";
                 }
@@ -172,7 +172,7 @@ namespace v2rayN.Handler
 
         #endregion
 
-        #region Download 
+        #region Download
 
         public WebClientEx DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
         {
@@ -271,7 +271,7 @@ namespace v2rayN.Handler
 
         /// <summary>
         /// DownloadString
-        /// </summary> 
+        /// </summary>
         /// <param name="url"></param>
         public void WebDownloadString(string url)
         {

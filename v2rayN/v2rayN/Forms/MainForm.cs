@@ -404,7 +404,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            
+
         }
         #endregion
 
@@ -513,6 +513,19 @@ namespace v2rayN.Forms
                     LoadV2ray();
                 }
             }
+            else if (config.vmess[index].configType == (int)EConfigType.VLESS)
+            {
+                AddServer5Form fm = new AddServer5Form
+                {
+                    EditIndex = index
+                };
+                if (fm.ShowDialog() == DialogResult.OK)
+                {
+                    //刷新
+                    RefreshServers();
+                    LoadV2ray();
+                }
+            }
             else
             {
                 AddServer2Form fm2 = new AddServer2Form
@@ -589,6 +602,20 @@ namespace v2rayN.Forms
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
             AddServerForm fm = new AddServerForm
+            {
+                EditIndex = -1
+            };
+            if (fm.ShowDialog() == DialogResult.OK)
+            {
+                //刷新
+                RefreshServers();
+                LoadV2ray();
+            }
+        }
+
+        private void menuAddVlessServer_Click(object sender, EventArgs e)
+        {
+            var fm = new AddServer5Form
             {
                 EditIndex = -1
             };
@@ -1298,7 +1325,16 @@ namespace v2rayN.Forms
                         try
                         {
                             string fileName = Utils.GetPath(downloadHandle.DownloadFileName);
-                            Process process = Process.Start("v2rayUpgrade.exe", "\"" + fileName + "\"");
+                            Process process = new Process
+                            {
+                                StartInfo = new ProcessStartInfo
+                                {
+                                    FileName = "v2rayUpgrade.exe",
+                                    Arguments = "\"" + fileName + "\"",
+                                    WorkingDirectory = Utils.StartupPath()
+                                }
+                            };
+                            process.Start();
                             if (process.Id > 0)
                             {
                                 menuExit_Click(null, null);
@@ -1595,5 +1631,6 @@ namespace v2rayN.Forms
 
         #endregion
 
+      
     }
 }
