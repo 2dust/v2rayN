@@ -471,6 +471,10 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Header header { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string seed { get; set; }
     }
 
     public class WsSettings
