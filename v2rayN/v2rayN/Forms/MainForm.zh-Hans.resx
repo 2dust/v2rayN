@@ -522,4 +522,7 @@
   <data name="menuGithubUpload.Text" xml:space="preserve">
     <value>上传到Github</value>
   </data>
+  <data name="menuGithubSettings.Text" xml:space="preserve">
+    <value>Github远端存储设置</value>
+  </data>
 </root>

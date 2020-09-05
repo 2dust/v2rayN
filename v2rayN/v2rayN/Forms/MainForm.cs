@@ -1629,8 +1629,83 @@ namespace v2rayN.Forms
 
 
 
+
         #endregion
 
-      
-    }
+        #region Github Remote Storage
+        private void LoadGithubRemoteStorageConfig() {
+            if (!File.Exists(Global.GithubRemoteStorageConfigFileName)) {
+                File.WriteAllText(Global.GithubRemoteStorageConfigFileName, "{}");
+            }
+            var githubRemoteStorageConfigText = File.ReadAllText(Global.GithubRemoteStorageConfigFileName, Encoding.UTF8);
+            try {
+                githubRemoteStorageConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<GithubRemoteStorageConfig>(githubRemoteStorageConfigText);
+            }
+            catch {
+                githubRemoteStorageConfig = null;
+            }
+        }
+        private bool CheckGithubSettings() {
+            LoadGithubRemoteStorageConfig();
+            if (githubRemoteStorageConfig == null) {
+                return false;
+            }
+            else
+                return githubRemoteStorageConfig.IsConfigVerificationPassed;
+        }
+
+        private async void menuGithubUpload_Click(object sender, EventArgs e) {
+            if (!this.CheckGithubSettings()) {
+                GithubSettingsForm fm = new GithubSettingsForm();
+                if (fm.ShowDialog() != DialogResult.OK) {
+                    //得到Config
+                    return;
+                }
+            }
+            try {
+                await GithubRemoteStorageHelper.Upload(config.vmess, githubRemoteStorageConfig);
+                UI.Show(UIRes.I18N("GithubRemoteStoreUploadSucceed"));
+            }
+            catch (Octokit.AuthorizationException githubAuthException) {
+                AppendText(githubAuthException.Message);
+                AppendText(githubAuthException.StackTrace);
+                UI.Show(UIRes.I18N("GithubRemoteStoreAuthorizationFailed"));
+            }
+            catch (Exception exception) {
+                AppendText(exception.Message);
+                AppendText(exception.StackTrace);
+                UI.Show(UIRes.I18N("GithubRemoteStoreUploadFailed"));
+            }
+        }
+
+        private async void menuGithubFetch_Click(object sender, EventArgs e) {
+            if (!this.CheckGithubSettings()) {
+                GithubSettingsForm fm = new GithubSettingsForm();
+                if (fm.ShowDialog() != DialogResult.OK) {
+                    return;
+                }
+            }
+            try {
+                await GithubRemoteStorageHelper.Fetch(config.vmess, githubRemoteStorageConfig);
+                RefreshServers();
+                UI.Show(UIRes.I18N("GithubRemoteStoreFetchSucceed"));
+            }
+            catch (Octokit.AuthorizationException githubAuthException) {
+                AppendText(githubAuthException.Message);
+                AppendText(githubAuthException.StackTrace);
+                UI.Show(UIRes.I18N("GithubRemoteStoreAuthorizationFailed"));
+            }
+            catch (Exception exception) {
+                AppendText(exception.Message);
+                AppendText(exception.StackTrace);
+                UI.Show(UIRes.I18N("GithubRemoteStoreFetchFailed"));
+            }
+        }
+        private void menuGithubSettings_Click(object sender, EventArgs e) {
+            LoadGithubRemoteStorageConfig();
+            GithubSettingsForm fm = new GithubSettingsForm();
+            fm.ShowDialog();
+        }
+        #endregion
+  }
 }

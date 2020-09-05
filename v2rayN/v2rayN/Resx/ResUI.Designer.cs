@@ -241,6 +241,69 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Failed to read the configuration file from Github, please check the settings and the configuration file on Github 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStorageConfigDamaged {
+            get {
+                return ResourceManager.GetString("GithubRemoteStorageConfigDamaged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to download the configuration file from Github, the configuration file was not found on Github, please check the settings.If it is the first time, you can upload to Github first. 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStorageConfigNotFound {
+            get {
+                return ResourceManager.GetString("GithubRemoteStorageConfigNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Github authentication failed, please check the settings 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStoreAuthorizationFailed {
+            get {
+                return ResourceManager.GetString("GithubRemoteStoreAuthorizationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to download configuration file from Github 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStoreFetchFailed {
+            get {
+                return ResourceManager.GetString("GithubRemoteStoreFetchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download the configuration file from Github successfully 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStoreFetchSucceed {
+            get {
+                return ResourceManager.GetString("GithubRemoteStoreFetchSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to upload configuration file to Github 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStoreUploadFailed {
+            get {
+                return ResourceManager.GetString("GithubRemoteStoreUploadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upload configuration file to Github successfully 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStoreUploadSucceed {
+            get {
+                return ResourceManager.GetString("GithubRemoteStoreUploadSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似  is not the correct client configuration file, please check 的本地化字符串。
         /// </summary>
         internal static string IncorrectClientConfiguration {

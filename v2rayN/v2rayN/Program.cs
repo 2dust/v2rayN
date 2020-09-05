@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using v2rayN.Forms;
@@ -19,6 +20,9 @@ namespace v2rayN
         [STAThread]
         static void Main()
         {
+            //Octokit
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             if (Environment.OSVersion.Version.Major >= 6)
             {
                 SetProcessDPIAware();

@@ -177,6 +177,27 @@
   <data name="FillUUID" xml:space="preserve">
     <value>请填写用户ID</value>
   </data>
+  <data name="GithubRemoteStorageConfigDamaged" xml:space="preserve">
+    <value>从Github读取远端配置文件失败，请检查设置或Github上的配置文件</value>
+  </data>
+  <data name="GithubRemoteStorageConfigNotFound" xml:space="preserve">
+    <value>从Github下载配置文件失败，没有在Github找到配置文件，请检查设置。如果是第一次可以先上传到Github</value>
+  </data>
+  <data name="GithubRemoteStoreAuthorizationFailed" xml:space="preserve">
+    <value>Github认证失败，请检查设置</value>
+  </data>
+  <data name="GithubRemoteStoreFetchFailed" xml:space="preserve">
+    <value>从Github下载配置文件失败</value>
+  </data>
+  <data name="GithubRemoteStoreFetchSucceed" xml:space="preserve">
+    <value>从Github下载配置文件成功</value>
+  </data>
+  <data name="GithubRemoteStoreUploadFailed" xml:space="preserve">
+    <value>上传配置文件到Github失败</value>
+  </data>
+  <data name="GithubRemoteStoreUploadSucceed" xml:space="preserve">
+    <value>上传配置文件到Github成功</value>
+  </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
     <value>不是正确的客户端配置文件，请检查</value>
   </data>

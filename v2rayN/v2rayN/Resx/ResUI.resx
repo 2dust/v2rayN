@@ -177,6 +177,27 @@
   <data name="FillUUID" xml:space="preserve">
     <value>Please fill in the user ID</value>
   </data>
+  <data name="GithubRemoteStorageConfigDamaged" xml:space="preserve">
+    <value>Failed to read the configuration file from Github, please check the settings and the configuration file on Github</value>
+  </data>
+  <data name="GithubRemoteStorageConfigNotFound" xml:space="preserve">
+    <value>Failed to download the configuration file from Github, the configuration file was not found on Github, please check the settings.If it is the first time, you can upload to Github first.</value>
+  </data>
+  <data name="GithubRemoteStoreAuthorizationFailed" xml:space="preserve">
+    <value>Github authentication failed, please check the settings</value>
+  </data>
+  <data name="GithubRemoteStoreFetchFailed" xml:space="preserve">
+    <value>Failed to download configuration file from Github</value>
+  </data>
+  <data name="GithubRemoteStoreFetchSucceed" xml:space="preserve">
+    <value>Download the configuration file from Github successfully</value>
+  </data>
+  <data name="GithubRemoteStoreUploadFailed" xml:space="preserve">
+    <value>Failed to upload configuration file to Github</value>
+  </data>
+  <data name="GithubRemoteStoreUploadSucceed" xml:space="preserve">
+    <value>Upload configuration file to Github successfully</value>
+  </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
     <value> is not the correct client configuration file, please check</value>
   </data>

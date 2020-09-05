@@ -7,6 +7,7 @@ namespace v2rayN.Forms
     public partial class BaseForm : Form
     {
         protected static Config config;
+        protected static GithubRemoteStorageConfig githubRemoteStorageConfig;
         protected static System.Drawing.Icon icon;
 
         public BaseForm()

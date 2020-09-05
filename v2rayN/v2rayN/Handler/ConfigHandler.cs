@@ -348,6 +348,15 @@ namespace v2rayN.Handler
 
             return 0;
         }
+    
+        /// <summary>
+        /// 存储文件
+        /// </summary>
+        /// <param name="config"></param>
+        private static void ToJsonFile(object config,string path)
+        {
+            Utils.ToJsonFile(config, Utils.GetPath(path));
+        }
 
         /// <summary>
         /// 存储文件
@@ -1011,5 +1020,14 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        /// <summary>
+        /// 保存Github存储配置
+        /// </summary>
+        /// <param name="githubRemoteStorageConfig"></param>
+        /// <returns></returns>
+        public static int SaveGithubRemoteStorageConfig(GithubRemoteStorageConfig githubRemoteStorageConfig) {
+          ToJsonFile(githubRemoteStorageConfig,Global.GithubRemoteStorageConfigFileName);
+          return 0;
+        }
     }
 }

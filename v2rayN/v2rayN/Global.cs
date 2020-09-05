@@ -31,6 +31,11 @@ namespace v2rayN
         public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
 
         /// <summary>
+        /// Github远端配置文件名
+        /// </summary>
+        public const string GithubRemoteStorageConfigFileName = "githubRemoteStorageConfig.json";
+
+        /// <summary>
         /// 本软件配置文件名
         /// </summary>
         public const string ConfigFileName = "guiNConfig.json";
