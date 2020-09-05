@@ -1687,8 +1687,9 @@ namespace v2rayN.Forms
             }
             try {
                 await GithubRemoteStorageHelper.Fetch(config.vmess, githubRemoteStorageConfig);
-                RefreshServers();
                 UI.Show(UIRes.I18N("GithubRemoteStoreFetchSucceed"));
+                RefreshServers();
+                ConfigHandler.SaveConfig(ref config);
             }
             catch (Octokit.AuthorizationException githubAuthException) {
                 AppendText(githubAuthException.Message);

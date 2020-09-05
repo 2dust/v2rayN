@@ -183,6 +183,9 @@
   <data name="GithubRemoteStorageConfigNotFound" xml:space="preserve">
     <value>Failed to download the configuration file from Github, the configuration file was not found on Github, please check the settings.If it is the first time, you can upload to Github first.</value>
   </data>
+  <data name="GithubRemoteStorageLocalVmessIsEmpty" xml:space="preserve">
+    <value>There is no data in the local Vmess list. After uploading, the remote configuration file (if have) will be cleared. Are you sure you want to do this?</value>
+  </data>
   <data name="GithubRemoteStoreAuthorizationFailed" xml:space="preserve">
     <value>Github authentication failed, please check the settings</value>
   </data>

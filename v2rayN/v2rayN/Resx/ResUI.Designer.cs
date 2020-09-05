@@ -259,6 +259,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 There is no data in the local Vmess list. After uploading, the remote configuration file (if have) will be cleared. Are you sure you want to do this? 的本地化字符串。
+        /// </summary>
+        internal static string GithubRemoteStorageLocalVmessIsEmpty {
+            get {
+                return ResourceManager.GetString("GithubRemoteStorageLocalVmessIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Github authentication failed, please check the settings 的本地化字符串。
         /// </summary>
         internal static string GithubRemoteStoreAuthorizationFailed {

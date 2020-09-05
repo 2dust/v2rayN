@@ -183,6 +183,9 @@
   <data name="GithubRemoteStorageConfigNotFound" xml:space="preserve">
     <value>从Github下载配置文件失败，没有在Github找到配置文件，请检查设置。如果是第一次可以先上传到Github</value>
   </data>
+  <data name="GithubRemoteStorageLocalVmessIsEmpty" xml:space="preserve">
+    <value>本地Vmess列表没有数据，上传后会清空远端配置文件（如有），确定要这么做吗</value>
+  </data>
   <data name="GithubRemoteStoreAuthorizationFailed" xml:space="preserve">
     <value>Github认证失败，请检查设置</value>
   </data>

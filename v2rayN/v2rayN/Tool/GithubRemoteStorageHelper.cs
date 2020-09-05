@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using v2rayN.Mode;
 using v2rayN.Protos.Statistics;
 
@@ -46,7 +48,9 @@ namespace v2rayN.Tool {
         /// <returns></returns>
         public static async Task Upload(IList<VmessItem> localVmessItems, GithubRemoteStorageConfig config) {
             if (localVmessItems?.Any() != true) {
-                return;
+                if (DialogResult.No == UI.ShowYesNo(UIRes.I18N("GithubRemoteStorageLocalVmessIsEmpty"))) {
+                    return;
+                }
             }
             var vmessesJson = Newtonsoft.Json.JsonConvert.SerializeObject(localVmessItems);
             var client = GetClient(config);
