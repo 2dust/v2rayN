@@ -120,11 +120,17 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>服务器</value>
+  </data>
   <data name="btnGUID.Text" xml:space="preserve">
     <value>生成(&amp;G)</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>底层传输方式(transport)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
@@ -148,6 +154,9 @@
   <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
     <value>223, 7</value>
   </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>350, 36</value>
+  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
   </data>
@@ -160,17 +169,26 @@
   <data name="label20.Text" xml:space="preserve">
     <value>3)h2 host中间逗号(,)隔开</value>
   </data>
+  <data name="txtPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 168</value>
+  </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 32</value>
+    <value>127, 32</value>
   </data>
   <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>211, 20</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 36</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 12</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>传输协议(network)</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 168</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -184,11 +202,20 @@
   <data name="label14.Text" xml:space="preserve">
     <value>1)http host中间逗号(,)隔开</value>
   </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 237</value>
+  </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
+    <value>107, 12</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
-    <value>底层传输安全</value>
+    <value>底层传输安全(tls)</value>
+  </data>
+  <data name="cmbStreamSecurity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 237</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>282, 71</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 12</value>
@@ -197,10 +224,13 @@
     <value>*tcp或kcp或QUIC伪装类型,默认none</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 94</value>
+    <value>127, 102</value>
   </data>
   <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>334, 51</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 71</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
@@ -208,14 +238,17 @@
   <data name="label11.Text" xml:space="preserve">
     <value>伪装类型(type)</value>
   </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 102</value>
+  </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>伪装域名(host)</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>底层传输方式(transport)</value>
+  <data name="cmbHeaderType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 67</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
@@ -265,11 +298,14 @@
   <data name="label1.Text" xml:space="preserve">
     <value>地址(address)</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
+  </data>
+  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 21</value>
+  </data>
+  <data name="MenuItem1.Text" xml:space="preserve">
+    <value>导入配置文件</value>
   </data>
   <data name="MenuItemImportClient.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 22</value>
@@ -291,12 +327,6 @@
   </data>
   <data name="MenuItemImportClipboard.Text" xml:space="preserve">
     <value>从剪贴板导入URL</value>
-  </data>
-  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
-  </data>
-  <data name="MenuItem1.Text" xml:space="preserve">
-    <value>导入配置文件</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>编辑或添加[VMess]服务器</value>

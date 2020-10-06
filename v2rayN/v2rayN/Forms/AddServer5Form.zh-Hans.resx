@@ -124,11 +124,14 @@
     <value>服务器</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="cmbFlow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 20</value>
+  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>流控(Flow)</value>
+    <value>流控(flow)</value>
   </data>
   <data name="btnGUID.Text" xml:space="preserve">
     <value>生成(&amp;G)</value>
@@ -160,6 +163,9 @@
   <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
     <value>223, 7</value>
   </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>353, 36</value>
+  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
   </data>
@@ -172,17 +178,26 @@
   <data name="label20.Text" xml:space="preserve">
     <value>3)h2 host中间逗号(,)隔开</value>
   </data>
+  <data name="txtPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 168</value>
+  </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 32</value>
+    <value>127, 32</value>
   </data>
   <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 20</value>
+    <value>220, 20</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 36</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 12</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>传输协议(network)</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 168</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -196,11 +211,20 @@
   <data name="label14.Text" xml:space="preserve">
     <value>1)http host中间逗号(,)隔开</value>
   </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 241</value>
+  </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
+    <value>107, 12</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
-    <value>底层传输安全</value>
+    <value>底层传输安全(tls)</value>
+  </data>
+  <data name="cmbStreamSecurity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 237</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>282, 71</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 12</value>
@@ -209,10 +233,13 @@
     <value>*tcp或kcp或QUIC伪装类型,默认none</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 94</value>
+    <value>127, 102</value>
   </data>
   <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>334, 51</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 71</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
@@ -220,11 +247,20 @@
   <data name="label11.Text" xml:space="preserve">
     <value>伪装类型(type)</value>
   </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 102</value>
+  </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>伪装域名(host)</value>
+  </data>
+  <data name="cmbHeaderType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 67</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>353, 158</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 12</value>
@@ -232,11 +268,11 @@
   <data name="label8.Text" xml:space="preserve">
     <value>*非空(none)</value>
   </data>
-  <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 143</value>
-  </data>
   <data name="cmbSecurity.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 20</value>
+  </data>
+  <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 21</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 12</value>
