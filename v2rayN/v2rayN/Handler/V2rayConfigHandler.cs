@@ -467,6 +467,7 @@ namespace v2rayN.Handler
                     //远程服务器用户ID
                     usersItem.id = config.id();
                     usersItem.alterId = 0;
+                    usersItem.flow = config.flow();
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = config.security();
 
@@ -516,6 +517,22 @@ namespace v2rayN.Handler
                         tlsSettings.serverName = host;
                     }
                     streamSettings.tlsSettings = tlsSettings;
+                }
+
+                //if xtls
+                if (config.streamSecurity() == Global.StreamSecurityX)
+                {
+                    streamSettings.security = config.streamSecurity();
+
+                    TlsSettings xtlsSettings = new TlsSettings
+                    {
+                        allowInsecure = config.allowInsecure()
+                    };
+                    if (!string.IsNullOrWhiteSpace(host))
+                    {
+                        xtlsSettings.serverName = host;
+                    }
+                    streamSettings.xtlsSettings = xtlsSettings;
                 }
 
                 //streamSettings
@@ -905,6 +922,7 @@ namespace v2rayN.Handler
                 {
                     inbound.protocol = Global.vlessProtocolLite;
                     usersItem.alterId = 0;
+                    usersItem.flow = config.flow();
                     inbound.settings.decryption = config.security();
                 }
 

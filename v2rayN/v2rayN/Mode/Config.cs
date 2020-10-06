@@ -365,7 +365,14 @@ namespace v2rayN.Mode
 
             return vmess[index].getItemId();
         }
-
+        public string flow()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].flow.TrimEx();
+        }
         #endregion
 
     }
@@ -391,6 +398,7 @@ namespace v2rayN.Mode
             configType = (int)EConfigType.Vmess;
             testResult = string.Empty;
             subid = string.Empty;
+            flow = string.Empty;
         }
 
         public string getSummary()
@@ -582,6 +590,14 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
+        /// <summary>
+        /// VLESS flow
+        /// </summary>
+        public string flow
+        {
+            get; set;
+        }        
     }
 
     [Serializable]

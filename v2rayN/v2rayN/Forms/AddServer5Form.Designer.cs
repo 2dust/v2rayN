@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServer5Form));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbFlow = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnGUID = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -94,6 +96,8 @@
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.cmbFlow);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.btnGUID);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -110,6 +114,22 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // cmbFlow
+            // 
+            resources.ApplyResources(this.cmbFlow, "cmbFlow");
+            this.cmbFlow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFlow.FormattingEnabled = true;
+            this.cmbFlow.Items.AddRange(new object[] {
+            resources.GetString("cmbFlow.Items"),
+            resources.GetString("cmbFlow.Items1"),
+            resources.GetString("cmbFlow.Items2")});
+            this.cmbFlow.Name = "cmbFlow";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
             // 
             // btnGUID
             // 
@@ -253,7 +273,8 @@
             this.cmbStreamSecurity.FormattingEnabled = true;
             this.cmbStreamSecurity.Items.AddRange(new object[] {
             resources.GetString("cmbStreamSecurity.Items"),
-            resources.GetString("cmbStreamSecurity.Items1")});
+            resources.GetString("cmbStreamSecurity.Items1"),
+            resources.GetString("cmbStreamSecurity.Items2")});
             this.cmbStreamSecurity.Name = "cmbStreamSecurity";
             this.cmbStreamSecurity.SelectedIndexChanged += new System.EventHandler(this.cmbStreamSecurity_SelectedIndexChanged);
             // 
@@ -485,5 +506,7 @@
         private System.Windows.Forms.Panel panTlsMore;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ComboBox cmbFlow;
+        private System.Windows.Forms.Label label4;
     }
 }
