@@ -467,9 +467,14 @@ namespace v2rayN.Handler
                     //远程服务器用户ID
                     usersItem.id = config.id();
                     usersItem.alterId = 0;
-                    usersItem.flow = config.flow();
+                    usersItem.flow = string.Empty;
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = config.security();
+                    //if xtls
+                    if (config.streamSecurity() == Global.StreamSecurityX)
+                    {
+                        usersItem.flow = config.flow();
+                    }
 
                     //Mux
                     outbound.mux.enabled = config.muxEnabled;
