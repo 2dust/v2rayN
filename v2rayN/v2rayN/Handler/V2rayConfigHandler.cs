@@ -470,6 +470,15 @@ namespace v2rayN.Handler
                     usersItem.flow = string.Empty;
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = config.security();
+                    
+                    //Mux
+                    outbound.mux.enabled = config.muxEnabled;
+                    outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
+
+                    //远程服务器底层传输配置
+                    StreamSettings streamSettings = outbound.streamSettings;
+                    boundStreamSettings(config, "out", ref streamSettings);
+
                     //if xtls
                     if (config.streamSecurity() == Global.StreamSecurityX)
                     {
@@ -481,15 +490,10 @@ namespace v2rayN.Handler
                         {
                             usersItem.flow = config.flow();
                         }
+                        
+                        outbound.mux.enabled = false;
+                        outbound.mux.concurrency = -1;
                     }
-
-                    //Mux
-                    outbound.mux.enabled = config.muxEnabled;
-                    outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
-
-                    //远程服务器底层传输配置
-                    StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(config, "out", ref streamSettings);
 
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
