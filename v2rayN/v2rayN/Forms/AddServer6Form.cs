@@ -5,15 +5,14 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServer4Form : BaseServerForm
-    { 
-
-        public AddServer4Form()
+    public partial class AddServer6Form : BaseServerForm
+    {
+        public AddServer6Form()
         {
             InitializeComponent();
         }
 
-        private void AddServer4Form_Load(object sender, EventArgs e)
+        private void AddServer6Form_Load(object sender, EventArgs e)
         {
             if (EditIndex >= 0)
             {
@@ -32,10 +31,10 @@ namespace v2rayN.Forms
         /// </summary>
         private void BindingServer()
         {
+
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
             txtId.Text = vmessItem.id;
-            txtSecurity.Text = vmessItem.security;
             txtRemarks.Text = vmessItem.remarks;
         }
 
@@ -48,7 +47,6 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
-            txtSecurity.Text = "";
             txtRemarks.Text = "";
         }
 
@@ -57,7 +55,6 @@ namespace v2rayN.Forms
             string address = txtAddress.Text;
             string port = txtPort.Text;
             string id = txtId.Text;
-            string security = txtSecurity.Text;
             string remarks = txtRemarks.Text;
 
             if (Utils.IsNullOrEmpty(address))
@@ -70,14 +67,18 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("FillCorrectServerPort"));
                 return;
             }
+            if (Utils.IsNullOrEmpty(id))
+            {
+                UI.Show(UIRes.I18N("FillPassword"));
+                return;
+            } 
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
-            vmessItem.security = security;
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.AddSocksServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddTrojanServer(ref config, vmessItem, EditIndex) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -90,40 +91,6 @@ namespace v2rayN.Forms
         {
             this.DialogResult = DialogResult.Cancel;
         }
-
-
-        #region 导入配置
-         
-        /// <summary>
-        /// 从剪贴板导入URL
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void menuItemImportClipboard_Click(object sender, EventArgs e)
-        {
-            ImportConfig();
-        }
-
-        private void ImportConfig()
-        {
-            ClearServer();
-
-            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
-            if (vmessItem == null)
-            {
-                UI.ShowWarning(msg);
-                return;
-            }
-
-            txtAddress.Text = vmessItem.address;
-            txtPort.Text = vmessItem.port.ToString();
-            txtSecurity.Text = vmessItem.security;
-            txtId.Text = vmessItem.id;
-            txtRemarks.Text = vmessItem.remarks;
-        }        
-
-        #endregion
-         
 
     }
 }

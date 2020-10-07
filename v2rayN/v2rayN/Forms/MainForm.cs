@@ -475,71 +475,41 @@ namespace v2rayN.Forms
             {
                 return;
             }
-
-            if (config.vmess[index].configType == (int)EConfigType.Vmess)
+            ShowServerForm(config.vmess[index].configType, index);
+        }
+        private void ShowServerForm(int configType, int index)
+        {
+            BaseServerForm fm;
+            switch (configType)
             {
-                AddServerForm fm = new AddServerForm
-                {
-                    EditIndex = index
-                };
-                if (fm.ShowDialog() == DialogResult.OK)
-                {
-                    //刷新
-                    RefreshServers();
-                    LoadV2ray();
-                }
+                case (int)EConfigType.Vmess:
+                    fm = new AddServerForm();
+                    break;
+                case (int)EConfigType.Shadowsocks:
+                    fm = new AddServer3Form();
+                    break;
+                case (int)EConfigType.Socks:
+                    fm = new AddServer4Form();
+                    break;
+                case (int)EConfigType.VLESS:
+                    fm = new AddServer5Form();
+                    break;
+                case (int)EConfigType.Trojan:
+                    fm = new AddServer6Form();
+                    break;
+                default:
+                    fm = new AddServer2Form();
+                    break;
             }
-            else if (config.vmess[index].configType == (int)EConfigType.Shadowsocks)
+            fm.EditIndex = index;
+            if (fm.ShowDialog() == DialogResult.OK)
             {
-                AddServer3Form fm = new AddServer3Form
-                {
-                    EditIndex = index
-                };
-                if (fm.ShowDialog() == DialogResult.OK)
-                {
-                    RefreshServers();
-                    LoadV2ray();
-                }
-            }
-            else if (config.vmess[index].configType == (int)EConfigType.Socks)
-            {
-                AddServer4Form fm = new AddServer4Form
-                {
-                    EditIndex = index
-                };
-                if (fm.ShowDialog() == DialogResult.OK)
-                {
-                    RefreshServers();
-                    LoadV2ray();
-                }
-            }
-            else if (config.vmess[index].configType == (int)EConfigType.VLESS)
-            {
-                AddServer5Form fm = new AddServer5Form
-                {
-                    EditIndex = index
-                };
-                if (fm.ShowDialog() == DialogResult.OK)
-                {
-                    //刷新
-                    RefreshServers();
-                    LoadV2ray();
-                }
-            }
-            else
-            {
-                AddServer2Form fm2 = new AddServer2Form
-                {
-                    EditIndex = index
-                };
-                if (fm2.ShowDialog() == DialogResult.OK)
-                {
-                    //刷新
-                    RefreshServers();
-                    LoadV2ray();
-                }
+                //刷新
+                RefreshServers();
+                LoadV2ray();
             }
         }
+
 
         private void lvServers_KeyDown(object sender, KeyEventArgs e)
         {
@@ -601,30 +571,12 @@ namespace v2rayN.Forms
 
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
-            AddServerForm fm = new AddServerForm
-            {
-                EditIndex = -1
-            };
-            if (fm.ShowDialog() == DialogResult.OK)
-            {
-                //刷新
-                RefreshServers();
-                LoadV2ray();
-            }
+            ShowServerForm((int)EConfigType.Vmess, -1);
         }
 
         private void menuAddVlessServer_Click(object sender, EventArgs e)
         {
-            var fm = new AddServer5Form
-            {
-                EditIndex = -1
-            };
-            if (fm.ShowDialog() == DialogResult.OK)
-            {
-                //刷新
-                RefreshServers();
-                LoadV2ray();
-            }
+            ShowServerForm((int)EConfigType.VLESS, -1);            
         }
 
         private void menuRemoveServer_Click(object sender, EventArgs e)
@@ -906,31 +858,19 @@ namespace v2rayN.Forms
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            AddServer3Form fm = new AddServer3Form
-            {
-                EditIndex = -1
-            };
-            if (fm.ShowDialog() == DialogResult.OK)
-            {
-                //刷新
-                RefreshServers();
-                LoadV2ray();
-            }
+            ShowServerForm((int)EConfigType.Shadowsocks, -1);             
             ShowForm();
         }
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            AddServer4Form fm = new AddServer4Form
-            {
-                EditIndex = -1
-            };
-            if (fm.ShowDialog() == DialogResult.OK)
-            {
-                //刷新
-                RefreshServers();
-                LoadV2ray();
-            }
+            ShowServerForm((int)EConfigType.Socks, -1);      
+            ShowForm();
+        }
+
+        private void menuAddTrojanServer_Click(object sender, EventArgs e)
+        {
+            ShowServerForm((int)EConfigType.Trojan, -1);
             ShowForm();
         }
 
@@ -1626,6 +1566,7 @@ namespace v2rayN.Forms
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);
             //Application.Restart();
         }
+
 
 
 

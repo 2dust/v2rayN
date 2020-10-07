@@ -152,6 +152,14 @@ namespace v2rayN
         /// vless
         /// </summary>
         public const string vlessProtocolLite = "vless";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocol = "trojan://";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocolLite = "trojan";
 
         /// <summary>
         /// pac

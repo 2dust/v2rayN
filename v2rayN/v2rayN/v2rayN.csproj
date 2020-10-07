@@ -98,6 +98,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\AddServer6Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddServer6Form.Designer.cs">
+      <DependentUpon>AddServer6Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AddServer4Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,12 @@
     </Compile>
     <Compile Include="Forms\AddServer5Form.Designer.cs">
       <DependentUpon>AddServer5Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BaseServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseServerForm.Designer.cs">
+      <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -225,6 +237,14 @@
       <DependentUpon>AddServer2Form.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddServer6Form.resx">
+      <DependentUpon>AddServer6Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddServer6Form.zh-Hans.resx">
+      <DependentUpon>AddServer6Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddServer4Form.resx">
       <DependentUpon>AddServer4Form.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -248,6 +268,9 @@
     <EmbeddedResource Include="Forms\AddServerForm.zh-Hans.resx">
       <DependentUpon>AddServerForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BaseServerForm.resx">
+      <DependentUpon>BaseServerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

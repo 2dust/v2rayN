@@ -37,6 +37,7 @@
             this.menuAddVlessServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddShadowsocksServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddSocksServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAddTrojanServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddCustomServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddServers = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScanScreen = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,8 +63,8 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,6 +184,7 @@
             this.menuAddVlessServer,
             this.menuAddShadowsocksServer,
             this.menuAddSocksServer,
+            this.menuAddTrojanServer,
             this.menuAddCustomServer,
             this.menuAddServers,
             this.menuScanScreen,
@@ -209,7 +211,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             // 
             // menuAddVmessServer
             // 
@@ -234,6 +235,12 @@
             resources.ApplyResources(this.menuAddSocksServer, "menuAddSocksServer");
             this.menuAddSocksServer.Name = "menuAddSocksServer";
             this.menuAddSocksServer.Click += new System.EventHandler(this.menuAddSocksServer_Click);
+            // 
+            // menuAddTrojanServer
+            // 
+            resources.ApplyResources(this.menuAddTrojanServer, "menuAddTrojanServer");
+            this.menuAddTrojanServer.Name = "menuAddTrojanServer";
+            this.menuAddTrojanServer.Click += new System.EventHandler(this.menuAddTrojanServer_Click);
             // 
             // menuAddCustomServer
             // 
@@ -381,17 +388,17 @@
             this.menuExport2SubContent.Name = "menuExport2SubContent";
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
+            // qrCodeControl
+            // 
+            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
+            this.qrCodeControl.Name = "qrCodeControl";
+            // 
             // tsbServer
             // 
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             this.tsbServer.Name = "tsbServer";
-            // 
-            // qrCodeControl
-            // 
-            resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
-            this.qrCodeControl.Name = "qrCodeControl";
             // 
             // notifyMain
             // 
@@ -947,6 +954,7 @@
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.ToolStripButton tsbQRCodeSwitch;
         private System.Windows.Forms.ToolStripMenuItem menuAddVlessServer;
+        private System.Windows.Forms.ToolStripMenuItem menuAddTrojanServer;
     }
 }
 

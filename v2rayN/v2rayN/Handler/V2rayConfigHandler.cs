@@ -494,6 +494,37 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
                 }
+                else if (config.configType() == (int)EConfigType.Trojan)
+                {
+                    ServersItem serversItem;
+                    if (outbound.settings.servers.Count <= 0)
+                    {
+                        serversItem = new ServersItem();
+                        outbound.settings.servers.Add(serversItem);
+                    }
+                    else
+                    {
+                        serversItem = outbound.settings.servers[0];
+                    }
+                    //远程服务器地址和端口
+                    serversItem.address = config.address();
+                    serversItem.port = config.port();
+                    serversItem.password = config.id();
+
+                    serversItem.ota = false;
+                    serversItem.level = 1;
+
+                    outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
+
+
+                    //远程服务器底层传输配置
+                    StreamSettings streamSettings = outbound.streamSettings;
+                    boundStreamSettings(config, "out", ref streamSettings);
+
+                    outbound.protocol = Global.trojanProtocolLite;
+                    outbound.settings.vnext = null;
+                }
             }
             catch
             {
@@ -1394,6 +1425,48 @@ namespace v2rayN.Handler
                     vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
                     vmessItem.security = arr21[0];
                     vmessItem.id = arr21[1];
+                }
+                else if (result.StartsWith(Global.trojanProtocol))
+                {
+                    msg = UIRes.I18N("ConfigurationFormatIncorrect");
+
+                    vmessItem.configType = (int)EConfigType.Trojan;
+                    result = result.Substring(Global.trojanProtocol.Length);
+                    //remark
+                    int indexRemark = result.IndexOf("#");
+                    if (indexRemark > 0)
+                    {
+                        try
+                        {
+                            vmessItem.remarks = WebUtility.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
+                        }
+                        catch { }
+                        result = result.Substring(0, indexRemark);
+                    }
+                    //part decode
+                    int indexS = result.IndexOf("@");
+                    if (indexS > 0)
+                    {
+                    }
+                    else
+                    {
+                        result = Utils.Base64Decode(result);
+                    }
+
+                    string[] arr1 = result.Split('@');
+                    if (arr1.Length != 2)
+                    {
+                        return null;
+                    }
+                    int indexPort = arr1[1].LastIndexOf(":");
+                    if (indexPort < 0)
+                    {
+                        return null;
+                    }
+                    vmessItem.address = arr1[1].Substring(0, indexPort);
+                    vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
+
+                    vmessItem.id = arr1[0];
                 }
                 else
                 {
