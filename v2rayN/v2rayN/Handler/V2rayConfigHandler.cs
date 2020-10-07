@@ -473,7 +473,14 @@ namespace v2rayN.Handler
                     //if xtls
                     if (config.streamSecurity() == Global.StreamSecurityX)
                     {
-                        usersItem.flow = config.flow();
+                        if (Utils.IsNullOrEmpty(config.flow()))
+                        {
+                            usersItem.flow = "xtls-rprx-origin";
+                        }
+                        else
+                        {
+                            usersItem.flow = config.flow();
+                        }
                     }
 
                     //Mux
