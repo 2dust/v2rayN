@@ -403,7 +403,7 @@ namespace v2rayN.Mode
 
         public string getSummary()
         {
-            string summary = string.Format("{0}-", ((EConfigType)configType).ToString());
+            string summary = string.Format("[{0}] ", ((EConfigType)configType).ToString());
             string[] arrAddr = address.Split('.');
             string addr;
             if (arrAddr.Length > 2)
