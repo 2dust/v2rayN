@@ -40,7 +40,7 @@ namespace v2rayN.Handler
                     vmess = new List<VmessItem>(),
 
                     //Mux
-                    muxEnabled = true,
+                    muxEnabled = false,
 
                     ////默认监听端口
                     //config.pacPort = 8888;
