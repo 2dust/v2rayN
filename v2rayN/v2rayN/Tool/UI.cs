@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace v2rayN
 {
@@ -7,12 +6,20 @@ namespace v2rayN
     {
         public static void Show(string msg)
         {
-            MessageBox.Show(msg);
+            MessageBox.Show(msg, "v2rayN", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        public static void ShowWarning(string msg)
+        {
+            MessageBox.Show(msg, "v2rayN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        public static void ShowError(string msg)
+        {
+            MessageBox.Show(msg, "v2rayN", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public static DialogResult ShowYesNo(string msg)
         {
-            return MessageBox.Show(msg, "YesNo", MessageBoxButtons.YesNo);
+            return MessageBox.Show(msg, "v2rayN", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }
 
         //public static string GetResourseString(string key)

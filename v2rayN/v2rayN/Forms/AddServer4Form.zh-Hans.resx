@@ -124,11 +124,8 @@
     <value>服务器</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="txtSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 85</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 89</value>
+  <data name="txtSecurity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 21</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
@@ -136,11 +133,8 @@
   <data name="label4.Text" xml:space="preserve">
     <value>用户名(可选)</value>
   </data>
-  <data name="txtId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 115</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 119</value>
+  <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 21</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>

@@ -17,6 +17,7 @@ namespace v2rayN.HttpProxyHandler
         private static int pacPort = 0;
         private static HttpWebServer server;
         private static HttpWebServerB serverB;
+        private static Config _config;
 
         public static bool IsRunning
         {
@@ -28,6 +29,7 @@ namespace v2rayN.HttpProxyHandler
 
         public static void Init(Config config)
         {
+            _config = config;
             Global.pacPort = config.GetLocalPort("pac");
 
             if (InitServer("*"))
@@ -112,7 +114,7 @@ namespace v2rayN.HttpProxyHandler
         {
             try
             {
-                var pac = GetPacList(address);
+                string pac = GetPacList(address);
                 return pac;
             }
             catch (Exception ex)
@@ -161,27 +163,40 @@ namespace v2rayN.HttpProxyHandler
             //}
         }
 
-
         private static string GetPacList(string address)
         {
-            var port = Global.httpPort;
+            int port = Global.httpPort;
             if (port <= 0)
             {
                 return "No port";
             }
             try
             {
-                List<string> lstProxy = new List<string>();
-                lstProxy.Add(string.Format("PROXY {0}:{1};", address, port));
-                var proxy = string.Join("", lstProxy.ToArray());
+                List<string> lstProxy = new List<string>
+                {
+                    string.Format("PROXY {0}:{1};", address, port)
+                };
+                string proxy = string.Join("", lstProxy.ToArray());
 
                 string strPacfile = Utils.GetPath(Global.pacFILE);
                 if (!File.Exists(strPacfile))
                 {
                     FileManager.UncompressFile(strPacfile, Resources.pac_txt);
                 }
-                var pac = File.ReadAllText(strPacfile, Encoding.UTF8);
+                string pac = File.ReadAllText(strPacfile, Encoding.UTF8);
                 pac = pac.Replace("__PROXY__", proxy);
+
+                if (_config.userPacRule.Count > 0)
+                {
+                    string keyWords = "var rules = [";
+                    if (pac.IndexOf(keyWords) >= 0)
+                    {
+                        string userPac = string.Join($"\",{Environment.NewLine}\"", _config.userPacRule.ToArray());
+                        userPac = string.Format("\"{0}\",", userPac);
+                        pac = pac.Replace(keyWords, keyWords + userPac);
+                    }
+                }
+
                 return pac;
             }
             catch

@@ -39,7 +39,7 @@ namespace v2rayN
 
             try
             {
-                var assembly = Assembly.GetExecutingAssembly();
+                Assembly assembly = Assembly.GetExecutingAssembly();
                 using (Stream stream = assembly.GetManifestResourceStream(res))
                 using (StreamReader reader = new StreamReader(stream))
                 {
@@ -121,10 +121,10 @@ namespace v2rayN
         /// <returns></returns>
         public static int ToJsonFile(Object obj, string filePath)
         {
-            int result = -1;
+            int result;
             try
             {
-                using (StreamWriter file = System.IO.File.CreateText(filePath))
+                using (StreamWriter file = File.CreateText(filePath))
                 {
                     //JsonSerializer serializer = new JsonSerializer();
                     JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
@@ -155,7 +155,7 @@ namespace v2rayN
             {
                 if (wrap)
                 {
-                    return string.Join(",\r\n", lst.ToArray());
+                    return string.Join("," + Environment.NewLine, lst.ToArray());
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace v2rayN
         {
             try
             {
-                str = str.Replace("\r\n", "");
+                str = str.Replace(Environment.NewLine, "");
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
             catch
@@ -194,7 +194,7 @@ namespace v2rayN
         {
             try
             {
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
                 return Convert.ToBase64String(plainTextBytes);
             }
             catch (Exception ex)
@@ -214,8 +214,8 @@ namespace v2rayN
             try
             {
                 plainText = plainText.TrimEx()
+                  .Replace(Environment.NewLine, "")
                   .Replace("\n", "")
-                  .Replace("\r\n", "")
                   .Replace("\r", "")
                   .Replace(" ", "");
 
@@ -272,27 +272,27 @@ namespace v2rayN
         /// <param name="unit">单位</param>
         public static void ToHumanReadable(ulong amount, out double result, out string unit)
         {
-            var factor = 1024u;
-            var KBs = amount / factor;
+            uint factor = 1024u;
+            ulong KBs = amount / factor;
             if (KBs > 0)
             {
                 // multi KB
-                var MBs = KBs / factor;
+                ulong MBs = KBs / factor;
                 if (MBs > 0)
                 {
                     // multi MB
-                    var GBs = MBs / factor;
+                    ulong GBs = MBs / factor;
                     if (GBs > 0)
                     {
                         // multi GB
-                        var TBs = GBs / factor;
+                        /*ulong TBs = GBs / factor;
                         if (TBs > 0)
                         {
                             // 你是魔鬼吗？ 用这么多流量
                             result = TBs + GBs % factor / (factor + 0.0);
                             unit = "TB";
                             return;
-                        }
+                        }*/
                         result = GBs + MBs % factor / (factor + 0.0);
                         unit = "GB";
                         return;
@@ -314,23 +314,39 @@ namespace v2rayN
 
         public static string HumanFy(ulong amount)
         {
-            double result;
-            string unit;
-            ToHumanReadable(amount, out result, out unit);
-            return $"{string.Format("{0:f1}", result)}{unit}";
+            ToHumanReadable(amount, out double result, out string unit);
+            return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
-        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result)
+        public static void DedupServerList(List<Mode.VmessItem> source, out List<Mode.VmessItem> result, bool keepOlder)
         {
-            var list = new List<Mode.VmessItem>();
-            foreach (var item in source)
+            List<Mode.VmessItem> list = new List<Mode.VmessItem>();
+            if (!keepOlder) source.Reverse(); // Remove the early items first
+
+            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
             {
-                if (!list.Exists(i => item.address == i.address && item.port == i.port && item.path == i.path))
+                return o.configVersion == n.configVersion &&
+                    o.configType == n.configType &&
+                    o.address == n.address &&
+                    o.port == n.port &&
+                    o.id == n.id &&
+                    o.alterId == n.alterId &&
+                    o.security == n.security &&
+                    o.network == n.network &&
+                    o.headerType == n.headerType &&
+                    o.requestHost == n.requestHost &&
+                    o.path == n.path &&
+                    o.streamSecurity == n.streamSecurity;
+                // skip (will remove) different remarks
+            }
+            foreach (Mode.VmessItem item in source)
+            {
+                if (!list.Exists(i => _isAdded(i, item)))
                 {
                     list.Add(item);
                 }
             }
-
+            if (!keepOlder) list.Reverse();
             result = list;
         }
 
@@ -348,7 +364,7 @@ namespace v2rayN
         {
             try
             {
-                int var1 = Utils.ToInt(oText);
+                int var1 = ToInt(oText);
                 return true;
             }
             catch
@@ -392,7 +408,7 @@ namespace v2rayN
             //可能是CIDR
             if (ip.IndexOf(@"/") > 0)
             {
-                var cidr = ip.Split('/');
+                string[] cidr = ip.Split('/');
                 if (cidr.Length == 2)
                 {
                     if (!IsNumberic(cidr[0]))
@@ -469,24 +485,16 @@ namespace v2rayN
         /// </summary>
         /// <param name="run"></param>
         /// <returns></returns>
-        public static int SetAutoRun(bool run)
+        public static void SetAutoRun(bool run)
         {
             try
             {
-                if (run)
-                {
-                    string exePath = GetExePath();
-                    RegWriteValue(autoRunRegPath, autoRunName, exePath);
-                }
-                else
-                {
-                    RegWriteValue(autoRunRegPath, autoRunName, "");
-                }
+                string exePath = GetExePath();
+                RegWriteValue(autoRunRegPath, autoRunName, run ? exePath : "");
             }
             catch
             {
             }
-            return 0;
         }
 
         /// <summary>
@@ -497,7 +505,7 @@ namespace v2rayN
         {
             try
             {
-                var value = RegReadValue(autoRunRegPath, autoRunName, "");
+                string value = RegReadValue(autoRunRegPath, autoRunName, "");
                 string exePath = GetExePath();
                 if (value?.Equals(exePath) == true)
                 {
@@ -517,7 +525,7 @@ namespace v2rayN
         public static string GetPath(string fileName)
         {
             string startupPath = StartupPath();
-            if (Utils.IsNullOrEmpty(fileName))
+            if (IsNullOrEmpty(fileName))
             {
                 return startupPath;
             }
@@ -535,15 +543,7 @@ namespace v2rayN
 
         public static string StartupPath()
         {
-            try
-            {
-                string exePath = GetExePath();
-                return exePath.Substring(0, exePath.LastIndexOf("\\", StringComparison.Ordinal));
-            }
-            catch
-            {
-                return Application.StartupPath;
-            }
+            return Application.StartupPath;
         }
 
         public static string RegReadValue(string path, string name, string def)
@@ -609,7 +609,7 @@ namespace v2rayN
             long roundtripTime = -1;
             try
             {
-                int timeout = 120;
+                int timeout = 30;
                 int echoNum = 2;
                 Ping pingSender = new Ping();
                 for (int i = 0; i < echoNum; i++)
@@ -657,7 +657,14 @@ namespace v2rayN
             return lstIPAddress;
         }
 
-
+        public static void SetSecurityProtocol()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+                                       | SecurityProtocolType.Tls
+                                       | SecurityProtocolType.Tls11
+                                       | SecurityProtocolType.Tls12;
+            ServicePointManager.DefaultConnectionLimit = 256;
+        }
         #endregion
 
         #region 杂项
@@ -779,16 +786,13 @@ namespace v2rayN
 
         #region TempPath
 
-        private static string _tempPath = null;
-
         // return path to store temporary files
         public static string GetTempPath()
         {
-            if (_tempPath == null)
+            string _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
+            if (!Directory.Exists(_tempPath))
             {
-                Directory.CreateDirectory(Path.Combine(StartupPath(), "v2ray_win_temp"));
-                // don't use "/", it will fail when we call explorer /select xxx/ss_win_temp\xxx.log
-                _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
+                Directory.CreateDirectory(_tempPath);
             }
             return _tempPath;
         }
@@ -796,31 +800,18 @@ namespace v2rayN
         public static string GetTempPath(string filename)
         {
             return Path.Combine(GetTempPath(), filename);
-        }
-
-        public static void ClearTempPath()
-        {
-            //Directory.Delete(GetTempPath(), true);
-            //_tempPath = null;
-        }
+        }              
 
         public static string UnGzip(byte[] buf)
         {
-            byte[] buffer = new byte[1024];
-            int n;
-            using (MemoryStream sb = new MemoryStream())
+            MemoryStream sb = new MemoryStream();
+            using (GZipStream input = new GZipStream(new MemoryStream(buf),
+            CompressionMode.Decompress,
+            false))
             {
-                using (GZipStream input = new GZipStream(new MemoryStream(buf),
-                    CompressionMode.Decompress,
-                    false))
-                {
-                    while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        sb.Write(buffer, 0, n);
-                    }
-                }
-                return System.Text.Encoding.UTF8.GetString(sb.ToArray());
+                input.CopyTo(sb);
             }
+            return Encoding.UTF8.GetString(sb.ToArray());
         }
 
         #endregion
@@ -854,7 +845,7 @@ namespace v2rayN
 
                 SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
                 SwWrite.Write(strContent);
-                SwWrite.WriteLine("\r\n");
+                SwWrite.WriteLine(Environment.NewLine);
                 SwWrite.WriteLine(" ");
                 SwWrite.Flush();
                 SwWrite.Close();
@@ -869,7 +860,6 @@ namespace v2rayN
 
         public static string ScanScreen()
         {
-            string ret = string.Empty;
             try
             {
                 foreach (Screen screen in Screen.AllScreens)
@@ -901,13 +891,13 @@ namespace v2rayN
                                                 GraphicsUnit.Pixel);
                             }
 
-                            var source = new BitmapLuminanceSource(target);
-                            var bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                            BitmapLuminanceSource source = new BitmapLuminanceSource(target);
+                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                             QRCodeReader reader = new QRCodeReader();
-                            var result = reader.decode(bitmap);
+                            Result result = reader.decode(bitmap);
                             if (result != null)
                             {
-                                ret = result.Text;
+                                string ret = result.Text;
                                 return ret;
                             }
                         }

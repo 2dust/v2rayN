@@ -35,7 +35,7 @@ namespace v2rayN.Forms
 
             for (int k = config.subItem.Count - 1; k >= 0; k--)
             {
-                var item = config.subItem[k];
+                SubItem item = config.subItem[k];
                 if (Utils.IsNullOrEmpty(item.remarks)
                     && Utils.IsNullOrEmpty(item.url))
                 {
@@ -47,9 +47,8 @@ namespace v2rayN.Forms
                 }
             }
 
-            for (int k = 0; k < config.subItem.Count; k++)
+            foreach (SubItem item in config.subItem)
             {
-                var item = config.subItem[k];
                 SubSettingControl control = new SubSettingControl();
                 control.OnButtonClicked += Control_OnButtonClicked;
                 control.subItem = item;
@@ -80,7 +79,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
         }
 
@@ -99,10 +98,12 @@ namespace v2rayN.Forms
 
         private void AddSub()
         {
-            var subItem = new SubItem();
-            subItem.id = string.Empty;
-            subItem.remarks = "remarks";
-            subItem.url = "url";
+            SubItem subItem = new SubItem
+            {
+                id = string.Empty,
+                remarks = "remarks",
+                url = "url"
+            };
             config.subItem.Add(subItem);
         }
     }

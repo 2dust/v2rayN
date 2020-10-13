@@ -1,20 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using v2rayN.Base;
+using System.Threading;
 using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Tool;
 
 namespace v2rayN.HttpProxyHandler
 {
-    class SysProxyHandle
+    public static class SysProxyHandle
     {
-        private const string _userWininetConfigFile = "user-wininet.json";
+        //private const string _userWininetConfigFile = "user-wininet.json";
 
-        private static string _queryStr;
+        //private static string _queryStr;
 
         // In general, this won't change
         // format:
@@ -44,11 +44,10 @@ namespace v2rayN.HttpProxyHandler
             catch (IOException ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-
             }
         }
 
-        public static void SetIEProxy(bool enable, bool global, string proxyServer, string pacURL)
+        public static void SetIEProxy(bool enable, bool global, string strProxy)
         {
             //Read();
 
@@ -56,130 +55,138 @@ namespace v2rayN.HttpProxyHandler
             //{
             //    // record user settings
             //    ExecSysproxy("query");
-            //    ParseQueryStr(_queryStr);
+            //    //ParseQueryStr(_queryStr);
             //}
 
             string arguments;
             if (enable)
             {
                 arguments = global
-                    ? string.Format(
-                        //"global {0} <local>;localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;172.32.*;192.168.*",
-                        "global {0} <local>;localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;172.32.*",
-                        proxyServer)
-                    : string.Format("pac {0}", pacURL);
+                    ? $"global {strProxy} {Global.IEProxyExceptions}"
+                    : $"pac {strProxy}";
             }
             else
             {
                 // restore user settings
-                //var flags = _userSettings.Flags;
-                //var proxy_server = _userSettings.ProxyServer ?? "-";
-                //var bypass_list = _userSettings.BypassList ?? "-";
-                //var pac_url = _userSettings.PacUrl ?? "-";
-                ////arguments = string.Format("set {0} {1} {2} {3}", flags, proxy_server, bypass_list, pac_url);
-                //set null settings
-                arguments = string.Format("set {0} {1} {2} {3}", 1, "-", "<local>", @"http://127.0.0.1");
+                string flags = _userSettings.Flags;
+                string proxy_server = _userSettings.ProxyServer ?? "-";
+                string bypass_list = _userSettings.BypassList ?? "-";
+                string pac_url = _userSettings.PacUrl ?? "-";
+                arguments = $"set {flags} {proxy_server} {bypass_list} {pac_url}";
 
                 // have to get new settings
-                //_userSettings.UserSettingsRecorded = false;
+                _userSettings.UserSettingsRecorded = false;
             }
 
             //Save();
             ExecSysproxy(arguments);
         }
 
+        // set system proxy to 1 (null) (null) (null)
+        public static bool ResetIEProxy()
+        {
+            try
+            {
+                // clear user-wininet.json
+                //_userSettings = new SysproxyConfig();
+                //Save();
+                // clear system setting
+                ExecSysproxy("set 1 - - -");
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static void ExecSysproxy(string arguments)
         {
-            using (var process = new Process())
+            // using event to avoid hanging when redirect standard output/error
+            // ref: https://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
+            // and http://blog.csdn.net/zhangweixing0/article/details/7356841
+            using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
+            using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
             {
-                // Configure the process using the StartInfo properties.
-                process.StartInfo.FileName = Utils.GetTempPath("sysproxy.exe");
-                process.StartInfo.Arguments = arguments;
-                process.StartInfo.WorkingDirectory = Utils.GetTempPath();
-                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.RedirectStandardOutput = true;
-
-                // Need to provide encoding info, or output/error strings we got will be wrong.
-                process.StartInfo.StandardOutputEncoding = Encoding.Unicode;
-                process.StartInfo.StandardErrorEncoding = Encoding.Unicode;
-
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-
-                var stderr = process.StandardError.ReadToEnd();
-                var stdout = process.StandardOutput.ReadToEnd();
-
-                process.WaitForExit();
-
-                var exitCode = process.ExitCode;
-                if (exitCode != (int)RET_ERRORS.RET_NO_ERROR)
+                using (Process process = new Process())
                 {
-                    throw new Exception(stderr);
-                }
+                    // Configure the process using the StartInfo properties.
+                    process.StartInfo.FileName = Utils.GetTempPath("sysproxy.exe");
+                    process.StartInfo.Arguments = arguments;
+                    process.StartInfo.WorkingDirectory = Utils.GetTempPath();
+                    process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.RedirectStandardOutput = true;
 
-                if (arguments == "query")
-                {
-                    if (stdout.IsNullOrWhiteSpace() || stdout.IsNullOrEmpty())
+                    // Need to provide encoding info, or output/error strings we got will be wrong.
+                    process.StartInfo.StandardOutputEncoding = Encoding.Unicode;
+                    process.StartInfo.StandardErrorEncoding = Encoding.Unicode;
+
+                    process.StartInfo.CreateNoWindow = true;
+
+                    StringBuilder output = new StringBuilder();
+                    StringBuilder error = new StringBuilder();
+
+                    process.OutputDataReceived += (sender, e) =>
                     {
-                        // we cannot get user settings
-                        throw new Exception("failed to query wininet settings");
+                        if (e.Data == null)
+                        {
+                            outputWaitHandle.Set();
+                        }
+                        else
+                        {
+                            output.AppendLine(e.Data);
+                        }
+                    };
+                    process.ErrorDataReceived += (sender, e) =>
+                    {
+                        if (e.Data == null)
+                        {
+                            errorWaitHandle.Set();
+                        }
+                        else
+                        {
+                            error.AppendLine(e.Data);
+                        }
+                    };
+                    try
+                    {
+                        process.Start();
+
+                        process.BeginErrorReadLine();
+                        process.BeginOutputReadLine();
+
+                        process.WaitForExit();
                     }
-                    _queryStr = stdout;
+                    catch (System.ComponentModel.Win32Exception e)
+                    {
+
+                        // log the arguments
+                        throw new Exception(process.StartInfo.Arguments);
+                    }
+                    string stderr = error.ToString();
+                    string stdout = output.ToString();
+
+                    int exitCode = process.ExitCode;
+                    if (exitCode != (int)RET_ERRORS.RET_NO_ERROR)
+                    {
+                        throw new Exception(stderr);
+                    }
+
+                    //if (arguments == "query")
+                    //{
+                    //    if (stdout.IsNullOrWhiteSpace() || stdout.IsNullOrEmpty())
+                    //    {
+                    //        throw new Exception("failed to query wininet settings");
+                    //    }
+                    //    _queryStr = stdout;
+                    //}
                 }
             }
         }
 
-        private static void Save()
-        {
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(File.Open(Utils.GetPath(_userWininetConfigFile), FileMode.Create)))
-                {
-                    string jsonString = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
-                    sw.Write(jsonString);
-                    sw.Flush();
-                }
-            }
-            catch (IOException ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-        }
 
-        private static void Read()
-        {
-            try
-            {
-                string configContent = File.ReadAllText(Utils.GetPath(_userWininetConfigFile));
-                _userSettings = JsonConvert.DeserializeObject<SysproxyConfig>(configContent);
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                // Suppress all exceptions. finally block will initialize new user config settings.
-            }
-            finally
-            {
-                if (_userSettings == null) _userSettings = new SysproxyConfig();
-            }
-        }
-
-        private static void ParseQueryStr(string str)
-        {
-            string[] userSettingsArr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            _userSettings.Flags = userSettingsArr[0];
-
-            // handle output from WinINET
-            if (userSettingsArr[1] == "(null)") _userSettings.ProxyServer = null;
-            else _userSettings.ProxyServer = userSettingsArr[1];
-            if (userSettingsArr[2] == "(null)") _userSettings.BypassList = null;
-            else _userSettings.BypassList = userSettingsArr[2];
-            if (userSettingsArr[3] == "(null)") _userSettings.PacUrl = null;
-            else _userSettings.PacUrl = userSettingsArr[3];
-
-            _userSettings.UserSettingsRecorded = true;
-        }
     }
 }

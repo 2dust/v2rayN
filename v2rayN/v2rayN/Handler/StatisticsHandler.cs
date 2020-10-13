@@ -1,14 +1,12 @@
 ﻿using Grpc.Core;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using v2rayN.Mode;
-using v2rayN.Properties;
 using v2rayN.Protos.Statistics;
-using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -18,7 +16,6 @@ namespace v2rayN.Handler
         private ServerStatistics serverStatistics_;
         private Channel channel_;
         private StatsService.StatsServiceClient client_;
-        private Thread workThread_;
         private bool exitFlag_;
 
         Action<ulong, ulong, List<ServerStatItem>> updateFunc_;
@@ -43,22 +40,22 @@ namespace v2rayN.Handler
 
         public StatisticsHandler(Mode.Config config, Action<ulong, ulong, List<ServerStatItem>> update)
         {
-            try
-            {
-                if (Environment.Is64BitOperatingSystem)
-                {
-                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x64.dll"), Resources.grpc_csharp_ext_x64_dll);
-                }
-                else
-                {
-                    FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x86.dll"), Resources.grpc_csharp_ext_x86_dll);
-                }
-            }
-            catch (IOException ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
+            //try
+            //{
+            //    if (Environment.Is64BitOperatingSystem)
+            //    {
+            //        FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x64.dll"), Resources.grpc_csharp_ext_x64_dll);
+            //    }
+            //    else
+            //    {
+            //        FileManager.UncompressFile(Utils.GetPath("grpc_csharp_ext.x86.dll"), Resources.grpc_csharp_ext_x86_dll);
+            //    }
+            //}
+            //catch (IOException ex)
+            //{
+            //    Utils.SaveLog(ex.Message, ex);
 
-            }
+            //}
 
             config_ = config;
             Enable = config.enableStatistics;
@@ -70,9 +67,7 @@ namespace v2rayN.Handler
 
             GrpcInit();
 
-            workThread_ = new Thread(new ThreadStart(Run));
-            workThread_.IsBackground = true;
-            workThread_.Start();
+            Task.Run(() => Run());
         }
 
         private void GrpcInit()
@@ -120,13 +115,11 @@ namespace v2rayN.Handler
 
                         if (res != null)
                         {
-                            var itemId = config_.getItemId();
-                            var serverStatItem = GetServerStatItem(itemId);
-                            ulong up = 0,
-                                 down = 0;
+                            string itemId = config_.getItemId();
+                            ServerStatItem serverStatItem = GetServerStatItem(itemId);
 
                             //TODO: parse output
-                            ParseOutput(res.Stat, out up, out down);
+                            ParseOutput(res.Stat, out ulong up, out ulong down);
 
                             serverStatItem.todayUp += up;
                             serverStatItem.todayDown += down;
@@ -169,8 +162,8 @@ namespace v2rayN.Handler
                     serverStatistics_.server = new List<ServerStatItem>();
                 }
 
-                var ticks = DateTime.Now.Date.Ticks;
-                foreach (var item in serverStatistics_.server)
+                long ticks = DateTime.Now.Date.Ticks;
+                foreach (ServerStatItem item in serverStatistics_.server)
                 {
                     if (item.dateNow != ticks)
                     {
@@ -200,8 +193,8 @@ namespace v2rayN.Handler
 
         private ServerStatItem GetServerStatItem(string itemId)
         {
-            var ticks = DateTime.Now.Date.Ticks;
-            var cur = Statistic.FindIndex(item => item.itemId == itemId);
+            long ticks = DateTime.Now.Date.Ticks;
+            int cur = Statistic.FindIndex(item => item.itemId == itemId);
             if (cur < 0)
             {
                 Statistic.Add(new ServerStatItem
@@ -231,12 +224,12 @@ namespace v2rayN.Handler
             try
             {
 
-                foreach (var stat in source)
+                foreach (Stat stat in source)
                 {
-                    var name = stat.Name;
-                    var value = stat.Value;
-                    var nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    var type = "";
+                    string name = stat.Name;
+                    long value = stat.Value;
+                    string[] nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string type = "";
 
                     name = name.Trim();
 
@@ -270,7 +263,7 @@ namespace v2rayN.Handler
                 // TCP stack please do me a favor
                 TcpListener l = new TcpListener(IPAddress.Loopback, 0);
                 l.Start();
-                var port = ((IPEndPoint)l.LocalEndpoint).Port;
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
                 l.Stop();
                 return port;
             }

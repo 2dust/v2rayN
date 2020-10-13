@@ -5,10 +5,8 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServerForm : BaseForm
-    {
-        public int EditIndex { get; set; }
-        VmessItem vmessItem = null;
+    public partial class AddServerForm : BaseServerForm
+    { 
 
         public AddServerForm()
         {
@@ -166,7 +164,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
         }
 
@@ -180,6 +178,18 @@ namespace v2rayN.Forms
             this.DialogResult = DialogResult.Cancel;
         }
 
+        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string security = cmbStreamSecurity.Text;
+            if (Utils.IsNullOrEmpty(security))
+            {
+                panTlsMore.Hide();
+            }
+            else
+            {
+                panTlsMore.Show();
+            }
+        }
 
         #region 导入客户端/服务端配置
 
@@ -207,9 +217,11 @@ namespace v2rayN.Forms
         {
             ClearServer();
 
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = false;
-            fileDialog.Filter = "Config|*.json|All|*.*";
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Config|*.json|All|*.*"
+            };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -231,7 +243,7 @@ namespace v2rayN.Forms
             }
             if (vmessItem == null)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
                 return;
             }
 
@@ -256,11 +268,10 @@ namespace v2rayN.Forms
         {
             ClearServer();
 
-            string msg;
-            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out msg);
+            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
             if (vmessItem == null)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
                 return;
             }
 
@@ -277,17 +288,5 @@ namespace v2rayN.Forms
         }
         #endregion
 
-        private void cmbStreamSecurity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string security = cmbStreamSecurity.Text;
-            if (Utils.IsNullOrEmpty(security))
-            {
-                panTlsMore.Hide();
-            }
-            else
-            {
-                panTlsMore.Show();
-            }
-        }
     }
 }

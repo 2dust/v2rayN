@@ -57,7 +57,7 @@ namespace v2rayN.Base
                     {
                         ThreadPool.QueueUserWorkItem((c) =>
                         {
-                            var ctx = c as HttpListenerContext;
+                            HttpListenerContext ctx = c as HttpListenerContext;
                             try
                             {
                                 string address = ctx.Request.LocalEndPoint.Address.ToString();

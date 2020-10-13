@@ -24,7 +24,7 @@ namespace v2rayN.Base
 
         public static bool IsWhiteSpace(this string value)
         {
-            foreach (var c in value)
+            foreach (char c in value)
             {
                 if (char.IsWhiteSpace(c)) continue;
 

@@ -91,26 +91,6 @@ namespace v2rayN.Properties {
         }
         
         /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] grpc_csharp_ext_x64_dll {
-            get {
-                object obj = ResourceManager.GetObject("grpc_csharp_ext_x64_dll", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] grpc_csharp_ext_x86_dll {
-            get {
-                object obj = ResourceManager.GetObject("grpc_csharp_ext_x86_dll", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap help {
@@ -213,6 +193,16 @@ namespace v2rayN.Properties {
         internal static System.Drawing.Bitmap server {
             get {
                 object obj = ResourceManager.GetObject("server", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap share {
+            get {
+                object obj = ResourceManager.GetObject("share", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

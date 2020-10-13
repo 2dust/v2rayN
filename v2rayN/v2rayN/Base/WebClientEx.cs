@@ -17,17 +17,7 @@ namespace v2rayN.Base
         protected override WebRequest GetWebRequest(Uri address)
         {
             HttpWebRequest request;
-            if (address.Scheme == "https")
-            {
-                ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => { return true; };
-                request = (HttpWebRequest)base.GetWebRequest(address);
-                request.ProtocolVersion = HttpVersion.Version10;
-            }
-            else
-            {
-                request = (HttpWebRequest)base.GetWebRequest(address);
-            }
-
+            request = (HttpWebRequest)base.GetWebRequest(address);
             request.Timeout = Timeout;
             request.ReadWriteTimeout = Timeout;
             //request.AllowAutoRedirect = false;

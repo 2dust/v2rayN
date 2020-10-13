@@ -19,7 +19,7 @@ namespace v2rayN.Resx {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ResUI {
@@ -102,6 +102,15 @@ namespace v2rayN.Resx {
         internal static string CustomServerTips {
             get {
                 return ResourceManager.GetString("CustomServerTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Downloading... 的本地化字符串。
+        /// </summary>
+        internal static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
             }
         }
         
@@ -268,6 +277,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 {0} already up to date. 的本地化字符串。
+        /// </summary>
+        internal static string IsLatestCore {
+            get {
+                return ResourceManager.GetString("IsLatestCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} already up to date. 的本地化字符串。
+        /// </summary>
+        internal static string IsLatestN {
+            get {
+                return ResourceManager.GetString("IsLatestN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         internal static string LvAddress {
@@ -394,7 +421,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download V2rayCore successfully 的本地化字符串。
+        ///   查找类似 Download V2ray successfully 的本地化字符串。
         /// </summary>
         internal static string MsgDownloadV2rayCoreSuccessfully {
             get {
@@ -448,11 +475,11 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Resolve V2rayCore successfully 的本地化字符串。
+        ///   查找类似 Resolve {0} successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgParsingV2rayCoreSuccessfully {
+        internal static string MsgParsingSuccessfully {
             get {
-                return ResourceManager.GetString("MsgParsingV2rayCoreSuccessfully", resourceCulture);
+                return ResourceManager.GetString("MsgParsingSuccessfully", resourceCulture);
             }
         }
         
@@ -475,20 +502,20 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Start updating {0}... 的本地化字符串。
+        /// </summary>
+        internal static string MsgStartUpdating {
+            get {
+                return ResourceManager.GetString("MsgStartUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Start updating PAC... 的本地化字符串。
         /// </summary>
         internal static string MsgStartUpdatingPAC {
             get {
                 return ResourceManager.GetString("MsgStartUpdatingPAC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Start updating V2rayCore... 的本地化字符串。
-        /// </summary>
-        internal static string MsgStartUpdatingV2rayCore {
-            get {
-                return ResourceManager.GetString("MsgStartUpdatingV2rayCore", resourceCulture);
             }
         }
         
@@ -574,7 +601,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2ray-core not found, download address: {0} 的本地化字符串。
+        ///   查找类似 V2ray-core not found, please download: {0} 的本地化字符串。
         /// </summary>
         internal static string NotFoundCore {
             get {
@@ -646,6 +673,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Servers deduplication completed. Old: {0}, New: {1}. 的本地化字符串。
+        /// </summary>
+        internal static string RemoveDuplicateServerResult {
+            get {
+                return ResourceManager.GetString("RemoveDuplicateServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Are you sure to remove the server? 的本地化字符串。
         /// </summary>
         internal static string RemoveServer {
@@ -691,7 +727,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 PAC failed to start. Pls with an administrator. 的本地化字符串。
+        ///   查找类似 PAC failed to start. Run it with Admin right. 的本地化字符串。
         /// </summary>
         internal static string StartPacFailed {
             get {
@@ -700,7 +736,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Start service ({0})...... 的本地化字符串。
+        ///   查找类似 Start service ({0})... 的本地化字符串。
         /// </summary>
         internal static string StartService {
             get {
@@ -728,7 +764,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Imported bulk URL from clipboard successfully 的本地化字符串。
+        ///   查找类似 {0} servers have been imported from clipboard. 的本地化字符串。
         /// </summary>
         internal static string SuccessfullyImportedServerViaClipboard {
             get {
@@ -742,6 +778,15 @@ namespace v2rayN.Resx {
         internal static string SuccessfullyImportedServerViaScan {
             get {
                 return ResourceManager.GetString("SuccessfullyImportedServerViaScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The ping of current service: {0} 的本地化字符串。
+        /// </summary>
+        internal static string TestMeOutput {
+            get {
+                return ResourceManager.GetString("TestMeOutput", resourceCulture);
             }
         }
     }

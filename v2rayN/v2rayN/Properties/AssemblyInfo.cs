@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 有关程序集的常规信息通过以下
@@ -8,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("v2rayN")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("v2rayN")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2019")]
+[assembly: AssemblyCopyright("Copyright © 2019-2020 (GPLv3)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,4 +32,4 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用“*”:
 //[assembly: AssemblyVersion("1.0.*")]
 //[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("2.53")]
+[assembly: AssemblyFileVersion("3.26")]

@@ -8,26 +8,46 @@ namespace v2rayN.HttpProxyHandler
     {
         public static bool UnsetProxy()
         {
-            return SetProxy(null, null);
-        }
-        public static bool SetProxy(string strProxy)
-        {
-            return SetProxy(strProxy, null);
+            return SetProxy(null, null, 1);
         }
 
-        public static bool SetProxy(string strProxy, string exceptions)
+        public static bool SetProxy(string strProxy, string exceptions, int type)
         {
             InternetPerConnOptionList list = new InternetPerConnOptionList();
 
-            int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
+            int optionCount = 1;
+            if (type == 1)
+            {
+                optionCount = 1;
+            }
+            else if (type == 2 || type == 4)
+            {
+                optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
+            }
+
+            int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
+            PerConnOption m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
+            if (type == 2)
+            {
+                m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY);
+                m_Option = PerConnOption.INTERNET_PER_CONN_PROXY_SERVER;
+            }
+            else if (type == 4)
+            {
+                m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_AUTO_PROXY_URL);
+                m_Option = PerConnOption.INTERNET_PER_CONN_AUTOCONFIG_URL;
+            }
+
+            //int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
             InternetConnectionOption[] options = new InternetConnectionOption[optionCount];
             // USE a proxy server ...
             options[0].m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
-            options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
+            //options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
+            options[0].m_Value.m_Int = m_Int;
             // use THIS proxy server
             if (optionCount > 1)
             {
-                options[1].m_Option = PerConnOption.INTERNET_PER_CONN_PROXY_SERVER;
+                options[1].m_Option = m_Option;
                 options[1].m_Value.m_StringPtr = Marshal.StringToHGlobalAuto(strProxy);
                 // except for these addresses ...
                 if (optionCount > 2)
@@ -50,14 +70,22 @@ namespace v2rayN.HttpProxyHandler
             // copy the array over into that spot in memory ...
             for (int i = 0; i < options.Length; ++i)
             {
-                IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
-                Marshal.StructureToPtr(options[i], opt, false);
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    IntPtr opt = new IntPtr(optionsPtr.ToInt64() + (i * optSize));
+                    Marshal.StructureToPtr(options[i], opt, false);
+                }
+                else
+                {
+                    IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
+                    Marshal.StructureToPtr(options[i], opt, false);
+                }
             }
 
             list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
-            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((Int32)list.dwSize);
+            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
@@ -100,7 +128,7 @@ namespace v2rayN.HttpProxyHandler
             public InternetConnectionOptionValue m_Value;
             static InternetConnectionOption()
             {
-                InternetConnectionOption.Size = Marshal.SizeOf(typeof(InternetConnectionOption));
+                Size = Marshal.SizeOf(typeof(InternetConnectionOption));
             }
 
             // Nested Types
@@ -181,7 +209,7 @@ namespace v2rayN.HttpProxyHandler
             string ProxyServer = rk.GetValue("ProxyServer").ToString();
             rk.Close();
             return ProxyServer;
-            
+
         }
     }
 }

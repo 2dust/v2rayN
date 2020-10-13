@@ -6,6 +6,7 @@ namespace v2rayN
         #region 常量
 
 
+        public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
 
@@ -13,8 +14,9 @@ namespace v2rayN
         /// <summary>
         /// SpeedTestUrl
         /// </summary>
-        public const string SpeedTestUrl = @"http://speedtest-sgp1.digitalocean.com/10mb.test";
+        public const string SpeedTestUrl = @"http://cachefly.cachefly.net/10mb.test";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
+        public const string AvailabilityTestUrl = @"https://www.google.com/generate_204";
 
         /// <summary>
         /// CustomRoutingListUrl
@@ -26,7 +28,7 @@ namespace v2rayN
         /// <summary>
         /// PromotionUrl
         /// </summary>
-        public const string PromotionUrl = @"aHR0cHM6Ly8xLjIzNDQ1Ni54eXovYWRzLmh0bWw=";
+        public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
 
         /// <summary>
         /// 本软件配置文件名
@@ -101,6 +103,7 @@ namespace v2rayN
         /// 
         /// </summary>
         public const string StreamSecurity = "tls";
+        public const string StreamSecurityX = "xtls";
 
         public const string InboundSocks = "socks";
         public const string InboundHttp = "http";
@@ -114,13 +117,25 @@ namespace v2rayN
         /// </summary>
         public const string vmessProtocol = "vmess://";
         /// <summary>
+        /// vmess
+        /// </summary>
+        public const string vmessProtocolLite = "vmess";
+        /// <summary>
         /// shadowsocks
         /// </summary>
         public const string ssProtocol = "ss://";
         /// <summary>
+        /// shadowsocks
+        /// </summary>
+        public const string ssProtocolLite = "shadowsocks";
+        /// <summary>
         /// socks
         /// </summary>
         public const string socksProtocol = "socks://";
+        /// <summary>
+        /// socks
+        /// </summary>
+        public const string socksProtocolLite = "socks";
         /// <summary>
         /// http
         /// </summary>
@@ -129,6 +144,22 @@ namespace v2rayN
         /// https
         /// </summary>
         public const string httpsProtocol = "https://";
+        /// <summary>
+        /// vless
+        /// </summary>
+        public const string vlessProtocol = "vless://";
+        /// <summary>
+        /// vless
+        /// </summary>
+        public const string vlessProtocolLite = "vless";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocol = "trojan://";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocolLite = "trojan";
 
         /// <summary>
         /// pac
@@ -161,6 +192,8 @@ namespace v2rayN
             slow = 3000
         }
         public const string StatisticLogOverall = "StatisticLogOverall.json";
+
+        public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
 
         #endregion
 
@@ -210,6 +243,15 @@ namespace v2rayN
         ///  
         /// </summary>
         public static int statePort
+        {
+            get; set;
+        }
+
+        public static Job processJob
+        {
+            get; set;
+        }
+        public static System.Threading.Mutex mutexObj
         {
             get; set;
         }

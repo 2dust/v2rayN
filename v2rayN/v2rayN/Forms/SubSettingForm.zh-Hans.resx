@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>取消(&amp;C)</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>订阅设置</value>
   </data>
   <data name="btnAdd.Text" xml:space="preserve">
     <value>添加(&amp;A)</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>取消(&amp;C)</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
@@ -142,8 +145,5 @@
         ////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIAwAAAAAAAAAF9v///xtTeXN0
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>订阅设置</value>
   </data>
 </root>

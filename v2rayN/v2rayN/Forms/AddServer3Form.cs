@@ -5,10 +5,8 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServer3Form : BaseForm
-    {
-        public int EditIndex { get; set; }
-        VmessItem vmessItem = null;
+    public partial class AddServer3Form : BaseServerForm
+    { 
 
         public AddServer3Form()
         {
@@ -96,7 +94,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.Show(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
         }
         private void btnClose_Click(object sender, EventArgs e)
@@ -121,11 +119,10 @@ namespace v2rayN.Forms
         {
             ClearServer();
 
-            string msg;
-            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out msg);
+            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
             if (vmessItem == null)
             {
-                UI.Show(msg);
+                UI.ShowWarning(msg);
                 return;
             }
 

@@ -37,11 +37,13 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.panTlsMore = new System.Windows.Forms.Panel();
-            this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.cmbAllowInsecure = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
+            this.cmbNetwork = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -54,10 +56,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.cmbHeaderType = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cmbNetwork = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.cmbSecurity = new System.Windows.Forms.ComboBox();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -99,10 +98,7 @@
             this.groupBox1.Controls.Add(this.btnGUID);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.cmbNetwork);
-            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.cmbSecurity);
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.label6);
@@ -136,8 +132,11 @@
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.panTlsMore);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label20);
             this.groupBox2.Controls.Add(this.txtPath);
+            this.groupBox2.Controls.Add(this.cmbNetwork);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label19);
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.label17);
@@ -166,16 +165,10 @@
             // 
             // panTlsMore
             // 
-            this.panTlsMore.Controls.Add(this.label22);
             this.panTlsMore.Controls.Add(this.label21);
             this.panTlsMore.Controls.Add(this.cmbAllowInsecure);
             resources.ApplyResources(this.panTlsMore, "panTlsMore");
             this.panTlsMore.Name = "panTlsMore";
-            // 
-            // label22
-            // 
-            resources.ApplyResources(this.label22, "label22");
-            this.label22.Name = "label22";
             // 
             // label21
             // 
@@ -193,6 +186,11 @@
             resources.ApplyResources(this.cmbAllowInsecure, "cmbAllowInsecure");
             this.cmbAllowInsecure.Name = "cmbAllowInsecure";
             // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
             // label20
             // 
             resources.ApplyResources(this.label20, "label20");
@@ -202,6 +200,25 @@
             // 
             resources.ApplyResources(this.txtPath, "txtPath");
             this.txtPath.Name = "txtPath";
+            // 
+            // cmbNetwork
+            // 
+            this.cmbNetwork.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbNetwork.FormattingEnabled = true;
+            this.cmbNetwork.Items.AddRange(new object[] {
+            resources.GetString("cmbNetwork.Items"),
+            resources.GetString("cmbNetwork.Items1"),
+            resources.GetString("cmbNetwork.Items2"),
+            resources.GetString("cmbNetwork.Items3"),
+            resources.GetString("cmbNetwork.Items4")});
+            resources.ApplyResources(this.cmbNetwork, "cmbNetwork");
+            this.cmbNetwork.Name = "cmbNetwork";
+            this.cmbNetwork.SelectedIndexChanged += new System.EventHandler(this.cmbNetwork_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
             // 
             // label19
             // 
@@ -279,34 +296,10 @@
             resources.ApplyResources(this.cmbHeaderType, "cmbHeaderType");
             this.cmbHeaderType.Name = "cmbHeaderType";
             // 
-            // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
             // label8
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            // 
-            // cmbNetwork
-            // 
-            this.cmbNetwork.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbNetwork.FormattingEnabled = true;
-            this.cmbNetwork.Items.AddRange(new object[] {
-            resources.GetString("cmbNetwork.Items"),
-            resources.GetString("cmbNetwork.Items1"),
-            resources.GetString("cmbNetwork.Items2"),
-            resources.GetString("cmbNetwork.Items3"),
-            resources.GetString("cmbNetwork.Items4")});
-            resources.ApplyResources(this.cmbNetwork, "cmbNetwork");
-            this.cmbNetwork.Name = "cmbNetwork";
-            this.cmbNetwork.SelectedIndexChanged += new System.EventHandler(this.cmbNetwork_SelectedIndexChanged);
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
             // 
             // cmbSecurity
             // 
@@ -508,7 +501,6 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ComboBox cmbAllowInsecure;
-        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Panel panTlsMore;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;

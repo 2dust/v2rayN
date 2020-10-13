@@ -16,13 +16,13 @@ namespace v2rayN
         public Job()
         {
             handle = CreateJobObject(IntPtr.Zero, null);
-            var extendedInfoPtr = IntPtr.Zero;
-            var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
+            IntPtr extendedInfoPtr = IntPtr.Zero;
+            JOBOBJECT_BASIC_LIMIT_INFORMATION info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
             {
                 LimitFlags = 0x2000
             };
 
-            var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+            JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
             {
                 BasicLimitInformation = info
             };
@@ -43,18 +43,17 @@ namespace v2rayN
                 if (extendedInfoPtr != IntPtr.Zero)
                 {
                     Marshal.FreeHGlobal(extendedInfoPtr);
-                    extendedInfoPtr = IntPtr.Zero;
                 }
             }
         }
 
         public bool AddProcess(IntPtr processHandle)
         {
-            var succ = AssignProcessToJobObject(handle, processHandle);
+            bool succ = AssignProcessToJobObject(handle, processHandle);
 
             if (!succ)
             {
-                //Logging.Error("Failed to call AssignProcessToJobObject! GetLastError=" + Marshal.GetLastWin32Error());
+                Utils.SaveLog("Failed to call AssignProcessToJobObject! GetLastError=" + Marshal.GetLastWin32Error());
             }
 
             return succ;
