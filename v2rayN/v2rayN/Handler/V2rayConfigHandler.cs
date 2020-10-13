@@ -1435,42 +1435,21 @@ namespace v2rayN.Handler
                     msg = UIRes.I18N("ConfigurationFormatIncorrect");
 
                     vmessItem.configType = (int)EConfigType.Trojan;
-                    result = result.Substring(Global.trojanProtocol.Length);
-                    //remark
-                    int indexRemark = result.IndexOf("#");
-                    if (indexRemark > 0)
+
+                    Uri uri = new Uri(result);
+                    vmessItem.address = uri.IdnHost;
+                    vmessItem.port = uri.Port;
+                    vmessItem.id = uri.UserInfo;
+
+                    var remarks = uri.Fragment.Replace("#", "");
+                    if (Utils.IsNullOrEmpty(remarks))
                     {
-                        try
-                        {
-                            vmessItem.remarks = WebUtility.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
-                        }
-                        catch { }
-                        result = result.Substring(0, indexRemark);
-                    }
-                    //part decode
-                    int indexS = result.IndexOf("@");
-                    if (indexS > 0)
-                    {
+                        vmessItem.remarks = "NONE";
                     }
                     else
                     {
-                        result = Utils.Base64Decode(result);
-                    }
-
-                    string[] arr1 = result.Split('@');
-                    if (arr1.Length != 2)
-                    {
-                        return null;
-                    }
-                    int indexPort = arr1[1].LastIndexOf(":");
-                    if (indexPort < 0)
-                    {
-                        return null;
-                    }
-                    vmessItem.address = arr1[1].Substring(0, indexPort);
-                    vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
-
-                    vmessItem.id = arr1[0];
+                        vmessItem.remarks = WebUtility.UrlDecode(remarks);
+                    }                     
                 }
                 else
                 {
