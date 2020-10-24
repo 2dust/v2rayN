@@ -561,7 +561,7 @@ namespace v2rayN.Handler
                     };
                     if (!string.IsNullOrWhiteSpace(host))
                     {
-                        tlsSettings.serverName = host;
+                        tlsSettings.serverName = Utils.String2List(host)[0];
                     }
                     streamSettings.tlsSettings = tlsSettings;
                 }
@@ -577,7 +577,7 @@ namespace v2rayN.Handler
                     };
                     if (!string.IsNullOrWhiteSpace(host))
                     {
-                        xtlsSettings.serverName = host;
+                        xtlsSettings.serverName = Utils.String2List(host)[0];
                     }
                     streamSettings.xtlsSettings = xtlsSettings;
                 }
@@ -1440,6 +1440,9 @@ namespace v2rayN.Handler
                     vmessItem.address = uri.IdnHost;
                     vmessItem.port = uri.Port;
                     vmessItem.id = uri.UserInfo;
+
+                    var qurery = HttpUtility.ParseQueryString(uri.Query);
+                    vmessItem.requestHost = qurery["sni"] ?? "";
 
                     var remarks = uri.Fragment.Replace("#", "");
                     if (Utils.IsNullOrEmpty(remarks))

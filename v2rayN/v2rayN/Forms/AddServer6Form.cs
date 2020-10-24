@@ -35,6 +35,7 @@ namespace v2rayN.Forms
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
             txtId.Text = vmessItem.id;
+            txtRequestHost.Text = vmessItem.requestHost;
             txtRemarks.Text = vmessItem.remarks;
         }
 
@@ -47,6 +48,7 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
+            txtRequestHost.Text = "";
             txtRemarks.Text = "";
         }
 
@@ -55,6 +57,7 @@ namespace v2rayN.Forms
             string address = txtAddress.Text;
             string port = txtPort.Text;
             string id = txtId.Text;
+            string requestHost = txtRequestHost.Text;
             string remarks = txtRemarks.Text;
 
             if (Utils.IsNullOrEmpty(address))
@@ -76,6 +79,7 @@ namespace v2rayN.Forms
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
+            vmessItem.requestHost = requestHost.Replace(" ", "");
             vmessItem.remarks = remarks;
 
             if (ConfigHandler.AddTrojanServer(ref config, vmessItem, EditIndex) == 0)

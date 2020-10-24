@@ -123,6 +123,9 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器</value>
   </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>域名(SNI)</value>
+  </data>
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
   </data>

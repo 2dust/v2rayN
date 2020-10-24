@@ -430,11 +430,16 @@ namespace v2rayN.Handler
                     {
                         remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
                     }
+                    string query = string.Empty;
+                    if (!Utils.IsNullOrEmpty(vmessItem.requestHost))
+                    {
+                        query = string.Format("?sni={0}", vmessItem.requestHost);
+                    }
                     url = string.Format("{0}@{1}:{2}",
                         vmessItem.id,
                         vmessItem.address,
                         vmessItem.port);
-                    url = string.Format("{0}{1}{2}", Global.trojanProtocol, url, remark);
+                    url = string.Format("{0}{1}{2}{3}", Global.trojanProtocol, url, query, remark);
                 }
                 else
                 {
