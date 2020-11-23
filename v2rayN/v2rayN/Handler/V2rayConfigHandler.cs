@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                 // TODO: 统计配置
                 statistic(config, ref v2rayConfig);
 
-                Utils.ToJsonFile(v2rayConfig, fileName);
+                Utils.ToJsonFile(v2rayConfig, fileName, false);
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
             }
@@ -919,7 +919,7 @@ namespace v2rayN.Handler
                 //传出设置
                 ServerOutbound(config, ref v2rayConfig);
 
-                Utils.ToJsonFile(v2rayConfig, fileName);
+                Utils.ToJsonFile(v2rayConfig, fileName, false);
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
             }
