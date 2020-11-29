@@ -30,6 +30,7 @@ namespace v2rayN.Handler
         {
             lstV2ray = new List<string>
             {
+                "xray",
                 "wv2ray",
                 "v2ray"
             };
@@ -161,7 +162,7 @@ namespace v2rayN.Handler
         private string V2rayFindexe() {
             //查找v2ray文件是否存在
             string fileName = string.Empty;
-            lstV2ray.Reverse();
+            //lstV2ray.Reverse();
             foreach (string name in lstV2ray)
             {
                 string vName = string.Format("{0}.exe", name);
