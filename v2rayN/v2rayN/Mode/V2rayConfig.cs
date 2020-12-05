@@ -420,11 +420,7 @@ namespace v2rayN.Mode
     }
 
     public class TcpSettings
-    {
-        /// <summary>
-        /// 是否重用 TCP 连接
-        /// </summary>
-        public bool connectionReuse { get; set; }
+    {         
         /// <summary>
         /// 数据包头部伪装设置
         /// </summary>
@@ -488,12 +484,7 @@ namespace v2rayN.Mode
     }
 
     public class WsSettings
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool connectionReuse { get; set; }
-
+    {      
         /// <summary>
         /// 
         /// </summary>

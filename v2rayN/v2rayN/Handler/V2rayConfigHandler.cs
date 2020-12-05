@@ -624,8 +624,7 @@ namespace v2rayN.Handler
                     //ws
                     case "ws":
                         WsSettings wsSettings = new WsSettings
-                        {
-                            connectionReuse = true
+                        {                            
                         };
 
                         string path = config.path();
@@ -689,7 +688,6 @@ namespace v2rayN.Handler
                         {
                             TcpSettings tcpSettings = new TcpSettings
                             {
-                                connectionReuse = true,
                                 header = new Header
                                 {
                                     type = config.headerType()
