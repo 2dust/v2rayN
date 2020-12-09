@@ -206,6 +206,10 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public Event Event
+        {
+            get; set;
+        }
 
         #region 函数
 
@@ -733,6 +737,19 @@ namespace v2rayN.Mode
         }
 
         public Dictionary<string, int> mainLvColWidth
+        {
+            get; set;
+        }
+    }
+    [Serializable]
+    public class Event
+    {
+        public string open
+        {
+            get; set;
+        }
+
+        public string close
         {
             get; set;
         }

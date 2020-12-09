@@ -49,7 +49,8 @@ namespace v2rayN.Forms
             ConfigHandler.LoadConfig(ref config);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
-
+            string command = config.Event.open;
+            ExecCmd(command);
             if (config.enableStatistics)
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
@@ -85,9 +86,11 @@ namespace v2rayN.Forms
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                string command = config.Event.close;
                 StorageUI();
                 e.Cancel = true;
                 HideForm();
+                ExecCmd(command);
                 return;
             }
         }
@@ -148,6 +151,23 @@ namespace v2rayN.Forms
             for (int k = 0; k < lvServers.Columns.Count; k++)
             {
                 ConfigHandler.AddformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
+            }
+        }
+
+        private void ExecCmd(string cmd)
+        {
+            if (!cmd.Equals(""))
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                p.StandardInput.WriteLine(cmd + "&exit");
+                p.Close();
             }
         }
 
