@@ -217,7 +217,7 @@ namespace v2rayN.Forms
                         todayDown = string.Empty;
                 if (config.index.Equals(k))
                 {
-                    def = "√";
+                    def = "✓";
                 }
 
                 VmessItem item = config.vmess[k];
