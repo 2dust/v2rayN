@@ -164,6 +164,11 @@ namespace v2rayN.Mode
         /// VLESS
         /// </summary>
         public string encryption { get; set; }
+
+        /// <summary>
+        /// VLESS
+        /// </summary>
+        public string flow { get; set; }         
     }
     public class Sniffing
     {
@@ -393,7 +398,12 @@ namespace v2rayN.Mode
         /// QUIC
         /// </summary>
         public QuicSettings quicSettings { get; set; }
-        
+
+        /// <summary>
+        /// VLESS xtls
+        /// </summary>
+        public TlsSettings xtlsSettings { get; set; }
+
     }
 
     public class TlsSettings
@@ -410,11 +420,7 @@ namespace v2rayN.Mode
     }
 
     public class TcpSettings
-    {
-        /// <summary>
-        /// 是否重用 TCP 连接
-        /// </summary>
-        public bool connectionReuse { get; set; }
+    {         
         /// <summary>
         /// 数据包头部伪装设置
         /// </summary>
@@ -471,15 +477,14 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Header header { get; set; }
-    }
-
-    public class WsSettings
-    {
         /// <summary>
         /// 
         /// </summary>
-        public bool connectionReuse { get; set; }
+        public string seed { get; set; }
+    }
 
+    public class WsSettings
+    {      
         /// <summary>
         /// 
         /// </summary>

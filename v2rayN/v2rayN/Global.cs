@@ -14,7 +14,7 @@ namespace v2rayN
         /// <summary>
         /// SpeedTestUrl
         /// </summary>
-        public const string SpeedTestUrl = @"http://speedtest-sgp1.digitalocean.com/10mb.test";
+        public const string SpeedTestUrl = @"http://cachefly.cachefly.net/10mb.test";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string AvailabilityTestUrl = @"https://www.google.com/generate_204";
 
@@ -103,6 +103,7 @@ namespace v2rayN
         ///
         /// </summary>
         public const string StreamSecurity = "tls";
+        public const string StreamSecurityX = "xtls";
 
         public const string InboundSocks = "socks";
         public const string InboundHttp = "http";
@@ -151,6 +152,14 @@ namespace v2rayN
         /// vless
         /// </summary>
         public const string vlessProtocolLite = "vless";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocol = "trojan://";
+        /// <summary>
+        /// trojan
+        /// </summary>
+        public const string trojanProtocolLite = "trojan";
 
         /// <summary>
         /// pac

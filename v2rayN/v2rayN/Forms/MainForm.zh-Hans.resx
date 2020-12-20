@@ -142,6 +142,12 @@
   <data name="menuAddSocksServer.Text" xml:space="preserve">
     <value>添加[Socks]服务器</value>
   </data>
+  <data name="menuAddTrojanServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 22</value>
+  </data>
+  <data name="menuAddTrojanServer.Text" xml:space="preserve">
+    <value>添加[Trojan]服务器</value>
+  </data>
   <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>300, 22</value>
   </data>
@@ -280,12 +286,6 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>批量导出订阅内容至剪贴板(多选)</value>
   </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>  服务器  </value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>301, 600</value>
   </data>
@@ -305,6 +305,12 @@
         ////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIAwAAAAAAAAAF9v///xtTeXN0
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>  服务器  </value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 164</value>
@@ -411,6 +417,18 @@
   <data name="tsbSub.Text" xml:space="preserve">
     <value>  订阅  </value>
   </data>
+  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
+  </data>
+  <data name="tsbSubSetting.Text" xml:space="preserve">
+    <value>订阅设置</value>
+  </data>
+  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
+  </data>
+  <data name="tsbSubUpdate.Text" xml:space="preserve">
+    <value>更新订阅</value>
+  </data>
   <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 53</value>
   </data>
@@ -446,43 +464,6 @@
   <data name="tsbCheckUpdate.Text" xml:space="preserve">
     <value>  检查更新  </value>
   </data>
-  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 53</value>
-  </data>
-  <data name="tsbHelp.Text" xml:space="preserve">
-    <value>   帮助   </value>
-  </data>
-  <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 53</value>
-  </data>
-  <data name="tsbPromotion.Text" xml:space="preserve">
-    <value>    推广    </value>
-  </data>
-  <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
-        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 53</value>
-  </data>
-  <data name="tsbClose.Text" xml:space="preserve">
-    <value>  关闭窗口  </value>
-  </data>
-  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
-  </data>
-  <data name="tsbSubSetting.Text" xml:space="preserve">
-    <value>订阅设置</value>
-  </data>
-  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
-  </data>
-  <data name="tsbSubUpdate.Text" xml:space="preserve">
-    <value>更新订阅</value>
-  </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
     <value>223, 22</value>
   </data>
@@ -510,10 +491,35 @@
   <data name="tsbCheckClearPACList.Text" xml:space="preserve">
     <value>简化PAC (请设置Core路由)</value>
   </data>
+  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 53</value>
+  </data>
+  <data name="tsbHelp.Text" xml:space="preserve">
+    <value>   帮助   </value>
+  </data>
   <data name="tsbAbout.Text" xml:space="preserve">
     <value>v2rayN 项目</value>
   </data>
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray 官网</value>
+  </data>
+  <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 53</value>
+  </data>
+  <data name="tsbPromotion.Text" xml:space="preserve">
+    <value>    推广    </value>
+  </data>
+  <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
+        GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 53</value>
+  </data>
+  <data name="tsbClose.Text" xml:space="preserve">
+    <value>  关闭窗口  </value>
   </data>
 </root>

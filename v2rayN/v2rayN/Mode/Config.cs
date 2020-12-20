@@ -365,7 +365,14 @@ namespace v2rayN.Mode
 
             return vmess[index].getItemId();
         }
-
+        public string flow()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].flow.TrimEx();
+        }
         #endregion
 
     }
@@ -391,11 +398,12 @@ namespace v2rayN.Mode
             configType = (int)EConfigType.Vmess;
             testResult = string.Empty;
             subid = string.Empty;
+            flow = string.Empty;
         }
 
         public string getSummary()
         {
-            string summary = string.Format("{0}-", ((EConfigType)configType).ToString());
+            string summary = string.Format("[{0}] ", ((EConfigType)configType).ToString());
             string[] arrAddr = address.Split('.');
             string addr;
             if (arrAddr.Length > 2)
@@ -410,25 +418,26 @@ namespace v2rayN.Mode
             {
                 addr = address;
             }
-            if (configType == (int)EConfigType.Vmess)
+            switch (configType)
             {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else if (configType == (int)EConfigType.Shadowsocks)
-            {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else if (configType == (int)EConfigType.Socks)
-            {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            if (configType == (int)EConfigType.VLESS)
-            {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else
-            {
-                summary += string.Format("{0}", remarks);
+                case (int)EConfigType.Vmess:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Shadowsocks:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Socks:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.VLESS:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Trojan:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                default:
+                    summary += string.Format("{0}", remarks);
+                    break;
             }
             return summary;
         }
@@ -579,6 +588,14 @@ namespace v2rayN.Mode
         /// SubItem id
         /// </summary>
         public string subid
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// VLESS flow
+        /// </summary>
+        public string flow
         {
             get; set;
         }

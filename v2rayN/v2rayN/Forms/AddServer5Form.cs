@@ -5,10 +5,8 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServer5Form : BaseForm
-    {
-        public int EditIndex { get; set; }
-        VmessItem vmessItem = null;
+    public partial class AddServer5Form : BaseServerForm
+    { 
 
         public AddServer5Form()
         {
@@ -36,7 +34,8 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
-            txtId.Text = vmessItem.id; 
+            txtId.Text = vmessItem.id;
+            cmbFlow.Text = vmessItem.flow;
             cmbSecurity.Text = vmessItem.security;
             cmbNetwork.Text = vmessItem.network;
             txtRemarks.Text = vmessItem.remarks;
@@ -57,6 +56,7 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
+            cmbFlow.Text = "";
             cmbSecurity.Text = Global.None;
             cmbNetwork.Text = Global.DefaultNetwork;
             txtRemarks.Text = "";
@@ -112,6 +112,7 @@ namespace v2rayN.Forms
             string address = txtAddress.Text;
             string port = txtPort.Text;
             string id = txtId.Text;
+            string flow = cmbFlow.Text;
             string security = cmbSecurity.Text;
             string network = cmbNetwork.Text;
             string remarks = txtRemarks.Text;
@@ -137,11 +138,12 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("FillUUID"));
                 return;
             }
-           
+
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
+            vmessItem.flow = flow;
             vmessItem.security = security;
             vmessItem.network = network;
             vmessItem.remarks = remarks;

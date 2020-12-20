@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                 // TODO: 统计配置
                 statistic(config, ref v2rayConfig);
 
-                Utils.ToJsonFile(v2rayConfig, fileName);
+                Utils.ToJsonFile(v2rayConfig, fileName, false);
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
             }
@@ -467,9 +467,10 @@ namespace v2rayN.Handler
                     //远程服务器用户ID
                     usersItem.id = config.id();
                     usersItem.alterId = 0;
+                    usersItem.flow = string.Empty;
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = config.security();
-
+                    
                     //Mux
                     outbound.mux.enabled = config.muxEnabled;
                     outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
@@ -478,8 +479,55 @@ namespace v2rayN.Handler
                     StreamSettings streamSettings = outbound.streamSettings;
                     boundStreamSettings(config, "out", ref streamSettings);
 
+                    //if xtls
+                    if (config.streamSecurity() == Global.StreamSecurityX)
+                    {
+                        if (Utils.IsNullOrEmpty(config.flow()))
+                        {
+                            usersItem.flow = "xtls-rprx-origin";
+                        }
+                        else
+                        {
+                            usersItem.flow = config.flow();
+                        }
+                        
+                        outbound.mux.enabled = false;
+                        outbound.mux.concurrency = -1;
+                    }
+
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
+                }
+                else if (config.configType() == (int)EConfigType.Trojan)
+                {
+                    ServersItem serversItem;
+                    if (outbound.settings.servers.Count <= 0)
+                    {
+                        serversItem = new ServersItem();
+                        outbound.settings.servers.Add(serversItem);
+                    }
+                    else
+                    {
+                        serversItem = outbound.settings.servers[0];
+                    }
+                    //远程服务器地址和端口
+                    serversItem.address = config.address();
+                    serversItem.port = config.port();
+                    serversItem.password = config.id();
+
+                    serversItem.ota = false;
+                    serversItem.level = 1;
+
+                    outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
+
+
+                    //远程服务器底层传输配置
+                    StreamSettings streamSettings = outbound.streamSettings;
+                    boundStreamSettings(config, "out", ref streamSettings);
+
+                    outbound.protocol = Global.trojanProtocolLite;
+                    outbound.settings.vnext = null;
                 }
             }
             catch
@@ -513,9 +561,25 @@ namespace v2rayN.Handler
                     };
                     if (!string.IsNullOrWhiteSpace(host))
                     {
-                        tlsSettings.serverName = host;
+                        tlsSettings.serverName = Utils.String2List(host)[0];
                     }
                     streamSettings.tlsSettings = tlsSettings;
+                }
+
+                //if xtls
+                if (config.streamSecurity() == Global.StreamSecurityX)
+                {
+                    streamSettings.security = config.streamSecurity();
+
+                    TlsSettings xtlsSettings = new TlsSettings
+                    {
+                        allowInsecure = config.allowInsecure()
+                    };
+                    if (!string.IsNullOrWhiteSpace(host))
+                    {
+                        xtlsSettings.serverName = Utils.String2List(host)[0];
+                    }
+                    streamSettings.xtlsSettings = xtlsSettings;
                 }
 
                 //streamSettings
@@ -551,13 +615,16 @@ namespace v2rayN.Handler
                         {
                             type = config.headerType()
                         };
+                        if (!Utils.IsNullOrEmpty(config.path()))
+                        {
+                            kcpSettings.seed = config.path();
+                        }
                         streamSettings.kcpSettings = kcpSettings;
                         break;
                     //ws
                     case "ws":
                         WsSettings wsSettings = new WsSettings
-                        {
-                            connectionReuse = true
+                        {                            
                         };
 
                         string path = config.path();
@@ -621,7 +688,6 @@ namespace v2rayN.Handler
                         {
                             TcpSettings tcpSettings = new TcpSettings
                             {
-                                connectionReuse = true,
                                 header = new Header
                                 {
                                     type = config.headerType()
@@ -851,7 +917,7 @@ namespace v2rayN.Handler
                 //传出设置
                 ServerOutbound(config, ref v2rayConfig);
 
-                Utils.ToJsonFile(v2rayConfig, fileName);
+                Utils.ToJsonFile(v2rayConfig, fileName, false);
 
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
             }
@@ -901,6 +967,7 @@ namespace v2rayN.Handler
                 {
                     inbound.protocol = Global.vlessProtocolLite;
                     usersItem.alterId = 0;
+                    usersItem.flow = config.flow();
                     inbound.settings.decryption = config.security();
                 }
 
@@ -1360,6 +1427,30 @@ namespace v2rayN.Handler
                     vmessItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
                     vmessItem.security = arr21[0];
                     vmessItem.id = arr21[1];
+                }
+                else if (result.StartsWith(Global.trojanProtocol))
+                {
+                    msg = UIRes.I18N("ConfigurationFormatIncorrect");
+
+                    vmessItem.configType = (int)EConfigType.Trojan;
+
+                    Uri uri = new Uri(result);
+                    vmessItem.address = uri.IdnHost;
+                    vmessItem.port = uri.Port;
+                    vmessItem.id = uri.UserInfo;
+
+                    var qurery = HttpUtility.ParseQueryString(uri.Query);
+                    vmessItem.requestHost = qurery["sni"] ?? "";
+
+                    var remarks = uri.Fragment.Replace("#", "");
+                    if (Utils.IsNullOrEmpty(remarks))
+                    {
+                        vmessItem.remarks = "NONE";
+                    }
+                    else
+                    {
+                        vmessItem.remarks = WebUtility.UrlDecode(remarks);
+                    }                     
                 }
                 else
                 {
