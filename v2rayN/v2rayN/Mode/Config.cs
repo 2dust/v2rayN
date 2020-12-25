@@ -67,39 +67,6 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
-        /// <summary>
-        /// 路由模式
-        /// </summary>
-        public string routingMode
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义需代理的网址或ip
-        /// </summary>
-        public List<string> useragent
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义直连的网址或ip
-        /// </summary>
-        public List<string> userdirect
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义阻止的网址或ip
-        /// </summary>
-        public List<string> userblock
-        {
-            get; set;
-        }
-
         /// <summary>
         /// KcpItem
         /// </summary>
@@ -109,9 +76,9 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 监听状态
+        /// 
         /// </summary>
-        public ListenerType listenerType
+        public ESysProxyType sysProxyType
         {
             get; set;
         }
@@ -129,14 +96,7 @@ namespace v2rayN.Mode
         public string speedPingTestUrl
         {
             get; set;
-        }
-        /// <summary>
-        /// 自定义GFWList url
-        /// </summary>
-        public string urlGFWList
-        {
-            get; set;
-        }
+        }        
 
         /// <summary>
         /// 允许来自局域网的连接
@@ -201,8 +161,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
-        public List<string> userPacRule
+        public List<RoutingItem> routingItem
         {
             get; set;
         }
@@ -317,10 +276,7 @@ namespace v2rayN.Mode
             {
                 return GetLocalPort(Global.InboundSocks) + 1;
             }
-            else if (protocol == "pac")
-            {
-                return GetLocalPort(Global.InboundSocks) + 2;
-            }
+           
             else if (protocol == "speedtest")
             {
                 return GetLocalPort(Global.InboundSocks) + 103;
@@ -733,6 +689,42 @@ namespace v2rayN.Mode
         }
 
         public Dictionary<string, int> mainLvColWidth
+        {
+            get; set;
+        }
+    }
+
+    [Serializable]
+    public class RoutingItem
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string remarks
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 路由模式
+        /// </summary>
+        public string routingMode
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string outboundTag
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> userRules
         {
             get; set;
         }

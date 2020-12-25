@@ -86,22 +86,10 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.domainStrategy))
             {
                 config.domainStrategy = "IPIfNonMatch";
-            }
-            if (Utils.IsNullOrEmpty(config.routingMode))
+            }            
+            if (config.routingItem == null)
             {
-                config.routingMode = "0";
-            }
-            if (config.useragent == null)
-            {
-                config.useragent = new List<string>();
-            }
-            if (config.userdirect == null)
-            {
-                config.userdirect = new List<string>();
-            }
-            if (config.userblock == null)
-            {
-                config.userblock = new List<string>();
+                config.routingItem = new List<RoutingItem>();
             }
             //kcp
             if (config.kcpItem == null)
@@ -139,10 +127,6 @@ namespace v2rayN.Handler
             {
                 config.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
-            if (Utils.IsNullOrEmpty(config.urlGFWList))
-            {
-                config.urlGFWList = Global.GFWLIST_URL;
-            }
             //if (Utils.IsNullOrEmpty(config.remoteDNS))
             //{
             //    config.remoteDNS = "1.1.1.1";
@@ -151,10 +135,6 @@ namespace v2rayN.Handler
             if (config.subItem == null)
             {
                 config.subItem = new List<SubItem>();
-            }
-            if (config.userPacRule == null)
-            {
-                config.userPacRule = new List<string>();
             }
 
             if (config == null
@@ -299,7 +279,8 @@ namespace v2rayN.Handler
                 path = config.vmess[index].path,
                 streamSecurity = config.vmess[index].streamSecurity,
                 allowInsecure = config.vmess[index].allowInsecure,
-                configType = config.vmess[index].configType
+                configType = config.vmess[index].configType,
+                flow = config.vmess[index].flow
             };
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
@@ -1077,6 +1058,29 @@ namespace v2rayN.Handler
 
             ToJsonFile(config);
 
+            return 0;
+        }
+
+
+        /// <summary>
+        /// SaveRoutingItem
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static int SaveRoutingItem(ref Config config)
+        {
+            if (config.routingItem == null || config.routingItem.Count <= 0)
+            {
+                return -1;
+            }
+
+            foreach (RoutingItem sub in config.routingItem)
+            {
+
+            }
+            Global.reloadV2ray = true;
+
+            ToJsonFile(config);
             return 0;
         }
 

@@ -35,8 +35,8 @@ namespace v2rayN.Forms
             {
                 v2rayHandler.V2rayStop();
 
-                HttpProxyHandle.CloseHttpAgent(config);
-                PACServerHandle.Stop();
+                //HttpProxyHandle.CloseHttpAgent(config);
+                HttpProxyHandle.UpdateSysProxy(config, true);
 
                 ConfigHandler.SaveConfig(ref config);
                 statistics?.SaveToFile();
@@ -205,6 +205,8 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServersView()
         {
+            int index = lvServers.SelectedIndices.Count > 0 ? lvServers.SelectedIndices[0] : -1;
+
             lvServers.BeginUpdate();
             lvServers.Items.Clear();
 
@@ -270,15 +272,11 @@ namespace v2rayN.Forms
             }
             lvServers.EndUpdate();
 
-            //if (lvServers.Items.Count > 0)
-            //{
-            //    if (lvServers.Items.Count <= testConfigIndex)
-            //    {
-            //        testConfigIndex = lvServers.Items.Count - 1;
-            //    }
-            //    lvServers.Items[testConfigIndex].Selected = true;
-            //    lvServers.Select();
-            //}
+            if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
+            {
+                lvServers.Items[index].Selected = true;
+                lvServers.EnsureVisible(index); // workaround
+            }
         }
 
         /// <summary>
@@ -343,29 +341,8 @@ namespace v2rayN.Forms
 
         private void DisplayToolStatus()
         {
-            toolSslSocksPort.Text =
-            toolSslHttpPort.Text =
-            toolSslPacPort.Text = "OFF";
-
             toolSslSocksPort.Text = $"{Global.Loopback}:{config.inbound[0].localPort}";
-
-            if (config.listenerType != (int)ListenerType.noHttpProxy)
-            {
-                toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
-                if (config.listenerType == ListenerType.GlobalPac ||
-                    config.listenerType == ListenerType.PacOpenAndClear ||
-                    config.listenerType == ListenerType.PacOpenOnly)
-                {
-                    if (PACServerHandle.IsRunning)
-                    {
-                        toolSslPacPort.Text = $"{HttpProxyHandle.GetPacUrl()}";
-                    }
-                    else
-                    {
-                        toolSslPacPort.Text = UIRes.I18N("StartPacFailed");
-                    }
-                }
-            }
+            toolSslHttpPort.Text = $"{Global.Loopback}:{Global.httpPort}";
 
             notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
@@ -426,7 +403,7 @@ namespace v2rayN.Forms
             ConfigHandler.SaveConfig(ref config, false);
             statistics?.SaveToFile();
 
-            ChangePACButtonStatus(config.listenerType);
+            ChangePACButtonStatus(config.sysProxyType);
 
             tsbReload.Enabled = true;
         }
@@ -576,7 +553,7 @@ namespace v2rayN.Forms
 
         private void menuAddVlessServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.VLESS, -1);            
+            ShowServerForm((int)EConfigType.VLESS, -1);
         }
 
         private void menuRemoveServer_Click(object sender, EventArgs e)
@@ -758,7 +735,17 @@ namespace v2rayN.Forms
                 //刷新
                 RefreshServers();
                 LoadV2ray();
-                HttpProxyHandle.RestartHttpAgent(config, true);
+            }
+        }
+
+        private void tsbRoutingSetting_Click(object sender, EventArgs e)
+        {
+            RoutingSettingForm fm = new RoutingSettingForm();
+            if (fm.ShowDialog() == DialogResult.OK)
+            {
+                //刷新
+                RefreshServers();
+                LoadV2ray();
             }
         }
 
@@ -858,13 +845,13 @@ namespace v2rayN.Forms
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Shadowsocks, -1);             
+            ShowServerForm((int)EConfigType.Shadowsocks, -1);
             ShowForm();
         }
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Socks, -1);      
+            ShowServerForm((int)EConfigType.Socks, -1);
             ShowForm();
         }
 
@@ -1020,10 +1007,11 @@ namespace v2rayN.Forms
             this.ShowInTaskbar = true;
             //this.notifyIcon1.Visible = false;
             this.txtMsgBox.ScrollToCaret();
-            if (config.index >= 0 && config.index < lvServers.Items.Count)
-            {
-                lvServers.EnsureVisible(config.index); // workaround
-            }
+            //if (config.index >= 0 && config.index < lvServers.Items.Count)
+            //{
+            //    lvServers.Items[config.index].Selected = true;
+            //    lvServers.EnsureVisible(config.index); // workaround
+            //}
 
             SetVisibleCore(true);
         }
@@ -1151,55 +1139,37 @@ namespace v2rayN.Forms
 
         #region 系统代理相关
 
-        private void menuCopyPACUrl_Click(object sender, EventArgs e)
-        {
-            Utils.SetClipboardData(HttpProxyHandle.GetPacUrl());
-        }
 
-        private void menuNotEnabledHttp_Click(object sender, EventArgs e)
-        {
-            SetListenerType(ListenerType.noHttpProxy);
-        }
         private void menuGlobal_Click(object sender, EventArgs e)
         {
-            SetListenerType(ListenerType.GlobalHttp);
+            SetListenerType(ESysProxyType.ForcedChange);
         }
-        private void menuGlobalPAC_Click(object sender, EventArgs e)
+
+        private void menuKeepClear_Click(object sender, EventArgs e)
         {
-            SetListenerType(ListenerType.GlobalPac);
-        }
-        private void menuKeep_Click(object sender, EventArgs e)
-        {
-            SetListenerType(ListenerType.HttpOpenAndClear);
-        }
-        private void menuKeepPAC_Click(object sender, EventArgs e)
-        {
-            SetListenerType(ListenerType.PacOpenAndClear);
+            SetListenerType(ESysProxyType.ForcedClear);
         }
         private void menuKeepNothing_Click(object sender, EventArgs e)
         {
-            SetListenerType(ListenerType.HttpOpenOnly);
+            SetListenerType(ESysProxyType.Unchanged);
         }
-        private void menuKeepPACNothing_Click(object sender, EventArgs e)
+        private void SetListenerType(ESysProxyType type)
         {
-            SetListenerType(ListenerType.PacOpenOnly);
-        }
-        private void SetListenerType(ListenerType type)
-        {
-            config.listenerType = type;
+            config.sysProxyType = type;
             ChangePACButtonStatus(type);
         }
 
-        private void ChangePACButtonStatus(ListenerType type)
+        private void ChangePACButtonStatus(ESysProxyType type)
         {
-            if (type != ListenerType.noHttpProxy)
-            {
-                HttpProxyHandle.RestartHttpAgent(config, false);
-            }
-            else
-            {
-                HttpProxyHandle.CloseHttpAgent(config);
-            }
+            HttpProxyHandle.UpdateSysProxy(config, false);
+            //if (type != ListenerType.noHttpProxy)
+            //{
+            //    HttpProxyHandle.RestartHttpAgent(config, false);
+            //}
+            //else
+            //{
+            //    HttpProxyHandle.CloseHttpAgent(config);
+            //}
 
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
@@ -1302,6 +1272,16 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
         {
+            CheckUpdateCore("v2fly");
+        }
+
+        private void tsbCheckUpdateXrayCore_Click(object sender, EventArgs e)
+        {
+            CheckUpdateCore("xray");
+        }
+
+        private void CheckUpdateCore(string type)
+        {
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
             {
@@ -1362,53 +1342,7 @@ namespace v2rayN.Forms
             }
 
             AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayCore"));
-            downloadHandle.CheckUpdateAsync("Core");
-        }
-
-        private void tsbCheckUpdatePACList_Click(object sender, EventArgs e)
-        {
-            DownloadHandle pacListHandle = null;
-            if (pacListHandle == null)
-            {
-                pacListHandle = new DownloadHandle();
-                pacListHandle.UpdateCompleted += (sender2, args) =>
-                {
-                    if (args.Success)
-                    {
-                        string result = args.Msg;
-                        if (Utils.IsNullOrEmpty(result))
-                        {
-                            return;
-                        }
-                        pacListHandle.GenPacFile(result);
-
-                        AppendText(false, UIRes.I18N("MsgPACUpdateSuccessfully"));
-                    }
-                    else
-                    {
-                        AppendText(false, UIRes.I18N("MsgPACUpdateFailed"));
-                    }
-                };
-                pacListHandle.Error += (sender2, args) =>
-                {
-                    AppendText(true, args.GetException().Message);
-                };
-            }
-            AppendText(false, UIRes.I18N("MsgStartUpdatingPAC"));
-            pacListHandle.WebDownloadString(config.urlGFWList);
-        }
-
-        private void tsbCheckClearPACList_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                File.WriteAllText(Utils.GetPath(Global.pacFILE), Utils.GetEmbedText(Global.BlankPacFileName), Encoding.UTF8);
-                AppendText(false, UIRes.I18N("MsgSimplifyPAC"));
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
+            downloadHandle.CheckUpdateAsync(type);
         }
         #endregion
 
@@ -1570,8 +1504,8 @@ namespace v2rayN.Forms
 
 
 
+
         #endregion
 
-      
     }
 }

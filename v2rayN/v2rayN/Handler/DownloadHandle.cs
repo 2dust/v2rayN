@@ -54,8 +54,10 @@ namespace v2rayN.Handler
 
         private readonly string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
         private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
-        private readonly string coreLatestUrl = "https://github.com/v2fly/v2ray-core/releases/latest";
-        private const string coreUrl = "https://github.com/v2fly/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
+        private readonly string v2flyCoreLatestUrl = "https://github.com/v2fly/v2ray-core/releases/latest";
+        private const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
+        private readonly string xrayCoreLatestUrl = "https://github.com/xtls/xray-core/releases/latest";
+        private const string xrayCoreUrl = "https://github.com/xtls/xray-core/releases/download/{0}/xray-windows-{1}.zip";
 
         public async void CheckUpdateAsync(string type)
         {
@@ -67,9 +69,13 @@ namespace v2rayN.Handler
             HttpClient httpClient = new HttpClient(webRequestHandler);
 
             string url;
-            if (type == "Core")
+            if (type == "v2fly")
             {
-                url = coreLatestUrl;
+                url = v2flyCoreLatestUrl;
+            }
+            else if (type == "xray")
+            {
+                url = xrayCoreLatestUrl;
             }
             else if (type == "v2rayN")
             {
@@ -94,11 +100,23 @@ namespace v2rayN.Handler
         /// <summary>
         /// 获取V2RayCore版本
         /// </summary>
-        public string getV2rayVersion()
+        public string getCoreVersion(string type)
         {
             try
             {
-                string filePath = Utils.GetPath("V2ray.exe");
+                var core = string.Empty;
+                var match = string.Empty;
+                if (type == "v2fly")
+                {
+                    core = "v2ray.exe";
+                    match = "V2Ray";
+                }
+                else if (type == "xray")
+                {
+                    core = "xray.exe";
+                    match = "Xray";
+                }
+                string filePath = Utils.GetPath(core);
                 if (!File.Exists(filePath))
                 {
                     string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2fly/v2ray-core/releases");
@@ -117,10 +135,9 @@ namespace v2rayN.Handler
                 p.Start();
                 p.WaitForExit(5000);
                 string echo = p.StandardOutput.ReadToEnd();
-                string version = Regex.Match(echo, "V2Ray ([0-9.]+) \\(").Groups[1].Value;
+                string version = Regex.Match(echo, $"{match} ([0-9.]+) \\(").Groups[1].Value;
                 return version;
             }
-
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
@@ -136,12 +153,19 @@ namespace v2rayN.Handler
                 string curVersion;
                 string message;
                 string url;
-                if (type == "Core")
+                if (type == "v2fly")
                 {
-                    curVersion = "v" + getV2rayVersion();
+                    curVersion = "v" + getCoreVersion(type);
                     message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
-                    url = string.Format(coreUrl, version, osBit);
+                    url = string.Format(v2flyCoreUrl, version, osBit);
+                }
+                else if (type == "xray")
+                {
+                    curVersion = "v" + getCoreVersion(type);
+                    message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
+                    string osBit = Environment.Is64BitProcess ? "64" : "32";
+                    url = string.Format(xrayCoreUrl, version, osBit);
                 }
                 else if (type == "v2rayN")
                 {
@@ -313,47 +337,24 @@ namespace v2rayN.Handler
             }
         }
 
-        #endregion
-
-        #region PAC
-
-        public string GenPacFile(string result)
+        public string WebDownloadStringSync(string url)
         {
+            string source = string.Empty;
             try
             {
-                File.WriteAllText(Utils.GetTempPath("gfwlist.txt"), result, Encoding.UTF8);
-                List<string> lines = ParsePacResult(result);
-                string abpContent = Utils.UnGzip(Resources.abp_js);
-                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines, Formatting.Indented));
-                File.WriteAllText(Utils.GetPath(Global.pacFILE), abpContent, Encoding.UTF8);
+                Utils.SetSecurityProtocol();
+
+                WebClientEx ws = new WebClientEx();
+
+                return ws.DownloadString(new Uri(url));
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-                return ex.Message;
+                return string.Empty;
             }
-            return string.Empty;
         }
-
-        private List<string> ParsePacResult(string response)
-        {
-            IEnumerable<char> IgnoredLineBegins = new[] { '!', '[' };
-
-            byte[] bytes = Convert.FromBase64String(response);
-            string content = Encoding.UTF8.GetString(bytes);
-            List<string> valid_lines = new List<string>();
-            using (StringReader sr = new StringReader(content))
-            {
-                foreach (string line in sr.NonWhiteSpaceLines())
-                {
-                    if (line.BeginWithAny(IgnoredLineBegins))
-                        continue;
-                    valid_lines.Add(line);
-                }
-            }
-            return valid_lines;
-        }
-
         #endregion
+
     }
 }

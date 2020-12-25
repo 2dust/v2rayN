@@ -35,7 +35,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// DNS 配置
         /// </summary>
-        public Dns dns { get; set; }
+        public object dns { get; set; }
         /// <summary>
         /// 路由配置
         /// </summary>
@@ -57,8 +57,8 @@ namespace v2rayN.Mode
 
     public class SystemPolicy
     {
-        public bool statsInboundUplink;
-        public bool statsInboundDownlink;
+        public bool statsOutboundUplink;
+        public bool statsOutboundDownlink;
     }
 
     public class Log
@@ -138,7 +138,9 @@ namespace v2rayN.Mode
         /// VLESS
         /// </summary>
         public string decryption { get; set; }
-        
+
+        public bool allowTransparent { get; set; }
+      
     }
 
     public class UsersItem

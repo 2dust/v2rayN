@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using v2rayN.Base;
+using v2rayN.Handler;
 using v2rayN.Mode;
 
 namespace v2rayN.Forms
@@ -11,7 +12,10 @@ namespace v2rayN.Forms
         public event ChangeEventHandler OnButtonClicked;
 
 
-        public SubItem subItem { get; set; }
+        public SubItem subItem
+        {
+            get; set;
+        }
 
         public SubSettingControl()
         {
@@ -20,6 +24,7 @@ namespace v2rayN.Forms
 
         private void SubSettingControl_Load(object sender, EventArgs e)
         {
+            this.Height = grbMain.Height;
             BindingSub();
         }
 
@@ -55,6 +60,24 @@ namespace v2rayN.Forms
             }
 
             OnButtonClicked?.Invoke(sender, e);
+        }
+
+        private void btnShare_Click(object sender, EventArgs e)
+        {
+            if (this.Height <= grbMain.Height)
+            {
+                if (Utils.IsNullOrEmpty(subItem.url))
+                {
+                    picQRCode.Image = null;
+                    return;
+                }
+                picQRCode.Image = QRCodeHelper.GetQRCode(subItem.url);
+                this.Height = grbMain.Height + 200;
+            }
+            else
+            {
+                this.Height = grbMain.Height;
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ using ZXing.Common;
 using ZXing.QrCode;
 using System.Security.Principal;
 using v2rayN.Base;
+using Newtonsoft.Json.Linq;
 
 namespace v2rayN
 {
@@ -145,6 +146,19 @@ namespace v2rayN
                 result = -1;
             }
             return result;
+        }
+
+        public static JObject ParseJson(string strJson)
+        {
+            try
+            {
+                JObject obj = JObject.Parse(strJson);
+                return obj;
+            }
+            catch
+            {
+                return null;
+            }
         }
         #endregion
 

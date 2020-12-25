@@ -32,7 +32,7 @@ namespace v2rayN.Handler
             try
             {
                 Color color = ColorTranslator.FromHtml("#3399CC");
-                int index = (int)config.listenerType;
+                int index = (int)config.sysProxyType;
                 if (index > 0)
                 {
                     color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];

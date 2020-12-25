@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>448, 17</value>
+    <value>568, 17</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -154,10 +154,10 @@
     <value>Fill</value>
   </data>
   <data name="panCon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 68</value>
   </data>
   <data name="panCon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>614, 569</value>
+    <value>765, 545</value>
   </data>
   <data name="panCon.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -205,7 +205,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>355, 17</value>
+    <value>475, 17</value>
   </data>
   <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -232,10 +232,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 569</value>
+    <value>0, 613</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>614, 60</value>
+    <value>765, 60</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -250,6 +250,153 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnSetDefRountingRule.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnSetDefRountingRule.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnSetDefRountingRule.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSetDefRountingRule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>319, 17</value>
+  </data>
+  <data name="btnSetDefRountingRule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 23</value>
+  </data>
+  <data name="btnSetDefRountingRule.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="btnSetDefRountingRule.Text" xml:space="preserve">
+    <value>Set default custom routing rules</value>
+  </data>
+  <data name="&gt;&gt;btnSetDefRountingRule.Name" xml:space="preserve">
+    <value>btnSetDefRountingRule</value>
+  </data>
+  <data name="&gt;&gt;btnSetDefRountingRule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSetDefRountingRule.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;btnSetDefRountingRule.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labRoutingTips.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labRoutingTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 42</value>
+  </data>
+  <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>598, 16</value>
+  </data>
+  <data name="labRoutingTips.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="labRoutingTips.Text" xml:space="preserve">
+    <value>*Set the rules, separated by commas (,); support Domain (pure string / regular / subdomain) and IP</value>
+  </data>
+  <data name="&gt;&gt;labRoutingTips.Name" xml:space="preserve">
+    <value>labRoutingTips</value>
+  </data>
+  <data name="&gt;&gt;labRoutingTips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labRoutingTips.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;labRoutingTips.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="linkLabelRoutingDoc.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="linkLabelRoutingDoc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 21</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="linkLabelRoutingDoc.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
+    <value>Domain strategy</value>
+  </data>
+  <data name="&gt;&gt;linkLabelRoutingDoc.Name" xml:space="preserve">
+    <value>linkLabelRoutingDoc</value>
+  </data>
+  <data name="&gt;&gt;linkLabelRoutingDoc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabelRoutingDoc.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;linkLabelRoutingDoc.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="cmbdomainStrategy.Items" xml:space="preserve">
+    <value>AsIs</value>
+  </data>
+  <data name="cmbdomainStrategy.Items1" xml:space="preserve">
+    <value>IPIfNonMatch</value>
+  </data>
+  <data name="cmbdomainStrategy.Items2" xml:space="preserve">
+    <value>IPOnDemand</value>
+  </data>
+  <data name="cmbdomainStrategy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>116, 17</value>
+  </data>
+  <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 20</value>
+  </data>
+  <data name="cmbdomainStrategy.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;cmbdomainStrategy.Name" xml:space="preserve">
+    <value>cmbdomainStrategy</value>
+  </data>
+  <data name="&gt;&gt;cmbdomainStrategy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbdomainStrategy.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;cmbdomainStrategy.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>765, 68</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -259,13 +406,13 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>614, 629</value>
+    <value>765, 673</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Subscription settings</value>
+    <value>Routing Settings</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SubSettingForm</value>
+    <value>RoutingSettingForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>

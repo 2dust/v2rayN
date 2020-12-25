@@ -120,158 +120,26 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 12</value>
-  </data>
-  <data name="linkDnsObjectDoc.Text" xml:space="preserve">
-    <value>支持填写DnsObject,JSON格式</value>
-  </data>
-  <data name="chkdefAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 16</value>
-  </data>
-  <data name="chkdefAllowInsecure.Text" xml:space="preserve">
-    <value>底层传输安全选tls时，默认跳过证书验证(allowInsecure)</value>
-  </data>
-  <data name="chksniffingEnabled2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 16</value>
-  </data>
-  <data name="chksniffingEnabled2.Text" xml:space="preserve">
-    <value>开启流量探测</value>
-  </data>
-  <data name="chksniffingEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 16</value>
-  </data>
-  <data name="chksniffingEnabled.Text" xml:space="preserve">
-    <value>开启流量探测</value>
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 12</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>自定义DNS(可多个,用逗号(,)隔开)</value>
-  </data>
-  <data name="chkmuxEnabled.Text" xml:space="preserve">
-    <value>开启Mux多路复用(默认开启)</value>
-  </data>
-  <data name="chkAllowIn2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 16</value>
-  </data>
-  <data name="chkAllowIn2.Text" xml:space="preserve">
-    <value>本地监听端口2</value>
-  </data>
-  <data name="chkudpEnabled2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 16</value>
-  </data>
-  <data name="chkudpEnabled2.Text" xml:space="preserve">
-    <value>开启UDP</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>协议</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>协议</value>
-  </data>
-  <data name="chkudpEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 16</value>
-  </data>
-  <data name="chkudpEnabled.Text" xml:space="preserve">
-    <value>开启UDP</value>
-  </data>
-  <data name="chklogEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 16</value>
-  </data>
-  <data name="chklogEnabled.Text" xml:space="preserve">
-    <value>记录本地日志(默认关闭)</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>日志等级</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>本地监听端口</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>648, 437</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
-  </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:DNS设置  </value>
-  </data>
-  <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage6.Text" xml:space="preserve">
-    <value>  Core:KCP设置  </value>
-  </data>
-  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 16</value>
-  </data>
-  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
-    <value>去重时保留序号较小的项</value>
-  </data>
-  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
-  </data>
-  <data name="lbFreshrate.Text" xml:space="preserve">
-    <value>统计刷新频率</value>
-  </data>
-  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 16</value>
-  </data>
-  <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
-  </data>
-  <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 16</value>
-  </data>
-  <data name="chkAllowLANConn.Text" xml:space="preserve">
-    <value>允许来自局域网的连接</value>
-  </data>
-  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 16</value>
-  </data>
-  <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>开机自动启动(可能会不成功)</value>
-  </data>
-  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 469</value>
+  <data name="btnAdd.Text" xml:space="preserve">
+    <value>添加(&amp;A)</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 479</value>
+  <data name="btnSetDefRountingRule.Text" xml:space="preserve">
+    <value>一键设置默认自定义路由规则</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>662, 539</value>
+  <data name="labRoutingTips.Text" xml:space="preserve">
+    <value>*设置的规则，用逗号(,)隔开;支持Domain(纯字符串/正则/子域名)和IP</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="linkLabelRoutingDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
+    <value>域名解析策略</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>参数设置</value>
+    <value>路由设置</value>
   </data>
 </root>

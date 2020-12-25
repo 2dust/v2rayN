@@ -23,7 +23,6 @@ namespace v2rayN
         /// </summary>
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
-        public const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
         /// <summary>
         /// PromotionUrl
@@ -56,10 +55,7 @@ namespace v2rayN
         /// v2ray配置Httpresponse文件名
         /// </summary>
         public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse.txt";
-        /// <summary>
-        /// 空白的pac文件
-        /// </summary>
-        public const string BlankPacFileName = "v2rayN.Sample.BlankPac.txt";
+
 
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
 
@@ -97,7 +93,7 @@ namespace v2rayN
         /// <summary>
         /// 阻止 tag值
         /// </summary>
-        public const string blockTag = "block";
+        public const string blockTag = "block";        
 
         /// <summary>
         /// 
@@ -160,11 +156,6 @@ namespace v2rayN
         /// trojan
         /// </summary>
         public const string trojanProtocolLite = "trojan";
-
-        /// <summary>
-        /// pac
-        /// </summary>
-        public const string pacFILE = "pac.txt";
 
         /// <summary>
         /// email
@@ -231,13 +222,6 @@ namespace v2rayN
             get; set;
         }
 
-        /// <summary>
-        /// PAC端口
-        /// </summary>
-        public static int pacPort
-        {
-            get; set;
-        }
 
         /// <summary>
         ///  
