@@ -456,7 +456,7 @@
     <value>180, 22</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
-    <value>xray-Core</value>
+    <value>Xray-Core</value>
   </data>
   <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 53</value>

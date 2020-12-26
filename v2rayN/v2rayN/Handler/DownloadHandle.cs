@@ -56,8 +56,8 @@ namespace v2rayN.Handler
         private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
         private readonly string v2flyCoreLatestUrl = "https://github.com/v2fly/v2ray-core/releases/latest";
         private const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
-        private readonly string xrayCoreLatestUrl = "https://github.com/xtls/xray-core/releases/latest";
-        private const string xrayCoreUrl = "https://github.com/xtls/xray-core/releases/download/{0}/xray-windows-{1}.zip";
+        private readonly string xrayCoreLatestUrl = "https://github.com/XTLS/Xray-core/releases/latest";
+        private const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases/download/{0}/Xray-windows-{1}.zip";
 
         public async void CheckUpdateAsync(string type)
         {
