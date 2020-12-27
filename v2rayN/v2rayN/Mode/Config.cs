@@ -704,15 +704,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
-        /// <summary>
-        /// 路由模式
-        /// </summary>
-        public string routingMode
-        {
-            get; set;
-        }
-
+         
         /// <summary>
         /// 
         /// </summary>

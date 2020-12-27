@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnExpand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>619, 46</value>
+    <value>526, 20</value>
   </data>
   <data name="btnExpand.Text" xml:space="preserve">
     <value>扩大</value>
@@ -130,27 +130,6 @@
   <data name="label4.Text" xml:space="preserve">
     <value>出口标签</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 12</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>预定义规则</value>
-  </data>
-  <data name="cmbroutingMode.Items" xml:space="preserve">
-    <value>使用自定义域名或IP</value>
-  </data>
-  <data name="cmbroutingMode.Items1" xml:space="preserve">
-    <value>全局</value>
-  </data>
-  <data name="cmbroutingMode.Items2" xml:space="preserve">
-    <value>绕过局域网</value>
-  </data>
-  <data name="cmbroutingMode.Items3" xml:space="preserve">
-    <value>绕过大陆地址</value>
-  </data>
-  <data name="cmbroutingMode.Items4" xml:space="preserve">
-    <value>绕过局域网及大陆地址</value>
-  </data>
   <data name="btnRemove.Location" type="System.Drawing.Point, System.Drawing">
     <value>619, 20</value>
   </data>
@@ -158,7 +137,7 @@
     <value>移除</value>
   </data>
   <data name="txtUserRule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>567, 64</value>
+    <value>567, 104</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>

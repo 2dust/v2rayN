@@ -197,28 +197,7 @@ namespace v2rayN.Handler
 
                     foreach (var item in config.routingItem)
                     {
-                        if (item.routingMode != "0")
-                        {
-                            switch (item.routingMode)
-                            {
-                                case "1":
-                                    break;
-                                case "2":
-                                    routingGeo("ip", "private", Global.directTag, ref v2rayConfig);
-                                    break;
-                                case "3":
-                                    routingGeo("", "cn", Global.directTag, ref v2rayConfig);
-                                    break;
-                                case "4":
-                                    routingGeo("ip", "private", Global.directTag, ref v2rayConfig);
-                                    routingGeo("", "cn", Global.directTag, ref v2rayConfig);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            routingUserRule(item.userRules, item.outboundTag, ref v2rayConfig);
-                        }
+                        routingUserRule(item.userRules, item.outboundTag, ref v2rayConfig);
                     }
                 }
             }
@@ -288,46 +267,6 @@ namespace v2rayN.Handler
                     if (rulesIP.ip.Count > 0)
                     {
                         v2rayConfig.routing.rules.Add(rulesIP);
-                    }
-                }
-            }
-            catch
-            {
-            }
-            return 0;
-        }
-
-
-        private static int routingGeo(string ipOrDomain, string code, string tag, ref V2rayConfig v2rayConfig)
-        {
-            try
-            {
-                if (!Utils.IsNullOrEmpty(code))
-                {
-                    //IP
-                    if (ipOrDomain == "ip" || ipOrDomain == "")
-                    {
-                        RulesItem rulesItem = new RulesItem
-                        {
-                            type = "field",
-                            outboundTag = Global.directTag,
-                            ip = new List<string>()
-                        };
-                        rulesItem.ip.Add($"geoip:{code}");
-
-                        v2rayConfig.routing.rules.Add(rulesItem);
-                    }
-
-                    if (ipOrDomain == "domain" || ipOrDomain == "")
-                    {
-                        RulesItem rulesItem = new RulesItem
-                        {
-                            type = "field",
-                            outboundTag = Global.directTag,
-                            domain = new List<string>()
-                        };
-                        rulesItem.domain.Add($"geosite:{code}");
-                        v2rayConfig.routing.rules.Add(rulesItem);
                     }
                 }
             }

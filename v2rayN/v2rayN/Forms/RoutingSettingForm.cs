@@ -65,6 +65,8 @@ namespace v2rayN.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            config.domainStrategy = cmbdomainStrategy.Text;
+
             if (config.routingItem.Count <= 0)
             {
                 AddSub("proxy", "");
@@ -93,12 +95,11 @@ namespace v2rayN.Forms
         }
 
 
-        private void AddSub(string outboundTag, string userRule, string routingMode = "0")
+        private void AddSub(string outboundTag, string userRule)
         {
             RoutingItem RoutingItem = new RoutingItem
             {
                 remarks = outboundTag,
-                routingMode = routingMode,
                 outboundTag = outboundTag,
                 userRules = Utils.String2List(userRule)
 
@@ -129,8 +130,8 @@ namespace v2rayN.Forms
                 AddSub(lstTag[k], result);
             }
 
-            AddSub(Global.directTag, "", "4");
-            AddSub(Global.agentTag, "", "0");
+            AddSub(Global.directTag, Utils.GetEmbedText(Global.CustomRoutingFileName + "private"));
+            AddSub(Global.agentTag, "");
 
             RefreshSubsView();
         }

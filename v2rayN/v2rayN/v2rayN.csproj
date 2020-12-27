@@ -373,6 +373,7 @@
     <EmbeddedResource Include="Sample\custom_routing_proxy" />
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
+    <EmbeddedResource Include="Sample\custom_routing_private" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>

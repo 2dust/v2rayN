@@ -31,8 +31,6 @@ namespace v2rayN.Forms
             {
                 txtRemarks.Text = routingItem.remarks.ToString();
                 cmbOutboundTag.Text = routingItem.outboundTag;
-                int.TryParse(routingItem.routingMode, out int routingMode);
-                cmbroutingMode.SelectedIndex = routingMode;
                 txtUserRule.Text = Utils.List2String(routingItem.userRules, true);
             }
         }
@@ -42,7 +40,6 @@ namespace v2rayN.Forms
             {
                 routingItem.remarks = txtRemarks.Text.TrimEx();
                 routingItem.outboundTag = cmbOutboundTag.Text;
-                routingItem.routingMode = cmbroutingMode.SelectedIndex.ToString();
                 routingItem.userRules = Utils.String2List(txtUserRule.Text);
             }
         }

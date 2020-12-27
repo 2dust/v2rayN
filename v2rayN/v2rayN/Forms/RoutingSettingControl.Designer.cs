@@ -32,8 +32,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnExpand = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbroutingMode = new System.Windows.Forms.ComboBox();
             this.cmbOutboundTag = new System.Windows.Forms.ComboBox();
             this.btnRemove = new System.Windows.Forms.Button();
             this.txtUserRule = new System.Windows.Forms.TextBox();
@@ -48,8 +46,6 @@
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.btnExpand);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.cmbroutingMode);
             this.groupBox2.Controls.Add(this.cmbOutboundTag);
             this.groupBox2.Controls.Add(this.btnRemove);
             this.groupBox2.Controls.Add(this.txtUserRule);
@@ -70,24 +66,6 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // cmbroutingMode
-            // 
-            resources.ApplyResources(this.cmbroutingMode, "cmbroutingMode");
-            this.cmbroutingMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbroutingMode.FormattingEnabled = true;
-            this.cmbroutingMode.Items.AddRange(new object[] {
-            resources.GetString("cmbroutingMode.Items"),
-            resources.GetString("cmbroutingMode.Items1"),
-            resources.GetString("cmbroutingMode.Items2"),
-            resources.GetString("cmbroutingMode.Items3"),
-            resources.GetString("cmbroutingMode.Items4")});
-            this.cmbroutingMode.Name = "cmbroutingMode";
             // 
             // cmbOutboundTag
             // 
@@ -151,8 +129,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.ComboBox cmbOutboundTag;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbroutingMode;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnExpand;
     }
