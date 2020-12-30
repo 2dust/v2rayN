@@ -52,12 +52,12 @@ namespace v2rayN.Handler
 
         #region Check for updates
 
-        private readonly string nLatestUrl = "https://github.com/2dust/v2rayN/releases/latest";
-        private const string nUrl = "https://github.com/2dust/v2rayN/releases/download/{0}/v2rayN.zip";
-        private readonly string v2flyCoreLatestUrl = "https://github.com/v2fly/v2ray-core/releases/latest";
-        private const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases/download/{0}/v2ray-windows-{1}.zip";
-        private readonly string xrayCoreLatestUrl = "https://github.com/XTLS/Xray-core/releases/latest";
-        private const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases/download/{0}/Xray-windows-{1}.zip";
+        private readonly string nLatestUrl = Global.NUrl + "/latest";
+        private const string nUrl = Global.NUrl + "/download/{0}/v2rayN.zip";
+        private readonly string v2flyCoreLatestUrl = Global.v2flyCoreUrl + "/latest";
+        private const string v2flyCoreUrl = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip";
+        private readonly string xrayCoreLatestUrl = Global.xrayCoreUrl + "/latest";
+        private const string xrayCoreUrl = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip";
 
         public async void CheckUpdateAsync(string type)
         {
@@ -119,7 +119,7 @@ namespace v2rayN.Handler
                 string filePath = Utils.GetPath(core);
                 if (!File.Exists(filePath))
                 {
-                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2fly/v2ray-core/releases");
+                    string msg = string.Format(UIRes.I18N("NotFoundCore"), @"");
                     //ShowMsg(true, msg);
                     return "";
                 }

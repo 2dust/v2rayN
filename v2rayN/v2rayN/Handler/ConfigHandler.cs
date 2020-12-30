@@ -86,10 +86,10 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.domainStrategy))
             {
                 config.domainStrategy = "IPIfNonMatch";
-            }            
-            if (config.routingItem == null)
+            }
+            if (config.rules == null)
             {
-                config.routingItem = new List<RoutingItem>();
+                config.rules = new List<RulesItem>();
             }
             //kcp
             if (config.kcpItem == null)
@@ -1067,14 +1067,14 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static int SaveRoutingItem(ref Config config)
+        public static int SaveRoutingRulesItem(ref Config config)
         {
-            if (config.routingItem == null || config.routingItem.Count <= 0)
+            if (config.rules == null)
             {
                 return -1;
             }
 
-            foreach (RoutingItem sub in config.routingItem)
+            foreach (RulesItem sub in config.rules)
             {
 
             }
@@ -1083,6 +1083,134 @@ namespace v2rayN.Handler
             ToJsonFile(config);
             return 0;
         }
+        /// <summary>
+        /// AddRoutingRulesItem
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="item"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static int AddRoutingRule(ref Config config, RulesItem item, int index)
+        {
+            if (index >= 0)
+            {
+                config.rules[index] = item;
+            }
+            else
+            {
+                config.rules.Add(item);
+            }
+            Global.reloadV2ray = true;
 
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// AddBatchRoutingRules
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="clipboardData"></param>
+        /// <returns></returns>
+        public static int AddBatchRoutingRules(ref Config config, string clipboardData)
+        {
+            if (Utils.IsNullOrEmpty(clipboardData))
+            {
+                return -1;
+            }
+
+            var lstRules = Utils.FromJson<List<RulesItem>>(clipboardData);
+            if (lstRules == null)
+            {
+                return -1;
+            }
+
+            config.rules.Clear();
+            foreach (var item in lstRules)
+            {
+                config.rules.Add(item);
+            }
+
+            Global.reloadV2ray = true;
+
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// MoveRoutingRule
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="index"></param>
+        /// <param name="eMove"></param>
+        /// <returns></returns>
+        public static int MoveRoutingRule(ref Config config, int index, EMove eMove)
+        {
+            int count = config.rules.Count;
+            if (index < 0 || index > config.rules.Count - 1)
+            {
+                return -1;
+            }
+            switch (eMove)
+            {
+                case EMove.Top:
+                    {
+                        if (index == 0)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(config.rules[index]);
+                        config.rules.RemoveAt(index);
+                        config.rules.Insert(0, item);
+
+                        break;
+                    }
+                case EMove.Up:
+                    {
+                        if (index == 0)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(config.rules[index]);
+                        config.rules.RemoveAt(index);
+                        config.rules.Insert(index - 1, item);
+
+                        break;
+                    }
+
+                case EMove.Down:
+                    {
+                        if (index == count - 1)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(config.rules[index]);
+                        config.rules.RemoveAt(index);
+                        config.rules.Insert(index + 1, item);
+
+                        break;
+                    }
+                case EMove.Bottom:
+                    {
+                        if (index == count - 1)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(config.rules[index]);
+                        config.rules.RemoveAt(index);
+                        config.rules.Add(item);
+
+                        break;
+                    }
+
+            }
+            Global.reloadV2ray = true;
+
+            ToJsonFile(config);
+
+            return 0;
+        }
     }
 }

@@ -120,24 +120,140 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
-  <data name="btnAdd.Text" xml:space="preserve">
-    <value>添加(&amp;A)</value>
-  </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>
-  <data name="btnSetDefRountingRule.Text" xml:space="preserve">
-    <value>一键设置默认自定义路由规则</value>
-  </data>
-  <data name="labRoutingTips.Text" xml:space="preserve">
-    <value>*设置的规则，用逗号(,)隔开;支持Domain(纯字符串/正则/子域名)和IP</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 60</value>
+  </data>
   <data name="linkLabelRoutingDoc.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 12</value>
   </data>
   <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
     <value>域名解析策略</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 51</value>
+  </data>
+  <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuAdd.Text" xml:space="preserve">
+    <value>添加规则</value>
+  </data>
+  <data name="menuRemove.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuRemove.Text" xml:space="preserve">
+    <value>移除所选规则</value>
+  </data>
+  <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuSelectAll.Text" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="menuExportSelectedRules.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuExportSelectedRules.Text" xml:space="preserve">
+    <value>导出所选规则至剪贴板</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 6</value>
+  </data>
+  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuMoveTop.Text" xml:space="preserve">
+    <value>上移至顶 (T)</value>
+  </data>
+  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuMoveUp.Text" xml:space="preserve">
+    <value>上移 (U)</value>
+  </data>
+  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuMoveDown.Text" xml:space="preserve">
+    <value>下移 (D)</value>
+  </data>
+  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="menuMoveBottom.Text" xml:space="preserve">
+    <value>下移至底 (B)</value>
+  </data>
+  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 21</value>
+  </data>
+  <data name="MenuItem1.Text" xml:space="preserve">
+    <value>路由规则功能</value>
+  </data>
+  <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 186</value>
+  </data>
+  <data name="lvRoutings.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAD/////Bfv///8UU3lz
+        dGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJBwcDAAAA
+        CgAAAAAAAAAAGAABAAAJBgAAAAH5////+////woAAAAAAAAAABoAAQABBQYAAAATU3lzdGVtLkRyYXdp
+        bmcuRm9udAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5Gb250U3R5
+        bGUDAAAAG1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABggAAAAG5a6L5L2TAAAQQQX3
+        ////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIAwAAAAAAAAAF9v///xtTeXN0
+        ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
+</value>
+  </data>
+  <data name="lvRoutings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>771, 505</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>777, 511</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>路由规则列表</value>
+  </data>
+  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 537</value>
+  </data>
+  <data name="menuImportRulesFromPreset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="menuImportRulesFromPreset.Text" xml:space="preserve">
+    <value>从预设中导入规则</value>
+  </data>
+  <data name="menuImportRulesFromFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="menuImportRulesFromFile.Text" xml:space="preserve">
+    <value>从文件中导入规则</value>
+  </data>
+  <data name="menuImportRulesFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="menuImportRulesFromClipboard.Text" xml:space="preserve">
+    <value>从剪贴板中导入规则</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 21</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>导入路由规则</value>
+  </data>
+  <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 25</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>785, 673</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>路由设置</value>

@@ -121,12 +121,6 @@
     <value>取消(&amp;C)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 12</value>
-  </data>
-  <data name="linkDnsObjectDoc.Text" xml:space="preserve">
-    <value>支持填写DnsObject,JSON格式</value>
-  </data>
   <data name="chkdefAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
     <value>336, 16</value>
   </data>
@@ -144,12 +138,6 @@
   </data>
   <data name="chksniffingEnabled.Text" xml:space="preserve">
     <value>开启流量探测</value>
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 12</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>自定义DNS(可多个,用逗号(,)隔开)</value>
   </data>
   <data name="chkmuxEnabled.Text" xml:space="preserve">
     <value>开启Mux多路复用(默认开启)</value>
@@ -211,6 +199,18 @@
   <data name="tabPage1.Text" xml:space="preserve">
     <value>  Core:基础设置  </value>
   </data>
+  <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 12</value>
+  </data>
+  <data name="linkDnsObjectDoc.Text" xml:space="preserve">
+    <value>支持填写DnsObject,JSON格式</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>自定义DNS(可多个,用逗号(,)隔开)</value>
+  </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
@@ -222,6 +222,12 @@
   </data>
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Core类型</value>
   </data>
   <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 16</value>

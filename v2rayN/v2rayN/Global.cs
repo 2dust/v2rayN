@@ -9,6 +9,9 @@ namespace v2rayN
         public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
+        public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
+        public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
+        public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
 
 
         /// <summary>
@@ -17,7 +20,7 @@ namespace v2rayN
         public const string SpeedTestUrl = @"http://cachefly.cachefly.net/10mb.test";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string AvailabilityTestUrl = @"https://www.google.com/generate_204";
-
+      
         /// <summary>
         /// CustomRoutingListUrl
         /// </summary>

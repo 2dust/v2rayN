@@ -195,9 +195,9 @@ namespace v2rayN.Handler
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
 
-                    foreach (var item in config.routingItem)
+                    foreach (var item in config.rules)
                     {
-                        routingUserRule(item.userRules, item.outboundTag, ref v2rayConfig);
+                        routingUserRule(item, ref v2rayConfig);
                     }
                 }
             }
@@ -206,68 +206,38 @@ namespace v2rayN.Handler
             }
             return 0;
         }
-        private static int routingUserRule(List<string> userRule, string tag, ref V2rayConfig v2rayConfig)
+        private static int routingUserRule(RulesItem rules, ref V2rayConfig v2rayConfig)
         {
             try
             {
-                if (userRule == null)
+                if (rules == null)
                 {
+                    return 0;
                 }
-                else if (userRule.Count == 0)
+                var hasDomainIp = false;
+                if (rules.domain != null && rules.domain.Count > 0)
                 {
-                    v2rayConfig.routing.rules.Add(new RulesItem
-                    {
-                        type = "field",
-                        outboundTag = tag,
-                        port = "0-65535"
-                    });
+                    var it = Utils.DeepCopy(rules);
+                    it.ip = null;
+                    it.type = "field";
+                    v2rayConfig.routing.rules.Add(it);
+                    hasDomainIp = true;
                 }
-                else if (userRule.Count > 0)
+                if (rules.ip != null && rules.ip.Count > 0)
                 {
-                    //Domain
-                    RulesItem rulesDomain = new RulesItem
-                    {
-                        type = "field",
-                        outboundTag = tag,
-                        domain = new List<string>()
-                    };
-
-                    //IP
-                    RulesItem rulesIP = new RulesItem
-                    {
-                        type = "field",
-                        outboundTag = tag,
-                        ip = new List<string>()
-                    };
-
-                    foreach (string u in userRule)
-                    {
-                        string url = u.TrimEx();
-                        if (Utils.IsNullOrEmpty(url))
-                        {
-                            continue;
-                        }
-                        if (Utils.IsIP(url) || url.StartsWith("geoip:"))
-                        {
-                            rulesIP.ip.Add(url);
-                        }
-                        else if (Utils.IsDomain(url)
-                            || url.StartsWith("geosite:")
-                            || url.StartsWith("regexp:")
-                            || url.StartsWith("domain:")
-                            || url.StartsWith("full:"))
-                        {
-                            rulesDomain.domain.Add(url);
-                        }
-                    }
-                    if (rulesDomain.domain.Count > 0)
-                    {
-                        v2rayConfig.routing.rules.Add(rulesDomain);
-                    }
-                    if (rulesIP.ip.Count > 0)
-                    {
-                        v2rayConfig.routing.rules.Add(rulesIP);
-                    }
+                    var it = Utils.DeepCopy(rules);
+                    it.domain = null;
+                    it.type = "field";
+                    v2rayConfig.routing.rules.Add(it);
+                    hasDomainIp = true;
+                }
+                if (!hasDomainIp && !Utils.IsNullOrEmpty(rules.port))
+                {
+                    var it = Utils.DeepCopy(rules);
+                    it.domain = null;
+                    it.ip = null;
+                    it.type = "field";
+                    v2rayConfig.routing.rules.Add(it);
                 }
             }
             catch

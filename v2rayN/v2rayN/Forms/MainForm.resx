@@ -226,7 +226,7 @@
     <value>tsbCheckUpdateN</value>
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
-    <value>Only open Http proxy and do nothing</value>
+    <value>Do not change system proxy</value>
   </data>
   <data name="&gt;&gt;menuMoveBottom.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -585,7 +585,7 @@
     <value>265, 142</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
+    <value>262, 22</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1103,7 +1103,7 @@
     <value>Magenta</value>
   </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
+    <value>262, 22</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -1148,7 +1148,7 @@
     <value>Vertical</value>
   </data>
   <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 22</value>
+    <value>262, 22</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -1173,6 +1173,9 @@
   </data>
   <data name="&gt;&gt;menuServers.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuKeepClear.Text" xml:space="preserve">
+    <value>Clear system proxy</value>
   </data>
   <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -1217,7 +1220,7 @@
     <value>notifyMain</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
-    <value>Open Http proxy and set the system proxy (global mode)</value>
+    <value>Set system proxy (global mode)</value>
   </data>
   <data name="&gt;&gt;tsbQRCodeSwitch.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1414,9 +1417,6 @@
   </data>
   <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>228, 18</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-Hans</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

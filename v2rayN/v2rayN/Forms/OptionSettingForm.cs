@@ -120,6 +120,7 @@ namespace v2rayN.Forms
                     break;
             }
 
+            cmbCoreType.SelectedIndex = (int)config.coreType;
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -284,6 +285,7 @@ namespace v2rayN.Forms
             config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
+            config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
 
             return 0;
         }

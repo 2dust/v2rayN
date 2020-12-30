@@ -22,18 +22,13 @@ namespace v2rayN.Handler
     {
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
         private List<string> lstV2ray;
+        private string coreUrl;
         public event ProcessDelegate ProcessEvent;
         //private int processId = 0;
         private Process _process;
 
         public V2rayHandler()
         {
-            lstV2ray = new List<string>
-            {
-                "xray",
-                "wv2ray",
-                "v2ray"
-            };
         }
 
         /// <summary>
@@ -41,6 +36,24 @@ namespace v2rayN.Handler
         /// </summary>
         public void LoadV2ray(Config config)
         {
+            if (config.coreType == ECoreType.v2fly_core)
+            {
+                lstV2ray = new List<string>
+                {
+                    "wv2ray",
+                    "v2ray"
+                };
+                coreUrl = Global.v2flyCoreUrl;
+            }
+            else
+            {
+                lstV2ray = new List<string>
+                {
+                    "xray"
+                };
+                coreUrl = Global.xrayCoreUrl;
+            }
+
             if (Global.reloadV2ray)
             {
                 string fileName = Utils.GetPath(v2rayConfigRes);
@@ -159,7 +172,8 @@ namespace v2rayN.Handler
             }
         }
 
-        private string V2rayFindexe() {
+        private string V2rayFindexe()
+        {
             //查找v2ray文件是否存在
             string fileName = string.Empty;
             //lstV2ray.Reverse();
@@ -175,7 +189,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(UIRes.I18N("NotFoundCore"), @"https://github.com/v2fly/v2ray-core/releases");
+                string msg = string.Format(UIRes.I18N("NotFoundCore"), coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -318,6 +332,6 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
             }
-        }         
+        }
     }
 }

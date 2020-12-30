@@ -96,7 +96,7 @@ namespace v2rayN.Mode
         public string speedPingTestUrl
         {
             get; set;
-        }        
+        }
 
         /// <summary>
         /// 允许来自局域网的连接
@@ -161,7 +161,12 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-        public List<RoutingItem> routingItem
+        public List<RulesItem> rules
+        {
+            get; set;
+        }
+
+        public ECoreType coreType
         {
             get; set;
         }
@@ -276,7 +281,7 @@ namespace v2rayN.Mode
             {
                 return GetLocalPort(Global.InboundSocks) + 1;
             }
-           
+
             else if (protocol == "speedtest")
             {
                 return GetLocalPort(Global.InboundSocks) + 103;
@@ -689,34 +694,6 @@ namespace v2rayN.Mode
         }
 
         public Dictionary<string, int> mainLvColWidth
-        {
-            get; set;
-        }
-    }
-
-    [Serializable]
-    public class RoutingItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string remarks
-        {
-            get; set;
-        }
-         
-        /// <summary>
-        /// 
-        /// </summary>
-        public string outboundTag
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> userRules
         {
             get; set;
         }

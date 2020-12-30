@@ -117,47 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="labRoutingTips.Text" xml:space="preserve">
+    <value>*设置的路由规则,用逗号(,)分隔</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnExpand.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 20</value>
-  </data>
-  <data name="btnExpand.Text" xml:space="preserve">
-    <value>扩大</value>
-  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+    <value>71, 12</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>出口标签</value>
-  </data>
-  <data name="btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>619, 20</value>
-  </data>
-  <data name="btnRemove.Text" xml:space="preserve">
-    <value>移除</value>
-  </data>
-  <data name="txtUserRule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>567, 104</value>
+    <value>OutboundTag</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>备注</value>
+    <value>别名</value>
   </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>取消(&amp;C)</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>域名或IP</value>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>709, 160</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>规则</value>
-  </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>709, 160</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>路由规则详情设置</value>
   </data>
 </root>

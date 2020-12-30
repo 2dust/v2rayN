@@ -323,34 +323,6 @@ namespace v2rayN.Mode
         public List<string> servers { get; set; }
     }
 
-    public class RulesItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string type { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string port { get; set; }
-
-        public List<string> inboundTag { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string outboundTag { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> ip { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> domain { get; set; }
-    }
-
     public class Routing
     {
         /// <summary>

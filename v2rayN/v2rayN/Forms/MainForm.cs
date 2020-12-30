@@ -223,11 +223,7 @@ namespace v2rayN.Forms
                 }
 
                 VmessItem item = config.vmess[k];
-
-                void _addSubItem(ListViewItem i, string name, string text)
-                {
-                    i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
-                }
+                              
                 bool stats = statistics != null && statistics.Enable;
                 if (stats)
                 {
@@ -241,20 +237,20 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
-                _addSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
-                _addSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
-                _addSubItem(lvItem, EServerColName.address.ToString(), item.address);
-                _addSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
-                _addSubItem(lvItem, EServerColName.security.ToString(), item.security);
-                _addSubItem(lvItem, EServerColName.network.ToString(), item.network);
-                _addSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
-                _addSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
+                Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
+                Utils.AddSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
+                Utils.AddSubItem(lvItem, EServerColName.address.ToString(), item.address);
+                Utils.AddSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
+                Utils.AddSubItem(lvItem, EServerColName.security.ToString(), item.security);
+                Utils.AddSubItem(lvItem, EServerColName.network.ToString(), item.network);
+                Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
+                Utils.AddSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
                 if (stats)
                 {
-                    _addSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown);
-                    _addSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp);
-                    _addSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown);
-                    _addSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp);
+                    Utils.AddSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown);
+                    Utils.AddSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp);
+                    Utils.AddSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown);
+                    Utils.AddSubItem(lvItem, EServerColName.totalUp.ToString(), totalUp);
                 }
 
                 if (k % 2 == 1) // 隔行着色
@@ -1138,17 +1134,15 @@ namespace v2rayN.Forms
         #endregion
 
         #region 系统代理相关
-
-
+        private void menuKeepClear_Click(object sender, EventArgs e)
+        {
+            SetListenerType(ESysProxyType.ForcedClear);
+        }
         private void menuGlobal_Click(object sender, EventArgs e)
         {
             SetListenerType(ESysProxyType.ForcedChange);
         }
 
-        private void menuKeepClear_Click(object sender, EventArgs e)
-        {
-            SetListenerType(ESysProxyType.ForcedClear);
-        }
         private void menuKeepNothing_Click(object sender, EventArgs e)
         {
             SetListenerType(ESysProxyType.Unchanged);

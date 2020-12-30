@@ -125,6 +125,12 @@
     <Compile Include="Forms\BaseServerForm.Designer.cs">
       <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RoutingSettingDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingSettingDetailsForm.Designer.cs">
+      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mode\ComboItem.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -137,12 +143,6 @@
     </Compile>
     <Compile Include="Forms\RoutingSettingForm.Designer.cs">
       <DependentUpon>RoutingSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RoutingSettingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\RoutingSettingControl.Designer.cs">
-      <DependentUpon>RoutingSettingControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SubSettingForm.cs">
       <SubType>Form</SubType>
@@ -187,9 +187,9 @@
     <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
     <Compile Include="Mode\ECoreType.cs" />
     <Compile Include="Mode\ESysProxyType.cs" />
-    <Compile Include="Mode\ERoutingSort.cs" />
     <Compile Include="Mode\EMove.cs" />
     <Compile Include="Mode\EServerColName.cs" />
+    <Compile Include="Mode\RulesItem.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
     <Compile Include="Mode\EConfigType.cs" />
@@ -300,12 +300,11 @@
       <DependentUpon>QRCodeControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingControl.resx">
-      <DependentUpon>RoutingSettingControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.resx">
+      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingControl.zh-Hans.resx">
-      <DependentUpon>RoutingSettingControl.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.zh-Hans.resx">
+      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
@@ -374,6 +373,7 @@
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
     <EmbeddedResource Include="Sample\custom_routing_private" />
+    <EmbeddedResource Include="Sample\custom_routing_rules" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>
@@ -442,7 +442,6 @@
     <None Include="Resources\about.png" />
     <Content Include="Resources\help.png" />
     <None Include="Resources\notify.png" />
-    <Content Include="Resources\privoxy_conf.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">

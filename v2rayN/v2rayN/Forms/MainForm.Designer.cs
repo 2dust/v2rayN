@@ -68,9 +68,9 @@
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuSysAgentMode = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuKeepNothing = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuGlobal = new System.Windows.Forms.ToolStripMenuItem();
             this.menuKeepClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuGlobal = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuKeepNothing = new System.Windows.Forms.ToolStripMenuItem();
             this.menuServers = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddServers2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScanScreen2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -421,16 +421,16 @@
             // 
             resources.ApplyResources(this.menuSysAgentMode, "menuSysAgentMode");
             this.menuSysAgentMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuKeepNothing,
+            this.menuKeepClear,
             this.menuGlobal,
-            this.menuKeepClear});
+            this.menuKeepNothing});
             this.menuSysAgentMode.Name = "menuSysAgentMode";
             // 
-            // menuKeepNothing
+            // menuKeepClear
             // 
-            resources.ApplyResources(this.menuKeepNothing, "menuKeepNothing");
-            this.menuKeepNothing.Name = "menuKeepNothing";
-            this.menuKeepNothing.Click += new System.EventHandler(this.menuKeepNothing_Click);
+            resources.ApplyResources(this.menuKeepClear, "menuKeepClear");
+            this.menuKeepClear.Name = "menuKeepClear";
+            this.menuKeepClear.Click += new System.EventHandler(this.menuKeepClear_Click);
             // 
             // menuGlobal
             // 
@@ -438,11 +438,11 @@
             this.menuGlobal.Name = "menuGlobal";
             this.menuGlobal.Click += new System.EventHandler(this.menuGlobal_Click);
             // 
-            // menuKeepClear
+            // menuKeepNothing
             // 
-            resources.ApplyResources(this.menuKeepClear, "menuKeepClear");
-            this.menuKeepClear.Name = "menuKeepClear";
-            this.menuKeepClear.Click += new System.EventHandler(this.menuKeepClear_Click);
+            resources.ApplyResources(this.menuKeepNothing, "menuKeepNothing");
+            this.menuKeepNothing.Name = "menuKeepNothing";
+            this.menuKeepNothing.Click += new System.EventHandler(this.menuKeepNothing_Click);
             // 
             // menuServers
             // 

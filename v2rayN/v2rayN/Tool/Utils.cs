@@ -24,8 +24,7 @@ using Newtonsoft.Json.Linq;
 namespace v2rayN
 {
     class Utils
-    {
-
+    {      
 
         #region 资源Json操作
 
@@ -802,6 +801,10 @@ namespace v2rayN
             }
         }
 
+        public static void AddSubItem(ListViewItem i, string name, string text)
+        {
+            i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
+        }
         #endregion
 
         #region TempPath

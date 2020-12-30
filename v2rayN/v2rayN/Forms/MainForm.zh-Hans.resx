@@ -312,11 +312,11 @@
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
   </data>
-  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>228, 22</value>
   </data>
-  <data name="menuKeepNothing.Text" xml:space="preserve">
-    <value>不改变系统代理</value>
+  <data name="menuKeepClear.Text" xml:space="preserve">
+    <value>清除系统代理</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>228, 22</value>
@@ -324,11 +324,11 @@
   <data name="menuGlobal.Text" xml:space="preserve">
     <value>自动配置系统代理(全局模式)</value>
   </data>
-  <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
     <value>228, 22</value>
   </data>
-  <data name="menuKeepClear.Text" xml:space="preserve">
-    <value>清除系统代理</value>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>不改变系统代理</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -441,19 +441,19 @@
     <value>  重启服务  </value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>135, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
     <value>v2rayN</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>135, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
     <value>v2fly-Core</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>135, 22</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
     <value>Xray-Core</value>
