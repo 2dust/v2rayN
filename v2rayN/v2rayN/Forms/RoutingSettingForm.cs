@@ -42,8 +42,9 @@ namespace v2rayN.Forms
             lvRoutings.Columns.Add(UIRes.I18N("LvAlias"), 100);
             lvRoutings.Columns.Add("outboundTag", 80);
             lvRoutings.Columns.Add("port", 80);
-            lvRoutings.Columns.Add("domain", 200);
-            lvRoutings.Columns.Add("ip", 200);
+            lvRoutings.Columns.Add("protocol", 100);
+            lvRoutings.Columns.Add("domain", 160);
+            lvRoutings.Columns.Add("ip", 160);
 
             lvRoutings.EndUpdate();
         }
@@ -61,6 +62,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, "remarks", item.remarks);
                 Utils.AddSubItem(lvItem, "outboundTag", item.outboundTag);
                 Utils.AddSubItem(lvItem, "port", item.port);
+                Utils.AddSubItem(lvItem, "protocol", Utils.List2String(item.protocol));
                 Utils.AddSubItem(lvItem, "domain", Utils.List2String(item.domain));
                 Utils.AddSubItem(lvItem, "ip", Utils.List2String(item.ip));
 

@@ -214,16 +214,37 @@ namespace v2rayN.Handler
                 {
                     return 0;
                 }
+                if (Utils.IsNullOrEmpty(rules.port))
+                {
+                    rules.port = null;
+                }
+                if (rules.domain != null && rules.domain.Count == 0)
+                {
+                    rules.domain = null;
+                }
+                if (rules.ip != null && rules.ip.Count == 0)
+                {
+                    rules.ip = null;
+                }
+                if (rules.protocol != null && rules.protocol.Count == 0)
+                {
+                    rules.protocol = null;
+                }
+
                 var hasDomainIp = false;
                 if (rules.domain != null && rules.domain.Count > 0)
                 {
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
                     it.type = "field";
-                    if (Utils.IsNullOrEmpty(rules.port))
-                    {
-                        it.port = null;
-                    }
+                    //if (Utils.IsNullOrEmpty(it.port))
+                    //{
+                    //    it.port = null;
+                    //}
+                    //if (it.protocol != null && it.protocol.Count == 0)
+                    //{
+                    //    it.protocol = null;
+                    //}
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
@@ -232,20 +253,43 @@ namespace v2rayN.Handler
                     var it = Utils.DeepCopy(rules);
                     it.domain = null;
                     it.type = "field";
-                    if (Utils.IsNullOrEmpty(rules.port))
-                    {
-                        it.port = null;
-                    }
+                    //if (Utils.IsNullOrEmpty(it.port))
+                    //{
+                    //    it.port = null;
+                    //}
+                    //if (it.protocol != null && it.protocol.Count == 0)
+                    //{
+                    //    it.protocol = null;
+                    //}
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
-                if (!hasDomainIp && !Utils.IsNullOrEmpty(rules.port))
+                if (!hasDomainIp)
                 {
-                    var it = Utils.DeepCopy(rules);
-                    it.domain = null;
-                    it.ip = null;
-                    it.type = "field";
-                    v2rayConfig.routing.rules.Add(it);
+                    if (!Utils.IsNullOrEmpty(rules.port))
+                    {
+                        var it = Utils.DeepCopy(rules);
+                        //it.domain = null;
+                        //it.ip = null;
+                        //if (it.protocol != null && it.protocol.Count == 0)
+                        //{
+                        //    it.protocol = null;
+                        //}
+                        it.type = "field";
+                        v2rayConfig.routing.rules.Add(it);
+                    }
+                    else if (rules.protocol != null && rules.protocol.Count > 0)
+                    {
+                        var it = Utils.DeepCopy(rules);
+                        //it.domain = null;
+                        //it.ip = null;
+                        //if (Utils.IsNullOrEmpty(it.port))
+                        //{
+                        //    it.port = null;
+                        //}
+                        it.type = "field";
+                        v2rayConfig.routing.rules.Add(it);
+                    }
                 }
             }
             catch

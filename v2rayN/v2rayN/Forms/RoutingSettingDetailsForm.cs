@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -42,6 +43,16 @@ namespace v2rayN.Forms
                 routingItem.outboundTag = cmbOutboundTag.Text;
                 routingItem.domain = Utils.String2List(txtDomain.Text);
                 routingItem.ip = Utils.String2List(txtIP.Text);
+
+                var protocol = new List<string>();
+                for (int i = 0; i < clbProtocol.Items.Count; i++)
+                {
+                    if (clbProtocol.GetItemChecked(i))
+                    {
+                        protocol.Add(clbProtocol.Items[i].ToString());
+                    }
+                }
+                routingItem.protocol = protocol;
             }
         }
         private void BindingData()
@@ -53,6 +64,17 @@ namespace v2rayN.Forms
                 cmbOutboundTag.Text = routingItem.outboundTag;
                 txtDomain.Text = Utils.List2String(routingItem.domain, true);
                 txtIP.Text = Utils.List2String(routingItem.ip, true);
+
+                if (routingItem.protocol != null)
+                {
+                    for (int i = 0; i < clbProtocol.Items.Count; i++)
+                    {
+                        if (routingItem.protocol.Contains(clbProtocol.Items[i].ToString()))
+                        {
+                            clbProtocol.SetItemChecked(i, true);
+                        }
+                    }
+                }
             }
         }
         private void ClearBind()

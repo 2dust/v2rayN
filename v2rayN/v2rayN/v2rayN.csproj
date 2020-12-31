@@ -367,12 +367,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Sample\custom_routing_block" />
-    <EmbeddedResource Include="Sample\custom_routing_direct" />
-    <EmbeddedResource Include="Sample\custom_routing_proxy" />
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
-    <EmbeddedResource Include="Sample\custom_routing_private" />
     <EmbeddedResource Include="Sample\custom_routing_rules" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
