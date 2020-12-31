@@ -220,6 +220,10 @@ namespace v2rayN.Handler
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
                     it.type = "field";
+                    if (Utils.IsNullOrEmpty(rules.port))
+                    {
+                        it.port = null;
+                    }
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
@@ -228,6 +232,10 @@ namespace v2rayN.Handler
                     var it = Utils.DeepCopy(rules);
                     it.domain = null;
                     it.type = "field";
+                    if (Utils.IsNullOrEmpty(rules.port))
+                    {
+                        it.port = null;
+                    }
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
