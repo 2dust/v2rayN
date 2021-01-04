@@ -370,4 +370,7 @@
   <data name="RemoveRules" xml:space="preserve">
     <value>Are you sure to remove the rules?</value>
   </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0},One of the required.</value>
+  </data>
 </root>

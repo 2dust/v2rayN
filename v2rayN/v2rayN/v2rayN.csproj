@@ -131,6 +131,7 @@
     <Compile Include="Forms\RoutingSettingDetailsForm.Designer.cs">
       <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handler\ShareHandler.cs" />
     <Compile Include="Mode\ComboItem.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

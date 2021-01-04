@@ -370,4 +370,7 @@
   <data name="RemoveRules" xml:space="preserve">
     <value>是否确定移除规则?</value>
   </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0},必填其中一项.</value>
+  </data>
 </root>

@@ -685,7 +685,7 @@ namespace v2rayN.Forms
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
             {
-                string url = ConfigHandler.GetVmessQRCode(config, v);
+                string url = ShareHandler.GetShareUrl(config, v);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -708,7 +708,7 @@ namespace v2rayN.Forms
             StringBuilder sb = new StringBuilder();
             foreach (int v in lvSelecteds)
             {
-                string url = ConfigHandler.GetVmessQRCode(config, v);
+                string url = ShareHandler.GetShareUrl(config, v);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;

@@ -340,100 +340,6 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
-        /// 取得服务器QRCode配置
-        /// </summary>
-        /// <param name="config"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static string GetVmessQRCode(Config config, int index)
-        {
-            try
-            {
-                string url = string.Empty;
-
-                VmessItem vmessItem = config.vmess[index];
-                if (vmessItem.configType == (int)EConfigType.Vmess)
-                {
-                    VmessQRCode vmessQRCode = new VmessQRCode
-                    {
-                        v = vmessItem.configVersion.ToString(),
-                        ps = vmessItem.remarks.TrimEx(), //备注也许很长 ;
-                        add = vmessItem.address,
-                        port = vmessItem.port.ToString(),
-                        id = vmessItem.id,
-                        aid = vmessItem.alterId.ToString(),
-                        net = vmessItem.network,
-                        type = vmessItem.headerType,
-                        host = vmessItem.requestHost,
-                        path = vmessItem.path,
-                        tls = vmessItem.streamSecurity
-                    };
-
-                    url = Utils.ToJson(vmessQRCode);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}", Global.vmessProtocol, url);
-
-                }
-                else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    url = string.Format("{0}:{1}@{2}:{3}",
-                        vmessItem.security,
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}{2}", Global.ssProtocol, url, remark);
-                }
-                else if (vmessItem.configType == (int)EConfigType.Socks)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    url = string.Format("{0}:{1}@{2}:{3}",
-                        vmessItem.security,
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}{2}", Global.socksProtocol, url, remark);
-                }
-                else if (vmessItem.configType == (int)EConfigType.Trojan)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    string query = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.requestHost))
-                    {
-                        query = string.Format("?sni={0}", vmessItem.requestHost);
-                    }
-                    url = string.Format("{0}@{1}:{2}",
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = string.Format("{0}{1}{2}{3}", Global.trojanProtocol, url, query, remark);
-                }
-                else
-                {
-                }
-                return url;
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
         /// 移动服务器
         /// </summary>
         /// <param name="config"></param>
@@ -824,7 +730,7 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(str, out string msg);
+                VmessItem vmessItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
                 if (vmessItem == null)
                 {
                     continue;
@@ -854,6 +760,13 @@ namespace v2rayN.Handler
                 else if (vmessItem.configType == (int)EConfigType.Trojan)
                 {
                     if (AddTrojanServer(ref config, vmessItem, -1) == 0)
+                    {
+                        countServers++;
+                    }
+                }
+                else if (vmessItem.configType == (int)EConfigType.VLESS)
+                {
+                    if (AddVlessServer(ref config, vmessItem, -1) == 0)
                     {
                         countServers++;
                     }

@@ -88,6 +88,29 @@ namespace v2rayN.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             EndBindingData();
+            var hasRule = false;
+            if (routingItem.domain != null && routingItem.domain.Count > 0)
+            {
+                hasRule = true;
+            }
+            if (routingItem.ip != null && routingItem.ip.Count > 0)
+            {
+                hasRule = true;
+            }
+            if (routingItem.protocol != null && routingItem.protocol.Count > 0)
+            {
+                hasRule = true;
+            }
+            if (!Utils.IsNullOrEmpty(routingItem.port))
+            {
+                hasRule = true;
+            }
+            if (!hasRule)
+            {
+                UI.ShowWarning(string.Format(UIRes.I18N("RoutingRuleDetailRequiredTips"), "Port/Protocol/Domain/IP"));
+                return;
+            }
+
             if (ConfigHandler.AddRoutingRule(ref config, routingItem, EditIndex) == 0)
             {
                 this.DialogResult = DialogResult.OK;

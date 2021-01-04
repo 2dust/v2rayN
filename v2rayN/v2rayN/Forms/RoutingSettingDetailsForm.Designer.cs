@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoutingSettingDetailsForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.clbProtocol = new System.Windows.Forms.CheckedListBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.labRoutingTips = new System.Windows.Forms.Label();
@@ -46,8 +48,6 @@
             this.txtIP = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtDomain = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.clbProtocol = new System.Windows.Forms.CheckedListBox();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -73,6 +73,23 @@
             this.panel3.Controls.Add(this.label2);
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
+            // 
+            // clbProtocol
+            // 
+            this.clbProtocol.CheckOnClick = true;
+            resources.ApplyResources(this.clbProtocol, "clbProtocol");
+            this.clbProtocol.FormattingEnabled = true;
+            this.clbProtocol.Items.AddRange(new object[] {
+            resources.GetString("clbProtocol.Items"),
+            resources.GetString("clbProtocol.Items1"),
+            resources.GetString("clbProtocol.Items2")});
+            this.clbProtocol.MultiColumn = true;
+            this.clbProtocol.Name = "clbProtocol";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
             // 
             // txtPort
             // 
@@ -168,23 +185,6 @@
             // 
             resources.ApplyResources(this.txtDomain, "txtDomain");
             this.txtDomain.Name = "txtDomain";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // clbProtocol
-            // 
-            this.clbProtocol.CheckOnClick = true;
-            resources.ApplyResources(this.clbProtocol, "clbProtocol");
-            this.clbProtocol.FormattingEnabled = true;
-            this.clbProtocol.Items.AddRange(new object[] {
-            resources.GetString("clbProtocol.Items"),
-            resources.GetString("clbProtocol.Items1"),
-            resources.GetString("clbProtocol.Items2")});
-            this.clbProtocol.MultiColumn = true;
-            this.clbProtocol.Name = "clbProtocol";
             // 
             // RoutingSettingDetailsForm
             // 
