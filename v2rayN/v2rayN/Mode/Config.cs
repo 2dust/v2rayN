@@ -170,6 +170,10 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public bool ignoreGeoUpdateCore
+        {
+            get; set;
+        }
 
         #region 函数
 

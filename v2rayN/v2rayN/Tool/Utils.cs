@@ -20,11 +20,12 @@ using ZXing.QrCode;
 using System.Security.Principal;
 using v2rayN.Base;
 using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace v2rayN
 {
     class Utils
-    {      
+    {
 
         #region 资源Json操作
 
@@ -369,6 +370,14 @@ namespace v2rayN
             result = list;
         }
 
+        public static string UrlEncode(string url)
+        {
+            return HttpUtility.UrlEncode(url);
+        }
+        public static string UrlDecode(string url)
+        {
+            return HttpUtility.UrlDecode(url);
+        }
         #endregion
 
 

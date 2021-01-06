@@ -223,6 +223,12 @@
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
   </data>
+  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
+    <value>更新Core时忽略Geo文件</value>
+  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>

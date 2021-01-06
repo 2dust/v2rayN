@@ -223,7 +223,7 @@ namespace v2rayN.Forms
                 }
 
                 VmessItem item = config.vmess[k];
-                              
+
                 bool stats = statistics != null && statistics.Enable;
                 if (stats)
                 {
@@ -1310,7 +1310,7 @@ namespace v2rayN.Forms
 
                             string fileName = downloadHandle.DownloadFileName;
                             fileName = Utils.GetPath(fileName);
-                            FileManager.ZipExtractToFile(fileName);
+                            FileManager.ZipExtractToFile(fileName, config.ignoreGeoUpdateCore ? "geo" : "");
 
                             AppendText(false, UIRes.I18N("MsgUpdateV2rayCoreSuccessfullyMore"));
 

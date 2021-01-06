@@ -57,7 +57,7 @@ namespace v2rayN.Handler
                     string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(item.remarks))
                     {
-                        remark = "#" + WebUtility.UrlEncode(item.remarks);
+                        remark = "#" + Utils.UrlEncode(item.remarks);
                     }
                     url = string.Format("{0}:{1}@{2}:{3}",
                         item.security,
@@ -72,7 +72,7 @@ namespace v2rayN.Handler
                     string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(item.remarks))
                     {
-                        remark = "#" + WebUtility.UrlEncode(item.remarks);
+                        remark = "#" + Utils.UrlEncode(item.remarks);
                     }
                     url = string.Format("{0}:{1}@{2}:{3}",
                         item.security,
@@ -87,12 +87,12 @@ namespace v2rayN.Handler
                     string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(item.remarks))
                     {
-                        remark = "#" + WebUtility.UrlEncode(item.remarks);
+                        remark = "#" + Utils.UrlEncode(item.remarks);
                     }
                     string query = string.Empty;
                     if (!Utils.IsNullOrEmpty(item.requestHost))
                     {
-                        query = string.Format("?sni={0}", item.requestHost);
+                        query = string.Format("?sni={0}", Utils.UrlEncode(item.requestHost));
                     }
                     url = string.Format("{0}@{1}:{2}",
                         item.id,
@@ -105,7 +105,7 @@ namespace v2rayN.Handler
                     string remark = string.Empty;
                     if (!Utils.IsNullOrEmpty(item.remarks))
                     {
-                        remark = "#" + WebUtility.UrlEncode(item.remarks);
+                        remark = "#" + Utils.UrlEncode(item.remarks);
                     }
                     var dicQuery = new Dictionary<string, string>();
                     if (!Utils.IsNullOrEmpty(item.flow))
@@ -150,7 +150,7 @@ namespace v2rayN.Handler
                             }
                             if (!Utils.IsNullOrEmpty(item.requestHost))
                             {
-                                dicQuery.Add("host", item.requestHost);
+                                dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
                             }
                             break;
                         case "kcp":
@@ -164,18 +164,18 @@ namespace v2rayN.Handler
                             }
                             if (!Utils.IsNullOrEmpty(item.path))
                             {
-                                dicQuery.Add("seed", item.path);
+                                dicQuery.Add("seed", Utils.UrlEncode(item.path));
                             }
                             break;
 
                         case "ws":
                             if (!Utils.IsNullOrEmpty(item.requestHost))
                             {
-                                dicQuery.Add("host", item.requestHost);
+                                dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
                             }
                             if (!Utils.IsNullOrEmpty(item.path))
                             {
-                                dicQuery.Add("path", item.path);
+                                dicQuery.Add("path", Utils.UrlEncode(item.path));
                             }
                             break;
 
@@ -184,11 +184,11 @@ namespace v2rayN.Handler
                             dicQuery["type"] = "http";
                             if (!Utils.IsNullOrEmpty(item.requestHost))
                             {
-                                dicQuery.Add("host", item.requestHost);
+                                dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
                             }
                             if (!Utils.IsNullOrEmpty(item.path))
                             {
-                                dicQuery.Add("path", item.path);
+                                dicQuery.Add("path", Utils.UrlEncode(item.path));
                             }
                             break;
 
@@ -201,8 +201,8 @@ namespace v2rayN.Handler
                             {
                                 dicQuery.Add("headerType", "none");
                             }
-                            dicQuery.Add("quicSecurity", item.requestHost);
-                            dicQuery.Add("key", item.path);
+                            dicQuery.Add("quicSecurity", Utils.UrlEncode(item.requestHost));
+                            dicQuery.Add("key", Utils.UrlEncode(item.path));
                             break;
                     }
                     string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
@@ -330,7 +330,7 @@ namespace v2rayN.Handler
                     {
                         try
                         {
-                            vmessItem.remarks = WebUtility.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
+                            vmessItem.remarks = Utils.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
                         }
                         catch { }
                         result = result.Substring(0, indexRemark);
@@ -383,7 +383,7 @@ namespace v2rayN.Handler
                     }
                     else
                     {
-                        vmessItem.remarks = WebUtility.UrlDecode(remarks);
+                        vmessItem.remarks = Utils.UrlDecode(remarks);
                     }
                 }
                 else if (result.StartsWith(Global.vlessProtocol))
@@ -509,7 +509,7 @@ namespace v2rayN.Handler
             var tag = match.Groups["tag"].Value;
             if (!Utils.IsNullOrEmpty(tag))
             {
-                server.remarks = HttpUtility.UrlDecode(tag, Encoding.UTF8);
+                server.remarks = Utils.UrlDecode(tag);
             }
             Match details;
             try
@@ -591,7 +591,7 @@ namespace v2rayN.Handler
                 case "ws":
                     string p1 = q["path"] ?? "/";
                     string h1 = q["host"] ?? "";
-                    i.requestHost = h1;
+                    i.requestHost = Utils.UrlDecode(h1);
                     i.path = p1;
                     break;
 
@@ -600,7 +600,7 @@ namespace v2rayN.Handler
                     i.network = "h2";
                     string p2 = q["path"] ?? "/";
                     string h2 = q["host"] ?? "";
-                    i.requestHost = h2;
+                    i.requestHost = Utils.UrlDecode(h2);
                     i.path = p2;
                     break;
 
@@ -609,7 +609,7 @@ namespace v2rayN.Handler
                     string k = q["key"] ?? "";
                     string t3 = q["type"] ?? "none";
                     i.headerType = t3;
-                    i.requestHost = s;
+                    i.requestHost = Utils.UrlDecode(s);
                     i.path = k;
                     break;
 
@@ -645,30 +645,30 @@ namespace v2rayN.Handler
             {
                 case "tcp":
                     item.headerType = query["headerType"] ?? "none";
-                    item.requestHost = query["host"] ?? "";
+                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
 
                     break;
                 case "kcp":
                     item.headerType = query["headerType"] ?? "none";
-                    item.path = query["seed"] ?? "";
+                    item.path = Utils.UrlDecode(query["seed"] ?? "");
                     break;
 
                 case "ws":
-                    item.requestHost = query["host"] ?? "";
-                    item.path = query["path"] ?? "/";
+                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
+                    item.path = Utils.UrlDecode(query["path"] ?? "/");
                     break;
 
                 case "http":
                 case "h2":
                     item.network = "h2";
-                    item.requestHost = query["host"] ?? "";
-                    item.path = query["path"] ?? "/";
+                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
+                    item.path = Utils.UrlDecode(query["path"] ?? "/");
                     break;
 
                 case "quic":
                     item.headerType = query["headerType"] ?? "none";
                     item.requestHost = query["quicSecurity"] ?? "none";
-                    item.path = query["key"] ?? "";
+                    item.path = Utils.UrlDecode(query["key"] ?? "");
                     break;
 
                 default:
