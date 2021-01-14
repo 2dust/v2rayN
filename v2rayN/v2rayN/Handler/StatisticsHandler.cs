@@ -30,6 +30,11 @@ namespace v2rayN.Handler
             get; set;
         }
 
+        public bool ClearStatistic
+        {
+            get; set;
+        }
+
         public List<ServerStatItem> Statistic
         {
             get
@@ -60,6 +65,7 @@ namespace v2rayN.Handler
             config_ = config;
             Enable = config.enableStatistics;
             UpdateUI = false;
+            ClearStatistic = false;
             updateFunc_ = update;
             exitFlag_ = false;
 
@@ -125,6 +131,16 @@ namespace v2rayN.Handler
                             serverStatItem.todayDown += down;
                             serverStatItem.totalUp += up;
                             serverStatItem.totalDown += down;
+
+                            if (ClearStatistic)
+                            {
+                                serverStatItem.todayUp = 0;
+                                serverStatItem.todayDown = 0;
+                                serverStatItem.totalUp = 0;
+                                serverStatItem.totalDown = 0;
+
+                                ClearStatistic = false;
+                            }
 
                             if (UpdateUI)
                             {
