@@ -259,6 +259,12 @@
   <data name="tsbTestMe.Text" xml:space="preserve">
     <value>测试当前服务状态</value>
   </data>
+  <data name="menuClearServerStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 22</value>
+  </data>
+  <data name="menuClearServerStatistics.Text" xml:space="preserve">
+    <value>清除所有服务统计数据</value>
+  </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>297, 6</value>
   </data>
