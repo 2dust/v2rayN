@@ -660,6 +660,15 @@ namespace v2rayN.Forms
             string result = httpProxyTest() + "ms";
             AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
         }
+
+        private void menuClearStatistic_Click(object sender, EventArgs e)
+        {
+            if (statistics != null)
+            {
+                statistics.ClearAllServerStatistics();
+            }
+        }
+
         private int httpProxyTest()
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, "", UpdateSpeedtestHandler);
@@ -1500,6 +1509,5 @@ namespace v2rayN.Forms
 
 
         #endregion
-
     }
 }
