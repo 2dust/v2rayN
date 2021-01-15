@@ -30,10 +30,6 @@ namespace v2rayN.Handler
             get; set;
         }
 
-        public bool ClearStatistic
-        {
-            get; set;
-        }
 
         public List<ServerStatItem> Statistic
         {
@@ -65,7 +61,6 @@ namespace v2rayN.Handler
             config_ = config;
             Enable = config.enableStatistics;
             UpdateUI = false;
-            ClearStatistic = false;
             updateFunc_ = update;
             exitFlag_ = false;
 
@@ -132,21 +127,6 @@ namespace v2rayN.Handler
                             serverStatItem.totalUp += up;
                             serverStatItem.totalDown += down;
 
-                            if (ClearStatistic)
-                            {
-                                foreach (ServerStatItem item in serverStatistics_.server)
-                                {
-                                    item.todayUp = 0;
-                                    item.todayDown = 0;
-                                    item.totalUp = 0;
-                                    item.totalDown = 0;
-                                    updateFunc_(up, down, new List<ServerStatItem> { item });
-                                }
-
-                                ClearStatistic = false;
-
-                            }
-
                             if (UpdateUI)
                             {
                                 updateFunc_(up, down, new List<ServerStatItem> { serverStatItem });
@@ -209,6 +189,25 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+        public void ClearAllServerStatistics()
+        {
+            if (serverStatistics_ != null)
+            {
+                foreach (var item in serverStatistics_.server)
+                {
+                    item.todayUp = 0;
+                    item.todayDown = 0;
+                    item.totalUp = 0;
+                    item.totalDown = 0;
+                    // update ui display to zero
+                    updateFunc_(0, 0, new List<ServerStatItem> { item });
+                }
+
+                // update statistic json file
+                SaveToFile();
             }
         }
 

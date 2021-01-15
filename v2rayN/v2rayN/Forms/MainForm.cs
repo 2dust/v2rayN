@@ -663,9 +663,9 @@ namespace v2rayN.Forms
 
         private void menuClearStatistic_Click(object sender, EventArgs e)
         {
-            if (statistics != null && statistics.Enable)
+            if (statistics != null)
             {
-                statistics.ClearStatistic = true;
+                statistics.ClearAllServerStatistics();
             }
         }
 
