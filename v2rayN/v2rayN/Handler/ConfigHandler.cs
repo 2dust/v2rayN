@@ -136,6 +136,10 @@ namespace v2rayN.Handler
             {
                 config.subItem = new List<SubItem>();
             }
+            if (config.ruleSubItem == null)
+            {
+                config.ruleSubItem = new List<SubItem>();
+            }
 
             if (config == null
                 || config.index < 0
@@ -524,6 +528,12 @@ namespace v2rayN.Handler
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
+
+            var securitys = new HashSet<string>() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+            if (!securitys.Contains(vmessItem.security))
+            {
+                return -1;
+            }
 
             if (index >= 0)
             {
@@ -1123,6 +1133,30 @@ namespace v2rayN.Handler
 
             ToJsonFile(config);
 
+            return 0;
+        }
+
+        /// <summary>
+        /// SaveRuleSubItem
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static int SaveRuleSubItem(ref Config config)
+        {
+            if (config.ruleSubItem == null || config.ruleSubItem.Count <= 0)
+            {
+                return -1;
+            }
+
+            foreach (SubItem sub in config.ruleSubItem)
+            {
+                if (Utils.IsNullOrEmpty(sub.id))
+                {
+                    sub.id = Utils.GetGUID();
+                }
+            }
+
+            ToJsonFile(config);
             return 0;
         }
     }

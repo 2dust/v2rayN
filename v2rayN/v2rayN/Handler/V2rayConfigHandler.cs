@@ -146,7 +146,7 @@ namespace v2rayN.Handler
             try
             {
                 Inbounds inbound = v2rayConfig.inbounds[0];
-                //端口
+                inbound.tag = Global.InboundSocks;
                 inbound.port = config.inbound[0].localPort;
                 inbound.protocol = config.inbound[0].protocol;
                 if (config.allowLANConn)
@@ -157,12 +157,13 @@ namespace v2rayN.Handler
                 {
                     inbound.listen = Global.Loopback;
                 }
-                //开启udp
+                //udp
                 inbound.settings.udp = config.inbound[0].udpEnabled;
                 inbound.sniffing.enabled = config.inbound[0].sniffingEnabled;
 
                 //http
                 Inbounds inbound2 = v2rayConfig.inbounds[1];
+                inbound2.tag = Global.InboundHttp;
                 inbound2.port = config.GetLocalPort(Global.InboundHttp);
                 inbound2.protocol = Global.InboundHttp;
                 inbound2.listen = inbound.listen;
@@ -231,6 +232,10 @@ namespace v2rayN.Handler
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
                     it.type = "field";
+                    for (int k = 0; k < it.domain.Count; k++)
+                    {
+                        it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
+                    }
                     //if (Utils.IsNullOrEmpty(it.port))
                     //{
                     //    it.port = null;

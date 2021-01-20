@@ -289,7 +289,7 @@ namespace v2rayN.Handler
             {
                 return "Timeout";
             }
-            return string.Format("{0}{1}", time, unit).PadLeft(6, ' ');
+            return string.Format("{0}{1}", time, unit).PadLeft(8, ' ');
         }
     }
 }

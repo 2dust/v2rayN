@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="labRoutingTips.Text" xml:space="preserve">
-    <value>*设置的路由规则,用逗号(,)分隔</value>
+    <value>*设置的路由规则,用逗号(,)分隔;正则中的逗号用&lt;COMMA&gt;替代</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">

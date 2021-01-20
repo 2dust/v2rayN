@@ -24,7 +24,7 @@ namespace v2rayN.Forms
                 config.rules = new List<RulesItem>();
             }
             InitRoutingsView();
-            RefreshRoutingsView();             
+            RefreshRoutingsView();
         }
 
         private void InitRoutingsView()
@@ -220,7 +220,7 @@ namespace v2rayN.Forms
             }
 
         }
-               
+
         private void lvRoutings_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
@@ -301,6 +301,22 @@ namespace v2rayN.Forms
         private void menuImportRulesFromClipboard_Click(object sender, EventArgs e)
         {
             string clipboardData = Utils.GetClipboardData();
+            if (ConfigHandler.AddBatchRoutingRules(ref config, clipboardData) == 0)
+            {
+                RefreshRoutingsView();
+                UI.Show(UIRes.I18N("OperationSuccess"));
+            }
+        }
+        private void menuImportRulesFromUrl_Click(object sender, EventArgs e)
+        {
+            var fm = new RoutingSubSettingForm();
+            if (fm.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            var url = fm.Url;
+            DownloadHandle downloadHandle = new DownloadHandle();
+            string clipboardData = downloadHandle.WebDownloadStringSync(url);
             if (ConfigHandler.AddBatchRoutingRules(ref config, clipboardData) == 0)
             {
                 RefreshRoutingsView();

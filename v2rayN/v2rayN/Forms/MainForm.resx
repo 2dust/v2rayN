@@ -123,181 +123,181 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="scMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
+    <value>3, 17</value>
   </data>
   <metadata name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>327, 17</value>
   </metadata>
   <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddVmessServer.Text" xml:space="preserve">
     <value>Add [VMess] server</value>
   </data>
   <data name="menuAddVlessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddVlessServer.Text" xml:space="preserve">
     <value>Add [VLESS] server</value>
   </data>
   <data name="menuAddShadowsocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
     <value>Add [Shadowsocks] server</value>
   </data>
   <data name="menuAddSocksServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddSocksServer.Text" xml:space="preserve">
     <value>Add [Socks] server</value>
   </data>
   <data name="menuAddTrojanServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddTrojanServer.Text" xml:space="preserve">
     <value>Add [Trojan] server</value>
   </data>
   <data name="menuAddCustomServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddCustomServer.Text" xml:space="preserve">
     <value>Add a custom configuration server</value>
   </data>
   <data name="menuAddServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuAddServers.Text" xml:space="preserve">
     <value>Import bulk URL from clipboard (Ctrl+V)</value>
   </data>
   <data name="menuScanScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuScanScreen.Text" xml:space="preserve">
     <value>Scan QR code on the screen (Ctrl+S)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuRemoveServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRemoveServer.Text" xml:space="preserve">
     <value>Remove selected servers (Delete)</value>
   </data>
   <data name="menuRemoveDuplicateServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
     <value>Remove duplicate servers</value>
   </data>
   <data name="menuCopyServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuCopyServer.Text" xml:space="preserve">
     <value>Clone selected server</value>
   </data>
   <data name="menuSetDefaultServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSetDefaultServer.Text" xml:space="preserve">
     <value>Set as active server (Enter)</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
     <value>Move to top (T)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
     <value>Up (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveDown.Text" xml:space="preserve">
     <value>Down (D)</value>
   </data>
   <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
     <value>Move to bottom (B)</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSelectAll.Text" xml:space="preserve">
     <value>Select All (Ctrl+A)</value>
   </data>
   <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuPingServer.Text" xml:space="preserve">
     <value>Test servers ping (Ctrl+P)</value>
   </data>
   <data name="menuTcpingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuTcpingServer.Text" xml:space="preserve">
     <value>Test servers with tcping (Ctrl+O)</value>
   </data>
   <data name="menuRealPingServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuRealPingServer.Text" xml:space="preserve">
     <value>Test servers real delay (Ctrl+R)</value>
   </data>
   <data name="menuSpeedServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuSpeedServer.Text" xml:space="preserve">
     <value>Test servers download speed (Ctrl+T)</value>
   </data>
   <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="tsbTestMe.Text" xml:space="preserve">
     <value>Test current service status</value>
   </data>
   <data name="menuClearServerStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuClearServerStatistics.Text" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 6</value>
+    <value>352, 6</value>
   </data>
   <data name="menuExport2ClientConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ClientConfig.Text" xml:space="preserve">
     <value>Export selected server for client configuration</value>
   </data>
   <data name="menuExport2ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ServerConfig.Text" xml:space="preserve">
     <value>Export selected server for server configuration</value>
   </data>
   <data name="menuExport2ShareUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2ShareUrl.Text" xml:space="preserve">
     <value>Export share URLs to clipboard (Ctrl+C)</value>
   </data>
   <data name="menuExport2SubContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 24</value>
+    <value>355, 22</value>
   </data>
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
@@ -306,7 +306,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 56</value>
+    <value>64, 53</value>
   </data>
   <data name="tsbServer.Text" xml:space="preserve">
     <value>Servers</value>
@@ -315,7 +315,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>424, 708</value>
+    <value>356, 622</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -347,7 +347,7 @@
     <value>0, 0</value>
   </data>
   <data name="lvServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1003, 472</value>
+    <value>686, 307</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
@@ -387,7 +387,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="qrCodeControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 472</value>
+    <value>256, 307</value>
   </data>
   <data name="qrCodeControl.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -420,10 +420,10 @@
     <value>100</value>
   </data>
   <data name="scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1263, 472</value>
+    <value>946, 307</value>
   </data>
   <data name="scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>1003</value>
+    <value>686</value>
   </data>
   <data name="scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -450,64 +450,64 @@
     <value>NoControl</value>
   </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 26</value>
+    <value>262, 22</value>
   </data>
   <data name="menuKeepClear.Text" xml:space="preserve">
     <value>Clear system proxy</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 26</value>
+    <value>262, 22</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
     <value>Set system proxy (global mode)</value>
   </data>
   <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 26</value>
+    <value>262, 22</value>
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
     <value>Do not change system proxy</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuSysAgentMode.Text" xml:space="preserve">
     <value>Http proxy</value>
   </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuServers.Text" xml:space="preserve">
     <value>Server</value>
   </data>
   <data name="menuAddServers2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuAddServers2.Text" xml:space="preserve">
     <value>Import bulk URL from clipboard</value>
   </data>
   <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuScanScreen2.Text" xml:space="preserve">
     <value>Scan QR code on the screen</value>
   </data>
   <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
     <value>Update subscriptions</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>306, 6</value>
+    <value>261, 6</value>
   </data>
   <data name="menuExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>309, 24</value>
+    <value>264, 22</value>
   </data>
   <data name="menuExit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 154</value>
+    <value>265, 142</value>
   </data>
   <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
     <value>cmsMain</value>
@@ -528,10 +528,10 @@
     <value>Fill</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 69</value>
+    <value>0, 66</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1269, 496</value>
+    <value>952, 327</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -555,7 +555,7 @@
     <value>Fill</value>
   </data>
   <data name="txtMsgBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
+    <value>3, 17</value>
   </data>
   <data name="txtMsgBox.MaxLength" type="System.Int32, mscorlib">
     <value>0</value>
@@ -567,7 +567,7 @@
     <value>Vertical</value>
   </data>
   <data name="txtMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1263, 126</value>
+    <value>946, 154</value>
   </data>
   <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -591,43 +591,43 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 20</value>
+    <value>52, 21</value>
   </data>
   <data name="toolSslSocksPortLab.Text" xml:space="preserve">
     <value>SOCKS5:</value>
   </data>
   <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 21</value>
   </data>
   <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 20</value>
+    <value>206, 21</value>
   </data>
   <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+    <value>39, 21</value>
   </data>
   <data name="toolSslHttpPortLab.Text" xml:space="preserve">
     <value>HTTP:</value>
   </data>
   <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 21</value>
   </data>
   <data name="toolSslBlank2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 20</value>
+    <value>206, 21</value>
   </data>
   <data name="toolSslBlank3.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 20</value>
+    <value>206, 21</value>
   </data>
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -639,7 +639,7 @@
     <value>No</value>
   </data>
   <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 20</value>
+    <value>220, 21</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
@@ -648,13 +648,13 @@
     <value>MiddleRight</value>
   </data>
   <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 21</value>
   </data>
   <data name="ssMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 147</value>
+    <value>3, 171</value>
   </data>
   <data name="ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1263, 26</value>
+    <value>946, 26</value>
   </data>
   <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -678,10 +678,10 @@
     <value>Bottom</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 565</value>
+    <value>0, 393</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1269, 176</value>
+    <value>952, 200</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -705,10 +705,10 @@
     <value>Top</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 59</value>
+    <value>0, 56</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1269, 10</value>
+    <value>952, 10</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -729,16 +729,16 @@
     <value>409, 17</value>
   </metadata>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 26</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 26</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>Updates</value>
@@ -747,7 +747,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 56</value>
+    <value>99, 53</value>
   </data>
   <data name="tsbSub.Text" xml:space="preserve">
     <value>Subscriptions</value>
@@ -759,7 +759,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 56</value>
+    <value>45, 53</value>
   </data>
   <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
     <value>Share</value>
@@ -771,16 +771,16 @@
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 26</value>
+    <value>161, 22</value>
   </data>
   <data name="tsbOptionSetting.Text" xml:space="preserve">
     <value>OptionSetting</value>
   </data>
   <data name="tsbRoutingSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 26</value>
+    <value>161, 22</value>
   </data>
   <data name="tsbRoutingSetting.Text" xml:space="preserve">
     <value>RoutingSetting</value>
@@ -789,7 +789,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 56</value>
+    <value>67, 53</value>
   </data>
   <data name="tsbSetting.Text" xml:space="preserve">
     <value>Settings</value>
@@ -798,12 +798,12 @@
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7ZaBDQIhDEVvBEdwBDfQDXQER3AD3cARdAPd
         QDfSDbQvuSb1AicFjJrwkxcN0FIolOuamv5VE2E+gLaPayWchEcE+hhTXVPhIoQmDcFYbKpoJtwEdX4X
         jgIrXfTwnzb6dBw22BaJVdjJmWQs1/SdBRtE0U5cBXW2oSFRO0HtSEeW2FZ1wsq9sjuRdTDVAXnNuWLY
         6JnAl0sYa/Q5q1dhq35ci+Bkq2HJvbZpxGeybAAuw4Fq+cnW1wPITgHFYxvBUw+qHEIL1yq1vDKhVlH3
@@ -818,7 +818,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbReload.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 56</value>
+    <value>97, 53</value>
   </data>
   <data name="tsbReload.Text" xml:space="preserve">
     <value>Restart service</value>
@@ -827,22 +827,22 @@
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 26</value>
+    <value>203, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
     <value>v2rayN (this software)</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 26</value>
+    <value>203, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
     <value>Update v2flyCore</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 26</value>
+    <value>203, 22</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
     <value>Update XrayCore</value>
@@ -851,7 +851,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 56</value>
+    <value>128, 53</value>
   </data>
   <data name="tsbCheckUpdate.Text" xml:space="preserve">
     <value>Check for updates</value>
@@ -860,31 +860,31 @@
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 26</value>
+    <value>187, 22</value>
   </data>
   <data name="tsbAbout.Text" xml:space="preserve">
     <value>v2rayN Project</value>
   </data>
   <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 26</value>
+    <value>187, 22</value>
   </data>
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray Website</value>
   </data>
   <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 6</value>
+    <value>184, 6</value>
   </data>
   <data name="tsbLanguageDef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 26</value>
+    <value>187, 22</value>
   </data>
   <data name="tsbLanguageDef.Text" xml:space="preserve">
     <value>Language-[English]</value>
   </data>
   <data name="tsbLanguageZhHans.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 26</value>
+    <value>187, 22</value>
   </data>
   <data name="tsbLanguageZhHans.Text" xml:space="preserve">
     <value>语言-[中文简体]</value>
@@ -893,7 +893,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 56</value>
+    <value>48, 53</value>
   </data>
   <data name="tsbHelp.Text" xml:space="preserve">
     <value>Help</value>
@@ -905,7 +905,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 56</value>
+    <value>89, 53</value>
   </data>
   <data name="tsbPromotion.Text" xml:space="preserve">
     <value>  Promotion  </value>
@@ -914,12 +914,12 @@
     <value>ImageAboveText</value>
   </data>
   <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 59</value>
+    <value>6, 56</value>
   </data>
   <data name="tsbClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVFhH7c6xDQAgCEVBRnVTHU2ZABuMxV3yOvJDAAA/
         GqfZVG6X8mg1dfUAAPBQxAZd0SJruVXHWwAAAABJRU5ErkJggg==
 </value>
   </data>
@@ -927,7 +927,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 56</value>
+    <value>52, 53</value>
   </data>
   <data name="tsbClose.Text" xml:space="preserve">
     <value> Close </value>
@@ -939,7 +939,7 @@
     <value>0, 0</value>
   </data>
   <data name="tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1269, 59</value>
+    <value>952, 56</value>
   </data>
   <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -963,13 +963,13 @@
     <value>65</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 15</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1269, 741</value>
+    <value>952, 593</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>v2rayN</value>

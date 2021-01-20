@@ -165,6 +165,10 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public List<SubItem> ruleSubItem
+        {
+            get; set;
+        }
 
         public ECoreType coreType
         {

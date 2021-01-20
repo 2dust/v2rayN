@@ -131,6 +131,12 @@
     <Compile Include="Forms\RoutingSettingDetailsForm.Designer.cs">
       <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RoutingSubSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingSubSettingForm.Designer.cs">
+      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Handler\ShareHandler.cs" />
     <Compile Include="Mode\ComboItem.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -303,9 +309,17 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.resx">
       <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.zh-Hans.resx">
       <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingSubSettingForm.resx">
+      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingSubSettingForm.zh-Hans.resx">
+      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>

@@ -266,8 +266,8 @@ namespace v2rayN.Handler
                     {
                         ((WebClientEx)sender).Dispose();
                         TimeSpan ts = (DateTime.Now - totalDatetime);
-                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
-                        UpdateCompleted(this, new ResultEventArgs(true, speed));
+                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.0"));
+                        UpdateCompleted(this, new ResultEventArgs(true, speed.PadLeft(8, ' ')));
                         return;
                     }
 
@@ -276,8 +276,8 @@ namespace v2rayN.Handler
                     {
 
                         TimeSpan ts = (DateTime.Now - totalDatetime);
-                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.##"));
-                        UpdateCompleted(this, new ResultEventArgs(true, speed));
+                        string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.0"));
+                        UpdateCompleted(this, new ResultEventArgs(true, speed.PadLeft(8, ' ')));
                     }
                     else
                     {
