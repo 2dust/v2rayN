@@ -125,17 +125,17 @@
     <Compile Include="Forms\BaseServerForm.Designer.cs">
       <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RoutingSettingDetailsForm.cs">
+    <Compile Include="Forms\RoutingRuleSettingDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RoutingSettingDetailsForm.Designer.cs">
-      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+    <Compile Include="Forms\RoutingRuleSettingDetailsForm.Designer.cs">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RoutingSubSettingForm.cs">
+    <Compile Include="Forms\RoutingRuleSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RoutingSubSettingForm.Designer.cs">
-      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
+    <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Handler\ShareHandler.cs" />
     <Compile Include="Mode\ComboItem.cs" />
@@ -196,6 +196,7 @@
     <Compile Include="Mode\ESysProxyType.cs" />
     <Compile Include="Mode\EMove.cs" />
     <Compile Include="Mode\EServerColName.cs" />
+    <Compile Include="Mode\RoutingItem.cs" />
     <Compile Include="Mode\RulesItem.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
@@ -307,19 +308,20 @@
       <DependentUpon>QRCodeControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.resx">
-      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.resx">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingDetailsForm.zh-Hans.resx">
-      <DependentUpon>RoutingSettingDetailsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.zh-Hans.resx">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSubSettingForm.resx">
-      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.resx">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSubSettingForm.zh-Hans.resx">
-      <DependentUpon>RoutingSubSettingForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.zh-Hans.resx">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
@@ -384,7 +386,8 @@
     </Compile>
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
-    <EmbeddedResource Include="Sample\custom_routing_rules" />
+    <EmbeddedResource Include="Sample\custom_routing_white" />
+    <EmbeddedResource Include="Sample\custom_routing_global" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>

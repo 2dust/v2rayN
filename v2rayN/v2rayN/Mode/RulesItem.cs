@@ -6,8 +6,6 @@ namespace v2rayN.Mode
     [Serializable]
     public class RulesItem
     {
-        public string remarks { get; set; }
-       
         public string type { get; set; }
       
         public string port { get; set; }

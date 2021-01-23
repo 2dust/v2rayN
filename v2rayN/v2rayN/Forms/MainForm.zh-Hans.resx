@@ -292,14 +292,8 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>批量导出订阅内容至剪贴板(多选)</value>
   </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>  服务器  </value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>301, 600</value>
+    <value>301, 622</value>
   </data>
   <data name="lvServers.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -318,20 +312,26 @@
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
   </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>  服务器  </value>
+  </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="menuKeepClear.Text" xml:space="preserve">
     <value>清除系统代理</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="menuGlobal.Text" xml:space="preserve">
-    <value>自动配置系统代理(全局模式)</value>
+    <value>自动配置系统代理</value>
   </data>
   <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 22</value>
+    <value>172, 22</value>
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
     <value>不改变系统代理</value>
@@ -342,11 +342,20 @@
   <data name="menuSysAgentMode.Text" xml:space="preserve">
     <value>系统代理</value>
   </data>
+  <data name="menuRoutings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="menuRoutings.Text" xml:space="preserve">
+    <value>路由</value>
+  </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
   </data>
   <data name="menuServers.Text" xml:space="preserve">
     <value>服务器</value>
+  </data>
+  <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 6</value>
   </data>
   <data name="menuAddServers2.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -376,7 +385,7 @@
     <value>退出</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 142</value>
+    <value>196, 192</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器列表</value>
@@ -388,13 +397,13 @@
     <value>信息</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>订阅设置</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>更新订阅</value>

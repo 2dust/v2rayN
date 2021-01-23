@@ -1,0 +1,24 @@
+[{
+		"outboundTag": "block",
+		"domain": [
+			"geosite:category-ads-all"
+		]
+	},
+	{
+		"outboundTag": "direct",
+		"domain": [
+			"geosite:cn"
+		]
+	},
+  {
+    "outboundTag": "direct",
+    "ip": [
+      "geoip:private",
+      "geoip:cn"
+    ]
+  },
+	{
+		"port": "0-65535",
+		"outboundTag": "proxy"
+	}
+]

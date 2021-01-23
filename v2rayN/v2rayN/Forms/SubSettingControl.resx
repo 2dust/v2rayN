@@ -131,9 +131,6 @@
   <data name="&gt;&gt;txtUrl.Name" xml:space="preserve">
     <value>txtUrl</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="&gt;&gt;picQRCode.Name" xml:space="preserve">
     <value>picQRCode</value>
   </data>
@@ -179,6 +176,9 @@
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 12</value>
+  </data>
+  <data name="&gt;&gt;picQRCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 21</value>
@@ -237,6 +237,9 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="&gt;&gt;grbMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 12</value>
   </data>
@@ -258,8 +261,8 @@
   <data name="btnRemove.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 110</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>619, 310</value>
   </data>
   <data name="btnShare.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -272,9 +275,6 @@
   </data>
   <data name="chkEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
-  </data>
-  <data name="grbMain.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
   </data>
   <data name="txtUrl.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -309,6 +309,9 @@
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="grbMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>619, 110</value>
   </data>
@@ -321,8 +324,8 @@
   <data name="chkEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 310</value>
+  <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 110</value>
   </data>
   <data name="txtRemarks.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -345,9 +348,6 @@
   <data name="btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>grbMain</value>
-  </data>
   <data name="&gt;&gt;grbMain.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -357,17 +357,17 @@
   <data name="&gt;&gt;btnRemove.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="grbMain.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
-  <data name="&gt;&gt;picQRCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>grbMain</value>
   </data>
   <data name="btnRemove.Location" type="System.Drawing.Point, System.Drawing">
     <value>525, 21</value>
   </data>
-  <data name="&gt;&gt;grbMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="&gt;&gt;chkEnabled.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -380,8 +380,5 @@
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-Hans</value>
   </metadata>
 </root>

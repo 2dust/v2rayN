@@ -190,9 +190,12 @@ namespace v2rayN.Handler
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
 
-                    foreach (var item in config.rules)
+                    if (config.routings != null && config.routingIndex < config.routings.Count)
                     {
-                        routingUserRule(item, ref v2rayConfig);
+                        foreach (var item in config.routings[config.routingIndex].rules)
+                        {
+                            routingUserRule(item, ref v2rayConfig);
+                        }
                     }
                 }
             }

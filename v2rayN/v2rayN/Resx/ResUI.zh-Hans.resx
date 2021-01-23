@@ -373,4 +373,16 @@
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
     <value>{0},必填其中一项.</value>
   </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>别名</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>地址(Url)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>请填写地址(Url)</value>
+  </data>
 </root>

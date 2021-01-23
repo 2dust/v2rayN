@@ -373,4 +373,16 @@
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
     <value>{0},One of the required.</value>
   </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>remarks</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>Please fill in the address (Url)</value>
+  </data>
 </root>
