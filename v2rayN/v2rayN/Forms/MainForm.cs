@@ -1440,6 +1440,7 @@ namespace v2rayN.Forms
                         int ret = MainFormHandler.Instance.AddBatchServers(config, result, id);
                         if (ret > 0)
                         {
+                            RefreshServers();
                         }
                         else
                         {
