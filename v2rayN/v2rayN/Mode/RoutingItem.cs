@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace v2rayN.Mode
 {
+    [Serializable]
     public class RoutingItem
     {
         public string remarks
