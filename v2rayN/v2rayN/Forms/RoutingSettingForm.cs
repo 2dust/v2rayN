@@ -10,6 +10,7 @@ namespace v2rayN.Forms
     public partial class RoutingSettingForm : BaseForm
     {
         private List<int> lvSelecteds = new List<int>();
+        private RoutingItem lockedItem;
         public RoutingSettingForm()
         {
             InitializeComponent();
@@ -27,55 +28,27 @@ namespace v2rayN.Forms
             }
             InitRoutingsView();
             RefreshRoutingsView();
-        }
 
-        private void InitRoutingsView()
+            BindingLockedData();
+
+        }      
+
+
+        private void tabNormal_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            lvRoutings.BeginUpdate();
-            lvRoutings.Items.Clear();
-
-            lvRoutings.GridLines = true;
-            lvRoutings.FullRowSelect = true;
-            lvRoutings.View = View.Details;
-            lvRoutings.MultiSelect = true;
-            lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
-
-            lvRoutings.Columns.Add("", 30);
-            lvRoutings.Columns.Add(UIRes.I18N("LvAlias"), 200);
-            lvRoutings.Columns.Add(UIRes.I18N("LvUrl"), 240);
-            lvRoutings.Columns.Add(UIRes.I18N("LvCount"), 60);
-
-            lvRoutings.EndUpdate();
-        }
-
-        private void RefreshRoutingsView()
-        {
-            lvRoutings.BeginUpdate();
-            lvRoutings.Items.Clear();
-
-            for (int k = 0; k < config.routings.Count; k++)
+            if (tabNormal.SelectedTab == tabPageRuleList)
             {
-                string def = string.Empty;
-                if (config.routingIndex.Equals(k))
-                {
-                    def = "√";
-                }
-
-                var item = config.routings[k];
-
-                ListViewItem lvItem = new ListViewItem(def);
-                Utils.AddSubItem(lvItem, "remarks", item.remarks);
-                Utils.AddSubItem(lvItem, "url", item.url);
-                Utils.AddSubItem(lvItem, "count", item.rules.Count.ToString());
-
-                if (lvItem != null) lvRoutings.Items.Add(lvItem);
+                MenuItem1.Enabled = true;
             }
-            lvRoutings.EndUpdate();
+            else
+            {
+                MenuItem1.Enabled = false;
+            }
         }
-
         private void btnOK_Click(object sender, EventArgs e)
         {
             config.domainStrategy = cmbdomainStrategy.Text;
+            EndBindingLockedData();
 
             if (ConfigHandler.SaveRouting(ref config) == 0)
             {
@@ -91,6 +64,89 @@ namespace v2rayN.Forms
         {
             this.DialogResult = DialogResult.Cancel;
         }
+
+
+        #region locked
+        private void BindingLockedData()
+        {
+            lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
+            if (lockedItem != null)
+            {
+                txtProxyDomain.Text = Utils.List2String(lockedItem.rules[0].domain, true);
+                txtProxyIp.Text = Utils.List2String(lockedItem.rules[0].ip, true);
+
+                txtDirectDomain.Text = Utils.List2String(lockedItem.rules[1].domain, true);
+                txtDirectIp.Text = Utils.List2String(lockedItem.rules[1].ip, true);
+
+                txtBlockDomain.Text = Utils.List2String(lockedItem.rules[2].domain, true);
+                txtBlockIp.Text = Utils.List2String(lockedItem.rules[2].ip, true);
+            }
+        }
+        private void EndBindingLockedData()
+        {
+            if (lockedItem != null)
+            {
+                lockedItem.rules[0].domain = Utils.String2List(txtProxyDomain.Text.TrimEx());
+                lockedItem.rules[0].ip = Utils.String2List(txtProxyIp.Text.TrimEx());
+
+                lockedItem.rules[1].domain = Utils.String2List(txtDirectDomain.Text.TrimEx());
+                lockedItem.rules[1].ip = Utils.String2List(txtDirectIp.Text.TrimEx());
+
+                lockedItem.rules[2].domain = Utils.String2List(txtBlockDomain.Text.TrimEx());
+                lockedItem.rules[2].ip = Utils.String2List(txtBlockIp.Text.TrimEx());
+            }
+        }
+        #endregion
+
+        #region ListView
+        private void InitRoutingsView()
+        {
+            lvRoutings.BeginUpdate();
+            lvRoutings.Items.Clear();
+
+            lvRoutings.GridLines = true;
+            lvRoutings.FullRowSelect = true;
+            lvRoutings.View = View.Details;
+            lvRoutings.MultiSelect = true;
+            lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
+
+            lvRoutings.Columns.Add("", 30);
+            lvRoutings.Columns.Add(UIRes.I18N("LvAlias"), 200);
+            lvRoutings.Columns.Add(UIRes.I18N("LvCount"), 60);
+            lvRoutings.Columns.Add(UIRes.I18N("LvUrl"), 240);
+
+            lvRoutings.EndUpdate();
+        }
+
+        private void RefreshRoutingsView()
+        {
+            lvRoutings.BeginUpdate();
+            lvRoutings.Items.Clear();
+
+            for (int k = 0; k < config.routings.Count; k++)
+            {
+                var item = config.routings[k];
+                if (item.locked == true)
+                {
+                    continue;
+                }
+
+                string def = string.Empty;
+                if (config.routingIndex.Equals(k))
+                {
+                    def = "√";
+                }
+                               
+                ListViewItem lvItem = new ListViewItem(def);
+                Utils.AddSubItem(lvItem, "remarks", item.remarks);
+                Utils.AddSubItem(lvItem, "count", item.rules.Count.ToString());
+                Utils.AddSubItem(lvItem, "url", item.url);
+
+                if (lvItem != null) lvRoutings.Items.Add(lvItem);
+            }
+            lvRoutings.EndUpdate();
+        }
+
 
         private void linkLabelRoutingDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -136,6 +192,9 @@ namespace v2rayN.Forms
                 return index;
             }
         }
+
+        #endregion
+
 
         #region Edit function
 
@@ -197,8 +256,9 @@ namespace v2rayN.Forms
             }
             return 0;
         }
-        #endregion
 
+
+        #endregion
 
     }
 }

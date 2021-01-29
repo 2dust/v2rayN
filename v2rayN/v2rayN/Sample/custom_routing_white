@@ -1,15 +1,23 @@
-[{
-		"outboundTag": "block",
-		"domain": [
-			"geosite:category-ads-all"
-		]
-	},
-	{
-		"outboundTag": "direct",
-		"domain": [
-			"geosite:cn"
-		]
-	},
+[
+  {
+    "outboundTag": "direct",
+    "domain": [
+      "domain:example.com",
+      "domain:example2.com"
+    ]
+  },
+  {
+    "outboundTag": "block",
+    "domain": [
+      "geosite:category-ads-all"
+    ]
+  },
+  {
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:cn"
+    ]
+  },
   {
     "outboundTag": "direct",
     "ip": [
@@ -17,8 +25,8 @@
       "geoip:cn"
     ]
   },
-	{
-		"port": "0-65535",
-		"outboundTag": "proxy"
-	}
+  {
+    "port": "0-65535",
+    "outboundTag": "proxy"
+  }
 ]

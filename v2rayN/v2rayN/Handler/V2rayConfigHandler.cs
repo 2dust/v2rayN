@@ -190,6 +190,14 @@ namespace v2rayN.Handler
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
 
+                    var lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
+                    if (lockedItem != null)
+                    {
+                        foreach (var item in lockedItem.rules)
+                        {
+                            routingUserRule(item, ref v2rayConfig);
+                        }
+                    }
                     if (config.routings != null && config.routingIndex < config.routings.Count)
                     {
                         foreach (var item in config.routings[config.routingIndex].rules)

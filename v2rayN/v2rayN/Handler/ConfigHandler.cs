@@ -1002,6 +1002,14 @@ namespace v2rayN.Handler
             {
 
             }
+            //move locked item
+            int index = config.routings.FindIndex(it => it.locked == true);
+            if (index != -1)
+            {
+                var item = Utils.DeepCopy(config.routings[index]);
+                config.routings.RemoveAt(index);
+                config.routings.Add(item);
+            }
             if (config.routingIndex >= config.routings.Count)
             {
                 config.routingIndex = 0;
@@ -1151,32 +1159,43 @@ namespace v2rayN.Handler
             {
                 config.routings = new List<RoutingItem>();
             }
-            if (config.routings.Count > 0)
+            if (config.routings.Count <= 0)
             {
-                return 0;
+                //Bypass the mainland
+                var item2 = new RoutingItem();
+                item2.remarks = "绕过大陆(Whitelist)";
+                item2.url = string.Empty;
+                item2.rules = new List<RulesItem>();
+                string result2 = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
+                AddBatchRoutingRules(ref item2, result2);
+                config.routings.Add(item2);
+
+                config.routingIndex = 0;
             }
-            config.routingIndex = 0;
+            
+            if (GetLockedRoutingItem(ref config) == null)
+            {
+                var item1 = new RoutingItem();
+                item1.remarks = "locked";
+                item1.url = string.Empty;
+                item1.rules = new List<RulesItem>();
+                item1.locked = true;
+                string result1 = Utils.GetEmbedText(Global.CustomRoutingFileName + "locked");
+                AddBatchRoutingRules(ref item1, result1);
+                config.routings.Add(item1);
+            }
 
-            //Global
-            var item1 = new RoutingItem();
-            item1.remarks = "全局(Global)";
-            item1.url = string.Empty;
-            item1.rules = new List<RulesItem>();
-            string result = Utils.GetEmbedText(Global.CustomRoutingFileName + "global");
-            AddBatchRoutingRules(ref item1, result);
-            config.routings.Add(item1);
-
-            //Bypass the mainland
-            var item2 = new RoutingItem();
-            item2.remarks = "绕过大陆(Whitelist)";
-            item2.url = string.Empty;
-            item2.rules = new List<RulesItem>();
-            string result2 = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
-            AddBatchRoutingRules(ref item2, result2);
-            config.routings.Add(item2);
-
-            ToJsonFile(config);
+            SaveRouting(ref config);
             return 0;
+        }         
+
+        public static RoutingItem GetLockedRoutingItem(ref Config config)
+        {
+            if (config.routings == null)
+            {
+                return null;
+            }
+            return config.routings.Find(it => it.locked == true);
         }
         #endregion
     }

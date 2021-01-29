@@ -194,7 +194,7 @@ namespace v2rayN.Forms
             fm.rulesItem = new RulesItem();
             if (fm.ShowDialog() == DialogResult.OK)
             {
-                routingItem.rules.Add(fm.rulesItem);
+                routingItem.rules.Insert(0, fm.rulesItem);
                 RefreshRoutingsView();
             }
         }

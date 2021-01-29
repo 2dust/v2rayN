@@ -23,5 +23,10 @@ namespace v2rayN.Mode
         }
         public bool enabled { get; set; } = true;
 
+        public bool locked
+        {
+            get; set;
+        }
+
     }
 }

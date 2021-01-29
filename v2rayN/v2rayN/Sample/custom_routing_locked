@@ -1,0 +1,21 @@
+[
+  {
+    "domain": [
+      "geosite:google"
+    ],
+    "outboundTag": "proxy"
+  },
+  {
+    "outboundTag": "direct",
+    "domain": [
+      "domain:example.com",
+      "domain:example2.com"
+    ]
+  },
+  {
+    "outboundTag": "block",
+    "domain": [
+      "geosite:category-ads-all"
+    ]
+  }
+]

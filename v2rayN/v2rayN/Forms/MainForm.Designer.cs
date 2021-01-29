@@ -84,6 +84,11 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtMsgBox = new System.Windows.Forms.TextBox();
+            this.cmsMsgBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuMsgBoxSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMsgBoxCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMsgBoxCopyAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMsgBoxAddRoutingRule = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.toolSslSocksPortLab = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslSocksPort = new System.Windows.Forms.ToolStripStatusLabel();
@@ -130,6 +135,7 @@
             this.cmsMain.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.cmsMsgBox.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.SuspendLayout();
@@ -208,6 +214,7 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
+            this.cmsLv.OwnerItem = this.tsbServer;
             // 
             // menuAddVmessServer
             // 
@@ -525,9 +532,45 @@
             resources.ApplyResources(this.txtMsgBox, "txtMsgBox");
             this.txtMsgBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(49)))), ((int)(((byte)(52)))));
             this.txtMsgBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtMsgBox.ContextMenuStrip = this.cmsMsgBox;
             this.txtMsgBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(226)))), ((int)(((byte)(228)))));
             this.txtMsgBox.Name = "txtMsgBox";
             this.txtMsgBox.ReadOnly = true;
+            this.txtMsgBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMsgBox_KeyDown);
+            // 
+            // cmsMsgBox
+            // 
+            resources.ApplyResources(this.cmsMsgBox, "cmsMsgBox");
+            this.cmsMsgBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuMsgBoxSelectAll,
+            this.menuMsgBoxCopy,
+            this.menuMsgBoxCopyAll,
+            this.menuMsgBoxAddRoutingRule});
+            this.cmsMsgBox.Name = "cmsMsgBox";
+            // 
+            // menuMsgBoxSelectAll
+            // 
+            resources.ApplyResources(this.menuMsgBoxSelectAll, "menuMsgBoxSelectAll");
+            this.menuMsgBoxSelectAll.Name = "menuMsgBoxSelectAll";
+            this.menuMsgBoxSelectAll.Click += new System.EventHandler(this.menuMsgBoxSelectAll_Click);
+            // 
+            // menuMsgBoxCopy
+            // 
+            resources.ApplyResources(this.menuMsgBoxCopy, "menuMsgBoxCopy");
+            this.menuMsgBoxCopy.Name = "menuMsgBoxCopy";
+            this.menuMsgBoxCopy.Click += new System.EventHandler(this.menuMsgBoxCopy_Click);
+            // 
+            // menuMsgBoxCopyAll
+            // 
+            resources.ApplyResources(this.menuMsgBoxCopyAll, "menuMsgBoxCopyAll");
+            this.menuMsgBoxCopyAll.Name = "menuMsgBoxCopyAll";
+            this.menuMsgBoxCopyAll.Click += new System.EventHandler(this.menuMsgBoxCopyAll_Click);
+            // 
+            // menuMsgBoxAddRoutingRule
+            // 
+            resources.ApplyResources(this.menuMsgBoxAddRoutingRule, "menuMsgBoxAddRoutingRule");
+            this.menuMsgBoxAddRoutingRule.Name = "menuMsgBoxAddRoutingRule";
+            this.menuMsgBoxAddRoutingRule.Click += new System.EventHandler(this.menuMsgBoxAddRoutingRule_Click);
             // 
             // ssMain
             // 
@@ -818,6 +861,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.cmsMsgBox.ResumeLayout(false);
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
@@ -921,6 +965,11 @@
         private System.Windows.Forms.ToolStripMenuItem menuClearServerStatistics;
         private System.Windows.Forms.ToolStripMenuItem menuRoutings;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ContextMenuStrip cmsMsgBox;
+        private System.Windows.Forms.ToolStripMenuItem menuMsgBoxSelectAll;
+        private System.Windows.Forms.ToolStripMenuItem menuMsgBoxCopy;
+        private System.Windows.Forms.ToolStripMenuItem menuMsgBoxAddRoutingRule;
+        private System.Windows.Forms.ToolStripMenuItem menuMsgBoxCopyAll;
     }
 }
 

@@ -292,6 +292,12 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>批量导出订阅内容至剪贴板(多选)</value>
   </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>  服务器  </value>
+  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>301, 622</value>
   </data>
@@ -311,12 +317,6 @@
         ////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIAwAAAAAAAAAF9v///xtTeXN0
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>  服务器  </value>
   </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 22</value>
@@ -385,10 +385,37 @@
     <value>退出</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 192</value>
+    <value>196, 170</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器列表</value>
+  </data>
+  <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
+    <value>全选 (Ctrl+A)</value>
+  </data>
+  <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
+    <value>复制 (Ctrl+C)</value>
+  </data>
+  <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
+    <value>复制所有</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
+    <value>快速添加路由规则 (Ctrl+V)</value>
+  </data>
+  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>222, 114</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>网速显示未启用</value>
@@ -397,13 +424,13 @@
     <value>信息</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>124, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>订阅设置</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>124, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>更新订阅</value>

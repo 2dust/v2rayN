@@ -1507,6 +1507,10 @@ namespace v2rayN.Forms
             for (int k = 0; k < config.routings.Count; k++)
             {
                 var item = config.routings[k];
+                if (item.locked == true)
+                {
+                    continue;
+                }
                 string name = item.remarks;
 
                 ToolStripMenuItem ts = new ToolStripMenuItem(name)
@@ -1540,6 +1544,53 @@ namespace v2rayN.Forms
             {
             }
         }
+        #endregion
+
+        #region MsgBoxMenu
+        private void menuMsgBoxSelectAll_Click(object sender, EventArgs e)
+        {
+            this.txtMsgBox.Focus();
+            this.txtMsgBox.SelectAll();
+        }
+
+        private void menuMsgBoxCopy_Click(object sender, EventArgs e)
+        {
+            var data = this.txtMsgBox.SelectedText.TrimEx();
+            Utils.SetClipboardData(data);
+        }
+
+        private void menuMsgBoxCopyAll_Click(object sender, EventArgs e)
+        {
+            var data = this.txtMsgBox.Text;
+            Utils.SetClipboardData(data);
+        }
+        private void menuMsgBoxAddRoutingRule_Click(object sender, EventArgs e)
+        {
+            menuMsgBoxCopy_Click(null, null);
+            tsbRoutingSetting_Click(null, null);
+        }
+
+        private void txtMsgBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.A:
+                        menuMsgBoxSelectAll_Click(null, null);
+                        break;
+                    case Keys.C:
+                        menuMsgBoxCopy_Click(null, null);
+                        break;
+                    case Keys.V:
+                        menuMsgBoxAddRoutingRule_Click(null, null);
+                        break;
+
+                }
+            }
+
+        }
+
         #endregion
 
     }

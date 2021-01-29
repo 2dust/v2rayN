@@ -388,6 +388,7 @@
     <None Include="Resources\sysproxy64.exe.gz" />
     <EmbeddedResource Include="Sample\custom_routing_white" />
     <EmbeddedResource Include="Sample\custom_routing_global" />
+    <EmbeddedResource Include="Sample\custom_routing_locked" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>

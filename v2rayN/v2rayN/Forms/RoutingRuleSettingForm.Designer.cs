@@ -155,6 +155,7 @@
             this.menuMoveDown,
             this.menuMoveBottom});
             this.cmsLv.Name = "cmsLv";
+            this.cmsLv.OwnerItem = this.MenuItem1;
             // 
             // menuAdd
             // 
