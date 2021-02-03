@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace v2rayN
 {
     class Global
@@ -190,6 +192,8 @@ namespace v2rayN
         public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
 
         public const string RoutingRuleComma = "<COMMA>";
+
+        public static readonly IEnumerable<string> ssSecuritys = new HashSet<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
         #endregion
 
         #region 全局变量

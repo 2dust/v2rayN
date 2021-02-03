@@ -169,7 +169,11 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-      
+        public bool enableRoutingAdvanced
+        {
+            get; set;
+        }
+
         public ECoreType coreType
         {
             get; set;

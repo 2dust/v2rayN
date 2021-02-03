@@ -21,6 +21,7 @@ namespace v2rayN.Forms
             ConfigHandler.InitBuiltinRouting(ref config);
 
             cmbdomainStrategy.Text = config.domainStrategy;
+            chkenableRoutingAdvanced.Checked = config.enableRoutingAdvanced;
 
             if (config.routings == null)
             {
@@ -30,24 +31,25 @@ namespace v2rayN.Forms
             RefreshRoutingsView();
 
             BindingLockedData();
-
-        }      
+            InitUI();
+        }
 
 
         private void tabNormal_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (tabNormal.SelectedTab == tabPageRuleList)
-            {
-                MenuItem1.Enabled = true;
-            }
-            else
-            {
-                MenuItem1.Enabled = false;
-            }
+            //if (tabNormal.SelectedTab == tabPageRuleList)
+            //{
+            //    MenuItem1.Enabled = true;
+            //}
+            //else
+            //{
+            //    MenuItem1.Enabled = false;
+            //}
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
             config.domainStrategy = cmbdomainStrategy.Text;
+            config.enableRoutingAdvanced = chkenableRoutingAdvanced.Checked;
             EndBindingLockedData();
 
             if (ConfigHandler.SaveRouting(ref config) == 0)
@@ -63,6 +65,31 @@ namespace v2rayN.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+        private void chkenableRoutingAdvanced_CheckedChanged_1(object sender, EventArgs e)
+        {
+            InitUI();
+        }
+        private void InitUI()
+        {
+            if (chkenableRoutingAdvanced.Checked)
+            {
+                this.tabPageProxy.Parent = null;
+                this.tabPageDirect.Parent = null;
+                this.tabPageBlock.Parent = null;
+                this.tabPageRuleList.Parent = tabNormal;
+                MenuItem1.Enabled = true;
+
+            }
+            else
+            {
+                this.tabPageProxy.Parent = tabNormal;
+                this.tabPageDirect.Parent = tabNormal;
+                this.tabPageBlock.Parent = tabNormal;
+                this.tabPageRuleList.Parent = null;
+                MenuItem1.Enabled = false;
+            }
+           
         }
 
 
@@ -94,6 +121,7 @@ namespace v2rayN.Forms
 
                 lockedItem.rules[2].domain = Utils.String2List(txtBlockDomain.Text.TrimEx());
                 lockedItem.rules[2].ip = Utils.String2List(txtBlockIp.Text.TrimEx());
+
             }
         }
         #endregion
@@ -136,7 +164,7 @@ namespace v2rayN.Forms
                 {
                     def = "√";
                 }
-                               
+
                 ListViewItem lvItem = new ListViewItem(def);
                 Utils.AddSubItem(lvItem, "remarks", item.remarks);
                 Utils.AddSubItem(lvItem, "count", item.rules.Count.ToString());
@@ -259,6 +287,7 @@ namespace v2rayN.Forms
 
 
         #endregion
+
 
     }
 }

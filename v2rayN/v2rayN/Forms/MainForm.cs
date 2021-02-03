@@ -1501,6 +1501,12 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshRoutingsMenu()
         {
+            menuRoutings.Visible = config.enableRoutingAdvanced;
+            if (!config.enableRoutingAdvanced)
+            {
+                return;
+            }
+
             menuRoutings.DropDownItems.Clear();
 
             List<ToolStripMenuItem> lst = new List<ToolStripMenuItem>();

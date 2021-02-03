@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;menuServer.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="&gt;&gt;cmbdomainStrategy.Name" xml:space="preserve">
     <value>cmbdomainStrategy</value>
   </data>
@@ -124,42 +127,39 @@
   <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
     <value>839, 505</value>
   </data>
-  <data name="&gt;&gt;tabNormal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="txtProxyDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 485</value>
+  </data>
+  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>392, 0</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="txtDirectDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="lvRoutings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageRuleList.Name" xml:space="preserve">
-    <value>tabPageRuleList</value>
   </data>
   <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>853, 25</value>
   </data>
-  <data name="lvRoutings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="txtBlockIp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>441, 485</value>
+  <data name="&gt;&gt;txtDirectIp.Name" xml:space="preserve">
+    <value>txtDirectIp</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>IP</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+  <data name="panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="&gt;&gt;lvRoutings.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;chkenableRoutingAdvanced.Parent" xml:space="preserve">
+    <value>panel1</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 505</value>
   </data>
-  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
+  <data name="txtBlockIp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>441, 485</value>
   </data>
   <data name="MenuItem1.Text" xml:space="preserve">
     <value>Edit and Function</value>
@@ -173,30 +173,27 @@
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
   </data>
-  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="txtBlockIp.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="cmbdomainStrategy.Items2" xml:space="preserve">
-    <value>IPOnDemand</value>
-  </data>
   <data name="&gt;&gt;labRoutingTips.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="txtDirectIp.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtProxyIp.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
   </data>
   <data name="txtProxyDomain.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 17</value>
   </data>
-  <data name="&gt;&gt;txtProxyIp.Parent" xml:space="preserve">
-    <value>groupBox5</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>Domain</value>
   </data>
   <data name="&gt;&gt;tabPageRuleList.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -207,14 +204,17 @@
   <data name="&gt;&gt;cmbdomainStrategy.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 505</value>
+  <data name="tabPageBlock.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="menuServer.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="&gt;&gt;txtProxyDomain.Name" xml:space="preserve">
-    <value>txtProxyDomain</value>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="MenuItem1.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="linkLabelRoutingDoc.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 21</value>
@@ -225,23 +225,23 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>853, 673</value>
   </data>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>392, 0</value>
+  </data>
   <data name="&gt;&gt;panel5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="linkLabelRoutingDoc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="txtDirectDomain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;MenuItem1.Name" xml:space="preserve">
-    <value>MenuItem1</value>
+  <data name="&gt;&gt;txtProxyDomain.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Routing Settings</value>
-  </data>
-  <data name="txtBlockIp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="menuRemove.Text" xml:space="preserve">
     <value>Remove selected</value>
@@ -252,23 +252,23 @@
   <data name="groupBox5.Text" xml:space="preserve">
     <value>IP</value>
   </data>
+  <data name="tabPageRuleList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 511</value>
+  </data>
   <data name="tabPageRuleList.Text" xml:space="preserve">
-    <value>4.Pre-defined Rule Set List</value>
+    <value>Pre-defined Rule Set List</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Domain</value>
-  </data>
-  <data name="tabPageBlock.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>475, 17</value>
+    <value>660, 17</value>
   </data>
   <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
     <value>Domain strategy</value>
   </data>
-  <data name="&gt;&gt;tabNormal.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 505</value>
@@ -276,44 +276,41 @@
   <data name="&gt;&gt;panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>853, 60</value>
+  </data>
   <data name="&gt;&gt;tabPageBlock.Parent" xml:space="preserve">
     <value>tabNormal</value>
   </data>
-  <data name="&gt;&gt;menuAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;MenuItem1.Name" xml:space="preserve">
+    <value>MenuItem1</value>
   </data>
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tabPageBlock.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="&gt;&gt;lvRoutings.Parent" xml:space="preserve">
-    <value>tabPageRuleList</value>
-  </data>
   <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
     <value>tabPageBlock</value>
   </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>568, 17</value>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
-  <data name="MenuItem1.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="cmbdomainStrategy.Items2" xml:space="preserve">
+    <value>IPOnDemand</value>
   </data>
-  <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+  <data name="&gt;&gt;menuAdd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel5.Name" xml:space="preserve">
-    <value>panel5</value>
+  <data name="chkenableRoutingAdvanced.Location" type="System.Drawing.Point, System.Drawing">
+    <value>318, 17</value>
   </data>
   <data name="&gt;&gt;groupBox6.Parent" xml:space="preserve">
     <value>panel5</value>
   </data>
-  <data name="menuServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="linkLabelRoutingDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
   </data>
   <data name="groupBox3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -321,8 +318,8 @@
   <data name="groupBox6.Text" xml:space="preserve">
     <value>Domain</value>
   </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>853, 60</value>
+  <data name="&gt;&gt;tabNormal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txtDirectDomain.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -333,11 +330,11 @@
   <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txtDirectDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 485</value>
+  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
   <data name="&gt;&gt;menuServer.Name" xml:space="preserve">
     <value>menuServer</value>
@@ -345,8 +342,11 @@
   <data name="&gt;&gt;groupBox6.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 21</value>
+  <data name="&gt;&gt;linkLabelRoutingDoc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
+    <value>panel3</value>
   </data>
   <data name="&gt;&gt;txtBlockDomain.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -354,8 +354,8 @@
   <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
     <value>panel5</value>
   </data>
-  <data name="&gt;&gt;linkLabelRoutingDoc.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvRoutings.Parent" xml:space="preserve">
+    <value>tabPageRuleList</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -378,11 +378,8 @@
   <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="txtProxyDomain.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="labRoutingTips.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;txtProxyIp.Name" xml:space="preserve">
     <value>txtProxyIp</value>
@@ -390,47 +387,41 @@
   <data name="tabPageDirect.Size" type="System.Drawing.Size, System.Drawing">
     <value>845, 511</value>
   </data>
-  <data name="txtBlockDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 485</value>
-  </data>
   <data name="menuAdd.Text" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="txtDirectIp.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="lvRoutings.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
   </data>
   <data name="linkLabelRoutingDoc.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;txtBlockIp.Name" xml:space="preserve">
+    <value>txtBlockIp</value>
   </data>
-  <data name="&gt;&gt;tabPageProxy.Name" xml:space="preserve">
-    <value>tabPageProxy</value>
+  <data name="&gt;&gt;txtBlockDomain.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;labRoutingTips.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>panel2</value>
   </data>
-  <data name="txtProxyIp.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;lvRoutings.Type" xml:space="preserve">
-    <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;tabPageRuleList.Name" xml:space="preserve">
+    <value>tabPageRuleList</value>
   </data>
   <data name="&gt;&gt;tabPageBlock.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;labRoutingTips.Name" xml:space="preserve">
-    <value>labRoutingTips</value>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="linkLabelRoutingDoc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 12</value>
+  <data name="&gt;&gt;chkenableRoutingAdvanced.Name" xml:space="preserve">
+    <value>chkenableRoutingAdvanced</value>
   </data>
-  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
-    <value>panel3</value>
+  <data name="chkenableRoutingAdvanced.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>RoutingSettingForm</value>
@@ -438,17 +429,17 @@
   <data name="txtDirectIp.Size" type="System.Drawing.Size, System.Drawing">
     <value>441, 485</value>
   </data>
-  <data name="&gt;&gt;linkLabelRoutingDoc.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;txtBlockDomain.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;tabPageDirect.Name" xml:space="preserve">
-    <value>tabPageDirect</value>
+  <data name="txtProxyDomain.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="groupBox5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -456,8 +447,8 @@
   <data name="&gt;&gt;tabNormal.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="txtBlockIp.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="tabPageBlock.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 505</value>
@@ -465,8 +456,8 @@
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;panel4.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="menuSetDefaultRouting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>panel4</value>
@@ -486,11 +477,8 @@
   <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
     <value>groupBox4</value>
   </data>
-  <data name="&gt;&gt;menuSetDefaultRouting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="lvRoutings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="tabPageProxy.Text" xml:space="preserve">
+    <value>1.Proxy Domain or IP</value>
   </data>
   <data name="txtDirectDomain.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -498,50 +486,50 @@
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 92</value>
   </data>
+  <data name="txtProxyIp.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;btnOK.Name" xml:space="preserve">
     <value>btnOK</value>
   </data>
   <data name="tabPageProxy.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
+  <data name="chkenableRoutingAdvanced.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
   <data name="cmbdomainStrategy.Location" type="System.Drawing.Point, System.Drawing">
     <value>116, 17</value>
-  </data>
-  <data name="&gt;&gt;txtBlockIp.Name" xml:space="preserve">
-    <value>txtBlockIp</value>
-  </data>
-  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;txtDirectDomain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
-    <value>542, 16</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="txtBlockIp.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="groupBox6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
   </data>
   <data name="&gt;&gt;panel4.Name" xml:space="preserve">
     <value>panel4</value>
   </data>
+  <data name="&gt;&gt;chkenableRoutingAdvanced.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;MenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="txtBlockDomain.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="groupBox6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
   <data name="txtProxyIp.Size" type="System.Drawing.Size, System.Drawing">
     <value>441, 485</value>
   </data>
-  <data name="&gt;&gt;txtDirectIp.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="lvRoutings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
   <data name="tabPageRuleList.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="txtProxyDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 485</value>
+  <data name="txtDirectDomain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
   </data>
   <data name="linkLabelRoutingDoc.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -552,32 +540,26 @@
   <data name="cmbdomainStrategy.Items1" xml:space="preserve">
     <value>IPIfNonMatch</value>
   </data>
-  <data name="txtBlockDomain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
-  </data>
   <data name="tabNormal.Size" type="System.Drawing.Size, System.Drawing">
     <value>853, 537</value>
   </data>
   <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="txtBlockDomain.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="&gt;&gt;linkLabelRoutingDoc.Parent" xml:space="preserve">
+    <value>panel1</value>
   </data>
-  <data name="txtProxyDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>panel2</value>
+  <data name="txtDirectIp.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
   <data name="tabPageDirect.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tabPageBlock.Name" xml:space="preserve">
-    <value>tabPageBlock</value>
+  <data name="&gt;&gt;panel4.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="tabNormal.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>853, 51</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -585,8 +567,8 @@
   <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
     <value>panel4</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>panel3</value>
@@ -617,14 +599,17 @@
   <data name="cmbdomainStrategy.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 20</value>
   </data>
+  <data name="&gt;&gt;tabPageProxy.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="txtProxyDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="tabPageProxy.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
   <data name="&gt;&gt;txtDirectDomain.Parent" xml:space="preserve">
     <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;txtProxyDomain.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;tabPageDirect.Parent" xml:space="preserve">
     <value>tabNormal</value>
@@ -635,8 +620,11 @@
   <data name="&gt;&gt;tabPageRuleList.Parent" xml:space="preserve">
     <value>tabNormal</value>
   </data>
-  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="chkenableRoutingAdvanced.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabPageDirect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="panel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -650,8 +638,8 @@
   <data name="&gt;&gt;labRoutingTips.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
   <data name="tabPageBlock.Size" type="System.Drawing.Size, System.Drawing">
     <value>845, 511</value>
@@ -659,11 +647,17 @@
   <data name="txtBlockIp.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 17</value>
   </data>
-  <data name="&gt;&gt;menuServer.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;lvRoutings.Type" xml:space="preserve">
+    <value>v2rayN.Base.ListViewFlickerFree, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabPageProxy.Name" xml:space="preserve">
+    <value>tabPageProxy</value>
   </data>
   <data name="&gt;&gt;txtProxyDomain.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkenableRoutingAdvanced.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>panel3</value>
@@ -677,44 +671,53 @@
   <data name="&gt;&gt;tabPageProxy.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="chkenableRoutingAdvanced.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 16</value>
+  </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="cmbdomainStrategy.Items" xml:space="preserve">
     <value>AsIs</value>
   </data>
-  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
-    <value>panel2</value>
+  <data name="&gt;&gt;txtDirectDomain.Name" xml:space="preserve">
+    <value>txtDirectDomain</value>
   </data>
   <data name="&gt;&gt;txtBlockDomain.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+  <data name="&gt;&gt;tabPageBlock.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;MenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txtBlockIp.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabNormal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 76</value>
   </data>
   <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="txtDirectDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="tabPageBlock.Text" xml:space="preserve">
     <value>3.Block Domain or IP</value>
   </data>
-  <data name="labRoutingTips.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
   <data name="&gt;&gt;txtBlockIp.Parent" xml:space="preserve">
     <value>groupBox2</value>
+  </data>
+  <data name="menuServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="panel5.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -725,26 +728,32 @@
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="txtDirectIp.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="chkenableRoutingAdvanced.Text" xml:space="preserve">
+    <value>Enable advanced routing function</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="txtBlockDomain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
   </data>
-  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>392, 0</value>
+  <data name="&gt;&gt;linkLabelRoutingDoc.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;txtDirectIp.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="tabPageRuleList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>845, 511</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="linkLabelRoutingDoc.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
-  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 505</value>
   </data>
   <data name="labRoutingTips.Text" xml:space="preserve">
     <value>*Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt;</value>
@@ -752,38 +761,50 @@
   <data name="&gt;&gt;txtProxyDomain.Parent" xml:space="preserve">
     <value>groupBox6</value>
   </data>
-  <data name="&gt;&gt;txtDirectDomain.Name" xml:space="preserve">
-    <value>txtDirectDomain</value>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="txtBlockDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
     <value>839, 505</value>
   </data>
+  <data name="tabPageDirect.Text" xml:space="preserve">
+    <value>2.Direct Domain or IP</value>
+  </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 613</value>
   </data>
-  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="tabPageProxy.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="txtDirectIp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;panel4.Parent" xml:space="preserve">
     <value>tabPageDirect</value>
   </data>
-  <data name="lvRoutings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>839, 505</value>
+  <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 16</value>
   </data>
-  <data name="menuSetDefaultRouting.Text" xml:space="preserve">
-    <value>Set as active routing</value>
+  <data name="txtBlockIp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>Domain</value>
+  <data name="txtDirectIp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
   </data>
-  <data name="groupBox4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
+  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 21</value>
   </data>
-  <data name="&gt;&gt;txtDirectIp.Name" xml:space="preserve">
-    <value>txtDirectIp</value>
+  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
+  </data>
+  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageDirect.Name" xml:space="preserve">
+    <value>tabPageDirect</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -806,29 +827,29 @@
   <data name="tabPageDirect.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="lvRoutings.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
-  <data name="&gt;&gt;tabPageProxy.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tabNormal.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabPageRuleList.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;linkLabelRoutingDoc.Parent" xml:space="preserve">
-    <value>panel1</value>
+  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
   <data name="&gt;&gt;txtBlockIp.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txtProxyIp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
+  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;menuSetDefaultRouting.Name" xml:space="preserve">
-    <value>menuSetDefaultRouting</value>
-  </data>
-  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;menuSetDefaultRouting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuRemove.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -842,8 +863,8 @@
   <data name="menuRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
   </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>392, 0</value>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
   <data name="&gt;&gt;tabPageRuleList.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -860,29 +881,32 @@
   <data name="txtProxyDomain.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;tabPageBlock.Name" xml:space="preserve">
+    <value>tabPageBlock</value>
   </data>
   <data name="&gt;&gt;txtProxyIp.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="txtProxyIp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
+  </data>
   <data name="&gt;&gt;menuRemove.Name" xml:space="preserve">
     <value>menuRemove</value>
   </data>
-  <data name="&gt;&gt;tabPageBlock.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
   </data>
-  <data name="txtBlockDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;labRoutingTips.Name" xml:space="preserve">
+    <value>labRoutingTips</value>
   </data>
-  <data name="btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;txtProxyDomain.Name" xml:space="preserve">
+    <value>txtProxyDomain</value>
   </data>
-  <data name="tabPageDirect.Text" xml:space="preserve">
-    <value>2.Direct Domain or IP</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Domain</value>
   </data>
-  <data name="tabPageDirect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;txtProxyIp.Parent" xml:space="preserve">
+    <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;panel5.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -896,23 +920,26 @@
   <data name="tabPageBlock.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="menuSetDefaultRouting.Text" xml:space="preserve">
+    <value>Set as active routing</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 505</value>
   </data>
-  <data name="menuSetDefaultRouting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
+  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="txtDirectIp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="tabPageProxy.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;txtDirectDomain.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
+  </data>
+  <data name="labRoutingTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 22</value>
   </data>
   <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -923,11 +950,14 @@
   <data name="&gt;&gt;cmbdomainStrategy.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="tabNormal.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
   </data>
-  <data name="tabPageProxy.Text" xml:space="preserve">
-    <value>1.Proxy Domain or IP</value>
+  <data name="&gt;&gt;panel5.Name" xml:space="preserve">
+    <value>panel5</value>
+  </data>
+  <data name="groupBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
     <value>groupBox5</value>
@@ -938,23 +968,23 @@
   <data name="txtDirectDomain.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
-  <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="&gt;&gt;menuSetDefaultRouting.Name" xml:space="preserve">
+    <value>menuSetDefaultRouting</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>IP</value>
   </data>
-  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="lvRoutings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>839, 505</value>
   </data>
-  <data name="txtDirectIp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
+  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tabNormal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 76</value>
+  <data name="txtBlockDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 485</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="panel4.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -965,8 +995,8 @@
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>447, 505</value>
   </data>
-  <data name="panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="txtDirectDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 485</value>
   </data>
   <data name="&gt;&gt;menuAdd.Name" xml:space="preserve">
     <value>menuAdd</value>
@@ -977,21 +1007,18 @@
   <data name="&gt;&gt;cmsLv.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="labRoutingTips.Location" type="System.Drawing.Point, System.Drawing">
-    <value>299, 21</value>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>753, 17</value>
   </data>
   <data name="&gt;&gt;txtDirectIp.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>853, 51</value>
+  <data name="&gt;&gt;lvRoutings.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-Hans</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

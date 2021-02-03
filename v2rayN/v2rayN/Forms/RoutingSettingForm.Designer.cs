@@ -32,9 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoutingSettingForm));
             this.btnClose = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.labRoutingTips = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labRoutingTips = new System.Windows.Forms.Label();
+            this.chkenableRoutingAdvanced = new System.Windows.Forms.CheckBox();
             this.linkLabelRoutingDoc = new System.Windows.Forms.LinkLabel();
             this.cmbdomainStrategy = new System.Windows.Forms.ComboBox();
             this.cmsLv = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -96,9 +97,16 @@
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.labRoutingTips);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
             this.panel2.Name = "panel2";
+            // 
+            // labRoutingTips
+            // 
+            resources.ApplyResources(this.labRoutingTips, "labRoutingTips");
+            this.labRoutingTips.ForeColor = System.Drawing.Color.Brown;
+            this.labRoutingTips.Name = "labRoutingTips";
             // 
             // btnOK
             // 
@@ -110,16 +118,17 @@
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.labRoutingTips);
+            this.panel1.Controls.Add(this.chkenableRoutingAdvanced);
             this.panel1.Controls.Add(this.linkLabelRoutingDoc);
             this.panel1.Controls.Add(this.cmbdomainStrategy);
             this.panel1.Name = "panel1";
             // 
-            // labRoutingTips
+            // chkenableRoutingAdvanced
             // 
-            resources.ApplyResources(this.labRoutingTips, "labRoutingTips");
-            this.labRoutingTips.ForeColor = System.Drawing.Color.Brown;
-            this.labRoutingTips.Name = "labRoutingTips";
+            resources.ApplyResources(this.chkenableRoutingAdvanced, "chkenableRoutingAdvanced");
+            this.chkenableRoutingAdvanced.Name = "chkenableRoutingAdvanced";
+            this.chkenableRoutingAdvanced.UseVisualStyleBackColor = true;
+            this.chkenableRoutingAdvanced.CheckedChanged += new System.EventHandler(this.chkenableRoutingAdvanced_CheckedChanged_1);
             // 
             // linkLabelRoutingDoc
             // 
@@ -415,5 +424,6 @@
         private System.Windows.Forms.TabPage tabPageRuleList;
         private Base.ListViewFlickerFree lvRoutings;
         private System.Windows.Forms.Label labRoutingTips;
+        private System.Windows.Forms.CheckBox chkenableRoutingAdvanced;
     }
 }

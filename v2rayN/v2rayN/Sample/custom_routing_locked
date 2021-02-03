@@ -8,8 +8,8 @@
   {
     "outboundTag": "direct",
     "domain": [
-      "domain:example.com",
-      "domain:example2.com"
+      "domain:example-example.com",
+      "domain:example-example2.com"
     ]
   },
   {

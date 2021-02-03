@@ -190,19 +190,32 @@ namespace v2rayN.Handler
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
 
-                    var lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
-                    if (lockedItem != null)
+                    if (config.enableRoutingAdvanced)
                     {
-                        foreach (var item in lockedItem.rules)
+                        if (config.routings != null && config.routingIndex < config.routings.Count)
                         {
-                            routingUserRule(item, ref v2rayConfig);
+                            foreach (var item in config.routings[config.routingIndex].rules)
+                            {
+                                routingUserRule(item, ref v2rayConfig);
+                            }
                         }
                     }
-                    if (config.routings != null && config.routingIndex < config.routings.Count)
+                    else
                     {
-                        foreach (var item in config.routings[config.routingIndex].rules)
+                        var lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
+                        if (lockedItem != null)
                         {
-                            routingUserRule(item, ref v2rayConfig);
+                            foreach (var item in lockedItem.rules)
+                            {
+                                routingUserRule(item, ref v2rayConfig);
+                            }
+                            //Extra to bypass the mainland
+                            string result = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
+                            var lstRules = Utils.FromJson<List<RulesItem>>(result);
+                            foreach (var item in lstRules)
+                            {
+                                routingUserRule(item, ref v2rayConfig);
+                            }
                         }
                     }
                 }
@@ -378,7 +391,15 @@ namespace v2rayN.Handler
                     serversItem.address = config.address();
                     serversItem.port = config.port();
                     serversItem.password = config.id();
-                    serversItem.method = config.security();
+                    if (Global.ssSecuritys.Contains(config.security()))
+                    {
+                        serversItem.method = config.security();
+                    }
+                    else
+                    {
+                        serversItem.method = "none";
+                    }
+
 
                     serversItem.ota = false;
                     serversItem.level = 1;

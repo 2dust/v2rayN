@@ -528,8 +528,7 @@ namespace v2rayN.Handler
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
 
-            var securitys = new HashSet<string>() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
-            if (!securitys.Contains(vmessItem.security))
+            if (!Global.ssSecuritys.Contains(vmessItem.security))
             {
                 return -1;
             }
