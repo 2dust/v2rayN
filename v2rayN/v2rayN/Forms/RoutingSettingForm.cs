@@ -78,7 +78,8 @@ namespace v2rayN.Forms
                 this.tabPageDirect.Parent = null;
                 this.tabPageBlock.Parent = null;
                 this.tabPageRuleList.Parent = tabNormal;
-                MenuItem1.Enabled = true;
+                MenuItemBasic.Enabled = false;
+                MenuItemAdvanced.Enabled = true;
 
             }
             else
@@ -87,9 +88,10 @@ namespace v2rayN.Forms
                 this.tabPageDirect.Parent = tabNormal;
                 this.tabPageBlock.Parent = tabNormal;
                 this.tabPageRuleList.Parent = null;
-                MenuItem1.Enabled = false;
+                MenuItemBasic.Enabled = true;
+                MenuItemAdvanced.Enabled = false;
             }
-           
+
         }
 
 
@@ -285,9 +287,16 @@ namespace v2rayN.Forms
             return 0;
         }
 
+        private void menuImportBasicRules_Click(object sender, EventArgs e)
+        {
+            //Extra to bypass the mainland
+            txtDirectDomain.Text = "geosite:cn";
+            txtDirectIp.Text = "geoip:private,geoip:cn";
+
+            txtBlockDomain.Text = "geosite:category-ads-all";
+        }
 
         #endregion
-
 
     }
 }

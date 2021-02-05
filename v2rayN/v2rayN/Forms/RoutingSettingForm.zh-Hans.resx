@@ -124,6 +124,12 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 545</value>
+  </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>817, 60</value>
+  </data>
   <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
     <value>518, 16</value>
   </data>
@@ -136,11 +142,8 @@
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 545</value>
-  </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>817, 60</value>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>817, 51</value>
   </data>
   <data name="chkenableRoutingAdvanced.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 16</value>
@@ -154,8 +157,8 @@
   <data name="linkLabelRoutingDoc.Text" xml:space="preserve">
     <value>域名解析策略</value>
   </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>817, 51</value>
+  <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 92</value>
   </data>
   <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
@@ -181,32 +184,29 @@
   <data name="menuSetDefaultRouting.Text" xml:space="preserve">
     <value>设为活动路由</value>
   </data>
-  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 21</value>
+  <data name="MenuItemAdvanced.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 21</value>
   </data>
-  <data name="MenuItem1.Text" xml:space="preserve">
-    <value>路由规则集功能</value>
-  </data>
-  <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 92</value>
+  <data name="MenuItemAdvanced.Text" xml:space="preserve">
+    <value>高级功能</value>
   </data>
   <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>817, 25</value>
   </data>
-  <data name="txtProxyIp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 417</value>
+  <data name="MenuItemBasic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 21</value>
   </data>
-  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 437</value>
+  <data name="MenuItemBasic.Text" xml:space="preserve">
+    <value>基础功能</value>
   </data>
-  <data name="txtProxyDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 417</value>
+  <data name="menuImportBasicRules.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 437</value>
+  <data name="menuImportBasicRules.Text" xml:space="preserve">
+    <value>一键导入基础规则</value>
   </data>
-  <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>803, 437</value>
+  <data name="tabNormal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>817, 469</value>
   </data>
   <data name="tabPageProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>809, 443</value>
@@ -214,20 +214,20 @@
   <data name="tabPageProxy.Text" xml:space="preserve">
     <value>  1.代理的Domain或IP  </value>
   </data>
-  <data name="txtDirectIp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 417</value>
+  <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>803, 437</value>
   </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 437</value>
   </data>
-  <data name="txtDirectDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 417</value>
+  <data name="txtProxyIp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>405, 417</value>
   </data>
-  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 437</value>
   </data>
-  <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>803, 437</value>
+  <data name="txtProxyDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 417</value>
   </data>
   <data name="tabPageDirect.Size" type="System.Drawing.Size, System.Drawing">
     <value>809, 443</value>
@@ -235,26 +235,47 @@
   <data name="tabPageDirect.Text" xml:space="preserve">
     <value>  2.直连的Domain或IP  </value>
   </data>
-  <data name="txtBlockIp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 417</value>
+  <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>803, 437</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>411, 437</value>
   </data>
-  <data name="txtBlockDomain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 417</value>
+  <data name="txtDirectIp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>405, 417</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 437</value>
   </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>803, 437</value>
+  <data name="txtDirectDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 417</value>
   </data>
   <data name="tabPageBlock.Size" type="System.Drawing.Size, System.Drawing">
     <value>809, 443</value>
   </data>
   <data name="tabPageBlock.Text" xml:space="preserve">
     <value>  3.阻止的Domain或IP  </value>
+  </data>
+  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>803, 437</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>411, 437</value>
+  </data>
+  <data name="txtBlockIp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>405, 417</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 437</value>
+  </data>
+  <data name="txtBlockDomain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 417</value>
+  </data>
+  <data name="tabPageRuleList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>809, 443</value>
+  </data>
+  <data name="tabPageRuleList.Text" xml:space="preserve">
+    <value>  预定义规则集列表</value>
   </data>
   <data name="lvRoutings.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -275,15 +296,6 @@
   </data>
   <data name="lvRoutings.Size" type="System.Drawing.Size, System.Drawing">
     <value>803, 437</value>
-  </data>
-  <data name="tabPageRuleList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 443</value>
-  </data>
-  <data name="tabPageRuleList.Text" xml:space="preserve">
-    <value>  预定义规则集列表</value>
-  </data>
-  <data name="tabNormal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>817, 469</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>817, 605</value>

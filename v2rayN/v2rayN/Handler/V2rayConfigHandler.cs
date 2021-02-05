@@ -208,14 +208,7 @@ namespace v2rayN.Handler
                             foreach (var item in lockedItem.rules)
                             {
                                 routingUserRule(item, ref v2rayConfig);
-                            }
-                            //Extra to bypass the mainland
-                            string result = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
-                            var lstRules = Utils.FromJson<List<RulesItem>>(result);
-                            foreach (var item in lstRules)
-                            {
-                                routingUserRule(item, ref v2rayConfig);
-                            }
+                            }                         
                         }
                     }
                 }
