@@ -614,7 +614,10 @@ namespace v2rayN.Handler
             vmessItem.id = vmessItem.id.TrimEx();
 
             vmessItem.streamSecurity = Global.StreamSecurity;
-            vmessItem.allowInsecure = "false";
+            if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+            {
+                vmessItem.allowInsecure = config.defAllowInsecure.ToString();
+            }
 
             if (index >= 0)
             {

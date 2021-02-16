@@ -1398,69 +1398,15 @@ namespace v2rayN.Forms
         /// </summary>
         private void UpdateSubscriptionProcess()
         {
-            AppendText(false, UIRes.I18N("MsgUpdateSubscriptionStart"));
-
-            if (config.subItem == null || config.subItem.Count <= 0)
+            void _updateUI(bool refresh, string msg)
             {
-                AppendText(false, UIRes.I18N("MsgNoValidSubscription"));
-                return;
-            }
-
-            for (int k = 1; k <= config.subItem.Count; k++)
-            {
-                string id = config.subItem[k - 1].id.TrimEx();
-                string url = config.subItem[k - 1].url.TrimEx();
-                string hashCode = $"{k}->";
-                if (config.subItem[k - 1].enabled == false)
+                AppendText(false, msg);
+                if (refresh)
                 {
-                    continue;
+                    RefreshServers();
                 }
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
-                {
-                    AppendText(false, $"{hashCode}{UIRes.I18N("MsgNoValidSubscription")}");
-                    continue;
-                }
-
-                DownloadHandle downloadHandle3 = new DownloadHandle();
-                downloadHandle3.UpdateCompleted += (sender2, args) =>
-                {
-                    if (args.Success)
-                    {
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
-                        string result = Utils.Base64Decode(args.Msg);
-                        if (Utils.IsNullOrEmpty(result))
-                        {
-                            AppendText(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");
-                            return;
-                        }
-
-                        ConfigHandler.RemoveServerViaSubid(ref config, id);
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
-                        RefreshServers();
-                        int ret = MainFormHandler.Instance.AddBatchServers(config, result, id);
-                        if (ret > 0)
-                        {
-                            RefreshServers();
-                        }
-                        else
-                        {
-                            AppendText(false, $"{hashCode}{UIRes.I18N("MsgFailedImportSubscription")}");
-                        }
-                        AppendText(false, $"{hashCode}{UIRes.I18N("MsgUpdateSubscriptionEnd")}");
-                    }
-                    else
-                    {
-                        AppendText(false, args.Msg);
-                    }
-                };
-                downloadHandle3.Error += (sender2, args) =>
-                {
-                    AppendText(true, args.GetException().Message);
-                };
-
-                downloadHandle3.WebDownloadString(url);
-                AppendText(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
-            }
+            };
+            MainFormHandler.Instance.UpdateSubscriptionProcess(config, _updateUI);            
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)

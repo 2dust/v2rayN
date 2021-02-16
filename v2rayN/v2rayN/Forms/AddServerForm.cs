@@ -45,6 +45,7 @@ namespace v2rayN.Forms
             txtPath.Text = vmessItem.path;
             cmbStreamSecurity.Text = vmessItem.streamSecurity;
             cmbAllowInsecure.Text = vmessItem.allowInsecure;
+            txtSNI.Text = vmessItem.sni;
         }
 
 
@@ -66,6 +67,7 @@ namespace v2rayN.Forms
             cmbStreamSecurity.Text = "";
             cmbAllowInsecure.Text = "";
             txtPath.Text = "";
+            txtSNI.Text = "";
         }
 
 
@@ -122,6 +124,7 @@ namespace v2rayN.Forms
             string path = txtPath.Text;
             string streamSecurity = cmbStreamSecurity.Text;
             string allowInsecure = cmbAllowInsecure.Text;
+            string sni = txtSNI.Text;
 
             if (Utils.IsNullOrEmpty(address))
             {
@@ -157,6 +160,7 @@ namespace v2rayN.Forms
             vmessItem.path = path.Replace(" ", "");
             vmessItem.streamSecurity = streamSecurity;
             vmessItem.allowInsecure = allowInsecure;
+            vmessItem.sni = sni;
 
             if (ConfigHandler.AddServer(ref config, vmessItem, EditIndex) == 0)
             {

@@ -120,16 +120,29 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>服务器</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 12</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>域名(SNI)</value>
+  <data name="label21.Text" xml:space="preserve">
+    <value>跳过证书验证(allowInsecure)</value>
+  </data>
+  <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>406, 185</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 12</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>底层传输安全(tls)</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmbStreamSecurity.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 12</value>
   </data>
@@ -153,6 +166,9 @@
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>服务器地址</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>

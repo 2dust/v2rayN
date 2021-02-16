@@ -35,8 +35,10 @@ namespace v2rayN.Forms
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
             txtId.Text = vmessItem.id;
-            txtRequestHost.Text = vmessItem.requestHost;
+            txtSNI.Text = vmessItem.sni;
             txtRemarks.Text = vmessItem.remarks;
+            cmbStreamSecurity.Text = vmessItem.streamSecurity;
+            cmbAllowInsecure.Text = vmessItem.allowInsecure;
         }
 
 
@@ -48,8 +50,10 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
-            txtRequestHost.Text = "";
-            txtRemarks.Text = "";
+            txtSNI.Text = "";
+            txtRemarks.Text = ""; 
+            cmbStreamSecurity.Text = "tls";
+            cmbAllowInsecure.Text = "";
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -57,8 +61,10 @@ namespace v2rayN.Forms
             string address = txtAddress.Text;
             string port = txtPort.Text;
             string id = txtId.Text;
-            string requestHost = txtRequestHost.Text;
+            string sni = txtSNI.Text;
             string remarks = txtRemarks.Text;
+            string streamSecurity = cmbStreamSecurity.Text;
+            string allowInsecure = cmbAllowInsecure.Text;
 
             if (Utils.IsNullOrEmpty(address))
             {
@@ -79,8 +85,10 @@ namespace v2rayN.Forms
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
-            vmessItem.requestHost = requestHost.Replace(" ", "");
+            vmessItem.sni = sni.Replace(" ", "");
             vmessItem.remarks = remarks;
+            vmessItem.streamSecurity = streamSecurity;
+            vmessItem.allowInsecure = allowInsecure;
 
             if (ConfigHandler.AddTrojanServer(ref config, vmessItem, EditIndex) == 0)
             {

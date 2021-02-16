@@ -44,7 +44,8 @@ namespace v2rayN.Handler
                         type = item.headerType,
                         host = item.requestHost,
                         path = item.path,
-                        tls = item.streamSecurity
+                        tls = item.streamSecurity,
+                        sni = item.sni
                     };
 
                     url = Utils.ToJson(vmessQRCode);
@@ -90,9 +91,9 @@ namespace v2rayN.Handler
                         remark = "#" + Utils.UrlEncode(item.remarks);
                     }
                     string query = string.Empty;
-                    if (!Utils.IsNullOrEmpty(item.requestHost))
+                    if (!Utils.IsNullOrEmpty(item.sni))
                     {
-                        query = string.Format("?sni={0}", Utils.UrlEncode(item.requestHost));
+                        query = string.Format("?sni={0}", Utils.UrlEncode(item.sni));
                     }
                     url = string.Format("{0}@{1}:{2}",
                         item.id,
@@ -127,6 +128,10 @@ namespace v2rayN.Handler
                     else
                     {
                         dicQuery.Add("security", "none");
+                    }
+                    if (!Utils.IsNullOrEmpty(item.sni))
+                    {
+                        dicQuery.Add("sni", item.sni);
                     }
                     if (!Utils.IsNullOrEmpty(item.network))
                     {
@@ -294,6 +299,7 @@ namespace v2rayN.Handler
                         vmessItem.requestHost = Utils.ToString(vmessQRCode.host);
                         vmessItem.path = Utils.ToString(vmessQRCode.path);
                         vmessItem.streamSecurity = Utils.ToString(vmessQRCode.tls);
+                        vmessItem.sni = Utils.ToString(vmessQRCode.sni);
                     }
 
                     ConfigHandler.UpgradeServerVersion(ref vmessItem);
@@ -374,7 +380,7 @@ namespace v2rayN.Handler
                     vmessItem.id = uri.UserInfo;
 
                     var qurery = HttpUtility.ParseQueryString(uri.Query);
-                    vmessItem.requestHost = qurery["sni"] ?? "";
+                    vmessItem.sni = qurery["sni"] ?? "";
 
                     var remarks = uri.Fragment.Replace("#", "");
                     if (Utils.IsNullOrEmpty(remarks))
@@ -640,6 +646,7 @@ namespace v2rayN.Handler
             item.flow = query["flow"] ?? "";
             item.security = query["encryption"] ?? "none";
             item.streamSecurity = query["security"] ?? "";
+            item.sni = query["sni"] ?? "";
             item.network = query["type"] ?? "tcp";
             switch (item.network)
             {
