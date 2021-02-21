@@ -190,7 +190,7 @@ namespace v2rayN.Handler
                 _updateFunc(testCounter, args.GetException().Message);
             };
 
-            var timeout = 12;
+            var timeout = 10;
             foreach (int itemIndex in _selecteds)
             {
                 if (itemIndex >= _config.vmess.Count)
@@ -289,7 +289,7 @@ namespace v2rayN.Handler
             {
                 return "Timeout";
             }
-            return string.Format("{0}{1}", time, unit).PadLeft(6, ' ');
+            return string.Format("{0}{1}", time, unit).PadLeft(8, ' ');
         }
     }
 }

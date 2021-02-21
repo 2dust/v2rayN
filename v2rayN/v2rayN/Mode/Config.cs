@@ -61,46 +61,6 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 域名解析策略
-        /// </summary>
-        public string domainStrategy
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 路由模式
-        /// </summary>
-        public string routingMode
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义需代理的网址或ip
-        /// </summary>
-        public List<string> useragent
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义直连的网址或ip
-        /// </summary>
-        public List<string> userdirect
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义阻止的网址或ip
-        /// </summary>
-        public List<string> userblock
-        {
-            get; set;
-        }
-
-        /// <summary>
         /// KcpItem
         /// </summary>
         public KcpItem kcpItem
@@ -109,9 +69,9 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 监听状态
+        /// 
         /// </summary>
-        public ListenerType listenerType
+        public ESysProxyType sysProxyType
         {
             get; set;
         }
@@ -127,13 +87,6 @@ namespace v2rayN.Mode
         /// 自定义“服务器真连接延迟”测试url
         /// </summary>
         public string speedPingTestUrl
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 自定义GFWList url
-        /// </summary>
-        public string urlGFWList
         {
             get; set;
         }
@@ -201,8 +154,31 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        /// <summary>
+        /// 域名解析策略
+        /// </summary>
+        public string domainStrategy
+        {
+            get; set;
+        }
+        public int routingIndex
+        {
+            get; set;
+        }
+        public List<RoutingItem> routings
+        {
+            get; set;
+        }
+        public bool enableRoutingAdvanced
+        {
+            get; set;
+        }
 
-        public List<string> userPacRule
+        public ECoreType coreType
+        {
+            get; set;
+        }
+        public bool ignoreGeoUpdateCore
         {
             get; set;
         }
@@ -317,10 +293,7 @@ namespace v2rayN.Mode
             {
                 return GetLocalPort(Global.InboundSocks) + 1;
             }
-            else if (protocol == "pac")
-            {
-                return GetLocalPort(Global.InboundSocks) + 2;
-            }
+
             else if (protocol == "speedtest")
             {
                 return GetLocalPort(Global.InboundSocks) + 103;
@@ -365,7 +338,22 @@ namespace v2rayN.Mode
 
             return vmess[index].getItemId();
         }
-
+        public string flow()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].flow.TrimEx();
+        }
+        public string sni()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].sni.TrimEx();
+        }
         #endregion
 
     }
@@ -391,11 +379,12 @@ namespace v2rayN.Mode
             configType = (int)EConfigType.Vmess;
             testResult = string.Empty;
             subid = string.Empty;
+            flow = string.Empty;
         }
 
         public string getSummary()
         {
-            string summary = string.Format("{0}-", ((EConfigType)configType).ToString());
+            string summary = string.Format("[{0}] ", ((EConfigType)configType).ToString());
             string[] arrAddr = address.Split('.');
             string addr;
             if (arrAddr.Length > 2)
@@ -410,21 +399,26 @@ namespace v2rayN.Mode
             {
                 addr = address;
             }
-            if (configType == (int)EConfigType.Vmess)
+            switch (configType)
             {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else if (configType == (int)EConfigType.Shadowsocks)
-            {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else if (configType == (int)EConfigType.Socks)
-            {
-                summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-            }
-            else
-            {
-                summary += string.Format("{0}", remarks);
+                case (int)EConfigType.Vmess:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Shadowsocks:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Socks:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.VLESS:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                case (int)EConfigType.Trojan:
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    break;
+                default:
+                    summary += string.Format("{0}", remarks);
+                    break;
             }
             return summary;
         }
@@ -575,6 +569,21 @@ namespace v2rayN.Mode
         /// SubItem id
         /// </summary>
         public string subid
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// VLESS flow
+        /// </summary>
+        public string flow
+        {
+            get; set;
+        }
+        /// <summary>
+        /// tls sni
+        /// </summary>
+        public string sni
         {
             get; set;
         }

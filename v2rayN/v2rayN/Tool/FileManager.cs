@@ -68,7 +68,7 @@ namespace v2rayN.Tool
                 throw ex;
             }
         }
-        public static bool ZipExtractToFile(string fileName)
+        public static bool ZipExtractToFile(string fileName, string ignoredName)
         {
             try
             {
@@ -82,6 +82,10 @@ namespace v2rayN.Tool
                         }
                         try
                         {
+                            if (!Utils.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
+                            {
+                                continue;
+                            }
                             entry.ExtractToFile(Utils.GetPath(entry.Name), true);
                         }
                         catch (IOException ex)

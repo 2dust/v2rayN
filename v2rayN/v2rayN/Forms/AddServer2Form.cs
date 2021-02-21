@@ -5,10 +5,8 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServer2Form : BaseForm
-    {
-        public int EditIndex { get; set; }
-        VmessItem vmessItem;
+    public partial class AddServer2Form : BaseServerForm
+    { 
 
         public AddServer2Form()
         {

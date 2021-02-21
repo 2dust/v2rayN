@@ -5,10 +5,8 @@ using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {
-    public partial class AddServer3Form : BaseForm
-    {
-        public int EditIndex { get; set; }
-        VmessItem vmessItem = null;
+    public partial class AddServer3Form : BaseServerForm
+    { 
 
         public AddServer3Form()
         {
@@ -121,7 +119,7 @@ namespace v2rayN.Forms
         {
             ClearServer();
 
-            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
+            VmessItem vmessItem = ShareHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
             if (vmessItem == null)
             {
                 UI.ShowWarning(msg);

@@ -74,7 +74,7 @@ namespace v2rayN.HttpProxyHandler
                 if (_process == null)
                 {
 
-                    string privoxyConfig = Resources.privoxy_conf;
+                    string privoxyConfig = "";//Resources.privoxy_conf;
                     RunningPort = config.GetLocalPort(Global.InboundHttp);
                     privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", localPort.ToString());
                     privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());

@@ -117,40 +117,62 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>编辑或添加[Shadowsocks]服务器</value>
-  </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
-  </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>确定(&amp;O)</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>服务器地址</value>
-  </data>
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>服务器端口</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>密码</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>加密方式</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>别名(remarks)</value>
   </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>加密方式</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>服务器端口</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>服务器地址</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
+  </data>
+  <data name="MenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 21</value>
+  </data>
   <data name="MenuItem1.Text" xml:space="preserve">
     <value>导入配置文件</value>
   </data>
+  <data name="menuItemImportClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
   <data name="menuItemImportClipboard.Text" xml:space="preserve">
     <value>从剪贴板导入URL</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>编辑或添加[Shadowsocks]服务器</value>
   </data>
 </root>

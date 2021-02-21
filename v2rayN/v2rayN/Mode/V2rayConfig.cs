@@ -35,7 +35,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// DNS 配置
         /// </summary>
-        public Dns dns { get; set; }
+        public object dns { get; set; }
         /// <summary>
         /// 路由配置
         /// </summary>
@@ -57,8 +57,8 @@ namespace v2rayN.Mode
 
     public class SystemPolicy
     {
-        public bool statsInboundUplink;
-        public bool statsInboundDownlink;
+        public bool statsOutboundUplink;
+        public bool statsOutboundDownlink;
     }
 
     public class Log
@@ -132,6 +132,15 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public List<UsersItem> clients { get; set; }
+
+        
+        /// <summary>
+        /// VLESS
+        /// </summary>
+        public string decryption { get; set; }
+
+        public bool allowTransparent { get; set; }
+      
     }
 
     public class UsersItem
@@ -152,6 +161,16 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string security { get; set; }
+
+        /// <summary>
+        /// VLESS
+        /// </summary>
+        public string encryption { get; set; }
+
+        /// <summary>
+        /// VLESS
+        /// </summary>
+        public string flow { get; set; }         
     }
     public class Sniffing
     {
@@ -304,34 +323,6 @@ namespace v2rayN.Mode
         public List<string> servers { get; set; }
     }
 
-    public class RulesItem
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string type { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string port { get; set; }
-
-        public List<string> inboundTag { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string outboundTag { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> ip { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<string> domain { get; set; }
-    }
-
     public class Routing
     {
         /// <summary>
@@ -381,7 +372,12 @@ namespace v2rayN.Mode
         /// QUIC
         /// </summary>
         public QuicSettings quicSettings { get; set; }
-        
+
+        /// <summary>
+        /// VLESS xtls
+        /// </summary>
+        public TlsSettings xtlsSettings { get; set; }
+
     }
 
     public class TlsSettings
@@ -398,11 +394,7 @@ namespace v2rayN.Mode
     }
 
     public class TcpSettings
-    {
-        /// <summary>
-        /// 是否重用 TCP 连接
-        /// </summary>
-        public bool connectionReuse { get; set; }
+    {         
         /// <summary>
         /// 数据包头部伪装设置
         /// </summary>
@@ -459,15 +451,14 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Header header { get; set; }
-    }
-
-    public class WsSettings
-    {
         /// <summary>
         /// 
         /// </summary>
-        public bool connectionReuse { get; set; }
+        public string seed { get; set; }
+    }
 
+    public class WsSettings
+    {      
         /// <summary>
         /// 
         /// </summary>
