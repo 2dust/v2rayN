@@ -36,6 +36,13 @@ namespace v2rayN
         /// <returns></returns>
         public static string GetEmbedText(string res)
         {
+            //支持自定义文件覆盖默认配置
+            string path = GetPath(res);
+            if (File.Exists(path))
+            {
+                return LoadResource(path);
+            }
+
             string result = string.Empty;
 
             try
@@ -173,6 +180,7 @@ namespace v2rayN
         {
             try
             {
+                if (lst == null) lst = new List<string>();
                 if (wrap)
                 {
                     return string.Join("," + Environment.NewLine, lst.ToArray());

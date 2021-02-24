@@ -1,7 +1,14 @@
-﻿namespace v2rayN.Forms
+﻿using System.Collections.Generic;
+using v2rayN.Mode;
+
+namespace v2rayN.Forms
 {
     partial class RoutingRuleSettingDetailsForm
     {
+
+        //缓存当前支持的outbound类型，以免频繁读取配置文件
+        private static object[] cmbOutboundTags;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -112,10 +119,30 @@
             // 
             this.cmbOutboundTag.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbOutboundTag.FormattingEnabled = true;
-            this.cmbOutboundTag.Items.AddRange(new object[] {
-            resources.GetString("cmbOutboundTag.Items"),
-            resources.GetString("cmbOutboundTag.Items1"),
-            resources.GetString("cmbOutboundTag.Items2")});
+
+            if (cmbOutboundTags == null)
+            {
+                cmbOutboundTags = new object[] {
+                resources.GetString("cmbOutboundTag.Items"),
+                resources.GetString("cmbOutboundTag.Items1"),
+                resources.GetString("cmbOutboundTag.Items2")};
+
+                //尝试从配置里面读取outbound选项
+                try
+                {
+                    List<string> list = new List<string>();
+                    foreach (Outbounds item in Utils.FromJson<V2rayConfig>(Utils.GetEmbedText(Global.v2raySampleClient)).outbounds)
+                    {
+                        list.Add(item.tag);
+                    };
+                    cmbOutboundTags = list.ToArray();
+                }
+                catch
+                {
+                }
+            }
+
+            this.cmbOutboundTag.Items.AddRange(cmbOutboundTags);
             resources.ApplyResources(this.cmbOutboundTag, "cmbOutboundTag");
             this.cmbOutboundTag.Name = "cmbOutboundTag";
             // 
