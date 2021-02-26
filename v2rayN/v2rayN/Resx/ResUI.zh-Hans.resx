@@ -283,10 +283,10 @@
     <value>更新订阅开始</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>更新V2rayCore成功</value>
+    <value>更新Core成功</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>更新V2rayCore成功！正在重启服务...</value>
+    <value>更新Core成功！正在重启服务...</value>
   </data>
   <data name="NeedHttpGlobalProxy" xml:space="preserve">
     <value>此功能依赖Http全局代理,请先设置正确。</value>
@@ -298,7 +298,7 @@
     <value>非Vmess服务，此功能无效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>找不到 v2ray-core，下载地址: {0}</value>
+    <value>找不到Core，下载地址: {0}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成,未发现有效二维码</value>
