@@ -1272,7 +1272,7 @@ namespace v2rayN.Forms
                 {
                     if (args.Success)
                     {
-                        AppendText(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "v2rayCore"));
+                        AppendText(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "Core"));
 
                         string url = args.Msg;
                         this.Invoke((MethodInvoker)(delegate
@@ -1323,7 +1323,7 @@ namespace v2rayN.Forms
                 };
             }
 
-            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayCore"));
+            AppendText(false, string.Format(UIRes.I18N("MsgStartUpdating"), "Core"));
             downloadHandle.CheckUpdateAsync(type);
         }
         #endregion
