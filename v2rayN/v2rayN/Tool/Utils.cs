@@ -40,6 +40,12 @@ namespace v2rayN
 
             try
             {
+                //支持自定义文件覆盖默认配置
+                string path = GetPath(res);
+                if (File.Exists(path))
+                {
+                    return LoadResource(path);
+                }
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 using (Stream stream = assembly.GetManifestResourceStream(res))
                 using (StreamReader reader = new StreamReader(stream))
@@ -171,6 +177,7 @@ namespace v2rayN
         /// <returns></returns>
         public static string List2String(List<string> lst, bool wrap = false)
         {
+            if (lst == null) return string.Empty;
             try
             {
                 if (wrap)
