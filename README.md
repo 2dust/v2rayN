@@ -1,4 +1,4 @@
-# v2rayN
+# v2rayN (3.29 Only for pac)
 
 ### How to use
 - If you are newbie please download v2rayN-Core.zip from releases
