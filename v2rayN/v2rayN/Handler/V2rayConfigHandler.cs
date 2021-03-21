@@ -702,6 +702,12 @@ namespace v2rayN.Handler
                             }
                         }
                         break;
+                    case "grpc":
+                        var grpcSettings = new GrpcSettings();
+                    
+                        grpcSettings.serviceName = config.path();
+                        streamSettings.grpcSettings = grpcSettings;
+                        break;
                     default:
                         //tcp带http伪装
                         if (config.headerType().Equals(Global.TcpHeaderHttp))

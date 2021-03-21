@@ -377,6 +377,10 @@ namespace v2rayN.Mode
         /// VLESS xtls
         /// </summary>
         public TlsSettings xtlsSettings { get; set; }
+        /// <summary>
+        /// grpc
+        /// </summary>
+        public GrpcSettings grpcSettings { get; set; }
 
     }
 
@@ -506,6 +510,14 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Header header { get; set; }
+    }
+
+    public class GrpcSettings
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string serviceName { get; set; }
     }
 
 }

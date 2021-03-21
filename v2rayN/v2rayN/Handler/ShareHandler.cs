@@ -97,7 +97,7 @@ namespace v2rayN.Handler
                     }
                     url = string.Format("{0}@{1}:{2}",
                         item.id,
-                        item.address,
+                        GetIpv6(item.address),
                         item.port);
                     url = string.Format("{0}{1}{2}{3}", Global.trojanProtocol, url, query, remark);
                 }
@@ -214,7 +214,7 @@ namespace v2rayN.Handler
 
                     url = string.Format("{0}@{1}:{2}",
                     item.id,
-                    item.address,
+                    GetIpv6(item.address),
                     item.port);
                     url = string.Format("{0}{1}{2}{3}", Global.vlessProtocol, url, query, remark);
                 }
@@ -229,6 +229,10 @@ namespace v2rayN.Handler
             }
         }
 
+        private static string GetIpv6(string address)
+        {
+            return Utils.IsIpv6(address) ? $"[{address}]" : address;
+        }
         #endregion
 
         #region  ImportShareUrl 

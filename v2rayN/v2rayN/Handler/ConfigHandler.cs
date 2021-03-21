@@ -283,7 +283,8 @@ namespace v2rayN.Handler
                 streamSecurity = config.vmess[index].streamSecurity,
                 allowInsecure = config.vmess[index].allowInsecure,
                 configType = config.vmess[index].configType,
-                flow = config.vmess[index].flow
+                flow = config.vmess[index].flow,
+                sni = config.vmess[index].sni
             };
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项

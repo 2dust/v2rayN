@@ -487,6 +487,24 @@ namespace v2rayN
             return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
         }
 
+        public static bool IsIpv6(string ip)
+        {
+            IPAddress address;
+            if (IPAddress.TryParse(ip, out address))
+            {
+                switch (address.AddressFamily)
+                {
+                    case AddressFamily.InterNetwork:
+                        return false;
+                    case AddressFamily.InterNetworkV6:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            return false;
+        }
+
         #endregion
 
         #region 开机自动启动

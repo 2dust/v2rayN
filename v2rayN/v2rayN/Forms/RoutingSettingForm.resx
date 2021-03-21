@@ -429,6 +429,9 @@
   <data name="txtProxyIp.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="txtProxyIp.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
   <data name="txtProxyIp.Size" type="System.Drawing.Size, System.Drawing">
     <value>441, 485</value>
   </data>
@@ -482,6 +485,9 @@
   </data>
   <data name="txtProxyDomain.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="txtProxyDomain.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
   <data name="txtProxyDomain.Size" type="System.Drawing.Size, System.Drawing">
     <value>386, 485</value>
@@ -588,6 +594,9 @@
   <data name="txtDirectIp.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="txtDirectIp.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
   <data name="txtDirectIp.Size" type="System.Drawing.Size, System.Drawing">
     <value>441, 485</value>
   </data>
@@ -641,6 +650,9 @@
   </data>
   <data name="txtDirectDomain.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="txtDirectDomain.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
   <data name="txtDirectDomain.Size" type="System.Drawing.Size, System.Drawing">
     <value>386, 485</value>
@@ -747,6 +759,9 @@
   <data name="txtBlockIp.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="txtBlockIp.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
   <data name="txtBlockIp.Size" type="System.Drawing.Size, System.Drawing">
     <value>441, 485</value>
   </data>
@@ -800,6 +815,9 @@
   </data>
   <data name="txtBlockDomain.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="txtBlockDomain.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
   <data name="txtBlockDomain.Size" type="System.Drawing.Size, System.Drawing">
     <value>386, 485</value>
