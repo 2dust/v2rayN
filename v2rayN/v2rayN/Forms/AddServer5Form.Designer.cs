@@ -39,6 +39,8 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.panTlsMore = new System.Windows.Forms.Panel();
+            this.txtSNI = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.cmbAllowInsecure = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -78,6 +80,7 @@
             this.MenuItemImportServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panTlsMore.SuspendLayout();
@@ -146,6 +149,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.panTlsMore);
@@ -182,10 +186,22 @@
             // 
             // panTlsMore
             // 
+            this.panTlsMore.Controls.Add(this.txtSNI);
+            this.panTlsMore.Controls.Add(this.label22);
             this.panTlsMore.Controls.Add(this.label21);
             this.panTlsMore.Controls.Add(this.cmbAllowInsecure);
             resources.ApplyResources(this.panTlsMore, "panTlsMore");
             this.panTlsMore.Name = "panTlsMore";
+            // 
+            // txtSNI
+            // 
+            resources.ApplyResources(this.txtSNI, "txtSNI");
+            this.txtSNI.Name = "txtSNI";
+            // 
+            // label22
+            // 
+            resources.ApplyResources(this.label22, "label22");
+            this.label22.Name = "label22";
             // 
             // label21
             // 
@@ -227,7 +243,8 @@
             resources.GetString("cmbNetwork.Items1"),
             resources.GetString("cmbNetwork.Items2"),
             resources.GetString("cmbNetwork.Items3"),
-            resources.GetString("cmbNetwork.Items4")});
+            resources.GetString("cmbNetwork.Items4"),
+            resources.GetString("cmbNetwork.Items5")});
             resources.ApplyResources(this.cmbNetwork, "cmbNetwork");
             this.cmbNetwork.Name = "cmbNetwork";
             this.cmbNetwork.SelectedIndexChanged += new System.EventHandler(this.cmbNetwork_SelectedIndexChanged);
@@ -432,6 +449,11 @@
             resources.ApplyResources(this.MenuItemImportClipboard, "MenuItemImportClipboard");
             this.MenuItemImportClipboard.Click += new System.EventHandler(this.MenuItemImportClipboard_Click);
             // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
+            // 
             // AddServer5Form
             // 
             resources.ApplyResources(this, "$this");
@@ -509,5 +531,8 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.ComboBox cmbFlow;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtSNI;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label25;
     }
 }

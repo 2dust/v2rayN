@@ -19,12 +19,13 @@ using ZXing.Common;
 using ZXing.QrCode;
 using System.Security.Principal;
 using v2rayN.Base;
+using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace v2rayN
 {
     class Utils
     {
-
 
         #region 资源Json操作
 
@@ -119,16 +120,22 @@ namespace v2rayN
         /// <param name="obj"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static int ToJsonFile(Object obj, string filePath)
+        public static int ToJsonFile(Object obj, string filePath, bool nullValue = true)
         {
             int result;
             try
             {
                 using (StreamWriter file = File.CreateText(filePath))
                 {
-                    //JsonSerializer serializer = new JsonSerializer();
-                    JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
-                    //JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore };
+                    JsonSerializer serializer;
+                    if (nullValue)
+                    {
+                        serializer = new JsonSerializer() { Formatting = Formatting.Indented };
+                    }
+                    else
+                    {
+                        serializer = new JsonSerializer() { Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore };
+                    }
 
                     serializer.Serialize(file, obj);
                 }
@@ -139,6 +146,19 @@ namespace v2rayN
                 result = -1;
             }
             return result;
+        }
+
+        public static JObject ParseJson(string strJson)
+        {
+            try
+            {
+                JObject obj = JObject.Parse(strJson);
+                return obj;
+            }
+            catch
+            {
+                return null;
+            }
         }
         #endregion
 
@@ -350,6 +370,14 @@ namespace v2rayN
             result = list;
         }
 
+        public static string UrlEncode(string url)
+        {
+            return HttpUtility.UrlEncode(url);
+        }
+        public static string UrlDecode(string url)
+        {
+            return HttpUtility.UrlDecode(url);
+        }
         #endregion
 
 
@@ -457,6 +485,24 @@ namespace v2rayN
         public static bool IsMatch(string input, string pattern)
         {
             return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
+        }
+
+        public static bool IsIpv6(string ip)
+        {
+            IPAddress address;
+            if (IPAddress.TryParse(ip, out address))
+            {
+                switch (address.AddressFamily)
+                {
+                    case AddressFamily.InterNetwork:
+                        return false;
+                    case AddressFamily.InterNetworkV6:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            return false;
         }
 
         #endregion
@@ -782,6 +828,10 @@ namespace v2rayN
             }
         }
 
+        public static void AddSubItem(ListViewItem i, string name, string text)
+        {
+            i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
+        }
         #endregion
 
         #region TempPath
@@ -800,7 +850,7 @@ namespace v2rayN
         public static string GetTempPath(string filename)
         {
             return Path.Combine(GetTempPath(), filename);
-        }              
+        }
 
         public static string UnGzip(byte[] buf)
         {

@@ -238,7 +238,7 @@
     <value>清除原订阅内容</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>下载V2ray成功</value>
+    <value>下载Core成功</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>导入订阅内容失败</value>
@@ -283,10 +283,10 @@
     <value>更新订阅开始</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>更新V2rayCore成功</value>
+    <value>更新Core成功</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>更新V2rayCore成功！正在重启服务...</value>
+    <value>更新Core成功！正在重启服务...</value>
   </data>
   <data name="NeedHttpGlobalProxy" xml:space="preserve">
     <value>此功能依赖Http全局代理,请先设置正确。</value>
@@ -298,7 +298,7 @@
     <value>非Vmess服务，此功能无效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>找不到 v2ray-core，下载地址: {0}</value>
+    <value>找不到Core，下载地址: {0}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成,未发现有效二维码</value>
@@ -360,5 +360,29 @@
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>当前服务的真连接延迟: {0}</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>操作成功</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>请先选择规则</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>是否确定移除规则?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0},必填其中一项.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>别名</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>地址(Url)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>请填写地址(Url)</value>
   </data>
 </root>

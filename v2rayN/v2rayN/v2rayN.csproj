@@ -125,11 +125,31 @@
     <Compile Include="Forms\BaseServerForm.Designer.cs">
       <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RoutingRuleSettingDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingRuleSettingDetailsForm.Designer.cs">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RoutingRuleSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\ShareHandler.cs" />
+    <Compile Include="Mode\ComboItem.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RoutingSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoutingSettingForm.Designer.cs">
+      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SubSettingForm.cs">
       <SubType>Form</SubType>
@@ -165,18 +185,19 @@
     <Compile Include="Handler\SpeedtestHandler.cs" />
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\DownloadHandle.cs" />
-    <Compile Include="Base\HttpWebServer.cs" />
-    <Compile Include="Base\HttpWebServerB.cs" />
     <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
-    <Compile Include="HttpProxyHandler\PACServerHandle.cs" />
     <Compile Include="HttpProxyHandler\ProxySetting.cs" />
     <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />
     <Compile Include="Base\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
+    <Compile Include="Mode\ECoreType.cs" />
+    <Compile Include="Mode\ESysProxyType.cs" />
     <Compile Include="Mode\EMove.cs" />
     <Compile Include="Mode\EServerColName.cs" />
+    <Compile Include="Mode\RoutingItem.cs" />
+    <Compile Include="Mode\RulesItem.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
     <Compile Include="Mode\EConfigType.cs" />
@@ -287,12 +308,34 @@
       <DependentUpon>QRCodeControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.resx">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.zh-Hans.resx">
+      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.resx">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.zh-Hans.resx">
+      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.zh-Hans.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingSettingForm.resx">
+      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoutingSettingForm.zh-Hans.resx">
+      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingForm.resx">
       <DependentUpon>SubSettingForm.cs</DependentUpon>
@@ -341,14 +384,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Sample\custom_routing_block" />
-    <EmbeddedResource Include="Sample\custom_routing_direct" />
-    <EmbeddedResource Include="Sample\custom_routing_proxy" />
     <None Include="Resources\sysproxy.exe.gz" />
     <None Include="Resources\sysproxy64.exe.gz" />
+    <EmbeddedResource Include="Sample\custom_routing_white" />
+    <EmbeddedResource Include="Sample\custom_routing_global" />
+    <EmbeddedResource Include="Sample\custom_routing_locked" />
     <Protobuf Include="Protos\Statistics.proto" />
-    <None Include="Resources\abp.js.gz" />
-    <None Include="Resources\pac.txt.gz" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resx\ResUI.zh-Hans.resx">
@@ -411,13 +452,11 @@
   <ItemGroup>
     <None Include="Resources\share.png" />
     <None Include="Resources\promotion.png" />
-    <EmbeddedResource Include="Sample\BlankPac.txt" />
     <None Include="Resources\sub.png" />
     <None Include="Resources\checkupdate.png" />
     <None Include="Resources\about.png" />
     <Content Include="Resources\help.png" />
     <None Include="Resources\notify.png" />
-    <Content Include="Resources\privoxy_conf.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">

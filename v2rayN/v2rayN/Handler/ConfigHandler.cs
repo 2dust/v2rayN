@@ -16,6 +16,8 @@ namespace v2rayN.Handler
     {
         private static string configRes = Global.ConfigFileName;
 
+        #region ConfigHandler
+
         /// <summary>
         /// 载入配置文件
         /// </summary>
@@ -87,22 +89,7 @@ namespace v2rayN.Handler
             {
                 config.domainStrategy = "IPIfNonMatch";
             }
-            if (Utils.IsNullOrEmpty(config.routingMode))
-            {
-                config.routingMode = "0";
-            }
-            if (config.useragent == null)
-            {
-                config.useragent = new List<string>();
-            }
-            if (config.userdirect == null)
-            {
-                config.userdirect = new List<string>();
-            }
-            if (config.userblock == null)
-            {
-                config.userblock = new List<string>();
-            }
+
             //kcp
             if (config.kcpItem == null)
             {
@@ -139,10 +126,6 @@ namespace v2rayN.Handler
             {
                 config.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
-            if (Utils.IsNullOrEmpty(config.urlGFWList))
-            {
-                config.urlGFWList = Global.GFWLIST_URL;
-            }
             //if (Utils.IsNullOrEmpty(config.remoteDNS))
             //{
             //    config.remoteDNS = "1.1.1.1";
@@ -151,10 +134,6 @@ namespace v2rayN.Handler
             if (config.subItem == null)
             {
                 config.subItem = new List<SubItem>();
-            }
-            if (config.userPacRule == null)
-            {
-                config.userPacRule = new List<string>();
             }
 
             if (config == null
@@ -179,6 +158,10 @@ namespace v2rayN.Handler
 
             return 0;
         }
+
+        #endregion
+
+        #region Server
 
         /// <summary>
         /// 添加服务器或编辑
@@ -299,7 +282,9 @@ namespace v2rayN.Handler
                 path = config.vmess[index].path,
                 streamSecurity = config.vmess[index].streamSecurity,
                 allowInsecure = config.vmess[index].allowInsecure,
-                configType = config.vmess[index].configType
+                configType = config.vmess[index].configType,
+                flow = config.vmess[index].flow,
+                sni = config.vmess[index].sni
             };
 
             config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
@@ -356,95 +341,6 @@ namespace v2rayN.Handler
         private static void ToJsonFile(Config config)
         {
             Utils.ToJsonFile(config, Utils.GetPath(configRes));
-        }
-
-        /// <summary>
-        /// 取得服务器QRCode配置
-        /// </summary>
-        /// <param name="config"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static string GetVmessQRCode(Config config, int index)
-        {
-            try
-            {
-                string url = string.Empty;
-
-                VmessItem vmessItem = config.vmess[index];
-                if (vmessItem.configType == (int)EConfigType.Vmess)
-                {
-                    VmessQRCode vmessQRCode = new VmessQRCode
-                    {
-                        v = vmessItem.configVersion.ToString(),
-                        ps = vmessItem.remarks.TrimEx(), //备注也许很长 ;
-                        add = vmessItem.address,
-                        port = vmessItem.port.ToString(),
-                        id = vmessItem.id,
-                        aid = vmessItem.alterId.ToString(),
-                        net = vmessItem.network,
-                        type = vmessItem.headerType,
-                        host = vmessItem.requestHost,
-                        path = vmessItem.path,
-                        tls = vmessItem.streamSecurity
-                    };
-
-                    url = Utils.ToJson(vmessQRCode);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}", Global.vmessProtocol, url);
-
-                }
-                else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    url = string.Format("{0}:{1}@{2}:{3}",
-                        vmessItem.security,
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}{2}", Global.ssProtocol, url, remark);
-                }
-                else if (vmessItem.configType == (int)EConfigType.Socks)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    url = string.Format("{0}:{1}@{2}:{3}",
-                        vmessItem.security,
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = Utils.Base64Encode(url);
-                    url = string.Format("{0}{1}{2}", Global.socksProtocol, url, remark);
-                }
-                else if (vmessItem.configType == (int)EConfigType.Trojan)
-                {
-                    string remark = string.Empty;
-                    if (!Utils.IsNullOrEmpty(vmessItem.remarks))
-                    {
-                        remark = "#" + WebUtility.UrlEncode(vmessItem.remarks);
-                    }
-                    url = string.Format("{0}@{1}:{2}",
-                        vmessItem.id,
-                        vmessItem.address,
-                        vmessItem.port);
-                    url = string.Format("{0}{1}{2}", Global.trojanProtocol, url, remark);
-                }
-                else
-                {
-                }
-                return url;
-            }
-            catch
-            {
-                return "";
-            }
         }
 
         /// <summary>
@@ -633,6 +529,11 @@ namespace v2rayN.Handler
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
 
+            if (!Global.ssSecuritys.Contains(vmessItem.security))
+            {
+                return -1;
+            }
+
             if (index >= 0)
             {
                 //修改
@@ -714,7 +615,10 @@ namespace v2rayN.Handler
             vmessItem.id = vmessItem.id.TrimEx();
 
             vmessItem.streamSecurity = Global.StreamSecurity;
-            vmessItem.allowInsecure = "false";
+            if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+            {
+                vmessItem.allowInsecure = config.defAllowInsecure.ToString();
+            }
 
             if (index >= 0)
             {
@@ -838,7 +742,7 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(str, out string msg);
+                VmessItem vmessItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
                 if (vmessItem == null)
                 {
                     continue;
@@ -868,6 +772,13 @@ namespace v2rayN.Handler
                 else if (vmessItem.configType == (int)EConfigType.Trojan)
                 {
                     if (AddTrojanServer(ref config, vmessItem, -1) == 0)
+                    {
+                        countServers++;
+                    }
+                }
+                else if (vmessItem.configType == (int)EConfigType.VLESS)
+                {
+                    if (AddVlessServer(ref config, vmessItem, -1) == 0)
                     {
                         countServers++;
                     }
@@ -950,38 +861,6 @@ namespace v2rayN.Handler
 
             ToJsonFile(config);
             return 0;
-        }
-
-        public static int AddformMainLvColWidth(ref Config config, string name, int width)
-        {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-            if (config.uiItem.mainLvColWidth.ContainsKey(name))
-            {
-                config.uiItem.mainLvColWidth[name] = width;
-            }
-            else
-            {
-                config.uiItem.mainLvColWidth.Add(name, width);
-            }
-            return 0;
-        }
-        public static int GetformMainLvColWidth(ref Config config, string name, int width)
-        {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-            if (config.uiItem.mainLvColWidth.ContainsKey(name))
-            {
-                return config.uiItem.mainLvColWidth[name];
-            }
-            else
-            {
-                return width;
-            }
         }
 
         public static int SortServers(ref Config config, EServerColName name, bool asc)
@@ -1075,5 +954,252 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        #endregion
+
+        #region UI
+
+        public static int AddformMainLvColWidth(ref Config config, string name, int width)
+        {
+            if (config.uiItem.mainLvColWidth == null)
+            {
+                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+            }
+            if (config.uiItem.mainLvColWidth.ContainsKey(name))
+            {
+                config.uiItem.mainLvColWidth[name] = width;
+            }
+            else
+            {
+                config.uiItem.mainLvColWidth.Add(name, width);
+            }
+            return 0;
+        }
+        public static int GetformMainLvColWidth(ref Config config, string name, int width)
+        {
+            if (config.uiItem.mainLvColWidth == null)
+            {
+                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+            }
+            if (config.uiItem.mainLvColWidth.ContainsKey(name))
+            {
+                return config.uiItem.mainLvColWidth[name];
+            }
+            else
+            {
+                return width;
+            }
+        }
+
+        #endregion
+
+        #region Routing
+
+        public static int SaveRouting(ref Config config)
+        {
+            if (config.routings == null)
+            {
+                return -1;
+            }
+
+            foreach (var item in config.routings)
+            {
+
+            }
+            //move locked item
+            int index = config.routings.FindIndex(it => it.locked == true);
+            if (index != -1)
+            {
+                var item = Utils.DeepCopy(config.routings[index]);
+                config.routings.RemoveAt(index);
+                config.routings.Add(item);
+            }
+            if (config.routingIndex >= config.routings.Count)
+            {
+                config.routingIndex = 0;
+            }
+
+            Global.reloadV2ray = true;
+
+            ToJsonFile(config);
+            return 0;
+        }
+
+        public static int AddRoutingItem(ref Config config, RoutingItem item, int index)
+        {
+            if (index >= 0)
+            {
+                config.routings[index] = item;
+            }
+            else
+            {
+                config.routings.Add(item);
+            }
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// AddBatchRoutingRules
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="clipboardData"></param>
+        /// <returns></returns>
+        public static int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
+        {
+            if (Utils.IsNullOrEmpty(clipboardData))
+            {
+                return -1;
+            }
+
+            var lstRules = Utils.FromJson<List<RulesItem>>(clipboardData);
+            if (lstRules == null)
+            {
+                return -1;
+            }
+
+            routingItem.rules.Clear();
+            foreach (var item in lstRules)
+            {
+                routingItem.rules.Add(item);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// MoveRoutingRule
+        /// </summary>
+        /// <param name="routingItem"></param>
+        /// <param name="index"></param>
+        /// <param name="eMove"></param>
+        /// <returns></returns>
+        public static int MoveRoutingRule(ref RoutingItem routingItem, int index, EMove eMove)
+        {
+            int count = routingItem.rules.Count;
+            if (index < 0 || index > routingItem.rules.Count - 1)
+            {
+                return -1;
+            }
+            switch (eMove)
+            {
+                case EMove.Top:
+                    {
+                        if (index == 0)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(routingItem.rules[index]);
+                        routingItem.rules.RemoveAt(index);
+                        routingItem.rules.Insert(0, item);
+
+                        break;
+                    }
+                case EMove.Up:
+                    {
+                        if (index == 0)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(routingItem.rules[index]);
+                        routingItem.rules.RemoveAt(index);
+                        routingItem.rules.Insert(index - 1, item);
+
+                        break;
+                    }
+
+                case EMove.Down:
+                    {
+                        if (index == count - 1)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(routingItem.rules[index]);
+                        routingItem.rules.RemoveAt(index);
+                        routingItem.rules.Insert(index + 1, item);
+
+                        break;
+                    }
+                case EMove.Bottom:
+                    {
+                        if (index == count - 1)
+                        {
+                            return 0;
+                        }
+                        var item = Utils.DeepCopy(routingItem.rules[index]);
+                        routingItem.rules.RemoveAt(index);
+                        routingItem.rules.Add(item);
+
+                        break;
+                    }
+
+            }
+            return 0;
+        }
+
+        public static int SetDefaultRouting(ref Config config, int index)
+        {
+            if (index < 0 || index > config.routings.Count - 1)
+            {
+                return -1;
+            }
+
+            ////和现在相同
+            //if (config.index.Equals(index))
+            //{
+            //    return -1;
+            //}
+            config.routingIndex = index;
+            Global.reloadV2ray = true;
+
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+        public static int InitBuiltinRouting(ref Config config)
+        {
+            if (config.routings == null)
+            {
+                config.routings = new List<RoutingItem>();
+            }
+            if (config.routings.Count <= 0)
+            {
+                //Bypass the mainland
+                var item2 = new RoutingItem();
+                item2.remarks = "绕过大陆(Whitelist)";
+                item2.url = string.Empty;
+                item2.rules = new List<RulesItem>();
+                string result2 = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
+                AddBatchRoutingRules(ref item2, result2);
+                config.routings.Add(item2);
+
+                config.routingIndex = 0;
+            }
+            
+            if (GetLockedRoutingItem(ref config) == null)
+            {
+                var item1 = new RoutingItem();
+                item1.remarks = "locked";
+                item1.url = string.Empty;
+                item1.rules = new List<RulesItem>();
+                item1.locked = true;
+                string result1 = Utils.GetEmbedText(Global.CustomRoutingFileName + "locked");
+                AddBatchRoutingRules(ref item1, result1);
+                config.routings.Add(item1);
+            }
+
+            SaveRouting(ref config);
+            return 0;
+        }         
+
+        public static RoutingItem GetLockedRoutingItem(ref Config config)
+        {
+            if (config.routings == null)
+            {
+                return null;
+            }
+            return config.routings.Find(it => it.locked == true);
+        }
+        #endregion
     }
 }

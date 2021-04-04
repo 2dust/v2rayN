@@ -119,7 +119,7 @@ namespace v2rayN.Forms
         {
             ClearServer();
 
-            VmessItem vmessItem = V2rayConfigHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
+            VmessItem vmessItem = ShareHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
             if (vmessItem == null)
             {
                 UI.ShowWarning(msg);

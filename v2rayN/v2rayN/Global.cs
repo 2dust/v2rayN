@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace v2rayN
 {
     class Global
@@ -9,6 +11,9 @@ namespace v2rayN
         public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
+        public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
+        public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
+        public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
 
 
         /// <summary>
@@ -23,7 +28,6 @@ namespace v2rayN
         /// </summary>
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
-        public const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
         /// <summary>
         /// PromotionUrl
@@ -56,10 +60,7 @@ namespace v2rayN
         /// v2ray配置Httpresponse文件名
         /// </summary>
         public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse.txt";
-        /// <summary>
-        /// 空白的pac文件
-        /// </summary>
-        public const string BlankPacFileName = "v2rayN.Sample.BlankPac.txt";
+
 
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
 
@@ -162,11 +163,6 @@ namespace v2rayN
         public const string trojanProtocolLite = "trojan";
 
         /// <summary>
-        /// pac
-        /// </summary>
-        public const string pacFILE = "pac.txt";
-
-        /// <summary>
         /// email
         /// </summary>
         public const string userEMail = "t@t.tt";
@@ -195,6 +191,9 @@ namespace v2rayN
 
         public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
 
+        public const string RoutingRuleComma = "<COMMA>";
+
+        public static readonly IEnumerable<string> ssSecuritys = new HashSet<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
         #endregion
 
         #region 全局变量
@@ -231,13 +230,6 @@ namespace v2rayN
             get; set;
         }
 
-        /// <summary>
-        /// PAC端口
-        /// </summary>
-        public static int pacPort
-        {
-            get; set;
-        }
 
         /// <summary>
         ///  

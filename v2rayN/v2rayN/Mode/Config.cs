@@ -61,46 +61,6 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 域名解析策略
-        /// </summary>
-        public string domainStrategy
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 路由模式
-        /// </summary>
-        public string routingMode
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义需代理的网址或ip
-        /// </summary>
-        public List<string> useragent
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义直连的网址或ip
-        /// </summary>
-        public List<string> userdirect
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 用户自定义阻止的网址或ip
-        /// </summary>
-        public List<string> userblock
-        {
-            get; set;
-        }
-
-        /// <summary>
         /// KcpItem
         /// </summary>
         public KcpItem kcpItem
@@ -109,9 +69,9 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 监听状态
+        /// 
         /// </summary>
-        public ListenerType listenerType
+        public ESysProxyType sysProxyType
         {
             get; set;
         }
@@ -127,13 +87,6 @@ namespace v2rayN.Mode
         /// 自定义“服务器真连接延迟”测试url
         /// </summary>
         public string speedPingTestUrl
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 自定义GFWList url
-        /// </summary>
-        public string urlGFWList
         {
             get; set;
         }
@@ -201,8 +154,31 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        /// <summary>
+        /// 域名解析策略
+        /// </summary>
+        public string domainStrategy
+        {
+            get; set;
+        }
+        public int routingIndex
+        {
+            get; set;
+        }
+        public List<RoutingItem> routings
+        {
+            get; set;
+        }
+        public bool enableRoutingAdvanced
+        {
+            get; set;
+        }
 
-        public List<string> userPacRule
+        public ECoreType coreType
+        {
+            get; set;
+        }
+        public bool ignoreGeoUpdateCore
         {
             get; set;
         }
@@ -317,10 +293,7 @@ namespace v2rayN.Mode
             {
                 return GetLocalPort(Global.InboundSocks) + 1;
             }
-            else if (protocol == "pac")
-            {
-                return GetLocalPort(Global.InboundSocks) + 2;
-            }
+
             else if (protocol == "speedtest")
             {
                 return GetLocalPort(Global.InboundSocks) + 103;
@@ -372,6 +345,14 @@ namespace v2rayN.Mode
                 return string.Empty;
             }
             return vmess[index].flow.TrimEx();
+        }
+        public string sni()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].sni.TrimEx();
         }
         #endregion
 
@@ -596,6 +577,13 @@ namespace v2rayN.Mode
         /// VLESS flow
         /// </summary>
         public string flow
+        {
+            get; set;
+        }
+        /// <summary>
+        /// tls sni
+        /// </summary>
+        public string sni
         {
             get; set;
         }
