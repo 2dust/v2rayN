@@ -139,8 +139,11 @@
   <data name="chksniffingEnabled.Text" xml:space="preserve">
     <value>开启流量探测</value>
   </data>
+  <data name="chkmuxEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
   <data name="chkmuxEnabled.Text" xml:space="preserve">
-    <value>开启Mux多路复用(默认开启)</value>
+    <value>开启Mux多路复用</value>
   </data>
   <data name="chkAllowIn2.Size" type="System.Drawing.Size, System.Drawing">
     <value>102, 16</value>

@@ -34,6 +34,7 @@
             this.btnGUID = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.panTlsMore = new System.Windows.Forms.Panel();
@@ -80,7 +81,6 @@
             this.MenuItemImportServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panTlsMore.SuspendLayout();
@@ -156,6 +156,11 @@
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
             // 
             // label24
             // 
@@ -326,7 +331,8 @@
             resources.GetString("cmbSecurity.Items"),
             resources.GetString("cmbSecurity.Items1"),
             resources.GetString("cmbSecurity.Items2"),
-            resources.GetString("cmbSecurity.Items3")});
+            resources.GetString("cmbSecurity.Items3"),
+            resources.GetString("cmbSecurity.Items4")});
             resources.ApplyResources(this.cmbSecurity, "cmbSecurity");
             this.cmbSecurity.Name = "cmbSecurity";
             // 
@@ -443,11 +449,6 @@
             this.MenuItemImportClipboard.Name = "MenuItemImportClipboard";
             resources.ApplyResources(this.MenuItemImportClipboard, "MenuItemImportClipboard");
             this.MenuItemImportClipboard.Click += new System.EventHandler(this.MenuItemImportClipboard_Click);
-            // 
-            // label25
-            // 
-            resources.ApplyResources(this.label25, "label25");
-            this.label25.Name = "label25";
             // 
             // AddServerForm
             // 

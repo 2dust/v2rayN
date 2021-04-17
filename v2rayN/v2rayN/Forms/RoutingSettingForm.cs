@@ -290,6 +290,7 @@ namespace v2rayN.Forms
         private void menuImportBasicRules_Click(object sender, EventArgs e)
         {
             //Extra to bypass the mainland
+            txtProxyDomain.Text = "geosite:google";
             txtDirectDomain.Text = "geosite:cn";
             txtDirectIp.Text = "geoip:private,geoip:cn";
 

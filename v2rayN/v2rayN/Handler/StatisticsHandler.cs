@@ -111,7 +111,7 @@ namespace v2rayN.Handler
                         }
                         catch (Exception ex)
                         {
-                            Utils.SaveLog(ex.Message, ex);
+                            //Utils.SaveLog(ex.Message, ex);
                         }
 
                         if (res != null)
@@ -138,7 +138,7 @@ namespace v2rayN.Handler
                 }
                 catch (Exception ex)
                 {
-                    Utils.SaveLog(ex.Message, ex);
+                    //Utils.SaveLog(ex.Message, ex);
                 }
             }
         }
@@ -271,7 +271,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                //Utils.SaveLog(ex.Message, ex);
             }
         }
 

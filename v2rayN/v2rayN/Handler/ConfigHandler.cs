@@ -1045,7 +1045,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="clipboardData"></param>
         /// <returns></returns>
-        public static int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
+        public static int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData, bool blReplace = true)
         {
             if (Utils.IsNullOrEmpty(clipboardData))
             {
@@ -1057,8 +1057,10 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
-
-            routingItem.rules.Clear();
+            if (blReplace)
+            {
+                routingItem.rules.Clear();
+            }
             foreach (var item in lstRules)
             {
                 routingItem.rules.Add(item);
@@ -1175,7 +1177,7 @@ namespace v2rayN.Handler
 
                 config.routingIndex = 0;
             }
-            
+
             if (GetLockedRoutingItem(ref config) == null)
             {
                 var item1 = new RoutingItem();
@@ -1190,7 +1192,7 @@ namespace v2rayN.Handler
 
             SaveRouting(ref config);
             return 0;
-        }         
+        }
 
         public static RoutingItem GetLockedRoutingItem(ref Config config)
         {

@@ -227,7 +227,7 @@ namespace v2rayN.Forms
             if (lst.Count > 0)
             {
                 Utils.SetClipboardData(Utils.ToJson(lst));
-                UI.Show(UIRes.I18N("OperationSuccess"));
+                //UI.Show(UIRes.I18N("OperationSuccess"));
             }
 
         }
@@ -294,7 +294,7 @@ namespace v2rayN.Forms
                 return;
             }
 
-            if (ConfigHandler.AddBatchRoutingRules(ref routingItem, result) == 0)
+            if (AddBatchRoutingRules(ref routingItem, result) == 0)
             {
                 RefreshRoutingsView();
                 UI.Show(UIRes.I18N("OperationSuccess"));
@@ -304,7 +304,7 @@ namespace v2rayN.Forms
         private void menuImportRulesFromClipboard_Click(object sender, EventArgs e)
         {
             string clipboardData = Utils.GetClipboardData();
-            if (ConfigHandler.AddBatchRoutingRules(ref routingItem, clipboardData) == 0)
+            if (AddBatchRoutingRules(ref routingItem, clipboardData) == 0)
             {
                 RefreshRoutingsView();
                 UI.Show(UIRes.I18N("OperationSuccess"));
@@ -320,11 +320,20 @@ namespace v2rayN.Forms
             }
             DownloadHandle downloadHandle = new DownloadHandle();
             string clipboardData = downloadHandle.WebDownloadStringSync(url);
-            if (ConfigHandler.AddBatchRoutingRules(ref routingItem, clipboardData) == 0)
+            if (AddBatchRoutingRules(ref routingItem, clipboardData) == 0)
             {
                 RefreshRoutingsView();
                 UI.Show(UIRes.I18N("OperationSuccess"));
             }
+        }
+        private int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
+        {
+            bool blReplace = false;
+            if (UI.ShowYesNo(UIRes.I18N("AddBatchRoutingRulesYesNo")) == DialogResult.No)
+            {
+                blReplace = true;
+            }
+            return ConfigHandler.AddBatchRoutingRules(ref routingItem, clipboardData, blReplace);
         }
 
         #endregion

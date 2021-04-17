@@ -385,4 +385,7 @@
   <data name="MsgNeedUrl" xml:space="preserve">
     <value>Please fill in the address (Url)</value>
   </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
+  </data>
 </root>

@@ -40,6 +40,7 @@ namespace v2rayN.Handler
                         port = item.port.ToString(),
                         id = item.id,
                         aid = item.alterId.ToString(),
+                        scy = item.security,
                         net = item.network,
                         type = item.headerType,
                         host = item.requestHost,
@@ -279,10 +280,9 @@ namespace v2rayN.Handler
                             msg = UIRes.I18N("FailedConversionConfiguration");
                             return null;
                         }
-                        vmessItem.security = Global.DefaultSecurity;
+                                                
                         vmessItem.network = Global.DefaultNetwork;
                         vmessItem.headerType = Global.None;
-
 
                         vmessItem.configVersion = Utils.ToInt(vmessQRCode.v);
                         vmessItem.remarks = Utils.ToString(vmessQRCode.ps);
@@ -290,7 +290,16 @@ namespace v2rayN.Handler
                         vmessItem.port = Utils.ToInt(vmessQRCode.port);
                         vmessItem.id = Utils.ToString(vmessQRCode.id);
                         vmessItem.alterId = Utils.ToInt(vmessQRCode.aid);
+                        vmessItem.security = Utils.ToString(vmessQRCode.scy);
 
+                        if (!Utils.IsNullOrEmpty(vmessQRCode.scy))
+                        {
+                            vmessItem.security = vmessQRCode.scy;
+                        }
+                        else
+                        {
+                            vmessItem.security = Global.DefaultSecurity;
+                        }
                         if (!Utils.IsNullOrEmpty(vmessQRCode.net))
                         {
                             vmessItem.network = vmessQRCode.net;

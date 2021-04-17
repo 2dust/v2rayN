@@ -14,21 +14,26 @@ namespace v2rayN.Mode
         /// </summary>
         public string ps { get; set; } = string.Empty;
         /// <summary>
-        /// 远程服务器地址
+        /// VMess 远程服务器地址
         /// </summary>
         public string add { get; set; } = string.Empty;
         /// <summary>
-        /// 远程服务器端口
+        /// VMess 远程服务器端口
         /// </summary>
         public string port { get; set; } = string.Empty;
         /// <summary>
-        /// 远程服务器ID
+        /// VMess 远程服务器ID
         /// </summary>
         public string id { get; set; } = string.Empty;
         /// <summary>
-        /// 远程服务器额外ID
+        /// VMess 远程服务器额外ID
         /// </summary>
         public string aid { get; set; } = string.Empty;
+        /// <summary>
+        /// VMess Security
+        /// </summary>
+        public string scy { get; set; } = string.Empty;
+
         /// <summary>
         /// 传输协议tcp,kcp,ws
         /// </summary>

@@ -55,15 +55,14 @@
             // 
             // btnClose
             // 
-            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.cmbAllowInsecure);
             this.groupBox1.Controls.Add(this.label15);
@@ -79,6 +78,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtAddress);
             this.groupBox1.Controls.Add(this.label1);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -89,13 +89,13 @@
             // 
             // cmbAllowInsecure
             // 
-            resources.ApplyResources(this.cmbAllowInsecure, "cmbAllowInsecure");
             this.cmbAllowInsecure.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAllowInsecure.FormattingEnabled = true;
             this.cmbAllowInsecure.Items.AddRange(new object[] {
             resources.GetString("cmbAllowInsecure.Items"),
             resources.GetString("cmbAllowInsecure.Items1"),
             resources.GetString("cmbAllowInsecure.Items2")});
+            resources.ApplyResources(this.cmbAllowInsecure, "cmbAllowInsecure");
             this.cmbAllowInsecure.Name = "cmbAllowInsecure";
             // 
             // label15
@@ -105,12 +105,12 @@
             // 
             // cmbStreamSecurity
             // 
-            resources.ApplyResources(this.cmbStreamSecurity, "cmbStreamSecurity");
             this.cmbStreamSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStreamSecurity.FormattingEnabled = true;
             this.cmbStreamSecurity.Items.AddRange(new object[] {
             resources.GetString("cmbStreamSecurity.Items"),
             resources.GetString("cmbStreamSecurity.Items1")});
+            resources.ApplyResources(this.cmbStreamSecurity, "cmbStreamSecurity");
             this.cmbStreamSecurity.Name = "cmbStreamSecurity";
             // 
             // label4
@@ -170,9 +170,9 @@
             // 
             // panel2
             // 
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
