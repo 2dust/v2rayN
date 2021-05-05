@@ -36,6 +36,7 @@ namespace v2rayN.Forms
                 v2rayHandler.V2rayStop();
 
                 //HttpProxyHandle.CloseHttpAgent(config);
+                // 第二个bool参数指示此次UpdateSysProxy是否为退出
                 HttpProxyHandle.UpdateSysProxy(config, true);
 
                 ConfigHandler.SaveConfig(ref config);

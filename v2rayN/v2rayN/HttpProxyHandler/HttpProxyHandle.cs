@@ -147,11 +147,12 @@ namespace v2rayN.HttpProxyHandler
             Update(config, false);
         }
 
-        public static bool UpdateSysProxy(Config config, bool forceDisable)
+        public static bool UpdateSysProxy(Config config, bool isExit)
         {
             var type = config.sysProxyType;
 
-            if (forceDisable)
+            // 如果是程序退出那么自动配置系统代理的更新行为应当是清除
+            if (isExit && type == ESysProxyType.ForcedChange)
             {
                 type = ESysProxyType.ForcedClear;
             }
@@ -170,6 +171,7 @@ namespace v2rayN.HttpProxyHandler
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
+                    // 系统关机时这里无法复位成功，需要改
                     SysProxyHandle.ResetIEProxy();
                 }
                 else if (type == ESysProxyType.Unchanged)
