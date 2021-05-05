@@ -92,6 +92,13 @@ namespace v2rayN.Forms
                 HideForm();
                 return;
             }
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+            {
+                Microsoft.Win32.RegistryKey reg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+                reg.SetValue("ProxyEnable", 0);
+                reg.Flush();
+                reg.Close();
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
