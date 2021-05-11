@@ -110,6 +110,8 @@
             this.tsbSetting = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbOptionSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbRoutingSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbBackupGuiNConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -711,7 +713,9 @@
             resources.ApplyResources(this.tsbSetting, "tsbSetting");
             this.tsbSetting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbOptionSetting,
-            this.tsbRoutingSetting});
+            this.tsbRoutingSetting,
+            this.toolStripSeparator14,
+            this.tsbBackupGuiNConfig});
             this.tsbSetting.Image = global::v2rayN.Properties.Resources.option;
             this.tsbSetting.Name = "tsbSetting";
             // 
@@ -726,6 +730,17 @@
             resources.ApplyResources(this.tsbRoutingSetting, "tsbRoutingSetting");
             this.tsbRoutingSetting.Name = "tsbRoutingSetting";
             this.tsbRoutingSetting.Click += new System.EventHandler(this.tsbRoutingSetting_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            resources.ApplyResources(this.toolStripSeparator14, "toolStripSeparator14");
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            // 
+            // tsbBackupGuiNConfig
+            // 
+            resources.ApplyResources(this.tsbBackupGuiNConfig, "tsbBackupGuiNConfig");
+            this.tsbBackupGuiNConfig.Name = "tsbBackupGuiNConfig";
+            this.tsbBackupGuiNConfig.Click += new System.EventHandler(this.tsbBackupGuiNConfig_Click);
             // 
             // toolStripSeparator5
             // 
@@ -970,6 +985,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxCopy;
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxAddRoutingRule;
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxCopyAll;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripMenuItem tsbBackupGuiNConfig;
     }
 }
 

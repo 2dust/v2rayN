@@ -33,14 +33,7 @@ namespace v2rayN.Forms
 
             Application.ApplicationExit += (sender, args) =>
             {
-                v2rayHandler.V2rayStop();
-
-                //HttpProxyHandle.CloseHttpAgent(config);
-                HttpProxyHandle.UpdateSysProxy(config, true);
-
-                ConfigHandler.SaveConfig(ref config);
-                statistics?.SaveToFile();
-                statistics?.Close();
+                MyAppExit();
             };
         }
 
@@ -85,12 +78,19 @@ namespace v2rayN.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
+            switch (e.CloseReason)
             {
-                StorageUI();
-                e.Cancel = true;
-                HideForm();
-                return;
+                case CloseReason.UserClosing:
+                    StorageUI();
+                    e.Cancel = true;
+                    HideForm();
+                    break;
+                case CloseReason.ApplicationExitCall:
+                case CloseReason.FormOwnerClosing:
+                case CloseReason.TaskManagerClosing:
+                case CloseReason.WindowsShutDown:
+                    MyAppExit();
+                    break;
             }
         }
 
@@ -105,26 +105,21 @@ namespace v2rayN.Forms
 
             //}
         }
+        private void MyAppExit()
+        {
+            try
+            {
+                v2rayHandler.V2rayStop();
 
+                //HttpProxyHandle.CloseHttpAgent(config);
+                HttpProxyHandle.UpdateSysProxy(config, true);
 
-        //private const int WM_QUERYENDSESSION = 0x0011;
-        //protected override void WndProc(ref Message m)
-        //{
-        //    switch (m.Msg)
-        //    {
-        //        case WM_QUERYENDSESSION:
-        //            Utils.SaveLog("Windows shutdown UnsetProxy");
-
-        //            ConfigHandler.ToJsonFile(config);
-        //            statistics?.SaveToFile();
-        //            ProxySetting.UnsetProxy();
-        //            m.Result = (IntPtr)1;
-        //            break;
-        //        default:
-        //            base.WndProc(ref m);
-        //            break;
-        //    }
-        //}
+                ConfigHandler.SaveConfig(ref config);
+                statistics?.SaveToFile();
+                statistics?.Close();
+            }
+            catch { }
+        }
 
         private void RestoreUI()
         {
@@ -883,6 +878,10 @@ namespace v2rayN.Forms
             UpdateSubscriptionProcess();
         }
 
+        private void tsbBackupGuiNConfig_Click(object sender, EventArgs e)
+        {
+            MainFormHandler.Instance.BackupGuiNConfig(config);
+        }
         #endregion
 
 
@@ -1406,7 +1405,7 @@ namespace v2rayN.Forms
                     RefreshServers();
                 }
             };
-            MainFormHandler.Instance.UpdateSubscriptionProcess(config, _updateUI);            
+            MainFormHandler.Instance.UpdateSubscriptionProcess(config, _updateUI);
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)

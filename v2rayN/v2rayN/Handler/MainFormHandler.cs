@@ -236,6 +236,33 @@ namespace v2rayN.Handler
             }
 
         }
+        
+        public void BackupGuiNConfig(Config config)
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog
+            {
+                Filter = "guiNConfig|*.json",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (fileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            string fileName = fileDialog.FileName;
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+            if (Utils.ToJsonFile(config, fileName) == 0)
+            {
+                UI.Show(UIRes.I18N("OperationSuccess"));
+            }
+            else
+            {
+                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+            }
+        }
 
     }
 }
