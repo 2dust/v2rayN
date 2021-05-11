@@ -390,9 +390,6 @@
   <data name="txtId.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 91</value>
   </data>
-  <data name="txtId.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
-    <value>*</value>
-  </data>
   <data name="txtId.Size" type="System.Drawing.Size, System.Drawing">
     <value>265, 21</value>
   </data>

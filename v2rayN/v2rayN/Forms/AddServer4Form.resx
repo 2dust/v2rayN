@@ -264,9 +264,6 @@
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Server</value>
-  </data>
   <data name="txtId.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 120</value>
   </data>
@@ -375,8 +372,8 @@
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>547, 10</value>
   </data>
-  <data name="txtId.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
-    <value>*</value>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 35</value>
   </data>
   <data name="&gt;&gt;txtId.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -543,6 +540,9 @@
   <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="txtId.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
@@ -555,8 +555,8 @@
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 35</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Server</value>
   </data>
   <data name="&gt;&gt;txtRemarks.Name" xml:space="preserve">
     <value>txtRemarks</value>
@@ -581,9 +581,6 @@
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-Hans</value>
   </metadata>
   <metadata name="menuServer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
