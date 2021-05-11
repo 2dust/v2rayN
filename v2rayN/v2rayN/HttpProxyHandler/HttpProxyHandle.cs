@@ -151,7 +151,7 @@ namespace v2rayN.HttpProxyHandler
         {
             var type = config.sysProxyType;
 
-            if (forceDisable)
+            if (forceDisable && type == ESysProxyType.ForcedChange)
             {
                 type = ESysProxyType.ForcedClear;
             }
@@ -170,6 +170,8 @@ namespace v2rayN.HttpProxyHandler
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
+                    //TODO To be verified
+                    Utils.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
                     SysProxyHandle.ResetIEProxy();
                 }
                 else if (type == ESysProxyType.Unchanged)

@@ -210,6 +210,12 @@ namespace v2rayN.Handler
                             dicQuery.Add("quicSecurity", Utils.UrlEncode(item.requestHost));
                             dicQuery.Add("key", Utils.UrlEncode(item.path));
                             break;
+                        case "grpc":
+                            if (!Utils.IsNullOrEmpty(item.path))
+                            {
+                                dicQuery.Add("serviceName", Utils.UrlEncode(item.path));
+                            }
+                            break;
                     }
                     string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
@@ -280,7 +286,7 @@ namespace v2rayN.Handler
                             msg = UIRes.I18N("FailedConversionConfiguration");
                             return null;
                         }
-                                                
+
                         vmessItem.network = Global.DefaultNetwork;
                         vmessItem.headerType = Global.None;
 
@@ -690,7 +696,9 @@ namespace v2rayN.Handler
                     item.requestHost = query["quicSecurity"] ?? "none";
                     item.path = Utils.UrlDecode(query["key"] ?? "");
                     break;
-
+                case "grpc":
+                    item.path = Utils.UrlDecode(query["serviceName"] ?? "");
+                    break;
                 default:
                     return null;
             }

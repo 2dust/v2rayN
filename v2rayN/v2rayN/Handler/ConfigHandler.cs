@@ -1164,8 +1164,18 @@ namespace v2rayN.Handler
             {
                 config.routings = new List<RoutingItem>();
             }
-            if (config.routings.Count <= 0)
+
+            if (config.routings.Count(it => it.locked != true) <= 0)
             {
+                //Global
+                var item1 = new RoutingItem();
+                item1.remarks = "全局(Global)";
+                item1.url = string.Empty;
+                item1.rules = new List<RulesItem>();
+                string result1 = Utils.GetEmbedText(Global.CustomRoutingFileName + "global");
+                AddBatchRoutingRules(ref item1, result1);
+                config.routings.Add(item1);
+
                 //Bypass the mainland
                 var item2 = new RoutingItem();
                 item2.remarks = "绕过大陆(Whitelist)";
