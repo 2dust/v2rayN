@@ -249,8 +249,12 @@ namespace v2rayN.Handler
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
                     it.type = "field";
-                    for (int k = 0; k < it.domain.Count; k++)
+                    for (int k = it.domain.Count - 1; k >= 0; k--)
                     {
+                        if (it.domain[k].StartsWith("#"))
+                        {
+                            it.domain.RemoveAt(k);
+                        }
                         it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
                     }
                     //if (Utils.IsNullOrEmpty(it.port))
@@ -704,7 +708,7 @@ namespace v2rayN.Handler
                         break;
                     case "grpc":
                         var grpcSettings = new GrpcSettings();
-                    
+
                         grpcSettings.serviceName = config.path();
                         streamSettings.grpcSettings = grpcSettings;
                         break;

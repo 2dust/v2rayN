@@ -16,6 +16,10 @@ namespace v2rayN.Handler
         private List<int> _selecteds;
         Action<int, string> _updateFunc;
 
+        public SpeedtestHandler(ref Config config)
+        {
+            _config = config;
+        }
 
         public SpeedtestHandler(ref Config config, ref V2rayHandler v2rayHandler, List<int> selecteds, string actionType, Action<int, string> update)
         {

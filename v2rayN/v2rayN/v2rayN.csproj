@@ -138,6 +138,7 @@
       <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Handler\ShareHandler.cs" />
+    <Compile Include="Handler\UpdateHandle.cs" />
     <Compile Include="Mode\ComboItem.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

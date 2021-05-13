@@ -766,9 +766,9 @@ namespace v2rayN
             try
             {
                 IDataObject data = Clipboard.GetDataObject();
-                if (data.GetDataPresent(DataFormats.Text))
+                if (data.GetDataPresent(DataFormats.UnicodeText))
                 {
-                    strData = data.GetData(DataFormats.Text).ToString();
+                    strData = data.GetData(DataFormats.UnicodeText).ToString();
                 }
                 return strData;
             }
