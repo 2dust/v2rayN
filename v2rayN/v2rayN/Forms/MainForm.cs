@@ -33,7 +33,7 @@ namespace v2rayN.Forms
 
             Application.ApplicationExit += (sender, args) =>
             {
-                MyAppExit();
+                MyAppExit(false);
             };
         }
 
@@ -88,8 +88,10 @@ namespace v2rayN.Forms
                 case CloseReason.ApplicationExitCall:
                 case CloseReason.FormOwnerClosing:
                 case CloseReason.TaskManagerClosing:
+                    MyAppExit(false);
+                    break;
                 case CloseReason.WindowsShutDown:
-                    MyAppExit();
+                    MyAppExit(true);
                     break;
             }
         }
@@ -105,14 +107,21 @@ namespace v2rayN.Forms
 
             //}
         }
-        private void MyAppExit()
+        private void MyAppExit(bool blWindowsShutDown)
         {
             try
             {
                 v2rayHandler.V2rayStop();
 
                 //HttpProxyHandle.CloseHttpAgent(config);
-                HttpProxyHandle.UpdateSysProxy(config, true);
+                if (blWindowsShutDown)
+                {
+                    HttpProxyHandle.ResetIEProxy4WindowsShutDown();
+                }
+                else
+                {
+                    HttpProxyHandle.UpdateSysProxy(config, true);
+                }
 
                 ConfigHandler.SaveConfig(ref config);
                 statistics?.SaveToFile();
