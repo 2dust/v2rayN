@@ -388,4 +388,7 @@
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>是否追加规则?选择是则追加,选择否则替换</value>
   </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>下载 GeoFile: {0} 成功</value>
+  </data>
 </root>
