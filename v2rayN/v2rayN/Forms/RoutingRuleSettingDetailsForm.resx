@@ -124,6 +124,9 @@
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;clbInboundTag.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -147,8 +150,8 @@
   <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;cmbinboundTag.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -156,20 +159,20 @@
   <data name="&gt;&gt;clbProtocol.Name" xml:space="preserve">
     <value>clbProtocol</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;labRoutingTips.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="txtDomain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;clbProtocol.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="cmbInboundTag.Items1" xml:space="preserve">
+    <value>socks</value>
   </data>
   <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
@@ -186,8 +189,11 @@
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>742, 576</value>
+  <data name="&gt;&gt;clbInboundTag.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="clbInboundTag.Items1" xml:space="preserve">
+    <value>tls</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>panel2</value>
@@ -198,14 +204,20 @@
   <data name="$this.Text" xml:space="preserve">
     <value>RoutingSettingDetailsForm</value>
   </data>
+  <data name="cmbinboundTag.Items1" xml:space="preserve">
+    <value>socks</value>
+  </data>
   <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="txtIP.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;clbProtocol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cmbinboundTag.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -222,6 +234,9 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
   </data>
+  <data name="panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
@@ -234,14 +249,17 @@
   <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
-    <value>598, 16</value>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;txtDomain.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
   <data name="labRoutingTips.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 121</value>
@@ -256,16 +274,22 @@
     <value>Protocol</value>
   </data>
   <data name="&gt;&gt;cmbOutboundTag.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;panel3.Name" xml:space="preserve">
     <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;cmbInboundTag.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="cmbInboundTag.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
   </data>
   <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
     <value>panel4</value>
@@ -276,14 +300,29 @@
   <data name="clbProtocol.Items2" xml:space="preserve">
     <value>bittorrent</value>
   </data>
+  <data name="clbInboundTag.Items" xml:space="preserve">
+    <value>http</value>
+  </data>
+  <data name="txtDomain.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="labRoutingTips.Location" type="System.Drawing.Point, System.Drawing">
     <value>19, 82</value>
   </data>
   <data name="txtIP.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
   </data>
+  <data name="clbInboundTag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>372, 20</value>
+  </data>
+  <data name="txtDomain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
+  </data>
   <data name="&gt;&gt;labRoutingTips.Parent" xml:space="preserve">
     <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;cmbinboundTag.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -303,6 +342,9 @@
   <data name="txtDomain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="comboBox1.Items1" xml:space="preserve">
+    <value>direct</value>
+  </data>
   <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -318,17 +360,17 @@
   <data name="&gt;&gt;txtPort.Parent" xml:space="preserve">
     <value>panel3</value>
   </data>
-  <data name="txtPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 43</value>
+  <data name="comboBox1.Items" xml:space="preserve">
+    <value>proxy</value>
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
-  <data name="panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="txtDomain.Size" type="System.Drawing.Size, System.Drawing">
     <value>386, 375</value>
@@ -339,8 +381,11 @@
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>392, 0</value>
   </data>
-  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="&gt;&gt;clbProtocol.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="cmbinboundTag.Items2" xml:space="preserve">
+    <value>http</value>
   </data>
   <data name="&gt;&gt;cmbOutboundTag.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -348,17 +393,20 @@
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>panel2</value>
   </data>
+  <data name="txtIP.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="&gt;&gt;panel4.Name" xml:space="preserve">
     <value>panel4</value>
-  </data>
-  <data name="&gt;&gt;clbProtocol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="clbInboundTag.Items2" xml:space="preserve">
+    <value>bittorrent</value>
+  </data>
+  <data name="labRoutingTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>598, 16</value>
   </data>
   <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -366,11 +414,26 @@
   <data name="&gt;&gt;txtIP.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
+  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;cmbInboundTag.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;panel4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;cmbInboundTag.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
   <data name="&gt;&gt;txtIP.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clbProtocol.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="clbProtocol.Items" xml:space="preserve">
     <value>http</value>
@@ -390,11 +453,11 @@
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
   <data name="txtDomain.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
+  </data>
+  <data name="&gt;&gt;cmbinboundTag.Name" xml:space="preserve">
+    <value>cmbinboundTag</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -402,14 +465,14 @@
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
+  <data name="&gt;&gt;cmbinboundTag.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>&amp;OK</value>
   </data>
-  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
+  <data name="comboBox1.Items2" xml:space="preserve">
+    <value>block</value>
   </data>
   <data name="&gt;&gt;labRoutingTips.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -420,17 +483,23 @@
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
   </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 12</value>
+  </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>274, 47</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
   </data>
   <data name="cmbOutboundTag.Items2" xml:space="preserve">
     <value>block</value>
   </data>
-  <data name="labRoutingTips.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+  <data name="cmbinboundTag.Items" xml:space="preserve">
+    <value>null</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>367, 16</value>
   </data>
   <data name="clbProtocol.Location" type="System.Drawing.Point, System.Drawing">
     <value>347, 43</value>
@@ -456,11 +525,8 @@
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
+  <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;txtIP.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -468,17 +534,23 @@
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>panel3</value>
   </data>
-  <data name="&gt;&gt;clbProtocol.Parent" xml:space="preserve">
-    <value>panel3</value>
+  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 10</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
   </data>
   <data name="clbProtocol.ColumnWidth" type="System.Int32, mscorlib">
     <value>80</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Name" xml:space="preserve">
+    <value>comboBox1</value>
+  </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>504, 15</value>
   </data>
   <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
     <value>742, 60</value>
@@ -486,11 +558,17 @@
   <data name="&gt;&gt;btnOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="cmbInboundTag.Items" xml:space="preserve">
+    <value>null</value>
+  </data>
   <data name="&gt;&gt;panel4.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>&amp;Cancel</value>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
   </data>
   <data name="labRoutingTips.Text" xml:space="preserve">
     <value>*Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt;</value>
@@ -507,11 +585,23 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Port</value>
   </data>
+  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 10</value>
+  </data>
+  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
   <data name="&gt;&gt;txtPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txtDomain.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cmbInboundTag.Items2" xml:space="preserve">
+    <value>http</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -520,22 +610,31 @@
     <value>txtIP</value>
   </data>
   <data name="&gt;&gt;txtPort.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
+  </data>
+  <data name="txtPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>107, 43</value>
   </data>
   <data name="&gt;&gt;cmbOutboundTag.Name" xml:space="preserve">
     <value>cmbOutboundTag</value>
   </data>
-  <data name="txtDomain.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>279, 20</value>
   </data>
   <data name="btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Domain</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>742, 576</value>
   </data>
   <data name="panel4.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
+  </data>
+  <data name="cmbinboundTag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>367, 16</value>
   </data>
   <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -543,11 +642,23 @@
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 395</value>
   </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
+  <data name="&gt;&gt;clbInboundTag.Name" xml:space="preserve">
+    <value>clbInboundTag</value>
+  </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
+  </data>
+  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>&amp;Cancel</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -555,11 +666,20 @@
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
+  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
   <data name="&gt;&gt;txtDomain.Name" xml:space="preserve">
     <value>txtDomain</value>
   </data>
+  <data name="clbInboundTag.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>IP</value>
+  </data>
+  <data name="&gt;&gt;clbInboundTag.Parent" xml:space="preserve">
+    <value>panel3</value>
   </data>
   <data name="&gt;&gt;panel3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -570,8 +690,11 @@
   <data name="panel4.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 516</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 12</value>
+  <data name="labRoutingTips.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;cmbInboundTag.Name" xml:space="preserve">
+    <value>cmbInboundTag</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>350, 395</value>
@@ -579,8 +702,11 @@
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>panel3</value>
   </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>504, 15</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="cmbInboundTag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>367, 16</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

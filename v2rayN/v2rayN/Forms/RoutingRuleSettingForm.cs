@@ -55,7 +55,8 @@ namespace v2rayN.Forms
             lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             lvRoutings.Columns.Add("", 30);
-            lvRoutings.Columns.Add("outboundTag", 80);
+            lvRoutings.Columns.Add("inboundTag", 100);
+            lvRoutings.Columns.Add("outboundTag", 100);
             lvRoutings.Columns.Add("port", 80);
             lvRoutings.Columns.Add("protocol", 100);
             lvRoutings.Columns.Add("domain", 160);
@@ -74,6 +75,7 @@ namespace v2rayN.Forms
                 var item = routingItem.rules[k];
 
                 ListViewItem lvItem = new ListViewItem("");
+                Utils.AddSubItem(lvItem, "inboundTag", Utils.List2String(item.inboundTag));
                 Utils.AddSubItem(lvItem, "outboundTag", item.outboundTag);
                 Utils.AddSubItem(lvItem, "port", item.port);
                 Utils.AddSubItem(lvItem, "protocol", Utils.List2String(item.protocol));

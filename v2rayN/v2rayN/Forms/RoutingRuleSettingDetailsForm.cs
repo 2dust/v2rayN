@@ -36,6 +36,16 @@ namespace v2rayN.Forms
             if (rulesItem != null)
             {
                 rulesItem.port = txtPort.Text.TrimEx();
+
+                var inboundTag = new List<String>();
+                for (int i = 0; i < clbInboundTag.Items.Count; i++)
+                {
+                    if (clbInboundTag.GetItemChecked(i))
+                    {
+                        inboundTag.Add(clbInboundTag.Items[i].ToString());
+                    }
+                }
+                rulesItem.inboundTag = inboundTag;
                 rulesItem.outboundTag = cmbOutboundTag.Text;
                 rulesItem.domain = Utils.String2List(txtDomain.Text);
                 rulesItem.ip = Utils.String2List(txtIP.Text);
@@ -59,6 +69,17 @@ namespace v2rayN.Forms
                 cmbOutboundTag.Text = rulesItem.outboundTag;
                 txtDomain.Text = Utils.List2String(rulesItem.domain, true);
                 txtIP.Text = Utils.List2String(rulesItem.ip, true);
+
+                if (rulesItem.inboundTag != null)
+                {
+                    for (int i = 0; i < clbInboundTag.Items.Count; i++)
+                    {
+                        if (rulesItem.inboundTag.Contains(clbInboundTag.Items[i].ToString()))
+                        {
+                            clbInboundTag.SetItemChecked(i, true);
+                        }
+                    }
+                }
 
                 if (rulesItem.protocol != null)
                 {
