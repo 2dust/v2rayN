@@ -245,7 +245,7 @@ namespace v2rayN.Handler
                 {
                     if (args.Success)
                     {
-                        _updateFunc(false, UIRes.I18N("MsgDownloadV2rayCoreSuccessfully"));
+                        _updateFunc(false, string.Format(UIRes.I18N("MsgDownloadGeoFileSuccessfully"), geoName));
 
                         try
                         {
