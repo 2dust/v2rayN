@@ -388,4 +388,7 @@
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>是否追加规则?选择是则追加,选择否则替换</value>
   </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>信息 (过滤器 : {0})</value>
+  </data>
 </root>

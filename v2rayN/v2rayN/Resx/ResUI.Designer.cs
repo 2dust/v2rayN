@@ -484,6 +484,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Informations (Filter : {0}) 的本地化字符串。
+        /// </summary>
+        internal static string MsgInformationTitle {
+            get {
+                return ResourceManager.GetString("MsgInformationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill in the address (Url) 的本地化字符串。
         /// </summary>
         internal static string MsgNeedUrl {

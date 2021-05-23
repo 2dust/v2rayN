@@ -19,6 +19,7 @@ namespace v2rayN.Forms
         private V2rayHandler v2rayHandler;
         private List<int> lvSelecteds = new List<int>();
         private StatisticsHandler statistics = null;
+        private string MsgFilter = string.Empty;
 
         #region Window 事件
 
@@ -925,6 +926,13 @@ namespace v2rayN.Forms
             }
             else
             {
+                if (!Utils.IsNullOrEmpty(MsgFilter))
+                {
+                    if (!text.Contains(MsgFilter))
+                    {
+                        return;
+                    }
+                }
                 //this.txtMsgBox.AppendText(text);
                 ShowMsg(text);
             }
@@ -1460,7 +1468,16 @@ namespace v2rayN.Forms
             }
 
         }
-
+        private void menuMsgBoxFilter_Click(object sender, EventArgs e)
+        {
+            var fm = new MsgFilterSetForm();
+            fm.MsgFilter = MsgFilter;
+            if (fm.ShowDialog() == DialogResult.OK)
+            {
+                MsgFilter = fm.MsgFilter;
+                gbMsgTitle.Text = string.Format(UIRes.I18N("MsgInformationTitle"), MsgFilter);
+            }
+        }
         #endregion
 
     }

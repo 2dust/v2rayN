@@ -125,6 +125,12 @@
     <Compile Include="Forms\BaseServerForm.Designer.cs">
       <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MsgFilterSetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MsgFilterSetForm.Designer.cs">
+      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RoutingRuleSettingDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +307,12 @@
     <EmbeddedResource Include="Forms\MainForm.zh-Hans.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MsgFilterSetForm.resx">
+      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MsgFilterSetForm.zh-Hans.resx">
+      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionSettingForm.zh-Hans.resx">
       <DependentUpon>OptionSettingForm.cs</DependentUpon>

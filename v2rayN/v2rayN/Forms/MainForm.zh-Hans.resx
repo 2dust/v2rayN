@@ -318,6 +318,48 @@
         ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAACw==
 </value>
   </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>服务器列表</value>
+  </data>
+  <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
+    <value>全选 (Ctrl+A)</value>
+  </data>
+  <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
+    <value>复制 (Ctrl+C)</value>
+  </data>
+  <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
+    <value>复制所有</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
+    <value>快速添加路由规则 (Ctrl+V)</value>
+  </data>
+  <data name="menuMsgBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxFilter.Text" xml:space="preserve">
+    <value>设置信息过滤器</value>
+  </data>
+  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>222, 114</value>
+  </data>
+  <data name="toolSslServerSpeed.Text" xml:space="preserve">
+    <value>网速显示未启用</value>
+  </data>
+  <data name="gbMsgTitle.Text" xml:space="preserve">
+    <value>信息</value>
+  </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 22</value>
   </data>
@@ -386,42 +428,6 @@
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 170</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>服务器列表</value>
-  </data>
-  <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
-    <value>全选 (Ctrl+A)</value>
-  </data>
-  <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
-    <value>复制 (Ctrl+C)</value>
-  </data>
-  <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
-    <value>复制所有</value>
-  </data>
-  <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
-    <value>快速添加路由规则 (Ctrl+V)</value>
-  </data>
-  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>222, 92</value>
-  </data>
-  <data name="toolSslServerSpeed.Text" xml:space="preserve">
-    <value>网速显示未启用</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>信息</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 22</value>
@@ -492,22 +498,31 @@
     <value>  重启服务  </value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 22</value>
+    <value>168, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
     <value>v2rayN</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 22</value>
+    <value>168, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
     <value>v2fly-Core</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 22</value>
+    <value>168, 22</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
     <value>Xray-Core</value>
+  </data>
+  <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 6</value>
+  </data>
+  <data name="tsbCheckUpdateGeoSite.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="tsbCheckUpdateGeoIP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
   </data>
   <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 53</value>
