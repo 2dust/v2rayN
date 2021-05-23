@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoutingRuleSettingDetailsForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.clbInboundTag = new System.Windows.Forms.CheckedListBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.clbProtocol = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
@@ -61,6 +63,8 @@
             // panel3
             // 
             resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Controls.Add(this.clbInboundTag);
+            this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.clbProtocol);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.txtPort);
@@ -69,6 +73,22 @@
             this.panel3.Controls.Add(this.label4);
             this.panel3.Controls.Add(this.cmbOutboundTag);
             this.panel3.Name = "panel3";
+            // 
+            // clbInboundTag
+            // 
+            resources.ApplyResources(this.clbInboundTag, "clbInboundTag");
+            this.clbInboundTag.CheckOnClick = true;
+            this.clbInboundTag.FormattingEnabled = true;
+            this.clbInboundTag.Items.AddRange(new object[] {
+            resources.GetString("clbInboundTag.Items"),
+            resources.GetString("clbInboundTag.Items1")});
+            this.clbInboundTag.MultiColumn = true;
+            this.clbInboundTag.Name = "clbInboundTag";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
             // 
             // clbProtocol
             // 
@@ -214,5 +234,7 @@
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckedListBox clbProtocol;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckedListBox clbInboundTag;
     }
 }
