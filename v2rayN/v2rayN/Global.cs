@@ -194,6 +194,10 @@ namespace v2rayN
         public const string RoutingRuleComma = "<COMMA>";
 
         public static readonly IEnumerable<string> ssSecuritys = new HashSet<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+
+        public const string GrpcgunMode = "gun";
+        public const string GrpcmultiMode = "multi";
+        
         #endregion
 
         #region 全局变量

@@ -518,6 +518,10 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string serviceName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool multiMode { get; set; }
     }
 
 }

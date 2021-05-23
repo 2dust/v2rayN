@@ -826,13 +826,13 @@
     <value>282, 68</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>299, 12</value>
+    <value>293, 12</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
-    <value>*tcp or kcp or QUIC camouflage type, default none</value>
+    <value>*tcp or kcp or QUIC camouflage type or grpc mode</value>
   </data>
   <data name="&gt;&gt;label12.Name" xml:space="preserve">
     <value>label12</value>

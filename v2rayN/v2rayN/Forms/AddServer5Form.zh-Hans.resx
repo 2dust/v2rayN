@@ -224,7 +224,7 @@
     <value>197, 12</value>
   </data>
   <data name="label12.Text" xml:space="preserve">
-    <value>*tcp或kcp或QUIC伪装类型,默认none</value>
+    <value>*tcp或kcp或QUIC伪装类型或grpc模式</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 102</value>

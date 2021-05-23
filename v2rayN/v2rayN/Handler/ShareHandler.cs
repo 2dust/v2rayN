@@ -214,6 +214,10 @@ namespace v2rayN.Handler
                             if (!Utils.IsNullOrEmpty(item.path))
                             {
                                 dicQuery.Add("serviceName", Utils.UrlEncode(item.path));
+                                if (item.headerType == Global.GrpcgunMode || item.headerType == Global.GrpcmultiMode)
+                                {
+                                    dicQuery.Add("mode", Utils.UrlEncode(item.headerType));
+                                }
                             }
                             break;
                     }
@@ -698,6 +702,7 @@ namespace v2rayN.Handler
                     break;
                 case "grpc":
                     item.path = Utils.UrlDecode(query["serviceName"] ?? "");
+                    item.headerType= Utils.UrlDecode(query["mode"] ?? Global.GrpcgunMode);
                     break;
                 default:
                     return null;
