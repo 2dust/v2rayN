@@ -1185,6 +1185,15 @@ namespace v2rayN.Handler
                 AddBatchRoutingRules(ref item2, result2);
                 config.routings.Add(item2);
 
+                //Blacklist
+                var item3 = new RoutingItem();
+                item3.remarks = "黑名单(Blacklist)";
+                item3.url = string.Empty;
+                item3.rules = new List<RulesItem>();
+                string result3 = Utils.GetEmbedText(Global.CustomRoutingFileName + "black");
+                AddBatchRoutingRules(ref item3, result3);
+                config.routings.Add(item3);
+
                 config.routingIndex = 0;
             }
 

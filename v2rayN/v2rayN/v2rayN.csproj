@@ -402,6 +402,7 @@
     <EmbeddedResource Include="Sample\custom_routing_white" />
     <EmbeddedResource Include="Sample\custom_routing_global" />
     <EmbeddedResource Include="Sample\custom_routing_locked" />
+    <EmbeddedResource Include="Sample\custom_routing_black" />
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>
