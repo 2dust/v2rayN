@@ -37,7 +37,7 @@ namespace v2rayN.Handler
                 int index = (int)config.sysProxyType;
                 if (index > 0)
                 {
-                    color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
+                    color = (new Color[] { Color.Purple, Color.DarkSlateBlue, Color.DarkGreen, Color.Red, Color.Orange, Color.RoyalBlue })[index - 1];
                     //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
                 }
 
