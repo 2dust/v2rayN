@@ -41,7 +41,7 @@ namespace v2rayN.HttpProxyHandler
                     if (type == ListenerType.GlobalHttp)
                     {
                         //ProxySetting.SetProxy($"{Global.Loopback}:{port}", Global.IEProxyExceptions, 2);
-                        SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}");
+                        SysProxyHandle.SetIEProxy(true, true, $"{Global.httpProtocol}{Global.Loopback}:{port}");
                     }
                     else if (type == ListenerType.HttpOpenAndClear)
                     {
@@ -166,7 +166,7 @@ namespace v2rayN.HttpProxyHandler
                 }
                 if (type == ESysProxyType.ForcedChange)
                 {
-                    SysProxyHandle.SetIEProxy(true, true, $"{Global.Loopback}:{port}");
+                    SysProxyHandle.SetIEProxy(true, true, $"{Global.httpProtocol}{Global.Loopback}:{port}");
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
