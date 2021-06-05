@@ -59,10 +59,14 @@ namespace v2rayN.HttpProxyHandler
             //}
 
             string arguments;
-            if (enable)
-            {
+            if (enable) {
+                var customProxyException = Utils.LoadResource(Utils.GetPath(Global.CustomProxyExceptions));
+                var finalProxyExceptions = Global.IEProxyExceptions;
+                if (customProxyException != null && customProxyException.Trim() != string.Empty) {
+                    finalProxyExceptions = finalProxyExceptions + ';' + customProxyException.Trim();
+                }
                 arguments = global
-                    ? $"global {strProxy} {Global.IEProxyExceptions}"
+                    ? $"global {strProxy} {finalProxyExceptions}"
                     : $"pac {strProxy}";
             }
             else
