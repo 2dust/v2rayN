@@ -11,6 +11,7 @@ using v2rayN.Tool;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace v2rayN.Forms
 {
@@ -928,7 +929,7 @@ namespace v2rayN.Forms
             {
                 if (!Utils.IsNullOrEmpty(MsgFilter))
                 {
-                    if (!text.Contains(MsgFilter))
+                    if (!Regex.IsMatch(text,MsgFilter))
                     {
                         return;
                     }
