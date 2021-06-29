@@ -499,8 +499,8 @@ if not "$(ConfigurationName)" == "Debug" del $(TargetDir)*.pdb</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Grpc.Core.2.23.0\build\net45\Grpc.Core.targets" Condition="Exists('..\packages\Grpc.Core.2.23.0\build\net45\Grpc.Core.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>TASKKILL /F /IM  v2rayN.exe /T
-set errolevel=0</PreBuildEvent>
+    <PreBuildEvent>taskkill /f /im $(TargetFileName)   /t &gt;nul  2&gt;nul
+set errorlevel=0</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
