@@ -10,6 +10,7 @@ configuration: Release
 test: off
 before_build:
 - ps: >-
+     cd v2rayN
      nuget restore -verbosity detailed
 build:
   parallel: true
