@@ -1339,27 +1339,34 @@ namespace v2rayN.Forms
         }
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
-            VmessItem item = config.vmess[config.index];
-            var remarks = item.remarks;
-            var handle = new UpdateHandle();
-            void _updateUIAndReselect(bool success, string msg)
+            try
             {
-                AppendText(false, msg);
-                if (success)
+                VmessItem item = config.vmess[config.index];
+                var remarks = item.remarks;
+                var handle = new UpdateHandle();
+                void _updateUIAndReselect(bool success, string msg)
                 {
-                    RefreshServers();
-                }
-                if (handle.updateSubscriptionProcessCompleted)
-                {
-                    // wait for above fxcking async program to complete
-                    int index = FindIndexByRemarks(remarks);
-                    SetDefaultServer(index);
-                    AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
-                    RefreshServers();
-                    handle.updateSubscriptionProcessCompleted = false;
-                }
-            };
-            handle.UpdateSubscriptionProcess(config, _updateUIAndReselect);
+                    AppendText(false, msg);
+                    if (success)
+                    {
+                        RefreshServers();
+                    }
+                    if (handle.updateSubscriptionProcessCompleted)
+                    {
+                        // wait for above fxcking async program to complete
+                        int index = FindIndexByRemarks(remarks);
+                        SetDefaultServer(index);
+                        AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
+                        RefreshServers();
+                        handle.updateSubscriptionProcessCompleted = false;
+                    }
+                };
+                handle.UpdateSubscriptionProcess(config, _updateUIAndReselect);
+            }
+            catch
+            {
+                UpdateSubscriptionProcess();
+            }
         }
         /// <summary>
         /// the subscription update process
