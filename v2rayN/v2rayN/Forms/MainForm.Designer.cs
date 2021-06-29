@@ -630,6 +630,7 @@
             // 
             resources.ApplyResources(this.menuServers, "menuServers");
             this.menuServers.Name = "menuServers";
+            menuServers.Visible = false;
             // 
             // toolStripSeparator13
             // 
