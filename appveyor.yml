@@ -1,0 +1,22 @@
+branches:
+  only:
+  - master
+environment:
+  STATIC_SITE_REPO: https://github.com/JaredDC/v2rayN
+  GIT_USER_EMAIL: jared.dcx@gmail.com
+  GIT_USER_NAME: JaredDC
+image: Visual Studio 2019
+configuration: Release
+test: off
+before_build:
+- ps: >-
+     nuget restore -verbosity detailed
+build:
+  parallel: true
+  verbosity: minimal
+artifacts:
+- path: v2rayN\v2rayN\bin\Release
+  name: v2rayN.Protable
+  
+on_success:
+    - echo succeed
