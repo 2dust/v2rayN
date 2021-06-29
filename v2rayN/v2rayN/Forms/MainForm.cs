@@ -1361,8 +1361,6 @@ namespace v2rayN.Forms
                         // wait for above fxcking async program to complete
                         int index = FindIndexByRemarks(remarks);
                         SetDefaultServer(index);
-                        AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
-                        RefreshServers();
                         handle.updateSubscriptionProcessCompleted = false;
                     }
                 };
