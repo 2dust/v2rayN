@@ -978,12 +978,11 @@ namespace v2rayN.Forms
 
         #region 托盘事件
 
-        private void notifyMain_MouseClick(object sender, MouseEventArgs e)
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                ShowForm();
-            }
+
+            ShowForm();
+
         }
 
         private void menuExit_Click(object sender, EventArgs e)

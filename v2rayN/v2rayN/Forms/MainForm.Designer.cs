@@ -573,7 +573,7 @@
             // 
             resources.ApplyResources(this.notifyMain, "notifyMain");
             this.notifyMain.ContextMenuStrip = this.cmsMain;
-            this.notifyMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyMain_MouseClick);
+            this.notifyMain.DoubleClick += notifyIcon_DoubleClick;
             // 
             // cmsMain
             // 
