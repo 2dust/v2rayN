@@ -881,7 +881,7 @@ namespace v2rayN.Forms
 
         private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess();
+            UpdateSubscriptionRememberChoice();
         }
 
         private void tsbBackupGuiNConfig_Click(object sender, EventArgs e)
@@ -1339,6 +1339,11 @@ namespace v2rayN.Forms
         }
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
+            UpdateSubscriptionRememberChoice();
+        }
+
+        private void UpdateSubscriptionRememberChoice()
+        {
             try
             {
                 VmessItem item = config.vmess[config.index];
@@ -1356,8 +1361,6 @@ namespace v2rayN.Forms
                         // wait for above fxcking async program to complete
                         int index = FindIndexByRemarks(remarks);
                         SetDefaultServer(index);
-                        AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
-                        RefreshServers();
                         handle.updateSubscriptionProcessCompleted = false;
                     }
                 };
@@ -1368,6 +1371,7 @@ namespace v2rayN.Forms
                 UpdateSubscriptionProcess();
             }
         }
+
         /// <summary>
         /// the subscription update process
         /// </summary>
