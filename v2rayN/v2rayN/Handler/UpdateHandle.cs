@@ -14,7 +14,7 @@ namespace v2rayN.Handler
     {
         Action<bool, string> _updateFunc;
         private Config _config;
-
+        public bool updateSubscriptionProcessCompleted = false;
         public event EventHandler<ResultEventArgs> AbsoluteCompleted;
 
         public class ResultEventArgs : EventArgs

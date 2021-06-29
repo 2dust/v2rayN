@@ -1316,9 +1316,28 @@ namespace v2rayN.Forms
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess();
+            VmessItem item = config.vmess[config.index];
+            var remarks = item.remarks;
+            var handle = new UpdateHandle();
+            void _updateUIAndReselect(bool success, string msg)
+            {
+                AppendText(false, msg);
+                if (success)
+                {
+                    RefreshServers();
+                }
+                if (handle.updateSubscriptionProcessCompleted)
+                {
+                    // wait for above fxcking async program to complete
+                    int index = FindIndexByRemarks(remarks);
+                    SetDefaultServer(index);
+                    AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
+                    RefreshServers();
+                    handle.updateSubscriptionProcessCompleted = false;
+                }
+            };
+            handle.UpdateSubscriptionProcess(config, _updateUIAndReselect);
         }
-
         /// <summary>
         /// the subscription update process
         /// </summary>
