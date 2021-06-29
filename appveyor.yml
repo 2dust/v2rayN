@@ -9,9 +9,10 @@ image: Visual Studio 2019
 configuration: Release
 test: off
 before_build:
-- ps: >-
-     - cd v2rayN
-     - nuget restore -verbosity detailed
+- ps: >-   
+    cd v2rayN
+    
+    nuget restore -verbosity detailed
 build:
   parallel: true
   verbosity: minimal
