@@ -14,7 +14,7 @@ namespace v2rayN.Handler
     {
         Action<bool, string> _updateFunc;
         private Config _config;
-
+        public bool updateSubscriptionProcessCompleted = false;
         public event EventHandler<ResultEventArgs> AbsoluteCompleted;
 
         public class ResultEventArgs : EventArgs
@@ -212,6 +212,7 @@ namespace v2rayN.Handler
                         {
                             _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgFailedImportSubscription")}");
                         }
+                        updateSubscriptionProcessCompleted = true;
                         _updateFunc(true, $"{hashCode}{UIRes.I18N("MsgUpdateSubscriptionEnd")}");
                     }
                     else

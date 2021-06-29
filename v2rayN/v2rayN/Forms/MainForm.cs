@@ -1313,12 +1313,54 @@ namespace v2rayN.Forms
                 RefreshServers();
             }
         }
-
+        /// <summary>
+        /// Reset to the previous selected.
+        /// </summary>
+        private int FindIndexByRemarks(string remarks)
+        {
+            for (int k = 0; k < config.vmess.Count; k++)
+            {
+                VmessItem item = config.vmess[k];
+                if (item.remarks.Equals(remarks))
+                {
+                    return k;
+                }
+            }
+            for (int k = 0; k < config.vmess.Count; k++)
+            {
+                VmessItem item = config.vmess[k];
+                if (item.remarks.Contains(remarks.Substring(0, 2)))
+                {
+                    // 汉字也是占一个, 台湾 CHT [06]
+                    return k;
+                }
+            }
+            return 0;
+        }
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess();
+            VmessItem item = config.vmess[config.index];
+            var remarks = item.remarks;
+            var handle = new UpdateHandle();
+            void _updateUIAndReselect(bool success, string msg)
+            {
+                AppendText(false, msg);
+                if (success)
+                {
+                    RefreshServers();
+                }
+                if (handle.updateSubscriptionProcessCompleted)
+                {
+                    // wait for above fxcking async program to complete
+                    int index = FindIndexByRemarks(remarks);
+                    SetDefaultServer(index);
+                    AppendText(false, $"{UIRes.I18N("MsgUpdateSubscriptionEndReslectLast")}");
+                    RefreshServers();
+                    handle.updateSubscriptionProcessCompleted = false;
+                }
+            };
+            handle.UpdateSubscriptionProcess(config, _updateUIAndReselect);
         }
-
         /// <summary>
         /// the subscription update process
         /// </summary>
