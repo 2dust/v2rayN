@@ -33,7 +33,7 @@ after_build:
 artifacts:
 - path: v2rayN\v2rayN\bin\Release
   name: v2rayN.Portable
-- path: v2rayN\v2rayN.Protable-%GIT_TAG%.zip
+- path: v2rayN\v2rayN.Portable-%GIT_TAG%.zip
   name: v2rayN.Portable-Version
   
 on_success:
