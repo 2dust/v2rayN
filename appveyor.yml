@@ -1,10 +1,6 @@
 branches:
   only:
   - master
-environment:
-  STATIC_SITE_REPO: https://github.com/JaredDC/v2rayN
-  GIT_USER_EMAIL: jared.dcx@gmail.com
-  GIT_USER_NAME: JaredDC
 image: Visual Studio 2019
 configuration: Release
 test: off
@@ -21,17 +17,40 @@ build:
 
 after_build:
 - cmd:
-    dir
+    git describe --always --tags >OUTPUTFILE.TXT
+    
+    set /P GIT_TAG=<OUTPUTFILE.TXT
     
     7z x v2rayN-Core-bin\v2ray-windows.zip -ov2rayN\bin\Release
     
     copy v2rayN-Core-bin\geoip.dat   v2rayN\bin\Release /y
     
     copy v2rayN-Core-bin\geosite.dat v2rayN\bin\Release /y
+    
+    cd v2rayN\bin\Release
+    
+    7z a v2rayN.Protable.zip .
+    
+    move v2rayN.Protable.zip  ..\..\..\v2rayN.Protable-%GIT_TAG%.zip
 
 artifacts:
 - path: v2rayN\v2rayN\bin\Release
   name: v2rayN.Protable
+- 
+- path: v2rayN\v2rayN.Protable-%GIT_TAG%.zip
+  name: v2rayN.Protable-%GIT_TAG%
   
 on_success:
     - echo succeed
+
+deploy:
+  release: v2rayN %GIT_TAG%
+  description: "Need to add."
+  provider: GitHub
+  auth_token:
+    secure:  jjIUlINV2I/vxMzoH/jX11I6/rwEo237ELLgm37s3GdLQV3XkNbtVI/BVXjU4xSD
+  artifact: v2rayN.Protable, v2rayN.Protable-%GIT_TAG%
+  draft: true
+  prerelease: false
+  on:
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only

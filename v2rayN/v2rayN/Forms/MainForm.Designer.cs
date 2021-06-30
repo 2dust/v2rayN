@@ -902,6 +902,7 @@
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
+            this.tsbClose.Visible = false;
             // 
             // MainForm
             // 
