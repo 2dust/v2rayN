@@ -8,14 +8,22 @@ environment:
 image: Visual Studio 2019
 configuration: Release
 test: off
+
 before_build:
 - ps: >-   
     cd v2rayN
     
     nuget restore -verbosity detailed
+
 build:
   parallel: true
   verbosity: minimal
+
+after_build:
+- cmd:
+    dir
+    7z x v2rayN\v2rayN-Core-bin\v2ray-windows.zip -ov2rayN\v2rayN\bin\Release
+
 artifacts:
 - path: v2rayN\v2rayN\bin\Release
   name: v2rayN.Protable
