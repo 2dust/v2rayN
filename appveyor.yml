@@ -26,15 +26,13 @@ after_build:
     
     cd v2rayN\bin\Release
     
-    7z a v2rayN.Protable.zip .
+    7z a v2rayN.Portable.zip .
     
-    move v2rayN.Protable.zip  ..\..\..\v2rayN.Protable-%GIT_TAG%.zip
+    move v2rayN.Portable.zip  ..\..\..\v2rayN.Portable-%GIT_TAG%.zip
 
 artifacts:
-- path: v2rayN\v2rayN\bin\Release
-  name: v2rayN.Protable
-- path: v2rayN\v2rayN.Protable-%GIT_TAG%.zip
-  name: v2rayN.Protable-Version
+- path: v2rayN\v2rayN.Portable-%GIT_TAG%.zip
+  name: v2rayN.Portable-Version
   
 on_success:
     - echo succeed
@@ -45,7 +43,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure:  jjIUlINV2I/vxMzoH/jX11I6/rwEo237ELLgm37s3GdLQV3XkNbtVI/BVXjU4xSD
-  artifact: v2rayN.Protable, v2rayN.Protable-Version
+  artifact: v2rayN.Portable, v2rayN.Portable-Version
   draft: true
   prerelease: false
   on:

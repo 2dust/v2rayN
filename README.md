@@ -5,7 +5,7 @@
 ### Download
 Click the **BUTTON** below to **download** the latest binary file
 
-[![LatestProtable](https://img.shields.io/badge/download-protable-brightgreen)](https://ci.appveyor.com/api/buildjobs/n3pgmk27y4f4s4x7/artifacts/v2rayN%2Fv2rayN%2Fbin%2Fv2rayN.Protable.zip) 
+[![LatestPortable](https://img.shields.io/badge/download-latest-brightgreen)](https://ci.appveyor.com/project/JaredDC/v2rayn/build/artifacts) 
 
 
 ### How to use
