@@ -1,6 +1,3 @@
-branches:
-  only:
-  - master
 image: Visual Studio 2019
 configuration: Release
 test: off
