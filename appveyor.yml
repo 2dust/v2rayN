@@ -24,6 +24,10 @@ after_build:
     dir
     
     7z x v2rayN-Core-bin\v2ray-windows.zip -ov2rayN\bin\Release
+    
+    copy v2rayN-Core-bin\geoip.dat   v2rayN\bin\Release /y
+    
+    copy v2rayN-Core-bin\geosite.dat v2rayN\bin\Release /y
 
 artifacts:
 - path: v2rayN\v2rayN\bin\Release
