@@ -31,7 +31,9 @@ after_build:
     move v2rayN.Portable.zip  ..\..\..\v2rayN.Portable-%GIT_TAG%.zip
 
 artifacts:
-- path: v2rayN\v2rayN.Portable-%GIT_TAG%.zip
+- path: v2rayN\v2rayN\bin\Release
+  name: v2rayN.Portable
+- path: v2rayN\v2rayN.Protable-%GIT_TAG%.zip
   name: v2rayN.Portable-Version
   
 on_success:
@@ -43,7 +45,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure:  jjIUlINV2I/vxMzoH/jX11I6/rwEo237ELLgm37s3GdLQV3XkNbtVI/BVXjU4xSD
-  artifact: v2rayN.Portable, v2rayN.Portable-Version
+  artifact: v2rayN.Portable-Version
   draft: true
   prerelease: false
   on:
