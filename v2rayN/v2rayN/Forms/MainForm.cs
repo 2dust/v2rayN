@@ -32,11 +32,18 @@ namespace v2rayN.Forms
             HideForm();
             this.Text = Utils.GetVersion();
             Global.processJob = new Job();
-
             Application.ApplicationExit += (sender, args) =>
             {
                 MyAppExit(false);
             };
+            
+            var _timer = new System.Timers.Timer();
+            /*_timer.Interval = 1000 * 60 * mins;*/
+            _timer.Interval = 1000 * 60 * 60 * 3; // every 3 hours
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+            _timer.Elapsed += timer_Elapsed;
+            _timer.Start();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -1341,6 +1348,10 @@ namespace v2rayN.Forms
             UpdateSubscriptionRememberChoice();
         }
 
+        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            UpdateSubscriptionRememberChoice();
+        }
         private void UpdateSubscriptionRememberChoice()
         {
             try
