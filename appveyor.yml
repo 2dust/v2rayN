@@ -36,7 +36,6 @@ after_build:
 artifacts:
 - path: v2rayN\v2rayN\bin\Release
   name: v2rayN.Protable
-- 
 - path: v2rayN\v2rayN.Protable-%GIT_TAG%.zip
   name: v2rayN.Protable-Version
   
