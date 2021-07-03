@@ -1188,7 +1188,8 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateN_Click(object sender, EventArgs e)
         {
-            void _updateUI(bool success, string msg)
+            Process.Start("https://github.com/JaredDC/v2rayN/releases/latest");
+            /*void _updateUI(bool success, string msg)
             {
                 AppendText(false, msg);
                 if (success)
@@ -1196,7 +1197,7 @@ namespace v2rayN.Forms
                     menuExit_Click(null, null);
                 }
             };
-            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI);
+            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI);*/
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
