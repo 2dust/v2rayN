@@ -40,7 +40,7 @@ on_success:
     - echo succeed
 
 deploy:
-  release: v2rayN %GIT_TAG%
+  release: %GIT_TAG%
   description: "Need to add."
   provider: GitHub
   auth_token:
