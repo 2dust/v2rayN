@@ -364,7 +364,7 @@
     <value>172, 22</value>
   </data>
   <data name="menuKeepClear.Text" xml:space="preserve">
-    <value>清除系统代理</value>
+    <value>不使用代理</value>
   </data>
   <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 22</value>
