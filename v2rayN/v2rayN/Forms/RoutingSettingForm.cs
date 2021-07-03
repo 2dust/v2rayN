@@ -22,6 +22,7 @@ namespace v2rayN.Forms
 
             cmbdomainStrategy.Text = config.domainStrategy;
             chkenableRoutingAdvanced.Checked = config.enableRoutingAdvanced;
+            cmbdomainMatcher.Text = config.domainMatcher;
 
             if (config.routings == null)
             {
@@ -50,6 +51,8 @@ namespace v2rayN.Forms
         {
             config.domainStrategy = cmbdomainStrategy.Text;
             config.enableRoutingAdvanced = chkenableRoutingAdvanced.Checked;
+            config.domainMatcher = cmbdomainMatcher.Text;
+
             EndBindingLockedData();
 
             if (ConfigHandler.SaveRouting(ref config) == 0)
@@ -295,6 +298,8 @@ namespace v2rayN.Forms
             txtDirectIp.Text = "geoip:private,geoip:cn";
 
             txtBlockDomain.Text = "geosite:category-ads-all";
+
+            UI.Show(UIRes.I18N("OperationSuccess"));
         }
 
         #endregion

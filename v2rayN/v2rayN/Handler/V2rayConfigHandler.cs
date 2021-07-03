@@ -189,6 +189,7 @@ namespace v2rayN.Handler
                   && v2rayConfig.routing.rules != null)
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
+                    v2rayConfig.routing.domainMatcher = config.domainMatcher;
 
                     if (config.enableRoutingAdvanced)
                     {
