@@ -36,7 +36,7 @@ namespace v2rayN.Forms
             {
                 MyAppExit(false);
             };
-            notifyMain.Click += new EventHandler(notifyMain_Click);
+            notifyMain.MouseClick += new MouseEventHandler(notifyMain_MouseClick);
             var _timer = new System.Timers.Timer();
             /*_timer.Interval = 1000 * 60 * mins;*/
             _timer.Interval = 1000 * 60 * 60 * 3; // every 3 hours
@@ -1545,15 +1545,18 @@ namespace v2rayN.Forms
         }
         #endregion
 
-        private void notifyMain_Click(object sender, EventArgs e)
+        private void notifyMain_MouseClick(object sender, MouseEventArgs e)
         {
-            if (config.sysProxyType == ESysProxyType.ForcedClear)
+            if (e.Button == MouseButtons.Left)
             {
-                SetListenerType(ESysProxyType.ForcedChange);
-            }
-            else if(config.sysProxyType == ESysProxyType.ForcedChange)
-            {
-                SetListenerType(ESysProxyType.ForcedClear);
+                if (config.sysProxyType == ESysProxyType.ForcedClear)
+                {
+                    SetListenerType(ESysProxyType.ForcedChange);
+                }
+                else if (config.sysProxyType == ESysProxyType.ForcedChange)
+                {
+                    SetListenerType(ESysProxyType.ForcedClear);
+                }
             }
         }
     }
