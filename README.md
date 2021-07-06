@@ -4,6 +4,7 @@
 
 ## TODO
 fix MicroSoft Todo can't sync when using Proxy.
+Temporary solution: single click tray icon change proxy mode.
 
 ### Download
 Click the **BUTTON** below to **download** the latest binary file
