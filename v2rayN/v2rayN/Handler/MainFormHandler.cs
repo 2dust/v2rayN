@@ -33,11 +33,11 @@ namespace v2rayN.Handler
         {
             try
             {
-                Color color = ColorTranslator.FromHtml("#3399CC");
+                Color color = Color.DimGray;
                 int index = (int)config.sysProxyType;
                 if (index > 0)
                 {
-                    color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
+                    color = (new Color[] { Color.DarkGreen, Color.Orange, Color.Red, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
                     //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
                 }
 
