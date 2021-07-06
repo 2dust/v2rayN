@@ -65,8 +65,9 @@ namespace v2rayN.Forms
             //remoteDNS
             txtremoteDNS.Text = config.remoteDNS;
 
-
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
+
+            txtsystemProxyExceptions.Text = config.systemProxyExceptions;
         }
 
 
@@ -228,8 +229,9 @@ namespace v2rayN.Forms
             //remoteDNS
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
-
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
+
+            config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
 
             return 0;
         }

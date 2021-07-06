@@ -161,6 +161,10 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public string domainMatcher
+        {
+            get; set;
+        }
         public int routingIndex
         {
             get; set;
@@ -179,6 +183,14 @@ namespace v2rayN.Mode
             get; set;
         }
         public bool ignoreGeoUpdateCore
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// systemProxyExceptions
+        /// </summary>
+        public string systemProxyExceptions
         {
             get; set;
         }

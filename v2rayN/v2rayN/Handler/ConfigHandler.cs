@@ -89,6 +89,10 @@ namespace v2rayN.Handler
             {
                 config.domainStrategy = "IPIfNonMatch";
             }
+            if (Utils.IsNullOrEmpty(config.domainMatcher))
+            {
+                config.domainMatcher = "linear";
+            }
 
             //kcp
             if (config.kcpItem == null)
