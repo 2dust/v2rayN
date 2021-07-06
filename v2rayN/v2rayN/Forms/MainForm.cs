@@ -1547,7 +1547,7 @@ namespace v2rayN.Forms
 
         private void notifyMain_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Middle)
             {
                 if (config.sysProxyType == ESysProxyType.ForcedClear)
                 {
