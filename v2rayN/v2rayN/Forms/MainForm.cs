@@ -36,7 +36,7 @@ namespace v2rayN.Forms
             {
                 MyAppExit(false);
             };
-            
+            notifyMain.Click += new EventHandler(notifyMain_Click);
             var _timer = new System.Timers.Timer();
             /*_timer.Interval = 1000 * 60 * mins;*/
             _timer.Interval = 1000 * 60 * 60 * 3; // every 3 hours
@@ -1545,5 +1545,16 @@ namespace v2rayN.Forms
         }
         #endregion
 
+        private void notifyMain_Click(object sender, EventArgs e)
+        {
+            if (config.sysProxyType == ESysProxyType.ForcedClear)
+            {
+                SetListenerType(ESysProxyType.ForcedChange);
+            }
+            else if(config.sysProxyType == ESysProxyType.ForcedChange)
+            {
+                SetListenerType(ESysProxyType.ForcedClear);
+            }
+        }
     }
 }
