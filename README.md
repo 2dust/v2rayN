@@ -2,6 +2,9 @@
 [![AppVeyor](https://img.shields.io/appveyor/build/JaredDC/v2rayn)](https://ci.appveyor.com/project/JaredDC/v2rayn)
 [![AppVeyor](https://img.shields.io/github/v/release/JaredDC/v2rayN)](https://github.com/JaredDC/v2rayN/releases/latest)
 
+## TODO
+fix MicroSoft Todo can't sync when using Proxy.
+
 ### Download
 Click the **BUTTON** below to **download** the latest binary file
 
