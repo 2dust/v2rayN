@@ -5,6 +5,8 @@
 ## TODO
 fix MicroSoft Todo can't sync when using Proxy.
 Temporary solution: single click tray icon change proxy mode.
+使用一次fiddler即可正常使用Microsoft Todo/Store. 重启也可生效.
+具体设置方法, 见: https://blog.csdn.net/tcliuwenwen/article/details/108526311
 
 ### Download
 Click the **BUTTON** below to **download** the latest binary file
