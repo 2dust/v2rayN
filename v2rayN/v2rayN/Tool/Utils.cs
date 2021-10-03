@@ -536,7 +536,7 @@ namespace v2rayN
             try
             {
                 string exePath = GetExePath();
-                RegWriteValue(autoRunRegPath, autoRunName, run ? ("\"" + exePath + "\"") : "");
+                RegWriteValue(autoRunRegPath, autoRunName, run ? $"\"{exePath}\"" : "");
             }
             catch
             {
@@ -553,7 +553,7 @@ namespace v2rayN
             {
                 string value = RegReadValue(autoRunRegPath, autoRunName, "");
                 string exePath = GetExePath();
-                if (value?.Equals(exePath) == true || value?.Equals("\"" + exePath + "\"") == true)
+                if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
                 {
                     return true;
                 }
@@ -708,7 +708,8 @@ namespace v2rayN
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
                                        | SecurityProtocolType.Tls
                                        | SecurityProtocolType.Tls11
-                                       | SecurityProtocolType.Tls12;
+                                       | SecurityProtocolType.Tls12
+                                       | SecurityProtocolType.Tls13;
             ServicePointManager.DefaultConnectionLimit = 256;
         }
         #endregion
