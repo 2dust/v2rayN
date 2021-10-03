@@ -56,6 +56,7 @@ namespace v2rayN.Handler
                         try
                         {
                             string fileName = Utils.GetPath(Global.DownloadFileName);
+                            fileName = Utils.UrlEncode(fileName);
                             Process process = new Process
                             {
                                 StartInfo = new ProcessStartInfo
