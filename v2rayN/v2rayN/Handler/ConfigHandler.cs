@@ -51,7 +51,9 @@ namespace v2rayN.Handler
                     enableStatistics = false,
 
                     // 默认中等刷新率
-                    statisticsFreshRate = (int)Global.StatisticsFreshRate.medium
+                    statisticsFreshRate = (int)Global.StatisticsFreshRate.medium,
+
+                    enableRoutingAdvanced = true
                 };
             }
 
@@ -559,7 +561,7 @@ namespace v2rayN.Handler
                     Global.reloadV2ray = true;
                 }
             }
-            
+
             if (toFile)
             {
                 ToJsonFile(config);
