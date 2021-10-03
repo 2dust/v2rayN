@@ -174,7 +174,7 @@ namespace v2rayN.Handler
         /// <param name="vmessItem"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddServer(ref Config config, VmessItem vmessItem, int index)
+        public static int AddServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Vmess;
@@ -212,8 +212,10 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
-
+            if (toFile)
+            {
+                ToJsonFile(config);
+            }
             return 0;
         }
 
@@ -524,7 +526,7 @@ namespace v2rayN.Handler
         /// <param name="vmessItem"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, int index)
+        public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Shadowsocks;
@@ -557,8 +559,11 @@ namespace v2rayN.Handler
                     Global.reloadV2ray = true;
                 }
             }
-
-            ToJsonFile(config);
+            
+            if (toFile)
+            {
+                ToJsonFile(config);
+            }
 
             return 0;
         }
@@ -570,7 +575,7 @@ namespace v2rayN.Handler
         /// <param name="vmessItem"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddSocksServer(ref Config config, VmessItem vmessItem, int index)
+        public static int AddSocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Socks;
@@ -597,7 +602,10 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            if (toFile)
+            {
+                ToJsonFile(config);
+            }
 
             return 0;
         }
@@ -610,7 +618,7 @@ namespace v2rayN.Handler
         /// <param name="vmessItem"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddTrojanServer(ref Config config, VmessItem vmessItem, int index)
+        public static int AddTrojanServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Trojan;
@@ -644,7 +652,10 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            if (toFile)
+            {
+                ToJsonFile(config);
+            }
 
             return 0;
         }
@@ -754,40 +765,41 @@ namespace v2rayN.Handler
                 vmessItem.subid = subid;
                 if (vmessItem.configType == (int)EConfigType.Vmess)
                 {
-                    if (AddServer(ref config, vmessItem, -1) == 0)
+                    if (AddServer(ref config, vmessItem, -1, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
                 {
-                    if (AddShadowsocksServer(ref config, vmessItem, -1) == 0)
+                    if (AddShadowsocksServer(ref config, vmessItem, -1, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Socks)
                 {
-                    if (AddSocksServer(ref config, vmessItem, -1) == 0)
+                    if (AddSocksServer(ref config, vmessItem, -1, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Trojan)
                 {
-                    if (AddTrojanServer(ref config, vmessItem, -1) == 0)
+                    if (AddTrojanServer(ref config, vmessItem, -1, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.VLESS)
                 {
-                    if (AddVlessServer(ref config, vmessItem, -1) == 0)
+                    if (AddVlessServer(ref config, vmessItem, -1, false) == 0)
                     {
                         countServers++;
                     }
                 }
             }
+            ToJsonFile(config);
             return countServers;
         }
 
@@ -915,7 +927,7 @@ namespace v2rayN.Handler
         /// <param name="vmessItem"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index)
+        public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
             vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.VLESS;
@@ -953,7 +965,10 @@ namespace v2rayN.Handler
                 }
             }
 
-            ToJsonFile(config);
+            if (toFile)
+            {
+                ToJsonFile(config);
+            }
 
             return 0;
         }
