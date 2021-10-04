@@ -236,31 +236,44 @@ namespace v2rayN.Handler
             }
 
         }
-        
-        public void BackupGuiNConfig(Config config)
+
+        public void BackupGuiNConfig(Config config, bool auto = false)
         {
-            SaveFileDialog fileDialog = new SaveFileDialog
+            string fileName = string.Empty;
+            if (auto)
             {
-                Filter = "guiNConfig|*.json",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
+                fileName = Utils.GetTempPath($"guiNConfig{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json");
             }
-            string fileName = fileDialog.FileName;
+            else
+            {
+                SaveFileDialog fileDialog = new SaveFileDialog
+                {
+                    Filter = "guiNConfig|*.json",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+                if (fileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                fileName = fileDialog.FileName;
+            }
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }
-            if (Utils.ToJsonFile(config, fileName) == 0)
+            var ret = Utils.ToJsonFile(config, fileName);
+            if (!auto)
             {
-                UI.Show(UIRes.I18N("OperationSuccess"));
-            }
-            else
-            {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                if (ret == 0)
+                {
+
+                    UI.Show(UIRes.I18N("OperationSuccess"));
+                }
+                else
+                {
+                    UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                }
             }
         }
 

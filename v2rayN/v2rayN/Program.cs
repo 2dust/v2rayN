@@ -34,7 +34,7 @@ namespace v2rayN
             if (!IsDuplicateInstance())
             {
 
-                Utils.SaveLog("v2rayN start up " + Utils.GetVersion());
+                Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
 
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
@@ -81,7 +81,7 @@ namespace v2rayN
 
             string name = Utils.GetExePath(); // Allow different locations to run
             name = name.Replace("\\", "/"); // https://stackoverflow.com/questions/20714120/could-not-find-a-part-of-the-path-error-while-creating-mutex
-            
+
             Global.mutexObj = new Mutex(false, name, out bool bCreatedNew);
             return !bCreatedNew;
         }
