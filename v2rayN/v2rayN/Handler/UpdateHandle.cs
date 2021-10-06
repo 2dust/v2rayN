@@ -35,7 +35,7 @@ namespace v2rayN.Handler
         private const string v2flyCoreUrl = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip";
         private readonly string xrayCoreLatestUrl = Global.xrayCoreUrl + "/latest";
         private const string xrayCoreUrl = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip";
-        private const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
+        private const string geoUrl = "https://hub.fastgit.org/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
 
         public void CheckUpdateGuiN(Config config, Action<bool, string> update)
         {

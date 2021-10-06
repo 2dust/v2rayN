@@ -9,11 +9,11 @@ namespace v2rayN
 
         public const string DownloadFileName = "v2ray-windows.zip";
         public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
-        public const string AboutUrl = @"https://github.com/2dust/v2rayN";
+        public const string AboutUrl = @"https://hub.fastgit.org/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
-        public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
-        public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
-        public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
+        public const string v2flyCoreUrl = "https://hub.fastgit.org/v2fly/v2ray-core/releases";
+        public const string xrayCoreUrl = "https://hub.fastgit.org/XTLS/Xray-core/releases";
+        public const string NUrl = @"https://hub.fastgit.org/2dust/v2rayN/releases";
 
 
         /// <summary>
