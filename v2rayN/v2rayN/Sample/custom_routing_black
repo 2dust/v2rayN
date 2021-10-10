@@ -1,0 +1,29 @@
+[
+  {
+    "outboundTag": "direct",
+    "protocol": [
+      "bittorrent"
+    ]
+  },
+  {
+    "outboundTag": "block",
+    "domain": [
+      "geosite:category-ads-all"
+    ]
+  },
+  {
+    "outboundTag": "proxy",
+    "ip": [
+      "geoip:telegram"
+    ],
+    "domain": [
+      "geosite:gfw",
+      "geosite:greatfire",
+      "geosite:tld-!cn"
+    ]
+  },
+  {
+    "port": "0-65535",
+    "outboundTag": "direct"
+  }
+]

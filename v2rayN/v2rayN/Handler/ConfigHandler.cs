@@ -1078,6 +1078,10 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            if (routingItem.rules == null)
+            {
+                routingItem.rules = new List<RulesItem>();
+            }
             if (blReplace)
             {
                 routingItem.rules.Clear();
@@ -1189,35 +1193,44 @@ namespace v2rayN.Handler
             if (config.routings.Count(it => it.locked != true) <= 0)
             {
                 //Global
-                var item1 = new RoutingItem();
-                item1.remarks = "全局(Global)";
-                item1.url = string.Empty;
-                item1.rules = new List<RulesItem>();
-                string result1 = Utils.GetEmbedText(Global.CustomRoutingFileName + "global");
-                AddBatchRoutingRules(ref item1, result1);
+                var item1 = new RoutingItem()
+                {
+                    remarks = "全局(Global)",
+                    url = string.Empty,
+                };
+                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
                 config.routings.Add(item1);
 
                 //Bypass the mainland
-                var item2 = new RoutingItem();
-                item2.remarks = "绕过大陆(Whitelist)";
-                item2.url = string.Empty;
-                item2.rules = new List<RulesItem>();
-                string result2 = Utils.GetEmbedText(Global.CustomRoutingFileName + "white");
-                AddBatchRoutingRules(ref item2, result2);
+                var item2 = new RoutingItem()
+                {
+                    remarks = "绕过大陆(Whitelist)",
+                    url = string.Empty,
+                };
+                AddBatchRoutingRules(ref item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
                 config.routings.Add(item2);
+
+                //Blacklist
+                var item3 = new RoutingItem()
+                {
+                    remarks = "黑名单(Blacklist)",
+                    url = string.Empty,
+                };
+                AddBatchRoutingRules(ref item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
+                config.routings.Add(item3);
 
                 config.routingIndex = 0;
             }
 
             if (GetLockedRoutingItem(ref config) == null)
             {
-                var item1 = new RoutingItem();
-                item1.remarks = "locked";
-                item1.url = string.Empty;
-                item1.rules = new List<RulesItem>();
-                item1.locked = true;
-                string result1 = Utils.GetEmbedText(Global.CustomRoutingFileName + "locked");
-                AddBatchRoutingRules(ref item1, result1);
+                var item1 = new RoutingItem()
+                {
+                    remarks = "locked",
+                    url = string.Empty,
+                    locked = true,
+                };
+                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
                 config.routings.Add(item1);
             }
 

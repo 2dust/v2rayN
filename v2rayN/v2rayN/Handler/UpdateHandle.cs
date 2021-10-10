@@ -293,6 +293,12 @@ namespace v2rayN.Handler
                 {
                     AllowAutoRedirect = false
                 };
+                if (httpProxyTest() > 0)
+                {
+                    int httpPort = _config.GetLocalPort(Global.InboundHttp);
+                    WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
+                    webRequestHandler.Proxy = webProxy;
+                }
                 HttpClient httpClient = new HttpClient(webRequestHandler);
 
                 string url;
