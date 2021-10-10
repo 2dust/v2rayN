@@ -41,8 +41,9 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
+            var url = string.Empty;
 
-            DownloadHandle downloadHandle = null;
+              DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
             {
                 downloadHandle = new DownloadHandle();
@@ -55,7 +56,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Global.DownloadFileName);
+                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
                             fileName = Utils.UrlEncode(fileName);
                             Process process = new Process
                             {
@@ -93,8 +94,8 @@ namespace v2rayN.Handler
                 {
                     _updateFunc(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "v2rayN"));
 
-                    string url = args.Msg;
-                    askToDownload(downloadHandle, url);
+                    url = args.Msg;
+                    askToDownload(downloadHandle, url, true);
                 }
                 else
                 {
@@ -110,6 +111,7 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
+            var url = string.Empty;
 
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
@@ -124,7 +126,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            _updateFunc(true, "");
+                            _updateFunc(true, url);
                         }
                         catch (Exception ex)
                         {
@@ -147,8 +149,8 @@ namespace v2rayN.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "Core"));
-                    string url = args.Msg;
-                    askToDownload(downloadHandle, url);
+                    url = args.Msg;
+                    askToDownload(downloadHandle, url, true);
                 }
                 else
                 {
@@ -236,6 +238,7 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
+            var url = string.Format(geoUrl, geoName);
 
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
@@ -250,7 +253,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Global.DownloadFileName);
+                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
                             if (File.Exists(fileName))
                             {
                                 string targetPath = Utils.GetPath($"{geoName}.dat");
@@ -278,8 +281,7 @@ namespace v2rayN.Handler
                 };
             }
 
-            var url = string.Format(geoUrl, geoName);
-            askToDownload(downloadHandle, url);
+            askToDownload(downloadHandle, url, false);
         }
 
         #region private
@@ -433,9 +435,21 @@ namespace v2rayN.Handler
             }
         }
 
-        private void askToDownload(DownloadHandle downloadHandle, string url)
+        private void askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
         {
-            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
+            bool blDownload = false;
+            if (blAsk)
+            {
+                if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
+                {
+                    blDownload = true;
+                }
+            }
+            else
+            {
+                blDownload = true;
+            }
+            if (blDownload)
             {
                 if (httpProxyTest() > 0)
                 {

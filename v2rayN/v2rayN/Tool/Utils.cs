@@ -833,6 +833,14 @@ namespace v2rayN
         {
             i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
         }
+
+        public static string GetDownloadFileName(string url)
+        {
+            var fileName = System.IO.Path.GetFileName(url);
+            fileName += "_temp";
+
+            return fileName;
+        }
         #endregion
 
         #region TempPath

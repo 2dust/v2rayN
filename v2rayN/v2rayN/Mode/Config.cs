@@ -195,6 +195,11 @@ namespace v2rayN.Mode
             get; set;
         }
 
+        public int autoUpdateInterval
+        {
+            get; set;
+        } = 0;
+
         #region 函数
 
         public string address()

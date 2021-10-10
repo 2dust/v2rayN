@@ -139,29 +139,62 @@
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
   </data>
+  <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 156</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>自动更新Geo文件的间隔(单位分钟)</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
+    <value>更新Core时忽略Geo文件</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Core类型</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 16</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
+    <value>去重时保留序号较小的项</value>
+  </data>
+  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="lbFreshrate.Text" xml:space="preserve">
+    <value>统计刷新频率</value>
+  </data>
+  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>372, 16</value>
+  </data>
+  <data name="chkEnableStatistics.Text" xml:space="preserve">
+    <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
+  </data>
+  <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="chkAllowLANConn.Text" xml:space="preserve">
+    <value>允许来自局域网的连接</value>
+  </data>
+  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 16</value>
+  </data>
+  <data name="chkAutoRun.Text" xml:space="preserve">
+    <value>开机自动启动(可能会不成功)</value>
+  </data>
   <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
   <data name="tabPage7.Text" xml:space="preserve">
     <value>  v2rayN设置  </value>
-  </data>
-  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 12</value>
-  </data>
-  <data name="label13.Text" xml:space="preserve">
-    <value>使用分号(;)分隔</value>
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>239, 12</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>对于下列字符开头的地址不使用代理服务器:</value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>例外</value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
@@ -259,47 +292,23 @@
   <data name="label14.Text" xml:space="preserve">
     <value>自定义DNS(可多个,用逗号(,)隔开)</value>
   </data>
-  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 16</value>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
   </data>
-  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
-    <value>更新Core时忽略Geo文件</value>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>例外</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Core类型</value>
+  <data name="label13.Text" xml:space="preserve">
+    <value>使用分号(;)分隔</value>
   </data>
-  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 16</value>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>239, 12</value>
   </data>
-  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
-    <value>去重时保留序号较小的项</value>
-  </data>
-  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
-  </data>
-  <data name="lbFreshrate.Text" xml:space="preserve">
-    <value>统计刷新频率</value>
-  </data>
-  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 16</value>
-  </data>
-  <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
-  </data>
-  <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 16</value>
-  </data>
-  <data name="chkAllowLANConn.Text" xml:space="preserve">
-    <value>允许来自局域网的连接</value>
-  </data>
-  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 16</value>
-  </data>
-  <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>开机自动启动(可能会不成功)</value>
+  <data name="label12.Text" xml:space="preserve">
+    <value>对于下列字符开头的地址不使用代理服务器:</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 479</value>
