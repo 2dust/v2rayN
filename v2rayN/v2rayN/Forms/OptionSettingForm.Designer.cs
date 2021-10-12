@@ -69,6 +69,8 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.txtautoUpdateInterval = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.chkIgnoreGeoUpdateCore = new System.Windows.Forms.CheckBox();
             this.cmbCoreType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -372,6 +374,8 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
+            this.tabPage7.Controls.Add(this.label15);
             this.tabPage7.Controls.Add(this.chkIgnoreGeoUpdateCore);
             this.tabPage7.Controls.Add(this.cmbCoreType);
             this.tabPage7.Controls.Add(this.label4);
@@ -383,6 +387,16 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // txtautoUpdateInterval
+            // 
+            resources.ApplyResources(this.txtautoUpdateInterval, "txtautoUpdateInterval");
+            this.txtautoUpdateInterval.Name = "txtautoUpdateInterval";
+            // 
+            // label15
+            // 
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
             // 
             // chkIgnoreGeoUpdateCore
             // 
@@ -579,5 +593,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtautoUpdateInterval;
+        private System.Windows.Forms.Label label15;
     }
 }

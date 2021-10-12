@@ -123,6 +123,7 @@ namespace v2rayN.Forms
 
             chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
             cmbCoreType.SelectedIndex = (int)config.coreType;
+            txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -290,6 +291,7 @@ namespace v2rayN.Forms
 
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
             config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
+            config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
 
             return 0;
         }

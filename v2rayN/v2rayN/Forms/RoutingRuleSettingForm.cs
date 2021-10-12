@@ -55,12 +55,13 @@ namespace v2rayN.Forms
             lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             lvRoutings.Columns.Add("", 30);
-            lvRoutings.Columns.Add("outboundTag", 100);
+            lvRoutings.Columns.Add("outboundTag", 80);
             lvRoutings.Columns.Add("port", 80);
-            lvRoutings.Columns.Add("protocol", 100);
-            lvRoutings.Columns.Add("inboundTag", 100);
+            lvRoutings.Columns.Add("protocol", 80);
+            lvRoutings.Columns.Add("inboundTag", 80);
             lvRoutings.Columns.Add("domain", 160);
-            lvRoutings.Columns.Add("ip", 160);
+            lvRoutings.Columns.Add("ip", 160); 
+            lvRoutings.Columns.Add("enable", 60);
 
             lvRoutings.EndUpdate();
         }
@@ -81,6 +82,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, "inboundTag", Utils.List2String(item.inboundTag));
                 Utils.AddSubItem(lvItem, "domain", Utils.List2String(item.domain));
                 Utils.AddSubItem(lvItem, "ip", Utils.List2String(item.ip));
+                Utils.AddSubItem(lvItem, "enable", item.enabled.ToString());
 
                 if (lvItem != null) lvRoutings.Items.Add(lvItem);
             }
