@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using System.Web;
 using System.Windows.Forms;
 
 namespace v2rayUpgrade
@@ -18,8 +17,7 @@ namespace v2rayUpgrade
             InitializeComponent();
             if (args.Length > 0)
             {
-                fileName = string.Join(" ", args);
-                fileName = HttpUtility.UrlDecode(fileName);
+                fileName = args[0];
             }
         }
         private void showWarn(string message)

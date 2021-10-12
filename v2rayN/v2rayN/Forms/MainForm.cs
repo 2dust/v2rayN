@@ -50,7 +50,6 @@ namespace v2rayN.Forms
         {
             ConfigHandler.LoadConfig(ref config);
             ConfigHandler.InitBuiltinRouting(ref config);
-            MainFormHandler.Instance.BackupGuiNConfig(config, true);
             v2rayHandler = new V2rayHandler();
             v2rayHandler.ProcessEvent += v2rayHandler_ProcessEvent;
 
@@ -58,7 +57,6 @@ namespace v2rayN.Forms
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
-            MainFormHandler.Instance.UpdateTask(config, UpdateTaskHandler);
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
@@ -938,7 +936,7 @@ namespace v2rayN.Forms
             {
                 if (!Utils.IsNullOrEmpty(MsgFilter))
                 {
-                    if (!Regex.IsMatch(text, MsgFilter))
+                    if (!Regex.IsMatch(text,MsgFilter))
                     {
                         return;
                     }
@@ -970,10 +968,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void ClearMsg()
         {
-            txtMsgBox.Invoke((Action)delegate
-            {
-                txtMsgBox.Clear();
-            });
+            this.txtMsgBox.Clear();
         }
 
         /// <summary>
@@ -1095,15 +1090,6 @@ namespace v2rayN.Forms
             }
         }
 
-        private void UpdateTaskHandler(bool success, string msg)
-        {
-            AppendText(false, msg);
-            if (success)
-            {
-                Global.reloadV2ray = true;
-                LoadV2ray();
-            }
-        }
         #endregion
 
         #region 移动服务器
@@ -1233,7 +1219,8 @@ namespace v2rayN.Forms
                 {
                     CloseV2ray();
 
-                    string fileName = Utils.GetPath(Utils.GetDownloadFileName(msg));
+                    string fileName = Global.DownloadFileName;
+                    fileName = Utils.GetPath(fileName);
                     FileManager.ZipExtractToFile(fileName, config.ignoreGeoUpdateCore ? "geo" : "");
 
                     AppendText(false, UIRes.I18N("MsgUpdateV2rayCoreSuccessfullyMore"));

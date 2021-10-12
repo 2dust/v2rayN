@@ -41,9 +41,8 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
-            var url = string.Empty;
 
-              DownloadHandle downloadHandle = null;
+            DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
             {
                 downloadHandle = new DownloadHandle();
@@ -56,8 +55,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
-                            fileName = Utils.UrlEncode(fileName);
+                            string fileName = Utils.GetPath(Global.DownloadFileName);
                             Process process = new Process
                             {
                                 StartInfo = new ProcessStartInfo
@@ -94,8 +92,8 @@ namespace v2rayN.Handler
                 {
                     _updateFunc(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "v2rayN"));
 
-                    url = args.Msg;
-                    askToDownload(downloadHandle, url, true);
+                    string url = args.Msg;
+                    askToDownload(downloadHandle, url);
                 }
                 else
                 {
@@ -111,7 +109,6 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
-            var url = string.Empty;
 
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
@@ -126,7 +123,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            _updateFunc(true, url);
+                            _updateFunc(true, "");
                         }
                         catch (Exception ex)
                         {
@@ -149,8 +146,8 @@ namespace v2rayN.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, string.Format(UIRes.I18N("MsgParsingSuccessfully"), "Core"));
-                    url = args.Msg;
-                    askToDownload(downloadHandle, url, true);
+                    string url = args.Msg;
+                    askToDownload(downloadHandle, url);
                 }
                 else
                 {
@@ -239,7 +236,6 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
-            var url = string.Format(geoUrl, geoName);
 
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
@@ -254,7 +250,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
+                            string fileName = Utils.GetPath(Global.DownloadFileName);
                             if (File.Exists(fileName))
                             {
                                 string targetPath = Utils.GetPath($"{geoName}.dat");
@@ -282,7 +278,8 @@ namespace v2rayN.Handler
                 };
             }
 
-            askToDownload(downloadHandle, url, false);
+            var url = string.Format(geoUrl, geoName);
+            askToDownload(downloadHandle, url);
         }
 
         #region private
@@ -296,12 +293,6 @@ namespace v2rayN.Handler
                 {
                     AllowAutoRedirect = false
                 };
-                if (httpProxyTest() > 0)
-                {
-                    int httpPort = _config.GetLocalPort(Global.InboundHttp);
-                    WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
-                    webRequestHandler.Proxy = webProxy;
-                }
                 HttpClient httpClient = new HttpClient(webRequestHandler);
 
                 string url;
@@ -436,21 +427,9 @@ namespace v2rayN.Handler
             }
         }
 
-        private void askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
+        private void askToDownload(DownloadHandle downloadHandle, string url)
         {
-            bool blDownload = false;
-            if (blAsk)
-            {
-                if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
-                {
-                    blDownload = true;
-                }
-            }
-            else
-            {
-                blDownload = true;
-            }
-            if (blDownload)
+            if (UI.ShowYesNo(string.Format(UIRes.I18N("DownloadYesNo"), url)) == DialogResult.Yes)
             {
                 if (httpProxyTest() > 0)
                 {

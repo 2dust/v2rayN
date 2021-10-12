@@ -197,10 +197,7 @@ namespace v2rayN.Handler
                         {
                             foreach (var item in config.routings[config.routingIndex].rules)
                             {
-                                if (item.enabled)
-                                {
-                                    routingUserRule(item, ref v2rayConfig);
-                                }
+                                routingUserRule(item, ref v2rayConfig);
                             }
                         }
                     }

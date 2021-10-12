@@ -7,7 +7,7 @@ namespace v2rayN
     {
         #region 常量
 
-        //public const string DownloadFileName = "v2ray-windows.zip";
+        public const string DownloadFileName = "v2ray-windows.zip";
         public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
