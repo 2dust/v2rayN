@@ -29,5 +29,5 @@ Click the **BUTTON** below to **download** the latest binary file
 - 不要担心,你的配置会保存,比如订阅,选择,路由规则.
 
 ### Requirements  
-- Microsoft [.NET Framework 4.6](https://docs.microsoft.com/zh-cn/dotnet/framework/install/guide-for-developers) or higher
+- Microsoft [.NET Framework 4.8](https://docs.microsoft.com/zh-cn/dotnet/framework/install/guide-for-developers)
 - Project V core [https://github.com/v2fly/v2ray-core/releases](https://github.com/v2fly/v2ray-core/releases)

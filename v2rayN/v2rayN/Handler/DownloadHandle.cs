@@ -52,7 +52,7 @@ namespace v2rayN.Handler
 
                 ws.DownloadFileCompleted += ws_DownloadFileCompleted;
                 ws.DownloadProgressChanged += ws_DownloadProgressChanged;
-                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(Global.DownloadFileName));
+                ws.DownloadFileAsync(new Uri(url), Utils.GetPath(Utils.GetDownloadFileName(url)));
             }
             catch (Exception ex)
             {

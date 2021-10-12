@@ -19,7 +19,9 @@ namespace v2rayN.Mode
         public List<string> domain { get; set; }
         
         public List<string> protocol { get; set; }
-        
+
+        public bool enabled { get; set; } = true;
+
     }
 
 }
