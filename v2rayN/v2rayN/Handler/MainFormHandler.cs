@@ -242,7 +242,7 @@ namespace v2rayN.Handler
                         Utils.SaveLog("geoip" + msg);
                 });
 
-                Thread.Sleep(60000 * config.autoUpdateInterval);
+                Thread.Sleep(1000 * 3600 * config.autoUpdateInterval);
             }
         }
     }
