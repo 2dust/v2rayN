@@ -47,8 +47,9 @@ namespace v2rayN
                     result = reader.ReadToEnd();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return result;
         }
@@ -69,8 +70,9 @@ namespace v2rayN
                     result = reader.ReadToEnd();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return result;
         }
@@ -108,8 +110,9 @@ namespace v2rayN
                                            Formatting.Indented,
                                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return result;
         }
@@ -141,8 +144,9 @@ namespace v2rayN
                 }
                 result = 0;
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 result = -1;
             }
             return result;
@@ -155,8 +159,10 @@ namespace v2rayN
                 JObject obj = JObject.Parse(strJson);
                 return obj;
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
+
                 return null;
             }
         }
@@ -182,8 +188,9 @@ namespace v2rayN
                     return string.Join(",", lst.ToArray());
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return string.Empty;
             }
         }
@@ -199,8 +206,9 @@ namespace v2rayN
                 str = str.Replace(Environment.NewLine, "");
                 return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return new List<string>();
             }
         }
@@ -265,8 +273,9 @@ namespace v2rayN
             {
                 return Convert.ToInt32(obj);
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return 0;
             }
         }
@@ -277,8 +286,9 @@ namespace v2rayN
             {
                 return (obj == null ? string.Empty : obj.ToString());
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return string.Empty;
             }
         }
@@ -395,8 +405,9 @@ namespace v2rayN
                 int var1 = ToInt(oText);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return false;
             }
         }
@@ -538,8 +549,9 @@ namespace v2rayN
                 string exePath = GetExePath();
                 RegWriteValue(autoRunRegPath, autoRunName, run ? $"\"{exePath}\"" : "");
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
         }
 
@@ -558,8 +570,9 @@ namespace v2rayN
                     return true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return false;
         }
@@ -608,8 +621,9 @@ namespace v2rayN
                     return value;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             finally
             {
@@ -633,8 +647,9 @@ namespace v2rayN
                     regKey?.SetValue(name, value);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             finally
             {
@@ -674,8 +689,9 @@ namespace v2rayN
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return -1;
             }
             return roundtripTime;
@@ -697,8 +713,9 @@ namespace v2rayN
                         lstIPAddress.Add(ipa.ToString());
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return lstIPAddress;
         }
@@ -729,8 +746,9 @@ namespace v2rayN
                         FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
                         File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return string.Empty;
             }
         }
@@ -773,8 +791,9 @@ namespace v2rayN
                 }
                 return strData;
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return strData;
         }
@@ -804,8 +823,9 @@ namespace v2rayN
             {
                 return Guid.NewGuid().ToString("D");
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
             }
             return string.Empty;
         }
@@ -823,8 +843,9 @@ namespace v2rayN
                 //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
                 return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
             }
-            catch
+            catch (Exception ex)
             {
+                SaveLog(ex.Message, ex);
                 return false;
             }
         }
@@ -963,7 +984,10 @@ namespace v2rayN
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
+            }
             return string.Empty;
         }
 

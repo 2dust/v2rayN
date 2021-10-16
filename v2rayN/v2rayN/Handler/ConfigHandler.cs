@@ -32,6 +32,15 @@ namespace v2rayN.Handler
                 //转成Json
                 config = Utils.FromJson<Config>(result);
             }
+            else
+            {            
+                if (File.Exists(Utils.GetPath(configRes)))
+                {
+                    Utils.SaveLog("LoadConfig Exception");
+                    return -1;
+                }
+            }
+
             if (config == null)
             {
                 config = new Config
