@@ -88,6 +88,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkAutoUpdateSubscribe = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -373,6 +374,7 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.chkAutoUpdateSubscribe);
             this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
             this.tabPage7.Controls.Add(this.label15);
             this.tabPage7.Controls.Add(this.chkIgnoreGeoUpdateCore);
@@ -505,6 +507,12 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // chkAutoUpdateSubscribe
+            // 
+            resources.ApplyResources(this.chkAutoUpdateSubscribe, "chkAutoUpdateSubscribe");
+            this.chkAutoUpdateSubscribe.Name = "chkAutoUpdateSubscribe";
+            this.chkAutoUpdateSubscribe.UseVisualStyleBackColor = true;
+            // 
             // OptionSettingForm
             // 
             resources.ApplyResources(this, "$this");
@@ -595,5 +603,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtautoUpdateInterval;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.CheckBox chkAutoUpdateSubscribe;
     }
 }

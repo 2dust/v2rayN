@@ -1137,6 +1137,36 @@
   <data name="&gt;&gt;tabPage6.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="chkAutoUpdateSubscribe.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkAutoUpdateSubscribe.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkAutoUpdateSubscribe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 189</value>
+  </data>
+  <data name="chkAutoUpdateSubscribe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 16</value>
+  </data>
+  <data name="chkAutoUpdateSubscribe.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="chkAutoUpdateSubscribe.Text" xml:space="preserve">
+    <value>Update subscribe on start</value>
+  </data>
+  <data name="&gt;&gt;chkAutoUpdateSubscribe.Name" xml:space="preserve">
+    <value>chkAutoUpdateSubscribe</value>
+  </data>
+  <data name="&gt;&gt;chkAutoUpdateSubscribe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkAutoUpdateSubscribe.Parent" xml:space="preserve">
+    <value>tabPage7</value>
+  </data>
+  <data name="&gt;&gt;chkAutoUpdateSubscribe.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
     <value>325, 156</value>
   </data>
@@ -1156,7 +1186,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;txtautoUpdateInterval.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1186,7 +1216,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="chkIgnoreGeoUpdateCore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1216,7 +1246,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkIgnoreGeoUpdateCore.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cmbCoreType.Items" xml:space="preserve">
     <value>v2fly_core</value>
@@ -1243,7 +1273,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;cmbCoreType.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1273,7 +1303,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="chkKeepOlderDedupl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1303,7 +1333,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkKeepOlderDedupl.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
     <value>161, 84</value>
@@ -1324,7 +1354,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;cbFreshrate.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="lbFreshrate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1354,7 +1384,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;lbFreshrate.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="chkEnableStatistics.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1384,7 +1414,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkEnableStatistics.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="chkAllowLANConn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1411,7 +1441,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAllowLANConn.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="chkAutoRun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1438,7 +1468,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAutoRun.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="tabPage7.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>

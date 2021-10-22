@@ -96,6 +96,7 @@ namespace v2rayN.Forms
             chkAllowLANConn.Checked = config.allowLANConn;
             chkEnableStatistics.Checked = config.enableStatistics;
             chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
+            chkAutoUpdateSubscribe.Checked = config.autoUpdateSubscribe;
 
             ComboItem[] cbSource = new ComboItem[]
             {
@@ -292,6 +293,7 @@ namespace v2rayN.Forms
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
             config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
             config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
+            config.autoUpdateSubscribe = chkAutoUpdateSubscribe.Checked;
 
             return 0;
         }

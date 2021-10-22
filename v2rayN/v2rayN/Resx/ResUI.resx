@@ -394,4 +394,7 @@
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>Informations (Filter : {0})</value>
   </data>
+  <data name="StartAutoUpdateSubscribe" xml:space="preserve">
+    <value>Start automatic update subscribe</value>
+  </data>
 </root>

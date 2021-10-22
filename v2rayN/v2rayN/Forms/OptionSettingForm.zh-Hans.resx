@@ -322,4 +322,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="chkAutoUpdateSubscribe.Text" xml:space="preserve">
+    <value>启动时自动更新订阅</value>
+  </data>
 </root>

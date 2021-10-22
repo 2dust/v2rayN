@@ -83,6 +83,8 @@ namespace v2rayN.Forms
 
             HideForm();
 
+            AutoUpdateSubscription();
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1352,6 +1354,18 @@ namespace v2rayN.Forms
             };
 
             (new UpdateHandle()).UpdateSubscriptionProcess(config, _updateUI);
+        }
+
+        /// <summary>
+        /// If enabled this setting,Then automatic update subscription on start       
+        /// </summary>
+        private void AutoUpdateSubscription()
+        {
+            if (config.autoUpdateSubscribe)
+            {
+                ShowMsg(UIRes.I18N("StartAutoUpdateSubscribe"));                
+                UpdateSubscriptionProcess();
+            }
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)

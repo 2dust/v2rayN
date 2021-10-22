@@ -200,6 +200,10 @@ namespace v2rayN.Mode
             get; set;
         } = 0;
 
+        public bool autoUpdateSubscribe
+        {
+            get;set;
+        }
         #region 函数
 
         public string address()
