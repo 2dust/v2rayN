@@ -1363,8 +1363,10 @@ namespace v2rayN.Forms
         {
             if (config.autoUpdateSubscribe)
             {
-                ShowMsg(UIRes.I18N("StartAutoUpdateSubscribe"));                
+                ShowMsg(UIRes.I18N("StartAutoUpdateSubscribe"));
+                ShowMsg(config.index.ToString());
                 UpdateSubscriptionProcess();
+                SetDefaultServer(config.index);
             }
         }
 
