@@ -1364,9 +1364,18 @@ namespace v2rayN.Forms
             if (config.autoUpdateSubscribe)
             {
                 ShowMsg(UIRes.I18N("StartAutoUpdateSubscribe"));
-                ShowMsg(config.index.ToString());
-                UpdateSubscriptionProcess();
-                SetDefaultServer(config.index);
+                int lastIndex = config.index;
+                void _updateUI(bool success, string msg)
+                {
+                    AppendText(false, msg);
+                    if (success)
+                    {
+                        RefreshServers();                        
+                    }                    
+                    SetDefaultServer(lastIndex);                    
+                };
+
+                (new UpdateHandle()).UpdateSubscriptionProcess(config, _updateUI);                
             }
         }
 
