@@ -12,6 +12,7 @@ namespace v2rayN.Forms
         public BaseForm()
         {
             InitializeComponent();
+            this.Font= new System.Drawing.Font(System.Drawing.SystemFonts.MessageBoxFont.Name, System.Drawing.SystemFonts.DefaultFont.Size);
             LoadCustomIcon();
         }
 
