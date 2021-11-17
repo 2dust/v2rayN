@@ -236,19 +236,27 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int RemoveServer(ref Config config, int index)
+        public static int RemoveServer(ref Config config, List<int> indexs)
         {
-            if (index < 0 || index > config.vmess.Count - 1)
+            var itemId = config.getItemId();
+
+            for (int k = indexs.Count - 1; k >= 0; k--)
             {
-                return -1;
+                var index = indexs[k];
+                if (index < 0 || index > config.vmess.Count - 1)
+                {
+                    continue;
+                }
+
+                config.vmess.RemoveAt(index);
             }
 
-            //删除
-            config.vmess.RemoveAt(index);
-
-
-            //移除的是活动的
-            if (config.index.Equals(index))
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
+            {
+                config.index = index_;
+            }
+            else
             {
                 if (config.vmess.Count > 0)
                 {
@@ -258,13 +266,8 @@ namespace v2rayN.Handler
                 {
                     config.index = -1;
                 }
-                Global.reloadV2ray = true;
             }
-            else if (index < config.index)//移除活动之前的
-            {
-                config.index--;
-                Global.reloadV2ray = true;
-            }
+            Global.reloadV2ray = true;
 
             ToJsonFile(config);
 
