@@ -220,11 +220,12 @@ namespace v2rayN.Handler
                 int httpPort = _config.GetLocalPort("speedtest");
 
                 WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
-                var ws = downloadHandle2.DownloadFileAsync(url, webProxy, timeout - 2);
+                var ws = downloadHandle2.DownloadDataAsync(url, webProxy, timeout - 2);
 
                 Thread.Sleep(1000 * timeout);
 
                 ws.CancelAsync();
+                ws.Dispose();
 
                 Thread.Sleep(1000 * 2);
             }

@@ -62,7 +62,7 @@ namespace v2rayN.Handler
             }
             return ws;
         }
-
+        
         void ws_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             if (UpdateCompleted != null)
@@ -108,7 +108,7 @@ namespace v2rayN.Handler
                     if (e.Error == null
                         || Utils.IsNullOrEmpty(e.Error.ToString()))
                     {
-
+                        ((WebClientEx)sender).Dispose();
                         TimeSpan ts = (DateTime.Now - totalDatetime);
                         string speed = string.Format("{0} M/s", (totalBytesToReceive / ts.TotalMilliseconds / 1000).ToString("#0.0"));
                         UpdateCompleted(this, new ResultEventArgs(true, speed.PadLeft(8, ' ')));
@@ -189,5 +189,34 @@ namespace v2rayN.Handler
             }
         }
 
+        public WebClientEx DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout)
+        {
+            WebClientEx ws = new WebClientEx();
+            try
+            {
+                Utils.SetSecurityProtocol();
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
+
+                progressPercentage = -1;
+                totalBytesToReceive = 0;
+
+                DownloadTimeout = downloadTimeout;
+                if (webProxy != null)
+                {
+                    ws.Proxy = webProxy;
+                }
+
+                ws.DownloadProgressChanged += ws_DownloadProgressChanged;
+                ws.DownloadDataCompleted += ws_DownloadFileCompleted;
+                ws.DownloadDataAsync(new Uri(url));
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+            }
+            return ws;
+        }
     }
 }
