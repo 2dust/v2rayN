@@ -120,15 +120,30 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>确定(&amp;O)</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 613</value>
+    <value>0, 501</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>785, 60</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 147</value>
+  </data>
+  <data name="btnBrowse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>670, 104</value>
+  </data>
+  <data name="txtCustomIcon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>101, 105</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>自定义图标</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
@@ -153,9 +168,6 @@
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>别名</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 109</value>
   </data>
   <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 22</value>
@@ -235,19 +247,28 @@
 </value>
   </data>
   <data name="lvRoutings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>771, 447</value>
+    <value>771, 297</value>
+  </data>
+  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 172</value>
+  </data>
+  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 329</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>777, 453</value>
+    <value>777, 303</value>
   </data>
   <data name="tabPage2.Text" xml:space="preserve">
     <value>规则列表</value>
   </data>
-  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 134</value>
+  <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 25</value>
   </data>
-  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 479</value>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 21</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>导入规则</value>
   </data>
   <data name="menuImportRulesFromFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 22</value>
@@ -267,17 +288,8 @@
   <data name="menuImportRulesFromUrl.Text" xml:space="preserve">
     <value>从订阅Url中导入规则</value>
   </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 21</value>
-  </data>
-  <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>导入规则</value>
-  </data>
-  <data name="menuServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 25</value>
-  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>785, 673</value>
+    <value>785, 561</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>规则集设置</value>

@@ -27,6 +27,9 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
+        public string customIcon
+        {
+            get; set;
+        }
     }
 }

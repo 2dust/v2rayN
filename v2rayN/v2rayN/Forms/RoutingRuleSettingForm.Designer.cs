@@ -34,6 +34,10 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.txtCustomIcon = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -68,17 +72,17 @@
             // 
             // btnClose
             // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // panel2
             // 
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
@@ -90,13 +94,39 @@
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.btnBrowse);
+            this.panel1.Controls.Add(this.txtCustomIcon);
+            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.txtUrl);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.txtRemarks);
             this.panel1.Controls.Add(this.label2);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // btnBrowse
+            // 
+            resources.ApplyResources(this.btnBrowse, "btnBrowse");
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // txtCustomIcon
+            // 
+            resources.ApplyResources(this.txtCustomIcon, "txtCustomIcon");
+            this.txtCustomIcon.Name = "txtCustomIcon";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
             // 
             // label1
             // 
@@ -125,8 +155,8 @@
             // 
             // lvRoutings
             // 
-            this.lvRoutings.ContextMenuStrip = this.cmsLv;
             resources.ApplyResources(this.lvRoutings, "lvRoutings");
+            this.lvRoutings.ContextMenuStrip = this.cmsLv;
             this.lvRoutings.FullRowSelect = true;
             this.lvRoutings.GridLines = true;
             this.lvRoutings.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -142,6 +172,7 @@
             // 
             // cmsLv
             // 
+            resources.ApplyResources(this.cmsLv, "cmsLv");
             this.cmsLv.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cmsLv.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuAdd,
@@ -155,114 +186,113 @@
             this.menuMoveBottom});
             this.cmsLv.Name = "cmsLv";
             this.cmsLv.OwnerItem = this.MenuItem1;
-            resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAdd
             // 
-            this.menuAdd.Name = "menuAdd";
             resources.ApplyResources(this.menuAdd, "menuAdd");
+            this.menuAdd.Name = "menuAdd";
             this.menuAdd.Click += new System.EventHandler(this.menuAdd_Click);
             // 
             // menuRemove
             // 
-            this.menuRemove.Name = "menuRemove";
             resources.ApplyResources(this.menuRemove, "menuRemove");
+            this.menuRemove.Name = "menuRemove";
             this.menuRemove.Click += new System.EventHandler(this.menuRemove_Click);
             // 
             // menuSelectAll
             // 
-            this.menuSelectAll.Name = "menuSelectAll";
             resources.ApplyResources(this.menuSelectAll, "menuSelectAll");
+            this.menuSelectAll.Name = "menuSelectAll";
             this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
             // 
             // menuExportSelectedRules
             // 
-            this.menuExportSelectedRules.Name = "menuExportSelectedRules";
             resources.ApplyResources(this.menuExportSelectedRules, "menuExportSelectedRules");
+            this.menuExportSelectedRules.Name = "menuExportSelectedRules";
             this.menuExportSelectedRules.Click += new System.EventHandler(this.menuExportSelectedRules_Click);
             // 
             // toolStripSeparator3
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
             resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
             // 
             // menuMoveTop
             // 
-            this.menuMoveTop.Name = "menuMoveTop";
             resources.ApplyResources(this.menuMoveTop, "menuMoveTop");
+            this.menuMoveTop.Name = "menuMoveTop";
             this.menuMoveTop.Click += new System.EventHandler(this.menuMoveTop_Click);
             // 
             // menuMoveUp
             // 
-            this.menuMoveUp.Name = "menuMoveUp";
             resources.ApplyResources(this.menuMoveUp, "menuMoveUp");
+            this.menuMoveUp.Name = "menuMoveUp";
             this.menuMoveUp.Click += new System.EventHandler(this.menuMoveUp_Click);
             // 
             // menuMoveDown
             // 
-            this.menuMoveDown.Name = "menuMoveDown";
             resources.ApplyResources(this.menuMoveDown, "menuMoveDown");
+            this.menuMoveDown.Name = "menuMoveDown";
             this.menuMoveDown.Click += new System.EventHandler(this.menuMoveDown_Click);
             // 
             // menuMoveBottom
             // 
-            this.menuMoveBottom.Name = "menuMoveBottom";
             resources.ApplyResources(this.menuMoveBottom, "menuMoveBottom");
+            this.menuMoveBottom.Name = "menuMoveBottom";
             this.menuMoveBottom.Click += new System.EventHandler(this.menuMoveBottom_Click);
             // 
             // MenuItem1
             // 
+            resources.ApplyResources(this.MenuItem1, "MenuItem1");
             this.MenuItem1.DropDown = this.cmsLv;
             this.MenuItem1.Name = "MenuItem1";
-            resources.ApplyResources(this.MenuItem1, "MenuItem1");
             // 
             // tabControl2
             // 
-            this.tabControl2.Controls.Add(this.tabPage2);
             resources.ApplyResources(this.tabControl2, "tabControl2");
+            this.tabControl2.Controls.Add(this.tabPage2);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.lvRoutings);
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.lvRoutings);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // menuServer
             // 
+            resources.ApplyResources(this.menuServer, "menuServer");
             this.menuServer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem1,
             this.toolStripMenuItem1});
-            resources.ApplyResources(this.menuServer, "menuServer");
             this.menuServer.Name = "menuServer";
             // 
             // toolStripMenuItem1
             // 
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuImportRulesFromFile,
             this.menuImportRulesFromClipboard,
             this.menuImportRulesFromUrl});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             // 
             // menuImportRulesFromFile
             // 
-            this.menuImportRulesFromFile.Name = "menuImportRulesFromFile";
             resources.ApplyResources(this.menuImportRulesFromFile, "menuImportRulesFromFile");
+            this.menuImportRulesFromFile.Name = "menuImportRulesFromFile";
             this.menuImportRulesFromFile.Click += new System.EventHandler(this.menuImportRulesFromFile_Click);
             // 
             // menuImportRulesFromClipboard
             // 
-            this.menuImportRulesFromClipboard.Name = "menuImportRulesFromClipboard";
             resources.ApplyResources(this.menuImportRulesFromClipboard, "menuImportRulesFromClipboard");
+            this.menuImportRulesFromClipboard.Name = "menuImportRulesFromClipboard";
             this.menuImportRulesFromClipboard.Click += new System.EventHandler(this.menuImportRulesFromClipboard_Click);
             // 
             // menuImportRulesFromUrl
             // 
-            this.menuImportRulesFromUrl.Name = "menuImportRulesFromUrl";
             resources.ApplyResources(this.menuImportRulesFromUrl, "menuImportRulesFromUrl");
+            this.menuImportRulesFromUrl.Name = "menuImportRulesFromUrl";
             this.menuImportRulesFromUrl.Click += new System.EventHandler(this.menuImportRulesFromUrl_Click);
             // 
             // RoutingRuleSettingForm
@@ -319,5 +349,9 @@
         private System.Windows.Forms.TextBox txtUrl;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtCustomIcon;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Label label5;
     }
 }

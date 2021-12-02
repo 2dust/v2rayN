@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -50,9 +51,23 @@ namespace v2rayN.Handler
                 Graphics graphics = Graphics.FromImage(bitmap);
                 SolidBrush drawBrush = new SolidBrush(color);
 
-                graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
-                int zoom = 16;
-                graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
+                var customIcon = false;
+                if (config.enableRoutingAdvanced)
+                {
+                    var item = config.routings[config.routingIndex];
+                    if (!Utils.IsNullOrEmpty(item.customIcon) && File.Exists(item.customIcon))
+                    {
+                        graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
+                        graphics.DrawImage(new Bitmap(item.customIcon), 0, 0);
+                        customIcon = true;
+                    }
+                }
+                if (!customIcon)
+                {
+                    graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
+                    int zoom = 16;
+                    graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
+                }
 
                 Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
 
