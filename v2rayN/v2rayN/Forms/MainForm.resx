@@ -302,6 +302,18 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
   </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 622</value>
   </data>
@@ -427,18 +439,6 @@
   </data>
   <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
   </data>
   <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -566,41 +566,23 @@
   <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>228, 18</value>
   </metadata>
-  <data name="toolSslSocksPortLab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
+  <data name="toolSslInboundInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 21</value>
   </data>
-  <data name="toolSslSocksPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 21</value>
-  </data>
-  <data name="toolSslSocksPortLab.Text" xml:space="preserve">
-    <value>SOCKS5:</value>
-  </data>
-  <data name="toolSslSocksPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
+  <data name="toolSslInboundInfo.Text" xml:space="preserve">
+    <value>InboundInfo</value>
   </data>
   <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>279, 21</value>
+    <value>285, 21</value>
   </data>
-  <data name="toolSslHttpPortLab.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="toolSslHttpPortLab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 21</value>
-  </data>
-  <data name="toolSslHttpPortLab.Text" xml:space="preserve">
-    <value>HTTP:</value>
-  </data>
-  <data name="toolSslHttpPort.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolSslRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 21</value>
   </data>
-  <data name="toolSslBlank2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>279, 21</value>
+    <value>285, 21</value>
   </data>
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -831,13 +813,13 @@
     <value>6, 56</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>Updates</value>
@@ -1319,40 +1301,16 @@
   <data name="&gt;&gt;menuMsgBoxFilter.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPortLab.Name" xml:space="preserve">
-    <value>toolSslSocksPortLab</value>
+  <data name="&gt;&gt;toolSslInboundInfo.Name" xml:space="preserve">
+    <value>toolSslInboundInfo</value>
   </data>
-  <data name="&gt;&gt;toolSslSocksPortLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslSocksPort.Name" xml:space="preserve">
-    <value>toolSslSocksPort</value>
-  </data>
-  <data name="&gt;&gt;toolSslSocksPort.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolSslInboundInfo.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolSslBlank1.Name" xml:space="preserve">
     <value>toolSslBlank1</value>
   </data>
   <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPortLab.Name" xml:space="preserve">
-    <value>toolSslHttpPortLab</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPortLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPort.Name" xml:space="preserve">
-    <value>toolSslHttpPort</value>
-  </data>
-  <data name="&gt;&gt;toolSslHttpPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
-    <value>toolSslBlank2</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
@@ -1636,6 +1594,18 @@
   </data>
   <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslRoutingRule.Name" xml:space="preserve">
+    <value>toolSslRoutingRule</value>
+  </data>
+  <data name="&gt;&gt;toolSslRoutingRule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
+    <value>toolSslBlank2</value>
+  </data>
+  <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>

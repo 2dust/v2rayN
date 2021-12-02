@@ -77,12 +77,8 @@
             this.menuMsgBoxAddRoutingRule = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMsgBoxFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
-            this.toolSslSocksPortLab = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslSocksPort = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslInboundInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslHttpPortLab = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslHttpPort = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolSslBlank2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.notifyMain = new System.Windows.Forms.NotifyIcon(this.components);
@@ -133,6 +129,8 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
+            this.toolSslRoutingRule = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolSslBlank2 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -221,6 +219,7 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
+            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -501,11 +500,9 @@
             // 
             this.ssMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolSslSocksPortLab,
-            this.toolSslSocksPort,
+            this.toolSslInboundInfo,
             this.toolSslBlank1,
-            this.toolSslHttpPortLab,
-            this.toolSslHttpPort,
+            this.toolSslRoutingRule,
             this.toolSslBlank2,
             this.toolSslServerSpeed,
             this.toolSslBlank4});
@@ -513,37 +510,16 @@
             this.ssMain.Name = "ssMain";
             this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
             // 
-            // toolSslSocksPortLab
+            // toolSslInboundInfo
             // 
-            resources.ApplyResources(this.toolSslSocksPortLab, "toolSslSocksPortLab");
-            this.toolSslSocksPortLab.Name = "toolSslSocksPortLab";
-            // 
-            // toolSslSocksPort
-            // 
-            this.toolSslSocksPort.Name = "toolSslSocksPort";
-            resources.ApplyResources(this.toolSslSocksPort, "toolSslSocksPort");
+            this.toolSslInboundInfo.Name = "toolSslInboundInfo";
+            resources.ApplyResources(this.toolSslInboundInfo, "toolSslInboundInfo");
             // 
             // toolSslBlank1
             // 
             resources.ApplyResources(this.toolSslBlank1, "toolSslBlank1");
             this.toolSslBlank1.Name = "toolSslBlank1";
             this.toolSslBlank1.Spring = true;
-            // 
-            // toolSslHttpPortLab
-            // 
-            resources.ApplyResources(this.toolSslHttpPortLab, "toolSslHttpPortLab");
-            this.toolSslHttpPortLab.Name = "toolSslHttpPortLab";
-            // 
-            // toolSslHttpPort
-            // 
-            this.toolSslHttpPort.Name = "toolSslHttpPort";
-            resources.ApplyResources(this.toolSslHttpPort, "toolSslHttpPort");
-            // 
-            // toolSslBlank2
-            // 
-            resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
-            this.toolSslBlank2.Name = "toolSslBlank2";
-            this.toolSslBlank2.Spring = true;
             // 
             // toolSslServerSpeed
             // 
@@ -889,6 +865,17 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
+            // toolSslRoutingRule
+            // 
+            this.toolSslRoutingRule.Name = "toolSslRoutingRule";
+            resources.ApplyResources(this.toolSslRoutingRule, "toolSslRoutingRule");
+            // 
+            // toolSslBlank2
+            // 
+            this.toolSslBlank2.Name = "toolSslBlank2";
+            resources.ApplyResources(this.toolSslBlank2, "toolSslBlank2");
+            this.toolSslBlank2.Spring = true;
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -994,12 +981,7 @@
         private System.Windows.Forms.ToolStripButton tsbPromotion;
         private System.Windows.Forms.ToolStripMenuItem menuAddSocksServer;
         private System.Windows.Forms.StatusStrip ssMain;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslSocksPort;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslHttpPort;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslBlank2;
         private System.Windows.Forms.ToolStripStatusLabel toolSslBlank1;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslSocksPortLab;
-        private System.Windows.Forms.ToolStripStatusLabel toolSslHttpPortLab;
         private System.Windows.Forms.ToolStripStatusLabel toolSslServerSpeed;
         private System.Windows.Forms.ToolStripStatusLabel toolSslBlank4;
         private System.Windows.Forms.ToolStripMenuItem menuRemoveDuplicateServer;
@@ -1032,6 +1014,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateGeoIP;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxFilter;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslInboundInfo;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslRoutingRule;
+        private System.Windows.Forms.ToolStripStatusLabel toolSslBlank2;
     }
 }
 
