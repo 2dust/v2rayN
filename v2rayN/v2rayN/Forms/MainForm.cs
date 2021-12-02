@@ -587,13 +587,9 @@ namespace v2rayN.Forms
 
         private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
         {
-            Utils.DedupServerList(config.vmess, out List<VmessItem> servers, config.keepOlderDedupl);
             int oldCount = config.vmess.Count;
-            int newCount = servers.Count;
-            if (servers != null)
-            {
-                config.vmess = servers;
-            }
+            ConfigHandler.DedupServerList(ref config);
+            int newCount = config.vmess.Count;
             RefreshServers();
             LoadV2ray();
             UI.Show(string.Format(UIRes.I18N("RemoveDuplicateServerResult"), oldCount, newCount));

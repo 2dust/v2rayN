@@ -987,6 +987,63 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        public static int DedupServerList(ref Config config)
+        {
+            var itemId = config.getItemId();
+            
+            List<Mode.VmessItem> source = config.vmess;
+            bool keepOlder = config.keepOlderDedupl;
+
+            List<Mode.VmessItem> list = new List<Mode.VmessItem>();
+            if (!keepOlder) source.Reverse(); // Remove the early items first
+
+            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
+            {
+                return o.configVersion == n.configVersion &&
+                    o.configType == n.configType &&
+                    o.address == n.address &&
+                    o.port == n.port &&
+                    o.id == n.id &&
+                    o.alterId == n.alterId &&
+                    o.security == n.security &&
+                    o.network == n.network &&
+                    o.headerType == n.headerType &&
+                    o.requestHost == n.requestHost &&
+                    o.path == n.path &&
+                    o.streamSecurity == n.streamSecurity;
+                // skip (will remove) different remarks
+            }
+            foreach (Mode.VmessItem item in source)
+            {
+                if (!list.Exists(i => _isAdded(i, item)))
+                {
+                    list.Add(item);
+                }
+            }
+            if (!keepOlder) list.Reverse();
+            config.vmess = list;
+
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
+            {
+                config.index = index_;
+            }
+            else
+            {
+                if (config.vmess.Count > 0)
+                {
+                    config.index = 0;
+                }
+                else
+                {
+                    config.index = -1;
+                }
+            }
+            Global.reloadV2ray = true;
+
+            return 0;
+        }
+
         #endregion
 
         #region UI
