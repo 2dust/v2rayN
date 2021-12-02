@@ -331,6 +331,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Custom Icon 的本地化字符串。
+        /// </summary>
+        internal static string LvCustomIcon {
+            get {
+                return ResourceManager.GetString("LvCustomIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Security 的本地化字符串。
         /// </summary>
         internal static string LvEncryptionMethod {

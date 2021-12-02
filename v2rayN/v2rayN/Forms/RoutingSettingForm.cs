@@ -147,6 +147,7 @@ namespace v2rayN.Forms
             lvRoutings.Columns.Add(UIRes.I18N("LvAlias"), 200);
             lvRoutings.Columns.Add(UIRes.I18N("LvCount"), 60);
             lvRoutings.Columns.Add(UIRes.I18N("LvUrl"), 240);
+            lvRoutings.Columns.Add(UIRes.I18N("LvCustomIcon"), 240);
 
             lvRoutings.EndUpdate();
         }
@@ -174,6 +175,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, "remarks", item.remarks);
                 Utils.AddSubItem(lvItem, "count", item.rules.Count.ToString());
                 Utils.AddSubItem(lvItem, "url", item.url);
+                Utils.AddSubItem(lvItem, "customIcon", item.customIcon);
 
                 if (lvItem != null) lvRoutings.Items.Add(lvItem);
             }
