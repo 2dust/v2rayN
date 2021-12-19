@@ -14,6 +14,7 @@ namespace v2rayN.Forms
 
         private void AddServer6Form_Load(object sender, EventArgs e)
         {
+            transportControl.AllowXtls = true;
             if (EditIndex >= 0)
             {
                 vmessItem = config.vmess[EditIndex];
@@ -31,14 +32,13 @@ namespace v2rayN.Forms
         /// </summary>
         private void BindingServer()
         {
-
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
             txtId.Text = vmessItem.id;
-            txtSNI.Text = vmessItem.sni;
+            cmbFlow.Text = vmessItem.flow;
             txtRemarks.Text = vmessItem.remarks;
-            cmbStreamSecurity.Text = vmessItem.streamSecurity;
-            cmbAllowInsecure.Text = vmessItem.allowInsecure;
+
+            transportControl.BindingServer(vmessItem);
         }
 
 
@@ -50,10 +50,10 @@ namespace v2rayN.Forms
             txtAddress.Text = "";
             txtPort.Text = "";
             txtId.Text = "";
-            txtSNI.Text = "";
+            cmbFlow.Text = "";
             txtRemarks.Text = ""; 
-            cmbStreamSecurity.Text = "tls";
-            cmbAllowInsecure.Text = "";
+
+            transportControl.ClearServer(vmessItem);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -61,10 +61,8 @@ namespace v2rayN.Forms
             string address = txtAddress.Text;
             string port = txtPort.Text;
             string id = txtId.Text;
-            string sni = txtSNI.Text;
+            string flow = cmbFlow.Text;
             string remarks = txtRemarks.Text;
-            string streamSecurity = cmbStreamSecurity.Text;
-            string allowInsecure = cmbAllowInsecure.Text;
 
             if (Utils.IsNullOrEmpty(address))
             {
@@ -80,15 +78,15 @@ namespace v2rayN.Forms
             {
                 UI.Show(UIRes.I18N("FillPassword"));
                 return;
-            } 
+            }
+
+            transportControl.EndBindingServer();
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
-            vmessItem.sni = sni.Replace(" ", "");
+            vmessItem.flow = flow;
             vmessItem.remarks = remarks;
-            vmessItem.streamSecurity = streamSecurity;
-            vmessItem.allowInsecure = allowInsecure;
 
             if (ConfigHandler.AddTrojanServer(ref config, vmessItem, EditIndex) == 0)
             {

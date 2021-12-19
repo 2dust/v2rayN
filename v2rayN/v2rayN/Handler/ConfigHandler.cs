@@ -639,8 +639,10 @@ namespace v2rayN.Handler
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
-
-            vmessItem.streamSecurity = Global.StreamSecurity;
+            if (Utils.IsNullOrEmpty(vmessItem.streamSecurity))
+            {
+                vmessItem.streamSecurity = Global.StreamSecurity;
+            }
             if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
             {
                 vmessItem.allowInsecure = config.defAllowInsecure.ToString();

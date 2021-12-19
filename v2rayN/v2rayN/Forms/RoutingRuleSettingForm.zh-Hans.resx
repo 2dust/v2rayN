@@ -136,6 +136,9 @@
   <data name="btnBrowse.Location" type="System.Drawing.Point, System.Drawing">
     <value>670, 104</value>
   </data>
+  <data name="btnBrowse.Text" xml:space="preserve">
+    <value>浏览(&amp;B)</value>
+  </data>
   <data name="txtCustomIcon.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 105</value>
   </data>

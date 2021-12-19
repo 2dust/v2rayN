@@ -525,9 +525,26 @@ namespace v2rayN.Handler
                     serversItem.address = config.address();
                     serversItem.port = config.port();
                     serversItem.password = config.id();
+                    serversItem.flow = string.Empty;
 
                     serversItem.ota = false;
                     serversItem.level = 1;
+                          
+                    //if xtls
+                    if (config.streamSecurity() == Global.StreamSecurityX)
+                    {
+                        if (Utils.IsNullOrEmpty(config.flow()))
+                        {
+                            serversItem.flow = "xtls-rprx-origin";
+                        }
+                        else
+                        {
+                            serversItem.flow = config.flow().Replace("splice", "direct");
+                        }
+
+                        outbound.mux.enabled = false;
+                        outbound.mux.concurrency = -1;
+                    }
 
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;

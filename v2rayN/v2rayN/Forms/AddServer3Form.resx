@@ -126,7 +126,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
@@ -199,7 +199,7 @@
     <value>278, 20</value>
   </data>
   <data name="cmbSecurity.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;cmbSecurity.Name" xml:space="preserve">
     <value>cmbSecurity</value>
@@ -220,7 +220,7 @@
     <value>278, 21</value>
   </data>
   <data name="txtRemarks.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;txtRemarks.Name" xml:space="preserve">
     <value>txtRemarks</value>
@@ -295,7 +295,7 @@
     <value>278, 21</value>
   </data>
   <data name="txtId.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;txtId.Name" xml:space="preserve">
     <value>txtId</value>
@@ -343,7 +343,7 @@
     <value>194, 21</value>
   </data>
   <data name="txtPort.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;txtPort.Name" xml:space="preserve">
     <value>txtPort</value>
@@ -391,7 +391,7 @@
     <value>359, 21</value>
   </data>
   <data name="txtAddress.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;txtAddress.Name" xml:space="preserve">
     <value>txtAddress</value>
@@ -466,7 +466,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>0</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>&amp;OK</value>

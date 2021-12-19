@@ -143,6 +143,12 @@
     <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
       <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ServerTransportControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ServerTransportControl.Designer.cs">
+      <DependentUpon>ServerTransportControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Handler\ShareHandler.cs" />
     <Compile Include="Handler\UpdateHandle.cs" />
     <Compile Include="Mode\ComboItem.cs" />
@@ -256,6 +262,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\FileManager.cs" />
     <Compile Include="Tool\Job.cs" />
+    <Compile Include="Tool\Logging.cs" />
     <Compile Include="Tool\QueryableExtension.cs" />
     <Compile Include="Tool\UIRes.cs" />
     <Compile Include="Tool\UI.cs" />
@@ -335,6 +342,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RoutingRuleSettingForm.zh-Hans.resx">
       <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ServerTransportControl.resx">
+      <DependentUpon>ServerTransportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ServerTransportControl.zh-Hans.resx">
+      <DependentUpon>ServerTransportControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
@@ -483,6 +496,9 @@
       <Version>2.27.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.13</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

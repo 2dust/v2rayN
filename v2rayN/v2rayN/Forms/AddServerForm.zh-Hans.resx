@@ -130,20 +130,11 @@
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 12</value>
   </data>
-  <data name="label24.Text" xml:space="preserve">
-    <value>3)QUIC 加密密钥/Kcp seed</value>
-  </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
   </data>
-  <data name="label23.Text" xml:space="preserve">
-    <value>4)QUIC 加密方式</value>
-  </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 12</value>
-  </data>
-  <data name="label21.Text" xml:space="preserve">
-    <value>跳过证书验证(allowInsecure)</value>
   </data>
   <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 7</value>
@@ -154,14 +145,8 @@
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
   </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>*默认tcp,选错会无法连接</value>
-  </data>
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 12</value>
-  </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>3)h2 host中间逗号(,)隔开</value>
   </data>
   <data name="txtPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 168</value>
@@ -178,32 +163,20 @@
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 12</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>传输协议(network)</value>
-  </data>
   <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 168</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
   </data>
-  <data name="label19.Text" xml:space="preserve">
-    <value>路径(path)</value>
-  </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>1)http host中间逗号(,)隔开</value>
   </data>
   <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 237</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 12</value>
-  </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>底层传输安全(tls)</value>
   </data>
   <data name="cmbStreamSecurity.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 237</value>
@@ -213,9 +186,6 @@
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 12</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>*tcp或kcp或QUIC伪装类型或grpc模式</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 102</value>
@@ -229,23 +199,14 @@
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>伪装类型(type)</value>
-  </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 102</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 12</value>
   </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>伪装域名(host)</value>
-  </data>
   <data name="cmbHeaderType.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 67</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>底层传输方式(transport)</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>

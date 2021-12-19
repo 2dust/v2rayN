@@ -171,8 +171,8 @@
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
   </data>
-  <data name="&gt;&gt;menuServer.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="btnBrowse.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -267,8 +267,8 @@
   <data name="&gt;&gt;menuAdd.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 12</value>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="&gt;&gt;txtCustomIcon.Name" xml:space="preserve">
     <value>txtCustomIcon</value>
@@ -292,7 +292,7 @@
     <value>95, 21</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>128*128</value>
+    <value>PNG(128*128)</value>
   </data>
   <data name="&gt;&gt;txtRemarks.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -324,8 +324,8 @@
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
   </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="menuAdd.Text" xml:space="preserve">
     <value>Add</value>
@@ -342,8 +342,8 @@
   <data name="&gt;&gt;lvRoutings.Parent" xml:space="preserve">
     <value>tabPage2</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
+  <data name="txtUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>644, 48</value>
   </data>
   <data name="&gt;&gt;menuMoveBottom.Name" xml:space="preserve">
     <value>menuMoveBottom</value>
@@ -375,8 +375,8 @@
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>RoutingRuleSettingForm</value>
   </data>
-  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
-    <value>panel2</value>
+  <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 21</value>
   </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -390,6 +390,9 @@
   <data name="&gt;&gt;menuMoveTop.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;menuServer.Name" xml:space="preserve">
+    <value>menuServer</value>
+  </data>
   <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -402,6 +405,9 @@
   <data name="&gt;&gt;btnOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
     <value>Up (U)</value>
   </data>
@@ -410,9 +416,6 @@
   </data>
   <data name="&gt;&gt;btnOK.Name" xml:space="preserve">
     <value>btnOK</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 12</value>
@@ -432,14 +435,11 @@
   <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
   <data name="lvRoutings.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 117</value>
+    <value>10, 117</value>
   </data>
   <data name="&gt;&gt;menuImportRulesFromClipboard.Name" xml:space="preserve">
     <value>menuImportRulesFromClipboard</value>
@@ -480,6 +480,9 @@
   <data name="btnBrowse.Location" type="System.Drawing.Point, System.Drawing">
     <value>660, 104</value>
   </data>
+  <data name="&gt;&gt;menuServer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="lvRoutings.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -500,14 +503,11 @@
   <data name="txtUrl.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
-  </data>
   <data name="&gt;&gt;txtCustomIcon.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="menuImportRulesFromUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 22</value>
+  <data name="&gt;&gt;btnBrowse.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -521,8 +521,8 @@
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;menuExportSelectedRules.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="menuImportRulesFromUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 22</value>
   </data>
   <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
     <value>panel2</value>
@@ -545,17 +545,14 @@
   <data name="txtUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>91, 45</value>
   </data>
-  <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 21</value>
-  </data>
   <data name="&gt;&gt;menuImportRulesFromClipboard.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txtUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 48</value>
-  </data>
   <data name="&gt;&gt;menuMoveDown.Name" xml:space="preserve">
     <value>menuMoveDown</value>
+  </data>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
   </data>
   <data name="menuAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 22</value>
@@ -575,8 +572,8 @@
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
+    <value>panel2</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -589,9 +586,6 @@
   </data>
   <data name="&gt;&gt;txtCustomIcon.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -620,6 +614,9 @@
   <data name="tabPage2.Text" xml:space="preserve">
     <value>RuleList</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
   <data name="txtCustomIcon.Size" type="System.Drawing.Size, System.Drawing">
     <value>563, 21</value>
   </data>
@@ -629,8 +626,8 @@
   <data name="menuSelectAll.Text" xml:space="preserve">
     <value>Select All (Ctrl+A)</value>
   </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
   </data>
   <data name="tabControl2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -653,8 +650,8 @@
   <data name="menuExportSelectedRules.Text" xml:space="preserve">
     <value>Export Selected Rules</value>
   </data>
-  <data name="&gt;&gt;menuServer.Name" xml:space="preserve">
-    <value>menuServer</value>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
   </data>
   <data name="txtRemarks.Location" type="System.Drawing.Point, System.Drawing">
     <value>91, 13</value>
@@ -728,6 +725,9 @@
   <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -755,8 +755,8 @@
   <data name="&gt;&gt;txtRemarks.Name" xml:space="preserve">
     <value>txtRemarks</value>
   </data>
-  <data name="&gt;&gt;btnBrowse.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;menuExportSelectedRules.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

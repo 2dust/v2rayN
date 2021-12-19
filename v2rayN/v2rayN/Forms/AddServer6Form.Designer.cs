@@ -31,12 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServer6Form));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.cmbAllowInsecure = new System.Windows.Forms.ComboBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.cmbStreamSecurity = new System.Windows.Forms.ComboBox();
+            this.cmbFlow = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtSNI = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -46,10 +42,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.transportControl = new v2rayN.Forms.ServerTransportControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,12 +62,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label21);
-            this.groupBox1.Controls.Add(this.cmbAllowInsecure);
-            this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.cmbStreamSecurity);
+            this.groupBox1.Controls.Add(this.cmbFlow);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txtSNI);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.label6);
@@ -82,46 +77,22 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
-            // label21
+            // cmbFlow
             // 
-            resources.ApplyResources(this.label21, "label21");
-            this.label21.Name = "label21";
-            // 
-            // cmbAllowInsecure
-            // 
-            this.cmbAllowInsecure.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAllowInsecure.FormattingEnabled = true;
-            this.cmbAllowInsecure.Items.AddRange(new object[] {
-            resources.GetString("cmbAllowInsecure.Items"),
-            resources.GetString("cmbAllowInsecure.Items1"),
-            resources.GetString("cmbAllowInsecure.Items2")});
-            resources.ApplyResources(this.cmbAllowInsecure, "cmbAllowInsecure");
-            this.cmbAllowInsecure.Name = "cmbAllowInsecure";
-            // 
-            // label15
-            // 
-            resources.ApplyResources(this.label15, "label15");
-            this.label15.Name = "label15";
-            // 
-            // cmbStreamSecurity
-            // 
-            this.cmbStreamSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStreamSecurity.FormattingEnabled = true;
-            this.cmbStreamSecurity.Items.AddRange(new object[] {
-            resources.GetString("cmbStreamSecurity.Items"),
-            resources.GetString("cmbStreamSecurity.Items1")});
-            resources.ApplyResources(this.cmbStreamSecurity, "cmbStreamSecurity");
-            this.cmbStreamSecurity.Name = "cmbStreamSecurity";
+            this.cmbFlow.FormattingEnabled = true;
+            this.cmbFlow.Items.AddRange(new object[] {
+            resources.GetString("cmbFlow.Items"),
+            resources.GetString("cmbFlow.Items1"),
+            resources.GetString("cmbFlow.Items2"),
+            resources.GetString("cmbFlow.Items3"),
+            resources.GetString("cmbFlow.Items4")});
+            resources.ApplyResources(this.cmbFlow, "cmbFlow");
+            this.cmbFlow.Name = "cmbFlow";
             // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
-            // txtSNI
-            // 
-            resources.ApplyResources(this.txtSNI, "txtSNI");
-            this.txtSNI.Name = "txtSNI";
             // 
             // label13
             // 
@@ -168,6 +139,18 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.transportControl);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // transportControl
+            // 
+            this.transportControl.AllowXtls = false;
+            resources.ApplyResources(this.transportControl, "transportControl");
+            this.transportControl.Name = "transportControl";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnClose);
@@ -193,6 +176,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -201,6 +185,7 @@
             this.Load += new System.EventHandler(this.AddServer6Form_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -222,11 +207,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Panel panel3;
+        private ServerTransportControl transportControl;
+        private System.Windows.Forms.ComboBox cmbFlow;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtSNI;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox cmbStreamSecurity;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.ComboBox cmbAllowInsecure;
     }
 }
