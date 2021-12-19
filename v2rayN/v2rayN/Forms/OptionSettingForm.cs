@@ -181,6 +181,21 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("PleaseSelectProtocol"));
                 return -1;
             }
+
+            var remoteDNS = txtremoteDNS.Text.TrimEx();
+            var obj = Utils.ParseJson(remoteDNS);
+            if (obj != null && obj.ContainsKey("servers"))
+            {
+            }
+            else
+            {
+                if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
+                {
+                    UI.Show(UIRes.I18N("FillCorrectDNSText"));
+                    return -1;
+                }
+            }
+
             config.inbound[0].localPort = Utils.ToInt(localPort);
             config.inbound[0].protocol = protocol;
             config.inbound[0].udpEnabled = udpEnabled;
@@ -227,7 +242,7 @@ namespace v2rayN.Forms
             //Mux
             config.muxEnabled = muxEnabled;
 
-            //remoteDNS
+            //remoteDNS          
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
