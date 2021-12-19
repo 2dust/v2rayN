@@ -33,7 +33,7 @@ namespace v2rayN
 
             if (!IsDuplicateInstance())
             {
-
+                Logging.Setup();
                 Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
 
                 //设置语言环境

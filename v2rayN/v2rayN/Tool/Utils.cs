@@ -21,6 +21,7 @@ using System.Security.Principal;
 using v2rayN.Base;
 using Newtonsoft.Json.Linq;
 using System.Web;
+using log4net;
 
 namespace v2rayN
 {
@@ -870,37 +871,14 @@ namespace v2rayN
 
         public static void SaveLog(string strContent)
         {
-            SaveLog("info", new Exception(strContent));
+            var logger = LogManager.GetLogger("Log1");
+            logger.Info(strContent);
         }
         public static void SaveLog(string strTitle, Exception ex)
         {
-            try
-            {
-                string path = Path.Combine(StartupPath(), "guiLogs");
-                string FilePath = Path.Combine(path, DateTime.Now.ToString("yyyyMMdd") + ".txt");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                if (!File.Exists(FilePath))
-                {
-                    FileStream FsCreate = new FileStream(FilePath, FileMode.Create);
-                    FsCreate.Close();
-                    FsCreate.Dispose();
-                }
-                FileStream FsWrite = new FileStream(FilePath, FileMode.Append, FileAccess.Write);
-                StreamWriter SwWrite = new StreamWriter(FsWrite);
-
-                string strContent = ex.ToString();
-
-                SwWrite.WriteLine(string.Format("{0}{1}[{2}]{3}", "--------------------------------", strTitle, DateTime.Now.ToString("HH:mm:ss"), "--------------------------------"));
-                SwWrite.Write(strContent);
-                SwWrite.WriteLine(Environment.NewLine);
-                SwWrite.WriteLine(" ");
-                SwWrite.Flush();
-                SwWrite.Close();
-            }
-            catch { }
+            var logger = LogManager.GetLogger("Log2");
+            logger.Debug(strTitle);
+            logger.Debug(ex);          
         }
 
         #endregion
