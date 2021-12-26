@@ -901,6 +901,7 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            var propertyName = string.Empty;
             switch (name)
             {
                 case EServerColName.configType:
@@ -910,6 +911,10 @@ namespace v2rayN.Handler
                 case EServerColName.security:
                 case EServerColName.network:
                 case EServerColName.testResult:
+                    propertyName = name.ToString();
+                    break;
+                case EServerColName.subRemarks:
+                    propertyName = "subid";
                     break;
                 default:
                     return -1;
@@ -919,11 +924,11 @@ namespace v2rayN.Handler
 
             if (asc)
             {
-                config.vmess = items.OrderBy(name.ToString()).ToList();
+                config.vmess = items.OrderBy(propertyName).ToList();
             }
             else
             {
-                config.vmess = items.OrderByDescending(name.ToString()).ToList();
+                config.vmess = items.OrderByDescending(propertyName).ToList();
             }
 
             var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
@@ -1263,15 +1268,6 @@ namespace v2rayN.Handler
 
             if (config.routings.Count(it => it.locked != true) <= 0)
             {
-                //Global
-                var item1 = new RoutingItem()
-                {
-                    remarks = "全局(Global)",
-                    url = string.Empty,
-                };
-                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
-                config.routings.Add(item1);
-
                 //Bypass the mainland
                 var item2 = new RoutingItem()
                 {
@@ -1289,6 +1285,15 @@ namespace v2rayN.Handler
                 };
                 AddBatchRoutingRules(ref item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
                 config.routings.Add(item3);
+
+                //Global
+                var item1 = new RoutingItem()
+                {
+                    remarks = "全局(Global)",
+                    url = string.Empty,
+                };
+                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
+                config.routings.Add(item1);
 
                 config.routingIndex = 0;
             }

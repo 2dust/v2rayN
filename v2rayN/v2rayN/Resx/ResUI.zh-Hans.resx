@@ -401,39 +401,39 @@
     <value>请填写正确的自定义DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>1)ws path</value>
+    <value>*ws path</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
-    <value>2)h2 path</value>
+    <value>*h2 path</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
-    <value>3)QUIC 加密密钥/Kcp seed</value>
+    <value>*QUIC 加密密钥/Kcp seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>4)grpc serviceName</value>
+    <value>*grpc serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>1)http host中间逗号(,)隔开</value>
+    <value>*http host中间逗号(,)隔开</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>2)ws host</value>
+    <value>*ws host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>3)h2 host中间逗号(,)隔开</value>
+    <value>*h2 host中间逗号(,)隔开</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
-    <value>4)QUIC 加密方式</value>
+    <value>*QUIC 加密方式</value>
   </data>
   <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>1)tcp伪装类型</value>
+    <value>*tcp伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>2)kcp伪装类型</value>
+    <value>*kcp伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>3)QUIC伪装类型</value>
+    <value>*QUIC伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>4)grpc 模式</value>
+    <value>*grpc 模式</value>
   </data>
 </root>

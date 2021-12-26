@@ -296,25 +296,56 @@ namespace v2rayN.Forms
         private void RefreshServersMenu()
         {
             menuServers.DropDownItems.Clear();
+            menuServers2.SelectedIndexChanged -= MenuServers2_SelectedIndexChanged;
+            menuServers2.Items.Clear();
+            menuServers.Visible = false;
+            menuServers2.Visible = false;
 
-            List<ToolStripMenuItem> lst = new List<ToolStripMenuItem>();
-            for (int k = 0; k < config.vmess.Count; k++)
+            if (config.vmess.Count > 20)
             {
-                VmessItem item = config.vmess[k];
-                string name = item.getSummary();
+                for (int k = 0; k < config.vmess.Count; k++)
+                {
+                    VmessItem item = config.vmess[k];
+                    string name = item.getSummary();
 
-                ToolStripMenuItem ts = new ToolStripMenuItem(name)
-                {
-                    Tag = k
-                };
-                if (config.index.Equals(k))
-                {
-                    ts.Checked = true;
+                    if (config.index.Equals(k))
+                    {
+                        name = $"√ {name}";
+                    }
+                    menuServers2.Items.Add(name);
+
                 }
-                ts.Click += new EventHandler(ts_Click);
-                lst.Add(ts);
+                menuServers2.SelectedIndex = config.index;
+                menuServers2.SelectedIndexChanged += MenuServers2_SelectedIndexChanged;
+                menuServers2.Visible = true;
             }
-            menuServers.DropDownItems.AddRange(lst.ToArray());
+            else
+            {
+                List<ToolStripMenuItem> lst = new List<ToolStripMenuItem>();
+                for (int k = 0; k < config.vmess.Count; k++)
+                {
+                    VmessItem item = config.vmess[k];
+                    string name = item.getSummary();
+
+                    ToolStripMenuItem ts = new ToolStripMenuItem(name)
+                    {
+                        Tag = k
+                    };
+                    if (config.index.Equals(k))
+                    {
+                        ts.Checked = true;
+                    }
+                    ts.Click += new EventHandler(ts_Click);
+                    lst.Add(ts);
+                }
+                menuServers.DropDownItems.AddRange(lst.ToArray());
+                menuServers.Visible = true;
+            }
+        }
+
+        private void MenuServers2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetDefaultServer(((ToolStripComboBox)sender).SelectedIndex);
         }
 
         private void ts_Click(object sender, EventArgs e)

@@ -54,14 +54,15 @@
             // 
             // btnClose
             // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.cmbFlow);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label13);
@@ -73,12 +74,12 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtAddress);
             this.groupBox1.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // cmbFlow
             // 
+            resources.ApplyResources(this.cmbFlow, "cmbFlow");
             this.cmbFlow.FormattingEnabled = true;
             this.cmbFlow.Items.AddRange(new object[] {
             resources.GetString("cmbFlow.Items"),
@@ -86,7 +87,6 @@
             resources.GetString("cmbFlow.Items2"),
             resources.GetString("cmbFlow.Items3"),
             resources.GetString("cmbFlow.Items4")});
-            resources.ApplyResources(this.cmbFlow, "cmbFlow");
             this.cmbFlow.Name = "cmbFlow";
             // 
             // label4
@@ -141,21 +141,21 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.transportControl);
             resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Controls.Add(this.transportControl);
             this.panel3.Name = "panel3";
             // 
             // transportControl
             // 
-            this.transportControl.AllowXtls = false;
             resources.ApplyResources(this.transportControl, "transportControl");
+            this.transportControl.AllowXtls = false;
             this.transportControl.Name = "transportControl";
             // 
             // panel2
             // 
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
