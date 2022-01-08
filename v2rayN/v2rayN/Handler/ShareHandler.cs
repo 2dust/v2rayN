@@ -76,7 +76,8 @@ namespace v2rayN.Handler
                 host = item.requestHost,
                 path = item.path,
                 tls = item.streamSecurity,
-                sni = item.sni
+                sni = item.sni,
+                alpn = Utils.List2String(item.alpn)
             };
 
             url = Utils.ToJson(vmessQRCode);
@@ -179,6 +180,10 @@ namespace v2rayN.Handler
             if (!Utils.IsNullOrEmpty(item.sni))
             {
                 dicQuery.Add("sni", item.sni);
+            }
+            if (item.alpn != null && item.alpn.Count > 0)
+            {
+                dicQuery.Add("alpn", Utils.UrlEncode(Utils.List2String(item.alpn)));
             }
             if (!Utils.IsNullOrEmpty(item.network))
             {
@@ -422,8 +427,9 @@ namespace v2rayN.Handler
             vmessItem.path = Utils.ToString(vmessQRCode.path);
             vmessItem.streamSecurity = Utils.ToString(vmessQRCode.tls);
             vmessItem.sni = Utils.ToString(vmessQRCode.sni);
+            vmessItem.alpn = Utils.String2List(vmessQRCode.alpn);
 
-            return vmessItem;
+             return vmessItem;
         }
 
         private static VmessItem ResolveVmess4Kitsunebi(string result)
@@ -730,6 +736,7 @@ namespace v2rayN.Handler
             item.security = query["encryption"] ?? "none";
             item.streamSecurity = query["security"] ?? "";
             item.sni = query["sni"] ?? "";
+            item.alpn = Utils.String2List(Utils.UrlDecode(query["alpn"] ?? ""));
             item.network = query["type"] ?? "tcp";
             switch (item.network)
             {

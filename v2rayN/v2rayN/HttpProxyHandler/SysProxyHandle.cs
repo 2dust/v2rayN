@@ -85,15 +85,6 @@ namespace v2rayN.HttpProxyHandler
 
         public static void SetIEProxy(bool global, string strProxy, string strExceptions)
         {
-            if (Utils.IsNullOrEmpty(strExceptions))
-            {
-                strExceptions = Global.IEProxyExceptions;
-            }
-            else
-            {
-                strExceptions = $"{Global.IEProxyExceptions};{strExceptions}";
-            }
-
             string arguments = global
                 ? $"global {strProxy} {strExceptions}"
                 : $"pac {strProxy}";

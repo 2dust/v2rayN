@@ -404,6 +404,13 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string serverName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> alpn
+        {
+            get; set;
+        }
     }
 
     public class TcpSettings

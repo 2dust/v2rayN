@@ -118,15 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="labAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 12</value>
-  </data>
-  <data name="labAllowInsecure.Text" xml:space="preserve">
-    <value>跳过证书验证(allowInsecure)</value>
-  </data>
-  <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 7</value>
-  </data>
   <data name="tipNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
   </data>
@@ -157,11 +148,8 @@
   <data name="labStreamSecurity.Text" xml:space="preserve">
     <value>底层传输安全(tls)</value>
   </data>
-  <data name="tipHeaderType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 12</value>
-  </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 100</value>
+    <value>127, 92</value>
   </data>
   <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>331, 20</value>
@@ -180,5 +168,26 @@
   </data>
   <data name="gbTransport.Text" xml:space="preserve">
     <value>底层传输方式(transport)</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>282, 11</value>
+  </data>
+  <data name="clbAlpn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 7</value>
+  </data>
+  <data name="clbAlpn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 20</value>
+  </data>
+  <data name="txtSNI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>391, 21</value>
+  </data>
+  <data name="labAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 12</value>
+  </data>
+  <data name="labAllowInsecure.Text" xml:space="preserve">
+    <value>跳过证书验证(allowInsecure)</value>
+  </data>
+  <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>183, 7</value>
   </data>
 </root>

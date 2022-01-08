@@ -166,7 +166,8 @@ namespace v2rayN.HttpProxyHandler
                 }
                 if (type == ESysProxyType.ForcedChange)
                 {
-                    SysProxyHandle.SetIEProxy(true, $"{Global.Loopback}:{port}", config.systemProxyExceptions);
+                    var strExceptions = $"{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                    SysProxyHandle.SetIEProxy(true, $"{Global.Loopback}:{port}", strExceptions);
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {

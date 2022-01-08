@@ -179,6 +179,7 @@ namespace v2rayN.Handler
             {
                 string id = config.subItem[k - 1].id.Trim();
                 string url = config.subItem[k - 1].url.Trim();
+                string userAgent = config.subItem[k - 1].userAgent.Trim();
                 string hashCode = $"{k}->";
                 if (config.subItem[k - 1].enabled == false)
                 {
@@ -227,7 +228,7 @@ namespace v2rayN.Handler
                     _updateFunc(false, args.GetException().Message);
                 };
 
-                downloadHandle3.WebDownloadString(url);
+                downloadHandle3.WebDownloadString(url, userAgent);
                 _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
 

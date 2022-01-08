@@ -13,7 +13,7 @@ namespace v2rayN.Handler
         public event EventHandler<ResultEventArgs> UpdateCompleted;
 
         public event ErrorEventHandler Error;
-         
+
 
         public class ResultEventArgs : EventArgs
         {
@@ -31,7 +31,7 @@ namespace v2rayN.Handler
         private long totalBytesToReceive = 0;
         private DateTime totalDatetime = new DateTime();
         private int DownloadTimeout = -1;
-          
+
         public WebClientEx DownloadFileAsync(string url, WebProxy webProxy, int downloadTimeout)
         {
             WebClientEx ws = new WebClientEx();
@@ -62,7 +62,7 @@ namespace v2rayN.Handler
             }
             return ws;
         }
-        
+
         void ws_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             if (UpdateCompleted != null)
@@ -131,7 +131,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public void WebDownloadString(string url)
+        public void WebDownloadString(string url, string userAgent)
         {
             string source = string.Empty;
             try
@@ -139,6 +139,11 @@ namespace v2rayN.Handler
                 Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
+                if (!Utils.IsNullOrEmpty(userAgent))
+                {
+                    ws.Headers.Add("user-agent", userAgent);
+                }
+
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
                 ws.DownloadStringAsync(new Uri(url));
             }

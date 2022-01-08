@@ -541,7 +541,7 @@
     <value>0, 10</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 226</value>
+    <value>729, 221</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -589,7 +589,7 @@
     <value>Bottom</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 456</value>
+    <value>0, 461</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>729, 60</value>
@@ -640,7 +640,7 @@
     <value>0, 0</value>
   </data>
   <data name="transportControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 220</value>
+    <value>729, 230</value>
   </data>
   <data name="transportControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -661,10 +661,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 236</value>
+    <value>0, 231</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 220</value>
+    <value>729, 230</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -691,7 +691,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>729, 516</value>
+    <value>729, 521</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edit or add a [VLESS] server</value>

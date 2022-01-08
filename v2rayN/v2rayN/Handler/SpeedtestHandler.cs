@@ -122,7 +122,7 @@ namespace v2rayN.Handler
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, httpPort + itemIndex);
                             int responseTime = -1;
-                            string status = GetRealPingTime(_config.speedPingTestUrl, webProxy, out responseTime);
+                            string status = GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : FormatOut(status, "");
                             _updateFunc(itemIndex, output);
                         }
@@ -157,7 +157,7 @@ namespace v2rayN.Handler
                     {
                         WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
                         int responseTime = -1;
-                        string status = GetRealPingTime(Global.AvailabilityTestUrl, webProxy, out responseTime);
+                        string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
                         bool noError = Utils.IsNullOrEmpty(status);
                         return noError ? responseTime : -1;
                     }
@@ -193,7 +193,7 @@ namespace v2rayN.Handler
                 return;
             }
 
-            string url = _config.speedTestUrl;
+            string url = _config.constItem.speedTestUrl;
             DownloadHandle downloadHandle2 = new DownloadHandle();
             downloadHandle2.UpdateCompleted += (sender2, args) =>
             {

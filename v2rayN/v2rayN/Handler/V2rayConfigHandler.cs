@@ -587,7 +587,8 @@ namespace v2rayN.Handler
 
                     TlsSettings tlsSettings = new TlsSettings
                     {
-                        allowInsecure = config.allowInsecure()
+                        allowInsecure = config.allowInsecure(),
+                        alpn = config.alpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -607,7 +608,8 @@ namespace v2rayN.Handler
 
                     TlsSettings xtlsSettings = new TlsSettings
                     {
-                        allowInsecure = config.allowInsecure()
+                        allowInsecure = config.allowInsecure(),
+                        alpn = config.alpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {

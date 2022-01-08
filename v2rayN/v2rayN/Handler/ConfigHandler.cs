@@ -128,18 +128,22 @@ namespace v2rayN.Handler
                 config.uiItem.mainLvColWidth = new Dictionary<string, int>();
             }
 
-            //// 如果是用户升级，首次会有端口号为0的情况，不可用，这里处理
-            //if (config.pacPort == 0)
-            //{
-            //    config.pacPort = 8888;
-            //}
-            if (Utils.IsNullOrEmpty(config.speedTestUrl))
+
+            if (config.constItem == null)
             {
-                config.speedTestUrl = Global.SpeedTestUrl;
+                config.constItem = new ConstItem();
             }
-            if (Utils.IsNullOrEmpty(config.speedPingTestUrl))
+            if (Utils.IsNullOrEmpty(config.constItem.speedTestUrl))
             {
-                config.speedPingTestUrl = Global.SpeedPingTestUrl;
+                config.constItem.speedTestUrl = Global.SpeedTestUrl;
+            }
+            if (Utils.IsNullOrEmpty(config.constItem.speedPingTestUrl))
+            {
+                config.constItem.speedPingTestUrl = Global.SpeedPingTestUrl;
+            }
+            if (Utils.IsNullOrEmpty(config.constItem.defIEProxyExceptions))
+            {
+                config.constItem.defIEProxyExceptions = Global.IEProxyExceptions;
             }
             //if (Utils.IsNullOrEmpty(config.remoteDNS))
             //{
