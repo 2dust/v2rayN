@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -529,7 +531,7 @@ namespace v2rayN.Handler
 
                     serversItem.ota = false;
                     serversItem.level = 1;
-                          
+
                     //if xtls
                     if (config.streamSecurity() == Global.StreamSecurityX)
                     {
@@ -1418,6 +1420,12 @@ namespace v2rayN.Handler
                     msg = UIRes.I18N("FailedGenDefaultConfiguration");
                     return "";
                 }
+                List<IPEndPoint> lstIpEndPoints = null;
+                try
+                {
+                    lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                }
+                catch { }
 
                 log(configCopy, ref v2rayConfig, false);
                 //routing(config, ref v2rayConfig);
@@ -1426,6 +1434,7 @@ namespace v2rayN.Handler
                 v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
 
                 int httpPort = configCopy.GetLocalPort("speedtest");
+
                 foreach (int index in selecteds)
                 {
                     if (configCopy.vmess[index].configType == (int)EConfigType.Custom)
@@ -1434,11 +1443,18 @@ namespace v2rayN.Handler
                     }
 
                     configCopy.index = index;
+                    var port = httpPort + index;
+
+                    //Port In Used
+                    if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == port) >= 0)
+                    {
+                        continue;
+                    }
 
                     Inbounds inbound = new Inbounds
                     {
                         listen = Global.Loopback,
-                        port = httpPort + index,
+                        port = port,
                         protocol = Global.InboundHttp
                     };
                     inbound.tag = Global.InboundHttp + inbound.port.ToString();
