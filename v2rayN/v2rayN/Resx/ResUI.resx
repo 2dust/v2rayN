@@ -436,4 +436,7 @@
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
     <value>*grpc mode</value>
   </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
 </root>

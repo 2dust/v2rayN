@@ -146,7 +146,7 @@
     <value>107, 12</value>
   </data>
   <data name="labStreamSecurity.Text" xml:space="preserve">
-    <value>底层传输安全(tls)</value>
+    <value>传输层安全(tls)</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 92</value>

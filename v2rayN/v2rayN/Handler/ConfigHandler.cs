@@ -914,6 +914,7 @@ namespace v2rayN.Handler
                 case EServerColName.port:
                 case EServerColName.security:
                 case EServerColName.network:
+                case EServerColName.streamSecurity:
                 case EServerColName.testResult:
                     propertyName = name.ToString();
                     break;

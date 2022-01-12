@@ -202,6 +202,7 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvPort"), 50);
             lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90);
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70);
+            lvServers.Columns.Add(UIRes.I18N("LvTLS"), 70);
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50);
             lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70, HorizontalAlignment.Right);
 
@@ -258,6 +259,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
                 Utils.AddSubItem(lvItem, EServerColName.security.ToString(), item.security);
                 Utils.AddSubItem(lvItem, EServerColName.network.ToString(), item.network);
+                Utils.AddSubItem(lvItem, EServerColName.streamSecurity.ToString(), item.streamSecurity);
                 Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
                 Utils.AddSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
                 if (stats)

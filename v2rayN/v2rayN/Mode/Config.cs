@@ -554,7 +554,7 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 底层传输安全
+        /// 传输层安全
         /// </summary>
         public string streamSecurity
         {

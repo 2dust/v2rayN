@@ -436,4 +436,7 @@
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
     <value>*grpc 模式</value>
   </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>传输层安全</value>
+  </data>
 </root>
