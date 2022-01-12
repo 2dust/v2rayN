@@ -353,7 +353,7 @@ namespace v2rayN
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
-        
+
 
         public static string UrlEncode(string url)
         {
@@ -717,8 +717,9 @@ namespace v2rayN
 
         public static void SetSecurityProtocol()
         {
-            //.NET Framework 4.8
-            if (GetDotNetRelease(528040))
+            string securityProtocolTls13 = RegReadValue(Global.MyRegPath, Global.MyRegKeySecurityProtocolTls13, "0");
+
+            if (securityProtocolTls13.Equals("1"))
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
                                            | SecurityProtocolType.Tls
@@ -734,6 +735,26 @@ namespace v2rayN
                                            | SecurityProtocolType.Tls12;
             }
             ServicePointManager.DefaultConnectionLimit = 256;
+        }
+
+        public static bool PortInUse(int port)
+        {
+            bool inUse = false;
+
+            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
+
+            var lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+
+            foreach (IPEndPoint endPoint in ipEndPoints)
+            {
+                if (endPoint.Port == port)
+                {
+                    inUse = true;
+                    break;
+                }
+            }
+            return inUse;
         }
         #endregion
 
@@ -913,7 +934,7 @@ namespace v2rayN
         {
             var logger = LogManager.GetLogger("Log2");
             logger.Debug(strTitle);
-            logger.Debug(ex);          
+            logger.Debug(ex);
         }
 
         #endregion
