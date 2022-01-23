@@ -156,9 +156,6 @@
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
   </data>
-  <data name="FillCorrectAlterId" xml:space="preserve">
-    <value>Please fill in the correct format extra ID</value>
-  </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>Please fill in the correct format server port</value>
   </data>

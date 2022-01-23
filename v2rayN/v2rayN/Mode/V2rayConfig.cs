@@ -149,10 +149,7 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string id { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int alterId { get; set; }
+        
         /// <summary>
         /// 
         /// </summary>

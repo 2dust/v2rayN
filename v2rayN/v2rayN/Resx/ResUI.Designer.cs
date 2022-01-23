@@ -187,15 +187,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please fill in the correct format extra ID 的本地化字符串。
-        /// </summary>
-        internal static string FillCorrectAlterId {
-            get {
-                return ResourceManager.GetString("FillCorrectAlterId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Please fill in the correct custom DNS 的本地化字符串。
         /// </summary>
         internal static string FillCorrectDNSText {
