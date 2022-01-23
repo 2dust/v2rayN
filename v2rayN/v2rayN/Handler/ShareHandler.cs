@@ -69,7 +69,7 @@ namespace v2rayN.Handler
                 add = item.address,
                 port = item.port.ToString(),
                 id = item.id,
-                aid = item.alterId.ToString(),
+                aid = "0",
                 scy = item.security,
                 net = item.network,
                 type = item.headerType,
@@ -96,15 +96,15 @@ namespace v2rayN.Handler
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
-            url = string.Format("{0}:{1}@{2}:{3}",
-                item.security,
-                item.id,
-                item.address,
-                item.port);
-            url = Utils.Base64Encode(url);
-            //new
-            //var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            //url = $"{pw}@{item.address}:{ item.port}";
+            //url = string.Format("{0}:{1}@{2}:{3}",
+            //    item.security,
+            //    item.id,
+            //    item.address,
+            //    item.port);
+            //url = Utils.Base64Encode(url);
+            //new Sip002
+            var pw = Utils.Base64Encode($"{item.security}:{item.id}");
+            url = $"{pw}@{GetIpv6(item.address)}:{ item.port}";
             url = string.Format("{0}{1}{2}", Global.ssProtocol, url, remark);
             return url;
         }
@@ -117,12 +117,15 @@ namespace v2rayN.Handler
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
-            url = string.Format("{0}:{1}@{2}:{3}",
-                item.security,
-                item.id,
-                item.address,
-                item.port);
-            url = Utils.Base64Encode(url);
+            //url = string.Format("{0}:{1}@{2}:{3}",
+            //    item.security,
+            //    item.id,
+            //    item.address,
+            //    item.port);
+            //url = Utils.Base64Encode(url);
+            //new
+            var pw = Utils.Base64Encode($"{item.security}:{item.id}");
+            url = $"{pw}@{GetIpv6(item.address)}:{ item.port}";
             url = string.Format("{0}{1}{2}", Global.socksProtocol, url, remark);
             return url;
         }
@@ -135,15 +138,14 @@ namespace v2rayN.Handler
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
-            string query = string.Empty;
-            if (!Utils.IsNullOrEmpty(item.sni))
-            {
-                query = string.Format("?sni={0}", Utils.UrlEncode(item.sni));
-            }
+            var dicQuery = new Dictionary<string, string>();
+            GetStdTransport(item, null, ref dicQuery);
+            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
+
             url = string.Format("{0}@{1}:{2}",
-                item.id,
-                GetIpv6(item.address),
-                item.port);
+            item.id,
+            GetIpv6(item.address),
+            item.port);
             url = string.Format("{0}{1}{2}{3}", Global.trojanProtocol, url, query, remark);
             return url;
         }
@@ -157,10 +159,6 @@ namespace v2rayN.Handler
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (!Utils.IsNullOrEmpty(item.flow))
-            {
-                dicQuery.Add("flow", item.flow);
-            }
             if (!Utils.IsNullOrEmpty(item.security))
             {
                 dicQuery.Add("encryption", item.security);
@@ -169,13 +167,38 @@ namespace v2rayN.Handler
             {
                 dicQuery.Add("encryption", "none");
             }
+            GetStdTransport(item, "none", ref dicQuery);
+            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
+
+            url = string.Format("{0}@{1}:{2}",
+            item.id,
+            GetIpv6(item.address),
+            item.port);
+            url = string.Format("{0}{1}{2}{3}", Global.vlessProtocol, url, query, remark);
+            return url;
+        }
+        private static string GetIpv6(string address)
+        {
+            return Utils.IsIpv6(address) ? $"[{address}]" : address;
+        }
+
+        private static int GetStdTransport(VmessItem item, string securityDef, ref Dictionary<string, string> dicQuery)
+        {
+            if (!Utils.IsNullOrEmpty(item.flow))
+            {
+                dicQuery.Add("flow", item.flow);
+            }
+
             if (!Utils.IsNullOrEmpty(item.streamSecurity))
             {
                 dicQuery.Add("security", item.streamSecurity);
             }
             else
             {
-                dicQuery.Add("security", "none");
+                if (securityDef != null)
+                {
+                    dicQuery.Add("security", securityDef);
+                }
             }
             if (!Utils.IsNullOrEmpty(item.sni))
             {
@@ -272,19 +295,9 @@ namespace v2rayN.Handler
                     }
                     break;
             }
-            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
-
-            url = string.Format("{0}@{1}:{2}",
-            item.id,
-            GetIpv6(item.address),
-            item.port);
-            url = string.Format("{0}{1}{2}{3}", Global.vlessProtocol, url, query, remark);
-            return url;
+            return 0;
         }
-        private static string GetIpv6(string address)
-        {
-            return Utils.IsIpv6(address) ? $"[{address}]" : address;
-        }
+        
         #endregion
 
         #region  ImportShareUrl 
@@ -349,7 +362,21 @@ namespace v2rayN.Handler
                 {
                     msg = UIRes.I18N("ConfigurationFormatIncorrect");
 
-                    vmessItem = ResolveSocks(result);
+                    vmessItem = ResolveSocksNew(result);
+                    if (vmessItem == null)
+                    {
+                        vmessItem = ResolveSocks(result);
+                    }
+                    if (vmessItem == null)
+                    {
+                        return null;
+                    }
+                    if (vmessItem.address.Length == 0 || vmessItem.port == 0)
+                    {
+                        return null;
+                    }
+
+                    vmessItem.configType = (int)EConfigType.Socks;
                 }
                 else if (result.StartsWith(Global.trojanProtocol))
                 {
@@ -403,7 +430,6 @@ namespace v2rayN.Handler
             vmessItem.address = Utils.ToString(vmessQRCode.add);
             vmessItem.port = Utils.ToInt(vmessQRCode.port);
             vmessItem.id = Utils.ToString(vmessQRCode.id);
-            vmessItem.alterId = Utils.ToInt(vmessQRCode.aid);
             vmessItem.security = Utils.ToString(vmessQRCode.scy);
 
             if (!Utils.IsNullOrEmpty(vmessQRCode.scy))
@@ -429,7 +455,7 @@ namespace v2rayN.Handler
             vmessItem.sni = Utils.ToString(vmessQRCode.sni);
             vmessItem.alpn = Utils.String2List(vmessQRCode.alpn);
 
-             return vmessItem;
+            return vmessItem;
         }
 
         private static VmessItem ResolveVmess4Kitsunebi(string result)
@@ -466,7 +492,6 @@ namespace v2rayN.Handler
             vmessItem.network = Global.DefaultNetwork;
             vmessItem.headerType = Global.None;
             vmessItem.remarks = "Alien";
-            vmessItem.alterId = 0;
 
             return vmessItem;
         }
@@ -490,11 +515,6 @@ namespace v2rayN.Handler
             if (!m.Success) return null;
 
             i.id = m.Groups["id"].Value;
-            if (!int.TryParse(m.Groups["alterId"].Value, out int aid))
-            {
-                return null;
-            }
-            i.alterId = aid;
 
             if (m.Groups["streamSecurity"].Success)
             {
@@ -577,17 +597,7 @@ namespace v2rayN.Handler
 
             // parse base64 UserInfo
             string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
-            string base64 = rawUserInfo.Replace('-', '+').Replace('_', '/');    // Web-safe base64 to normal base64
-            string userInfo;
-            try
-            {
-                userInfo = Encoding.UTF8.GetString(Convert.FromBase64String(
-                base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')));
-            }
-            catch (FormatException)
-            {
-                return null;
-            }
+            string userInfo = Utils.Base64Decode(rawUserInfo);
             string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
             if (userInfoParts.Length != 2)
             {
@@ -624,8 +634,7 @@ namespace v2rayN.Handler
             Match details;
             try
             {
-                details = DetailsParser.Match(Encoding.UTF8.GetString(Convert.FromBase64String(
-                    base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '='))));
+                details = DetailsParser.Match(Utils.Base64Decode(base64));               
             }
             catch (FormatException)
             {
@@ -642,7 +651,7 @@ namespace v2rayN.Handler
 
 
         private static readonly Regex StdVmessUserInfo = new Regex(
-            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})-(?<alterId>[0-9]+)$");
+            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$");
 
         private static VmessItem ResolveSocks(string result)
         {
@@ -690,30 +699,55 @@ namespace v2rayN.Handler
             return vmessItem;
         }
 
+        private static VmessItem ResolveSocksNew(string result)
+        {
+            Uri parsedUrl;
+            try
+            {
+                parsedUrl = new Uri(result);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+            VmessItem server = new VmessItem
+            {
+                remarks = Utils.UrlDecode(parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)),
+                address = parsedUrl.IdnHost,
+                port = parsedUrl.Port,
+            };
+
+            // parse base64 UserInfo
+            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
+            string userInfo = Utils.Base64Decode(rawUserInfo);
+            string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
+            if (userInfoParts.Length == 2)
+            {
+                server.security = userInfoParts[0];
+                server.id = userInfoParts[1];
+            } 
+
+            return server;
+        }
+
         private static VmessItem ResolveTrojan(string result)
         {
-            VmessItem vmessItem = new VmessItem();
-
-            vmessItem.configType = (int)EConfigType.Trojan;
-
-            Uri uri = new Uri(result);
-            vmessItem.address = uri.IdnHost;
-            vmessItem.port = uri.Port;
-            vmessItem.id = uri.UserInfo;
-
-            var qurery = HttpUtility.ParseQueryString(uri.Query);
-            vmessItem.sni = qurery["sni"] ?? "";
-
-            var remarks = uri.Fragment.Replace("#", "");
-            if (Utils.IsNullOrEmpty(remarks))
+            VmessItem item = new VmessItem
             {
-                vmessItem.remarks = "NONE";
-            }
-            else
-            {
-                vmessItem.remarks = Utils.UrlDecode(remarks);
-            }
-            return vmessItem;
+                configType = (int)EConfigType.Trojan
+            };
+
+            Uri url = new Uri(result);
+
+            item.address = url.IdnHost;
+            item.port = url.Port;
+            item.remarks = Utils.UrlDecode(url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped));
+            item.id = url.UserInfo;
+
+            var query = HttpUtility.ParseQueryString(url.Query);
+            ResolveStdTransport(query, ref item);
+
+            return item;
         }
         private static VmessItem ResolveStdVLESS(string result)
         {
@@ -731,9 +765,16 @@ namespace v2rayN.Handler
             item.id = url.UserInfo;
 
             var query = HttpUtility.ParseQueryString(url.Query);
-
-            item.flow = query["flow"] ?? "";
             item.security = query["encryption"] ?? "none";
+            item.streamSecurity = query["security"] ?? "";
+            ResolveStdTransport(query, ref item);
+
+            return item;
+        }
+
+        private static int ResolveStdTransport(NameValueCollection query, ref VmessItem item)
+        {
+            item.flow = query["flow"] ?? "";         
             item.streamSecurity = query["security"] ?? "";
             item.sni = query["sni"] ?? "";
             item.alpn = Utils.String2List(Utils.UrlDecode(query["alpn"] ?? ""));
@@ -772,10 +813,9 @@ namespace v2rayN.Handler
                     item.headerType = Utils.UrlDecode(query["mode"] ?? Global.GrpcgunMode);
                     break;
                 default:
-                    return null;
+                    break;
             }
-
-            return item;
+            return 0;
         }
 
         #endregion
