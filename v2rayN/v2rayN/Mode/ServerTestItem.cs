@@ -3,7 +3,7 @@
 namespace v2rayN.Mode
 {
     [Serializable]
-    class TestItem
+    class ServerTestItem
     {
         public int selected
         {
