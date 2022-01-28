@@ -109,12 +109,6 @@
             // 
             this.cmbSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSecurity.FormattingEnabled = true;
-            this.cmbSecurity.Items.AddRange(new object[] {
-            resources.GetString("cmbSecurity.Items"),
-            resources.GetString("cmbSecurity.Items1"),
-            resources.GetString("cmbSecurity.Items2"),
-            resources.GetString("cmbSecurity.Items3"),
-            resources.GetString("cmbSecurity.Items4")});
             resources.ApplyResources(this.cmbSecurity, "cmbSecurity");
             this.cmbSecurity.Name = "cmbSecurity";
             // 

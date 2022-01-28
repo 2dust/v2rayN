@@ -221,21 +221,6 @@
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cmbSecurity.Items" xml:space="preserve">
-    <value>aes-128-gcm</value>
-  </data>
-  <data name="cmbSecurity.Items1" xml:space="preserve">
-    <value>chacha20-poly1305</value>
-  </data>
-  <data name="cmbSecurity.Items2" xml:space="preserve">
-    <value>auto</value>
-  </data>
-  <data name="cmbSecurity.Items3" xml:space="preserve">
-    <value>none</value>
-  </data>
-  <data name="cmbSecurity.Items4" xml:space="preserve">
-    <value>zero</value>
-  </data>
   <data name="cmbSecurity.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 114</value>
   </data>

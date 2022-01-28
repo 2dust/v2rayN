@@ -15,6 +15,7 @@ namespace v2rayN.Forms
 
         private void AddServer3Form_Load(object sender, EventArgs e)
         {
+            cmbSecurity.Items.AddRange(Global.ssSecuritys.ToArray());
             if (EditIndex >= 0)
             {
                 vmessItem = config.vmess[EditIndex];

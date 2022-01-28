@@ -196,7 +196,8 @@ namespace v2rayN
 
         public const string RoutingRuleComma = "<COMMA>";
 
-        public static readonly IEnumerable<string> ssSecuritys = new HashSet<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+        public static readonly List<string> vmessSecuritys = new List<string> { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
+        public static readonly List<string> ssSecuritys = new List<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
 
         public const string GrpcgunMode = "gun";
         public const string GrpcmultiMode = "multi";
