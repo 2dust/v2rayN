@@ -366,6 +366,15 @@ namespace v2rayN.Mode
                 return null;
             }
         }
+
+        public int FindIndexId(string indexId)
+        {
+            if (string.IsNullOrEmpty(indexId))
+            {
+                return -1;
+            }
+            return vmess.FindIndex(it => it.indexId == indexId);
+        }
         #endregion
 
     }
@@ -375,6 +384,7 @@ namespace v2rayN.Mode
     {
         public VmessItem()
         {
+            indexId = string.Empty;
             configVersion = 1;
             address = string.Empty;
             port = 0;
@@ -459,6 +469,10 @@ namespace v2rayN.Mode
             string itemId = $"{address}{port}{requestHost}{path}";
             itemId = Utils.Base64Encode(itemId);
             return itemId;
+        }
+        public string indexId
+        {
+            get; set;
         }
 
         /// <summary>

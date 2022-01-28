@@ -844,11 +844,18 @@ namespace v2rayN
         /// 取得GUID
         /// </summary>
         /// <returns></returns>
-        public static string GetGUID()
+        public static string GetGUID(bool full = true)
         {
             try
             {
-                return Guid.NewGuid().ToString("D");
+                if (full)
+                {
+                    return Guid.NewGuid().ToString("D");
+                }
+                else
+                {
+                    return BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0).ToString();
+                }
             }
             catch (Exception ex)
             {
