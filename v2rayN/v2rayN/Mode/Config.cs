@@ -218,6 +218,15 @@ namespace v2rayN.Mode
             return vmess[index].id.TrimEx();
         }
 
+        public int alterId()
+        {
+            if (index < 0)
+            {
+                return 0;
+            }
+            return vmess[index].alterId;
+        }
+
         public string security()
         {
             if (index < 0)
@@ -389,6 +398,7 @@ namespace v2rayN.Mode
             address = string.Empty;
             port = 0;
             id = string.Empty;
+            alterId = 0;
             security = string.Empty;
             network = string.Empty;
             remarks = string.Empty;
@@ -503,7 +513,14 @@ namespace v2rayN.Mode
         public string id
         {
             get; set;
-        }        
+        }
+        /// <summary>
+        /// 远程服务器额外ID
+        /// </summary>
+        public int alterId
+        {
+            get; set;
+        }
         /// <summary>
         /// 本地安全策略
         /// </summary>

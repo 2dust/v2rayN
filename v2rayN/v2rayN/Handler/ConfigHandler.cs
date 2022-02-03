@@ -296,6 +296,7 @@ namespace v2rayN.Handler
                 address = config.vmess[index].address,
                 port = config.vmess[index].port,
                 id = config.vmess[index].id,
+                alterId = config.vmess[index].alterId,
                 security = config.vmess[index].security,
                 network = config.vmess[index].network,
                 remarks = string.Format("{0}-clone", config.vmess[index].remarks),
@@ -982,6 +983,7 @@ namespace v2rayN.Handler
                     o.address == n.address &&
                     o.port == n.port &&
                     o.id == n.id &&
+                    o.alterId == n.alterId &&
                     o.security == n.security &&
                     o.network == n.network &&
                     o.headerType == n.headerType &&

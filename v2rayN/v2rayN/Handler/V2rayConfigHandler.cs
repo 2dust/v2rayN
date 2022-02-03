@@ -363,6 +363,7 @@ namespace v2rayN.Handler
                     }
                     //远程服务器用户ID
                     usersItem.id = config.id();
+                    usersItem.alterId = config.alterId();
                     usersItem.email = Global.userEMail;
                     if (Global.vmessSecuritys.Contains(config.security()))
                     {
@@ -1030,6 +1031,7 @@ namespace v2rayN.Handler
                 if (config.configType() == (int)EConfigType.Vmess)
                 {
                     inbound.protocol = Global.vmessProtocolLite;
+                    usersItem.alterId = config.alterId();
 
                 }
                 else if (config.configType() == (int)EConfigType.VLESS)
@@ -1129,6 +1131,7 @@ namespace v2rayN.Handler
                 vmessItem.address = outbound.settings.vnext[0].address;
                 vmessItem.port = outbound.settings.vnext[0].port;
                 vmessItem.id = outbound.settings.vnext[0].users[0].id;
+                vmessItem.alterId = outbound.settings.vnext[0].users[0].alterId;
                 vmessItem.remarks = string.Format("import@{0}", DateTime.Now.ToShortDateString());
 
                 //tcp or kcp
@@ -1272,6 +1275,7 @@ namespace v2rayN.Handler
                 vmessItem.address = string.Empty;
                 vmessItem.port = inbound.port;
                 vmessItem.id = inbound.settings.clients[0].id;
+                vmessItem.alterId = inbound.settings.clients[0].alterId;
 
                 vmessItem.remarks = string.Format("import@{0}", DateTime.Now.ToShortDateString());
 
