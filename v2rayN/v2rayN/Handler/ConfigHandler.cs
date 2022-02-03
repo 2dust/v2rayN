@@ -33,7 +33,7 @@ namespace v2rayN.Handler
                 config = Utils.FromJson<Config>(result);
             }
             else
-            {            
+            {
                 if (File.Exists(Utils.GetPath(configRes)))
                 {
                     Utils.SaveLog("LoadConfig Exception");
@@ -241,7 +241,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServer(ref Config config, List<int> indexs)
         {
-            var itemId = config.getItemId();
+            var indexId = config.indexId();
 
             for (int k = indexs.Count - 1; k >= 0; k--)
             {
@@ -254,23 +254,7 @@ namespace v2rayN.Handler
                 config.vmess.RemoveAt(index);
             }
 
-            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
-            if (index_ >= 0)
-            {
-                config.index = index_;
-            }
-            else
-            {
-                if (config.vmess.Count > 0)
-                {
-                    config.index = 0;
-                }
-                else
-                {
-                    config.index = -1;
-                }
-            }
-            Global.reloadV2ray = true;
+            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
 
@@ -861,6 +845,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServerViaSubid(ref Config config, string subid)
         {
+            var indexId = config.indexId();
             if (Utils.IsNullOrEmpty(subid) || config.vmess.Count <= 0)
             {
                 return -1;
@@ -872,6 +857,8 @@ namespace v2rayN.Handler
                     config.vmess.RemoveAt(k);
                 }
             }
+
+            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
             return 0;
@@ -902,7 +889,8 @@ namespace v2rayN.Handler
                 default:
                     return -1;
             }
-            string itemId = config.getItemId();
+
+            var indexId = config.indexId();
             var items = config.vmess.AsQueryable();
 
             if (asc)
@@ -914,11 +902,7 @@ namespace v2rayN.Handler
                 config.vmess = items.OrderByDescending(propertyName).ToList();
             }
 
-            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
-            if (index_ >= 0)
-            {
-                config.index = index_;
-            }
+            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
             return 0;
@@ -954,7 +938,7 @@ namespace v2rayN.Handler
                 }
             }
             else
-            {               
+            {
                 AddServerCommon(ref config, vmessItem);
             }
 
@@ -968,8 +952,8 @@ namespace v2rayN.Handler
 
         public static int DedupServerList(ref Config config)
         {
-            var itemId = config.getItemId();
-            
+            var indexId = config.indexId();
+
             List<Mode.VmessItem> source = config.vmess;
             bool keepOlder = config.keepOlderDedupl;
 
@@ -1002,23 +986,7 @@ namespace v2rayN.Handler
             if (!keepOlder) list.Reverse();
             config.vmess = list;
 
-            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
-            if (index_ >= 0)
-            {
-                config.index = index_;
-            }
-            else
-            {
-                if (config.vmess.Count > 0)
-                {
-                    config.index = 0;
-                }
-                else
-                {
-                    config.index = -1;
-                }
-            }
-            Global.reloadV2ray = true;
+            SetIndex(ref config, indexId);
 
             return 0;
         }
@@ -1040,6 +1008,34 @@ namespace v2rayN.Handler
             }
             return 0;
         }
+
+        public static int SetIndex(ref Config config, string indexId)
+        {
+            var index_ = config.FindIndexId(indexId);
+
+            if (config.index == index_)
+            {
+                return 0;
+            }
+            else if (index_ >= 0)
+            {
+                config.index = index_;
+            }
+            else
+            {
+                if (config.vmess.Count > 0)
+                {
+                    config.index = 0;
+                }
+                else
+                {
+                    config.index = -1;
+                }
+            }
+            Global.reloadV2ray = true;
+            return 0;
+        }
+
         #endregion
 
         #region UI

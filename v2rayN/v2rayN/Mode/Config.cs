@@ -375,7 +375,14 @@ namespace v2rayN.Mode
                 return null;
             }
         }
-
+        public string indexId()
+        {
+            if (index < 0)
+            {
+                return string.Empty;
+            }
+            return vmess[index].indexId.TrimEx();
+        }
         public int FindIndexId(string indexId)
         {
             if (string.IsNullOrEmpty(indexId))
