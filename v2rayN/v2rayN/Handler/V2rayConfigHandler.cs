@@ -503,7 +503,7 @@ namespace v2rayN.Handler
                     {
                         if (Utils.IsNullOrEmpty(config.flow()))
                         {
-                            usersItem.flow = "xtls-rprx-origin";
+                            usersItem.flow = Global.xtlsFlows[1];
                         }
                         else
                         {
@@ -543,7 +543,7 @@ namespace v2rayN.Handler
                     {
                         if (Utils.IsNullOrEmpty(config.flow()))
                         {
-                            serversItem.flow = "xtls-rprx-origin";
+                            serversItem.flow = Global.xtlsFlows[1];
                         }
                         else
                         {

@@ -15,6 +15,7 @@ namespace v2rayN.Forms
 
         private void AddServer5Form_Load(object sender, EventArgs e)
         {
+            cmbFlow.Items.AddRange(Global.xtlsFlows.ToArray());
             transportControl.AllowXtls = true;
             if (EditIndex >= 0)
             {

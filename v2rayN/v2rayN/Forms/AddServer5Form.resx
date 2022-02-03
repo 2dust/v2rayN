@@ -143,21 +143,6 @@
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cmbFlow.Items" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmbFlow.Items1" xml:space="preserve">
-    <value>xtls-rprx-origin</value>
-  </data>
-  <data name="cmbFlow.Items2" xml:space="preserve">
-    <value>xtls-rprx-origin-udp443</value>
-  </data>
-  <data name="cmbFlow.Items3" xml:space="preserve">
-    <value>xtls-rprx-direct</value>
-  </data>
-  <data name="cmbFlow.Items4" xml:space="preserve">
-    <value>xtls-rprx-direct-udp443</value>
-  </data>
   <data name="cmbFlow.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 123</value>
   </data>

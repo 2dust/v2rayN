@@ -88,12 +88,6 @@
             // cmbFlow
             // 
             this.cmbFlow.FormattingEnabled = true;
-            this.cmbFlow.Items.AddRange(new object[] {
-            resources.GetString("cmbFlow.Items"),
-            resources.GetString("cmbFlow.Items1"),
-            resources.GetString("cmbFlow.Items2"),
-            resources.GetString("cmbFlow.Items3"),
-            resources.GetString("cmbFlow.Items4")});
             resources.ApplyResources(this.cmbFlow, "cmbFlow");
             this.cmbFlow.Name = "cmbFlow";
             // 
