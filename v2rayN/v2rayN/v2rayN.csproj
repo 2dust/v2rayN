@@ -506,7 +506,7 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="ZXing.Net">
-      <Version>0.16.7</Version>
+      <Version>0.16.8</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
