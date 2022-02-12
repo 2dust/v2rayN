@@ -404,7 +404,7 @@
     <value>*h2 path</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
-    <value>*QUIC 加密密钥/Kcp seed</value>
+    <value>*QUIC 加密密钥</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
     <value>*grpc serviceName</value>
@@ -435,5 +435,8 @@
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>传输层安全</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*Kcp seed</value>
   </data>
 </root>

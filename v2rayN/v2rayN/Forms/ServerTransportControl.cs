@@ -164,6 +164,7 @@ namespace v2rayN.Forms
             else if (network.Equals("kcp"))
             {
                 tipHeaderType.Text = UIRes.I18N("TransportHeaderTypeTip2");
+                tipPath.Text = UIRes.I18N("TransportPathTip5");                
             }
             else if (network.Equals("ws"))
             {

@@ -1451,14 +1451,26 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    configCopy.index = it.selected;
-                    var port = httpPort + it.selected;
+                    //find unuse port
+                    var port = httpPort;
+                    for (int k = httpPort; k < 65536; k++)
+                    {
+                        if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == k) >= 0)
+                        {
+                            continue;
+                        }
+                        //found
+                        port = k;
+                        httpPort = port + 1;
+                        break;
+                    }
 
                     //Port In Used
                     if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == port) >= 0)
                     {
                         continue;
                     }
+                    configCopy.index = it.selected;
                     it.port = port;
 
                     Inbounds inbound = new Inbounds

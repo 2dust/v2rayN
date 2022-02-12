@@ -980,6 +980,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 *Kcp seed 的本地化字符串。
+        /// </summary>
+        internal static string TransportPathTip5 {
+            get {
+                return ResourceManager.GetString("TransportPathTip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 *http host Separated by commas (,) 的本地化字符串。
         /// </summary>
         internal static string TransportRequestHostTip1 {

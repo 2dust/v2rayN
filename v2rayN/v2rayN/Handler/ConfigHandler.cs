@@ -731,7 +731,7 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 //maybe sub
-                if (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol))
+                if (string.IsNullOrEmpty(subid) && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
                 {
                     if (AddSubItem(ref config, str) == 0)
                     {
@@ -794,12 +794,9 @@ namespace v2rayN.Handler
         public static int AddSubItem(ref Config config, string url)
         {
             //already exists
-            foreach (SubItem sub in config.subItem)
+            if (config.subItem.FindIndex(e => e.url == url) >= 0)
             {
-                if (url == sub.url)
-                {
-                    return 0;
-                }
+                return 0;
             }
 
             SubItem subItem = new SubItem

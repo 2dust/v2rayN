@@ -436,4 +436,7 @@
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
   </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*Kcp seed</value>
+  </data>
 </root>
