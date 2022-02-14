@@ -69,7 +69,7 @@ namespace v2rayN.Handler
                 add = item.address,
                 port = item.port.ToString(),
                 id = item.id,
-                aid = "0",
+                aid = item.alterId.ToString(),
                 scy = item.security,
                 net = item.network,
                 type = item.headerType,
@@ -430,6 +430,7 @@ namespace v2rayN.Handler
             vmessItem.address = Utils.ToString(vmessQRCode.add);
             vmessItem.port = Utils.ToInt(vmessQRCode.port);
             vmessItem.id = Utils.ToString(vmessQRCode.id);
+            vmessItem.alterId = Utils.ToInt(vmessQRCode.aid);
             vmessItem.security = Utils.ToString(vmessQRCode.scy);
 
             if (!Utils.IsNullOrEmpty(vmessQRCode.scy))
