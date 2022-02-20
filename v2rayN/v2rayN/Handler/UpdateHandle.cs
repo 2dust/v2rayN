@@ -43,7 +43,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-              DownloadHandle downloadHandle = null;
+            DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
             {
                 downloadHandle = new DownloadHandle();
@@ -162,7 +162,7 @@ namespace v2rayN.Handler
         }
 
 
-        public void UpdateSubscriptionProcess(Config config, Action<bool, string> update)
+        public void UpdateSubscriptionProcess(Config config, bool blProxy, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
@@ -228,7 +228,9 @@ namespace v2rayN.Handler
                     _updateFunc(false, args.GetException().Message);
                 };
 
-                downloadHandle3.WebDownloadString(url, userAgent);
+                WebProxy webProxy = blProxy ? new WebProxy(Global.Loopback, _config.GetLocalPort(Global.InboundHttp)) : null;
+                downloadHandle3.WebDownloadString(url, webProxy, userAgent);
+
                 _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
 

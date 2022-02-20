@@ -199,12 +199,12 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
             lvServers.Columns.Add(UIRes.I18N("LvAlias"), 100);
             lvServers.Columns.Add(UIRes.I18N("LvAddress"), 120);
-            lvServers.Columns.Add(UIRes.I18N("LvPort"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 90);
-            lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 70);
-            lvServers.Columns.Add(UIRes.I18N("LvTLS"), 70);
-            lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 50);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 70, HorizontalAlignment.Right);
+            lvServers.Columns.Add(UIRes.I18N("LvPort"), 100);
+            lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 120);
+            lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 120);
+            lvServers.Columns.Add(UIRes.I18N("LvTLS"), 100);
+            lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 100);
+            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 120, HorizontalAlignment.Right);
 
             if (statistics != null && statistics.Enable)
             {
@@ -407,6 +407,15 @@ namespace v2rayN.Forms
 
             try
             {
+                if ((EServerColName)e.Column == EServerColName.def)
+                {
+                    foreach (ColumnHeader it in lvServers.Columns)
+                    {
+                        it.Width = -2;
+                    }
+                    return;
+                }
+
                 var tag = lvServers.Columns[e.Column].Tag?.ToString();
                 bool asc = Utils.IsNullOrEmpty(tag) ? true : !Convert.ToBoolean(tag);
                 if (ConfigHandler.SortServers(ref config, (EServerColName)e.Column, asc) != 0)
@@ -460,7 +469,7 @@ namespace v2rayN.Forms
             ConfigHandler.SaveConfig(ref config, false);
             statistics?.SaveToFile();
 
-            ChangePACButtonStatus(0);
+            ChangePACButtonStatus(ESysProxyType.ForcedClear);
 
             v2rayHandler.V2rayStop();
         }
@@ -915,7 +924,11 @@ namespace v2rayN.Forms
 
         private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess();
+            UpdateSubscriptionProcess(false);
+        }
+        private void menuUpdateSubViaProxy_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(true);
         }
 
         private void tsbBackupGuiNConfig_Click(object sender, EventArgs e)
@@ -1202,14 +1215,6 @@ namespace v2rayN.Forms
         private void ChangePACButtonStatus(ESysProxyType type)
         {
             HttpProxyHandle.UpdateSysProxy(config, false);
-            //if (type != ListenerType.noHttpProxy)
-            //{
-            //    HttpProxyHandle.RestartHttpAgent(config, false);
-            //}
-            //else
-            //{
-            //    HttpProxyHandle.CloseHttpAgent(config);
-            //}
 
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {
@@ -1361,13 +1366,18 @@ namespace v2rayN.Forms
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess();
+            UpdateSubscriptionProcess(false);
+        }
+
+        private void tsbSubUpdateViaProxy_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(true);
         }
 
         /// <summary>
         /// the subscription update process
         /// </summary>
-        private void UpdateSubscriptionProcess()
+        private void UpdateSubscriptionProcess(bool blProxy)
         {
             void _updateUI(bool success, string msg)
             {
@@ -1378,7 +1388,7 @@ namespace v2rayN.Forms
                 }
             };
 
-            (new UpdateHandle()).UpdateSubscriptionProcess(config, _updateUI);
+            (new UpdateHandle()).UpdateSubscriptionProcess(config, blProxy, _updateUI);
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
@@ -1489,6 +1499,10 @@ namespace v2rayN.Forms
         {
             var data = this.txtMsgBox.Text;
             Utils.SetClipboardData(data);
+        }
+        private void menuMsgBoxClear_Click(object sender, EventArgs e)
+        {
+            this.txtMsgBox.Clear();
         }
         private void menuMsgBoxAddRoutingRule_Click(object sender, EventArgs e)
         {

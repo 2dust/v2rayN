@@ -764,14 +764,22 @@ namespace v2rayN
         /// 取得版本
         /// </summary>
         /// <returns></returns>
-        public static string GetVersion()
+        public static string GetVersion(bool blFull = true)
         {
             try
             {
                 string location = GetExePath();
-                return string.Format("v2rayN - V{0} - {1}",
-                        FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
-                        File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
+                if (blFull)
+                {
+                    return string.Format("v2rayN - V{0} - {1}",
+                            FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
+                            File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
+                }
+                else
+                {
+                    return string.Format("v2rayN/{0}",
+                        FileVersionInfo.GetVersionInfo(location).FileVersion.ToString());
+                }
             }
             catch (Exception ex)
             {

@@ -131,7 +131,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public void WebDownloadString(string url, string userAgent)
+        public void WebDownloadString(string url, WebProxy webProxy, string userAgent)
         {
             string source = string.Empty;
             try
@@ -139,10 +139,16 @@ namespace v2rayN.Handler
                 Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
-                if (!Utils.IsNullOrEmpty(userAgent))
+                if (webProxy != null)
                 {
-                    ws.Headers.Add("user-agent", userAgent);
+                    ws.Proxy = webProxy;
                 }
+
+                if (Utils.IsNullOrEmpty(userAgent))
+                {
+                    userAgent = $"{Utils.GetVersion(false)}";
+                }
+                ws.Headers.Add("user-agent", userAgent);
 
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
                 ws.DownloadStringAsync(new Uri(url));

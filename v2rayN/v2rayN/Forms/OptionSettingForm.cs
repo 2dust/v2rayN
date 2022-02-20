@@ -5,6 +5,7 @@ using v2rayN.Handler;
 using v2rayN.Base;
 using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
+using System.Diagnostics;
 
 namespace v2rayN.Forms
 {
@@ -330,7 +331,12 @@ namespace v2rayN.Forms
 
         private void linkDnsObjectDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.v2fly.org/config/dns.html#dnsobject");
+            Process.Start("https://www.v2fly.org/config/dns.html#dnsobject");
+        }
+
+        private void btnSetLoopback_Click(object sender, EventArgs e)
+        {
+            Process.Start(Utils.GetPath("EnableLoopback.exe"));
         }
     }
 }

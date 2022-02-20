@@ -321,12 +321,6 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器列表</value>
   </data>
-  <data name="gbMsgTitle.Text" xml:space="preserve">
-    <value>信息</value>
-  </data>
-  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>222, 114</value>
-  </data>
   <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
   </data>
@@ -357,8 +351,32 @@
   <data name="menuMsgBoxFilter.Text" xml:space="preserve">
     <value>设置信息过滤器</value>
   </data>
+  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>222, 114</value>
+  </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>网速显示未启用</value>
+  </data>
+  <data name="gbMsgTitle.Text" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 22</value>
+  </data>
+  <data name="menuKeepClear.Text" xml:space="preserve">
+    <value>清除系统代理</value>
+  </data>
+  <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 22</value>
+  </data>
+  <data name="menuGlobal.Text" xml:space="preserve">
+    <value>自动配置系统代理</value>
+  </data>
+  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 22</value>
+  </data>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>不改变系统代理</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>260, 22</value>
@@ -402,6 +420,12 @@
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
     <value>更新订阅</value>
   </data>
+  <data name="menuUpdateSubViaProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 22</value>
+  </data>
+  <data name="menuUpdateSubViaProxy.Text" xml:space="preserve">
+    <value>更新订阅(通过代理)</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>257, 6</value>
   </data>
@@ -412,25 +436,25 @@
     <value>退出</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 199</value>
+    <value>261, 227</value>
   </data>
-  <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="menuKeepClear.Text" xml:space="preserve">
-    <value>清除系统代理</value>
+  <data name="tsbSubSetting.Text" xml:space="preserve">
+    <value>订阅设置</value>
   </data>
-  <data name="menuGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="menuGlobal.Text" xml:space="preserve">
-    <value>自动配置系统代理</value>
+  <data name="tsbSubUpdate.Text" xml:space="preserve">
+    <value>更新订阅</value>
   </data>
-  <data name="menuKeepNothing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+  <data name="tsbSubUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="menuKeepNothing.Text" xml:space="preserve">
-    <value>不改变系统代理</value>
+  <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
+    <value>更新订阅(通过代理)</value>
   </data>
   <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 53</value>
@@ -438,29 +462,11 @@
   <data name="tsbSub.Text" xml:space="preserve">
     <value>  订阅  </value>
   </data>
-  <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
-  </data>
-  <data name="tsbSubSetting.Text" xml:space="preserve">
-    <value>订阅设置</value>
-  </data>
-  <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
-  </data>
-  <data name="tsbSubUpdate.Text" xml:space="preserve">
-    <value>更新订阅</value>
-  </data>
   <data name="tsbQRCodeSwitch.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 53</value>
   </data>
   <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
     <value>  分享  </value>
-  </data>
-  <data name="tsbSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 53</value>
-  </data>
-  <data name="tsbSetting.Text" xml:space="preserve">
-    <value>  设置  </value>
   </data>
   <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 22</value>
@@ -483,6 +489,12 @@
   <data name="tsbBackupGuiNConfig.Text" xml:space="preserve">
     <value>备份v2rayN配置文件</value>
   </data>
+  <data name="tsbSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 53</value>
+  </data>
+  <data name="tsbSetting.Text" xml:space="preserve">
+    <value>  设置  </value>
+  </data>
   <data name="tsbReload.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -499,12 +511,6 @@
   </data>
   <data name="tsbReload.Text" xml:space="preserve">
     <value>  重启服务  </value>
-  </data>
-  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 53</value>
-  </data>
-  <data name="tsbCheckUpdate.Text" xml:space="preserve">
-    <value>  检查更新  </value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
@@ -533,17 +539,23 @@
   <data name="tsbCheckUpdateGeoIP.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
   </data>
-  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 53</value>
+  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 53</value>
   </data>
-  <data name="tsbHelp.Text" xml:space="preserve">
-    <value>   帮助   </value>
+  <data name="tsbCheckUpdate.Text" xml:space="preserve">
+    <value>  检查更新  </value>
   </data>
   <data name="tsbAbout.Text" xml:space="preserve">
     <value>v2rayN 项目</value>
   </data>
   <data name="tsbV2rayWebsite.Text" xml:space="preserve">
     <value>V2Ray 官网</value>
+  </data>
+  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 53</value>
+  </data>
+  <data name="tsbHelp.Text" xml:space="preserve">
+    <value>   帮助   </value>
   </data>
   <data name="tsbPromotion.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 53</value>
