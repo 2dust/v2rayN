@@ -996,6 +996,10 @@ namespace v2rayN.Handler
             {
                 vmessItem.allowInsecure = config.defAllowInsecure.ToString();
             }
+            if (!Utils.IsNullOrEmpty(vmessItem.network) && !Global.networks.Contains(vmessItem.network))
+            {
+                vmessItem.network = Global.DefaultNetwork;
+            }
 
             config.vmess.Add(vmessItem);
             if (config.vmess.Count == 1)

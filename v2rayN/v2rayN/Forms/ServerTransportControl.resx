@@ -366,24 +366,6 @@
   <data name="&gt;&gt;txtPath.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cmbNetwork.Items" xml:space="preserve">
-    <value>tcp</value>
-  </data>
-  <data name="cmbNetwork.Items1" xml:space="preserve">
-    <value>kcp</value>
-  </data>
-  <data name="cmbNetwork.Items2" xml:space="preserve">
-    <value>ws</value>
-  </data>
-  <data name="cmbNetwork.Items3" xml:space="preserve">
-    <value>h2</value>
-  </data>
-  <data name="cmbNetwork.Items4" xml:space="preserve">
-    <value>quic</value>
-  </data>
-  <data name="cmbNetwork.Items5" xml:space="preserve">
-    <value>grpc</value>
-  </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
     <value>192, 28</value>
   </data>
@@ -689,27 +671,6 @@
   </data>
   <data name="&gt;&gt;labRequestHost.ZOrder" xml:space="preserve">
     <value>13</value>
-  </data>
-  <data name="cmbHeaderType.Items" xml:space="preserve">
-    <value>none</value>
-  </data>
-  <data name="cmbHeaderType.Items1" xml:space="preserve">
-    <value>http</value>
-  </data>
-  <data name="cmbHeaderType.Items2" xml:space="preserve">
-    <value>srtp</value>
-  </data>
-  <data name="cmbHeaderType.Items3" xml:space="preserve">
-    <value>utp</value>
-  </data>
-  <data name="cmbHeaderType.Items4" xml:space="preserve">
-    <value>wechat-video</value>
-  </data>
-  <data name="cmbHeaderType.Items5" xml:space="preserve">
-    <value>dtls</value>
-  </data>
-  <data name="cmbHeaderType.Items6" xml:space="preserve">
-    <value>wireguard</value>
   </data>
   <data name="cmbHeaderType.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 60</value>

@@ -246,7 +246,7 @@ namespace v2rayN.Mode
         }
         public string network()
         {
-            if (index < 0 || Utils.IsNullOrEmpty(vmess[index].network))
+            if (index < 0 || Utils.IsNullOrEmpty(vmess[index].network) || !Global.networks.Contains(vmess[index].network))
             {
                 return Global.DefaultNetwork;
             }
