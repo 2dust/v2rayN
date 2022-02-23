@@ -121,7 +121,10 @@ namespace v2rayN.Handler
             }
             if (config.uiItem == null)
             {
-                config.uiItem = new UIItem();
+                config.uiItem = new UIItem()
+                {
+                    enableAutoAdjustMainLvColWidth = true
+                };
             }
             if (config.uiItem.mainLvColWidth == null)
             {

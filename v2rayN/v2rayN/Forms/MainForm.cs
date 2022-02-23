@@ -1385,6 +1385,13 @@ namespace v2rayN.Forms
                 if (success)
                 {
                     RefreshServers();
+                    if (config.uiItem.enableAutoAdjustMainLvColWidth)
+                    {
+                        foreach (ColumnHeader it in lvServers.Columns)
+                        {
+                            it.Width = -2;
+                        }
+                    }
                 }
             };
 

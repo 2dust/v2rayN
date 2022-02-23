@@ -121,18 +121,6 @@
     <value>取消(&amp;C)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 469</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>648, 437</value>
-  </data>
   <data name="chkdefAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
     <value>324, 16</value>
   </data>
@@ -205,11 +193,14 @@
   <data name="label2.Text" xml:space="preserve">
     <value>本地监听端口</value>
   </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>648, 437</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:DNS设置  </value>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>  Core:基础设置  </value>
   </data>
   <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
@@ -223,17 +214,23 @@
   <data name="label14.Text" xml:space="preserve">
     <value>自定义DNS(可多个,用逗号(,)隔开)</value>
   </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:DNS设置  </value>
+  </data>
   <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
   </data>
-  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 16</value>
   </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Text" xml:space="preserve">
+    <value>自动调整服务器列宽在更新订阅后</value>
   </data>
   <data name="btnSetLoopback.Text" xml:space="preserve">
     <value>解除Windows10 UWP应用回环代理限制</value>
@@ -289,17 +286,11 @@
   <data name="chkAutoRun.Text" xml:space="preserve">
     <value>开机自动启动(可能会不成功)</value>
   </data>
-  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>  系统代理设置  </value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>例外</value>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
@@ -313,11 +304,26 @@
   <data name="label12.Text" xml:space="preserve">
     <value>对于下列字符开头的地址不使用代理服务器:</value>
   </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 479</value>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>例外</value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>  系统代理设置  </value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 469</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
+  </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 479</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>662, 539</value>

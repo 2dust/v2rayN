@@ -770,7 +770,10 @@ namespace v2rayN.Mode
     [Serializable]
     public class UIItem
     {
-
+        public bool enableAutoAdjustMainLvColWidth
+        {
+            get; set;
+        }
 
         public System.Drawing.Size mainSize
         {

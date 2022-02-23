@@ -69,6 +69,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkEnableAutoAdjustMainLvColWidth = new System.Windows.Forms.CheckBox();
             this.btnSetLoopback = new System.Windows.Forms.Button();
             this.txtautoUpdateInterval = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -375,6 +376,7 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.chkEnableAutoAdjustMainLvColWidth);
             this.tabPage7.Controls.Add(this.btnSetLoopback);
             this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
             this.tabPage7.Controls.Add(this.label15);
@@ -389,6 +391,12 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableAutoAdjustMainLvColWidth
+            // 
+            resources.ApplyResources(this.chkEnableAutoAdjustMainLvColWidth, "chkEnableAutoAdjustMainLvColWidth");
+            this.chkEnableAutoAdjustMainLvColWidth.Name = "chkEnableAutoAdjustMainLvColWidth";
+            this.chkEnableAutoAdjustMainLvColWidth.UseVisualStyleBackColor = true;
             // 
             // btnSetLoopback
             // 
@@ -605,5 +613,6 @@
         private System.Windows.Forms.TextBox txtautoUpdateInterval;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnSetLoopback;
+        private System.Windows.Forms.CheckBox chkEnableAutoAdjustMainLvColWidth;
     }
 }
