@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace v2rayN.HttpProxyHandler
+namespace v2rayN.Handler
 {
     class ProxySetting
     {

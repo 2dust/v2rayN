@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using v2rayN.Handler;
-using v2rayN.Base;
-using v2rayN.HttpProxyHandler;
-using v2rayN.Mode;
 using System.Diagnostics;
+using System.Windows.Forms;
+using v2rayN.Base;
+using v2rayN.Handler;
+using v2rayN.Mode;
 
 namespace v2rayN.Forms
 {

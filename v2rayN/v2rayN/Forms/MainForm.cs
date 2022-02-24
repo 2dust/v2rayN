@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Windows.Forms;
-using v2rayN.Handler;
-using v2rayN.HttpProxyHandler;
-using v2rayN.Mode;
-using v2rayN.Base;
-using v2rayN.Tool;
 using System.Diagnostics;
 using System.Drawing;
-using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using v2rayN.Base;
+using v2rayN.Handler;
+using v2rayN.Mode;
+using v2rayN.Tool;
 
 namespace v2rayN.Forms
 {
@@ -125,11 +122,11 @@ namespace v2rayN.Forms
                 //HttpProxyHandle.CloseHttpAgent(config);
                 if (blWindowsShutDown)
                 {
-                    HttpProxyHandle.ResetIEProxy4WindowsShutDown();
+                    SysProxyHandle.ResetIEProxy4WindowsShutDown();
                 }
                 else
                 {
-                    HttpProxyHandle.UpdateSysProxy(config, true);
+                    SysProxyHandle.UpdateSysProxy(config, true);
                 }
 
                 ConfigHandler.SaveConfig(ref config);
@@ -1214,7 +1211,7 @@ namespace v2rayN.Forms
 
         private void ChangePACButtonStatus(ESysProxyType type)
         {
-            HttpProxyHandle.UpdateSysProxy(config, false);
+            SysProxyHandle.UpdateSysProxy(config, false);
 
             for (int k = 0; k < menuSysAgentMode.DropDownItems.Count; k++)
             {

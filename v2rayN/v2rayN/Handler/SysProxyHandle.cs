@@ -8,7 +8,7 @@ using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Tool;
 
-namespace v2rayN.HttpProxyHandler
+namespace v2rayN.Handler
 {
     public static class SysProxyHandle
     {
@@ -44,6 +44,56 @@ namespace v2rayN.HttpProxyHandler
             catch (IOException ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+
+        public static bool UpdateSysProxy(Config config, bool forceDisable)
+        {
+            var type = config.sysProxyType;
+
+            if (forceDisable && type == ESysProxyType.ForcedChange)
+            {
+                type = ESysProxyType.ForcedClear;
+            }
+
+            try
+            {
+                Global.httpPort = config.GetLocalPort(Global.InboundHttp);
+                int port = Global.httpPort;
+                if (port <= 0)
+                {
+                    return false;
+                }
+                if (type == ESysProxyType.ForcedChange)
+                {
+                    var strExceptions = $"{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                    SetIEProxy(true, $"{Global.Loopback}:{port}", strExceptions);
+                }
+                else if (type == ESysProxyType.ForcedClear)
+                {
+                    ResetIEProxy();
+                }
+                else if (type == ESysProxyType.Unchanged)
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+            return true;
+        }
+
+        public static void ResetIEProxy4WindowsShutDown()
+        {
+            try
+            {
+                //TODO To be verified
+                Utils.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
+            }
+            catch
+            {
             }
         }
 

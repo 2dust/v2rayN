@@ -149,6 +149,7 @@
     <Compile Include="Forms\ServerTransportControl.Designer.cs">
       <DependentUpon>ServerTransportControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handler\LazyConfig.cs" />
     <Compile Include="Handler\ShareHandler.cs" />
     <Compile Include="Handler\UpdateHandle.cs" />
     <Compile Include="Mode\ComboItem.cs" />
@@ -198,13 +199,11 @@
     <Compile Include="Handler\SpeedtestHandler.cs" />
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\DownloadHandle.cs" />
-    <Compile Include="HttpProxyHandler\PrivoxyHandler.cs" />
-    <Compile Include="HttpProxyHandler\ProxySetting.cs" />
-    <Compile Include="HttpProxyHandler\HttpProxyHandle.cs" />
+    <Compile Include="Handler\ProxySetting.cs" />
     <Compile Include="Base\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HttpProxyHandler\SysProxyHandle.cs" />
+    <Compile Include="Handler\SysProxyHandle.cs" />
     <Compile Include="Mode\ECoreType.cs" />
     <Compile Include="Mode\ESysProxyType.cs" />
     <Compile Include="Mode\EMove.cs" />
@@ -466,7 +465,6 @@
     <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\privoxy.exe.gz" />
     <None Include="Resources\restart.png" />
   </ItemGroup>
   <ItemGroup>
