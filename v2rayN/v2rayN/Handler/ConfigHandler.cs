@@ -176,7 +176,7 @@ namespace v2rayN.Handler
                     VmessItem vmessItem = config.vmess[i];
                     UpgradeServerVersion(ref vmessItem);
 
-                    if (string.IsNullOrEmpty(vmessItem.indexId))
+                    if (Utils.IsNullOrEmpty(vmessItem.indexId))
                     {
                         vmessItem.indexId = Utils.GetGUID(false);
                     }
@@ -724,6 +724,14 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+
+            //copy sub items
+            List<VmessItem> lstOriSub = null;
+            if (!Utils.IsNullOrEmpty(subid))
+            {
+                lstOriSub = config.vmess.Where(it => it.subid == subid).ToList();
+                RemoveServerViaSubid(ref config, subid);
+            }
             //if (clipboardData.IndexOf("vmess") >= 0 && clipboardData.IndexOf("vmess") == clipboardData.LastIndexOf("vmess"))
             //{
             //    clipboardData = clipboardData.Replace("\r\n", "").Replace("\n", "");
@@ -735,7 +743,7 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 //maybe sub
-                if (string.IsNullOrEmpty(subid) && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
+                if (Utils.IsNullOrEmpty(subid) && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
                 {
                     if (AddSubItem(ref config, str) == 0)
                     {
@@ -748,7 +756,18 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                vmessItem.subid = subid;
+
+                //exist sub items
+                if (!Utils.IsNullOrEmpty(subid))
+                {
+                    var existItem = lstOriSub?.FirstOrDefault(t => CompareVmessItem(t, vmessItem, true));
+                    if (existItem != null)
+                    {
+                        vmessItem = existItem;
+                    }
+                    vmessItem.subid = subid;
+                }
+
                 if (vmessItem.configType == (int)EConfigType.Vmess)
                 {
                     if (AddServer(ref config, vmessItem, -1, false) == 0)
@@ -955,31 +974,15 @@ namespace v2rayN.Handler
         {
             var indexId = config.indexId();
 
-            List<Mode.VmessItem> source = config.vmess;
+            List<VmessItem> source = config.vmess;
             bool keepOlder = config.keepOlderDedupl;
 
-            List<Mode.VmessItem> list = new List<Mode.VmessItem>();
+            List<VmessItem> list = new List<VmessItem>();
             if (!keepOlder) source.Reverse(); // Remove the early items first
 
-            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
+            foreach (VmessItem item in source)
             {
-                return o.configVersion == n.configVersion &&
-                    o.configType == n.configType &&
-                    o.address == n.address &&
-                    o.port == n.port &&
-                    o.id == n.id &&
-                    o.alterId == n.alterId &&
-                    o.security == n.security &&
-                    o.network == n.network &&
-                    o.headerType == n.headerType &&
-                    o.requestHost == n.requestHost &&
-                    o.path == n.path &&
-                    o.streamSecurity == n.streamSecurity;
-                // skip (will remove) different remarks
-            }
-            foreach (Mode.VmessItem item in source)
-            {
-                if (!list.Exists(i => _isAdded(i, item)))
+                if (!list.Exists(i => CompareVmessItem(i, item, false)))
                 {
                     list.Add(item);
                 }
@@ -994,7 +997,10 @@ namespace v2rayN.Handler
 
         public static int AddServerCommon(ref Config config, VmessItem vmessItem)
         {
-            vmessItem.indexId = Utils.GetGUID(false);
+            if (Utils.IsNullOrEmpty(vmessItem.indexId))
+            {
+                vmessItem.indexId = Utils.GetGUID(false);
+            }
             vmessItem.configVersion = 2;
             if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
             {
@@ -1039,6 +1045,29 @@ namespace v2rayN.Handler
             }
             Global.reloadV2ray = true;
             return 0;
+        }
+
+        private static bool CompareVmessItem(VmessItem o, VmessItem n, bool remarks)
+        {
+            if (o == null || n == null)
+            {
+                return false;
+            }
+
+            return o.configVersion == n.configVersion
+                && o.configType == n.configType
+                && o.address == n.address
+                && o.port == n.port
+                && o.id == n.id
+                && o.alterId == n.alterId
+                && o.security == n.security
+                && o.network == n.network
+                && o.headerType == n.headerType
+                && o.requestHost == n.requestHost
+                && o.path == n.path
+                && o.streamSecurity == n.streamSecurity
+                && o.flow == n.flow
+                && (remarks ? o.remarks == n.remarks : true);
         }
 
         #endregion
