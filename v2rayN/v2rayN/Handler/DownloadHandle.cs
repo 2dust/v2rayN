@@ -37,7 +37,7 @@ namespace v2rayN.Handler
             WebClientEx ws = new WebClientEx();
             try
             {
-                Utils.SetSecurityProtocol();
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;
@@ -136,7 +136,7 @@ namespace v2rayN.Handler
             string source = string.Empty;
             try
             {
-                Utils.SetSecurityProtocol();
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
 
                 WebClientEx ws = new WebClientEx();
                 if (webProxy != null)
@@ -187,7 +187,7 @@ namespace v2rayN.Handler
             string source = string.Empty;
             try
             {
-                Utils.SetSecurityProtocol();
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
 
                 WebClientEx ws = new WebClientEx();
 
@@ -205,7 +205,7 @@ namespace v2rayN.Handler
             WebClientEx ws = new WebClientEx();
             try
             {
-                Utils.SetSecurityProtocol();
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;

@@ -69,6 +69,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkEnableSecurityProtocolTls13 = new System.Windows.Forms.CheckBox();
             this.chkEnableAutoAdjustMainLvColWidth = new System.Windows.Forms.CheckBox();
             this.btnSetLoopback = new System.Windows.Forms.Button();
             this.txtautoUpdateInterval = new System.Windows.Forms.TextBox();
@@ -376,6 +377,7 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.chkEnableSecurityProtocolTls13);
             this.tabPage7.Controls.Add(this.chkEnableAutoAdjustMainLvColWidth);
             this.tabPage7.Controls.Add(this.btnSetLoopback);
             this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
@@ -391,6 +393,12 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableSecurityProtocolTls13
+            // 
+            resources.ApplyResources(this.chkEnableSecurityProtocolTls13, "chkEnableSecurityProtocolTls13");
+            this.chkEnableSecurityProtocolTls13.Name = "chkEnableSecurityProtocolTls13";
+            this.chkEnableSecurityProtocolTls13.UseVisualStyleBackColor = true;
             // 
             // chkEnableAutoAdjustMainLvColWidth
             // 
@@ -614,5 +622,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnSetLoopback;
         private System.Windows.Forms.CheckBox chkEnableAutoAdjustMainLvColWidth;
+        private System.Windows.Forms.CheckBox chkEnableSecurityProtocolTls13;
     }
 }

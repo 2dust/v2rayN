@@ -175,10 +175,7 @@ namespace v2rayN
         /// Language
         /// </summary>
         public const string MyRegKeyLanguage = "CurrentLanguage";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string MyRegKeySecurityProtocolTls13 = "SecurityProtocolTls13";
+       
         /// <summary>
         /// Icon
         /// </summary>

@@ -226,6 +226,9 @@
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
   </data>
+  <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
+    <value>启用安全协议TLS v1.3 (订阅/检查更新/测速)</value>
+  </data>
   <data name="chkEnableAutoAdjustMainLvColWidth.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 16</value>
   </data>

@@ -124,6 +124,7 @@ namespace v2rayN.Forms
             cmbCoreType.SelectedIndex = (int)config.coreType;
             txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
             chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
+            chkEnableSecurityProtocolTls13.Checked = config.enableSecurityProtocolTls13;
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -308,6 +309,7 @@ namespace v2rayN.Forms
             config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
             config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
             config.uiItem.enableAutoAdjustMainLvColWidth = chkEnableAutoAdjustMainLvColWidth.Checked;
+            config.enableSecurityProtocolTls13 = chkEnableSecurityProtocolTls13.Checked;
 
             return 0;
         }

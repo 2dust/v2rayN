@@ -715,11 +715,9 @@ namespace v2rayN
             return lstIPAddress;
         }
 
-        public static void SetSecurityProtocol()
+        public static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
         {
-            string securityProtocolTls13 = RegReadValue(Global.MyRegPath, Global.MyRegKeySecurityProtocolTls13, "0");
-
-            if (securityProtocolTls13.Equals("1"))
+            if (enableSecurityProtocolTls13)
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
                                            | SecurityProtocolType.Tls

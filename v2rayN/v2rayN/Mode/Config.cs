@@ -11,13 +11,7 @@ namespace v2rayN.Mode
     [Serializable]
     public class Config
     {
-        /// <summary>
-        /// 本地监听
-        /// </summary>
-        public List<InItem> inbound
-        {
-            get; set;
-        }
+        #region property
 
         /// <summary>
         /// 允许日志
@@ -44,25 +38,9 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// vmess服务器信息
-        /// </summary>
-        public List<VmessItem> vmess
-        {
-            get; set;
-        }
-
-        /// <summary>
         /// 允许Mux多路复用
         /// </summary>
         public bool muxEnabled
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// KcpItem
-        /// </summary>
-        public KcpItem kcpItem
         {
             get; set;
         }
@@ -107,7 +85,6 @@ namespace v2rayN.Mode
             get; set;
         }
 
-
         /// <summary>
         /// 自定义远程DNS
         /// </summary>
@@ -125,20 +102,6 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 订阅
-        /// </summary>
-        public List<SubItem> subItem
-        {
-            get; set;
-        }
-        /// <summary>
-        /// UI
-        /// </summary>
-        public UIItem uiItem
-        {
-            get; set;
-        }
-        /// <summary>
         /// 域名解析策略
         /// </summary>
         public string domainStrategy
@@ -150,10 +113,6 @@ namespace v2rayN.Mode
             get; set;
         }
         public int routingIndex
-        {
-            get; set;
-        }
-        public List<RoutingItem> routings
         {
             get; set;
         }
@@ -184,11 +143,66 @@ namespace v2rayN.Mode
             get; set;
         } = 0;
 
+        public bool enableSecurityProtocolTls13
+        {
+            get; set;
+        }
+        
+        #endregion
+
+        #region other entities
+
+        /// <summary>
+        /// 本地监听
+        /// </summary>
+        public List<InItem> inbound
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// vmess服务器信息
+        /// </summary>
+        public List<VmessItem> vmess
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// KcpItem
+        /// </summary>
+        public KcpItem kcpItem
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 订阅
+        /// </summary>
+        public List<SubItem> subItem
+        {
+            get; set;
+        }
+        /// <summary>
+        /// UI
+        /// </summary>
+        public UIItem uiItem
+        {
+            get; set;
+        }
+        public List<RoutingItem> routings
+        {
+            get; set;
+        }
+
         public ConstItem constItem
         {
             get; set;
         }
-        #region 函数
+
+        #endregion
+
+        #region function
 
         public string address()
         {
@@ -390,6 +404,7 @@ namespace v2rayN.Mode
             }
             return vmess.FindIndex(it => it.indexId == indexId);
         }
+        
         #endregion
 
     }
