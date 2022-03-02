@@ -298,7 +298,8 @@ namespace v2rayN.Handler
                 sni = config.vmess[index].sni
             };
 
-            config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
+            //config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
+            AddServerCommon(ref config, vmessItem);
 
             ToJsonFile(config);
 
@@ -725,6 +726,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
+            var indexId = config.indexId();
             //copy sub items
             List<VmessItem> lstOriSub = null;
             if (!Utils.IsNullOrEmpty(subid))
@@ -804,6 +806,9 @@ namespace v2rayN.Handler
                     }
                 }
             }
+
+            SetIndex(ref config, indexId);
+
             ToJsonFile(config);
             return countServers;
         }
