@@ -401,7 +401,7 @@ namespace v2rayN.Handler
                     serversItem.address = config.address();
                     serversItem.port = config.port();
                     serversItem.password = config.id();
-                    if (Global.ssSecuritys.Contains(config.security()))
+                    if (config.GetShadowsocksSecuritys().Contains(config.security()))
                     {
                         serversItem.method = config.security();
                     }

@@ -404,6 +404,16 @@ namespace v2rayN.Mode
             }
             return vmess.FindIndex(it => it.indexId == indexId);
         }
+
+        public List<string> GetShadowsocksSecuritys()
+        {
+            if (coreType == ECoreType.v2fly_core)
+            {
+                return Global.ssSecuritys;
+            }
+
+            return Global.ssSecuritysInXray;
+        }
         
         #endregion
 
