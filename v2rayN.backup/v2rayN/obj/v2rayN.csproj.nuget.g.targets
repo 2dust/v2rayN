@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)grpc.tools\2.44.0\build\Grpc.Tools.targets" Condition="Exists('$(NuGetPackageRoot)grpc.tools\2.44.0\build\Grpc.Tools.targets')" />
-    <Import Project="$(NuGetPackageRoot)grpc.core\2.44.0\buildTransitive\net45\Grpc.Core.targets" Condition="Exists('$(NuGetPackageRoot)grpc.core\2.44.0\buildTransitive\net45\Grpc.Core.targets')" />
-  </ImportGroup>
-</Project>
