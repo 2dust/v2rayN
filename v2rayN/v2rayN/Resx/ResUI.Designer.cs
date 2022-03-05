@@ -772,6 +772,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Global hotkey {0} registered failed, reason {1} 的本地化字符串。
+        /// </summary>
+        internal static string RegisterGlobalHotkeyFailed {
+            get {
+                return ResourceManager.GetString("RegisterGlobalHotkeyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global hotkey {0} registered successfully 的本地化字符串。
+        /// </summary>
+        internal static string RegisterGlobalHotkeySuccessfully {
+            get {
+                return ResourceManager.GetString("RegisterGlobalHotkeySuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Servers deduplication completed. Old: {0}, New: {1}. 的本地化字符串。
         /// </summary>
         internal static string RemoveDuplicateServerResult {

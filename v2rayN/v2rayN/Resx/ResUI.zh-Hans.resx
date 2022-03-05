@@ -439,4 +439,10 @@
   <data name="TransportPathTip5" xml:space="preserve">
     <value>*Kcp seed</value>
   </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>注册全局热键 {0} 失败,原因 {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>注册全局热键 {0} 成功</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHotkey;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -53,7 +54,6 @@ namespace v2rayN.Forms
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
-            MainFormHandler.Instance.UpdateTask(config, UpdateTaskHandler);
         }
 
         private void MainForm_VisibleChanged(object sender, EventArgs e)
@@ -80,6 +80,8 @@ namespace v2rayN.Forms
 
             HideForm();
 
+            MainFormHandler.Instance.UpdateTask(config, UpdateTaskHandler);
+            MainFormHandler.Instance.RegisterGlobalHotkey(config, OnHotkeyHandler, UpdateTaskHandler);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -161,6 +163,26 @@ namespace v2rayN.Forms
             {
                 ConfigHandler.AddformMainLvColWidth(ref config, ((EServerColName)k).ToString(), lvServers.Columns[k].Width);
             }
+        }
+
+        private void OnHotkeyHandler(object sender, HotkeyEventArgs e)
+        {
+            switch (Utils.ToInt(e.Name))
+            {
+                case (int)EGlobalHotkey.ShowForm:
+                    ShowForm();
+                    break;
+                case (int)EGlobalHotkey.SystemProxyClear:
+                    SetListenerType(ESysProxyType.ForcedClear);
+                    break;
+                case (int)EGlobalHotkey.SystemProxySet:
+                    SetListenerType(ESysProxyType.ForcedChange);
+                    break;
+                case (int)EGlobalHotkey.SystemProxyUnchanged:
+                    SetListenerType(ESysProxyType.Unchanged);
+                    break;
+            }
+            e.Handled = true;
         }
 
         #endregion
@@ -790,6 +812,18 @@ namespace v2rayN.Forms
                 RefreshServers();
                 LoadV2ray();
             }
+        }
+
+        private void tsbGlobalHotkeySetting_Click(object sender, EventArgs e)
+        {
+            var fm = new GlobalHotkeySettingForm();
+            if (fm.ShowDialog() == DialogResult.OK)
+            {
+                RefreshRoutingsMenu();
+                RefreshServers();
+                LoadV2ray();
+            }
+
         }
 
         private void tsbReload_Click(object sender, EventArgs e)

@@ -439,4 +439,10 @@
   <data name="TransportPathTip5" xml:space="preserve">
     <value>*Kcp seed</value>
   </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>Global hotkey {0} registered failed, reason {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>Global hotkey {0} registered successfully</value>
+  </data>
 </root>

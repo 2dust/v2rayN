@@ -1,10 +1,11 @@
-﻿using System;
+﻿using NHotkey;
+using NHotkey.WindowsForms;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -12,7 +13,7 @@ namespace v2rayN.Handler
     public sealed class MainFormHandler
     {
         private static readonly Lazy<MainFormHandler> instance = new Lazy<MainFormHandler>(() => new MainFormHandler());
-        Action<bool, string> _updateUI;
+        //Action<bool, string> _updateUI;
 
         //private DownloadHandle downloadHandle2;
         //private Config _config;
@@ -218,11 +219,10 @@ namespace v2rayN.Handler
 
         public void UpdateTask(Config config, Action<bool, string> update)
         {
-            _updateUI = update;
-            Task.Run(() => UpdateTaskRun(config));
+            Task.Run(() => UpdateTaskRun(config, update));
         }
 
-        private void UpdateTaskRun(Config config)
+        private void UpdateTaskRun(Config config, Action<bool, string> update)
         {
             var updateHandle = new UpdateHandle();
             while (true)
@@ -236,7 +236,7 @@ namespace v2rayN.Handler
 
                 updateHandle.UpdateGeoFile("geosite", config, (bool success, string msg) =>
                 {
-                    _updateUI(false, msg);
+                    update(false, msg);
                     if (success)
                         Utils.SaveLog("geosite" + msg);
                 });
@@ -245,7 +245,7 @@ namespace v2rayN.Handler
 
                 updateHandle.UpdateGeoFile("geoip", config, (bool success, string msg) =>
                 {
-                    _updateUI(false, msg);
+                    update(false, msg);
                     if (success)
                         Utils.SaveLog("geoip" + msg);
                 });
@@ -253,5 +253,49 @@ namespace v2rayN.Handler
                 Thread.Sleep(1000 * 3600 * config.autoUpdateInterval);
             }
         }
+
+        public void RegisterGlobalHotkey(Config config, EventHandler<HotkeyEventArgs> handler, Action<bool, string> update)
+        {
+            if (config.globalHotkeys == null)
+            {
+                return;
+            }
+
+            foreach (var item in config.globalHotkeys)
+            {
+                if (item.KeyCode == null)
+                {
+                    continue;
+                }
+
+                Keys keys = (Keys)item.KeyCode;
+                if (item.Control)
+                {
+                    keys |= Keys.Control;
+                }
+                if (item.Alt)
+                {
+                    keys |= Keys.Alt;
+                }
+                if (item.Shift)
+                {
+                    keys |= Keys.Shift;
+                }
+
+                try
+                {
+                    HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), keys, handler);
+                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeySuccessfully"), $"{item.eGlobalHotkey.ToString()} = {keys}");
+                    update(false, msg);
+                }
+                catch (Exception ex)
+                {
+                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeyFailed"), $"{item.eGlobalHotkey.ToString()} = {keys}", ex.Message);
+                    update(false, msg);
+                    Utils.SaveLog(msg);
+                }
+            }
+        }
+
     }
 }
