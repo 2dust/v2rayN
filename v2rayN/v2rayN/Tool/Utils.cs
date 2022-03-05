@@ -22,12 +22,12 @@ using v2rayN.Base;
 using Newtonsoft.Json.Linq;
 using System.Web;
 using log4net;
+using ZXing.Windows.Compatibility;
 
 namespace v2rayN
 {
-    class Utils
+    internal class Utils
     {
-
         #region 资源Json操作
 
         /// <summary>
@@ -54,7 +54,6 @@ namespace v2rayN
             }
             return result;
         }
-
 
         /// <summary>
         /// 取得存储资源
@@ -167,7 +166,8 @@ namespace v2rayN
                 return null;
             }
         }
-        #endregion
+
+        #endregion 资源Json操作
 
         #region 转换函数
 
@@ -199,6 +199,7 @@ namespace v2rayN
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// 逗号分隔的字符串,转List<string>
         /// </summary>
@@ -353,18 +354,17 @@ namespace v2rayN
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
-
-
         public static string UrlEncode(string url)
         {
             return HttpUtility.UrlEncode(url);
         }
+
         public static string UrlDecode(string url)
         {
             return HttpUtility.UrlDecode(url);
         }
-        #endregion
 
+        #endregion 转换函数
 
         #region 数据检查
 
@@ -408,7 +408,7 @@ namespace v2rayN
         /// <summary>
         /// 验证IP地址是否合法
         /// </summary>
-        /// <param name="ip"></param>        
+        /// <param name="ip"></param>
         public static bool IsIP(string ip)
         {
             //如果为空
@@ -433,7 +433,6 @@ namespace v2rayN
                 }
             }
 
-
             //模式字符串
             string pattern = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
 
@@ -444,7 +443,7 @@ namespace v2rayN
         /// <summary>
         /// 验证Domain地址是否合法
         /// </summary>
-        /// <param name="domain"></param>        
+        /// <param name="domain"></param>
         public static bool IsDomain(string domain)
         {
             //如果为空
@@ -467,7 +466,7 @@ namespace v2rayN
         /// 验证输入字符串是否与模式字符串匹配，匹配返回true
         /// </summary>
         /// <param name="input">输入字符串</param>
-        /// <param name="pattern">模式字符串</param>        
+        /// <param name="pattern">模式字符串</param>
         public static bool IsMatch(string input, string pattern)
         {
             return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
@@ -482,8 +481,10 @@ namespace v2rayN
                 {
                     case AddressFamily.InterNetwork:
                         return false;
+
                     case AddressFamily.InterNetworkV6:
                         return true;
+
                     default:
                         return false;
                 }
@@ -491,11 +492,12 @@ namespace v2rayN
             return false;
         }
 
-        #endregion
+        #endregion 数据检查
 
         #region 开机自动启动
 
         private static string autoRunName = "v2rayNAutoRun";
+
         private static string autoRunRegPath
         {
             get
@@ -651,7 +653,7 @@ namespace v2rayN
             }
         }
 
-        #endregion
+        #endregion 开机自动启动
 
         #region 测速
 
@@ -754,7 +756,8 @@ namespace v2rayN
             }
             return inUse;
         }
-        #endregion
+
+        #endregion 测速
 
         #region 杂项
 
@@ -902,7 +905,8 @@ namespace v2rayN
 
             return fileName;
         }
-        #endregion
+
+        #endregion 杂项
 
         #region TempPath
 
@@ -934,7 +938,7 @@ namespace v2rayN
             return Encoding.UTF8.GetString(sb.ToArray());
         }
 
-        #endregion
+        #endregion TempPath
 
         #region Log
 
@@ -943,6 +947,7 @@ namespace v2rayN
             var logger = LogManager.GetLogger("Log1");
             logger.Info(strContent);
         }
+
         public static void SaveLog(string strTitle, Exception ex)
         {
             var logger = LogManager.GetLogger("Log2");
@@ -950,8 +955,7 @@ namespace v2rayN
             logger.Debug(ex);
         }
 
-        #endregion
-
+        #endregion Log
 
         #region scan screen
 
@@ -1008,7 +1012,6 @@ namespace v2rayN
             return string.Empty;
         }
 
-        #endregion
-
+        #endregion scan screen
     }
 }

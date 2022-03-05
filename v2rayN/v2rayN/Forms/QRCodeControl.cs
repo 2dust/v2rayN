@@ -10,12 +10,13 @@ namespace v2rayN.Forms
         {
             InitializeComponent();
         }
+
         private void QRCodeControl_Load(object sender, System.EventArgs e)
         {
-            txtUrl.MouseUp += txtUrl_MouseUp;      
+            txtUrl.MouseUp += txtUrl_MouseUp;
         }
 
-        void txtUrl_MouseUp(object sender, MouseEventArgs e)
+        private void txtUrl_MouseUp(object sender, MouseEventArgs e)
         {
             txtUrl.SelectAll();
         }
@@ -32,7 +33,7 @@ namespace v2rayN.Forms
                     return;
                 }
                 txtUrl.Text = url;
-                picQRCode.Image = QRCodeHelper.GetQRCode(url);                
+                picQRCode.Image = QRCodeHelper.GetQRCode(url);
             }
         }
     }

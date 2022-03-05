@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using ZXing;
 using ZXing.QrCode;
+using ZXing.Windows.Compatibility;
 
 namespace v2rayN.Handler
 {

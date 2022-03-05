@@ -142,6 +142,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0-preview.1.22076.8" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.10" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>copy /y $(SolutionDir)v2rayUpgrade\$(OutDir)* $(TargetDir)

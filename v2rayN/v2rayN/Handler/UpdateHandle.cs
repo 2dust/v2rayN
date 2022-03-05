@@ -290,7 +290,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                WebRequestHandler webRequestHandler = new WebRequestHandler
+                HttpClientHandler webRequestHandler = new HttpClientHandler
                 {
                     AllowAutoRedirect = false
                 };
