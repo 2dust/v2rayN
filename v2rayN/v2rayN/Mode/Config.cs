@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using v2rayN.Base;
 
 
@@ -147,7 +148,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-        
+
         #endregion
 
         #region other entities
@@ -196,6 +197,11 @@ namespace v2rayN.Mode
         }
 
         public ConstItem constItem
+        {
+            get; set;
+        }
+
+        public List<KeyEventItem> globalHotkeys
         {
             get; set;
         }
@@ -404,7 +410,7 @@ namespace v2rayN.Mode
             }
             return vmess.FindIndex(it => it.indexId == indexId);
         }
-        
+
         #endregion
 
     }
@@ -821,5 +827,20 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+    }
+
+    [Serializable]
+    public class KeyEventItem
+    {
+        public EGlobalHotkey eGlobalHotkey { get; set; }
+
+        public bool Alt { get; set; }
+
+        public bool Control { get; set; }
+
+        public bool Shift { get; set; }
+
+        public Keys? KeyCode { get; set; }
+
     }
 }
