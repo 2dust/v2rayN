@@ -41,6 +41,7 @@ namespace v2rayN
                 Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
 
                 Application.EnableVisualStyles();
+                Application.SetHighDpiMode(HighDpiMode.SystemAware);
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());
             }

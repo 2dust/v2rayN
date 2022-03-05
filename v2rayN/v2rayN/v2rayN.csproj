@@ -1,20 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0A9785E6-D256-4B73-9757-4EF59955FD1E}</ProjectGuid>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>v2rayN</RootNamespace>
-    <AssemblyName>v2rayN</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishUrl>发布\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,27 +18,12 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>v2rayN.ico</ApplicationIcon>
@@ -67,366 +40,33 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
   <PropertyGroup>
     <StartupObject>v2rayN.Program</StartupObject>
   </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Messaging" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\AddServer6Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer6Form.Designer.cs">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddServer4Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer4Form.Designer.cs">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\ListViewFlickerFree.cs">
+    <Compile Update="Base\ListViewFlickerFree.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\AddServer5Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer5Form.Designer.cs">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\BaseServerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\BaseServerForm.Designer.cs">
-      <DependentUpon>BaseServerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MsgFilterSetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MsgFilterSetForm.Designer.cs">
-      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RoutingRuleSettingDetailsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RoutingRuleSettingDetailsForm.Designer.cs">
-      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\GlobalHotkeySettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\GlobalHotkeySettingForm.Designer.cs">
-      <DependentUpon>GlobalHotkeySettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RoutingRuleSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RoutingRuleSettingForm.Designer.cs">
-      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ServerTransportControl.cs">
+    <Compile Update="Forms\ServerTransportControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ServerTransportControl.Designer.cs">
-      <DependentUpon>ServerTransportControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Handler\LazyConfig.cs" />
-    <Compile Include="Handler\ShareHandler.cs" />
-    <Compile Include="Handler\UpdateHandle.cs" />
-    <Compile Include="Mode\ComboItem.cs" />
-    <Compile Include="Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RoutingSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RoutingSettingForm.Designer.cs">
-      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SubSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SubSettingForm.Designer.cs">
-      <DependentUpon>SubSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddServer2Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer2Form.Designer.cs">
-      <DependentUpon>AddServer2Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddServer3Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer3Form.Designer.cs">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\QRCodeControl.cs">
+    <Compile Update="Forms\QRCodeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\QRCodeControl.Designer.cs">
-      <DependentUpon>QRCodeControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SubSettingControl.cs">
+    <Compile Update="Forms\SubSettingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\SubSettingControl.Designer.cs">
-      <DependentUpon>SubSettingControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Handler\MainFormHandler.cs" />
-    <Compile Include="Handler\SpeedtestHandler.cs" />
-    <Compile Include="Handler\StatisticsHandler.cs" />
-    <Compile Include="Handler\DownloadHandle.cs" />
-    <Compile Include="Handler\ProxySetting.cs" />
-    <Compile Include="Base\WebClientEx.cs">
+    <Compile Update="Base\WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Handler\SysProxyHandle.cs" />
-    <Compile Include="Mode\EGlobalHotkey.cs" />
-    <Compile Include="Mode\ECoreType.cs" />
-    <Compile Include="Mode\ESysProxyType.cs" />
-    <Compile Include="Mode\EMove.cs" />
-    <Compile Include="Mode\EServerColName.cs" />
-    <Compile Include="Mode\RoutingItem.cs" />
-    <Compile Include="Mode\RulesItem.cs" />
-    <Compile Include="Mode\ServerStatistics.cs" />
-    <Compile Include="Mode\SysproxyConfig.cs" />
-    <Compile Include="Mode\EConfigType.cs" />
-    <Compile Include="Mode\ServerTestItem.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resx\ResUI.zh-Hans.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResUI.zh-Hans.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resx\ResUI.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResUI.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Base\StringEx.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServerForm.Designer.cs">
-      <DependentUpon>AddServerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Global.cs" />
-    <Compile Include="Handler\QRCodeHelper.cs" />
-    <Compile Include="Mode\VmessQRCode.cs" />
-    <Compile Include="Mode\V2rayTcpRequest.cs" />
-    <Compile Include="Handler\ConfigHandler.cs" />
-    <Compile Include="Handler\V2rayHandler.cs" />
-    <Compile Include="Mode\V2rayConfig.cs" />
-    <Compile Include="Mode\Config.cs" />
-    <Compile Include="Forms\OptionSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionSettingForm.Designer.cs">
-      <DependentUpon>OptionSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tool\FileManager.cs" />
-    <Compile Include="Tool\Job.cs" />
-    <Compile Include="Tool\Logging.cs" />
-    <Compile Include="Tool\QueryableExtension.cs" />
-    <Compile Include="Tool\UIRes.cs" />
-    <Compile Include="Tool\UI.cs" />
-    <Compile Include="Tool\Utils.cs" />
-    <Compile Include="Handler\V2rayConfigHandler.cs" />
-    <EmbeddedResource Include="Forms\AddServer2Form.zh-Hans.resx">
-      <DependentUpon>AddServer2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer6Form.resx">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer6Form.zh-Hans.resx">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer4Form.resx">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer4Form.zh-Hans.resx">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer3Form.zh-Hans.resx">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer5Form.resx">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer5Form.zh-Hans.resx">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServerForm.zh-Hans.resx">
-      <DependentUpon>AddServerForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BaseServerForm.resx">
-      <DependentUpon>BaseServerForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GlobalHotkeySettingForm.zh-Hans.resx">
-      <DependentUpon>GlobalHotkeySettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.zh-Hans.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MsgFilterSetForm.resx">
-      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MsgFilterSetForm.zh-Hans.resx">
-      <DependentUpon>MsgFilterSetForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionSettingForm.zh-Hans.resx">
-      <DependentUpon>OptionSettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\QRCodeControl.zh-Hans.resx">
-      <DependentUpon>QRCodeControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.resx">
-      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingRuleSettingDetailsForm.zh-Hans.resx">
-      <DependentUpon>RoutingRuleSettingDetailsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GlobalHotkeySettingForm.resx">
-      <DependentUpon>GlobalHotkeySettingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.resx">
-      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingRuleSettingForm.zh-Hans.resx">
-      <DependentUpon>RoutingRuleSettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ServerTransportControl.resx">
-      <DependentUpon>ServerTransportControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ServerTransportControl.zh-Hans.resx">
-      <DependentUpon>ServerTransportControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SubSettingControl.resx">
-      <DependentUpon>SubSettingControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SubSettingControl.zh-Hans.resx">
-      <DependentUpon>SubSettingControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingForm.resx">
-      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoutingSettingForm.zh-Hans.resx">
-      <DependentUpon>RoutingSettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SubSettingForm.resx">
-      <DependentUpon>SubSettingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServerForm.resx">
-      <DependentUpon>AddServerForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BaseForm.resx">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionSettingForm.resx">
-      <DependentUpon>OptionSettingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\QRCodeControl.resx">
-      <DependentUpon>QRCodeControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer2Form.resx">
-      <DependentUpon>AddServer2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer3Form.resx">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SubSettingForm.zh-Hans.resx">
-      <DependentUpon>SubSettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="app.config">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="Resources\sysproxy.exe.gz" />
-    <None Include="Resources\sysproxy64.exe.gz" />
     <EmbeddedResource Include="Sample\custom_routing_white" />
     <EmbeddedResource Include="Sample\custom_routing_global" />
     <EmbeddedResource Include="Sample\custom_routing_locked" />
@@ -434,16 +74,6 @@
     <Protobuf Include="Protos\Statistics.proto" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resx\ResUI.zh-Hans.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResUI.zh-Hans.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resx\ResUI.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResUI.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="v2rayN.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -479,29 +109,11 @@
     <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\restart.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\option.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\server.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\share.png" />
-    <None Include="Resources\promotion.png" />
-    <None Include="Resources\sub.png" />
-    <None Include="Resources\checkupdate.png" />
-    <None Include="Resources\about.png" />
     <Content Include="Resources\help.png" />
-    <None Include="Resources\notify.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.19.4</Version>
+      <Version>3.20.0-rc1</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Core">
       <Version>2.44.0</Version>
@@ -514,32 +126,30 @@
     <PackageReference Include="log4net">
       <Version>2.0.14</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="NHotkey">
-      <Version>2.1.0</Version>
     </PackageReference>
     <PackageReference Include="NHotkey.WindowsForms">
       <Version>2.1.0</Version>
     </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
     <PackageReference Include="ZXing.Net">
       <Version>0.16.8</Version>
     </PackageReference>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.310801">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0-preview.1.22076.8" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y $(SolutionDir)v2rayUpgrade\$(OutDir)* $(TargetDir)
 
 del $(TargetDir)*.xml $(TargetDir)*.so $(TargetDir)*.dylib
 if not "$(ConfigurationName)" == "Debug" del $(TargetDir)*.pdb</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\Grpc.Core.2.23.0\build\net45\Grpc.Core.targets" Condition="Exists('..\packages\Grpc.Core.2.23.0\build\net45\Grpc.Core.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "6A5TqE630JcNJRAtElzRGQ6Jjq9gNG7niJZxaM/2WwUROLdCrqaI/1veV6OKY5eVRJAOfUwTlTlUkCHZWMLmsA==",
+  "success": true,
+  "projectFilePath": "F:\\Code\\themerror\\v2rayN\\v2rayN\\v2rayN\\v2rayN.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wu197\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\grpc.core\\2.44.0\\grpc.core.2.44.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\grpc.core.api\\2.44.0\\grpc.core.api.2.44.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\grpc.tools\\2.44.0\\grpc.tools.2.44.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\log4net\\2.0.14\\log4net.2.0.14.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\nhotkey\\2.1.0\\nhotkey.2.1.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\nhotkey.windowsforms\\2.1.0\\nhotkey.windowsforms.2.1.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\system.buffers\\4.4.0\\system.buffers.4.4.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\system.numerics.vectors\\4.4.0\\system.numerics.vectors.4.4.0.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+    "C:\\Users\\wu197\\.nuget\\packages\\zxing.net\\0.16.8\\zxing.net.0.16.8.nupkg.sha512"
+  ],
+  "logs": []
+}

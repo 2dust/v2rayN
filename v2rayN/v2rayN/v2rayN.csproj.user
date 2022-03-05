@@ -19,4 +19,54 @@
     <StartArguments>
     </StartArguments>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Forms\AddServer2Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddServer3Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddServer4Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddServer5Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddServer6Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\BaseServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\GlobalHotkeySettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MsgFilterSetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\OptionSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\RoutingRuleSettingDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\RoutingRuleSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\RoutingSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SubSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

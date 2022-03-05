@@ -10,9 +10,9 @@ using v2rayN.Mode;
 
 namespace v2rayN.Handler
 {
-    class UpdateHandle
+    internal class UpdateHandle
     {
-        Action<bool, string> _updateFunc;
+        private Action<bool, string> _updateFunc;
         private Config _config;
 
         public event EventHandler<ResultEventArgs> AbsoluteCompleted;
@@ -106,7 +106,6 @@ namespace v2rayN.Handler
             CheckUpdateAsync("v2rayN");
         }
 
-
         public void CheckUpdateCore(string type, Config config, Action<bool, string> update)
         {
             _config = config;
@@ -160,7 +159,6 @@ namespace v2rayN.Handler
             _updateFunc(false, string.Format(UIRes.I18N("MsgStartUpdating"), "Core"));
             CheckUpdateAsync(type);
         }
-
 
         public void UpdateSubscriptionProcess(Config config, bool blProxy, Action<bool, string> update)
         {
@@ -233,9 +231,7 @@ namespace v2rayN.Handler
 
                 _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgStartGettingSubscriptions")}");
             }
-
         }
-
 
         public void UpdateGeoFile(string geoName, Config config, Action<bool, string> update)
         {
@@ -389,6 +385,7 @@ namespace v2rayN.Handler
                 return "";
             }
         }
+
         private void responseHandler(string type, string redirectUrl)
         {
             try
@@ -472,6 +469,7 @@ namespace v2rayN.Handler
             SpeedtestHandler statistics = new SpeedtestHandler(ref _config);
             return statistics.RunAvailabilityCheck();
         }
-        #endregion
+
+        #endregion private
     }
 }
