@@ -6,5 +6,5 @@
 - Run v2rayN.exe
 
 ### Requirements  
-- Microsoft [.NET Framework 4.8](https://docs.microsoft.com/zh-cn/dotnet/framework/install/guide-for-developers)
+- [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - Project V core [https://github.com/v2fly/v2ray-core/releases](https://github.com/v2fly/v2ray-core/releases)
