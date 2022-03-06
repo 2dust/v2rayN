@@ -131,6 +131,7 @@ namespace v2rayN.Forms
                     SysProxyHandle.UpdateSysProxy(config, true);
                 }
 
+                StorageUI();
                 ConfigHandler.SaveConfig(ref config);
                 statistics?.SaveToFile();
                 statistics?.Close();
@@ -170,7 +171,7 @@ namespace v2rayN.Forms
             switch (Utils.ToInt(e.Name))
             {
                 case (int)EGlobalHotkey.ShowForm:
-                    ShowForm();
+                    if (this.ShowInTaskbar) HideForm(); else ShowForm();
                     break;
                 case (int)EGlobalHotkey.SystemProxyClear:
                     SetListenerType(ESysProxyType.ForcedClear);
@@ -834,6 +835,7 @@ namespace v2rayN.Forms
 
         private void tsbClose_Click(object sender, EventArgs e)
         {
+            StorageUI();
             HideForm();
             //this.WindowState = FormWindowState.Minimized;
         }
