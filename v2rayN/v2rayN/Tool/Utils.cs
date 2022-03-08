@@ -719,16 +719,14 @@ namespace v2rayN
         {
             if (enableSecurityProtocolTls13)
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
-                                           | SecurityProtocolType.Tls
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                            | SecurityProtocolType.Tls11
                                            | SecurityProtocolType.Tls12
                                            | SecurityProtocolType.Tls13;
             }
             else
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
-                                           | SecurityProtocolType.Tls
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                            | SecurityProtocolType.Tls11
                                            | SecurityProtocolType.Tls12;
             }

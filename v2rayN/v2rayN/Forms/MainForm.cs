@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -463,7 +464,7 @@ namespace v2rayN.Forms
         /// <summary>
         /// 载入V2ray
         /// </summary>
-        private void LoadV2ray()
+        async Task LoadV2ray()
         {
             tsbReload.Enabled = false;
 
@@ -471,7 +472,11 @@ namespace v2rayN.Forms
             {
                 ClearMsg();
             }
-            v2rayHandler.LoadV2ray(config);
+            await Task.Run(() =>
+            {
+                v2rayHandler.LoadV2ray(config);
+            });
+
             Global.reloadV2ray = false;
             ConfigHandler.SaveConfig(ref config, false);
             statistics?.SaveToFile();
