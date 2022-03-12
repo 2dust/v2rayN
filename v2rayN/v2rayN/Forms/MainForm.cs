@@ -214,6 +214,7 @@ namespace v2rayN.Forms
             lvServers.View = View.Details;
             lvServers.Scrollable = true;
             lvServers.MultiSelect = true;
+            lvServers.AllowDrop = true;
             lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             lvServers.Columns.Add("", 30);
@@ -310,6 +311,26 @@ namespace v2rayN.Forms
             {
                 lvServers.Items[index].Selected = true;
                 lvServers.EnsureVisible(index); // workaround
+            }
+        }
+
+        /// <summary>
+        /// 填充 ListView 背景颜色
+        /// </summary>
+        /// <param name="listView"></param>
+        private void RefillListViewBackColor(ListView listView)
+        {
+            for (int i = 0; i < listView.Items.Count; i++)
+            {
+                ListViewItem currentItem = lvServers.Items[i];
+                if (i % 2 == 1) // 隔行着色
+                {
+                    currentItem.BackColor = Color.WhiteSmoke;
+                }
+                else
+                {
+                    currentItem.BackColor = default;
+                }
             }
         }
 
@@ -1584,6 +1605,96 @@ namespace v2rayN.Forms
                 MsgFilter = fm.MsgFilter;
                 gbMsgTitle.Text = string.Format(UIRes.I18N("MsgInformationTitle"), MsgFilter);
             }
+        }
+        #endregion
+
+        #region 拖动排序
+        private void lvServers_DragDrop(object sender, DragEventArgs e)
+        {
+            int targetIndex = lvServers.InsertionMark.Index;
+            if (targetIndex == -1)
+            {
+                return;
+            }
+            if (lvServers.InsertionMark.AppearsAfterItem)
+            {
+                targetIndex++;
+            }
+            string activeIndexId = config.indexId();
+
+            lvServers.BeginUpdate();
+            foreach (ListViewItem oldItem in lvServers.SelectedItems)
+            {
+                if (targetIndex == oldItem.Index)
+                {
+                    targetIndex++;
+                    continue;
+                }
+                VmessItem oldVmess = config.vmess[oldItem.Index];
+
+                ListViewItem cloneItem = (ListViewItem)oldItem.Clone();
+                VmessItem cloneVmess = Utils.DeepCopy(oldVmess);
+
+                lvServers.Items.Insert(targetIndex, cloneItem);
+                config.vmess.Insert(targetIndex, cloneVmess);
+
+                cloneItem.Selected = true;
+                if (oldItem.Focused)
+                {
+                    cloneItem.Focused = true;
+                }
+
+                lvServers.Items.Remove(oldItem);
+                config.vmess.Remove(oldVmess);
+
+                targetIndex = lvServers.Items.IndexOf(cloneItem) + 1;
+            }
+
+            RefillListViewBackColor(lvServers);
+            lvServers.EndUpdate();
+
+            config.index = config.FindIndexId(activeIndexId);
+            ConfigHandler.SaveConfig(ref config, false);
+
+            RefreshServersMenu();
+        }
+
+        private void lvServers_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
+        private void lvServers_DragLeave(object sender, EventArgs e)
+        {
+            lvServers.InsertionMark.Index = -1;
+        }
+
+        private void lvServers_DragOver(object sender, DragEventArgs e)
+        {
+            Point targetPoint = lvServers.PointToClient(new Point(e.X, e.Y));
+            int targetIndex = lvServers.InsertionMark.NearestIndex(targetPoint);
+
+
+            if (targetIndex > -1)
+            {
+                Rectangle itemBounds = lvServers.GetItemRect(targetIndex);
+                lvServers.EnsureVisible(targetIndex);
+
+                if (targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2))
+                {
+                    lvServers.InsertionMark.AppearsAfterItem = true;
+                }
+                else
+                {
+                    lvServers.InsertionMark.AppearsAfterItem = false;
+                }
+            }
+            lvServers.InsertionMark.Index = targetIndex;
+        }
+
+        private void lvServers_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            lvServers.DoDragDrop(e.Item, DragDropEffects.Move);
         }
         #endregion
 

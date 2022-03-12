@@ -185,8 +185,13 @@
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
             this.lvServers.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvServers_ColumnClick);
+            this.lvServers.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvServers_ItemDrag);
             this.lvServers.SelectedIndexChanged += new System.EventHandler(this.lvServers_SelectedIndexChanged);
             this.lvServers.Click += new System.EventHandler(this.lvServers_Click);
+            this.lvServers.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvServers_DragDrop);
+            this.lvServers.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvServers_DragEnter);
+            this.lvServers.DragOver += new System.Windows.Forms.DragEventHandler(this.lvServers_DragOver);
+            this.lvServers.DragLeave += new System.EventHandler(this.lvServers_DragLeave);
             this.lvServers.DoubleClick += new System.EventHandler(this.lvServers_DoubleClick);
             this.lvServers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvServers_KeyDown);
             // 
@@ -959,7 +964,7 @@
 
         }
 
-#endregion
+        #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox gbMsgTitle;
