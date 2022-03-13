@@ -141,7 +141,8 @@ namespace v2rayN.Handler
                             int responseTime = -1;
                             string status = GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
-                   
+
+                            _config.GetVmessItem(it.indexId)?.SetTestResult(output);
                             _updateFunc(it.indexId, output);
                         }
                         catch (Exception ex)
@@ -210,6 +211,7 @@ namespace v2rayN.Handler
             DownloadHandle downloadHandle2 = new DownloadHandle();
             downloadHandle2.UpdateCompleted += (sender2, args) =>
             {
+                _config.GetVmessItem(testIndexId)?.SetTestResult(args.Msg);
                 _updateFunc(testIndexId, args.Msg);
             };
             downloadHandle2.Error += (sender2, args) =>

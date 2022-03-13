@@ -245,6 +245,15 @@ namespace v2rayN.Mode
             return vmess.FindIndex(it => it.indexId == id);
         }
 
+        public VmessItem GetVmessItem(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+            return vmess.FirstOrDefault(it => it.indexId == id);
+        }
+
         public List<string> GetShadowsocksSecuritys()
         {
             if (coreType == ECoreType.v2fly_core)
@@ -306,7 +315,7 @@ namespace v2rayN.Mode
         }
 
         #region function
-        public string getSummary()
+        public string GetSummary()
         {
             string summary = string.Format("[{0}] ", ((EConfigType)configType).ToString());
             string[] arrAddr = address.Split('.');
@@ -356,7 +365,7 @@ namespace v2rayN.Mode
             }
             return summary;
         }
-        public string getSubRemarks(Config config)
+        public string GetSubRemarks(Config config)
         {
             string subRemarks = string.Empty;
             if (Utils.IsNullOrEmpty(subid))
@@ -377,7 +386,7 @@ namespace v2rayN.Mode
             return subid.Substring(0, 4);
         }
 
-        public List<string> getAlpn()
+        public List<string> GetAlpn()
         {
             if (alpn != null && alpn.Count > 0)
             {
@@ -388,13 +397,18 @@ namespace v2rayN.Mode
                 return null;
             }
         }
-        public string getNetwork()
+        public string GetNetwork()
         {
             if (Utils.IsNullOrEmpty(network) || !Global.networks.Contains(network))
             {
                 return Global.DefaultNetwork;
             }
             return network.TrimEx();
+        }
+
+        public void SetTestResult(string value)
+        {
+            testResult = value;
         }
         #endregion
 

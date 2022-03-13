@@ -288,7 +288,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, EServerColName.security.ToString(), item.security);
                 Utils.AddSubItem(lvItem, EServerColName.network.ToString(), item.network);
                 Utils.AddSubItem(lvItem, EServerColName.streamSecurity.ToString(), item.streamSecurity);
-                Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.getSubRemarks(config));
+                Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.GetSubRemarks(config));
                 Utils.AddSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
                 if (stats)
                 {
@@ -336,7 +336,7 @@ namespace v2rayN.Forms
                 for (int k = 0; k < lstVmess.Count; k++)
                 {
                     VmessItem item = lstVmess[k];
-                    string name = item.getSummary();
+                    string name = item.GetSummary();
 
                     if (config.IsActiveNode(item))
                     {
@@ -355,7 +355,7 @@ namespace v2rayN.Forms
                 for (int k = 0; k < lstVmess.Count; k++)
                 {
                     VmessItem item = lstVmess[k];
-                    string name = item.getSummary();
+                    string name = item.GetSummary();
 
                     ToolStripMenuItem ts = new ToolStripMenuItem(name)
                     {

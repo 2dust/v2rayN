@@ -80,7 +80,7 @@ namespace v2rayN.Handler
 
                 Utils.ToJsonFile(v2rayConfig, fileName, false);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{config.GetGroupRemarks(node.groupId)}] {node.getSummary()}");
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
             catch
             {
@@ -584,7 +584,7 @@ namespace v2rayN.Handler
             {
                 var config = LazyConfig.Instance.GetConfig();
                 //远程服务器底层传输配置
-                streamSettings.network = node.getNetwork();
+                streamSettings.network = node.GetNetwork();
                 string host = node.requestHost.TrimEx();
                 string sni = node.sni;
 
@@ -596,7 +596,7 @@ namespace v2rayN.Handler
                     TlsSettings tlsSettings = new TlsSettings
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure),
-                        alpn = node.getAlpn()
+                        alpn = node.GetAlpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -617,7 +617,7 @@ namespace v2rayN.Handler
                     TlsSettings xtlsSettings = new TlsSettings
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure),
-                        alpn = node.getAlpn()
+                        alpn = node.GetAlpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -631,7 +631,7 @@ namespace v2rayN.Handler
                 }
 
                 //streamSettings
-                switch (node.getNetwork())
+                switch (node.GetNetwork())
                 {
                     //kcp基本配置暂时是默认值，用户能自己设置伪装类型
                     case "kcp":
@@ -921,7 +921,7 @@ namespace v2rayN.Handler
                 }
                 File.Copy(addressFileName, fileName);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.getSummary()}");
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
             catch
             {
@@ -984,7 +984,7 @@ namespace v2rayN.Handler
 
                 Utils.ToJsonFile(v2rayConfig, fileName, false);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), node.getSummary());
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), node.GetSummary());
             }
             catch
             {
@@ -1471,9 +1471,8 @@ namespace v2rayN.Handler
                     inbound.tag = Global.InboundHttp + inbound.port.ToString();
                     v2rayConfig.inbounds.Add(inbound);
 
-                    var index = configCopy.FindIndexId(it.indexId);
                     V2rayConfig v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
-                    outbound(configCopy.vmess[index], ref v2rayConfigCopy);
+                    outbound(configCopy.GetVmessItem(it.indexId), ref v2rayConfigCopy);
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
