@@ -64,9 +64,9 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.tabGroup = new System.Windows.Forms.TabControl();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.gbMsgTitle = new System.Windows.Forms.GroupBox();
@@ -101,7 +101,6 @@
             this.menuUpdateSubViaProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.bgwScan = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -227,7 +226,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -412,13 +410,6 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
-            // tsbServer
-            // 
-            this.tsbServer.DropDown = this.cmsLv;
-            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
-            resources.ApplyResources(this.tsbServer, "tsbServer");
-            this.tsbServer.Name = "tsbServer";
-            // 
             // tabGroup
             // 
             resources.ApplyResources(this.tabGroup, "tabGroup");
@@ -430,6 +421,13 @@
             // 
             resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
             this.qrCodeControl.Name = "qrCodeControl";
+            // 
+            // tsbServer
+            // 
+            this.tsbServer.DropDown = this.cmsLv;
+            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
+            resources.ApplyResources(this.tsbServer, "tsbServer");
+            this.tsbServer.Name = "tsbServer";
             // 
             // splitContainer1
             // 
@@ -676,12 +674,6 @@
             this.menuExit.Name = "menuExit";
             resources.ApplyResources(this.menuExit, "menuExit");
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
-            // 
-            // bgwScan
-            // 
-            this.bgwScan.WorkerReportsProgress = true;
-            this.bgwScan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwScan_DoWork);
-            this.bgwScan.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwScan_ProgressChanged);
             // 
             // panel1
             // 
@@ -1027,7 +1019,6 @@
         private System.Windows.Forms.ToolStripDropDownButton tsbHelp;
         private System.Windows.Forms.ToolStripMenuItem tsbAbout;
         private System.Windows.Forms.ToolStripMenuItem menuAddServers2;
-        private System.ComponentModel.BackgroundWorker bgwScan;
         private System.Windows.Forms.ToolStripMenuItem menuScanScreen;
         private System.Windows.Forms.ToolStripMenuItem menuScanScreen2;
         private System.Windows.Forms.ToolStripDropDownButton tsbSub;

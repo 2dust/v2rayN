@@ -1009,8 +1009,33 @@ namespace v2rayN.Forms
 
         private void menuScanScreen_Click(object sender, EventArgs e)
         {
+            _ = ScanScreenTaskAsync();
+        }
+
+        public async Task ScanScreenTaskAsync()
+        {
             HideForm();
-            bgwScan.RunWorkerAsync();
+
+            string result = await Task.Run(() =>
+            {
+                return Utils.ScanScreen();
+            });
+
+            ShowForm();
+
+            if (Utils.IsNullOrEmpty(result))
+            {
+                UI.ShowWarning(UIRes.I18N("NoValidQRcodeFound"));
+            }
+            else
+            {
+                int ret = MainFormHandler.Instance.AddBatchServers(config, result, "", groupId);
+                if (ret > 0)
+                {
+                    RefreshServers();
+                    UI.Show(UIRes.I18N("SuccessfullyImportedServerViaScan"));
+                }
+            }
         }
 
         private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
@@ -1420,37 +1445,6 @@ namespace v2rayN.Forms
         {
             Process.Start($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
-        #endregion
-
-        #region ScanScreen
-
-
-        private void bgwScan_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            string ret = Utils.ScanScreen();
-            bgwScan.ReportProgress(0, ret);
-        }
-
-        private void bgwScan_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-            ShowForm();
-
-            string result = Convert.ToString(e.UserState);
-            if (Utils.IsNullOrEmpty(result))
-            {
-                UI.ShowWarning(UIRes.I18N("NoValidQRcodeFound"));
-            }
-            else
-            {
-                int ret = MainFormHandler.Instance.AddBatchServers(config, result, "", groupId);
-                if (ret > 0)
-                {
-                    RefreshServers();
-                    UI.Show(UIRes.I18N("SuccessfullyImportedServerViaScan"));
-                }
-            }
-        }
-
         #endregion
 
         #region 订阅

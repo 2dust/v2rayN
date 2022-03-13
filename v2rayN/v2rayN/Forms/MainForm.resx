@@ -302,18 +302,6 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
   </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 622</value>
   </data>
@@ -464,6 +452,18 @@
   <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
   <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -510,7 +510,7 @@
     <value>0</value>
   </data>
   <metadata name="cmsMsgBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>603, 17</value>
+    <value>493, 20</value>
   </metadata>
   <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>227, 22</value>
@@ -549,7 +549,7 @@
     <value>Set message filters</value>
   </data>
   <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 136</value>
+    <value>228, 158</value>
   </data>
   <data name="&gt;&gt;cmsMsgBox.Name" xml:space="preserve">
     <value>cmsMsgBox</value>
@@ -824,9 +824,6 @@
   <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <metadata name="bgwScan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>498, 17</value>
-  </metadata>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -1477,12 +1474,6 @@
   </data>
   <data name="&gt;&gt;menuExit.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bgwScan.Name" xml:space="preserve">
-    <value>bgwScan</value>
-  </data>
-  <data name="&gt;&gt;bgwScan.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
     <value>toolStripSeparator4</value>
