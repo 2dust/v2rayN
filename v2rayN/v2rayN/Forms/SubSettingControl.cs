@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace v2rayN.Forms
 {
@@ -10,7 +12,7 @@ namespace v2rayN.Forms
     public partial class SubSettingControl : UserControl
     {
         public event ChangeEventHandler OnButtonClicked;
-
+        private List<GroupItem> groupItem;
 
         public SubItem subItem
         {
@@ -25,6 +27,12 @@ namespace v2rayN.Forms
         private void SubSettingControl_Load(object sender, EventArgs e)
         {
             this.Height = grbMain.Height;
+
+            groupItem = LazyConfig.Instance.GetConfig().groupItem;
+
+            cmbGroup.Items.AddRange(groupItem.Select(t => t.remarks).ToArray());
+            cmbGroup.Items.Add(string.Empty);
+
             BindingSub();
         }
 
@@ -36,6 +44,12 @@ namespace v2rayN.Forms
                 txtUrl.Text = subItem.url.ToString();
                 chkEnabled.Checked = subItem.enabled;
                 txtUserAgent.Text = subItem.userAgent;
+
+                var index = groupItem.FindIndex(t => t.id == subItem.groupId);
+                if (index >= 0)
+                {
+                    cmbGroup.SelectedIndex = index;
+                }
             }
         }
         private void EndBindingSub()
@@ -46,6 +60,12 @@ namespace v2rayN.Forms
                 subItem.url = txtUrl.Text.TrimEx();
                 subItem.enabled = chkEnabled.Checked;
                 subItem.userAgent = txtUserAgent.Text.TrimEx();
+
+                var index = groupItem.FindIndex(t => t.remarks == cmbGroup.Text);
+                if (index >= 0)
+                {
+                    subItem.groupId = groupItem[index].id;
+                }
             }
         }
         private void txtRemarks_Leave(object sender, EventArgs e)

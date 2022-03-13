@@ -1041,5 +1041,14 @@ namespace v2rayN.Resx {
                 return ResourceManager.GetString("TransportRequestHostTip4", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Ungrouped 的本地化字符串。
+        /// </summary>
+        internal static string UngroupedServers {
+            get {
+                return ResourceManager.GetString("UngroupedServers", resourceCulture);
+            }
+        }
     }
 }

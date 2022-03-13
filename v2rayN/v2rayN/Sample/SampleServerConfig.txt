@@ -18,7 +18,7 @@
 			"network": "tcp"
 		}
 	}],
-	"outbound": [{
+	"outbounds": [{
 		"protocol": "freedom",
 		"settings": {}
 	}, {

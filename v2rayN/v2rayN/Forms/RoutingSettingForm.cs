@@ -304,6 +304,14 @@ namespace v2rayN.Forms
             UI.Show(UIRes.I18N("OperationSuccess"));
         }
 
+        private void menuImportAdvancedRules_Click(object sender, EventArgs e)
+        {
+            if (ConfigHandler.InitBuiltinRouting(ref config, true) == 0)
+            {
+                RefreshRoutingsView();
+            }
+        }
+
         #endregion
 
     }

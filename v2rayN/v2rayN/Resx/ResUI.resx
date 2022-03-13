@@ -445,4 +445,7 @@
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>Global hotkey {0} registered successfully</value>
   </data>
+  <data name="UngroupedServers" xml:space="preserve">
+    <value>Ungrouped</value>
+  </data>
 </root>

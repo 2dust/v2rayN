@@ -284,6 +284,18 @@ namespace v2rayN
                 return 0;
             }
         }
+        public static bool ToBool(object obj)
+        {
+            try
+            {
+                return Convert.ToBoolean(obj);
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
+                return false;
+            }
+        }
 
         public static string ToString(object obj)
         {

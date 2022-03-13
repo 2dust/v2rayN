@@ -5,10 +5,6 @@ namespace v2rayN.Mode
     [Serializable]
     class ServerTestItem
     {
-        public int selected
-        {
-            get; set;
-        }
         public string indexId
         {
             get; set;
