@@ -100,7 +100,7 @@ namespace v2rayN.Forms
             GroupItem groupItem = new GroupItem
             {
                 id = string.Empty,
-                remarks = "remarks"
+                remarks = "Group"
             };
             config.groupItem.Add(groupItem);
         }
