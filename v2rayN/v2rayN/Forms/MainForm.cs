@@ -282,6 +282,7 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
+                lvItem.Tag = item.indexId;
                 Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
                 Utils.AddSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 Utils.AddSubItem(lvItem, EServerColName.address.ToString(), item.address);
@@ -1678,43 +1679,57 @@ namespace v2rayN.Forms
             {
                 targetIndex++;
             }
-            string activeIndexId = config.indexId();
+            string activeIndexId = ConfigHandler.GetDefaultServer(ref config).indexId;
 
             lvServers.BeginUpdate();
-            foreach (ListViewItem oldItem in lvServers.SelectedItems)
+            foreach (ListViewItem listItem in lvServers.SelectedItems)
             {
-                if (targetIndex == oldItem.Index)
+                if (targetIndex == listItem.Index)
                 {
                     targetIndex++;
                     continue;
                 }
-                VmessItem oldVmess = config.vmess[oldItem.Index];
 
-                ListViewItem cloneItem = (ListViewItem)oldItem.Clone();
-                VmessItem cloneVmess = Utils.DeepCopy(oldVmess);
+                int origIndex = listItem.Index;
+                bool isFocued = listItem.Focused;
 
-                lvServers.Items.Insert(targetIndex, cloneItem);
-                config.vmess.Insert(targetIndex, cloneVmess);
-
-                cloneItem.Selected = true;
-                if (oldItem.Focused)
+                // 向下移动，删除自身后，targetIndex-1;
+                if (origIndex < targetIndex)
                 {
-                    cloneItem.Focused = true;
+                    targetIndex--;
                 }
 
-                lvServers.Items.Remove(oldItem);
-                config.vmess.Remove(oldVmess);
 
-                targetIndex = lvServers.Items.IndexOf(cloneItem) + 1;
+                listItem.Remove();
+                lvServers.Items.Insert(targetIndex, listItem);
+
+                if (isFocued)
+                {
+                    listItem.Focused = true;
+                }
+
+
+                targetIndex++;
             }
 
             RefillListViewBackColor(lvServers);
             lvServers.EndUpdate();
 
-            config.index = config.FindIndexId(activeIndexId);
+            for (int i = 0; i < lvServers.Items.Count; i++)
+            {
+                ListViewItem listItem = lvServers.Items[i];
+                config.GetVmessItem((string)listItem.Tag).sort = i;
+            }
+
             ConfigHandler.SaveConfig(ref config, false);
 
+
+            lstVmess = config.vmess.Where(it => it.groupId == groupId).OrderBy(it => it.sort).ToList();
+            //RefreshServersView();
             RefreshServersMenu();
+
+            //RefreshServers();
+
         }
 
         private void lvServers_DragEnter(object sender, DragEventArgs e)
