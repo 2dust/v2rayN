@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SubSettingControl));
             this.grbMain = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbGroup = new System.Windows.Forms.ComboBox();
             this.txtUserAgent = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnShare = new System.Windows.Forms.Button();
@@ -47,6 +49,8 @@
             // grbMain
             // 
             resources.ApplyResources(this.grbMain, "grbMain");
+            this.grbMain.Controls.Add(this.label4);
+            this.grbMain.Controls.Add(this.cmbGroup);
             this.grbMain.Controls.Add(this.txtUserAgent);
             this.grbMain.Controls.Add(this.label1);
             this.grbMain.Controls.Add(this.btnShare);
@@ -58,6 +62,19 @@
             this.grbMain.Controls.Add(this.label3);
             this.grbMain.Name = "grbMain";
             this.grbMain.TabStop = false;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // cmbGroup
+            // 
+            resources.ApplyResources(this.cmbGroup, "cmbGroup");
+            this.cmbGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGroup.FormattingEnabled = true;
+            this.cmbGroup.Name = "cmbGroup";
+            this.cmbGroup.Leave += new System.EventHandler(this.txtRemarks_Leave);
             // 
             // txtUserAgent
             // 
@@ -147,5 +164,7 @@
         private System.Windows.Forms.PictureBox picQRCode;
         private System.Windows.Forms.TextBox txtUserAgent;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cmbGroup;
     }
 }

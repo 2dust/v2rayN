@@ -6,7 +6,7 @@ using v2rayN.Mode;
 namespace v2rayN.Forms
 {
     public partial class AddServer3Form : BaseServerForm
-    { 
+    {
 
         public AddServer3Form()
         {
@@ -16,14 +16,14 @@ namespace v2rayN.Forms
         private void AddServer3Form_Load(object sender, EventArgs e)
         {
             cmbSecurity.Items.AddRange(config.GetShadowsocksSecuritys().ToArray());
-            if (EditIndex >= 0)
+            if (vmessItem != null)
             {
-                vmessItem = config.vmess[EditIndex];
                 BindingServer();
             }
             else
             {
                 vmessItem = new VmessItem();
+                vmessItem.groupId = groupId;
                 ClearServer();
             }
         }
@@ -89,7 +89,7 @@ namespace v2rayN.Forms
             vmessItem.security = security;
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.AddShadowsocksServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddShadowsocksServer(ref config, vmessItem) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -101,7 +101,7 @@ namespace v2rayN.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-        }       
+        }
 
     }
 }

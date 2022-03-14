@@ -180,6 +180,7 @@ namespace v2rayN.Handler
                 string id = config.subItem[k - 1].id.Trim();
                 string url = config.subItem[k - 1].url.Trim();
                 string userAgent = config.subItem[k - 1].userAgent.Trim();
+                string groupId = config.subItem[k - 1].groupId.Trim();
                 string hashCode = $"{k}->";
                 if (config.subItem[k - 1].enabled == false)
                 {
@@ -207,7 +208,7 @@ namespace v2rayN.Handler
                         //ConfigHandler.RemoveServerViaSubid(ref config, id);
                         //_updateFunc(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
                         //  RefreshServers();
-                        int ret = MainFormHandler.Instance.AddBatchServers(config, result, id);
+                        int ret = MainFormHandler.Instance.AddBatchServers(config, result, id, groupId);
                         if (ret > 0)
                         {
                             // RefreshServers();

@@ -77,15 +77,14 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Export2ClientConfig(int index, Config config)
+        public void Export2ClientConfig(VmessItem item, Config config)
         {
-            //int index = GetLvSelectedIndex();
-            if (index < 0)
+            if (item == null)
             {
                 return;
             }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess
-                && config.vmess[index].configType != (int)EConfigType.VLESS)
+            if (item.configType != (int)EConfigType.Vmess
+                && item.configType != (int)EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
@@ -106,9 +105,9 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            Config configCopy = Utils.DeepCopy(config);
-            configCopy.index = index;
-            if (V2rayConfigHandler.Export2ClientConfig(configCopy, fileName, out string msg) != 0)
+            //Config configCopy = Utils.DeepCopy(config);
+            //configCopy.index = index;
+            if (V2rayConfigHandler.Export2ClientConfig(item, fileName, out string msg) != 0)
             {
                 UI.Show(msg);
             }
@@ -118,15 +117,14 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Export2ServerConfig(int index, Config config)
+        public void Export2ServerConfig(VmessItem item, Config config)
         {
-            //int index = GetLvSelectedIndex();
-            if (index < 0)
+            if (item == null)
             {
                 return;
             }
-            if (config.vmess[index].configType != (int)EConfigType.Vmess
-                && config.vmess[index].configType != (int)EConfigType.VLESS)
+            if (item.configType != (int)EConfigType.Vmess
+                && item.configType != (int)EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
@@ -147,9 +145,9 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            Config configCopy = Utils.DeepCopy(config);
-            configCopy.index = index;
-            if (V2rayConfigHandler.Export2ServerConfig(configCopy, fileName, out string msg) != 0)
+            //Config configCopy = Utils.DeepCopy(config);
+            //configCopy.index = index;
+            if (V2rayConfigHandler.Export2ServerConfig(item, fileName, out string msg) != 0)
             {
                 UI.Show(msg);
             }
@@ -159,12 +157,12 @@ namespace v2rayN.Handler
             }
         }
 
-        public int AddBatchServers(Config config, string clipboardData, string subid = "")
+        public int AddBatchServers(Config config, string clipboardData, string subid, string groupId)
         {
             int counter;
             int _Add()
             {
-                return ConfigHandler.AddBatchServers(ref config, clipboardData, subid);
+                return ConfigHandler.AddBatchServers(ref config, clipboardData, subid, groupId);
             }
             counter = _Add();
             if (counter < 1)
@@ -227,12 +225,12 @@ namespace v2rayN.Handler
             var updateHandle = new UpdateHandle();
             while (true)
             {
-                Utils.SaveLog("UpdateTaskRun");
                 Thread.Sleep(60000);
                 if (config.autoUpdateInterval <= 0)
                 {
                     continue;
                 }
+                Utils.SaveLog("UpdateTaskRun");
 
                 updateHandle.UpdateGeoFile("geosite", config, (bool success, string msg) =>
                 {

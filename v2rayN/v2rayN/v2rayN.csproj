@@ -85,6 +85,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
@@ -154,6 +155,18 @@
     </Compile>
     <Compile Include="Forms\ServerTransportControl.Designer.cs">
       <DependentUpon>ServerTransportControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GroupSettingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\GroupSettingControl.Designer.cs">
+      <DependentUpon>GroupSettingControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GroupSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GroupSettingForm.Designer.cs">
+      <DependentUpon>GroupSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Handler\LazyConfig.cs" />
     <Compile Include="Handler\ShareHandler.cs" />
@@ -364,6 +377,14 @@
     <EmbeddedResource Include="Forms\ServerTransportControl.zh-Hans.resx">
       <DependentUpon>ServerTransportControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GroupSettingControl.resx">
+      <DependentUpon>GroupSettingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GroupSettingControl.zh-Hans.resx">
+      <DependentUpon>GroupSettingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingControl.resx">
       <DependentUpon>SubSettingControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -377,6 +398,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RoutingSettingForm.zh-Hans.resx">
       <DependentUpon>RoutingSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GroupSettingForm.resx">
+      <DependentUpon>GroupSettingForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GroupSettingForm.zh-Hans.resx">
+      <DependentUpon>GroupSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingForm.resx">
       <DependentUpon>SubSettingForm.cs</DependentUpon>

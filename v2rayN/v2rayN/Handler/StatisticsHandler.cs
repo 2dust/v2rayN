@@ -116,7 +116,7 @@ namespace v2rayN.Handler
 
                         if (res != null)
                         {
-                            string itemId = config_.getItemId();
+                            string itemId = config_.indexId;
                             ServerStatItem serverStatItem = GetServerStatItem(itemId);
 
                             //TODO: parse output

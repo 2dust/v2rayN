@@ -56,8 +56,9 @@ namespace v2rayN.Handler
 
             if (Global.reloadV2ray)
             {
+                var item = ConfigHandler.GetDefaultServer(ref config);
                 string fileName = Utils.GetPath(v2rayConfigRes);
-                if (V2rayConfigHandler.GenerateClientConfig(config, fileName, false, out string msg) != 0)
+                if (V2rayConfigHandler.GenerateClientConfig(item, fileName, false, out string msg) != 0)
                 {
                     ShowMsg(false, msg);
                 }

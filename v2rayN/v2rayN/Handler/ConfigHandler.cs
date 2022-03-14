@@ -45,16 +45,12 @@ namespace v2rayN.Handler
             {
                 config = new Config
                 {
-                    index = -1,
                     logEnabled = false,
                     loglevel = "warning",
                     vmess = new List<VmessItem>(),
 
                     //Mux
                     muxEnabled = false,
-
-                    ////默认监听端口
-                    //config.pacPort = 8888;
 
                     // 默认不开启统计
                     enableStatistics = false,
@@ -89,7 +85,6 @@ namespace v2rayN.Handler
             }
             else
             {
-                //http协议不由core提供,只保留socks
                 if (config.inbound.Count > 0)
                 {
                     config.inbound[0].protocol = Global.InboundSocks;
@@ -157,11 +152,14 @@ namespace v2rayN.Handler
             {
                 config.subItem = new List<SubItem>();
             }
+            if (config.groupItem == null)
+            {
+                config.groupItem = new List<GroupItem>();
+            }
+
 
             if (config == null
-                || config.index < 0
                 || config.vmess.Count <= 0
-                || config.index > config.vmess.Count - 1
                 )
             {
                 Global.reloadV2ray = false;
@@ -196,9 +194,8 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
+        public static int AddServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
             vmessItem.configType = (int)EConfigType.Vmess;
 
@@ -216,19 +213,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            if (index >= 0)
-            {
-                //修改
-                config.vmess[index] = vmessItem;
-                if (config.index.Equals(index))
-                {
-                    Global.reloadV2ray = true;
-                }
-            }
-            else
-            {
-                AddServerCommon(ref config, vmessItem);
-            }
+            AddServerCommon(ref config, vmessItem);
 
             if (toFile)
             {
@@ -241,24 +226,18 @@ namespace v2rayN.Handler
         /// 移除服务器
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="index"></param>
+        /// <param name="indexs"></param>
         /// <returns></returns>
-        public static int RemoveServer(ref Config config, List<int> indexs)
+        public static int RemoveServer(Config config, List<VmessItem> indexs)
         {
-            var indexId = config.indexId();
-
-            for (int k = indexs.Count - 1; k >= 0; k--)
+            foreach (var item in indexs)
             {
-                var index = indexs[k];
-                if (index < 0 || index > config.vmess.Count - 1)
+                var index = config.FindIndexId(item.indexId);
+                if (index >= 0)
                 {
-                    continue;
+                    config.vmess.RemoveAt(index);
                 }
-
-                config.vmess.RemoveAt(index);
             }
-
-            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
 
@@ -271,34 +250,33 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int CopyServer(ref Config config, int index)
+        public static int CopyServer(ref Config config, VmessItem item)
         {
-            if (index < 0 || index > config.vmess.Count - 1)
+            if (item == null)
             {
                 return -1;
             }
 
             VmessItem vmessItem = new VmessItem
             {
-                configVersion = config.vmess[index].configVersion,
-                address = config.vmess[index].address,
-                port = config.vmess[index].port,
-                id = config.vmess[index].id,
-                alterId = config.vmess[index].alterId,
-                security = config.vmess[index].security,
-                network = config.vmess[index].network,
-                remarks = string.Format("{0}-clone", config.vmess[index].remarks),
-                headerType = config.vmess[index].headerType,
-                requestHost = config.vmess[index].requestHost,
-                path = config.vmess[index].path,
-                streamSecurity = config.vmess[index].streamSecurity,
-                allowInsecure = config.vmess[index].allowInsecure,
-                configType = config.vmess[index].configType,
-                flow = config.vmess[index].flow,
-                sni = config.vmess[index].sni
+                configVersion = item.configVersion,
+                address = item.address,
+                port = item.port,
+                id = item.id,
+                alterId = item.alterId,
+                security = item.security,
+                network = item.network,
+                remarks = string.Format("{0}-clone", item.remarks),
+                headerType = item.headerType,
+                requestHost = item.requestHost,
+                path = item.path,
+                streamSecurity = item.streamSecurity,
+                allowInsecure = item.allowInsecure,
+                configType = item.configType,
+                flow = item.flow,
+                sni = item.sni
             };
 
-            //config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
             AddServerCommon(ref config, vmessItem);
 
             ToJsonFile(config);
@@ -310,26 +288,57 @@ namespace v2rayN.Handler
         /// 设置活动服务器
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="index"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        public static int SetDefaultServer(ref Config config, int index)
+        public static int SetDefaultServer(ref Config config, VmessItem item)
         {
-            if (index < 0 || index > config.vmess.Count - 1)
+            if (item == null)
             {
                 return -1;
             }
 
-            ////和现在相同
-            //if (config.index.Equals(index))
-            //{
-            //    return -1;
-            //}
-            config.index = index;
+            config.indexId = item.indexId;
             Global.reloadV2ray = true;
 
             ToJsonFile(config);
 
             return 0;
+        }
+
+        public static int SetDefaultServer(Config config, List<VmessItem> lstVmess)
+        {
+            if (lstVmess.Exists(t => t.indexId == config.indexId))
+            {
+                return 0;
+            }
+            if (config.vmess.Exists(t => t.indexId == config.indexId))
+            {
+                return 0;
+            }
+            if (lstVmess.Count > 0)
+            {
+                return SetDefaultServer(ref config, lstVmess[0]);
+            }
+            if (config.vmess.Count > 0)
+            {
+                return SetDefaultServer(ref config, config.vmess[0]);
+            }
+            return -1;
+        }
+        public static VmessItem GetDefaultServer(ref Config config)
+        {
+            if (config.vmess.Count <= 0)
+            {
+                return null;
+            }
+            var index = config.FindIndexId(config.indexId);
+            if (index < 0)
+            {
+                SetDefaultServer(ref config, config.vmess[0]);
+                return config.vmess[0];
+            }
+
+            return config.vmess[index];
         }
 
         /// <summary>
@@ -359,16 +368,23 @@ namespace v2rayN.Handler
         /// 移动服务器
         /// </summary>
         /// <param name="config"></param>
+        /// <param name="lstVmess"></param>
         /// <param name="index"></param>
         /// <param name="eMove"></param>
         /// <returns></returns>
-        public static int MoveServer(ref Config config, int index, EMove eMove)
+        public static int MoveServer(ref Config config, ref List<VmessItem> lstVmess, int index, EMove eMove)
         {
-            int count = config.vmess.Count;
-            if (index < 0 || index > config.vmess.Count - 1)
+            int count = lstVmess.Count;
+            if (index < 0 || index > lstVmess.Count - 1)
             {
                 return -1;
             }
+
+            for (int i = 0; i < lstVmess.Count; i++)
+            {
+                lstVmess[i].sort = (i + 1) * 10;
+            }
+
             switch (eMove)
             {
                 case EMove.Top:
@@ -377,21 +393,8 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
-                        config.vmess.RemoveAt(index);
-                        config.vmess.Insert(0, vmess);
-                        if (index < config.index)
-                        {
-                            //
-                        }
-                        else if (config.index == index)
-                        {
-                            config.index = 0;
-                        }
-                        else
-                        {
-                            config.index++;
-                        }
+                        lstVmess[index].sort = lstVmess[0].sort - 1;
+
                         break;
                     }
                 case EMove.Up:
@@ -400,17 +403,8 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
-                        config.vmess.RemoveAt(index);
-                        config.vmess.Insert(index - 1, vmess);
-                        if (index == config.index + 1)
-                        {
-                            config.index++;
-                        }
-                        else if (config.index == index)
-                        {
-                            config.index--;
-                        }
+                        lstVmess[index].sort = lstVmess[index - 1].sort - 1;
+
                         break;
                     }
 
@@ -420,17 +414,8 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
-                        config.vmess.RemoveAt(index);
-                        config.vmess.Insert(index + 1, vmess);
-                        if (index == config.index - 1)
-                        {
-                            config.index--;
-                        }
-                        else if (config.index == index)
-                        {
-                            config.index++;
-                        }
+                        lstVmess[index].sort = lstVmess[index + 1].sort + 1;
+
                         break;
                     }
                 case EMove.Bottom:
@@ -439,26 +424,11 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        VmessItem vmess = Utils.DeepCopy(config.vmess[index]);
-                        config.vmess.RemoveAt(index);
-                        config.vmess.Add(vmess);
-                        if (index < config.index)
-                        {
-                            config.index--;
-                        }
-                        else if (config.index == index)
-                        {
-                            config.index = count - 1;
-                        }
-                        else
-                        {
-                            //
-                        }
+                        lstVmess[index].sort = lstVmess[lstVmess.Count - 1].sort + 1;
+
                         break;
                     }
-
             }
-            Global.reloadV2ray = true;
 
             ToJsonFile(config);
 
@@ -471,7 +441,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static int AddCustomServer(ref Config config, string fileName)
+        public static int AddCustomServer(ref Config config, string fileName, string groupId)
         {
             string newFileName = string.Format("{0}.json", Utils.GetGUID());
             //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
@@ -487,17 +457,13 @@ namespace v2rayN.Handler
 
             VmessItem vmessItem = new VmessItem
             {
+                groupId = groupId,
                 address = newFileName,
                 configType = (int)EConfigType.Custom,
                 remarks = string.Format("import custom@{0}", DateTime.Now.ToShortDateString())
             };
 
-            config.vmess.Add(vmessItem);
-            if (config.vmess.Count == 1)
-            {
-                config.index = 0;
-                Global.reloadV2ray = true;
-            }
+            AddServerCommon(ref config, vmessItem);
 
             ToJsonFile(config);
 
@@ -509,17 +475,9 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int EditCustomServer(ref Config config, VmessItem vmessItem, int index)
+        public static int EditCustomServer(ref Config config, VmessItem vmessItem)
         {
-            //修改
-            config.vmess[index] = vmessItem;
-            if (config.index.Equals(index))
-            {
-                Global.reloadV2ray = true;
-            }
-
             ToJsonFile(config);
 
             return 0;
@@ -530,9 +488,8 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
+        public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
             vmessItem.configType = (int)EConfigType.Shadowsocks;
 
@@ -545,19 +502,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            if (index >= 0)
-            {
-                //修改
-                config.vmess[index] = vmessItem;
-                if (config.index.Equals(index))
-                {
-                    Global.reloadV2ray = true;
-                }
-            }
-            else
-            {
-                AddServerCommon(ref config, vmessItem);
-            }
+            AddServerCommon(ref config, vmessItem);
 
             if (toFile)
             {
@@ -572,27 +517,14 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddSocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
+        public static int AddSocksServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
             vmessItem.configType = (int)EConfigType.Socks;
 
             vmessItem.address = vmessItem.address.TrimEx();
 
-            if (index >= 0)
-            {
-                //修改
-                config.vmess[index] = vmessItem;
-                if (config.index.Equals(index))
-                {
-                    Global.reloadV2ray = true;
-                }
-            }
-            else
-            {
-                AddServerCommon(ref config, vmessItem);
-            }
+            AddServerCommon(ref config, vmessItem);
 
             if (toFile)
             {
@@ -608,9 +540,8 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddTrojanServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
+        public static int AddTrojanServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
             vmessItem.configType = (int)EConfigType.Trojan;
 
@@ -625,19 +556,7 @@ namespace v2rayN.Handler
                 vmessItem.allowInsecure = config.defAllowInsecure.ToString();
             }
 
-            if (index >= 0)
-            {
-                //修改
-                config.vmess[index] = vmessItem;
-                if (config.index.Equals(index))
-                {
-                    Global.reloadV2ray = true;
-                }
-            }
-            else
-            {
-                AddServerCommon(ref config, vmessItem);
-            }
+            AddServerCommon(ref config, vmessItem);
 
             if (toFile)
             {
@@ -719,14 +638,13 @@ namespace v2rayN.Handler
         /// <param name="clipboardData"></param>
         /// <param name="subid"></param>
         /// <returns>成功导入的数量</returns>
-        public static int AddBatchServers(ref Config config, string clipboardData, string subid = "")
+        public static int AddBatchServers(ref Config config, string clipboardData, string subid, string groupId)
         {
             if (Utils.IsNullOrEmpty(clipboardData))
             {
                 return -1;
             }
 
-            var indexId = config.indexId();
             //copy sub items
             List<VmessItem> lstOriSub = null;
             if (!Utils.IsNullOrEmpty(subid))
@@ -770,44 +688,45 @@ namespace v2rayN.Handler
                     vmessItem.subid = subid;
                 }
 
+                //groupId
+                vmessItem.groupId = groupId;
+
                 if (vmessItem.configType == (int)EConfigType.Vmess)
                 {
-                    if (AddServer(ref config, vmessItem, -1, false) == 0)
+                    if (AddServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
                 {
-                    if (AddShadowsocksServer(ref config, vmessItem, -1, false) == 0)
+                    if (AddShadowsocksServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Socks)
                 {
-                    if (AddSocksServer(ref config, vmessItem, -1, false) == 0)
+                    if (AddSocksServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.Trojan)
                 {
-                    if (AddTrojanServer(ref config, vmessItem, -1, false) == 0)
+                    if (AddTrojanServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (vmessItem.configType == (int)EConfigType.VLESS)
                 {
-                    if (AddVlessServer(ref config, vmessItem, -1, false) == 0)
+                    if (AddVlessServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
             }
-
-            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
             return countServers;
@@ -850,11 +769,11 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            foreach (SubItem sub in config.subItem)
+            foreach (SubItem item in config.subItem)
             {
-                if (Utils.IsNullOrEmpty(sub.id))
+                if (Utils.IsNullOrEmpty(item.id))
                 {
-                    sub.id = Utils.GetGUID(false);
+                    item.id = Utils.GetGUID(false);
                 }
             }
 
@@ -870,7 +789,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServerViaSubid(ref Config config, string subid)
         {
-            var indexId = config.indexId();
             if (Utils.IsNullOrEmpty(subid) || config.vmess.Count <= 0)
             {
                 return -1;
@@ -883,15 +801,13 @@ namespace v2rayN.Handler
                 }
             }
 
-            SetIndex(ref config, indexId);
-
             ToJsonFile(config);
             return 0;
         }
 
-        public static int SortServers(ref Config config, EServerColName name, bool asc)
+        public static int SortServers(ref Config config, ref List<VmessItem> lstVmess, EServerColName name, bool asc)
         {
-            if (config.vmess.Count <= 0)
+            if (lstVmess.Count <= 0)
             {
                 return -1;
             }
@@ -915,19 +831,20 @@ namespace v2rayN.Handler
                     return -1;
             }
 
-            var indexId = config.indexId();
-            var items = config.vmess.AsQueryable();
+            var items = lstVmess.AsQueryable();
 
             if (asc)
             {
-                config.vmess = items.OrderBy(propertyName).ToList();
+                lstVmess = items.OrderBy(propertyName).ToList();
             }
             else
             {
-                config.vmess = items.OrderByDescending(propertyName).ToList();
+                lstVmess = items.OrderByDescending(propertyName).ToList();
             }
-
-            SetIndex(ref config, indexId);
+            for (int i = 0; i < lstVmess.Count; i++)
+            {
+                lstVmess[i].sort = (i + 1) * 10;
+            }
 
             ToJsonFile(config);
             return 0;
@@ -938,9 +855,8 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <param name="vmessItem"></param>
-        /// <param name="index"></param>
         /// <returns></returns>
-        public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
+        public static int AddVlessServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
             vmessItem.configType = (int)EConfigType.VLESS;
 
@@ -953,19 +869,7 @@ namespace v2rayN.Handler
             vmessItem.path = vmessItem.path.TrimEx();
             vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
 
-            if (index >= 0)
-            {
-                //修改
-                config.vmess[index] = vmessItem;
-                if (config.index.Equals(index))
-                {
-                    Global.reloadV2ray = true;
-                }
-            }
-            else
-            {
-                AddServerCommon(ref config, vmessItem);
-            }
+            AddServerCommon(ref config, vmessItem);
 
             if (toFile)
             {
@@ -975,11 +879,9 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int DedupServerList(ref Config config)
+        public static int DedupServerList(ref Config config, ref List<VmessItem> lstVmess)
         {
-            var indexId = config.indexId();
-
-            List<VmessItem> source = config.vmess;
+            List<VmessItem> source = lstVmess;
             bool keepOlder = config.keepOlderDedupl;
 
             List<VmessItem> list = new List<VmessItem>();
@@ -991,21 +893,23 @@ namespace v2rayN.Handler
                 {
                     list.Add(item);
                 }
+                else
+                {
+                    var index = config.FindIndexId(item.indexId);
+                    if (index >= 0)
+                    {
+                        config.vmess.RemoveAt(index);
+                    }
+                }
             }
-            if (!keepOlder) list.Reverse();
-            config.vmess = list;
-
-            SetIndex(ref config, indexId);
+            //if (!keepOlder) list.Reverse();
+            //config.vmess = list;
 
             return 0;
         }
 
         public static int AddServerCommon(ref Config config, VmessItem vmessItem)
         {
-            if (Utils.IsNullOrEmpty(vmessItem.indexId))
-            {
-                vmessItem.indexId = Utils.GetGUID(false);
-            }
             vmessItem.configVersion = 2;
             if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
             {
@@ -1016,39 +920,23 @@ namespace v2rayN.Handler
                 vmessItem.network = Global.DefaultNetwork;
             }
 
-            config.vmess.Add(vmessItem);
-            if (config.vmess.Count == 1)
+            if (Utils.IsNullOrEmpty(vmessItem.indexId))
             {
-                config.index = 0;
-                Global.reloadV2ray = true;
+                vmessItem.indexId = Utils.GetGUID(false);
             }
-            return 0;
-        }
+            if (!config.vmess.Exists(it => it.indexId == vmessItem.indexId))
+            {
+                var maxSort = config.vmess.Max(t => t.sort);
+                vmessItem.sort = maxSort++;
 
-        public static int SetIndex(ref Config config, string indexId)
-        {
-            var index_ = config.FindIndexId(indexId);
+                config.vmess.Add(vmessItem);
+            }
 
-            if (config.index == index_)
-            {
-                return 0;
-            }
-            else if (index_ >= 0)
-            {
-                config.index = index_;
-            }
-            else
-            {
-                if (config.vmess.Count > 0)
-                {
-                    config.index = 0;
-                }
-                else
-                {
-                    config.index = -1;
-                }
-            }
-            Global.reloadV2ray = true;
+            //if (config.vmess.Count == 1)
+            //{
+            //    config.indexId = config.vmess[0].indexId;
+            //    Global.reloadV2ray = true;
+            //}
             return 0;
         }
 
@@ -1075,6 +963,55 @@ namespace v2rayN.Handler
                 && (remarks ? o.remarks == n.remarks : true);
         }
 
+        /// <summary>
+        /// save Group
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static int SaveGroupItem(ref Config config)
+        {
+            if (config.groupItem == null || config.groupItem.Count <= 0)
+            {
+                return -1;
+            }
+
+            foreach (GroupItem item in config.groupItem)
+            {
+                if (Utils.IsNullOrEmpty(item.id))
+                {
+                    item.id = Utils.GetGUID(false);
+                }
+            }
+
+            ToJsonFile(config);
+            return 0;
+        }
+
+        public static int RemoveGroupItem(ref Config config, string groupId)
+        {
+            if (Utils.IsNullOrEmpty(groupId) || config.vmess.Count <= 0)
+            {
+                return -1;
+            }
+
+            foreach (var item in config.vmess)
+            {
+                if (item.groupId.Equals(groupId))
+                {
+                    item.groupId = string.Empty;
+                }
+            }
+            foreach (var item in config.subItem)
+            {
+                if (item.groupId.Equals(groupId))
+                {
+                    item.groupId = string.Empty;
+                }
+            }
+
+            ToJsonFile(config);
+            return 0;
+        }
         #endregion
 
         #region UI
@@ -1290,14 +1227,14 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int InitBuiltinRouting(ref Config config)
+        public static int InitBuiltinRouting(ref Config config, bool blImportAdvancedRules = false)
         {
             if (config.routings == null)
             {
                 config.routings = new List<RoutingItem>();
             }
 
-            if (config.routings.Count(it => it.locked != true) <= 0)
+            if (blImportAdvancedRules || config.routings.Count(it => it.locked != true) <= 0)
             {
                 //Bypass the mainland
                 var item2 = new RoutingItem()
@@ -1326,7 +1263,10 @@ namespace v2rayN.Handler
                 AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
                 config.routings.Add(item1);
 
-                config.routingIndex = 0;
+                if (!blImportAdvancedRules)
+                {
+                    config.routingIndex = 0;
+                }
             }
 
             if (GetLockedRoutingItem(ref config) == null)

@@ -6,7 +6,7 @@ using v2rayN.Mode;
 namespace v2rayN.Forms
 {
     public partial class AddServer2Form : BaseServerForm
-    { 
+    {
 
         public AddServer2Form()
         {
@@ -15,7 +15,7 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
-            if (EditIndex >= 0)
+            if (vmessItem != null)
             {
                 BindingServer();
             }
@@ -30,7 +30,6 @@ namespace v2rayN.Forms
         /// </summary>
         private void BindingServer()
         {
-            vmessItem = config.vmess[EditIndex];
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
             txtAddress.ReadOnly = true;
@@ -55,7 +54,7 @@ namespace v2rayN.Forms
             }
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.EditCustomServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.EditCustomServer(ref config, vmessItem) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }

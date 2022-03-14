@@ -131,17 +131,20 @@
   <data name="picQRCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>619, 162</value>
   </data>
-  <data name="&gt;&gt;txtUserAgent.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="cmbGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 147</value>
   </data>
   <data name="chkEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 16</value>
   </data>
+  <data name="&gt;&gt;cmbGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;txtUrl.Name" xml:space="preserve">
     <value>txtUrl</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;cmbGroup.Parent" xml:space="preserve">
+    <value>grbMain</value>
   </data>
   <data name="&gt;&gt;picQRCode.Name" xml:space="preserve">
     <value>picQRCode</value>
@@ -177,6 +180,9 @@
   <data name="btnShare.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
   </data>
+  <data name="&gt;&gt;grbMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;txtRemarks.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -186,11 +192,17 @@
   <data name="&gt;&gt;txtRemarks.Parent" xml:space="preserve">
     <value>grbMain</value>
   </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
   <data name="btnShare.Location" type="System.Drawing.Point, System.Drawing">
     <value>434, 21</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 12</value>
+  </data>
+  <data name="&gt;&gt;cmbGroup.Name" xml:space="preserve">
+    <value>cmbGroup</value>
   </data>
   <data name="txtRemarks.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 21</value>
@@ -213,17 +225,20 @@
   <data name="btnShare.Text" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>grbMain</value>
   </data>
   <data name="&gt;&gt;chkEnabled.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 53</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="picQRCode.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -231,14 +246,17 @@
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
   </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txtUserAgent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>473, 21</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 12</value>
   </data>
-  <data name="picQRCode.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
   </data>
   <data name="txtUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 53</value>
@@ -250,13 +268,22 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txtUrl.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
-  <data name="picQRCode.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>Zoom</value>
+  <data name="&gt;&gt;chkEnabled.Parent" xml:space="preserve">
+    <value>grbMain</value>
+  </data>
+  <data name="cmbGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 20</value>
+  </data>
+  <data name="&gt;&gt;txtUserAgent.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="txtRemarks.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 12</value>
@@ -276,11 +303,20 @@
   <data name="&gt;&gt;chkEnabled.Name" xml:space="preserve">
     <value>chkEnabled</value>
   </data>
-  <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="picQRCode.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="btnRemove.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="picQRCode.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Belong to Group</value>
+  </data>
+  <data name="cmbGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
   </data>
   <data name="&gt;&gt;txtRemarks.Name" xml:space="preserve">
     <value>txtRemarks</value>
@@ -288,14 +324,11 @@
   <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 148</value>
-  </data>
   <data name="btnShare.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="&gt;&gt;btnRemove.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;btnShare.Parent" xml:space="preserve">
     <value>grbMain</value>
@@ -303,20 +336,26 @@
   <data name="chkEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
   </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;txtUserAgent.Parent" xml:space="preserve">
     <value>grbMain</value>
   </data>
-  <data name="grbMain.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="&gt;&gt;cmbGroup.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="txtUrl.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="grbMain.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>grbMain</value>
   </data>
-  <data name="txtUserAgent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 21</value>
+  <data name="&gt;&gt;btnRemove.Parent" xml:space="preserve">
+    <value>grbMain</value>
   </data>
   <data name="chkEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>368, 23</value>
@@ -333,9 +372,6 @@
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;btnRemove.Parent" xml:space="preserve">
-    <value>grbMain</value>
-  </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -351,20 +387,23 @@
   <data name="&gt;&gt;grbMain.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>grbMain</value>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="grbMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 148</value>
+    <value>619, 188</value>
   </data>
   <data name="&gt;&gt;btnShare.Name" xml:space="preserve">
     <value>btnShare</value>
   </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>619, 350</value>
+  </data>
   <data name="&gt;&gt;btnShare.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="chkEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -372,8 +411,8 @@
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 115</value>
   </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 310</value>
+  <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 188</value>
   </data>
   <data name="&gt;&gt;txtUserAgent.Name" xml:space="preserve">
     <value>txtUserAgent</value>
@@ -381,8 +420,8 @@
   <data name="label2.Text" xml:space="preserve">
     <value>Remarks</value>
   </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>grbMain</value>
   </data>
   <data name="picQRCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -396,7 +435,13 @@
   <data name="btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="&gt;&gt;chkEnabled.Parent" xml:space="preserve">
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 151</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
     <value>grbMain</value>
   </data>
   <data name="&gt;&gt;grbMain.ZOrder" xml:space="preserve">
@@ -411,6 +456,9 @@
   <data name="&gt;&gt;btnRemove.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -420,8 +468,8 @@
   <data name="&gt;&gt;grbMain.Name" xml:space="preserve">
     <value>grbMain</value>
   </data>
-  <data name="&gt;&gt;grbMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="btnRemove.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -431,6 +479,9 @@
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

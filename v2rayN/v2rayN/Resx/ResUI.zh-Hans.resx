@@ -445,4 +445,7 @@
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>注册全局热键 {0} 成功</value>
   </data>
+  <data name="UngroupedServers" xml:space="preserve">
+    <value>未分组服务器</value>
+  </data>
 </root>

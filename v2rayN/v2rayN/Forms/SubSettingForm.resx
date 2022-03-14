@@ -157,7 +157,7 @@
     <value>0, 0</value>
   </data>
   <data name="panCon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>614, 351</value>
+    <value>634, 401</value>
   </data>
   <data name="panCon.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -232,10 +232,10 @@
     <value>Bottom</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 351</value>
+    <value>0, 401</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>614, 60</value>
+    <value>634, 60</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -259,7 +259,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>614, 411</value>
+    <value>634, 461</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Subscription settings</value>

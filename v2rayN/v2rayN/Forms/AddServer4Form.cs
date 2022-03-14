@@ -6,7 +6,7 @@ using v2rayN.Mode;
 namespace v2rayN.Forms
 {
     public partial class AddServer4Form : BaseServerForm
-    { 
+    {
 
         public AddServer4Form()
         {
@@ -15,14 +15,14 @@ namespace v2rayN.Forms
 
         private void AddServer4Form_Load(object sender, EventArgs e)
         {
-            if (EditIndex >= 0)
+            if (vmessItem != null)
             {
-                vmessItem = config.vmess[EditIndex];
                 BindingServer();
             }
             else
             {
                 vmessItem = new VmessItem();
+                vmessItem.groupId = groupId;
                 ClearServer();
             }
         }
@@ -77,7 +77,7 @@ namespace v2rayN.Forms
             vmessItem.security = security;
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.AddSocksServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddSocksServer(ref config, vmessItem) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -90,7 +90,7 @@ namespace v2rayN.Forms
         {
             this.DialogResult = DialogResult.Cancel;
         }
-                 
+
 
     }
 }

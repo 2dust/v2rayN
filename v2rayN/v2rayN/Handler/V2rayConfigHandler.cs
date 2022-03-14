@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -21,29 +22,24 @@ namespace v2rayN.Handler
         /// <summary>
         /// 生成v2ray的客户端配置文件
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int GenerateClientConfig(Config config, string fileName, bool blExport, out string msg)
+        public static int GenerateClientConfig(VmessItem node, string fileName, bool blExport, out string msg)
         {
             try
             {
-                //检查GUI设置
-                if (config == null
-                    || config.index < 0
-                    || config.vmess.Count <= 0
-                    || config.index > config.vmess.Count - 1
-                    )
+                if (node == null)
                 {
                     msg = UIRes.I18N("CheckServerSettings");
                     return -1;
                 }
 
                 msg = UIRes.I18N("InitialConfiguration");
-                if (config.configType() == (int)EConfigType.Custom)
+                if (node.configType == (int)EConfigType.Custom)
                 {
-                    return GenerateClientCustomConfig(config, fileName, out msg);
+                    return GenerateClientCustomConfig(node, fileName, out msg);
                 }
 
                 //取得默认配置
@@ -62,6 +58,8 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
+                var config = LazyConfig.Instance.GetConfig();
+
                 //开始修改配置
                 log(config, ref v2rayConfig, blExport);
 
@@ -72,7 +70,7 @@ namespace v2rayN.Handler
                 routing(config, ref v2rayConfig);
 
                 //outbound
-                outbound(config, ref v2rayConfig);
+                outbound(node, ref v2rayConfig);
 
                 //dns
                 dns(config, ref v2rayConfig);
@@ -82,7 +80,7 @@ namespace v2rayN.Handler
 
                 Utils.ToJsonFile(v2rayConfig, fileName, false);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
             catch
             {
@@ -327,15 +325,16 @@ namespace v2rayN.Handler
         /// <summary>
         /// vmess协议服务器配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="v2rayConfig"></param>
         /// <returns></returns>
-        private static int outbound(Config config, ref V2rayConfig v2rayConfig)
+        private static int outbound(VmessItem node, ref V2rayConfig v2rayConfig)
         {
             try
             {
+                var config = LazyConfig.Instance.GetConfig();
                 Outbounds outbound = v2rayConfig.outbounds[0];
-                if (config.configType() == (int)EConfigType.Vmess)
+                if (node.configType == (int)EConfigType.Vmess)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -348,8 +347,8 @@ namespace v2rayN.Handler
                         vnextItem = outbound.settings.vnext[0];
                     }
                     //远程服务器地址和端口
-                    vnextItem.address = config.address();
-                    vnextItem.port = config.port();
+                    vnextItem.address = node.address;
+                    vnextItem.port = node.port;
 
                     UsersItem usersItem;
                     if (vnextItem.users.Count <= 0)
@@ -362,12 +361,12 @@ namespace v2rayN.Handler
                         usersItem = vnextItem.users[0];
                     }
                     //远程服务器用户ID
-                    usersItem.id = config.id();
-                    usersItem.alterId = config.alterId();
+                    usersItem.id = node.id;
+                    usersItem.alterId = node.alterId;
                     usersItem.email = Global.userEMail;
-                    if (Global.vmessSecuritys.Contains(config.security()))
+                    if (Global.vmessSecuritys.Contains(node.security))
                     {
-                        usersItem.security = config.security();
+                        usersItem.security = node.security;
                     }
                     else
                     {
@@ -380,12 +379,12 @@ namespace v2rayN.Handler
 
                     //远程服务器底层传输配置
                     StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(config, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", ref streamSettings);
 
                     outbound.protocol = Global.vmessProtocolLite;
                     outbound.settings.servers = null;
                 }
-                else if (config.configType() == (int)EConfigType.Shadowsocks)
+                else if (node.configType == (int)EConfigType.Shadowsocks)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -398,12 +397,12 @@ namespace v2rayN.Handler
                         serversItem = outbound.settings.servers[0];
                     }
                     //远程服务器地址和端口
-                    serversItem.address = config.address();
-                    serversItem.port = config.port();
-                    serversItem.password = config.id();
-                    if (config.GetShadowsocksSecuritys().Contains(config.security()))
+                    serversItem.address = node.address;
+                    serversItem.port = node.port;
+                    serversItem.password = node.id;
+                    if (config.GetShadowsocksSecuritys().Contains(node.security))
                     {
-                        serversItem.method = config.security();
+                        serversItem.method = node.security;
                     }
                     else
                     {
@@ -421,7 +420,7 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.ssProtocolLite;
                     outbound.settings.vnext = null;
                 }
-                else if (config.configType() == (int)EConfigType.Socks)
+                else if (node.configType == (int)EConfigType.Socks)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -434,18 +433,18 @@ namespace v2rayN.Handler
                         serversItem = outbound.settings.servers[0];
                     }
                     //远程服务器地址和端口
-                    serversItem.address = config.address();
-                    serversItem.port = config.port();
+                    serversItem.address = node.address;
+                    serversItem.port = node.port;
                     serversItem.method = null;
                     serversItem.password = null;
 
-                    if (!Utils.IsNullOrEmpty(config.security())
-                        && !Utils.IsNullOrEmpty(config.id()))
+                    if (!Utils.IsNullOrEmpty(node.security)
+                        && !Utils.IsNullOrEmpty(node.id))
                     {
                         SocksUsersItem socksUsersItem = new SocksUsersItem
                         {
-                            user = config.security(),
-                            pass = config.id(),
+                            user = node.security,
+                            pass = node.id,
                             level = 1
                         };
 
@@ -458,7 +457,7 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.socksProtocolLite;
                     outbound.settings.vnext = null;
                 }
-                else if (config.configType() == (int)EConfigType.VLESS)
+                else if (node.configType == (int)EConfigType.VLESS)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -471,8 +470,8 @@ namespace v2rayN.Handler
                         vnextItem = outbound.settings.vnext[0];
                     }
                     //远程服务器地址和端口
-                    vnextItem.address = config.address();
-                    vnextItem.port = config.port();
+                    vnextItem.address = node.address;
+                    vnextItem.port = node.port;
 
                     UsersItem usersItem;
                     if (vnextItem.users.Count <= 0)
@@ -485,10 +484,10 @@ namespace v2rayN.Handler
                         usersItem = vnextItem.users[0];
                     }
                     //远程服务器用户ID
-                    usersItem.id = config.id();
+                    usersItem.id = node.id;
                     usersItem.flow = string.Empty;
                     usersItem.email = Global.userEMail;
-                    usersItem.encryption = config.security();
+                    usersItem.encryption = node.security;
 
                     //Mux
                     outbound.mux.enabled = config.muxEnabled;
@@ -496,18 +495,18 @@ namespace v2rayN.Handler
 
                     //远程服务器底层传输配置
                     StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(config, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", ref streamSettings);
 
                     //if xtls
-                    if (config.streamSecurity() == Global.StreamSecurityX)
+                    if (node.streamSecurity == Global.StreamSecurityX)
                     {
-                        if (Utils.IsNullOrEmpty(config.flow()))
+                        if (Utils.IsNullOrEmpty(node.flow))
                         {
                             usersItem.flow = Global.xtlsFlows[1];
                         }
                         else
                         {
-                            usersItem.flow = config.flow().Replace("splice", "direct");
+                            usersItem.flow = node.flow.Replace("splice", "direct");
                         }
 
                         outbound.mux.enabled = false;
@@ -517,7 +516,7 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
                 }
-                else if (config.configType() == (int)EConfigType.Trojan)
+                else if (node.configType == (int)EConfigType.Trojan)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -530,24 +529,24 @@ namespace v2rayN.Handler
                         serversItem = outbound.settings.servers[0];
                     }
                     //远程服务器地址和端口
-                    serversItem.address = config.address();
-                    serversItem.port = config.port();
-                    serversItem.password = config.id();
+                    serversItem.address = node.address;
+                    serversItem.port = node.port;
+                    serversItem.password = node.id;
                     serversItem.flow = string.Empty;
 
                     serversItem.ota = false;
                     serversItem.level = 1;
 
                     //if xtls
-                    if (config.streamSecurity() == Global.StreamSecurityX)
+                    if (node.streamSecurity == Global.StreamSecurityX)
                     {
-                        if (Utils.IsNullOrEmpty(config.flow()))
+                        if (Utils.IsNullOrEmpty(node.flow))
                         {
                             serversItem.flow = Global.xtlsFlows[1];
                         }
                         else
                         {
-                            serversItem.flow = config.flow().Replace("splice", "direct");
+                            serversItem.flow = node.flow.Replace("splice", "direct");
                         }
 
                         outbound.mux.enabled = false;
@@ -560,7 +559,7 @@ namespace v2rayN.Handler
 
                     //远程服务器底层传输配置
                     StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(config, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", ref streamSettings);
 
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
@@ -575,28 +574,29 @@ namespace v2rayN.Handler
         /// <summary>
         /// vmess协议远程服务器底层传输配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="iobound"></param>
         /// <param name="streamSettings"></param>
         /// <returns></returns>
-        private static int boundStreamSettings(Config config, string iobound, ref StreamSettings streamSettings)
+        private static int boundStreamSettings(VmessItem node, string iobound, ref StreamSettings streamSettings)
         {
             try
             {
+                var config = LazyConfig.Instance.GetConfig();
                 //远程服务器底层传输配置
-                streamSettings.network = config.network();
-                string host = config.requestHost();
-                string sni = config.sni();
+                streamSettings.network = node.GetNetwork();
+                string host = node.requestHost.TrimEx();
+                string sni = node.sni;
 
                 //if tls
-                if (config.streamSecurity() == Global.StreamSecurity)
+                if (node.streamSecurity == Global.StreamSecurity)
                 {
-                    streamSettings.security = config.streamSecurity();
+                    streamSettings.security = node.streamSecurity;
 
                     TlsSettings tlsSettings = new TlsSettings
                     {
-                        allowInsecure = config.allowInsecure(),
-                        alpn = config.alpn()
+                        allowInsecure = Utils.ToBool(node.allowInsecure),
+                        alpn = node.GetAlpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -610,14 +610,14 @@ namespace v2rayN.Handler
                 }
 
                 //if xtls
-                if (config.streamSecurity() == Global.StreamSecurityX)
+                if (node.streamSecurity == Global.StreamSecurityX)
                 {
-                    streamSettings.security = config.streamSecurity();
+                    streamSettings.security = node.streamSecurity;
 
                     TlsSettings xtlsSettings = new TlsSettings
                     {
-                        allowInsecure = config.allowInsecure(),
-                        alpn = config.alpn()
+                        allowInsecure = Utils.ToBool(node.allowInsecure),
+                        alpn = node.GetAlpn()
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -631,7 +631,7 @@ namespace v2rayN.Handler
                 }
 
                 //streamSettings
-                switch (config.network())
+                switch (node.GetNetwork())
                 {
                     //kcp基本配置暂时是默认值，用户能自己设置伪装类型
                     case "kcp":
@@ -661,11 +661,11 @@ namespace v2rayN.Handler
                         kcpSettings.writeBufferSize = config.kcpItem.writeBufferSize;
                         kcpSettings.header = new Header
                         {
-                            type = config.headerType()
+                            type = node.headerType
                         };
-                        if (!Utils.IsNullOrEmpty(config.path()))
+                        if (!Utils.IsNullOrEmpty(node.path))
                         {
-                            kcpSettings.seed = config.path();
+                            kcpSettings.seed = node.path;
                         }
                         streamSettings.kcpSettings = kcpSettings;
                         break;
@@ -675,7 +675,7 @@ namespace v2rayN.Handler
                         {
                         };
 
-                        string path = config.path();
+                        string path = node.path;
                         if (!string.IsNullOrWhiteSpace(host))
                         {
                             wsSettings.headers = new Headers
@@ -705,7 +705,7 @@ namespace v2rayN.Handler
                         {
                             httpSettings.host = Utils.String2List(host);
                         }
-                        httpSettings.path = config.path();
+                        httpSettings.path = node.path;
 
                         streamSettings.httpSettings = httpSettings;
 
@@ -718,14 +718,14 @@ namespace v2rayN.Handler
                         QuicSettings quicsettings = new QuicSettings
                         {
                             security = host,
-                            key = config.path(),
+                            key = node.path,
                             header = new Header
                             {
-                                type = config.headerType()
+                                type = node.headerType
                             }
                         };
                         streamSettings.quicSettings = quicsettings;
-                        if (config.streamSecurity() == Global.StreamSecurity)
+                        if (node.streamSecurity == Global.StreamSecurity)
                         {
                             if (!string.IsNullOrWhiteSpace(sni))
                             {
@@ -733,26 +733,26 @@ namespace v2rayN.Handler
                             }
                             else
                             {
-                                streamSettings.tlsSettings.serverName = config.address();
+                                streamSettings.tlsSettings.serverName = node.address;
                             }
                         }
                         break;
                     case "grpc":
                         var grpcSettings = new GrpcSettings();
 
-                        grpcSettings.serviceName = config.path();
-                        grpcSettings.multiMode = (config.headerType() == Global.GrpcmultiMode ? true : false);
+                        grpcSettings.serviceName = node.path;
+                        grpcSettings.multiMode = (node.headerType == Global.GrpcmultiMode ? true : false);
                         streamSettings.grpcSettings = grpcSettings;
                         break;
                     default:
                         //tcp带http伪装
-                        if (config.headerType().Equals(Global.TcpHeaderHttp))
+                        if (node.headerType.Equals(Global.TcpHeaderHttp))
                         {
                             TcpSettings tcpSettings = new TcpSettings
                             {
                                 header = new Header
                                 {
-                                    type = config.headerType()
+                                    type = node.headerType
                                 }
                             };
 
@@ -767,9 +767,9 @@ namespace v2rayN.Handler
 
                                 //填入自定义Path
                                 string pathHttp = @"/";
-                                if (!Utils.IsNullOrEmpty(config.path()))
+                                if (!Utils.IsNullOrEmpty(node.path))
                                 {
-                                    string[] arrPath = config.path().Split(',');
+                                    string[] arrPath = node.path.Split(',');
                                     pathHttp = string.Join("\",\"", arrPath);
                                 }
                                 request = request.Replace("$requestPath$", string.Format("\"{0}\"", pathHttp));
@@ -837,7 +837,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int statistic(Config config, ref V2rayConfig v2rayConfig)
+        private static int statistic(Config config, ref V2rayConfig v2rayConfig)
         {
             if (config.enableStatistics)
             {
@@ -889,20 +889,16 @@ namespace v2rayN.Handler
         /// <summary>
         /// 生成v2ray的客户端配置文件(自定义配置)
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int GenerateClientCustomConfig(Config config, string fileName, out string msg)
+        private static int GenerateClientCustomConfig(VmessItem node, string fileName, out string msg)
         {
             try
             {
                 //检查GUI设置
-                if (config == null
-                    || config.index < 0
-                    || config.vmess.Count <= 0
-                    || config.index > config.vmess.Count - 1
-                    )
+                if (node == null)
                 {
                     msg = UIRes.I18N("CheckServerSettings");
                     return -1;
@@ -913,7 +909,7 @@ namespace v2rayN.Handler
                     File.Delete(fileName);
                 }
 
-                string addressFileName = config.address();
+                string addressFileName = node.address;
                 if (!File.Exists(addressFileName))
                 {
                     addressFileName = Path.Combine(Utils.GetTempPath(), addressFileName);
@@ -925,7 +921,7 @@ namespace v2rayN.Handler
                 }
                 File.Copy(addressFileName, fileName);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
             catch
             {
@@ -942,20 +938,16 @@ namespace v2rayN.Handler
         /// <summary>
         /// 生成v2ray的客户端配置文件
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int GenerateServerConfig(Config config, string fileName, out string msg)
+        public static int GenerateServerConfig(VmessItem node, string fileName, out string msg)
         {
             try
             {
                 //检查GUI设置
-                if (config == null
-                    || config.index < 0
-                    || config.vmess.Count <= 0
-                    || config.index > config.vmess.Count - 1
-                    )
+                if (node == null)
                 {
                     msg = UIRes.I18N("CheckServerSettings");
                     return -1;
@@ -979,18 +971,20 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
+                var config = LazyConfig.Instance.GetConfig();
+
                 ////开始修改配置
                 log(config, ref v2rayConfig, true);
 
                 //vmess协议服务器配置
-                ServerInbound(config, ref v2rayConfig);
+                ServerInbound(node, ref v2rayConfig);
 
                 //传出设置
                 ServerOutbound(config, ref v2rayConfig);
 
                 Utils.ToJsonFile(v2rayConfig, fileName, false);
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), config.getSummary());
+                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), node.GetSummary());
             }
             catch
             {
@@ -1003,10 +997,10 @@ namespace v2rayN.Handler
         /// <summary>
         /// vmess协议服务器配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="v2rayConfig"></param>
         /// <returns></returns>
-        private static int ServerInbound(Config config, ref V2rayConfig v2rayConfig)
+        private static int ServerInbound(VmessItem node, ref V2rayConfig v2rayConfig)
         {
             try
             {
@@ -1022,28 +1016,28 @@ namespace v2rayN.Handler
                     usersItem = inbound.settings.clients[0];
                 }
                 //远程服务器端口
-                inbound.port = config.port();
+                inbound.port = node.port;
 
                 //远程服务器用户ID
-                usersItem.id = config.id();
+                usersItem.id = node.id;
                 usersItem.email = Global.userEMail;
 
-                if (config.configType() == (int)EConfigType.Vmess)
+                if (node.configType == (int)EConfigType.Vmess)
                 {
                     inbound.protocol = Global.vmessProtocolLite;
-                    usersItem.alterId = config.alterId();
+                    usersItem.alterId = node.alterId;
 
                 }
-                else if (config.configType() == (int)EConfigType.VLESS)
+                else if (node.configType == (int)EConfigType.VLESS)
                 {
                     inbound.protocol = Global.vlessProtocolLite;
-                    usersItem.flow = config.flow();
-                    inbound.settings.decryption = config.security();
+                    usersItem.flow = node.flow;
+                    inbound.settings.decryption = node.security;
                 }
 
                 //远程服务器底层传输配置
                 StreamSettings streamSettings = inbound.streamSettings;
-                boundStreamSettings(config, "in", ref streamSettings);
+                boundStreamSettings(node, "in", ref streamSettings);
             }
             catch
             {
@@ -1054,7 +1048,7 @@ namespace v2rayN.Handler
         /// <summary>
         /// 传出设置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="v2rayConfig"></param>
         /// <returns></returns>
         private static int ServerOutbound(Config config, ref V2rayConfig v2rayConfig)
@@ -1368,25 +1362,25 @@ namespace v2rayN.Handler
         /// <summary>
         /// 导出为客户端配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int Export2ClientConfig(Config config, string fileName, out string msg)
+        public static int Export2ClientConfig(VmessItem node, string fileName, out string msg)
         {
-            return GenerateClientConfig(config, fileName, true, out msg);
+            return GenerateClientConfig(node, fileName, true, out msg);
         }
 
         /// <summary>
         /// 导出为服务端配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="node"></param>
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int Export2ServerConfig(Config config, string fileName, out string msg)
+        public static int Export2ServerConfig(VmessItem node, string fileName, out string msg)
         {
-            return GenerateServerConfig(config, fileName, out msg);
+            return GenerateServerConfig(node, fileName, out msg);
         }
 
         #endregion
@@ -1398,11 +1392,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (config == null
-                    || config.index < 0
-                    || config.vmess.Count <= 0
-                    || config.index > config.vmess.Count - 1
-                    )
+                if (config == null)
                 {
                     msg = UIRes.I18N("CheckServerSettings");
                     return "";
@@ -1470,7 +1460,6 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    configCopy.index = it.selected;
                     it.port = port;
 
                     Inbounds inbound = new Inbounds
@@ -1482,9 +1471,8 @@ namespace v2rayN.Handler
                     inbound.tag = Global.InboundHttp + inbound.port.ToString();
                     v2rayConfig.inbounds.Add(inbound);
 
-
                     V2rayConfig v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
-                    outbound(configCopy, ref v2rayConfigCopy);
+                    outbound(configCopy.GetVmessItem(it.indexId), ref v2rayConfigCopy);
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
@@ -1497,7 +1485,7 @@ namespace v2rayN.Handler
                     v2rayConfig.routing.rules.Add(rule);
                 }
 
-                msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), configCopy.getSummary());
+                //msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), node.getSummary());
                 return Utils.ToJson(v2rayConfig);
             }
             catch

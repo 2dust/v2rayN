@@ -16,14 +16,14 @@ namespace v2rayN.Forms
         private void AddServerForm_Load(object sender, EventArgs e)
         {
             cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
-            if (EditIndex >= 0)
+            if (vmessItem != null)
             {
-                vmessItem = config.vmess[EditIndex];
                 BindingServer();
             }
             else
             {
                 vmessItem = new VmessItem();
+                vmessItem.groupId = groupId;
                 ClearServer();
             }
         }
@@ -58,7 +58,7 @@ namespace v2rayN.Forms
 
             transportControl.ClearServer(vmessItem);
         }
-         
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             string address = txtAddress.Text;
@@ -93,7 +93,7 @@ namespace v2rayN.Forms
             vmessItem.security = security;
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.AddServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddServer(ref config, vmessItem) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }

@@ -16,14 +16,14 @@ namespace v2rayN.Forms
         {
             cmbFlow.Items.AddRange(Global.xtlsFlows.ToArray());
             transportControl.AllowXtls = true;
-            if (EditIndex >= 0)
+            if (vmessItem != null)
             {
-                vmessItem = config.vmess[EditIndex];
                 BindingServer();
             }
             else
             {
                 vmessItem = new VmessItem();
+                vmessItem.groupId = groupId;
                 ClearServer();
             }
         }
@@ -52,7 +52,7 @@ namespace v2rayN.Forms
             txtPort.Text = "";
             txtId.Text = "";
             cmbFlow.Text = "";
-            txtRemarks.Text = ""; 
+            txtRemarks.Text = "";
 
             transportControl.ClearServer(vmessItem);
         }
@@ -89,7 +89,7 @@ namespace v2rayN.Forms
             vmessItem.flow = flow;
             vmessItem.remarks = remarks;
 
-            if (ConfigHandler.AddTrojanServer(ref config, vmessItem, EditIndex) == 0)
+            if (ConfigHandler.AddTrojanServer(ref config, vmessItem) == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
