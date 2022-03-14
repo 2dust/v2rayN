@@ -1164,7 +1164,10 @@ namespace v2rayN.Forms
         private void ShowForm()
         {
             this.Show();
-            this.WindowState = FormWindowState.Normal;
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
             this.Activate();
             this.ShowInTaskbar = true;
             //this.notifyIcon1.Visible = false;
