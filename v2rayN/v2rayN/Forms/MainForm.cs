@@ -1679,56 +1679,57 @@ namespace v2rayN.Forms
             {
                 targetIndex++;
             }
-            string activeIndexId = ConfigHandler.GetDefaultServer(ref config).indexId;
 
+            bool isChanged = false;
             lvServers.BeginUpdate();
             foreach (ListViewItem listItem in lvServers.SelectedItems)
             {
-                if (targetIndex == listItem.Index)
+                if (targetIndex != listItem.Index)
                 {
-                    targetIndex++;
-                    continue;
+                    isChanged = true;
+                    int origIndex = listItem.Index;
+                    bool isFocued = listItem.Focused;
+
+                    // 向下移动，删除自身后，targetIndex-1;
+                    if (origIndex < targetIndex)
+                    {
+                        targetIndex--;
+                    }
+
+
+                    listItem.Remove();
+                    lvServers.Items.Insert(targetIndex, listItem);
+
+                    if (isFocued)
+                    {
+                        listItem.Focused = true;
+                    }
                 }
-
-                int origIndex = listItem.Index;
-                bool isFocued = listItem.Focused;
-
-                // 向下移动，删除自身后，targetIndex-1;
-                if (origIndex < targetIndex)
-                {
-                    targetIndex--;
-                }
-
-
-                listItem.Remove();
-                lvServers.Items.Insert(targetIndex, listItem);
-
-                if (isFocued)
-                {
-                    listItem.Focused = true;
-                }
-
-
                 targetIndex++;
             }
 
-            RefillListViewBackColor(lvServers);
-            lvServers.EndUpdate();
-
-            for (int i = 0; i < lvServers.Items.Count; i++)
+            if (isChanged)
             {
-                ListViewItem listItem = lvServers.Items[i];
-                config.GetVmessItem((string)listItem.Tag).sort = i;
+                RefillListViewBackColor(lvServers);
+
+
+                for (int i = 0; i < lvServers.Items.Count; i++)
+                {
+                    ListViewItem listItem = lvServers.Items[i];
+                    config.GetVmessItem((string)listItem.Tag).sort = i;
+                }
+
+                ConfigHandler.SaveConfig(ref config, false);
+
+
+                lstVmess = config.vmess.Where(it => it.groupId == groupId).OrderBy(it => it.sort).ToList();
+                //RefreshServersView();
+                RefreshServersMenu();
+
+                //RefreshServers();
             }
 
-            ConfigHandler.SaveConfig(ref config, false);
-
-
-            lstVmess = config.vmess.Where(it => it.groupId == groupId).OrderBy(it => it.sort).ToList();
-            //RefreshServersView();
-            RefreshServersMenu();
-
-            //RefreshServers();
+            lvServers.EndUpdate();
 
         }
 
