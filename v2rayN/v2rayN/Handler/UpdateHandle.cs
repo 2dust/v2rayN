@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -177,10 +178,10 @@ namespace v2rayN.Handler
 
             for (int k = 1; k <= config.subItem.Count; k++)
             {
-                string id = config.subItem[k - 1].id.Trim();
-                string url = config.subItem[k - 1].url.Trim();
-                string userAgent = config.subItem[k - 1].userAgent.Trim();
-                string groupId = config.subItem[k - 1].groupId.Trim();
+                string id = config.subItem[k - 1].id.TrimEx();
+                string url = config.subItem[k - 1].url.TrimEx();
+                string userAgent = config.subItem[k - 1].userAgent.TrimEx();
+                string groupId = config.subItem[k - 1].groupId.TrimEx();
                 string hashCode = $"{k}->";
                 if (config.subItem[k - 1].enabled == false)
                 {

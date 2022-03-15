@@ -66,12 +66,7 @@ namespace v2rayN.Forms
         }
 
         private void btnOK_Click(object sender, EventArgs e)
-        {
-            if (config.groupItem.Count <= 0)
-            {
-                AddGroup();
-            }
-
+        {            
             if (ConfigHandler.SaveGroupItem(ref config) == 0)
             {
                 this.DialogResult = DialogResult.OK;

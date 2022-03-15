@@ -764,7 +764,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int SaveSubItem(ref Config config)
         {
-            if (config.subItem == null || config.subItem.Count <= 0)
+            if (config.subItem == null)
             {
                 return -1;
             }
@@ -926,7 +926,7 @@ namespace v2rayN.Handler
             }
             if (!config.vmess.Exists(it => it.indexId == vmessItem.indexId))
             {
-                var maxSort = config.vmess.Max(t => t.sort);
+                var maxSort = config.vmess.Any() ? config.vmess.Max(t => t.sort) : 0;
                 vmessItem.sort = maxSort++;
 
                 config.vmess.Add(vmessItem);
@@ -970,7 +970,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int SaveGroupItem(ref Config config)
         {
-            if (config.groupItem == null || config.groupItem.Count <= 0)
+            if (config.groupItem == null)
             {
                 return -1;
             }
@@ -989,12 +989,13 @@ namespace v2rayN.Handler
 
         public static int RemoveGroupItem(ref Config config, string groupId)
         {
-            if (Utils.IsNullOrEmpty(groupId) || config.vmess.Count <= 0)
+            if (Utils.IsNullOrEmpty(groupId))
             {
                 return -1;
             }
 
-            foreach (var item in config.vmess)
+            var items = config.vmess.Where(t => t.groupId == groupId).ToList();
+            foreach (var item in items)
             {
                 if (item.groupId.Equals(groupId))
                 {

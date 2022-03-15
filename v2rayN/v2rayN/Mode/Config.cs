@@ -569,7 +569,7 @@ namespace v2rayN.Mode
         public string groupId
         {
             get; set;
-        }
+        } = string.Empty;
     }
 
     [Serializable]
@@ -703,7 +703,7 @@ namespace v2rayN.Mode
         public string groupId
         {
             get; set;
-        }
+        } = string.Empty;
     }
 
     [Serializable]

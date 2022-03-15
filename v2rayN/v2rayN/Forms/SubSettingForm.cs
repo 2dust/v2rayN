@@ -68,11 +68,6 @@ namespace v2rayN.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (config.subItem.Count <= 0)
-            {
-                AddSub();
-            }
-
             if (ConfigHandler.SaveSubItem(ref config) == 0)
             {
                 this.DialogResult = DialogResult.OK;
