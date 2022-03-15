@@ -1768,6 +1768,7 @@ namespace v2rayN.Forms
         private void lvServers_ItemDrag(object sender, ItemDragEventArgs e)
         {
             lvServers.DoDragDrop(e.Item, DragDropEffects.Move);
+            lvServers.InsertionMark.Index = -1;
         }
         #endregion
 
