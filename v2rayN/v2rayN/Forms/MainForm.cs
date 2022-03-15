@@ -201,7 +201,10 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServers()
         {
-            lstVmess = config.vmess.Where(it => it.groupId == groupId).OrderBy(it => it.sort).ToList();
+            lstVmess = config.vmess
+                .Where(it => Utils.IsNullOrEmpty(groupId) ? true : it.groupId == groupId)
+                .OrderBy(it => it.sort)
+                .ToList();
 
             ConfigHandler.SetDefaultServer(config, lstVmess);
             RefreshServersView();
@@ -469,6 +472,11 @@ namespace v2rayN.Forms
         {
             tabGroup.TabPages.Clear();
 
+            string title = $"  {UIRes.I18N("AllGroupServers")}   ";
+            var tabPage = new TabPage(title);
+            tabPage.Name = "";
+            tabGroup.TabPages.Add(tabPage);
+
             foreach (var item in config.groupItem)
             {
                 var tabPage2 = new TabPage($"   {item.remarks}   ");
@@ -476,12 +484,7 @@ namespace v2rayN.Forms
                 tabGroup.TabPages.Add(tabPage2);
             }
 
-            string title = $"  {UIRes.I18N("UngroupedServers")}   ";
-            var tabPage = new TabPage(title);
-            tabPage.Name = "Ungrouped";
-            tabGroup.TabPages.Add(tabPage);
-
-            tabGroup.SelectedIndex = tabGroup.TabPages.Count - 1;
+            tabGroup.SelectedIndex = 0;
         }
 
         private void tabGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -491,11 +494,9 @@ namespace v2rayN.Forms
                 return;
             }
             groupId = string.Empty;
-            if (tabGroup.SelectedIndex < config.groupItem.Count)
-            {
-                groupId = config.groupItem[tabGroup.SelectedIndex].id;
-            }
-
+            //groupId = tabGroup.TabPages[tabGroup.SelectedIndex].Name;
+            groupId = tabGroup.SelectedTab.Name;
+            
             RefreshServers();
         }
         #endregion

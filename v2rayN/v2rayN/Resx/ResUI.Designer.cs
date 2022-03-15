@@ -70,6 +70,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 All servers 的本地化字符串。
+        /// </summary>
+        internal static string AllGroupServers {
+            get {
+                return ResourceManager.GetString("AllGroupServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Batch export subscription to clipboard successfully 的本地化字符串。
         /// </summary>
         internal static string BatchExportSubscriptionSuccessfully {

@@ -448,4 +448,7 @@
   <data name="UngroupedServers" xml:space="preserve">
     <value>未分组服务器</value>
   </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>所有服务器</value>
+  </data>
 </root>
