@@ -1318,17 +1318,44 @@ namespace v2rayN.Forms
 
         private void MoveServer(EMove eMove)
         {
-            int index = GetLvSelectedIndex();
-            if (index < 0)
+            if (lvServers.SelectedItems.Count == 0)
             {
                 UI.Show(UIRes.I18N("PleaseSelectServer"));
                 return;
             }
-            if (ConfigHandler.MoveServer(ref config, ref lstVmess, index, eMove) == 0)
+
+            var listItems = lvServers.Items;
+            var selectedItems = lvServers.SelectedItems;
+
+            switch (eMove)
             {
-                //TODO: reload is not good.
-                RefreshServers();
-                //LoadV2ray();
+                case EMove.Top:
+                    MoveSelectedServer(0);
+                    listItems[0].EnsureVisible();
+                    break;
+                case EMove.Up:
+                    int firstSelectedIndex = selectedItems[0].Index; ;
+                    bool isAlreadyTop = firstSelectedIndex == 0;
+                    if (!isAlreadyTop)
+                    {
+                        MoveSelectedServer(firstSelectedIndex - 1);
+                        selectedItems[0].EnsureVisible();
+                    }
+                    break;
+                case EMove.Down:
+                    int lastSelectedIndex = selectedItems[selectedItems.Count - 1].Index;
+                    int lastListIndex = listItems[listItems.Count - 1].Index;
+                    bool isAlreadBottom = lastSelectedIndex == lastListIndex;
+                    if (!isAlreadBottom)
+                    {
+                        MoveSelectedServer(lastSelectedIndex + 2);
+                        selectedItems[selectedItems.Count - 1].EnsureVisible();
+                    }
+                    break;
+                case EMove.Bottom:
+                    MoveSelectedServer(lvServers.Items.Count);
+                    lvServers.Items[lvServers.Items.Count - 1].EnsureVisible();
+                    break;
             }
         }
         private void menuSelectAll_Click(object sender, EventArgs e)
@@ -1680,6 +1707,11 @@ namespace v2rayN.Forms
                 targetIndex++;
             }
 
+            MoveSelectedServer(targetIndex);
+        }
+
+        private void MoveSelectedServer(int targetIndex)
+        {
             bool isChanged = false;
             lvServers.BeginUpdate();
             foreach (ListViewItem listItem in lvServers.SelectedItems)
