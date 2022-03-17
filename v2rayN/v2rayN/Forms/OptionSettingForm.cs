@@ -16,6 +16,8 @@ namespace v2rayN.Forms
 
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
+            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
+
             InitBase();
 
             InitKCP();

@@ -199,7 +199,8 @@ namespace v2rayN.Handler
                     if (args.Success)
                     {
                         _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgGetSubscriptionSuccessfully")}");
-                        string result = Utils.Base64Decode(args.Msg);
+                        //string result = Utils.Base64Decode(args.Msg);
+                        string result = args.Msg;
                         if (Utils.IsNullOrEmpty(result))
                         {
                             _updateFunc(false, $"{hashCode}{UIRes.I18N("MsgSubscriptionDecodingFailed")}");

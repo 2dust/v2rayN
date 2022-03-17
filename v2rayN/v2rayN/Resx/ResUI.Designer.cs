@@ -610,7 +610,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Subscription content decoding failed (non-BASE64 code) 的本地化字符串。
+        ///   查找类似 Failed to get subscription content 的本地化字符串。
         /// </summary>
         internal static string MsgSubscriptionDecodingFailed {
             get {

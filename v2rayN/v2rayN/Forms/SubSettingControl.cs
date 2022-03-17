@@ -66,6 +66,10 @@ namespace v2rayN.Forms
                 {
                     subItem.groupId = groupItem[index].id;
                 }
+                else
+                {
+                    subItem.groupId = string.Empty;
+                }
             }
         }
         private void txtRemarks_Leave(object sender, EventArgs e)

@@ -268,7 +268,7 @@
     <value>Start updating PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
-    <value>Subscription content decoding failed (non-BASE64 code)</value>
+    <value>Failed to get subscription content</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>is unpacking...</value>

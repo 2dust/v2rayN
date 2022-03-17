@@ -150,8 +150,15 @@ namespace v2rayN.Handler
                 }
                 ws.Headers.Add("user-agent", userAgent);
 
+                Uri uri = new Uri(url);
+                //Authorization Header
+                if (!Utils.IsNullOrEmpty(uri.UserInfo))
+                {
+                    ws.Headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
+                }
+
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
-                ws.DownloadStringAsync(new Uri(url));
+                ws.DownloadStringAsync(uri);
             }
             catch (Exception ex)
             {
