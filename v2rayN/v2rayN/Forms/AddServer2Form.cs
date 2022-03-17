@@ -15,12 +15,15 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
+            txtAddress.ReadOnly = true;
             if (vmessItem != null)
             {
                 BindingServer();
             }
             else
             {
+                vmessItem = new VmessItem();
+                vmessItem.groupId = groupId;
                 ClearServer();
             }
         }
@@ -32,7 +35,6 @@ namespace v2rayN.Forms
         {
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
-            txtAddress.ReadOnly = true;
         }
 
 
@@ -66,7 +68,47 @@ namespace v2rayN.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            if (Utils.IsNullOrEmpty(vmessItem.indexId))
+            {
+                this.DialogResult = DialogResult.Cancel;
+            }
+            else
+            {
+                this.DialogResult = DialogResult.OK;
+            }
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            UI.Show(UIRes.I18N("CustomServerTips"));
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Config|*.json|All|*.*"
+            };
+            if (fileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            string fileName = fileDialog.FileName;
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            vmessItem.address = fileName;
+            vmessItem.remarks = txtRemarks.Text;
+
+            if (ConfigHandler.AddCustomServer(ref config, vmessItem) == 0)
+            {
+                BindingServer();
+                UI.Show(UIRes.I18N("SuccessfullyImportedCustomServer"));
+            }
+            else
+            {
+                UI.ShowWarning(UIRes.I18N("FailedImportedCustomServer"));
+            }
         }
     }
 }

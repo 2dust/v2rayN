@@ -16,6 +16,8 @@ namespace v2rayN.Forms
         private void AddServerForm_Load(object sender, EventArgs e)
         {
             cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
+            //FillCoreType(cmbCoreType);
+
             if (vmessItem != null)
             {
                 BindingServer();
@@ -39,6 +41,7 @@ namespace v2rayN.Forms
             txtAlterId.Text = vmessItem.alterId.ToString();
             cmbSecurity.Text = vmessItem.security;
             txtRemarks.Text = vmessItem.remarks;
+           // BindingCoreType(cmbCoreType, vmessItem);
 
             transportControl.BindingServer(vmessItem);
         }
@@ -92,6 +95,7 @@ namespace v2rayN.Forms
             vmessItem.alterId = Utils.ToInt(alterId);
             vmessItem.security = security;
             vmessItem.remarks = remarks;
+            //vmessItem.coreType = GetCoreType(cmbCoreType);
 
             if (ConfigHandler.AddServer(ref config, vmessItem) == 0)
             {

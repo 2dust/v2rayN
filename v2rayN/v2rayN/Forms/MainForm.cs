@@ -18,7 +18,7 @@ namespace v2rayN.Forms
     public partial class MainForm : BaseForm
     {
         private V2rayHandler v2rayHandler;
-        private List<VmessItem> lvSelecteds = new List<VmessItem>();
+        private List<VmessItem> lstSelecteds = new List<VmessItem>();
         private StatisticsHandler statistics = null;
         private string MsgFilter = string.Empty;
         private List<VmessItem> lstVmess = null;
@@ -498,6 +498,8 @@ namespace v2rayN.Forms
             groupId = tabGroup.SelectedTab.Name;
             
             RefreshServers();
+
+            lvServers.Focus();
         }
         #endregion
 
@@ -689,7 +691,7 @@ namespace v2rayN.Forms
                 return;
             }
 
-            ConfigHandler.RemoveServer(config, lvSelecteds);
+            ConfigHandler.RemoveServer(config, lstSelecteds);
 
             RefreshServers();
             _ = LoadV2ray();
@@ -767,7 +769,7 @@ namespace v2rayN.Forms
         {
             if (GetLvSelectedIndex() < 0) return;
             ClearTestResult();
-            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lvSelecteds, actionType, UpdateSpeedtestHandler);
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void tsbTestMe_Click(object sender, EventArgs e)
@@ -802,9 +804,9 @@ namespace v2rayN.Forms
             GetLvSelectedIndex();
 
             StringBuilder sb = new StringBuilder();
-            foreach (var v in lvSelecteds)
+            foreach (var it in lstSelecteds)
             {
-                string url = ShareHandler.GetShareUrl(v);
+                string url = ShareHandler.GetShareUrl(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -825,9 +827,9 @@ namespace v2rayN.Forms
             GetLvSelectedIndex();
 
             StringBuilder sb = new StringBuilder();
-            foreach (var v in lvSelecteds)
+            foreach (var it in lstSelecteds)
             {
-                string url = ShareHandler.GetShareUrl(v);
+                string url = ShareHandler.GetShareUrl(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -926,7 +928,7 @@ namespace v2rayN.Forms
         private int GetLvSelectedIndex()
         {
             int index = -1;
-            lvSelecteds.Clear();
+            lstSelecteds.Clear();
             try
             {
                 if (lvServers.SelectedIndices.Count <= 0)
@@ -938,7 +940,7 @@ namespace v2rayN.Forms
                 index = lvServers.SelectedIndices[0];
                 foreach (int i in lvServers.SelectedIndices)
                 {
-                    lvSelecteds.Add(lstVmess[i]);
+                    lstSelecteds.Add(lstVmess[i]);
                 }
                 return index;
             }
@@ -950,33 +952,7 @@ namespace v2rayN.Forms
 
         private void menuAddCustomServer_Click(object sender, EventArgs e)
         {
-            UI.Show(UIRes.I18N("CustomServerTips"));
-
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Multiselect = false,
-                Filter = "Config|*.json|All|*.*"
-            };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-
-            if (ConfigHandler.AddCustomServer(ref config, fileName, groupId) == 0)
-            {
-                RefreshServers();
-                //LoadV2ray();
-                UI.Show(UIRes.I18N("SuccessfullyImportedCustomServer"));
-            }
-            else
-            {
-                UI.ShowWarning(UIRes.I18N("FailedImportedCustomServer"));
-            }
+            ShowServerForm((int)EConfigType.Custom, -1);
         }
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
@@ -1215,9 +1191,9 @@ namespace v2rayN.Forms
         }
         private void ClearTestResult()
         {
-            foreach (var s in lvSelecteds)
+            foreach (var it in lstSelecteds)
             {
-                SetTestResult(s.indexId, "");
+                SetTestResult(it.indexId, "");
             }
         }
         private void UpdateSpeedtestHandler(string indexId, string msg)

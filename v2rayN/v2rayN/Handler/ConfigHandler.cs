@@ -439,10 +439,11 @@ namespace v2rayN.Handler
         /// 添加自定义服务器
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="fileName"></param>
+        /// <param name="vmessItem"></param>
         /// <returns></returns>
-        public static int AddCustomServer(ref Config config, string fileName, string groupId)
+        public static int AddCustomServer(ref Config config, VmessItem vmessItem)
         {
+            var fileName = vmessItem.address;
             string newFileName = string.Format("{0}.json", Utils.GetGUID());
             //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
 
@@ -455,13 +456,13 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            VmessItem vmessItem = new VmessItem
+            vmessItem.address = newFileName;
+            vmessItem.configType = (int)EConfigType.Custom;
+            if (Utils.IsNullOrEmpty(vmessItem.remarks))
             {
-                groupId = groupId,
-                address = newFileName,
-                configType = (int)EConfigType.Custom,
-                remarks = string.Format("import custom@{0}", DateTime.Now.ToShortDateString())
-            };
+                vmessItem.remarks = string.Format("import custom@{0}", DateTime.Now.ToShortDateString());
+            }
+
 
             AddServerCommon(ref config, vmessItem);
 
