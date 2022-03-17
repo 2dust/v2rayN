@@ -1440,6 +1440,13 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
+                    if (it.configType == (int)EConfigType.Vmess || it.configType == (int)EConfigType.VLESS)
+                    {
+                        if (!Utils.IsGuidByParse(configCopy.GetVmessItem(it.indexId).id))
+                        {
+                            continue;
+                        }
+                    }
 
                     //find unuse port
                     var port = httpPort;
@@ -1461,6 +1468,7 @@ namespace v2rayN.Handler
                         continue;
                     }
                     it.port = port;
+                    it.allowTest = true;
 
                     Inbounds inbound = new Inbounds
                     {

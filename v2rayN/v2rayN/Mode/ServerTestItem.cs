@@ -21,5 +21,9 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public bool allowTest
+        {
+            get; set;
+        }
     }
 }

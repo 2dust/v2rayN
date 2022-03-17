@@ -22,6 +22,7 @@ using v2rayN.Base;
 using Newtonsoft.Json.Linq;
 using System.Web;
 using log4net;
+using System.Linq;
 
 namespace v2rayN
 {
@@ -748,19 +749,25 @@ namespace v2rayN
         public static bool PortInUse(int port)
         {
             bool inUse = false;
-
-            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
-
-            var lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
-
-            foreach (IPEndPoint endPoint in ipEndPoints)
+            try
             {
-                if (endPoint.Port == port)
+                IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+                IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
+
+                var lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+
+                foreach (IPEndPoint endPoint in ipEndPoints)
                 {
-                    inUse = true;
-                    break;
+                    if (endPoint.Port == port)
+                    {
+                        inUse = true;
+                        break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
             }
             return inUse;
         }
@@ -911,6 +918,25 @@ namespace v2rayN
             fileName += "_temp";
 
             return fileName;
+        }
+
+        public static IPAddress GetDefaultGateway()
+        {
+            return NetworkInterface
+                .GetAllNetworkInterfaces()
+                .Where(n => n.OperationalStatus == OperationalStatus.Up)
+                .Where(n => n.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .SelectMany(n => n.GetIPProperties()?.GatewayAddresses)
+                .Select(g => g?.Address)
+                .Where(a => a != null)
+                // .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
+                // .Where(a => Array.FindIndex(a.GetAddressBytes(), b => b != 0) >= 0)
+                .FirstOrDefault();
+        }
+
+        public static bool IsGuidByParse(string strSrc)
+        {
+            return Guid.TryParse(strSrc, out Guid g);
         }
         #endregion
 

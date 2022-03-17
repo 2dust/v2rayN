@@ -125,11 +125,11 @@ namespace v2rayN.Handler
                 List<Task> tasks = new List<Task>();
                 foreach (var it in _selecteds)
                 {
-                    if (it.configType == (int)EConfigType.Custom)
+                    if (!it.allowTest)
                     {
                         continue;
                     }
-                    if (it.port <= 0)
+                    if (it.configType == (int)EConfigType.Custom)
                     {
                         continue;
                     }
@@ -222,11 +222,11 @@ namespace v2rayN.Handler
             var timeout = 10;
             foreach (var it in _selecteds)
             {
-                if (it.configType == (int)EConfigType.Custom)
+                if (!it.allowTest)
                 {
                     continue;
                 }
-                if (it.port <= 0)
+                if (it.configType == (int)EConfigType.Custom)
                 {
                     continue;
                 }
