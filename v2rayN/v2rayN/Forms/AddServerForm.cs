@@ -15,7 +15,7 @@ namespace v2rayN.Forms
 
         private void AddServerForm_Load(object sender, EventArgs e)
         {
-            this.Text = ((EConfigType)eConfigType).ToString();
+            this.Text = (eConfigType).ToString();
 
             cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
             cmbSecurity3.Items.AddRange(config.GetShadowsocksSecuritys().ToArray());

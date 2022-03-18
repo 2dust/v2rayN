@@ -320,7 +320,7 @@ namespace v2rayN.Handler
 
         private void SetCore(Config config, VmessItem item)
         {
-            var coreType = config.GetCoreType((EConfigType)item.configType);
+            var coreType = config.GetCoreType(item.configType);
             if (item.coreType != null)
             {
                 coreType = (ECoreType)item.coreType;

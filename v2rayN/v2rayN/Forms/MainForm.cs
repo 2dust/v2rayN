@@ -284,7 +284,7 @@ namespace v2rayN.Forms
                     }
                 }
                 ListViewItem lvItem = new ListViewItem(def);
-                Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
+                Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), (item.configType).ToString());
                 Utils.AddSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 Utils.AddSubItem(lvItem, EServerColName.address.ToString(), item.address);
                 Utils.AddSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
@@ -576,10 +576,10 @@ namespace v2rayN.Forms
             }
             ShowServerForm(lstVmess[index].configType, index);
         }
-        private void ShowServerForm(int configType, int index)
+        private void ShowServerForm(EConfigType configType, int index)
         {
             BaseServerForm fm;
-            if (configType == (int)EConfigType.Custom)
+            if (configType == EConfigType.Custom)
             {
                 fm = new AddServer2Form();
             }
@@ -589,7 +589,7 @@ namespace v2rayN.Forms
             }            
             fm.vmessItem = index >= 0 ? lstVmess[index] : null;
             fm.groupId = groupId;
-            fm.eConfigType = (EConfigType)configType;
+            fm.eConfigType = configType;
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 RefreshServers();
@@ -658,12 +658,12 @@ namespace v2rayN.Forms
 
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Vmess, -1);
+            ShowServerForm(EConfigType.Vmess, -1);
         }
 
         private void menuAddVlessServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.VLESS, -1);
+            ShowServerForm(EConfigType.VLESS, -1);
         }
 
         private void menuRemoveServer_Click(object sender, EventArgs e)
@@ -940,24 +940,24 @@ namespace v2rayN.Forms
 
         private void menuAddCustomServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Custom, -1);
+            ShowServerForm(EConfigType.Custom, -1);
         }
 
         private void menuAddShadowsocksServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Shadowsocks, -1);
+            ShowServerForm(EConfigType.Shadowsocks, -1);
             ShowForm();
         }
 
         private void menuAddSocksServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Socks, -1);
+            ShowServerForm(EConfigType.Socks, -1);
             ShowForm();
         }
 
         private void menuAddTrojanServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm((int)EConfigType.Trojan, -1);
+            ShowServerForm(EConfigType.Trojan, -1);
             ShowForm();
         }
 

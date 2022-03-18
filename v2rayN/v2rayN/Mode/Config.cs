@@ -308,7 +308,7 @@ namespace v2rayN.Mode
         public VmessItem()
         {
             indexId = string.Empty;
-            configType = (int)EConfigType.Vmess;
+            configType = EConfigType.Vmess;
             configVersion = 2;
             sort = 0;
             address = string.Empty;
@@ -332,7 +332,7 @@ namespace v2rayN.Mode
         #region function
         public string GetSummary()
         {
-            string summary = string.Format("[{0}] ", ((EConfigType)configType).ToString());
+            string summary = string.Format("[{0}] ", (configType).ToString());
             string[] arrAddr = address.Split('.');
             string addr;
             if (arrAddr.Length > 2)
@@ -349,34 +349,16 @@ namespace v2rayN.Mode
             }
             switch (configType)
             {
-                case (int)EConfigType.Vmess:
-                case (int)EConfigType.Shadowsocks:
-                case (int)EConfigType.Socks:
-                case (int)EConfigType.VLESS:
-                case (int)EConfigType.Trojan:
+                case EConfigType.Vmess:
+                case EConfigType.Shadowsocks:
+                case EConfigType.Socks:
+                case EConfigType.VLESS:
+                case EConfigType.Trojan:
                     summary += string.Format("{0}({1}:{2})", remarks, addr, port);
                     break;
                 default:
                     summary += string.Format("{0}", remarks);
-                    break;
-                    //case (int)EConfigType.Vmess:
-                    //    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-                    //    break;
-                    //case (int)EConfigType.Shadowsocks:
-                    //    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-                    //    break;
-                    //case (int)EConfigType.Socks:
-                    //    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-                    //    break;
-                    //case (int)EConfigType.VLESS:
-                    //    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-                    //    break;
-                    //case (int)EConfigType.Trojan:
-                    //    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
-                    //    break;
-                    //default:
-                    //    summary += string.Format("{0}", remarks);
-                    //    break;
+                    break;                 
             }
             return summary;
         }
@@ -435,7 +417,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// config type(1=normal,2=custom)
         /// </summary>
-        public int configType
+        public EConfigType configType
         {
             get; set;
         }

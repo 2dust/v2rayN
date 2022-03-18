@@ -197,7 +197,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = (int)EConfigType.Vmess;
+            vmessItem.configType = EConfigType.Vmess;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
@@ -439,7 +439,7 @@ namespace v2rayN.Handler
             }
 
             vmessItem.address = newFileName;
-            vmessItem.configType = (int)EConfigType.Custom;
+            vmessItem.configType = EConfigType.Custom;
             if (Utils.IsNullOrEmpty(vmessItem.remarks))
             {
                 vmessItem.remarks = string.Format("import custom@{0}", DateTime.Now.ToShortDateString());
@@ -474,7 +474,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = (int)EConfigType.Shadowsocks;
+            vmessItem.configType = EConfigType.Shadowsocks;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
@@ -503,7 +503,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddSocksServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = (int)EConfigType.Socks;
+            vmessItem.configType = EConfigType.Socks;
 
             vmessItem.address = vmessItem.address.TrimEx();
 
@@ -526,7 +526,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddTrojanServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = (int)EConfigType.Trojan;
+            vmessItem.configType = EConfigType.Trojan;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
@@ -563,7 +563,7 @@ namespace v2rayN.Handler
                 {
                     return 0;
                 }
-                if (vmessItem.configType == (int)EConfigType.Vmess)
+                if (vmessItem.configType == EConfigType.Vmess)
                 {
                     string path = "";
                     string host = "";
@@ -672,35 +672,35 @@ namespace v2rayN.Handler
                 //groupId
                 vmessItem.groupId = groupId;
 
-                if (vmessItem.configType == (int)EConfigType.Vmess)
+                if (vmessItem.configType == EConfigType.Vmess)
                 {
                     if (AddServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
-                else if (vmessItem.configType == (int)EConfigType.Shadowsocks)
+                else if (vmessItem.configType == EConfigType.Shadowsocks)
                 {
                     if (AddShadowsocksServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
-                else if (vmessItem.configType == (int)EConfigType.Socks)
+                else if (vmessItem.configType == EConfigType.Socks)
                 {
                     if (AddSocksServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
-                else if (vmessItem.configType == (int)EConfigType.Trojan)
+                else if (vmessItem.configType == EConfigType.Trojan)
                 {
                     if (AddTrojanServer(ref config, vmessItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
-                else if (vmessItem.configType == (int)EConfigType.VLESS)
+                else if (vmessItem.configType == EConfigType.VLESS)
                 {
                     if (AddVlessServer(ref config, vmessItem, false) == 0)
                     {
@@ -839,7 +839,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddVlessServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = (int)EConfigType.VLESS;
+            vmessItem.configType = EConfigType.VLESS;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();

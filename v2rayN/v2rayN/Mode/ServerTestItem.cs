@@ -17,7 +17,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-        public int configType
+        public EConfigType configType
         {
             get; set;
         }

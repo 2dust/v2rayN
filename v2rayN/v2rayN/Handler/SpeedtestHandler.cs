@@ -64,7 +64,7 @@ namespace v2rayN.Handler
             {
                 foreach (var it in _selecteds)
                 {
-                    if (it.configType == (int)EConfigType.Custom)
+                    if (it.configType == EConfigType.Custom)
                     {
                         continue;
                     }
@@ -129,7 +129,7 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    if (it.configType == (int)EConfigType.Custom)
+                    if (it.configType == EConfigType.Custom)
                     {
                         continue;
                     }
@@ -226,7 +226,7 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                if (it.configType == (int)EConfigType.Custom)
+                if (it.configType == EConfigType.Custom)
                 {
                     continue;
                 }

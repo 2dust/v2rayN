@@ -30,19 +30,19 @@ namespace v2rayN.Handler
 
                 switch (item.configType)
                 {
-                    case (int)EConfigType.Vmess:
+                    case EConfigType.Vmess:
                         url = ShareVmess(item);
                         break;
-                    case (int)EConfigType.Shadowsocks:
+                    case EConfigType.Shadowsocks:
                         url = ShareShadowsocks(item);
                         break;
-                    case (int)EConfigType.Socks:
+                    case EConfigType.Socks:
                         url = ShareSocks(item);
                         break;
-                    case (int)EConfigType.Trojan:
+                    case EConfigType.Trojan:
                         url = ShareTrojan(item);
                         break;
-                    case (int)EConfigType.VLESS:
+                    case EConfigType.VLESS:
                         url = ShareVLESS(item);
                         break;
                     default:
@@ -354,7 +354,7 @@ namespace v2rayN.Handler
                         return null;
                     }
 
-                    vmessItem.configType = (int)EConfigType.Shadowsocks;
+                    vmessItem.configType = EConfigType.Shadowsocks;
                 }
                 else if (result.StartsWith(Global.socksProtocol))
                 {
@@ -374,7 +374,7 @@ namespace v2rayN.Handler
                         return null;
                     }
 
-                    vmessItem.configType = (int)EConfigType.Socks;
+                    vmessItem.configType = EConfigType.Socks;
                 }
                 else if (result.StartsWith(Global.trojanProtocol))
                 {
@@ -408,7 +408,7 @@ namespace v2rayN.Handler
             msg = string.Empty;
             VmessItem vmessItem = new VmessItem();
 
-            vmessItem.configType = (int)EConfigType.Vmess;
+            vmessItem.configType = EConfigType.Vmess;
             result = result.Substring(Global.vmessProtocol.Length);
             result = Utils.Base64Decode(result);
 
@@ -461,7 +461,7 @@ namespace v2rayN.Handler
         {
             VmessItem vmessItem = new VmessItem
             {
-                configType = (int)EConfigType.Vmess
+                configType = EConfigType.Vmess
             };
             result = result.Substring(Global.vmessProtocol.Length);
             int indexSplit = result.IndexOf("?");
@@ -499,7 +499,7 @@ namespace v2rayN.Handler
         {
             VmessItem i = new VmessItem
             {
-                configType = (int)EConfigType.Vmess,
+                configType = EConfigType.Vmess,
                 security = "auto"
             };
 
@@ -655,7 +655,7 @@ namespace v2rayN.Handler
         private static VmessItem ResolveSocks(string result)
         {
             VmessItem vmessItem = new VmessItem();
-            vmessItem.configType = (int)EConfigType.Socks;
+            vmessItem.configType = EConfigType.Socks;
             result = result.Substring(Global.socksProtocol.Length);
             //remark
             int indexRemark = result.IndexOf("#");
@@ -733,7 +733,7 @@ namespace v2rayN.Handler
         {
             VmessItem item = new VmessItem
             {
-                configType = (int)EConfigType.Trojan
+                configType = EConfigType.Trojan
             };
 
             Uri url = new Uri(result);
@@ -752,7 +752,7 @@ namespace v2rayN.Handler
         {
             VmessItem item = new VmessItem
             {
-                configType = (int)EConfigType.VLESS,
+                configType = EConfigType.VLESS,
                 security = "none"
             };
 

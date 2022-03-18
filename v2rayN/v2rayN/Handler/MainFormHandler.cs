@@ -85,8 +85,8 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType != (int)EConfigType.Vmess
-                && item.configType != (int)EConfigType.VLESS)
+            if (item.configType != EConfigType.Vmess
+                && item.configType != EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
@@ -125,8 +125,8 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType != (int)EConfigType.Vmess
-                && item.configType != (int)EConfigType.VLESS)
+            if (item.configType != EConfigType.Vmess
+                && item.configType != EConfigType.VLESS)
             {
                 UI.Show(UIRes.I18N("NonVmessService"));
                 return;
