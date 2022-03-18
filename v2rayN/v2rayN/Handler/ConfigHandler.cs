@@ -621,7 +621,7 @@ namespace v2rayN.Handler
         /// <param name="clipboardData"></param>
         /// <param name="subid"></param>
         /// <returns>成功导入的数量</returns>
-        public static int AddBatchServers(ref Config config, string clipboardData, string subid, string groupId)
+        public static int AddBatchServers(ref Config config, string clipboardData, string subid, List<VmessItem> lstOriSub, string groupId)
         {
             if (Utils.IsNullOrEmpty(clipboardData))
             {
@@ -629,10 +629,8 @@ namespace v2rayN.Handler
             }
 
             //copy sub items
-            List<VmessItem> lstOriSub = null;
             if (!Utils.IsNullOrEmpty(subid))
             {
-                lstOriSub = config.vmess.Where(it => it.subid == subid).ToList();
                 RemoveServerViaSubid(ref config, subid);
             }
             //if (clipboardData.IndexOf("vmess") >= 0 && clipboardData.IndexOf("vmess") == clipboardData.LastIndexOf("vmess"))

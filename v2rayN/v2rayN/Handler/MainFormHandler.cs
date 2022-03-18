@@ -1,12 +1,14 @@
 ﻿using NHotkey;
 using NHotkey.WindowsForms;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Mode;
+using System.Linq;
 
 namespace v2rayN.Handler
 {
@@ -159,16 +161,16 @@ namespace v2rayN.Handler
 
         public int AddBatchServers(Config config, string clipboardData, string subid, string groupId)
         {
-            int counter;
-            int _Add()
+            List<VmessItem> lstOriSub = null;
+            if (!Utils.IsNullOrEmpty(subid))
             {
-                return ConfigHandler.AddBatchServers(ref config, clipboardData, subid, groupId);
+                lstOriSub = config.vmess.Where(it => it.subid == subid).ToList();
             }
-            counter = _Add();
+
+            int counter = ConfigHandler.AddBatchServers(ref config, clipboardData, subid, lstOriSub, groupId);
             if (counter < 1)
             {
-                clipboardData = Utils.Base64Decode(clipboardData);
-                counter = _Add();
+                counter = ConfigHandler.AddBatchServers(ref config, Utils.Base64Decode(clipboardData), subid, lstOriSub, groupId);
             }
 
             return counter;
