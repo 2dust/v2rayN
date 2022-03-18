@@ -99,26 +99,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\AddServer6Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer6Form.Designer.cs">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddServer4Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer4Form.Designer.cs">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Base\ListViewFlickerFree.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer5Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer5Form.Designer.cs">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\BaseServerForm.cs">
       <SubType>Form</SubType>
@@ -195,12 +177,6 @@
     </Compile>
     <Compile Include="Forms\AddServer2Form.Designer.cs">
       <DependentUpon>AddServer2Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddServer3Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddServer3Form.Designer.cs">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\QRCodeControl.cs">
       <SubType>UserControl</SubType>
@@ -290,34 +266,6 @@
     <Compile Include="Handler\V2rayConfigHandler.cs" />
     <EmbeddedResource Include="Forms\AddServer2Form.zh-Hans.resx">
       <DependentUpon>AddServer2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer6Form.resx">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer6Form.zh-Hans.resx">
-      <DependentUpon>AddServer6Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer4Form.resx">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer4Form.zh-Hans.resx">
-      <DependentUpon>AddServer4Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer3Form.zh-Hans.resx">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer5Form.resx">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer5Form.zh-Hans.resx">
-      <DependentUpon>AddServer5Form.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddServerForm.zh-Hans.resx">
@@ -427,10 +375,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddServer2Form.resx">
       <DependentUpon>AddServer2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddServer3Form.resx">
-      <DependentUpon>AddServer3Form.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SubSettingForm.zh-Hans.resx">
