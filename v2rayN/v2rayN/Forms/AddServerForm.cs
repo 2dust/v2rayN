@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -7,7 +8,6 @@ namespace v2rayN.Forms
 {
     public partial class AddServerForm : BaseServerForm
     {
-
         public AddServerForm()
         {
             InitializeComponent();
@@ -15,8 +15,46 @@ namespace v2rayN.Forms
 
         private void AddServerForm_Load(object sender, EventArgs e)
         {
+            this.Text = ((EConfigType)eConfigType).ToString();
+
             cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
-            //FillCoreType(cmbCoreType);
+            cmbSecurity3.Items.AddRange(config.GetShadowsocksSecuritys().ToArray());
+
+            cmbFlow5.Items.AddRange(Global.xtlsFlows.ToArray());
+            cmbFlow6.Items.AddRange(Global.xtlsFlows.ToArray());
+       
+            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
+            cmbCoreType.Items.Add(string.Empty);
+
+            switch (eConfigType)
+            {
+                case EConfigType.Vmess:
+                    panVmess.Dock = DockStyle.Fill;
+                    panVmess.Visible = true;
+                    break;
+                case EConfigType.Shadowsocks:
+                    panSs.Dock = DockStyle.Fill;
+                    panSs.Visible = true;
+                    panTran.Visible = false;
+                    this.Height = this.Height - panTran.Height;
+                    break;
+                case EConfigType.Socks:
+                    panSocks.Dock = DockStyle.Fill;
+                    panSocks.Visible = true;
+                    panTran.Visible = false;
+                    this.Height = this.Height - panTran.Height;
+                    break;
+                case EConfigType.VLESS:
+                    panVless.Dock = DockStyle.Fill;
+                    panVless.Visible = true;
+                    transportControl.AllowXtls = true;
+                    break;
+                case EConfigType.Trojan:
+                    panTrojan.Dock = DockStyle.Fill;
+                    panTrojan.Visible = true;
+                    transportControl.AllowXtls = true;
+                    break;
+            }
 
             if (vmessItem != null)
             {
@@ -35,41 +73,122 @@ namespace v2rayN.Forms
         /// </summary>
         private void BindingServer()
         {
+            txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
-            txtId.Text = vmessItem.id;
-            txtAlterId.Text = vmessItem.alterId.ToString();
-            cmbSecurity.Text = vmessItem.security;
-            txtRemarks.Text = vmessItem.remarks;
-           // BindingCoreType(cmbCoreType, vmessItem);
+
+            switch (eConfigType)
+            {
+                case EConfigType.Vmess:
+                    txtId.Text = vmessItem.id;
+                    txtAlterId.Text = vmessItem.alterId.ToString();
+                    cmbSecurity.Text = vmessItem.security;
+                    break;
+                case EConfigType.Shadowsocks:
+                    txtId3.Text = vmessItem.id;
+                    cmbSecurity3.Text = vmessItem.security;
+                    break;
+                case EConfigType.Socks:
+                    txtId4.Text = vmessItem.id;
+                    txtSecurity4.Text = vmessItem.security;
+                    break;
+                case EConfigType.VLESS:
+                    txtId5.Text = vmessItem.id;
+                    cmbFlow5.Text = vmessItem.flow;
+                    cmbSecurity5.Text = vmessItem.security;
+                    break;
+                case EConfigType.Trojan:
+                    txtId6.Text = vmessItem.id;
+                    cmbFlow6.Text = vmessItem.flow;
+                    break;
+            }
+
+            if (vmessItem.coreType == null)
+            {
+                cmbCoreType.Text = string.Empty;
+            }
+            else
+            {
+                cmbCoreType.Text = vmessItem.coreType.ToString();
+            }
 
             transportControl.BindingServer(vmessItem);
         }
-
 
         /// <summary>
         /// 清除设置
         /// </summary>
         private void ClearServer()
         {
+            txtRemarks.Text = "";
             txtAddress.Text = "";
             txtPort.Text = "";
-            txtId.Text = "";
-            txtAlterId.Text = "0";
-            cmbSecurity.Text = Global.DefaultSecurity;
-            txtRemarks.Text = "";
+
+            switch (eConfigType)
+            {
+                case EConfigType.Vmess:
+                    txtId.Text = "";
+                    txtAlterId.Text = "0";
+                    cmbSecurity.Text = Global.DefaultSecurity;
+                    break;
+                case EConfigType.Shadowsocks:
+                    txtId3.Text = "";
+                    cmbSecurity3.Text = Global.DefaultSecurity;
+                    break;
+                case EConfigType.Socks:
+                    txtId4.Text = "";
+                    txtSecurity4.Text = "";
+                    break;
+                case EConfigType.VLESS:
+                    txtId5.Text = "";
+                    cmbFlow5.Text = "";
+                    cmbSecurity5.Text = Global.None;
+                    break;
+                case EConfigType.Trojan:
+                    txtId6.Text = "";
+                    cmbFlow6.Text = "";
+                    break;
+            }
 
             transportControl.ClearServer(vmessItem);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            string remarks = txtRemarks.Text;
             string address = txtAddress.Text;
             string port = txtPort.Text;
-            string id = txtId.Text;
-            string alterId = txtAlterId.Text;
-            string security = cmbSecurity.Text;
-            string remarks = txtRemarks.Text;
+
+            string id = string.Empty;
+            string alterId = string.Empty;
+            string security = string.Empty;
+            string flow = string.Empty;
+
+            switch (eConfigType)
+            {
+                case EConfigType.Vmess:
+                    id = txtId.Text;
+                    alterId = txtAlterId.Text;
+                    security = cmbSecurity.Text;
+                    break;
+                case EConfigType.Shadowsocks:
+                    id = txtId3.Text;
+                    security = cmbSecurity3.Text;
+                    break;
+                case EConfigType.Socks:
+                    id = txtId4.Text;
+                    security = txtSecurity4.Text;
+                    break;
+                case EConfigType.VLESS:
+                    id = txtId5.Text;
+                    flow = cmbFlow5.Text;
+                    security = cmbSecurity5.Text;
+                    break;
+                case EConfigType.Trojan:
+                    id = txtId6.Text;
+                    flow = cmbFlow6.Text;
+                    break;
+            }
 
             if (Utils.IsNullOrEmpty(address))
             {
@@ -81,23 +200,69 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("FillCorrectServerPort"));
                 return;
             }
-            if (Utils.IsNullOrEmpty(id))
+            if (eConfigType == EConfigType.Shadowsocks)
             {
-                UI.Show(UIRes.I18N("FillUUID"));
-                return;
+                if (Utils.IsNullOrEmpty(id))
+                {
+                    UI.Show(UIRes.I18N("FillPassword"));
+                    return;
+                }
+                if (Utils.IsNullOrEmpty(security))
+                {
+                    UI.Show(UIRes.I18N("PleaseSelectEncryption"));
+                    return;
+                }
+            }
+            if (eConfigType != EConfigType.Socks)
+            {
+                if (Utils.IsNullOrEmpty(id))
+                {
+                    UI.Show(UIRes.I18N("FillUUID"));
+                    return;
+                }
             }
 
             transportControl.EndBindingServer();
 
+            vmessItem.remarks = remarks;
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
             vmessItem.id = id;
             vmessItem.alterId = Utils.ToInt(alterId);
             vmessItem.security = security;
-            vmessItem.remarks = remarks;
-            //vmessItem.coreType = GetCoreType(cmbCoreType);
 
-            if (ConfigHandler.AddServer(ref config, vmessItem) == 0)
+            if (Utils.IsNullOrEmpty(cmbCoreType.Text))
+            {
+                vmessItem.coreType = null;
+            }
+            else
+            {
+                vmessItem.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), cmbCoreType.Text);
+            }
+
+            int ret = -1;
+            switch (eConfigType)
+            {
+                case EConfigType.Vmess:
+                    ret = ConfigHandler.AddServer(ref config, vmessItem);
+                    break;
+                case EConfigType.Shadowsocks:
+                    ret = ConfigHandler.AddShadowsocksServer(ref config, vmessItem);
+                    break;
+                case EConfigType.Socks:
+                    ret = ConfigHandler.AddSocksServer(ref config, vmessItem);
+                    break;
+                case EConfigType.VLESS:
+                    vmessItem.flow = flow;
+                    ret = ConfigHandler.AddVlessServer(ref config, vmessItem);
+                    break;
+                case EConfigType.Trojan:
+                    vmessItem.flow = flow;
+                    ret = ConfigHandler.AddTrojanServer(ref config, vmessItem);
+                    break;
+            }
+
+            if (ret == 0)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -105,110 +270,18 @@ namespace v2rayN.Forms
             {
                 UI.ShowWarning(UIRes.I18N("OperationFailed"));
             }
+
         }
 
         private void btnGUID_Click(object sender, EventArgs e)
         {
-            txtId.Text = Utils.GetGUID();
+            txtId.Text =
+            txtId5.Text = Utils.GetGUID();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
         }
-
-        #region 导入客户端/服务端配置
-
-        /// <summary>
-        /// 导入客户端
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuItemImportClient_Click(object sender, EventArgs e)
-        {
-            MenuItemImport(1);
-        }
-
-        /// <summary>
-        /// 导入服务端
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuItemImportServer_Click(object sender, EventArgs e)
-        {
-            MenuItemImport(2);
-        }
-
-        private void MenuItemImport(int type)
-        {
-            ClearServer();
-
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Multiselect = false,
-                Filter = "Config|*.json|All|*.*"
-            };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-            string msg;
-            VmessItem vmessItemTemp;
-            if (type.Equals(1))
-            {
-                vmessItemTemp = V2rayConfigHandler.ImportFromClientConfig(fileName, out msg);
-            }
-            else
-            {
-                vmessItemTemp = V2rayConfigHandler.ImportFromServerConfig(fileName, out msg);
-            }
-            if (vmessItemTemp == null)
-            {
-                UI.ShowWarning(msg);
-                return;
-            }
-            vmessItem = vmessItemTemp;
-
-            txtAddress.Text = vmessItem.address;
-            txtPort.Text = vmessItem.port.ToString();
-            txtId.Text = vmessItem.id;
-            txtAlterId.Text = vmessItem.alterId.ToString();
-            txtRemarks.Text = vmessItem.remarks;
-
-            transportControl.BindingServer(vmessItem);
-        }
-
-        /// <summary>
-        /// 从剪贴板导入URL
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuItemImportClipboard_Click(object sender, EventArgs e)
-        {
-            ClearServer();
-
-            VmessItem vmessItemTemp = ShareHandler.ImportFromClipboardConfig(Utils.GetClipboardData(), out string msg);
-            if (vmessItemTemp == null)
-            {
-                UI.ShowWarning(msg);
-                return;
-            }
-            vmessItem = vmessItemTemp;
-
-            txtAddress.Text = vmessItem.address;
-            txtPort.Text = vmessItem.port.ToString();
-            txtId.Text = vmessItem.id;
-            txtAlterId.Text = vmessItem.alterId.ToString();
-            txtRemarks.Text = vmessItem.remarks;
-
-            transportControl.BindingServer(vmessItem);
-        }
-        #endregion
-
     }
 }

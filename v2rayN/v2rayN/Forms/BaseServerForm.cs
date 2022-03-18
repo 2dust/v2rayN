@@ -8,11 +8,12 @@ namespace v2rayN.Forms
     {
         public VmessItem vmessItem = null;
         public string groupId;
+        public EConfigType eConfigType;
 
         public BaseServerForm()
         {
             InitializeComponent();
-        }
- 
+        }         
+
     }
 }

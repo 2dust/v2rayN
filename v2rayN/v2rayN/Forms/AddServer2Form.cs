@@ -15,6 +15,9 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
+            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
+            cmbCoreType.Items.Add(string.Empty);
+
             txtAddress.ReadOnly = true;
             if (vmessItem != null)
             {
@@ -35,6 +38,15 @@ namespace v2rayN.Forms
         {
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
+
+            if (vmessItem.coreType == null)
+            {
+                cmbCoreType.Text = string.Empty;
+            }
+            else
+            {
+                cmbCoreType.Text = vmessItem.coreType.ToString();
+            }
         }
 
 
@@ -55,6 +67,14 @@ namespace v2rayN.Forms
                 return;
             }
             vmessItem.remarks = remarks;
+            if (Utils.IsNullOrEmpty(cmbCoreType.Text))
+            {
+                vmessItem.coreType = null;
+            }
+            else
+            {
+                vmessItem.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), cmbCoreType.Text);
+            }
 
             if (ConfigHandler.EditCustomServer(ref config, vmessItem) == 0)
             {

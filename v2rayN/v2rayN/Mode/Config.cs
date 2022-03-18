@@ -120,10 +120,6 @@ namespace v2rayN.Mode
             get; set;
         }
 
-        public ECoreType coreType
-        {
-            get; set;
-        }
         public bool ignoreGeoUpdateCore
         {
             get; set;
@@ -208,6 +204,12 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
+        public List<CoreTypeItem> coreTypeItem
+        {
+            get; set;
+        }
+
         #endregion
 
         #region function         
@@ -256,7 +258,7 @@ namespace v2rayN.Mode
 
         public List<string> GetShadowsocksSecuritys()
         {
-            if (coreType == ECoreType.v2fly_core)
+            if (GetCoreType(EConfigType.Shadowsocks) == ECoreType.v2fly)
             {
                 return Global.ssSecuritys;
             }
@@ -283,6 +285,19 @@ namespace v2rayN.Mode
             return groupItem.Where(it => it.id == groupId).FirstOrDefault()?.remarks;
         }
 
+        public ECoreType GetCoreType(EConfigType eConfigType)
+        {
+            if (coreTypeItem == null)
+            {
+                return ECoreType.v2fly;
+            }
+            var item = coreTypeItem.FirstOrDefault(it => it.configType == eConfigType);
+            if (item == null)
+            {
+                return ECoreType.v2fly;
+            }
+            return item.coreType;
+        }
         #endregion
 
     }
@@ -570,6 +585,10 @@ namespace v2rayN.Mode
         {
             get; set;
         } = string.Empty;
+        public ECoreType? coreType
+        {
+            get; set;
+        }
     }
 
     [Serializable]
@@ -778,6 +797,21 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string remarks
+        {
+            get; set;
+        }
+    }
+
+
+    [Serializable]
+    public class CoreTypeItem
+    {
+        public EConfigType configType
+        {
+            get; set;
+        }
+
+        public ECoreType coreType
         {
             get; set;
         }

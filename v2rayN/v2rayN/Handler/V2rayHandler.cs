@@ -36,27 +36,10 @@ namespace v2rayN.Handler
         /// </summary>
         public void LoadV2ray(Config config)
         {
-            if (config.coreType == ECoreType.v2fly_core)
-            {
-                lstV2ray = new List<string>
-                {
-                    "wv2ray",
-                    "v2ray"
-                };
-                coreUrl = Global.v2flyCoreUrl;
-            }
-            else
-            {
-                lstV2ray = new List<string>
-                {
-                    "xray"
-                };
-                coreUrl = Global.xrayCoreUrl;
-            }
-
             if (Global.reloadV2ray)
             {
                 var item = ConfigHandler.GetDefaultServer(ref config);
+                SetCore(config, item);
                 string fileName = Utils.GetPath(v2rayConfigRes);
                 if (V2rayConfigHandler.GenerateClientConfig(item, fileName, false, out string msg) != 0)
                 {
@@ -332,6 +315,33 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+        private void SetCore(Config config, VmessItem item)
+        {
+            var coreType = config.GetCoreType((EConfigType)item.configType);
+            if (item.coreType != null)
+            {
+                coreType = (ECoreType)item.coreType;
+            }
+
+            if (coreType == ECoreType.v2fly)
+            {
+                lstV2ray = new List<string>
+                {
+                    "wv2ray",
+                    "v2ray"
+                };
+                coreUrl = Global.v2flyCoreUrl;
+            }
+            else
+            {
+                lstV2ray = new List<string>
+                {
+                    "xray"
+                };
+                coreUrl = Global.xrayCoreUrl;
             }
         }
     }

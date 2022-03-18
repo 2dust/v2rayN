@@ -40,6 +40,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cmbCoreType = new System.Windows.Forms.ComboBox();
+            this.labCoreType = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +56,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbCoreType);
+            this.groupBox1.Controls.Add(this.labCoreType);
             this.groupBox1.Controls.Add(this.btnBrowse);
             this.groupBox1.Controls.Add(this.txtAddress);
             this.groupBox1.Controls.Add(this.label13);
@@ -115,6 +119,18 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // cmbCoreType
+            // 
+            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
+            this.cmbCoreType.Name = "cmbCoreType";
+            // 
+            // labCoreType
+            // 
+            resources.ApplyResources(this.labCoreType, "labCoreType");
+            this.labCoreType.Name = "labCoreType";
+            // 
             // AddServer2Form
             // 
             resources.ApplyResources(this, "$this");
@@ -146,5 +162,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.ComboBox cmbCoreType;
+        private System.Windows.Forms.Label labCoreType;
     }
 }

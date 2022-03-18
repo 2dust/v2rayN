@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="$this.Text" xml:space="preserve">
-    <value>编辑自定义配置服务器</value>
+    <value>自定义配置</value>
+  </data>
+  <data name="btnBrowse.Text" xml:space="preserve">
+    <value>浏览(&amp;B)</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
@@ -128,6 +131,9 @@
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器</value>
+  </data>
+  <data name="labCoreType.Text" xml:space="preserve">
+    <value>Core类型</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>地址(address)</value>

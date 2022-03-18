@@ -637,7 +637,7 @@
     <value>3, 3</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>648, 421</value>
+    <value>722, 421</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -661,7 +661,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -775,7 +775,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1117,7 +1117,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="tabPage6.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1299,57 +1299,6 @@
   <data name="&gt;&gt;chkIgnoreGeoUpdateCore.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="cmbCoreType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>325, 130</value>
-  </data>
-  <data name="cmbCoreType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 20</value>
-  </data>
-  <data name="cmbCoreType.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
-  </data>
-  <data name="&gt;&gt;cmbCoreType.Name" xml:space="preserve">
-    <value>cmbCoreType</value>
-  </data>
-  <data name="&gt;&gt;cmbCoreType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbCoreType.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
-  <data name="&gt;&gt;cmbCoreType.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 134</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 12</value>
-  </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Core Type</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>tabPage7</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="chkKeepOlderDedupl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1378,7 +1327,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkKeepOlderDedupl.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
     <value>161, 84</value>
@@ -1399,7 +1348,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;cbFreshrate.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="lbFreshrate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1429,7 +1378,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;lbFreshrate.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="chkEnableStatistics.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1459,7 +1408,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkEnableStatistics.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="chkAllowLANConn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1486,7 +1435,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAllowLANConn.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="chkAutoRun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1513,7 +1462,7 @@
     <value>tabPage7</value>
   </data>
   <data name="&gt;&gt;chkAutoRun.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>11</value>
   </data>
   <data name="tabPage7.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1522,7 +1471,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="tabPage7.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1541,6 +1490,339 @@
   </data>
   <data name="&gt;&gt;tabPage7.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="cmbCoreType6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 172</value>
+  </data>
+  <data name="cmbCoreType6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType6.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType6.Name" xml:space="preserve">
+    <value>cmbCoreType6</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType6.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labCoreType6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 176</value>
+  </data>
+  <data name="labCoreType6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType6.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
+  </data>
+  <data name="labCoreType6.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType6.Name" xml:space="preserve">
+    <value>labCoreType6</value>
+  </data>
+  <data name="&gt;&gt;labCoreType6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType6.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cmbCoreType5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 146</value>
+  </data>
+  <data name="cmbCoreType5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType5.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType5.Name" xml:space="preserve">
+    <value>cmbCoreType5</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType5.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labCoreType5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 150</value>
+  </data>
+  <data name="labCoreType5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType5.TabIndex" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="labCoreType5.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType5.Name" xml:space="preserve">
+    <value>labCoreType5</value>
+  </data>
+  <data name="&gt;&gt;labCoreType5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType5.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType5.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cmbCoreType4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 120</value>
+  </data>
+  <data name="cmbCoreType4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType4.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType4.Name" xml:space="preserve">
+    <value>cmbCoreType4</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType4.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType4.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="labCoreType4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 124</value>
+  </data>
+  <data name="labCoreType4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType4.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="labCoreType4.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType4.Name" xml:space="preserve">
+    <value>labCoreType4</value>
+  </data>
+  <data name="&gt;&gt;labCoreType4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType4.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType4.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="cmbCoreType3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 94</value>
+  </data>
+  <data name="cmbCoreType3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType3.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType3.Name" xml:space="preserve">
+    <value>cmbCoreType3</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType3.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType3.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="labCoreType3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 98</value>
+  </data>
+  <data name="labCoreType3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType3.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="labCoreType3.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType3.Name" xml:space="preserve">
+    <value>labCoreType3</value>
+  </data>
+  <data name="&gt;&gt;labCoreType3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType3.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType3.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="cmbCoreType2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 68</value>
+  </data>
+  <data name="cmbCoreType2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType2.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType2.Name" xml:space="preserve">
+    <value>cmbCoreType2</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType2.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType2.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="labCoreType2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 72</value>
+  </data>
+  <data name="labCoreType2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType2.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="labCoreType2.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType2.Name" xml:space="preserve">
+    <value>labCoreType2</value>
+  </data>
+  <data name="&gt;&gt;labCoreType2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType2.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType2.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="cmbCoreType1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 42</value>
+  </data>
+  <data name="cmbCoreType1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 20</value>
+  </data>
+  <data name="cmbCoreType1.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType1.Name" xml:space="preserve">
+    <value>cmbCoreType1</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType1.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType1.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="labCoreType1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labCoreType1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labCoreType1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>45, 46</value>
+  </data>
+  <data name="labCoreType1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="labCoreType1.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="labCoreType1.Text" xml:space="preserve">
+    <value>Core Type</value>
+  </data>
+  <data name="&gt;&gt;labCoreType1.Name" xml:space="preserve">
+    <value>labCoreType1</value>
+  </data>
+  <data name="&gt;&gt;labCoreType1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType1.Parent" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType1.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="tabPageCoreType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPageCoreType.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageCoreType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>728, 427</value>
+  </data>
+  <data name="tabPageCoreType.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tabPageCoreType.Text" xml:space="preserve">
+    <value>CoreType settings</value>
+  </data>
+  <data name="&gt;&gt;tabPageCoreType.Name" xml:space="preserve">
+    <value>tabPageCoreType</value>
+  </data>
+  <data name="&gt;&gt;tabPageCoreType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageCoreType.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPageCoreType.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1636,7 +1918,7 @@
     <value>0, 0</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
@@ -1660,7 +1942,7 @@
     <value>4, 22</value>
   </data>
   <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 427</value>
+    <value>728, 427</value>
   </data>
   <data name="tabPage3.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1678,7 +1960,7 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabPage3.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1687,7 +1969,7 @@
     <value>0, 10</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 453</value>
+    <value>736, 453</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1735,7 +2017,7 @@
     <value>0, 463</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 60</value>
+    <value>736, 60</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1759,7 +2041,7 @@
     <value>0, 0</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 10</value>
+    <value>736, 10</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1783,7 +2065,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>662, 523</value>
+    <value>736, 523</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

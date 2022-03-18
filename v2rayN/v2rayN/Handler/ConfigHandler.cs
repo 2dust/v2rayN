@@ -250,34 +250,16 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static int CopyServer(ref Config config, VmessItem item)
+        public static int CopyServer(ref Config config, List<VmessItem> indexs)
         {
-            if (item == null)
+            foreach (var item in indexs)
             {
-                return -1;
+                VmessItem vmessItem = Utils.DeepCopy(item);
+                vmessItem.indexId = string.Empty;
+                vmessItem.remarks = string.Format("{0}-clone", item.remarks);
+
+                AddServerCommon(ref config, vmessItem);
             }
-
-            VmessItem vmessItem = new VmessItem
-            {
-                configVersion = item.configVersion,
-                address = item.address,
-                port = item.port,
-                id = item.id,
-                alterId = item.alterId,
-                security = item.security,
-                network = item.network,
-                remarks = string.Format("{0}-clone", item.remarks),
-                headerType = item.headerType,
-                requestHost = item.requestHost,
-                path = item.path,
-                streamSecurity = item.streamSecurity,
-                allowInsecure = item.allowInsecure,
-                configType = item.configType,
-                flow = item.flow,
-                sni = item.sni
-            };
-
-            AddServerCommon(ref config, vmessItem);
 
             ToJsonFile(config);
 

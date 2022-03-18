@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using v2rayN.Base;
@@ -16,13 +17,13 @@ namespace v2rayN.Forms
 
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
-            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
-
             InitBase();
 
             InitKCP();
 
             InitGUI();
+
+            InitCoreType();
         }
 
         /// <summary>
@@ -123,11 +124,40 @@ namespace v2rayN.Forms
             }
 
             chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
-            cmbCoreType.SelectedIndex = (int)config.coreType;
             txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
             chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
             chkEnableSecurityProtocolTls13.Checked = config.enableSecurityProtocolTls13;
         }
+
+        private void InitCoreType()
+        {
+            if (config.coreTypeItem == null)
+            {
+                config.coreTypeItem = new List<CoreTypeItem>();
+            }
+
+            foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
+            {
+                if (config.coreTypeItem.FindIndex(t => t.configType == it) >= 0)
+                {
+                    continue;
+                }
+
+                config.coreTypeItem.Add(new CoreTypeItem()
+                {
+                    configType = it,
+                    coreType = ECoreType.v2fly
+                });
+            }
+            for (int k = 1; k <= config.coreTypeItem.Count; k++)
+            {
+                var item = config.coreTypeItem[k - 1];
+                ((ComboBox)tabPageCoreType.Controls[$"cmbCoreType{k}"]).Items.AddRange(Global.coreTypes.ToArray());
+                tabPageCoreType.Controls[$"labCoreType{k}"].Text = item.configType.ToString();
+                tabPageCoreType.Controls[$"cmbCoreType{k}"].Text = item.coreType.ToString();
+            }
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (SaveBase() != 0)
@@ -142,6 +172,11 @@ namespace v2rayN.Forms
             }
 
             if (SaveGUI() != 0)
+            {
+                return;
+            }
+
+            if (SaveCoreType() != 0)
             {
                 return;
             }
@@ -308,10 +343,20 @@ namespace v2rayN.Forms
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
-            config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
             config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
             config.uiItem.enableAutoAdjustMainLvColWidth = chkEnableAutoAdjustMainLvColWidth.Checked;
             config.enableSecurityProtocolTls13 = chkEnableSecurityProtocolTls13.Checked;
+
+            return 0;
+        }
+
+        private int SaveCoreType()
+        {
+            for (int k = 1; k <= config.coreTypeItem.Count; k++)
+            {
+                var item = config.coreTypeItem[k - 1];
+                item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), tabPageCoreType.Controls[$"cmbCoreType{k}"].Text);
+            }
 
             return 0;
         }

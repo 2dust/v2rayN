@@ -496,7 +496,7 @@ namespace v2rayN.Forms
             groupId = string.Empty;
             //groupId = tabGroup.TabPages[tabGroup.SelectedIndex].Name;
             groupId = tabGroup.SelectedTab.Name;
-            
+
             RefreshServers();
 
             lvServers.Focus();
@@ -579,29 +579,17 @@ namespace v2rayN.Forms
         private void ShowServerForm(int configType, int index)
         {
             BaseServerForm fm;
-            switch (configType)
+            if (configType == (int)EConfigType.Custom)
             {
-                case (int)EConfigType.Vmess:
-                    fm = new AddServerForm();
-                    break;
-                case (int)EConfigType.Shadowsocks:
-                    fm = new AddServer3Form();
-                    break;
-                case (int)EConfigType.Socks:
-                    fm = new AddServer4Form();
-                    break;
-                case (int)EConfigType.VLESS:
-                    fm = new AddServer5Form();
-                    break;
-                case (int)EConfigType.Trojan:
-                    fm = new AddServer6Form();
-                    break;
-                default:
-                    fm = new AddServer2Form();
-                    break;
+                fm = new AddServer2Form();
             }
+            else
+            {
+                fm = new AddServerForm();
+            }            
             fm.vmessItem = index >= 0 ? lstVmess[index] : null;
             fm.groupId = groupId;
+            fm.eConfigType = (EConfigType)configType;
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 RefreshServers();
@@ -714,7 +702,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            if (ConfigHandler.CopyServer(ref config, lstVmess[index]) == 0)
+            if (ConfigHandler.CopyServer(ref config, lstSelecteds) == 0)
             {
                 RefreshServers();
             }

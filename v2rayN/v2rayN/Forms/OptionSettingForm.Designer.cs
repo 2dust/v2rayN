@@ -75,14 +75,25 @@
             this.txtautoUpdateInterval = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.chkIgnoreGeoUpdateCore = new System.Windows.Forms.CheckBox();
-            this.cmbCoreType = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.chkKeepOlderDedupl = new System.Windows.Forms.CheckBox();
             this.cbFreshrate = new System.Windows.Forms.ComboBox();
             this.lbFreshrate = new System.Windows.Forms.Label();
             this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
             this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
+            this.tabPageCoreType = new System.Windows.Forms.TabPage();
+            this.cmbCoreType6 = new System.Windows.Forms.ComboBox();
+            this.labCoreType6 = new System.Windows.Forms.Label();
+            this.cmbCoreType5 = new System.Windows.Forms.ComboBox();
+            this.labCoreType5 = new System.Windows.Forms.Label();
+            this.cmbCoreType4 = new System.Windows.Forms.ComboBox();
+            this.labCoreType4 = new System.Windows.Forms.Label();
+            this.cmbCoreType3 = new System.Windows.Forms.ComboBox();
+            this.labCoreType3 = new System.Windows.Forms.Label();
+            this.cmbCoreType2 = new System.Windows.Forms.ComboBox();
+            this.labCoreType2 = new System.Windows.Forms.Label();
+            this.cmbCoreType1 = new System.Windows.Forms.ComboBox();
+            this.labCoreType1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -97,6 +108,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPageCoreType.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -116,6 +128,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPageCoreType);
             this.tabControl1.Controls.Add(this.tabPage3);
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
@@ -382,8 +395,6 @@
             this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
             this.tabPage7.Controls.Add(this.label15);
             this.tabPage7.Controls.Add(this.chkIgnoreGeoUpdateCore);
-            this.tabPage7.Controls.Add(this.cmbCoreType);
-            this.tabPage7.Controls.Add(this.label4);
             this.tabPage7.Controls.Add(this.chkKeepOlderDedupl);
             this.tabPage7.Controls.Add(this.cbFreshrate);
             this.tabPage7.Controls.Add(this.lbFreshrate);
@@ -429,18 +440,6 @@
             this.chkIgnoreGeoUpdateCore.Name = "chkIgnoreGeoUpdateCore";
             this.chkIgnoreGeoUpdateCore.UseVisualStyleBackColor = true;
             // 
-            // cmbCoreType
-            // 
-            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCoreType.FormattingEnabled = true;
-            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
-            this.cmbCoreType.Name = "cmbCoreType";
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
             // chkKeepOlderDedupl
             // 
             resources.ApplyResources(this.chkKeepOlderDedupl, "chkKeepOlderDedupl");
@@ -476,6 +475,96 @@
             resources.ApplyResources(this.chkAutoRun, "chkAutoRun");
             this.chkAutoRun.Name = "chkAutoRun";
             this.chkAutoRun.UseVisualStyleBackColor = true;
+            // 
+            // tabPageCoreType
+            // 
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType6);
+            this.tabPageCoreType.Controls.Add(this.labCoreType6);
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType5);
+            this.tabPageCoreType.Controls.Add(this.labCoreType5);
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType4);
+            this.tabPageCoreType.Controls.Add(this.labCoreType4);
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType3);
+            this.tabPageCoreType.Controls.Add(this.labCoreType3);
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType2);
+            this.tabPageCoreType.Controls.Add(this.labCoreType2);
+            this.tabPageCoreType.Controls.Add(this.cmbCoreType1);
+            this.tabPageCoreType.Controls.Add(this.labCoreType1);
+            resources.ApplyResources(this.tabPageCoreType, "tabPageCoreType");
+            this.tabPageCoreType.Name = "tabPageCoreType";
+            this.tabPageCoreType.UseVisualStyleBackColor = true;
+            // 
+            // cmbCoreType6
+            // 
+            this.cmbCoreType6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType6.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType6, "cmbCoreType6");
+            this.cmbCoreType6.Name = "cmbCoreType6";
+            // 
+            // labCoreType6
+            // 
+            resources.ApplyResources(this.labCoreType6, "labCoreType6");
+            this.labCoreType6.Name = "labCoreType6";
+            // 
+            // cmbCoreType5
+            // 
+            this.cmbCoreType5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType5.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType5, "cmbCoreType5");
+            this.cmbCoreType5.Name = "cmbCoreType5";
+            // 
+            // labCoreType5
+            // 
+            resources.ApplyResources(this.labCoreType5, "labCoreType5");
+            this.labCoreType5.Name = "labCoreType5";
+            // 
+            // cmbCoreType4
+            // 
+            this.cmbCoreType4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType4.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType4, "cmbCoreType4");
+            this.cmbCoreType4.Name = "cmbCoreType4";
+            // 
+            // labCoreType4
+            // 
+            resources.ApplyResources(this.labCoreType4, "labCoreType4");
+            this.labCoreType4.Name = "labCoreType4";
+            // 
+            // cmbCoreType3
+            // 
+            this.cmbCoreType3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType3.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType3, "cmbCoreType3");
+            this.cmbCoreType3.Name = "cmbCoreType3";
+            // 
+            // labCoreType3
+            // 
+            resources.ApplyResources(this.labCoreType3, "labCoreType3");
+            this.labCoreType3.Name = "labCoreType3";
+            // 
+            // cmbCoreType2
+            // 
+            this.cmbCoreType2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType2.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType2, "cmbCoreType2");
+            this.cmbCoreType2.Name = "cmbCoreType2";
+            // 
+            // labCoreType2
+            // 
+            resources.ApplyResources(this.labCoreType2, "labCoreType2");
+            this.labCoreType2.Name = "labCoreType2";
+            // 
+            // cmbCoreType1
+            // 
+            this.cmbCoreType1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType1.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType1, "cmbCoreType1");
+            this.cmbCoreType1.Name = "cmbCoreType1";
+            // 
+            // labCoreType1
+            // 
+            resources.ApplyResources(this.labCoreType1, "labCoreType1");
+            this.labCoreType1.Name = "labCoreType1";
             // 
             // tabPage3
             // 
@@ -548,6 +637,8 @@
             this.tabPage6.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
+            this.tabPageCoreType.ResumeLayout(false);
+            this.tabPageCoreType.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -607,8 +698,6 @@
         private System.Windows.Forms.LinkLabel linkDnsObjectDoc;
         private System.Windows.Forms.TextBox txtremoteDNS;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox cmbCoreType;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkIgnoreGeoUpdateCore;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox txtsystemProxyExceptions;
@@ -620,5 +709,18 @@
         private System.Windows.Forms.Button btnSetLoopback;
         private System.Windows.Forms.CheckBox chkEnableAutoAdjustMainLvColWidth;
         private System.Windows.Forms.CheckBox chkEnableSecurityProtocolTls13;
+        private System.Windows.Forms.TabPage tabPageCoreType;
+        private System.Windows.Forms.ComboBox cmbCoreType1;
+        private System.Windows.Forms.Label labCoreType1;
+        private System.Windows.Forms.ComboBox cmbCoreType6;
+        private System.Windows.Forms.Label labCoreType6;
+        private System.Windows.Forms.ComboBox cmbCoreType5;
+        private System.Windows.Forms.Label labCoreType5;
+        private System.Windows.Forms.ComboBox cmbCoreType4;
+        private System.Windows.Forms.Label labCoreType4;
+        private System.Windows.Forms.ComboBox cmbCoreType3;
+        private System.Windows.Forms.Label labCoreType3;
+        private System.Windows.Forms.ComboBox cmbCoreType2;
+        private System.Windows.Forms.Label labCoreType2;
     }
 }

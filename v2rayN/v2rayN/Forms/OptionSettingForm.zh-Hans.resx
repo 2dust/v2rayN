@@ -334,4 +334,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="tabPageCoreType.Text" xml:space="preserve">
+    <value>  Core类型设置  </value>
+  </data>
 </root>
