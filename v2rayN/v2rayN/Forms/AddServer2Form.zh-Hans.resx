@@ -126,6 +126,9 @@
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
+  <data name="btnEdit.Text" xml:space="preserve">
+    <value>编辑(&amp;E)</value>
+  </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>确定(&amp;O)</value>
   </data>

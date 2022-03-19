@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -66,6 +68,11 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("PleaseFillRemarks"));
                 return;
             }
+            if (Utils.IsNullOrEmpty(txtAddress.Text))
+            {
+                UI.Show(UIRes.I18N("FillServerAddressCustom"));
+                return;
+            }
             vmessItem.remarks = remarks;
             if (Utils.IsNullOrEmpty(cmbCoreType.Text))
             {
@@ -129,6 +136,19 @@ namespace v2rayN.Forms
             {
                 UI.ShowWarning(UIRes.I18N("FailedImportedCustomServer"));
             }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            var address = txtAddress.Text;
+            if (Utils.IsNullOrEmpty(address))
+            {
+                UI.Show(UIRes.I18N("FillServerAddressCustom"));
+                return;
+            }
+
+            address = Path.Combine(Utils.GetTempPath(), address);
+            Process.Start(address);
         }
     }
 }

@@ -250,6 +250,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please browse to import server configuration 的本地化字符串。
+        /// </summary>
+        internal static string FillServerAddressCustom {
+            get {
+                return ResourceManager.GetString("FillServerAddressCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill in the user ID 的本地化字符串。
         /// </summary>
         internal static string FillUUID {

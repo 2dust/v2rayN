@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServer2Form));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.cmbCoreType = new System.Windows.Forms.ComboBox();
+            this.labCoreType = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -40,8 +43,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cmbCoreType = new System.Windows.Forms.ComboBox();
-            this.labCoreType = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +57,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.cmbCoreType);
             this.groupBox1.Controls.Add(this.labCoreType);
             this.groupBox1.Controls.Add(this.btnBrowse);
@@ -67,6 +69,25 @@
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // btnEdit
+            // 
+            resources.ApplyResources(this.btnEdit, "btnEdit");
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // cmbCoreType
+            // 
+            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
+            this.cmbCoreType.Name = "cmbCoreType";
+            // 
+            // labCoreType
+            // 
+            resources.ApplyResources(this.labCoreType, "labCoreType");
+            this.labCoreType.Name = "labCoreType";
             // 
             // btnBrowse
             // 
@@ -119,18 +140,6 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
-            // cmbCoreType
-            // 
-            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCoreType.FormattingEnabled = true;
-            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
-            this.cmbCoreType.Name = "cmbCoreType";
-            // 
-            // labCoreType
-            // 
-            resources.ApplyResources(this.labCoreType, "labCoreType");
-            this.labCoreType.Name = "labCoreType";
-            // 
             // AddServer2Form
             // 
             resources.ApplyResources(this, "$this");
@@ -164,5 +173,6 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.ComboBox cmbCoreType;
         private System.Windows.Forms.Label labCoreType;
+        private System.Windows.Forms.Button btnEdit;
     }
 }

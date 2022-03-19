@@ -451,4 +451,7 @@
   <data name="AllGroupServers" xml:space="preserve">
     <value>All servers</value>
   </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Please browse to import server configuration</value>
+  </data>
 </root>
