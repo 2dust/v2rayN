@@ -23,6 +23,7 @@ namespace v2rayN.Handler
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
         private List<string> lstV2ray;
         private string coreUrl;
+        private string coreArguments;
         public event ProcessDelegate ProcessEvent;
         //private int processId = 0;
         private Process _process;
@@ -39,6 +40,12 @@ namespace v2rayN.Handler
             if (Global.reloadV2ray)
             {
                 var item = ConfigHandler.GetDefaultServer(ref config);
+                if (item == null)
+                {
+                    ShowMsg(false, UIRes.I18N("CheckServerSettings"));
+                    return;
+                }
+
                 SetCore(config, item);
                 string fileName = Utils.GetPath(v2rayConfigRes);
                 if (V2rayConfigHandler.GenerateClientConfig(item, fileName, false, out string msg) != 0)
@@ -196,6 +203,7 @@ namespace v2rayN.Handler
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = fileName,
+                        Arguments = coreArguments,
                         WorkingDirectory = Utils.StartupPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
@@ -320,6 +328,10 @@ namespace v2rayN.Handler
 
         private void SetCore(Config config, VmessItem item)
         {
+            if (item == null)
+            {
+                return;
+            }
             var coreType = config.GetCoreType(item.configType);
             if (item.coreType != null)
             {
@@ -334,14 +346,27 @@ namespace v2rayN.Handler
                     "v2ray"
                 };
                 coreUrl = Global.v2flyCoreUrl;
+                coreArguments = string.Empty;
             }
-            else
+            else if (coreType == ECoreType.Xray)
             {
                 lstV2ray = new List<string>
                 {
                     "xray"
                 };
                 coreUrl = Global.xrayCoreUrl;
+                coreArguments = string.Empty;
+            }
+            else if (coreType == ECoreType.clash)
+            {
+                lstV2ray = new List<string>
+                {
+                    "clash-windows-amd64",
+                    "clash-windows-386",
+                    "clash"
+                };
+                coreUrl = Global.clashCoreUrl;
+                coreArguments = "-f config.json";
             }
         }
     }

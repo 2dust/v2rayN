@@ -426,7 +426,12 @@ namespace v2rayN.Handler
         public static int AddCustomServer(ref Config config, VmessItem vmessItem)
         {
             var fileName = vmessItem.address;
-            string newFileName = string.Format("{0}.json", Utils.GetGUID());
+            if (!File.Exists(fileName))
+            {
+                return -1;
+            }
+            var ext = Path.GetExtension(fileName);
+            string newFileName = string.Format("{0}{1}", Utils.GetGUID(), ext);
             //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
 
             try

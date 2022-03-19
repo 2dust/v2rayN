@@ -14,6 +14,9 @@ namespace v2rayN
         public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
         public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
+        public const string clashCoreUrl = "https://github.com/Dreamacro/clash/releases";
+
+        
 
 
         /// <summary>

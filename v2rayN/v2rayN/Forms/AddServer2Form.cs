@@ -18,6 +18,7 @@ namespace v2rayN.Forms
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
             cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
+            cmbCoreType.Items.Add("clash");
             cmbCoreType.Items.Add(string.Empty);
 
             txtAddress.ReadOnly = true;
@@ -112,7 +113,7 @@ namespace v2rayN.Forms
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Multiselect = false,
-                Filter = "Config|*.json|All|*.*"
+                Filter = "Config|*.json|YAML|*.yaml|All|*.*"
             };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
