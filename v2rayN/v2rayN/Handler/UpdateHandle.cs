@@ -210,7 +210,7 @@ namespace v2rayN.Handler
                         //ConfigHandler.RemoveServerViaSubid(ref config, id);
                         //_updateFunc(false, $"{hashCode}{UIRes.I18N("MsgClearSubscription")}");
                         //  RefreshServers();
-                        int ret = MainFormHandler.Instance.AddBatchServers(config, result, id, groupId);
+                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, groupId);
                         if (ret > 0)
                         {
                             // RefreshServers();

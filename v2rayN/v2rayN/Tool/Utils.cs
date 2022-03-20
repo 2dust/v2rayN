@@ -943,19 +943,21 @@ namespace v2rayN
         #region TempPath
 
         // return path to store temporary files
-        public static string GetTempPath()
+        public static string GetTempPath(string filename = "")
         {
             string _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
             }
-            return _tempPath;
-        }
-
-        public static string GetTempPath(string filename)
-        {
-            return Path.Combine(GetTempPath(), filename);
+            if (string.IsNullOrEmpty(filename))
+            {
+                return _tempPath;
+            }
+            else
+            {
+                return Path.Combine(_tempPath, filename);
+            }
         }
 
         public static string UnGzip(byte[] buf)
@@ -968,6 +970,32 @@ namespace v2rayN
                 input.CopyTo(sb);
             }
             return Encoding.UTF8.GetString(sb.ToArray());
+        }
+
+        public static string GetBackupPath(string filename)
+        {
+            string _tempPath = Path.Combine(StartupPath(), "guiBackups");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            return Path.Combine(_tempPath, filename);
+        }
+        public static string GetConfigPath(string filename = "")
+        {
+            string _tempPath = Path.Combine(StartupPath(), "guiConfigs");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            if (string.IsNullOrEmpty(filename))
+            {
+                return _tempPath;
+            }
+            else
+            {
+                return Path.Combine(_tempPath, filename);
+            }
         }
 
         #endregion

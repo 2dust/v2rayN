@@ -289,12 +289,12 @@ namespace v2rayN.Mode
         {
             if (coreTypeItem == null)
             {
-                return ECoreType.v2fly;
+                return ECoreType.Xray;
             }
             var item = coreTypeItem.FirstOrDefault(it => it.configType == eConfigType);
             if (item == null)
             {
-                return ECoreType.v2fly;
+                return ECoreType.Xray;
             }
             return item.coreType;
         }

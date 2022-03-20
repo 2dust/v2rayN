@@ -586,7 +586,7 @@ namespace v2rayN.Forms
             else
             {
                 fm = new AddServerForm();
-            }            
+            }
             fm.vmessItem = index >= 0 ? lstVmess[index] : null;
             fm.groupId = groupId;
             fm.eConfigType = configType;
@@ -688,8 +688,7 @@ namespace v2rayN.Forms
         private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
         {
             int oldCount = lstVmess.Count;
-            ConfigHandler.DedupServerList(ref config, ref lstVmess);
-            int newCount = lstVmess.Count;
+            int newCount = ConfigHandler.DedupServerList(ref config, ref lstVmess);          
             RefreshServers();
             _ = LoadV2ray();
             UI.Show(string.Format(UIRes.I18N("RemoveDuplicateServerResult"), oldCount, newCount));
@@ -964,7 +963,7 @@ namespace v2rayN.Forms
         private void menuAddServers_Click(object sender, EventArgs e)
         {
             string clipboardData = Utils.GetClipboardData();
-            int ret = MainFormHandler.Instance.AddBatchServers(config, clipboardData, "", groupId);
+            int ret = ConfigHandler.AddBatchServers(ref config, clipboardData, "", groupId);
             if (ret > 0)
             {
                 RefreshServers();
@@ -994,7 +993,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                int ret = MainFormHandler.Instance.AddBatchServers(config, result, "", groupId);
+                int ret = ConfigHandler.AddBatchServers(ref config, result, "", groupId);
                 if (ret > 0)
                 {
                     RefreshServers();

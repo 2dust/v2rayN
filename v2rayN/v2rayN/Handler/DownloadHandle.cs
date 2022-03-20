@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using v2rayN.Base;
 
 namespace v2rayN.Handler
@@ -139,6 +140,7 @@ namespace v2rayN.Handler
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
 
                 WebClientEx ws = new WebClientEx();
+                ws.Encoding = Encoding.UTF8;
                 if (webProxy != null)
                 {
                     ws.Proxy = webProxy;
@@ -197,7 +199,7 @@ namespace v2rayN.Handler
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
 
                 WebClientEx ws = new WebClientEx();
-
+                ws.Encoding = Encoding.UTF8;
                 return ws.DownloadString(new Uri(url));
             }
             catch (Exception ex)

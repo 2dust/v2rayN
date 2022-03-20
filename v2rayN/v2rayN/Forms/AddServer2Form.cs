@@ -128,7 +128,7 @@ namespace v2rayN.Forms
             vmessItem.address = fileName;
             vmessItem.remarks = txtRemarks.Text;
 
-            if (ConfigHandler.AddCustomServer(ref config, vmessItem) == 0)
+            if (ConfigHandler.AddCustomServer(ref config, vmessItem, false) == 0)
             {
                 BindingServer();
                 UI.Show(UIRes.I18N("SuccessfullyImportedCustomServer"));
@@ -148,7 +148,7 @@ namespace v2rayN.Forms
                 return;
             }
 
-            address = Path.Combine(Utils.GetTempPath(), address);
+            address = Path.Combine(Utils.GetConfigPath(), address);
             Process.Start(address);
         }
     }

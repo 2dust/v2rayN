@@ -159,29 +159,12 @@ namespace v2rayN.Handler
             }
         }
 
-        public int AddBatchServers(Config config, string clipboardData, string subid, string groupId)
-        {
-            List<VmessItem> lstOriSub = null;
-            if (!Utils.IsNullOrEmpty(subid))
-            {
-                lstOriSub = config.vmess.Where(it => it.subid == subid).ToList();
-            }
-
-            int counter = ConfigHandler.AddBatchServers(ref config, clipboardData, subid, lstOriSub, groupId);
-            if (counter < 1)
-            {
-                counter = ConfigHandler.AddBatchServers(ref config, Utils.Base64Decode(clipboardData), subid, lstOriSub, groupId);
-            }
-
-            return counter;
-        }
-
         public void BackupGuiNConfig(Config config, bool auto = false)
         {
             string fileName = $"guiNConfig_{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_fff")}.json";
             if (auto)
             {
-                fileName = Utils.GetTempPath(fileName);
+                fileName = Utils.GetBackupPath(fileName);
             }
             else
             {

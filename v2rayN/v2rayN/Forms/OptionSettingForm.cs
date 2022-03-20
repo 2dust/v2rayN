@@ -146,7 +146,7 @@ namespace v2rayN.Forms
                 config.coreTypeItem.Add(new CoreTypeItem()
                 {
                     configType = it,
-                    coreType = ECoreType.v2fly
+                    coreType = ECoreType.Xray
                 });
             }
             for (int k = 1; k <= config.coreTypeItem.Count; k++)
