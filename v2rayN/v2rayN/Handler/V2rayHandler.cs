@@ -332,11 +332,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            var coreType = config.GetCoreType(item.configType);
-            if (item.coreType != null)
-            {
-                coreType = (ECoreType)item.coreType;
-            }
+            var coreType = LazyConfig.Instance.GetCoreType(item, item.configType);
 
             if (coreType == ECoreType.v2fly)
             {

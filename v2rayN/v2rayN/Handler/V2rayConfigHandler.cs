@@ -400,7 +400,7 @@ namespace v2rayN.Handler
                     serversItem.address = node.address;
                     serversItem.port = node.port;
                     serversItem.password = node.id;
-                    if (config.GetShadowsocksSecuritys().Contains(node.security))
+                    if (LazyConfig.Instance.GetShadowsocksSecuritys().Contains(node.security))
                     {
                         serversItem.method = node.security;
                     }

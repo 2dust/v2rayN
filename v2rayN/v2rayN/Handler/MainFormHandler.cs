@@ -53,7 +53,7 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(item.customIcon) && File.Exists(item.customIcon))
                     {
                         graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
-                        graphics.DrawImage(new Bitmap(item.customIcon), 0, 0);
+                        graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
                         customIcon = true;
                     }
                 }

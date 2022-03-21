@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using v2rayN.Mode;
+using System.Linq;
 
 namespace v2rayN.Handler
 {
@@ -19,6 +21,35 @@ namespace v2rayN.Handler
         public Config GetConfig()
         {
             return _config;
+        }
+
+        public List<string> GetShadowsocksSecuritys()
+        {
+            if (GetCoreType(null, EConfigType.Shadowsocks) == ECoreType.v2fly)
+            {
+                return Global.ssSecuritys;
+            }
+
+            return Global.ssSecuritysInXray;
+        }
+
+        public ECoreType GetCoreType(VmessItem vmessItem, EConfigType eConfigType)
+        {
+            if (vmessItem != null && vmessItem.coreType != null)
+            {
+                return (ECoreType)vmessItem.coreType;
+            }
+
+            if (_config.coreTypeItem == null)
+            {
+                return ECoreType.Xray;
+            }
+            var item = _config.coreTypeItem.FirstOrDefault(it => it.configType == eConfigType);
+            if (item == null)
+            {
+                return ECoreType.Xray;
+            }
+            return item.coreType;
         }
     }
 }

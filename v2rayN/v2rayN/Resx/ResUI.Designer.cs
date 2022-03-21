@@ -115,7 +115,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound. 的本地化字符串。
+        ///   查找类似 Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually. 的本地化字符串。
         /// </summary>
         internal static string CustomServerTips {
             get {

@@ -256,16 +256,6 @@ namespace v2rayN.Mode
             return vmess.FirstOrDefault(it => it.indexId == id);
         }
 
-        public List<string> GetShadowsocksSecuritys()
-        {
-            if (GetCoreType(EConfigType.Shadowsocks) == ECoreType.v2fly)
-            {
-                return Global.ssSecuritys;
-            }
-
-            return Global.ssSecuritysInXray;
-        }
-
         public bool IsActiveNode(VmessItem item)
         {
             if (!Utils.IsNullOrEmpty(item.indexId) && item.indexId == indexId)
@@ -285,19 +275,6 @@ namespace v2rayN.Mode
             return groupItem.Where(it => it.id == groupId).FirstOrDefault()?.remarks;
         }
 
-        public ECoreType GetCoreType(EConfigType eConfigType)
-        {
-            if (coreTypeItem == null)
-            {
-                return ECoreType.Xray;
-            }
-            var item = coreTypeItem.FirstOrDefault(it => it.configType == eConfigType);
-            if (item == null)
-            {
-                return ECoreType.Xray;
-            }
-            return item.coreType;
-        }
         #endregion
 
     }
@@ -358,7 +335,7 @@ namespace v2rayN.Mode
                     break;
                 default:
                     summary += string.Format("{0}", remarks);
-                    break;                 
+                    break;
             }
             return summary;
         }

@@ -16,13 +16,7 @@ namespace v2rayN.Forms
         private void AddServerForm_Load(object sender, EventArgs e)
         {
             this.Text = (eConfigType).ToString();
-
-            cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
-            cmbSecurity3.Items.AddRange(config.GetShadowsocksSecuritys().ToArray());
-
-            cmbFlow5.Items.AddRange(Global.xtlsFlows.ToArray());
-            cmbFlow6.Items.AddRange(Global.xtlsFlows.ToArray());
-       
+            
             cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
             cmbCoreType.Items.Add(string.Empty);
 
@@ -31,12 +25,16 @@ namespace v2rayN.Forms
                 case EConfigType.Vmess:
                     panVmess.Dock = DockStyle.Fill;
                     panVmess.Visible = true;
+
+                    cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
                     break;
                 case EConfigType.Shadowsocks:
                     panSs.Dock = DockStyle.Fill;
                     panSs.Visible = true;
                     panTran.Visible = false;
                     this.Height = this.Height - panTran.Height;
+
+                    cmbSecurity3.Items.AddRange(LazyConfig.Instance.GetShadowsocksSecuritys().ToArray());
                     break;
                 case EConfigType.Socks:
                     panSocks.Dock = DockStyle.Fill;
@@ -48,11 +46,15 @@ namespace v2rayN.Forms
                     panVless.Dock = DockStyle.Fill;
                     panVless.Visible = true;
                     transportControl.AllowXtls = true;
+
+                    cmbFlow5.Items.AddRange(Global.xtlsFlows.ToArray());
                     break;
                 case EConfigType.Trojan:
                     panTrojan.Dock = DockStyle.Fill;
                     panTrojan.Visible = true;
                     transportControl.AllowXtls = true;
+
+                    cmbFlow6.Items.AddRange(Global.xtlsFlows.ToArray());
                     break;
             }
 

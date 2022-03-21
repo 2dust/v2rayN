@@ -130,7 +130,7 @@
     <value>配置格式不正确</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。在自定义配置inbound中有socks port等于设置中的port时，系统代理才可用</value>
+    <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。如需使用系统代理请手工修改监听端口。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下载开始...</value>

@@ -130,7 +130,7 @@
     <value> configuration format is incorrect</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. The system agent is available when the socks port is equal to the port in the settings in the custom configuration inbound.</value>
+    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>Downloading...</value>
