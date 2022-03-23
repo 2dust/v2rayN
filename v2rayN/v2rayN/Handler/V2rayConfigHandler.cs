@@ -921,10 +921,33 @@ namespace v2rayN.Handler
                 }
                 File.Copy(addressFileName, fileName);
 
+                //check again
+                if (!File.Exists(fileName))
+                {
+                    msg = UIRes.I18N("FailedGenDefaultConfiguration");
+                    return -1;
+                }
+
+                //overwrite port
+                var fileContent = File.ReadAllLines(fileName).ToList();
+                var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+                switch (coreType)
+                {
+                    case ECoreType.v2fly:
+                    case ECoreType.Xray:
+                        break;
+                    case ECoreType.clash:
+                        fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
+                        fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
+                        break;
+                }
+                File.WriteAllLines(fileName, fileContent);
+
                 msg = string.Format(UIRes.I18N("SuccessfulConfiguration"), $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog("GenerateClientCustomConfig", ex);
                 msg = UIRes.I18N("FailedGenDefaultConfiguration");
                 return -1;
             }
