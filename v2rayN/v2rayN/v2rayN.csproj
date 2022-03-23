@@ -199,6 +199,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Handler\SysProxyHandle.cs" />
+    <Compile Include="Mode\ESpeedActionType.cs" />
     <Compile Include="Mode\EGlobalHotkey.cs" />
     <Compile Include="Mode\ECoreType.cs" />
     <Compile Include="Mode\ESysProxyType.cs" />

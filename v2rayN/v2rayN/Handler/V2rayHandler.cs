@@ -21,7 +21,7 @@ namespace v2rayN.Handler
     class V2rayHandler
     {
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
-        private List<string> lstV2ray;
+        private List<string> lstCore;
         private string coreUrl;
         private string coreArguments;
         public event ProcessDelegate ProcessEvent;
@@ -106,7 +106,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    foreach (string vName in lstV2ray)
+                    foreach (string vName in lstCore)
                     {
                         Process[] existing = Process.GetProcessesByName(vName);
                         foreach (Process p in existing)
@@ -163,12 +163,10 @@ namespace v2rayN.Handler
             }
         }
 
-        private string V2rayFindexe()
+        private string V2rayFindexe(List<string> lstCoreTemp)
         {
-            //查找v2ray文件是否存在
             string fileName = string.Empty;
-            //lstV2ray.Reverse();
-            foreach (string name in lstV2ray)
+            foreach (string name in lstCoreTemp)
             {
                 string vName = string.Format("{0}.exe", name);
                 vName = Utils.GetPath(vName);
@@ -195,7 +193,7 @@ namespace v2rayN.Handler
 
             try
             {
-                string fileName = V2rayFindexe();
+                string fileName = V2rayFindexe(lstCore);
                 if (fileName == "") return;
 
                 Process p = new Process
@@ -249,7 +247,8 @@ namespace v2rayN.Handler
 
             try
             {
-                string fileName = V2rayFindexe();
+                coreUrl = Global.xrayCoreUrl;
+                string fileName = V2rayFindexe(new List<string> { "xray" });
                 if (fileName == "") return -1;
 
                 Process p = new Process
@@ -336,7 +335,7 @@ namespace v2rayN.Handler
 
             if (coreType == ECoreType.v2fly)
             {
-                lstV2ray = new List<string>
+                lstCore = new List<string>
                 {
                     "wv2ray",
                     "v2ray"
@@ -346,7 +345,7 @@ namespace v2rayN.Handler
             }
             else if (coreType == ECoreType.Xray)
             {
-                lstV2ray = new List<string>
+                lstCore = new List<string>
                 {
                     "xray"
                 };
@@ -355,7 +354,7 @@ namespace v2rayN.Handler
             }
             else if (coreType == ECoreType.clash)
             {
-                lstV2ray = new List<string>
+                lstCore = new List<string>
                 {
                     "clash-windows-amd64",
                     "clash-windows-386",

@@ -21,7 +21,7 @@ namespace v2rayN.Handler
             _config = config;
         }
 
-        public SpeedtestHandler(ref Config config, ref V2rayHandler v2rayHandler, List<VmessItem> selecteds, string actionType, Action<string, string> update)
+        public SpeedtestHandler(ref Config config, V2rayHandler v2rayHandler, List<VmessItem> selecteds, ESpeedActionType actionType, Action<string, string> update)
         {
             _config = config;
             _v2rayHandler = v2rayHandler;
@@ -40,19 +40,19 @@ namespace v2rayN.Handler
                 });
             }
 
-            if (actionType == "ping")
+            if (actionType == ESpeedActionType.Ping)
             {
                 Task.Run(() => RunPing());
             }
-            if (actionType == "tcping")
+            else if (actionType == ESpeedActionType.Tcping)
             {
                 Task.Run(() => RunTcping());
             }
-            else if (actionType == "realping")
+            else if (actionType == ESpeedActionType.Realping)
             {
                 Task.Run(() => RunRealPing());
             }
-            else if (actionType == "speedtest")
+            else if (actionType == ESpeedActionType.Speedtest)
             {
                 Task.Run(() => RunSpeedTest());
             }

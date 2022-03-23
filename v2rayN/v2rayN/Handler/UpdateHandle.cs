@@ -182,7 +182,7 @@ namespace v2rayN.Handler
                 string url = config.subItem[k - 1].url.TrimEx();
                 string userAgent = config.subItem[k - 1].userAgent.TrimEx();
                 string groupId = config.subItem[k - 1].groupId.TrimEx();
-                string hashCode = $"{k}->";
+                string hashCode = $"{k}){config.subItem[k - 1].remarks}->";
                 if (config.subItem[k - 1].enabled == false)
                 {
                     continue;
