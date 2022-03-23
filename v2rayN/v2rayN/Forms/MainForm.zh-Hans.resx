@@ -573,4 +573,7 @@
   <data name="tsbClose.Text" xml:space="preserve">
     <value>  关闭窗口  </value>
   </data>
+  <data name="menuMoveToGroup.Text" xml:space="preserve">
+    <value>移至分组</value>
+  </data>
 </root>

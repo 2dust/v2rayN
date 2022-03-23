@@ -1115,7 +1115,17 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        public static int MoveServerToGroup(Config config, List<VmessItem> indexs, string groupId)
+        {
+            foreach (var item in indexs)
+            {
+                item.groupId = groupId;
+            }
 
+            ToJsonFile(config);
+
+            return 0;
+        }
         #endregion
 
         #region UI

@@ -47,6 +47,7 @@
             this.menuCopyServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetDefaultServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuMoveToGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveTop = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveDown = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,9 +65,9 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.tabGroup = new System.Windows.Forms.TabControl();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.gbMsgTitle = new System.Windows.Forms.GroupBox();
@@ -208,6 +209,7 @@
             this.menuCopyServer,
             this.menuSetDefaultServer,
             this.toolStripSeparator3,
+            this.menuMoveToGroup,
             this.menuMoveTop,
             this.menuMoveUp,
             this.menuMoveDown,
@@ -226,6 +228,7 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
+            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -309,6 +312,12 @@
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // menuMoveToGroup
+            // 
+            this.menuMoveToGroup.Name = "menuMoveToGroup";
+            resources.ApplyResources(this.menuMoveToGroup, "menuMoveToGroup");
+            this.menuMoveToGroup.Click += new System.EventHandler(this.menuMoveToGroup_Click);
             // 
             // menuMoveTop
             // 
@@ -410,6 +419,13 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
+            // tsbServer
+            // 
+            this.tsbServer.DropDown = this.cmsLv;
+            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
+            resources.ApplyResources(this.tsbServer, "tsbServer");
+            this.tsbServer.Name = "tsbServer";
+            // 
             // tabGroup
             // 
             resources.ApplyResources(this.tabGroup, "tabGroup");
@@ -421,13 +437,6 @@
             // 
             resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
             this.qrCodeControl.Name = "qrCodeControl";
-            // 
-            // tsbServer
-            // 
-            this.tsbServer.DropDown = this.cmsLv;
-            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
-            resources.ApplyResources(this.tsbServer, "tsbServer");
-            this.tsbServer.Name = "tsbServer";
             // 
             // splitContainer1
             // 
@@ -1076,6 +1085,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsbGlobalHotkeySetting;
         private System.Windows.Forms.TabControl tabGroup;
         private System.Windows.Forms.ToolStripMenuItem tsbGroupSetting;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveToGroup;
     }
 }
 

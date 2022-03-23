@@ -485,6 +485,23 @@ namespace v2rayN.Forms
             }
 
             tabGroup.SelectedIndex = 0;
+
+            //menuMoveToGroup
+            menuMoveToGroup.DropDownItems.Clear();
+
+            List<ToolStripMenuItem> lst = new List<ToolStripMenuItem>();
+            foreach (var item in config.groupItem)
+            {
+                string name = item.remarks;
+
+                ToolStripMenuItem ts = new ToolStripMenuItem(name)
+                {
+                    Tag = item.id,
+                };
+                ts.Click += new EventHandler(ts_Group_Click);
+                lst.Add(ts);
+            }
+            menuMoveToGroup.DropDownItems.AddRange(lst.ToArray());
         }
 
         private void tabGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -500,6 +517,29 @@ namespace v2rayN.Forms
             RefreshServers();
 
             lvServers.Focus();
+        }
+
+        private void ts_Group_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ToolStripItem ts = (ToolStripItem)sender;
+                var groupIdSelected = Utils.ToString(ts.Tag);
+
+                int index = GetLvSelectedIndex();
+                if (index < 0)
+                {
+                    return;
+                }
+
+                if (ConfigHandler.MoveServerToGroup(config, lstSelecteds, groupIdSelected) == 0)
+                {
+                    RefreshServers();
+                }
+            }
+            catch
+            {
+            }
         }
         #endregion
 
@@ -688,7 +728,7 @@ namespace v2rayN.Forms
         private void menuRemoveDuplicateServer_Click(object sender, EventArgs e)
         {
             int oldCount = lstVmess.Count;
-            int newCount = ConfigHandler.DedupServerList(ref config, ref lstVmess);          
+            int newCount = ConfigHandler.DedupServerList(ref config, ref lstVmess);
             RefreshServers();
             _ = LoadV2ray();
             UI.Show(string.Format(UIRes.I18N("RemoveDuplicateServerResult"), oldCount, newCount));
@@ -720,11 +760,11 @@ namespace v2rayN.Forms
 
         private void menuPingServer_Click(object sender, EventArgs e)
         {
-            Speedtest("ping");
+            Speedtest(ESpeedActionType.Ping);
         }
         private void menuTcpingServer_Click(object sender, EventArgs e)
         {
-            Speedtest("tcping");
+            Speedtest(ESpeedActionType.Tcping);
         }
 
         private void menuRealPingServer_Click(object sender, EventArgs e)
@@ -737,7 +777,7 @@ namespace v2rayN.Forms
 
             //UI.Show(UIRes.I18N("SpeedServerTips"));
 
-            Speedtest("realping");
+            Speedtest(ESpeedActionType.Realping);
         }
 
         private void menuSpeedServer_Click(object sender, EventArgs e)
@@ -750,13 +790,13 @@ namespace v2rayN.Forms
 
             //UI.Show(UIRes.I18N("SpeedServerTips"));
 
-            Speedtest("speedtest");
+            Speedtest(ESpeedActionType.Speedtest);
         }
-        private void Speedtest(string actionType)
+        private void Speedtest(ESpeedActionType actionType)
         {
             if (GetLvSelectedIndex() < 0) return;
             ClearTestResult();
-            SpeedtestHandler statistics = new SpeedtestHandler(ref config, ref v2rayHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
+            SpeedtestHandler statistics = new SpeedtestHandler(ref config, v2rayHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void tsbTestMe_Click(object sender, EventArgs e)
@@ -1280,7 +1320,9 @@ namespace v2rayN.Forms
                 item.Selected = true;
             }
         }
-
+        private void menuMoveToGroup_Click(object sender, EventArgs e)
+        {
+        }
         #endregion
 
         #region 系统代理相关
