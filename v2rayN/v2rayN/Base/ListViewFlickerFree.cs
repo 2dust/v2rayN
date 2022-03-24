@@ -1,10 +1,13 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace v2rayN.Base
 {
     class ListViewFlickerFree : ListView
     {
+        Action<int, int> _updateFunc;
+
         public ListViewFlickerFree()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer
@@ -13,40 +16,82 @@ namespace v2rayN.Base
             UpdateStyles();
         }
 
-
-        public void AutoResizeColumns()
+        public void RegisterDragEvent(Action<int, int> _update)
         {
-            try
-            {
-                this.SuspendLayout();
-                Graphics graphics = this.CreateGraphics();
+            _updateFunc = _update;
+            this.AllowDrop = true;
 
-                // 原生 ColumnHeaderAutoResizeStyle.ColumnContent 将忽略列头宽度
-                this.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-                for (int i = 0; i < this.Columns.Count; i++)
-                {
-                    ColumnHeader c = this.Columns[i];
-                    int cWidth = c.Width;
-                    string MaxStr = "";
-                    Font font = this.Items[0].SubItems[0].Font;
-
-                    foreach (ListViewItem item in this.Items)
-                    {
-                        // 整行视作相同字形，不单独计算每个单元格
-                        font = item.SubItems[i].Font;
-                        string str = item.SubItems[i].Text;
-                        if (str.Length > MaxStr.Length) // 未考虑非等宽问题
-                            MaxStr = str;
-                    }
-                    int strWidth = (int)graphics.MeasureString(MaxStr, font).Width;
-                    c.Width = System.Math.Max(cWidth, strWidth);
-                }
-                this.ResumeLayout();
-            }
-            catch { }
+            this.ItemDrag += new ItemDragEventHandler(this.lv_ItemDrag);
+            this.DragDrop += new DragEventHandler(this.lv_DragDrop);
+            this.DragEnter += new DragEventHandler(this.lv_DragEnter);
+            this.DragOver += new DragEventHandler(this.lv_DragOver);
+            this.DragLeave += new EventHandler(this.lv_DragLeave);
         }
 
-      
+        private void lv_DragDrop(object sender, DragEventArgs e)
+        {
+            int targetIndex = this.InsertionMark.Index;
+            if (targetIndex == -1)
+            {
+                return;
+            }
+            if (this.InsertionMark.AppearsAfterItem)
+            {
+                targetIndex++;
+            }
+
+
+            if (this.SelectedIndices.Count <= 0)
+            {
+                return;
+            }
+
+            _updateFunc(this.SelectedIndices[0], targetIndex);
+
+            //ListViewItem draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
+            //this.BeginUpdate();
+            //this.Items.Insert(targetIndex, (ListViewItem)draggedItem.Clone());
+            //this.Items.Remove(draggedItem);
+            //this.EndUpdate();
+        }
+
+
+        private void lv_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
+        private void lv_DragLeave(object sender, EventArgs e)
+        {
+            this.InsertionMark.Index = -1;
+        }
+
+        private void lv_DragOver(object sender, DragEventArgs e)
+        {
+            Point targetPoint = this.PointToClient(new Point(e.X, e.Y));
+            int targetIndex = this.InsertionMark.NearestIndex(targetPoint);
+
+            if (targetIndex > -1)
+            {
+                Rectangle itemBounds = this.GetItemRect(targetIndex);
+                this.EnsureVisible(targetIndex);
+
+                if (targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2))
+                {
+                    this.InsertionMark.AppearsAfterItem = true;
+                }
+                else
+                {
+                    this.InsertionMark.AppearsAfterItem = false;
+                }
+            }
+            this.InsertionMark.Index = targetIndex;
+        }
+
+        private void lv_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            this.DoDragDrop(e.Item, DragDropEffects.Move);
+            this.InsertionMark.Index = -1;
+        }
     }
 }

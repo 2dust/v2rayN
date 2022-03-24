@@ -15,6 +15,7 @@ namespace v2rayN.Handler
     class ConfigHandler
     {
         private static string configRes = Global.ConfigFileName;
+        private static object objLock = new object();
 
         #region ConfigHandler
 
@@ -204,7 +205,10 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         private static void ToJsonFile(Config config)
         {
-            Utils.ToJsonFile(config, Utils.GetPath(configRes));
+            lock (objLock)
+            {
+                Utils.ToJsonFile(config, Utils.GetPath(configRes));
+            }
         }
 
         #endregion
@@ -353,7 +357,7 @@ namespace v2rayN.Handler
         /// <param name="index"></param>
         /// <param name="eMove"></param>
         /// <returns></returns>
-        public static int MoveServer(ref Config config, ref List<VmessItem> lstVmess, int index, EMove eMove)
+        public static int MoveServer(ref Config config, ref List<VmessItem> lstVmess, int index, EMove eMove, int pos = -1)
         {
             int count = lstVmess.Count;
             if (index < 0 || index > lstVmess.Count - 1)
@@ -409,6 +413,9 @@ namespace v2rayN.Handler
 
                         break;
                     }
+                case EMove.Position:
+                    lstVmess[index].sort = pos * 10 + 1;
+                    break;
             }
 
             ToJsonFile(config);
@@ -1258,7 +1265,7 @@ namespace v2rayN.Handler
         /// <param name="index"></param>
         /// <param name="eMove"></param>
         /// <returns></returns>
-        public static int MoveRoutingRule(ref RoutingItem routingItem, int index, EMove eMove)
+        public static int MoveRoutingRule(ref RoutingItem routingItem, int index, EMove eMove, int pos = -1)
         {
             int count = routingItem.rules.Count;
             if (index < 0 || index > routingItem.rules.Count - 1)
@@ -1314,6 +1321,14 @@ namespace v2rayN.Handler
                         routingItem.rules.RemoveAt(index);
                         routingItem.rules.Add(item);
 
+                        break;
+                    }
+                case EMove.Position:
+                    {
+                        var removeItem = routingItem.rules[index];
+                        var item = Utils.DeepCopy(routingItem.rules[index]);
+                        routingItem.rules.Insert(pos, item);
+                        routingItem.rules.Remove(removeItem);
                         break;
                     }
 

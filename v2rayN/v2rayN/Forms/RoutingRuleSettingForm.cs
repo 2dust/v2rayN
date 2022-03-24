@@ -54,6 +54,7 @@ namespace v2rayN.Forms
             lvRoutings.View = View.Details;
             lvRoutings.MultiSelect = true;
             lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
+            lvRoutings.RegisterDragEvent(UpdateDragEventHandler);
 
             lvRoutings.Columns.Add("", 30);
             lvRoutings.Columns.Add("outboundTag", 80);
@@ -61,10 +62,21 @@ namespace v2rayN.Forms
             lvRoutings.Columns.Add("protocol", 80);
             lvRoutings.Columns.Add("inboundTag", 80);
             lvRoutings.Columns.Add("domain", 160);
-            lvRoutings.Columns.Add("ip", 160); 
+            lvRoutings.Columns.Add("ip", 160);
             lvRoutings.Columns.Add("enable", 60);
 
             lvRoutings.EndUpdate();
+        }
+        private void UpdateDragEventHandler(int index, int targetIndex)
+        {
+            if (index < 0 || targetIndex < 0)
+            {
+                return;
+            }
+            if (ConfigHandler.MoveRoutingRule(ref routingItem, index, EMove.Position, targetIndex) == 0)
+            {
+                RefreshRoutingsView();
+            }
         }
 
         private void RefreshRoutingsView()
@@ -353,6 +365,6 @@ namespace v2rayN.Forms
 
 
         #endregion
-               
+
     }
 }

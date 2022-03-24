@@ -225,6 +225,7 @@ namespace v2rayN.Forms
             lvServers.Scrollable = true;
             lvServers.MultiSelect = true;
             lvServers.HeaderStyle = ColumnHeaderStyle.Clickable;
+            lvServers.RegisterDragEvent(UpdateDragEventHandler);
 
             lvServers.Columns.Add("", 30);
             lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
@@ -245,6 +246,18 @@ namespace v2rayN.Forms
                 lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70);
             }
             lvServers.EndUpdate();
+        }
+
+        private void UpdateDragEventHandler(int index, int targetIndex)
+        {
+            if (index < 0 || targetIndex < 0)
+            {
+                return;
+            }
+            if (ConfigHandler.MoveServer(ref config, ref lstVmess, index, EMove.Position, targetIndex) == 0)
+            {
+                RefreshServers();
+            }
         }
 
         /// <summary>
