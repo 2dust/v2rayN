@@ -19,6 +19,7 @@ namespace v2rayN.Forms
         {
             cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
             cmbCoreType.Items.Add("clash");
+            cmbCoreType.Items.Add("hysteria");
             cmbCoreType.Items.Add(string.Empty);
 
             txtAddress.ReadOnly = true;

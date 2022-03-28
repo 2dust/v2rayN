@@ -5,7 +5,8 @@ namespace v2rayN.Mode
     {
         v2fly = 1,
         Xray = 2,
-        clash = 3,
+        clash = 11,
+        hysteria = 21,
         v2rayN = 99
     }
 }

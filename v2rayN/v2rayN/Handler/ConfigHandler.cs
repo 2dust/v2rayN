@@ -940,6 +940,15 @@ namespace v2rayN.Handler
                 vmessItem.coreType = ECoreType.clash;
                 vmessItem.address = fileName;
                 vmessItem.remarks = "clash_custom";
+            }  
+            //Is Other configuration
+            else
+            { 
+                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.txt");
+                File.WriteAllText(fileName, clipboardData);
+
+                vmessItem.address = fileName;
+                vmessItem.remarks = "other_custom";
             }
 
             if (!Utils.IsNullOrEmpty(subid))

@@ -90,6 +90,14 @@ namespace v2rayN.Handler
                 arguments = "-f config.json",
                 coreUrl = Global.clashCoreUrl
             });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.hysteria,
+                coreExes = new List<string> { "hysteria-tun-windows-6.0-amd64", "hysteria-tun-windows-6.0-386", "hysteria" },
+                arguments = "",
+                coreUrl = Global.hysteriaCoreUrl
+            });
         }
 
     }
