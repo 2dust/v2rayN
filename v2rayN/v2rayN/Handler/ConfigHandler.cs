@@ -747,6 +747,10 @@ namespace v2rayN.Handler
             {
                 vmessItem.indexId = Utils.GetGUID(false);
             }
+            else if (vmessItem.indexId == config.indexId)
+            {
+                Global.reloadV2ray = true;
+            }
             if (!config.vmess.Exists(it => it.indexId == vmessItem.indexId))
             {
                 var maxSort = config.vmess.Any() ? config.vmess.Max(t => t.sort) : 0;
@@ -755,11 +759,6 @@ namespace v2rayN.Handler
                 config.vmess.Add(vmessItem);
             }
 
-            //if (config.vmess.Count == 1)
-            //{
-            //    config.indexId = config.vmess[0].indexId;
-            //    Global.reloadV2ray = true;
-            //}
             return 0;
         }
 
@@ -940,10 +939,10 @@ namespace v2rayN.Handler
                 vmessItem.coreType = ECoreType.clash;
                 vmessItem.address = fileName;
                 vmessItem.remarks = "clash_custom";
-            }  
+            }
             //Is Other configuration
             else
-            { 
+            {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.txt");
                 File.WriteAllText(fileName, clipboardData);
 
