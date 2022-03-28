@@ -104,11 +104,11 @@ namespace v2rayN.Handler
                 }
             };
             _updateFunc(false, string.Format(UIRes.I18N("MsgStartUpdating"), "v2rayN"));
-            CheckUpdateAsync("v2rayN");
+            CheckUpdateAsync(ECoreType.v2rayN);
         }
 
 
-        public void CheckUpdateCore(string type, Config config, Action<bool, string> update)
+        public void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
@@ -292,7 +292,7 @@ namespace v2rayN.Handler
 
         #region private
 
-        private async void CheckUpdateAsync(string type)
+        private async void CheckUpdateAsync(ECoreType type)
         {
             try
             {
@@ -310,15 +310,15 @@ namespace v2rayN.Handler
                 HttpClient httpClient = new HttpClient(webRequestHandler);
 
                 string url;
-                if (type == "v2fly")
+                if (type == ECoreType.v2fly)
                 {
                     url = v2flyCoreLatestUrl;
                 }
-                else if (type == "xray")
+                else if (type == ECoreType.Xray)
                 {
                     url = xrayCoreLatestUrl;
                 }
-                else if (type == "v2rayN")
+                else if (type == ECoreType.v2rayN)
                 {
                     url = nLatestUrl;
                 }
@@ -347,18 +347,18 @@ namespace v2rayN.Handler
         /// <summary>
         /// 获取V2RayCore版本
         /// </summary>
-        private string getCoreVersion(string type)
+        private string getCoreVersion(ECoreType type)
         {
             try
             {
                 var core = string.Empty;
                 var match = string.Empty;
-                if (type == "v2fly")
+                if (type == ECoreType.v2fly)
                 {
                     core = "v2ray.exe";
                     match = "V2Ray";
                 }
-                else if (type == "xray")
+                else if (type == ECoreType.Xray)
                 {
                     core = "xray.exe";
                     match = "Xray";
@@ -392,7 +392,7 @@ namespace v2rayN.Handler
                 return "";
             }
         }
-        private void responseHandler(string type, string redirectUrl)
+        private void responseHandler(ECoreType type, string redirectUrl)
         {
             try
             {
@@ -401,21 +401,21 @@ namespace v2rayN.Handler
                 string curVersion;
                 string message;
                 string url;
-                if (type == "v2fly")
+                if (type == ECoreType.v2fly)
                 {
                     curVersion = "v" + getCoreVersion(type);
                     message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
                     url = string.Format(v2flyCoreUrl, version, osBit);
                 }
-                else if (type == "xray")
+                else if (type == ECoreType.Xray)
                 {
                     curVersion = "v" + getCoreVersion(type);
                     message = string.Format(UIRes.I18N("IsLatestCore"), curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
                     url = string.Format(xrayCoreUrl, version, osBit);
                 }
-                else if (type == "v2rayN")
+                else if (type == ECoreType.v2rayN)
                 {
                     curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
                     message = string.Format(UIRes.I18N("IsLatestN"), curVersion);

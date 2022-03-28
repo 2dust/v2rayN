@@ -168,6 +168,7 @@ namespace v2rayN.Handler
                 inbound2.protocol = Global.InboundHttp;
                 inbound2.listen = inbound.listen;
                 inbound2.settings.allowTransparent = false;
+                inbound2.sniffing.enabled = inbound.sniffing.enabled;
             }
             catch
             {

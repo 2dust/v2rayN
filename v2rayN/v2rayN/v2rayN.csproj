@@ -208,6 +208,7 @@
     <Compile Include="Mode\RoutingItem.cs" />
     <Compile Include="Mode\RulesItem.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />
+    <Compile Include="Mode\CoreInfo.cs" />
     <Compile Include="Mode\SysproxyConfig.cs" />
     <Compile Include="Mode\EConfigType.cs" />
     <Compile Include="Mode\ServerTestItem.cs" />

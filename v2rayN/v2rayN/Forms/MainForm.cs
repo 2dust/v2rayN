@@ -1392,15 +1392,15 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
         {
-            CheckUpdateCore("v2fly");
+            CheckUpdateCore(ECoreType.v2fly);
         }
 
         private void tsbCheckUpdateXrayCore_Click(object sender, EventArgs e)
         {
-            CheckUpdateCore("xray");
+            CheckUpdateCore(ECoreType.Xray);
         }
 
-        private void CheckUpdateCore(string type)
+        private void CheckUpdateCore(ECoreType type)
         {
             void _updateUI(bool success, string msg)
             {

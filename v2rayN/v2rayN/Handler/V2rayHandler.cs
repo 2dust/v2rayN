@@ -21,9 +21,7 @@ namespace v2rayN.Handler
     class V2rayHandler
     {
         private static string v2rayConfigRes = Global.v2rayConfigFileName;
-        private List<string> lstCore;
-        private string coreUrl;
-        private string coreArguments;
+        private CoreInfo coreInfo;
         public event ProcessDelegate ProcessEvent;
         //private int processId = 0;
         private Process _process;
@@ -46,7 +44,11 @@ namespace v2rayN.Handler
                     return;
                 }
 
-                SetCore(config, item);
+                if (SetCore(config, item) != 0)
+                {
+                    ShowMsg(false, UIRes.I18N("CheckServerSettings"));
+                    return;
+                }
                 string fileName = Utils.GetPath(v2rayConfigRes);
                 if (V2rayConfigHandler.GenerateClientConfig(item, fileName, false, out string msg) != 0)
                 {
@@ -106,7 +108,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    foreach (string vName in lstCore)
+                    foreach (string vName in coreInfo.coreExes)
                     {
                         Process[] existing = Process.GetProcessesByName(vName);
                         foreach (Process p in existing)
@@ -178,7 +180,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(UIRes.I18N("NotFoundCore"), coreUrl);
+                string msg = string.Format(UIRes.I18N("NotFoundCore"), coreInfo.coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -193,7 +195,7 @@ namespace v2rayN.Handler
 
             try
             {
-                string fileName = V2rayFindexe(lstCore);
+                string fileName = V2rayFindexe(coreInfo.coreExes);
                 if (fileName == "") return;
 
                 Process p = new Process
@@ -201,7 +203,7 @@ namespace v2rayN.Handler
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = fileName,
-                        Arguments = coreArguments,
+                        Arguments = coreInfo.arguments,
                         WorkingDirectory = Utils.StartupPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
@@ -247,7 +249,6 @@ namespace v2rayN.Handler
 
             try
             {
-                coreUrl = Global.xrayCoreUrl;
                 string fileName = V2rayFindexe(new List<string> { "xray" });
                 if (fileName == "") return -1;
 
@@ -325,44 +326,21 @@ namespace v2rayN.Handler
             }
         }
 
-        private void SetCore(Config config, VmessItem item)
+        private int SetCore(Config config, VmessItem item)
         {
             if (item == null)
             {
-                return;
+                return -1;
             }
             var coreType = LazyConfig.Instance.GetCoreType(item, item.configType);
 
-            if (coreType == ECoreType.v2fly)
+            coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+
+            if (coreInfo == null)
             {
-                lstCore = new List<string>
-                {
-                    "wv2ray",
-                    "v2ray"
-                };
-                coreUrl = Global.v2flyCoreUrl;
-                coreArguments = string.Empty;
+                return -1;
             }
-            else if (coreType == ECoreType.Xray)
-            {
-                lstCore = new List<string>
-                {
-                    "xray"
-                };
-                coreUrl = Global.xrayCoreUrl;
-                coreArguments = string.Empty;
-            }
-            else if (coreType == ECoreType.clash)
-            {
-                lstCore = new List<string>
-                {
-                    "clash-windows-amd64",
-                    "clash-windows-386",
-                    "clash"
-                };
-                coreUrl = Global.clashCoreUrl;
-                coreArguments = "-f config.json";
-            }
+            return 0;
         }
     }
 }
