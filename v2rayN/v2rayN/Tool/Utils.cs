@@ -370,7 +370,8 @@ namespace v2rayN
 
         public static string UrlEncode(string url)
         {
-            return HttpUtility.UrlEncode(url);
+            return Uri.EscapeDataString(url);
+            //return  HttpUtility.UrlEncode(url);
         }
         public static string UrlDecode(string url)
         {

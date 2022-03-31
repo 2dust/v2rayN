@@ -508,7 +508,7 @@ namespace v2rayN.Handler
 
             i.address = u.IdnHost;
             i.port = u.Port;
-            i.remarks = Utils.UrlDecode(u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped));
+            i.remarks = u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             var q = HttpUtility.ParseQueryString(u.Query);
 
             var m = StdVmessUserInfo.Match(u.UserInfo);
@@ -590,13 +590,13 @@ namespace v2rayN.Handler
             }
             VmessItem server = new VmessItem
             {
-                remarks = Utils.UrlDecode(parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)),
+                remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
                 port = parsedUrl.Port,
             };
 
             // parse base64 UserInfo
-            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
+            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.UriEscaped);
             string userInfo = Utils.Base64Decode(rawUserInfo);
             string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
             if (userInfoParts.Length != 2)
@@ -712,7 +712,7 @@ namespace v2rayN.Handler
             }
             VmessItem server = new VmessItem
             {
-                remarks = Utils.UrlDecode(parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped)),
+                remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
                 port = parsedUrl.Port,
             };
@@ -741,7 +741,7 @@ namespace v2rayN.Handler
 
             item.address = url.IdnHost;
             item.port = url.Port;
-            item.remarks = Utils.UrlDecode(url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped));
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             item.id = url.UserInfo;
 
             var query = HttpUtility.ParseQueryString(url.Query);
@@ -761,7 +761,7 @@ namespace v2rayN.Handler
 
             item.address = url.IdnHost;
             item.port = url.Port;
-            item.remarks = Utils.UrlDecode(url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped));
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             item.id = url.UserInfo;
 
             var query = HttpUtility.ParseQueryString(url.Query);
