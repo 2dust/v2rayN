@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -101,9 +102,9 @@ namespace v2rayN.Forms
 
             ComboItem[] cbSource = new ComboItem[]
             {
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = UIRes.I18N("QuickFresh")},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = UIRes.I18N("MediumFresh")},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = UIRes.I18N("SlowFresh")},
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = ResUI.QuickFresh},
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = ResUI.MediumFresh},
+                new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = ResUI.SlowFresh},
             };
             cbFreshrate.DataSource = cbSource;
 
@@ -187,7 +188,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(ResUI.OperationFailed);
             }
         }
 
@@ -211,12 +212,12 @@ namespace v2rayN.Forms
             bool sniffingEnabled = chksniffingEnabled.Checked;
             if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
             {
-                UI.Show(UIRes.I18N("FillLocalListeningPort"));
+                UI.Show(ResUI.FillLocalListeningPort);
                 return -1;
             }
             if (Utils.IsNullOrEmpty(protocol))
             {
-                UI.Show(UIRes.I18N("PleaseSelectProtocol"));
+                UI.Show(ResUI.PleaseSelectProtocol);
                 return -1;
             }
 
@@ -229,7 +230,7 @@ namespace v2rayN.Forms
             {
                 if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
                 {
-                    UI.Show(UIRes.I18N("FillCorrectDNSText"));
+                    UI.Show(ResUI.FillCorrectDNSText);
                     return -1;
                 }
             }
@@ -248,12 +249,12 @@ namespace v2rayN.Forms
             {
                 if (Utils.IsNullOrEmpty(localPort2) || !Utils.IsNumberic(localPort2))
                 {
-                    UI.Show(UIRes.I18N("FillLocalListeningPort"));
+                    UI.Show(ResUI.FillLocalListeningPort);
                     return -1;
                 }
                 if (Utils.IsNullOrEmpty(protocol2))
                 {
-                    UI.Show(UIRes.I18N("PleaseSelectProtocol"));
+                    UI.Show(ResUI.PleaseSelectProtocol);
                     return -1;
                 }
                 if (config.inbound.Count < 2)
@@ -312,7 +313,7 @@ namespace v2rayN.Forms
                 || Utils.IsNullOrEmpty(readBufferSize) || !Utils.IsNumberic(readBufferSize)
                 || Utils.IsNullOrEmpty(writeBufferSize) || !Utils.IsNumberic(writeBufferSize))
             {
-                UI.Show(UIRes.I18N("FillKcpParameters"));
+                UI.Show(ResUI.FillKcpParameters);
                 return -1;
             }
             config.kcpItem.mtu = Utils.ToInt(mtu);

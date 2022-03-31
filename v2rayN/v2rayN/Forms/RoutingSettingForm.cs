@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -61,7 +62,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(ResUI.OperationFailed);
             }
         }
 
@@ -144,10 +145,10 @@ namespace v2rayN.Forms
             lvRoutings.HeaderStyle = ColumnHeaderStyle.Clickable;
 
             lvRoutings.Columns.Add("", 30);
-            lvRoutings.Columns.Add(UIRes.I18N("LvAlias"), 200);
-            lvRoutings.Columns.Add(UIRes.I18N("LvCount"), 60);
-            lvRoutings.Columns.Add(UIRes.I18N("LvUrl"), 240);
-            lvRoutings.Columns.Add(UIRes.I18N("LvCustomIcon"), 240);
+            lvRoutings.Columns.Add(ResUI.LvAlias, 200);
+            lvRoutings.Columns.Add(ResUI.LvCount, 60);
+            lvRoutings.Columns.Add(ResUI.LvUrl, 240);
+            lvRoutings.Columns.Add(ResUI.LvCustomIcon, 240);
 
             lvRoutings.EndUpdate();
         }
@@ -211,7 +212,7 @@ namespace v2rayN.Forms
             {
                 if (lvRoutings.SelectedIndices.Count <= 0)
                 {
-                    UI.Show(UIRes.I18N("PleaseSelectRules"));
+                    UI.Show(ResUI.PleaseSelectRules);
                     return index;
                 }
 
@@ -259,7 +260,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            if (UI.ShowYesNo(UIRes.I18N("RemoveRules")) == DialogResult.No)
+            if (UI.ShowYesNo(ResUI.RemoveRules) == DialogResult.No)
             {
                 return;
             }
@@ -282,7 +283,7 @@ namespace v2rayN.Forms
         {
             if (index < 0)
             {
-                UI.Show(UIRes.I18N("PleaseSelectServer"));
+                UI.Show(ResUI.PleaseSelectServer);
                 return -1;
             }
             if (ConfigHandler.SetDefaultRouting(ref config, index) == 0)
@@ -301,7 +302,7 @@ namespace v2rayN.Forms
 
             txtBlockDomain.Text = "geosite:category-ads-all";
 
-            UI.Show(UIRes.I18N("OperationSuccess"));
+            UI.Show(ResUI.OperationSuccess);
         }
 
         private void menuImportAdvancedRules_Click(object sender, EventArgs e)

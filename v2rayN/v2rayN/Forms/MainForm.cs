@@ -12,6 +12,7 @@ using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Tool;
 using System.Linq;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -228,22 +229,22 @@ namespace v2rayN.Forms
             lvServers.RegisterDragEvent(UpdateDragEventHandler);
 
             lvServers.Columns.Add("", 30);
-            lvServers.Columns.Add(UIRes.I18N("LvServiceType"), 80);
-            lvServers.Columns.Add(UIRes.I18N("LvAlias"), 100);
-            lvServers.Columns.Add(UIRes.I18N("LvAddress"), 120);
-            lvServers.Columns.Add(UIRes.I18N("LvPort"), 100);
-            lvServers.Columns.Add(UIRes.I18N("LvEncryptionMethod"), 120);
-            lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 120);
-            lvServers.Columns.Add(UIRes.I18N("LvTLS"), 100);
-            lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 100);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 120, HorizontalAlignment.Right);
+            lvServers.Columns.Add(ResUI.LvServiceType, 80);
+            lvServers.Columns.Add(ResUI.LvAlias, 100);
+            lvServers.Columns.Add(ResUI.LvAddress, 120);
+            lvServers.Columns.Add(ResUI.LvPort, 100);
+            lvServers.Columns.Add(ResUI.LvEncryptionMethod, 120);
+            lvServers.Columns.Add(ResUI.LvTransportProtocol, 120);
+            lvServers.Columns.Add(ResUI.LvTLS, 100);
+            lvServers.Columns.Add(ResUI.LvSubscription, 100);
+            lvServers.Columns.Add(ResUI.LvTestResults, 120, HorizontalAlignment.Right);
 
             if (statistics != null && statistics.Enable)
             {
-                lvServers.Columns.Add(UIRes.I18N("LvTodayDownloadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTodayUploadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalDownloadDataAmount"), 70);
-                lvServers.Columns.Add(UIRes.I18N("LvTotalUploadDataAmount"), 70);
+                lvServers.Columns.Add(ResUI.LvTodayDownloadDataAmount, 70);
+                lvServers.Columns.Add(ResUI.LvTodayUploadDataAmount, 70);
+                lvServers.Columns.Add(ResUI.LvTotalDownloadDataAmount, 70);
+                lvServers.Columns.Add(ResUI.LvTotalUploadDataAmount, 70);
             }
             lvServers.EndUpdate();
         }
@@ -485,7 +486,7 @@ namespace v2rayN.Forms
         {
             tabGroup.TabPages.Clear();
 
-            string title = $"  {UIRes.I18N("AllGroupServers")}   ";
+            string title = $"  {ResUI.AllGroupServers}   ";
             var tabPage = new TabPage(title);
             tabPage.Name = "";
             tabGroup.TabPages.Add(tabPage);
@@ -727,7 +728,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            if (UI.ShowYesNo(UIRes.I18N("RemoveServer")) == DialogResult.No)
+            if (UI.ShowYesNo(ResUI.RemoveServer) == DialogResult.No)
             {
                 return;
             }
@@ -744,7 +745,7 @@ namespace v2rayN.Forms
             int newCount = ConfigHandler.DedupServerList(ref config, ref lstVmess);
             RefreshServers();
             _ = LoadV2ray();
-            UI.Show(string.Format(UIRes.I18N("RemoveDuplicateServerResult"), oldCount, newCount));
+            UI.Show(string.Format(ResUI.RemoveDuplicateServerResult, oldCount, newCount));
         }
 
         private void menuCopyServer_Click(object sender, EventArgs e)
@@ -784,11 +785,11 @@ namespace v2rayN.Forms
         {
             //if (!config.sysAgentEnabled)
             //{
-            //    UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
+            //    UI.Show(ResUI.NeedHttpGlobalProxy"));
             //    return;
             //}
 
-            //UI.Show(UIRes.I18N("SpeedServerTips"));
+            //UI.Show(ResUI.SpeedServerTips"));
 
             Speedtest(ESpeedActionType.Realping);
         }
@@ -797,11 +798,11 @@ namespace v2rayN.Forms
         {
             //if (!config.sysAgentEnabled)
             //{
-            //    UI.Show(UIRes.I18N("NeedHttpGlobalProxy"));
+            //    UI.Show(ResUI.NeedHttpGlobalProxy"));
             //    return;
             //}
 
-            //UI.Show(UIRes.I18N("SpeedServerTips"));
+            //UI.Show(ResUI.SpeedServerTips"));
 
             Speedtest(ESpeedActionType.Speedtest);
         }
@@ -816,7 +817,7 @@ namespace v2rayN.Forms
         {
             SpeedtestHandler statistics = new SpeedtestHandler(ref config);
             string result = statistics.RunAvailabilityCheck() + "ms";
-            AppendText(false, string.Format(UIRes.I18N("TestMeOutput"), result));
+            AppendText(false, string.Format(ResUI.TestMeOutput, result));
         }
 
         private void menuClearStatistic_Click(object sender, EventArgs e)
@@ -857,8 +858,8 @@ namespace v2rayN.Forms
             if (sb.Length > 0)
             {
                 Utils.SetClipboardData(sb.ToString());
-                AppendText(false, UIRes.I18N("BatchExportURLSuccessfully"));
-                //UI.Show(UIRes.I18N("BatchExportURLSuccessfully"));
+                AppendText(false, ResUI.BatchExportURLSuccessfully);
+                //UI.Show(ResUI.BatchExportURLSuccessfully"));
             }
         }
 
@@ -880,7 +881,7 @@ namespace v2rayN.Forms
             if (sb.Length > 0)
             {
                 Utils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
-                UI.Show(UIRes.I18N("BatchExportSubscriptionSuccessfully"));
+                UI.Show(ResUI.BatchExportSubscriptionSuccessfully);
             }
         }
 
@@ -950,7 +951,7 @@ namespace v2rayN.Forms
         {
             if (index < 0)
             {
-                UI.Show(UIRes.I18N("PleaseSelectServer"));
+                UI.Show(ResUI.PleaseSelectServer);
                 return -1;
             }
             if (ConfigHandler.SetDefaultServer(ref config, lstVmess[index]) == 0)
@@ -973,7 +974,7 @@ namespace v2rayN.Forms
             {
                 if (lvServers.SelectedIndices.Count <= 0)
                 {
-                    UI.Show(UIRes.I18N("PleaseSelectServer"));
+                    UI.Show(ResUI.PleaseSelectServer);
                     return index;
                 }
 
@@ -1020,7 +1021,7 @@ namespace v2rayN.Forms
             if (ret > 0)
             {
                 RefreshServers();
-                UI.Show(string.Format(UIRes.I18N("SuccessfullyImportedServerViaClipboard"), ret));
+                UI.Show(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
             }
         }
 
@@ -1042,7 +1043,7 @@ namespace v2rayN.Forms
 
             if (Utils.IsNullOrEmpty(result))
             {
-                UI.ShowWarning(UIRes.I18N("NoValidQRcodeFound"));
+                UI.ShowWarning(ResUI.NoValidQRcodeFound);
             }
             else
             {
@@ -1050,7 +1051,7 @@ namespace v2rayN.Forms
                 if (ret > 0)
                 {
                     RefreshServers();
-                    UI.Show(UIRes.I18N("SuccessfullyImportedServerViaScan"));
+                    UI.Show(ResUI.SuccessfullyImportedServerViaScan);
                 }
             }
         }
@@ -1316,7 +1317,7 @@ namespace v2rayN.Forms
             int index = GetLvSelectedIndex();
             if (index < 0)
             {
-                UI.Show(UIRes.I18N("PleaseSelectServer"));
+                UI.Show(ResUI.PleaseSelectServer);
                 return;
             }
             if (ConfigHandler.MoveServer(ref config, ref lstVmess, index, eMove) == 0)
@@ -1412,12 +1413,12 @@ namespace v2rayN.Forms
                     string fileName = Utils.GetPath(Utils.GetDownloadFileName(msg));
                     FileManager.ZipExtractToFile(fileName, config.ignoreGeoUpdateCore ? "geo" : "");
 
-                    AppendText(false, UIRes.I18N("MsgUpdateV2rayCoreSuccessfullyMore"));
+                    AppendText(false, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
                     Global.reloadV2ray = true;
                     _ = LoadV2ray();
 
-                    AppendText(false, UIRes.I18N("MsgUpdateV2rayCoreSuccessfully"));
+                    AppendText(false, ResUI.MsgUpdateV2rayCoreSuccessfully);
                 }
             };
             (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI);
@@ -1659,7 +1660,7 @@ namespace v2rayN.Forms
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 MsgFilter = fm.MsgFilter;
-                gbMsgTitle.Text = string.Format(UIRes.I18N("MsgInformationTitle"), MsgFilter);
+                gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, MsgFilter);
             }
         }
         #endregion

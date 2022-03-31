@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
@@ -117,7 +118,7 @@ namespace v2rayN.Handler
                 pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
                 if (pid < 0)
                 {
-                    _updateFunc(_selecteds[0].indexId, UIRes.I18N("OperationFailed"));
+                    _updateFunc(_selecteds[0].indexId, ResUI.OperationFailed);
                     return;
                 }
 
@@ -203,7 +204,7 @@ namespace v2rayN.Handler
             pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
             if (pid < 0)
             {
-                _updateFunc(_selecteds[0].indexId, UIRes.I18N("OperationFailed"));
+                _updateFunc(_selecteds[0].indexId, ResUI.OperationFailed);
                 return;
             }
 

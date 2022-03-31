@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -156,34 +157,34 @@ namespace v2rayN.Forms
 
             if (network.Equals(Global.DefaultNetwork))
             {
-                tipRequestHost.Text = UIRes.I18N("TransportRequestHostTip1");
-                tipHeaderType.Text = UIRes.I18N("TransportHeaderTypeTip1");
+                tipRequestHost.Text = ResUI.TransportRequestHostTip1;
+                tipHeaderType.Text = ResUI.TransportHeaderTypeTip1;
             }
             else if (network.Equals("kcp"))
             {
-                tipHeaderType.Text = UIRes.I18N("TransportHeaderTypeTip2");
-                tipPath.Text = UIRes.I18N("TransportPathTip5");                
+                tipHeaderType.Text = ResUI.TransportHeaderTypeTip2;
+                tipPath.Text = ResUI.TransportPathTip5;                
             }
             else if (network.Equals("ws"))
             {
-                tipRequestHost.Text = UIRes.I18N("TransportRequestHostTip2");
-                tipPath.Text = UIRes.I18N("TransportPathTip1");
+                tipRequestHost.Text = ResUI.TransportRequestHostTip2;
+                tipPath.Text = ResUI.TransportPathTip1;
             }
             else if (network.Equals("h2"))
             {
-                tipRequestHost.Text = UIRes.I18N("TransportRequestHostTip3");
-                tipPath.Text = UIRes.I18N("TransportPathTip2");
+                tipRequestHost.Text = ResUI.TransportRequestHostTip3;
+                tipPath.Text = ResUI.TransportPathTip2;
             }
             else if (network.Equals("quic"))
             {
-                tipRequestHost.Text = UIRes.I18N("TransportRequestHostTip4");
-                tipPath.Text = UIRes.I18N("TransportPathTip3");
-                tipHeaderType.Text = UIRes.I18N("TransportHeaderTypeTip3");
+                tipRequestHost.Text = ResUI.TransportRequestHostTip4;
+                tipPath.Text = ResUI.TransportPathTip3;
+                tipHeaderType.Text = ResUI.TransportHeaderTypeTip3;
             }
             else if (network.Equals("grpc"))
             {
-                tipPath.Text = UIRes.I18N("TransportPathTip4");
-                tipHeaderType.Text = UIRes.I18N("TransportHeaderTypeTip4");
+                tipPath.Text = ResUI.TransportPathTip4;
+                tipHeaderType.Text = ResUI.TransportHeaderTypeTip4;
                 labHeaderType.Visible = false;
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -194,24 +195,24 @@ namespace v2rayN.Forms
 
             if (Utils.IsNullOrEmpty(address))
             {
-                UI.Show(UIRes.I18N("FillServerAddress"));
+                UI.Show(ResUI.FillServerAddress);
                 return;
             }
             if (Utils.IsNullOrEmpty(port) || !Utils.IsNumberic(port))
             {
-                UI.Show(UIRes.I18N("FillCorrectServerPort"));
+                UI.Show(ResUI.FillCorrectServerPort);
                 return;
             }
             if (eConfigType == EConfigType.Shadowsocks)
             {
                 if (Utils.IsNullOrEmpty(id))
                 {
-                    UI.Show(UIRes.I18N("FillPassword"));
+                    UI.Show(ResUI.FillPassword);
                     return;
                 }
                 if (Utils.IsNullOrEmpty(security))
                 {
-                    UI.Show(UIRes.I18N("PleaseSelectEncryption"));
+                    UI.Show(ResUI.PleaseSelectEncryption);
                     return;
                 }
             }
@@ -219,7 +220,7 @@ namespace v2rayN.Forms
             {
                 if (Utils.IsNullOrEmpty(id))
                 {
-                    UI.Show(UIRes.I18N("FillUUID"));
+                    UI.Show(ResUI.FillUUID);
                     return;
                 }
             }
@@ -270,7 +271,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(ResUI.OperationFailed);
             }
 
         }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using v2rayN.Base;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
@@ -318,7 +319,7 @@ namespace v2rayN.Handler
                 string result = clipboardData.TrimEx();// Utils.GetClipboardData();
                 if (Utils.IsNullOrEmpty(result))
                 {
-                    msg = UIRes.I18N("FailedReadConfiguration");
+                    msg = ResUI.FailedReadConfiguration;
                     return null;
                 }
 
@@ -338,7 +339,7 @@ namespace v2rayN.Handler
                 }
                 else if (result.StartsWith(Global.ssProtocol))
                 {
-                    msg = UIRes.I18N("ConfigurationFormatIncorrect");
+                    msg = ResUI.ConfigurationFormatIncorrect;
 
                     vmessItem = ResolveSSLegacy(result);
                     if (vmessItem == null)
@@ -358,7 +359,7 @@ namespace v2rayN.Handler
                 }
                 else if (result.StartsWith(Global.socksProtocol))
                 {
-                    msg = UIRes.I18N("ConfigurationFormatIncorrect");
+                    msg = ResUI.ConfigurationFormatIncorrect;
 
                     vmessItem = ResolveSocksNew(result);
                     if (vmessItem == null)
@@ -378,7 +379,7 @@ namespace v2rayN.Handler
                 }
                 else if (result.StartsWith(Global.trojanProtocol))
                 {
-                    msg = UIRes.I18N("ConfigurationFormatIncorrect");
+                    msg = ResUI.ConfigurationFormatIncorrect;
 
                     vmessItem = ResolveTrojan(result);
                 }
@@ -390,13 +391,13 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    msg = UIRes.I18N("NonvmessOrssProtocol");
+                    msg = ResUI.NonvmessOrssProtocol;
                     return null;
                 }
             }
             catch
             {
-                msg = UIRes.I18N("Incorrectconfiguration");
+                msg = ResUI.Incorrectconfiguration;
                 return null;
             }
 
@@ -416,7 +417,7 @@ namespace v2rayN.Handler
             VmessQRCode vmessQRCode = Utils.FromJson<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
-                msg = UIRes.I18N("FailedConversionConfiguration");
+                msg = ResUI.FailedConversionConfiguration;
                 return null;
             }
 

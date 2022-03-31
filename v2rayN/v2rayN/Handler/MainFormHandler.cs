@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Mode;
 using System.Linq;
+using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
@@ -88,7 +89,7 @@ namespace v2rayN.Handler
             if (item.configType != EConfigType.Vmess
                 && item.configType != EConfigType.VLESS)
             {
-                UI.Show(UIRes.I18N("NonVmessService"));
+                UI.Show(ResUI.NonVmessService);
                 return;
             }
 
@@ -115,7 +116,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                UI.ShowWarning(string.Format(UIRes.I18N("SaveClientConfigurationIn"), fileName));
+                UI.ShowWarning(string.Format(ResUI.SaveClientConfigurationIn, fileName));
             }
         }
 
@@ -128,7 +129,7 @@ namespace v2rayN.Handler
             if (item.configType != EConfigType.Vmess
                 && item.configType != EConfigType.VLESS)
             {
-                UI.Show(UIRes.I18N("NonVmessService"));
+                UI.Show(ResUI.NonVmessService);
                 return;
             }
 
@@ -155,7 +156,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                UI.ShowWarning(string.Format(UIRes.I18N("SaveServerConfigurationIn"), fileName));
+                UI.ShowWarning(string.Format(ResUI.SaveServerConfigurationIn, fileName));
             }
         }
 
@@ -191,11 +192,11 @@ namespace v2rayN.Handler
                 if (ret == 0)
                 {
 
-                    UI.Show(UIRes.I18N("OperationSuccess"));
+                    UI.Show(ResUI.OperationSuccess);
                 }
                 else
                 {
-                    UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                    UI.ShowWarning(ResUI.OperationFailed);
                 }
             }
         }
@@ -268,12 +269,12 @@ namespace v2rayN.Handler
                 try
                 {
                     HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), keys, handler);
-                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeySuccessfully"), $"{item.eGlobalHotkey.ToString()} = {keys}");
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey.ToString()} = {keys}");
                     update(false, msg);
                 }
                 catch (Exception ex)
                 {
-                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeyFailed"), $"{item.eGlobalHotkey.ToString()} = {keys}", ex.Message);
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey.ToString()} = {keys}", ex.Message);
                     update(false, msg);
                     Utils.SaveLog(msg);
                 }

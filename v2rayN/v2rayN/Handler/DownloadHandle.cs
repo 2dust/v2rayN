@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using v2rayN.Base;
+using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
@@ -39,7 +40,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
 
                 progressPercentage = -1;
                 totalBytesToReceive = 0;
@@ -215,7 +216,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
 
                 progressPercentage = -1;
                 totalBytesToReceive = 0;

@@ -262,7 +262,6 @@
     <Compile Include="Tool\Job.cs" />
     <Compile Include="Tool\Logging.cs" />
     <Compile Include="Tool\QueryableExtension.cs" />
-    <Compile Include="Tool\UIRes.cs" />
     <Compile Include="Tool\UI.cs" />
     <Compile Include="Tool\Utils.cs" />
     <Compile Include="Handler\V2rayConfigHandler.cs" />

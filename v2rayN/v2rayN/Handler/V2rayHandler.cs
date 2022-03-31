@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
@@ -40,13 +41,13 @@ namespace v2rayN.Handler
                 var item = ConfigHandler.GetDefaultServer(ref config);
                 if (item == null)
                 {
-                    ShowMsg(false, UIRes.I18N("CheckServerSettings"));
+                    ShowMsg(false, ResUI.CheckServerSettings);
                     return;
                 }
 
                 if (SetCore(config, item) != 0)
                 {
-                    ShowMsg(false, UIRes.I18N("CheckServerSettings"));
+                    ShowMsg(false, ResUI.CheckServerSettings);
                     return;
                 }
                 string fileName = Utils.GetPath(v2rayConfigRes);
@@ -180,7 +181,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(UIRes.I18N("NotFoundCore"), coreInfo.coreUrl);
+                string msg = string.Format(ResUI.NotFoundCore, coreInfo.coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -191,7 +192,7 @@ namespace v2rayN.Handler
         /// </summary>
         private void V2rayStart()
         {
-            ShowMsg(false, string.Format(UIRes.I18N("StartService"), DateTime.Now.ToString()));
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
 
             try
             {
@@ -245,7 +246,7 @@ namespace v2rayN.Handler
         /// </summary>
         private int V2rayStartNew(string configStr)
         {
-            ShowMsg(false, string.Format(UIRes.I18N("StartService"), DateTime.Now.ToString()));
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
 
             try
             {

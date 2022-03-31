@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -125,7 +126,7 @@ namespace v2rayN.Forms
             }
             if (!hasRule)
             {
-                UI.ShowWarning(string.Format(UIRes.I18N("RoutingRuleDetailRequiredTips"), "Port/Protocol/Domain/IP"));
+                UI.ShowWarning(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Port/Protocol/Domain/IP"));
                 return;
             }
             this.DialogResult = DialogResult.OK;
