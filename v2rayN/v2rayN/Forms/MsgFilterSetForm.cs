@@ -34,5 +34,15 @@ namespace v2rayN.Forms
         {
             this.DialogResult = DialogResult.Cancel;
         }
+
+        private void btnFilderProxy_Click(object sender, EventArgs e)
+        {
+            txtMsgFilter.Text = "^(?!.*proxy).*$";
+        }
+
+        private void btnFilterDirect_Click(object sender, EventArgs e)
+        {
+            txtMsgFilter.Text = "^(?!.*direct).*$";
+        }
     }
 }
