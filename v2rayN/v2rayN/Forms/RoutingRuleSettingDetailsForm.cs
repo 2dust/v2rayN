@@ -48,8 +48,8 @@ namespace v2rayN.Forms
                 }
                 rulesItem.inboundTag = inboundTag;
                 rulesItem.outboundTag = cmbOutboundTag.Text;
-                rulesItem.domain = Utils.String2List(txtDomain.Text);
-                rulesItem.ip = Utils.String2List(txtIP.Text);
+                rulesItem.domain = Utils.String2ListSorted(txtDomain.Text);
+                rulesItem.ip = Utils.String2ListSorted(txtIP.Text);
 
                 var protocol = new List<string>();
                 for (int i = 0; i < clbProtocol.Items.Count; i++)

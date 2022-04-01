@@ -220,6 +220,26 @@ namespace v2rayN
         }
 
         /// <summary>
+        /// 逗号分隔的字符串,先排序后转List<string>
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static List<string> String2ListSorted(string str)
+        {
+            try
+            {
+                str = str.Replace(Environment.NewLine, "");
+                List<string> list = new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+                return list.OrderBy(x => x).ToList();
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
+                return new List<string>();
+            }
+        }
+
+        /// <summary>
         /// Base64编码
         /// </summary>
         /// <param name="plainText"></param>
