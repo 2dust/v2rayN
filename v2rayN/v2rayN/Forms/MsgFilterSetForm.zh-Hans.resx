@@ -129,4 +129,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>设置过滤器</value>
   </data>
+  <data name="btnFilderProxy.Text" xml:space="preserve">
+    <value>过滤Proxy</value>
+  </data>
+  <data name="btnFilterDirect.Text" xml:space="preserve">
+    <value>过滤Direct</value>
+  </data>
 </root>
