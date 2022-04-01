@@ -7,6 +7,6 @@ A V2Ray client for Windows, support [Xray core](https://github.com/XTLS/Xray-cor
 - Run v2rayN.exe
 
 ### Requirements  
-- Microsoft [.NET Framework 4.8](https://docs.microsoft.com/zh-cn/dotnet/framework/install/guide-for-developers)
+- Microsoft [.NET Framework 4.8](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net48-web-installer)
 - v2fly core [https://github.com/v2fly/v2ray-core/releases](https://github.com/v2fly/v2ray-core/releases)
 - Xray core [https://github.com/XTLS/Xray-core/releases](https://github.com/XTLS/Xray-core/releases)
