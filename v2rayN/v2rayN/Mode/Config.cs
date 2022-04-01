@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Base;
 using System.Linq;
-
+using System.Drawing;
 
 namespace v2rayN.Mode
 {
@@ -692,7 +692,9 @@ namespace v2rayN.Mode
             get; set;
         }
 
-        public System.Drawing.Size mainSize
+        public Point mainLocation { get; set; }
+
+        public Size mainSize
         {
             get; set;
         }

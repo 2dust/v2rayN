@@ -150,11 +150,16 @@ namespace v2rayN.Forms
         {
             scMain.Panel2Collapsed = true;
 
+            if (!config.uiItem.mainLocation.IsEmpty)
+            {
+                this.Location = config.uiItem.mainLocation;
+            }
             if (!config.uiItem.mainSize.IsEmpty)
             {
                 this.Width = config.uiItem.mainSize.Width;
                 this.Height = config.uiItem.mainSize.Height;
             }
+
 
             for (int k = 0; k < lvServers.Columns.Count; k++)
             {
@@ -165,6 +170,8 @@ namespace v2rayN.Forms
 
         private void StorageUI()
         {
+            config.uiItem.mainLocation = this.Location;
+
             config.uiItem.mainSize = new Size(this.Width, this.Height);
 
             for (int k = 0; k < lvServers.Columns.Count; k++)
@@ -1253,7 +1260,28 @@ namespace v2rayN.Forms
                 down /= (ulong)(config.statisticsFreshRate / 1000f);
                 toolSslServerSpeed.Text = string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down));
 
-                List<string[]> datas = new List<string[]>();
+                foreach (var it in statistics)
+                {
+                    int index = lstVmess.FindIndex(item => item.indexId == it.itemId);
+                    if (index < 0)
+                    {
+                        continue;
+                    }
+                    lvServers.Invoke((MethodInvoker)delegate
+                    {
+                        lvServers.BeginUpdate();
+
+                        lvServers.Items[index].SubItems["todayDown"].Text = Utils.HumanFy(it.todayDown);
+                        lvServers.Items[index].SubItems["todayUp"].Text = Utils.HumanFy(it.todayUp);
+                        lvServers.Items[index].SubItems["totalDown"].Text = Utils.HumanFy(it.totalDown);
+                        lvServers.Items[index].SubItems["totalUp"].Text = Utils.HumanFy(it.totalUp);
+
+                        lvServers.EndUpdate();
+                    });
+                }
+
+
+
                 for (int i = 0; i < lstVmess.Count; i++)
                 {
                     int index = statistics.FindIndex(item_ => item_.itemId == lstVmess[i].indexId);

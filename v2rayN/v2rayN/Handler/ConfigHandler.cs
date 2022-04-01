@@ -1159,6 +1159,8 @@ namespace v2rayN.Handler
             {
                 config.uiItem.mainLvColWidth.Add(name, width);
             }
+
+            ToJsonFile(config);
             return 0;
         }
         public static int GetformMainLvColWidth(ref Config config, string name, int width)
