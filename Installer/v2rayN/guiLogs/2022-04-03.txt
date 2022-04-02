@@ -1,0 +1,1 @@
+2022-04-03 02:49:12,881 [1] INFO  Log1 - v2rayN start up | v2rayN - V5.9 - 2022.04.01 | C:\Users\Admin\Desktop\v2rayN-Core\v2rayN-Core\v2rayN.exe
