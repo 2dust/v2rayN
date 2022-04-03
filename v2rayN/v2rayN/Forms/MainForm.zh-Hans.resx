@@ -421,7 +421,7 @@
     <value>260, 22</value>
   </data>
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
-    <value>更新订阅</value>
+    <value>更新订阅(不通过代理)</value>
   </data>
   <data name="menuUpdateSubViaProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>260, 22</value>
@@ -451,7 +451,7 @@
     <value>180, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
-    <value>更新订阅</value>
+    <value>更新订阅(不通过代理)</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>

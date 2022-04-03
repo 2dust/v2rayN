@@ -798,7 +798,7 @@
     <value>264, 22</value>
   </data>
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
-    <value>Update subscriptions</value>
+    <value>Update subscription without proxy</value>
   </data>
   <data name="menuUpdateSubViaProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>264, 22</value>
@@ -870,13 +870,13 @@
     <value>182, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
-    <value>Updates</value>
+    <value>Update subscription without proxy</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 22</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
-    <value>Updates via proxy</value>
+    <value>Update subscription with proxy</value>
   </data>
   <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
