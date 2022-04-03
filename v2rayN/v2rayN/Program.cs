@@ -35,6 +35,7 @@ namespace v2rayN
             {
                 Logging.Setup();
                 Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+                Logging.ClearLogs();
 
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
@@ -42,7 +43,7 @@ namespace v2rayN
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
+                Application.Run(new MainForm()); 
             }
             else
             {
