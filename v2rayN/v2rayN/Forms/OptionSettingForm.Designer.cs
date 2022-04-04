@@ -33,15 +33,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtpass = new System.Windows.Forms.TextBox();
+            this.txtuser = new System.Windows.Forms.TextBox();
             this.chkdefAllowInsecure = new System.Windows.Forms.CheckBox();
-            this.chksniffingEnabled2 = new System.Windows.Forms.CheckBox();
+            this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.chksniffingEnabled = new System.Windows.Forms.CheckBox();
             this.chkmuxEnabled = new System.Windows.Forms.CheckBox();
-            this.chkAllowIn2 = new System.Windows.Forms.CheckBox();
-            this.chkudpEnabled2 = new System.Windows.Forms.CheckBox();
-            this.cmbprotocol2 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtlocalPort2 = new System.Windows.Forms.TextBox();
             this.cmbprotocol = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.chkudpEnabled = new System.Windows.Forms.CheckBox();
@@ -79,7 +78,6 @@
             this.cbFreshrate = new System.Windows.Forms.ComboBox();
             this.lbFreshrate = new System.Windows.Forms.Label();
             this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
-            this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
             this.tabPageCoreType = new System.Windows.Forms.TabPage();
             this.cmbCoreType6 = new System.Windows.Forms.ComboBox();
@@ -143,15 +141,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.txtpass);
+            this.groupBox1.Controls.Add(this.txtuser);
             this.groupBox1.Controls.Add(this.chkdefAllowInsecure);
-            this.groupBox1.Controls.Add(this.chksniffingEnabled2);
+            this.groupBox1.Controls.Add(this.chkAllowLANConn);
             this.groupBox1.Controls.Add(this.chksniffingEnabled);
             this.groupBox1.Controls.Add(this.chkmuxEnabled);
-            this.groupBox1.Controls.Add(this.chkAllowIn2);
-            this.groupBox1.Controls.Add(this.chkudpEnabled2);
-            this.groupBox1.Controls.Add(this.cmbprotocol2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtlocalPort2);
             this.groupBox1.Controls.Add(this.cmbprotocol);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.chkudpEnabled);
@@ -164,17 +161,37 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // txtpass
+            // 
+            resources.ApplyResources(this.txtpass, "txtpass");
+            this.txtpass.Name = "txtpass";
+            // 
+            // txtuser
+            // 
+            resources.ApplyResources(this.txtuser, "txtuser");
+            this.txtuser.Name = "txtuser";
+            // 
             // chkdefAllowInsecure
             // 
             resources.ApplyResources(this.chkdefAllowInsecure, "chkdefAllowInsecure");
             this.chkdefAllowInsecure.Name = "chkdefAllowInsecure";
             this.chkdefAllowInsecure.UseVisualStyleBackColor = true;
             // 
-            // chksniffingEnabled2
+            // chkAllowLANConn
             // 
-            resources.ApplyResources(this.chksniffingEnabled2, "chksniffingEnabled2");
-            this.chksniffingEnabled2.Name = "chksniffingEnabled2";
-            this.chksniffingEnabled2.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chkAllowLANConn, "chkAllowLANConn");
+            this.chkAllowLANConn.Name = "chkAllowLANConn";
+            this.chkAllowLANConn.UseVisualStyleBackColor = true;
             // 
             // chksniffingEnabled
             // 
@@ -187,39 +204,6 @@
             resources.ApplyResources(this.chkmuxEnabled, "chkmuxEnabled");
             this.chkmuxEnabled.Name = "chkmuxEnabled";
             this.chkmuxEnabled.UseVisualStyleBackColor = true;
-            // 
-            // chkAllowIn2
-            // 
-            resources.ApplyResources(this.chkAllowIn2, "chkAllowIn2");
-            this.chkAllowIn2.Name = "chkAllowIn2";
-            this.chkAllowIn2.UseVisualStyleBackColor = true;
-            this.chkAllowIn2.CheckedChanged += new System.EventHandler(this.chkAllowIn2_CheckedChanged);
-            // 
-            // chkudpEnabled2
-            // 
-            resources.ApplyResources(this.chkudpEnabled2, "chkudpEnabled2");
-            this.chkudpEnabled2.Name = "chkudpEnabled2";
-            this.chkudpEnabled2.UseVisualStyleBackColor = true;
-            // 
-            // cmbprotocol2
-            // 
-            this.cmbprotocol2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbprotocol2.FormattingEnabled = true;
-            this.cmbprotocol2.Items.AddRange(new object[] {
-            resources.GetString("cmbprotocol2.Items"),
-            resources.GetString("cmbprotocol2.Items1")});
-            resources.ApplyResources(this.cmbprotocol2, "cmbprotocol2");
-            this.cmbprotocol2.Name = "cmbprotocol2";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // txtlocalPort2
-            // 
-            resources.ApplyResources(this.txtlocalPort2, "txtlocalPort2");
-            this.txtlocalPort2.Name = "txtlocalPort2";
             // 
             // cmbprotocol
             // 
@@ -399,7 +383,6 @@
             this.tabPage7.Controls.Add(this.cbFreshrate);
             this.tabPage7.Controls.Add(this.lbFreshrate);
             this.tabPage7.Controls.Add(this.chkEnableStatistics);
-            this.tabPage7.Controls.Add(this.chkAllowLANConn);
             this.tabPage7.Controls.Add(this.chkAutoRun);
             resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
@@ -463,12 +446,6 @@
             resources.ApplyResources(this.chkEnableStatistics, "chkEnableStatistics");
             this.chkEnableStatistics.Name = "chkEnableStatistics";
             this.chkEnableStatistics.UseVisualStyleBackColor = true;
-            // 
-            // chkAllowLANConn
-            // 
-            resources.ApplyResources(this.chkAllowLANConn, "chkAllowLANConn");
-            this.chkAllowLANConn.Name = "chkAllowLANConn";
-            this.chkAllowLANConn.UseVisualStyleBackColor = true;
             // 
             // chkAutoRun
             // 
@@ -664,11 +641,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox cmbprotocol;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbprotocol2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtlocalPort2;
-        private System.Windows.Forms.CheckBox chkudpEnabled2;
-        private System.Windows.Forms.CheckBox chkAllowIn2;
         private System.Windows.Forms.CheckBox chkmuxEnabled;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TextBox txtKcpmtu;
@@ -688,7 +660,6 @@
         private System.Windows.Forms.CheckBox chkAutoRun;
         private System.Windows.Forms.CheckBox chkAllowLANConn;
         private System.Windows.Forms.CheckBox chksniffingEnabled;
-        private System.Windows.Forms.CheckBox chksniffingEnabled2;
         private System.Windows.Forms.CheckBox chkEnableStatistics;
         private System.Windows.Forms.ComboBox cbFreshrate;
         private System.Windows.Forms.Label lbFreshrate;
@@ -722,5 +693,9 @@
         private System.Windows.Forms.Label labCoreType3;
         private System.Windows.Forms.ComboBox cmbCoreType2;
         private System.Windows.Forms.Label labCoreType2;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtpass;
+        private System.Windows.Forms.TextBox txtuser;
     }
 }

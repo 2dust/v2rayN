@@ -24,7 +24,23 @@
 		{
 			"tag": "tag2",
 			"port": 10809,
-			"protocol": "socks",
+			"protocol": "http",
+			"listen": "127.0.0.1",
+			"settings": {
+				"allowTransparent": false
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls"
+				]
+			}
+		},
+		{
+			"tag": "tag3",
+			"port": 10809,
+			"protocol": "http",
 			"listen": "127.0.0.1",
 			"settings": {
 				"allowTransparent": false

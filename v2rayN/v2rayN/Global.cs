@@ -111,6 +111,7 @@ namespace v2rayN
 
         public const string InboundSocks = "socks";
         public const string InboundHttp = "http";
+        public const string InboundHttp2 = "http2";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPITagName = "api";
         public const string InboundAPIProtocal = "dokodemo-door";
@@ -218,31 +219,6 @@ namespace v2rayN
         {
             get; set;
         }
-
-        /// <summary>
-        /// 是否开启全局代理(http)
-        /// </summary>
-        public static bool sysAgent
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// socks端口
-        /// </summary>
-        public static int socksPort
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// http端口
-        /// </summary>
-        public static int httpPort
-        {
-            get; set;
-        }
-
 
         /// <summary>
         ///  

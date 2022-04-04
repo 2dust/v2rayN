@@ -454,4 +454,7 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>请浏览导入服务器配置</value>
   </data>
+  <data name="SystemProxy" xml:space="preserve">
+    <value>系统代理</value>
+  </data>
 </root>

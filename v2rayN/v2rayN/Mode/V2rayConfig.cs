@@ -141,6 +141,7 @@ namespace v2rayN.Mode
 
         public bool allowTransparent { get; set; }
 
+        public List<AccountsItem> accounts { get; set; }
     }
 
     public class UsersItem
@@ -540,4 +541,15 @@ namespace v2rayN.Mode
         public bool multiMode { get; set; }
     }
 
+    public class AccountsItem
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string user { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string pass { get; set; }
+    }
 }

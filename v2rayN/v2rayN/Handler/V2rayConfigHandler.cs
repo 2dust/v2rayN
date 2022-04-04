@@ -150,7 +150,7 @@ namespace v2rayN.Handler
                 inbound.tag = Global.InboundSocks;
                 inbound.port = config.inbound[0].localPort;
                 inbound.protocol = config.inbound[0].protocol;
-                if (config.allowLANConn)
+                if (config.inbound[0].allowLANConn)
                 {
                     inbound.listen = "0.0.0.0";
                 }
@@ -170,6 +170,24 @@ namespace v2rayN.Handler
                 inbound2.listen = inbound.listen;
                 inbound2.settings.allowTransparent = false;
                 inbound2.sniffing.enabled = inbound.sniffing.enabled;
+
+                //auth
+                if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                {
+                    inbound.settings.auth = "password";
+                    inbound.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                    inbound2.settings.auth = "password";
+                    inbound2.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                }
+
+                //http Loopback
+                Inbounds inbound3 = v2rayConfig.inbounds[2];
+                inbound3.tag = Global.InboundHttp2;
+                inbound3.port = config.GetLocalPort(Global.InboundHttp2);
+                inbound3.protocol = Global.InboundHttp;
+                inbound3.listen = Global.Loopback;
+                inbound3.settings.allowTransparent = false;
+                inbound3.sniffing.enabled = inbound.sniffing.enabled;
             }
             catch
             {

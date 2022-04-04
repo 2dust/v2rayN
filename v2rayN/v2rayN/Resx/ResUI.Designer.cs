@@ -935,6 +935,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 System proxy 的本地化字符串。
+        /// </summary>
+        internal static string SystemProxy {
+            get {
+                return ResourceManager.GetString("SystemProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The ping of current service: {0} 的本地化字符串。
         /// </summary>
         internal static string TestMeOutput {

@@ -169,7 +169,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                int httpPort = _config.GetLocalPort(Global.InboundHttp);
+                int httpPort = _config.GetLocalPort(Global.InboundHttp2);
 
                 Task<int> t = Task.Run(() =>
                 {

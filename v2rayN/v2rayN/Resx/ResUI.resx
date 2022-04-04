@@ -454,4 +454,7 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Please browse to import server configuration</value>
   </data>
+  <data name="SystemProxy" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
 </root>

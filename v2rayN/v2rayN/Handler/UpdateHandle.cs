@@ -232,7 +232,7 @@ namespace v2rayN.Handler
                     _updateFunc(false, args.GetException().Message);
                 };
 
-                WebProxy webProxy = blProxy ? new WebProxy(Global.Loopback, _config.GetLocalPort(Global.InboundHttp)) : null;
+                WebProxy webProxy = blProxy ? new WebProxy(Global.Loopback, _config.GetLocalPort(Global.InboundHttp2)) : null;
                 downloadHandle3.WebDownloadString(url, webProxy, userAgent);
 
                 _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
@@ -304,7 +304,7 @@ namespace v2rayN.Handler
                 };
                 if (httpProxyTest() > 0)
                 {
-                    int httpPort = _config.GetLocalPort(Global.InboundHttp);
+                    int httpPort = _config.GetLocalPort(Global.InboundHttp2);
                     WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
                     webRequestHandler.Proxy = webProxy;
                 }
@@ -460,7 +460,7 @@ namespace v2rayN.Handler
             {
                 if (httpProxyTest() > 0)
                 {
-                    int httpPort = _config.GetLocalPort(Global.InboundHttp);
+                    int httpPort = _config.GetLocalPort(Global.InboundHttp2);
                     WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
                     downloadHandle.DownloadFileAsync(url, webProxy, 600);
                 }

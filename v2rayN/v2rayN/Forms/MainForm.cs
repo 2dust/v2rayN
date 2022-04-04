@@ -435,13 +435,6 @@ namespace v2rayN.Forms
             //qrCodeControl.showQRCode(index, config);
         }
 
-        private void DisplayToolStatus()
-        {
-            toolSslInboundInfo.Text = $"{Global.InboundSocks} {Global.Loopback}:{config.inbound[0].localPort} | "
-             + $"{ Global.InboundHttp} { Global.Loopback}:{Global.httpPort}";
-
-            notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
-        }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (!Utils.IsNullOrEmpty(e.ClickedItem.Text))
@@ -1401,6 +1394,23 @@ namespace v2rayN.Forms
             DisplayToolStatus();
         }
 
+        private void DisplayToolStatus()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{Global.InboundSocks} {Global.Loopback}:{config.GetLocalPort(Global.InboundSocks)}");
+            sb.Append(" | ");
+            sb.Append($"{Global.InboundHttp} {Global.Loopback}:{config.GetLocalPort(Global.InboundHttp)}");
+
+            if (config.sysProxyType == ESysProxyType.ForcedChange)
+            {
+                sb.Append(" | ");
+                sb.Append($"{ResUI.SystemProxy} {Global.Loopback}:{config.GetLocalPort(Global.InboundHttp2)}");
+            }
+
+            toolSslInboundInfo.Text = sb.ToString();
+
+            notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
+        }
         #endregion
 
 

@@ -53,14 +53,6 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
-        /// 允许来自局域网的连接
-        /// </summary>
-        public bool allowLANConn
-        {
-            get; set;
-        }
-
-        /// <summary>
         /// 启用实时网速和流量统计
         /// </summary>
         public bool enableStatistics
@@ -220,7 +212,10 @@ namespace v2rayN.Mode
             {
                 return GetLocalPort(Global.InboundSocks) + 1;
             }
-
+            else if (protocol == Global.InboundHttp2)
+            {
+                return GetLocalPort(Global.InboundSocks) + 2;
+            }
             else if (protocol == "speedtest")
             {
                 return GetLocalPort(Global.InboundSocks) + 103;
@@ -581,6 +576,13 @@ namespace v2rayN.Mode
         /// 开启流量探测
         /// </summary>
         public bool sniffingEnabled { get; set; } = true;
+
+        public bool allowLANConn { get; set; }
+       
+        public string user { get; set; }
+       
+        public string pass { get; set; }
+
     }
 
     [Serializable]
