@@ -273,7 +273,7 @@ namespace v2rayN.Forms
         /// </summary>
         private void RefreshServersView()
         {
-            int index = lvServers.SelectedIndices.Count > 0 ? lvServers.SelectedIndices[0] : -1;
+            int index = GetLvSelectedIndex(false);
 
             lvServers.BeginUpdate();
             lvServers.Items.Clear();
@@ -281,29 +281,12 @@ namespace v2rayN.Forms
             for (int k = 0; k < lstVmess.Count; k++)
             {
                 string def = string.Empty;
-                string totalUp = string.Empty,
-                        totalDown = string.Empty,
-                        todayUp = string.Empty,
-                        todayDown = string.Empty;
-
                 VmessItem item = lstVmess[k];
                 if (config.IsActiveNode(item))
                 {
                     def = "√";
                 }
 
-                bool stats = statistics != null && statistics.Enable;
-                if (stats)
-                {
-                    ServerStatItem sItem = statistics.Statistic.Find(item_ => item_.itemId == item.indexId);
-                    if (sItem != null)
-                    {
-                        totalUp = Utils.HumanFy(sItem.totalUp);
-                        totalDown = Utils.HumanFy(sItem.totalDown);
-                        todayUp = Utils.HumanFy(sItem.todayUp);
-                        todayDown = Utils.HumanFy(sItem.todayDown);
-                    }
-                }
                 ListViewItem lvItem = new ListViewItem(def);
                 Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), (item.configType).ToString());
                 Utils.AddSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
@@ -314,8 +297,22 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, EServerColName.streamSecurity.ToString(), item.streamSecurity);
                 Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.GetSubRemarks(config));
                 Utils.AddSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
-                if (stats)
+
+                if (statistics != null && statistics.Enable)
                 {
+                    string totalUp = string.Empty,
+                        totalDown = string.Empty,
+                        todayUp = string.Empty,
+                        todayDown = string.Empty;
+                    ServerStatItem sItem = statistics.Statistic.Find(item_ => item_.itemId == item.indexId);
+                    if (sItem != null)
+                    {
+                        totalUp = Utils.HumanFy(sItem.totalUp);
+                        totalDown = Utils.HumanFy(sItem.totalDown);
+                        todayUp = Utils.HumanFy(sItem.todayUp);
+                        todayDown = Utils.HumanFy(sItem.todayDown);
+                    }
+
                     Utils.AddSubItem(lvItem, EServerColName.todayDown.ToString(), todayDown);
                     Utils.AddSubItem(lvItem, EServerColName.todayUp.ToString(), todayUp);
                     Utils.AddSubItem(lvItem, EServerColName.totalDown.ToString(), totalDown);
@@ -416,23 +413,7 @@ namespace v2rayN.Forms
         }
 
         private void lvServers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = -1;
-            try
-            {
-                if (lvServers.SelectedIndices.Count > 0)
-                {
-                    index = lvServers.SelectedIndices[0];
-                }
-            }
-            catch
-            {
-            }
-            if (index < 0)
-            {
-                return;
-            }
-            //qrCodeControl.showQRCode(index, config);
+        {            
         }
 
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -603,17 +584,7 @@ namespace v2rayN.Forms
 
         private void lvServers_Click(object sender, EventArgs e)
         {
-            int index = -1;
-            try
-            {
-                if (lvServers.SelectedIndices.Count > 0)
-                {
-                    index = lvServers.SelectedIndices[0];
-                }
-            }
-            catch
-            {
-            }
+            int index = GetLvSelectedIndex(false);
             if (index < 0)
             {
                 return;
@@ -966,7 +937,7 @@ namespace v2rayN.Forms
         /// 取得ListView选中的行
         /// </summary>
         /// <returns></returns>
-        private int GetLvSelectedIndex()
+        private int GetLvSelectedIndex(bool show = true)
         {
             int index = -1;
             lstSelecteds.Clear();
@@ -974,7 +945,10 @@ namespace v2rayN.Forms
             {
                 if (lvServers.SelectedIndices.Count <= 0)
                 {
-                    UI.Show(ResUI.PleaseSelectServer);
+                    if (show)
+                    {
+                        UI.Show(ResUI.PleaseSelectServer);
+                    }
                     return index;
                 }
 
@@ -1190,11 +1164,13 @@ namespace v2rayN.Forms
             this.ShowInTaskbar = true;
             //this.notifyIcon1.Visible = false;
             this.txtMsgBox.ScrollToCaret();
-            //if (config.index >= 0 && config.index < lvServers.Items.Count)
-            //{
-            //    lvServers.Items[config.index].Selected = true;
-            //    lvServers.EnsureVisible(config.index); // workaround
-            //}
+
+            int index = GetLvSelectedIndex(false);
+            if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
+            {
+                lvServers.Items[index].Selected = true;
+                lvServers.EnsureVisible(index); // workaround
+            }
 
             SetVisibleCore(true);
         }
@@ -1272,27 +1248,7 @@ namespace v2rayN.Forms
                         lvServers.EndUpdate();
                     });
                 }
-
-
-
-                for (int i = 0; i < lstVmess.Count; i++)
-                {
-                    int index = statistics.FindIndex(item_ => item_.itemId == lstVmess[i].indexId);
-                    if (index != -1)
-                    {
-                        lvServers.Invoke((MethodInvoker)delegate
-                        {
-                            lvServers.BeginUpdate();
-
-                            lvServers.Items[i].SubItems["todayDown"].Text = Utils.HumanFy(statistics[index].todayDown);
-                            lvServers.Items[i].SubItems["todayUp"].Text = Utils.HumanFy(statistics[index].todayUp);
-                            lvServers.Items[i].SubItems["totalDown"].Text = Utils.HumanFy(statistics[index].totalDown);
-                            lvServers.Items[i].SubItems["totalUp"].Text = Utils.HumanFy(statistics[index].totalUp);
-
-                            lvServers.EndUpdate();
-                        });
-                    }
-                }
+                
             }
             catch (Exception ex)
             {

@@ -33,7 +33,7 @@ namespace v2rayN.Tool
             memory.ActivateOptions();
             hierarchy.Root.AddAppender(memory);
 
-            hierarchy.Root.Level = Level.Info;
+            hierarchy.Root.Level = Level.Debug;
             hierarchy.Configured = true;
         }
 

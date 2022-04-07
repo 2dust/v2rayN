@@ -109,6 +109,10 @@ namespace v2rayN.Handler
                 }
                 else
                 {
+                    if (coreInfo == null || coreInfo.coreExes == null)
+                    {
+                        return;
+                    }
                     foreach (string vName in coreInfo.coreExes)
                     {
                         Process[] existing = Process.GetProcessesByName(vName);
