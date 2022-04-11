@@ -753,16 +753,11 @@ namespace v2rayN
         {
             if (enableSecurityProtocolTls13)
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                           | SecurityProtocolType.Tls11
-                                           | SecurityProtocolType.Tls12
-                                           | SecurityProtocolType.Tls13;
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             }
             else
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                                           | SecurityProtocolType.Tls11
-                                           | SecurityProtocolType.Tls12;
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             }
             ServicePointManager.DefaultConnectionLimit = 256;
         }

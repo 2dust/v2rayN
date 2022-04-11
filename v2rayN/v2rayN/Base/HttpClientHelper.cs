@@ -183,7 +183,7 @@ namespace v2rayN.Base
             using (var stream = await response.Content.ReadAsStreamAsync())
             {
                 var totalRead = 0L;
-                var buffer = new byte[1024 * 1024];
+                var buffer = new byte[1024 * 128];
                 var isMoreToRead = true;
                 progressPercentage = -1;
                 DateTime totalDatetime = DateTime.Now;
@@ -211,14 +211,14 @@ namespace v2rayN.Base
                             TimeSpan ts = (DateTime.Now - totalDatetime);
                             var speed = totalRead * 1d / ts.TotalMilliseconds / 1000;
                             var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                            if (progressPercentage != percent && percent % 5 == 0)
+                            if (progressPercentage != percent && percent % 2 == 1)
                             {
                                 progressPercentage = percent;
                                 progress.Report(speed);
                             }
                         }
                     }
-                } while (isMoreToRead);                
+                } while (isMoreToRead);
             }
         }
 
