@@ -268,7 +268,7 @@
     <value>开始更新 PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
-    <value>订阅内容获取失败</value>
+    <value>无效的订阅内容</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>正在解压......</value>
