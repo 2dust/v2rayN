@@ -121,6 +121,18 @@
     <value>取消(&amp;C)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 469</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>  Core:基础设置  </value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>648, 437</value>
+  </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
@@ -145,15 +157,6 @@
   <data name="chkdefAllowInsecure.Text" xml:space="preserve">
     <value>传输层安全选tls时，默认跳过证书验证(allowInsecure)</value>
   </data>
-  <data name="chksniffingEnabled2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>468, 117</value>
-  </data>
-  <data name="chksniffingEnabled2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 16</value>
-  </data>
-  <data name="chksniffingEnabled2.Text" xml:space="preserve">
-    <value>开启流量探测</value>
-  </data>
   <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 16</value>
   </data>
@@ -174,39 +177,6 @@
   </data>
   <data name="chkmuxEnabled.Text" xml:space="preserve">
     <value>开启Mux多路复用</value>
-  </data>
-  <data name="chkAllowIn2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 120</value>
-  </data>
-  <data name="chkAllowIn2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 16</value>
-  </data>
-  <data name="chkAllowIn2.Text" xml:space="preserve">
-    <value>本地监听端口2</value>
-  </data>
-  <data name="chkudpEnabled2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>369, 119</value>
-  </data>
-  <data name="chkudpEnabled2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 16</value>
-  </data>
-  <data name="chkudpEnabled2.Text" xml:space="preserve">
-    <value>开启UDP</value>
-  </data>
-  <data name="cmbprotocol2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 117</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>206, 121</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>协议</value>
-  </data>
-  <data name="txtlocalPort2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 117</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>219, 29</value>
@@ -250,14 +220,11 @@
   <data name="label2.Text" xml:space="preserve">
     <value>本地监听端口</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>648, 437</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>  Core:基础设置  </value>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:DNS设置  </value>
   </data>
   <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
@@ -271,17 +238,17 @@
   <data name="label14.Text" xml:space="preserve">
     <value>自定义DNS(可多个,用逗号(,)隔开)</value>
   </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:DNS设置  </value>
-  </data>
   <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
   <data name="tabPage6.Text" xml:space="preserve">
     <value>  Core:KCP设置  </value>
+  </data>
+  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
   </data>
   <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
     <value>启用安全协议TLS v1.3 (订阅/检查更新/测速)</value>
@@ -296,13 +263,13 @@
     <value>解除Windows10 UWP应用回环代理限制</value>
   </data>
   <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>255, 156</value>
+    <value>274, 134</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 12</value>
+    <value>227, 12</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
-    <value>自动更新Geo文件的间隔(单位小时)</value>
+    <value>自动更新订阅和Geo文件的间隔(单位小时)</value>
   </data>
   <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 16</value>
@@ -334,17 +301,23 @@
   <data name="chkAutoRun.Text" xml:space="preserve">
     <value>开机自动启动(可能会不成功)</value>
   </data>
-  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
   <data name="tabPageCoreType.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
   <data name="tabPageCoreType.Text" xml:space="preserve">
     <value>  Core类型设置  </value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>  系统代理设置  </value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>例外</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
@@ -358,29 +331,14 @@
   <data name="label12.Text" xml:space="preserve">
     <value>对于下列字符开头的地址不使用代理服务器:</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>例外</value>
-  </data>
-  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>  系统代理设置  </value>
-  </data>
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 469</value>
-  </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>确定(&amp;O)</value>
-  </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 479</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>662, 60</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>662, 10</value>

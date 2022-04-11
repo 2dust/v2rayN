@@ -218,14 +218,21 @@ namespace v2rayN.Handler
                 }
                 Utils.SaveLog("UpdateTaskRun");
 
+                updateHandle.UpdateSubscriptionProcess(config, true, (bool success, string msg) =>
+                {
+                    update(success, msg);
+                    if (success)
+                        Utils.SaveLog("subscription" + msg);
+                });
+
+                Thread.Sleep(60000);
+
                 updateHandle.UpdateGeoFile("geosite", config, (bool success, string msg) =>
                 {
                     update(false, msg);
                     if (success)
                         Utils.SaveLog("geosite" + msg);
                 });
-
-                Thread.Sleep(60000);
 
                 updateHandle.UpdateGeoFile("geoip", config, (bool success, string msg) =>
                 {
