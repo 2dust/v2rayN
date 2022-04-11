@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -345,13 +346,17 @@ namespace v2rayN.Forms
                 UI.Show(ResUI.MsgNeedUrl);
                 return;
             }
-            DownloadHandle downloadHandle = new DownloadHandle();
-            string clipboardData = downloadHandle.WebDownloadStringSync(url);
-            if (AddBatchRoutingRules(ref routingItem, clipboardData) == 0)
+
+            Task.Run(async () =>
             {
-                RefreshRoutingsView();
-                UI.Show(ResUI.OperationSuccess);
-            }
+                DownloadHandle downloadHandle = new DownloadHandle();
+                string result = await downloadHandle.DownloadStringAsync(url, false, "");
+                if (AddBatchRoutingRules(ref routingItem, result) == 0)
+                {
+                    RefreshRoutingsView();
+                    UI.Show(ResUI.OperationSuccess);
+                }
+            });
         }
         private int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
         {
@@ -362,8 +367,6 @@ namespace v2rayN.Forms
             }
             return ConfigHandler.AddBatchRoutingRules(ref routingItem, clipboardData, blReplace);
         }
-
-
 
         #endregion
 

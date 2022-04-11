@@ -413,7 +413,7 @@ namespace v2rayN.Forms
         }
 
         private void lvServers_SelectedIndexChanged(object sender, EventArgs e)
-        {            
+        {
         }
 
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -781,13 +781,12 @@ namespace v2rayN.Forms
         {
             if (GetLvSelectedIndex() < 0) return;
             ClearTestResult();
-            SpeedtestHandler statistics = new SpeedtestHandler(ref config, v2rayHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
+            SpeedtestHandler statistics = new SpeedtestHandler(config, v2rayHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void tsbTestMe_Click(object sender, EventArgs e)
         {
-            SpeedtestHandler statistics = new SpeedtestHandler(ref config);
-            string result = statistics.RunAvailabilityCheck() + "ms";
+            string result = (new DownloadHandle()).RunAvailabilityCheck(null) + "ms";
             AppendText(false, string.Format(ResUI.TestMeOutput, result));
         }
 
@@ -1197,6 +1196,10 @@ namespace v2rayN.Forms
                 lstVmess[k].testResult = txt;
                 lvServers.Items[k].SubItems["testResult"].Text = txt;
             }
+            else
+            {
+                AppendText(false, txt);
+            }
         }
         private void SetTestResult(int k, string txt)
         {
@@ -1248,7 +1251,7 @@ namespace v2rayN.Forms
                         lvServers.EndUpdate();
                     });
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1418,31 +1421,16 @@ namespace v2rayN.Forms
             (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI);
         }
 
-        private void tsbCheckUpdateGeoSite_Click(object sender, EventArgs e)
+        private void tsbCheckUpdateGeo_Click(object sender, EventArgs e)
         {
-            (new UpdateHandle()).UpdateGeoFile("geosite", config, (bool success, string msg) =>
+            Task.Run(() =>
             {
-                AppendText(false, msg);
-                if (success)
-                {
-                    Global.reloadV2ray = true;
-                    _ = LoadV2ray();
-                }
+                var updateHandle = new UpdateHandle();
+                updateHandle.UpdateGeoFile("geosite", config, UpdateTaskHandler);
+                updateHandle.UpdateGeoFile("geoip", config, UpdateTaskHandler);
             });
         }
 
-        private void tsbCheckUpdateGeoIP_Click(object sender, EventArgs e)
-        {
-            (new UpdateHandle()).UpdateGeoFile("geoip", config, (bool success, string msg) =>
-            {
-                AppendText(false, msg);
-                if (success)
-                {
-                    Global.reloadV2ray = true;
-                    _ = LoadV2ray();
-                }
-            });
-        }
         #endregion
 
         #region Help

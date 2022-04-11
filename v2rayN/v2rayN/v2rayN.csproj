@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\HttpClientHelper.cs" />
     <Compile Include="Base\ListViewFlickerFree.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -195,9 +196,6 @@
     <Compile Include="Handler\StatisticsHandler.cs" />
     <Compile Include="Handler\DownloadHandle.cs" />
     <Compile Include="Handler\ProxySetting.cs" />
-    <Compile Include="Base\WebClientEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Handler\SysProxyHandle.cs" />
     <Compile Include="Mode\ESpeedActionType.cs" />
     <Compile Include="Mode\EGlobalHotkey.cs" />

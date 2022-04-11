@@ -126,8 +126,7 @@
             this.tsbCheckUpdateCore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateXrayCore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbCheckUpdateGeoSite = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbCheckUpdateGeoIP = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCheckUpdateGeo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbHelp = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -831,8 +830,7 @@
             this.tsbCheckUpdateCore,
             this.tsbCheckUpdateXrayCore,
             this.toolStripSeparator15,
-            this.tsbCheckUpdateGeoSite,
-            this.tsbCheckUpdateGeoIP});
+            this.tsbCheckUpdateGeo});
             this.tsbCheckUpdate.Image = global::v2rayN.Properties.Resources.checkupdate;
             resources.ApplyResources(this.tsbCheckUpdate, "tsbCheckUpdate");
             this.tsbCheckUpdate.Name = "tsbCheckUpdate";
@@ -860,17 +858,11 @@
             this.toolStripSeparator15.Name = "toolStripSeparator15";
             resources.ApplyResources(this.toolStripSeparator15, "toolStripSeparator15");
             // 
-            // tsbCheckUpdateGeoSite
+            // tsbCheckUpdateGeo
             // 
-            this.tsbCheckUpdateGeoSite.Name = "tsbCheckUpdateGeoSite";
-            resources.ApplyResources(this.tsbCheckUpdateGeoSite, "tsbCheckUpdateGeoSite");
-            this.tsbCheckUpdateGeoSite.Click += new System.EventHandler(this.tsbCheckUpdateGeoSite_Click);
-            // 
-            // tsbCheckUpdateGeoIP
-            // 
-            this.tsbCheckUpdateGeoIP.Name = "tsbCheckUpdateGeoIP";
-            resources.ApplyResources(this.tsbCheckUpdateGeoIP, "tsbCheckUpdateGeoIP");
-            this.tsbCheckUpdateGeoIP.Click += new System.EventHandler(this.tsbCheckUpdateGeoIP_Click);
+            this.tsbCheckUpdateGeo.Name = "tsbCheckUpdateGeo";
+            resources.ApplyResources(this.tsbCheckUpdateGeo, "tsbCheckUpdateGeo");
+            this.tsbCheckUpdateGeo.Click += new System.EventHandler(this.tsbCheckUpdateGeo_Click);
             // 
             // toolStripSeparator10
             // 
@@ -1071,8 +1063,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripMenuItem tsbBackupGuiNConfig;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateGeoSite;
-        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateGeoIP;
+        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateGeo;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxFilter;
         private System.Windows.Forms.ToolStripStatusLabel toolSslInboundInfo;

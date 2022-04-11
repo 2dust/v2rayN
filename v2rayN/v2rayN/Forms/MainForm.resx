@@ -321,7 +321,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 666</value>
+    <value>356, 644</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -750,19 +750,19 @@
     <value>Do not change system proxy</value>
   </data>
   <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuSysAgentMode.Text" xml:space="preserve">
     <value>System proxy</value>
   </data>
   <data name="menuRoutings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuRoutings.Text" xml:space="preserve">
     <value>Routing</value>
   </data>
   <data name="menuServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuServers.Text" xml:space="preserve">
     <value>Server</value>
@@ -780,43 +780,43 @@
     <value>Server</value>
   </data>
   <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 6</value>
+    <value>274, 6</value>
   </data>
   <data name="menuAddServers2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuAddServers2.Text" xml:space="preserve">
     <value>Import bulk URL from clipboard</value>
   </data>
   <data name="menuScanScreen2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuScanScreen2.Text" xml:space="preserve">
     <value>Scan QR code on the screen</value>
   </data>
   <data name="menuUpdateSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
     <value>Update subscription without proxy</value>
   </data>
   <data name="menuUpdateSubViaProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuUpdateSubViaProxy.Text" xml:space="preserve">
     <value>Update subscriptions via proxy</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 6</value>
+    <value>274, 6</value>
   </data>
   <data name="menuExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="menuExit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 221</value>
+    <value>278, 221</value>
   </data>
   <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
     <value>cmsMain</value>
@@ -861,19 +861,19 @@
     <value>6, 56</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>Update subscription without proxy</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 22</value>
+    <value>277, 22</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
     <value>Update subscription with proxy</value>
@@ -995,17 +995,11 @@
   <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 6</value>
   </data>
-  <data name="tsbCheckUpdateGeoSite.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsbCheckUpdateGeo.Size" type="System.Drawing.Size, System.Drawing">
     <value>203, 22</value>
   </data>
-  <data name="tsbCheckUpdateGeoSite.Text" xml:space="preserve">
-    <value>Update GeoSite</value>
-  </data>
-  <data name="tsbCheckUpdateGeoIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
-  </data>
-  <data name="tsbCheckUpdateGeoIP.Text" xml:space="preserve">
-    <value>Update GeoIP</value>
+  <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
+    <value>Update Geo files</value>
   </data>
   <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -1619,16 +1613,10 @@
   <data name="&gt;&gt;toolStripSeparator15.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsbCheckUpdateGeoSite.Name" xml:space="preserve">
-    <value>tsbCheckUpdateGeoSite</value>
+  <data name="&gt;&gt;tsbCheckUpdateGeo.Name" xml:space="preserve">
+    <value>tsbCheckUpdateGeo</value>
   </data>
-  <data name="&gt;&gt;tsbCheckUpdateGeoSite.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateGeoIP.Name" xml:space="preserve">
-    <value>tsbCheckUpdateGeoIP</value>
-  </data>
-  <data name="&gt;&gt;tsbCheckUpdateGeoIP.Type" xml:space="preserve">
+  <data name="&gt;&gt;tsbCheckUpdateGeo.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">

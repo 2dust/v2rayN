@@ -71,8 +71,8 @@ namespace v2rayN.Handler
                 coreType = ECoreType.v2fly,
                 coreExes = new List<string> { "wv2ray", "v2ray" },
                 arguments = "",
-                coreUrl = Global.v2flyCoreUrl
-
+                coreUrl = Global.v2flyCoreUrl,
+                match = "V2Ray"
             });
 
             coreInfos.Add(new CoreInfo
@@ -80,7 +80,8 @@ namespace v2rayN.Handler
                 coreType = ECoreType.Xray,
                 coreExes = new List<string> { "xray" },
                 arguments = "",
-                coreUrl = Global.xrayCoreUrl
+                coreUrl = Global.xrayCoreUrl,
+                match = "Xray"
             });
 
             coreInfos.Add(new CoreInfo

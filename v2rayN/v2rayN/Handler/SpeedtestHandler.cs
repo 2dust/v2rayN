@@ -17,12 +17,12 @@ namespace v2rayN.Handler
         private List<ServerTestItem> _selecteds;
         Action<string, string> _updateFunc;
 
-        public SpeedtestHandler(ref Config config)
+        public SpeedtestHandler(Config config)
         {
             _config = config;
         }
 
-        public SpeedtestHandler(ref Config config, V2rayHandler v2rayHandler, List<VmessItem> selecteds, ESpeedActionType actionType, Action<string, string> update)
+        public SpeedtestHandler(Config config, V2rayHandler v2rayHandler, List<VmessItem> selecteds, ESpeedActionType actionType, Action<string, string> update)
         {
             _config = config;
             _v2rayHandler = v2rayHandler;
@@ -55,7 +55,7 @@ namespace v2rayN.Handler
             }
             else if (actionType == ESpeedActionType.Speedtest)
             {
-                Task.Run(() => RunSpeedTest());
+                Task.Run(() => RunSpeedTestAsync());
             }
         }
 
@@ -71,7 +71,7 @@ namespace v2rayN.Handler
                     }
                     try
                     {
-                        updateFun(it);
+                        Task.Run(() => updateFun(it));
                     }
                     catch (Exception ex)
                     {
@@ -122,6 +122,7 @@ namespace v2rayN.Handler
                     return;
                 }
 
+                DownloadHandle downloadHandle = new DownloadHandle();
                 //Thread.Sleep(5000);
                 List<Task> tasks = new List<Task>();
                 foreach (var it in _selecteds)
@@ -140,7 +141,7 @@ namespace v2rayN.Handler
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
                             int responseTime = -1;
-                            string status = GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
+                            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
 
                             _config.GetVmessItem(it.indexId)?.SetTestResult(output);
@@ -165,38 +166,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public int RunAvailabilityCheck() // alias: isLive
-        {
-            try
-            {
-                int httpPort = _config.GetLocalPort(Global.InboundHttp2);
-
-                Task<int> t = Task.Run(() =>
-                {
-                    try
-                    {
-                        WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
-                        int responseTime = -1;
-                        string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out responseTime);
-                        bool noError = Utils.IsNullOrEmpty(status);
-                        return noError ? responseTime : -1;
-                    }
-                    catch (Exception ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                        return -1;
-                    }
-                });
-                return t.Result;
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                return -1;
-            }
-        }
-
-        private void RunSpeedTest()
+        private async Task RunSpeedTestAsync()
         {
             string testIndexId = string.Empty;
             int pid = -1;
@@ -217,10 +187,10 @@ namespace v2rayN.Handler
             };
             downloadHandle2.Error += (sender2, args) =>
             {
-                _updateFunc(testIndexId, args.GetException().Message);
+                _updateFunc("", args.GetException().Message);
             };
 
-            var timeout = 10;
+            var timeout = 8;
             foreach (var it in _selecteds)
             {
                 if (!it.allowTest)
@@ -235,15 +205,9 @@ namespace v2rayN.Handler
                 if (_config.FindIndexId(it.indexId) < 0) continue;
 
                 WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
-                var ws = downloadHandle2.DownloadDataAsync(url, webProxy, timeout - 2);
-
-                Thread.Sleep(1000 * timeout);
-
-                ws.CancelAsync();
-                ws.Dispose();
-
-                Thread.Sleep(1000 * 2);
+                await downloadHandle2.DownloadDataAsync(url, webProxy, timeout);
             }
+
             if (pid > 0) _v2rayHandler.V2rayStopPid(pid);
         }
 
@@ -282,37 +246,6 @@ namespace v2rayN.Handler
             return responseTime;
         }
 
-        private string GetRealPingTime(string url, WebProxy webProxy, out int responseTime)
-        {
-            string msg = string.Empty;
-            responseTime = -1;
-            try
-            {
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                myHttpWebRequest.Timeout = 5000;
-                myHttpWebRequest.Proxy = webProxy;//new WebProxy(Global.Loopback, Global.httpPort);
-
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-
-                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
-                if (myHttpWebResponse.StatusCode != HttpStatusCode.OK
-                    && myHttpWebResponse.StatusCode != HttpStatusCode.NoContent)
-                {
-                    msg = myHttpWebResponse.StatusDescription;
-                }
-                timer.Stop();
-                responseTime = timer.Elapsed.Milliseconds;
-
-                myHttpWebResponse.Close();
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                msg = ex.Message;
-            }
-            return msg;
-        }
         private string FormatOut(object time, string unit)
         {
             if (time.ToString().Equals("-1"))
