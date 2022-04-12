@@ -83,12 +83,12 @@ namespace v2rayN.Forms
             RefreshRoutingsMenu();
             RestoreUI();
 
-            _ = LoadV2ray();
-
             HideForm();
 
             MainFormHandler.Instance.UpdateTask(config, UpdateTaskHandler);
             MainFormHandler.Instance.RegisterGlobalHotkey(config, OnHotkeyHandler, UpdateTaskHandler);
+
+            _ = LoadV2ray();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -472,7 +472,7 @@ namespace v2rayN.Forms
             tabPage.Name = "";
             tabGroup.TabPages.Add(tabPage);
 
-            foreach (var item in config.groupItem)
+            foreach (var item in config.groupItem.OrderBy(t => t.sort))
             {
                 var tabPage2 = new TabPage($"   {item.remarks}   ");
                 tabPage2.Name = item.id;
@@ -539,13 +539,15 @@ namespace v2rayN.Forms
         #endregion
 
         #region v2ray 操作
-
         /// <summary>
         /// 载入V2ray
         /// </summary>
         async Task LoadV2ray()
         {
-            tsbReload.Enabled = false;
+            this.BeginInvoke(new Action(() =>
+            {
+                tsbReload.Enabled = false;
+            }));
 
             if (Global.reloadV2ray)
             {
@@ -562,7 +564,10 @@ namespace v2rayN.Forms
 
             ChangePACButtonStatus(config.sysProxyType);
 
-            tsbReload.Enabled = true;
+            this.BeginInvoke(new Action(() =>
+            {
+                tsbReload.Enabled = true;
+            }));
         }
 
         /// <summary>
@@ -881,9 +886,9 @@ namespace v2rayN.Forms
             var fm = new GlobalHotkeySettingForm();
             if (fm.ShowDialog() == DialogResult.OK)
             {
-                RefreshRoutingsMenu();
-                RefreshServers();
-                _ = LoadV2ray();
+                //RefreshRoutingsMenu();
+                //RefreshServers();
+                //_ = LoadV2ray();
             }
 
         }
@@ -1259,13 +1264,13 @@ namespace v2rayN.Forms
             }
         }
 
-        private void UpdateTaskHandler(bool success, string msg)
+        private async void UpdateTaskHandler(bool success, string msg)
         {
             AppendText(false, msg);
             if (success)
             {
                 Global.reloadV2ray = true;
-                _ = LoadV2ray();
+                await LoadV2ray();
             }
         }
         #endregion

@@ -32,6 +32,7 @@ namespace v2rayN.Forms
             if (groupItem != null)
             {
                 txtRemarks.Text = groupItem.remarks.ToString();
+                numSort.Value = groupItem.sort;
             }
         }
         private void EndBindingSub()
@@ -39,6 +40,7 @@ namespace v2rayN.Forms
             if (groupItem != null)
             {
                 groupItem.remarks = txtRemarks.Text.TrimEx();
+                groupItem.sort = Convert.ToInt32(numSort.Value);
             }
         }
         private void txtRemarks_Leave(object sender, EventArgs e)

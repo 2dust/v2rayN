@@ -33,15 +33,20 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.numSort = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.grbMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSort)).BeginInit();
             this.SuspendLayout();
             // 
             // grbMain
             // 
-            resources.ApplyResources(this.grbMain, "grbMain");
+            this.grbMain.Controls.Add(this.label1);
+            this.grbMain.Controls.Add(this.numSort);
             this.grbMain.Controls.Add(this.btnRemove);
             this.grbMain.Controls.Add(this.txtRemarks);
             this.grbMain.Controls.Add(this.label2);
+            resources.ApplyResources(this.grbMain, "grbMain");
             this.grbMain.Name = "grbMain";
             this.grbMain.TabStop = false;
             // 
@@ -63,6 +68,17 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
+            // numSort
+            // 
+            resources.ApplyResources(this.numSort, "numSort");
+            this.numSort.Name = "numSort";
+            this.numSort.Leave += new System.EventHandler(this.txtRemarks_Leave);
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
             // GroupSettingControl
             // 
             resources.ApplyResources(this, "$this");
@@ -72,6 +88,7 @@
             this.Load += new System.EventHandler(this.GroupSettingControl_Load);
             this.grbMain.ResumeLayout(false);
             this.grbMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSort)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -82,5 +99,7 @@
         private System.Windows.Forms.TextBox txtRemarks;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numSort;
     }
 }

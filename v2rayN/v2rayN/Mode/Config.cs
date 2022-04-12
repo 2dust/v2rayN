@@ -341,18 +341,30 @@ namespace v2rayN.Mode
             {
                 return subRemarks;
             }
-            foreach (SubItem sub in config.subItem)
-            {
-                if (sub.id.EndsWith(subid))
-                {
-                    return sub.remarks;
-                }
-            }
             if (subid.Length <= 4)
             {
                 return subid;
             }
+            var sub = config.subItem.FirstOrDefault(t => t.id == subid);
+            if (sub != null)
+            {
+                return sub.remarks;
+            }
             return subid.Substring(0, 4);
+        }
+        public string GetGroupRemarks(Config config)
+        {
+            string subRemarks = string.Empty;
+            if (Utils.IsNullOrEmpty(groupId))
+            {
+                return subRemarks;
+            }
+            var group = config.groupItem.FirstOrDefault(t => t.id == groupId);
+            if (group != null)
+            {
+                return group.remarks;
+            }
+            return groupId.Substring(0, 4);
         }
 
         public List<string> GetAlpn()
@@ -578,9 +590,9 @@ namespace v2rayN.Mode
         public bool sniffingEnabled { get; set; } = true;
 
         public bool allowLANConn { get; set; }
-       
+
         public string user { get; set; }
-       
+
         public string pass { get; set; }
 
     }
@@ -760,6 +772,10 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public string remarks
+        {
+            get; set;
+        }
+        public int sort
         {
             get; set;
         }

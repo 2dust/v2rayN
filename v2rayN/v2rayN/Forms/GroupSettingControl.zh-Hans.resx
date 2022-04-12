@@ -130,4 +130,7 @@
   <data name="grbMain.Text" xml:space="preserve">
     <value>分组详情</value>
   </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>排序编号</value>
+  </data>
 </root>
