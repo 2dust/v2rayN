@@ -94,7 +94,6 @@
             this.menuKeepNothing = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRoutings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuServers = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuServers2 = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.menuAddServers2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScanScreen2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -585,7 +584,6 @@
             this.menuSysAgentMode,
             this.menuRoutings,
             this.menuServers,
-            this.menuServers2,
             this.toolStripSeparator13,
             this.menuAddServers2,
             this.menuScanScreen2,
@@ -634,14 +632,6 @@
             // 
             this.menuServers.Name = "menuServers";
             resources.ApplyResources(this.menuServers, "menuServers");
-            // 
-            // menuServers2
-            // 
-            this.menuServers2.BackColor = System.Drawing.SystemColors.Window;
-            this.menuServers2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.menuServers2.DropDownWidth = 500;
-            resources.ApplyResources(this.menuServers2, "menuServers2");
-            this.menuServers2.Name = "menuServers2";
             // 
             // toolStripSeparator13
             // 
@@ -1069,7 +1059,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolSslInboundInfo;
         private System.Windows.Forms.ToolStripStatusLabel toolSslRoutingRule;
         private System.Windows.Forms.ToolStripStatusLabel toolSslBlank2;
-        private System.Windows.Forms.ToolStripComboBox menuServers2;
         private System.Windows.Forms.ToolStripMenuItem tsbSubUpdateViaProxy;
         private System.Windows.Forms.ToolStripMenuItem menuUpdateSubViaProxy;
         private System.Windows.Forms.ToolStripMenuItem menuMsgBoxClear;

@@ -460,4 +460,7 @@
   <data name="Speedtesting" xml:space="preserve">
     <value>Speed Test...</value>
   </data>
+  <data name="TooManyServersTip" xml:space="preserve">
+    <value>Too many servers, please open the main interface</value>
+  </data>
 </root>

@@ -767,18 +767,6 @@
   <data name="menuServers.Text" xml:space="preserve">
     <value>Server</value>
   </data>
-  <data name="menuServers2.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
-  <data name="menuServers2.MaxDropDownItems" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="menuServers2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 25</value>
-  </data>
-  <data name="menuServers2.ToolTipText" xml:space="preserve">
-    <value>Server</value>
-  </data>
   <data name="toolStripSeparator13.Size" type="System.Drawing.Size, System.Drawing">
     <value>274, 6</value>
   </data>
@@ -816,7 +804,7 @@
     <value>Exit</value>
   </data>
   <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 221</value>
+    <value>278, 192</value>
   </data>
   <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
     <value>cmsMain</value>
@@ -1432,12 +1420,6 @@
   </data>
   <data name="&gt;&gt;menuServers.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuServers2.Name" xml:space="preserve">
-    <value>menuServers2</value>
-  </data>
-  <data name="&gt;&gt;menuServers2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator13.Name" xml:space="preserve">
     <value>toolStripSeparator13</value>

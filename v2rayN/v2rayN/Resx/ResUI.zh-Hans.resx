@@ -460,4 +460,7 @@
   <data name="Speedtesting" xml:space="preserve">
     <value>测速中...</value>
   </data>
+  <data name="TooManyServersTip" xml:space="preserve">
+    <value>服务器太多，请打开主界面操作</value>
+  </data>
 </root>

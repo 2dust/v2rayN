@@ -962,6 +962,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Too many servers, please open the main interface 的本地化字符串。
+        /// </summary>
+        internal static string TooManyServersTip {
+            get {
+                return ResourceManager.GetString("TooManyServersTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 *tcp camouflage type 的本地化字符串。
         /// </summary>
         internal static string TransportHeaderTypeTip1 {
