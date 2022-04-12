@@ -457,4 +457,7 @@
   <data name="SystemProxy" xml:space="preserve">
     <value>系统代理</value>
   </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>测速中...</value>
+  </data>
 </root>

@@ -457,4 +457,7 @@
   <data name="SystemProxy" xml:space="preserve">
     <value>System proxy</value>
   </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Speed Test...</value>
+  </data>
 </root>

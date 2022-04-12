@@ -880,6 +880,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Speed Test... 的本地化字符串。
+        /// </summary>
+        internal static string Speedtesting {
+            get {
+                return ResourceManager.GetString("Speedtesting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 PAC failed to start. Run it with Admin right. 的本地化字符串。
         /// </summary>
         internal static string StartPacFailed {

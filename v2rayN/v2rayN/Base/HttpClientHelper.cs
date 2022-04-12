@@ -16,7 +16,6 @@ namespace v2rayN.Base
     {
         private static HttpClientHelper httpClientHelper = null;
         private HttpClient httpClient;
-        private int progressPercentage = -1;
 
         /// <summary>
         /// </summary>
@@ -120,7 +119,7 @@ namespace v2rayN.Base
                     var totalRead = 0L;
                     var buffer = new byte[1024 * 1024];
                     var isMoreToRead = true;
-                    progressPercentage = -1;
+                    var progressPercentage = 0;
 
                     do
                     {
@@ -183,14 +182,24 @@ namespace v2rayN.Base
             using (var stream = await response.Content.ReadAsStreamAsync())
             {
                 var totalRead = 0L;
-                var buffer = new byte[1024 * 128];
+                var buffer = new byte[1024 * 64];
                 var isMoreToRead = true;
-                progressPercentage = -1;
+                var progressPercentage = 0;
                 DateTime totalDatetime = DateTime.Now;
 
                 do
                 {
-                    token.ThrowIfCancellationRequested();
+                    if (token.IsCancellationRequested)
+                    {
+                        if (totalRead > 0)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            token.ThrowIfCancellationRequested();
+                        }
+                    }
 
                     var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
 
@@ -211,7 +220,7 @@ namespace v2rayN.Base
                             TimeSpan ts = (DateTime.Now - totalDatetime);
                             var speed = totalRead * 1d / ts.TotalMilliseconds / 1000;
                             var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                            if (progressPercentage != percent && percent % 2 == 1)
+                            if (progressPercentage != percent)
                             {
                                 progressPercentage = percent;
                                 progress.Report(speed);

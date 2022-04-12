@@ -187,7 +187,7 @@ namespace v2rayN.Handler
             };
             downloadHandle2.Error += (sender2, args) =>
             {
-                _updateFunc("", args.GetException().Message);
+                _updateFunc(testIndexId, args.GetException().Message);
             };
 
             var timeout = 8;

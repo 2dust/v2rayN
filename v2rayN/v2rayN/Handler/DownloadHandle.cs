@@ -39,7 +39,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Speedtesting));
 
                 var client = new HttpClient(new WebRequestHandler()
                 {
