@@ -250,8 +250,8 @@ namespace v2rayN.Handler
                                     File.Delete(targetPath);
                                 }
                                 File.Move(fileName, targetPath);
-                                    //_updateFunc(true, "");
-                                }
+                                //_updateFunc(true, "");
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -270,6 +270,16 @@ namespace v2rayN.Handler
             }
             askToDownload(downloadHandle, url, false);
 
+        }
+
+        public void RunAvailabilityCheck(Action<bool, string> update)
+        {
+            Task.Run(() =>
+            {
+                var time = (new DownloadHandle()).RunAvailabilityCheck(null);
+
+                update(false, string.Format(ResUI.TestMeOutput, time));
+            });
         }
 
         #region private

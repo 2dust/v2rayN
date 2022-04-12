@@ -176,21 +176,17 @@ namespace v2rayN.Handler
                     webProxy = new WebProxy(Global.Loopback, httpPort);
                 }
 
-                Task<int> t = Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out int responseTime);
-                        bool noError = Utils.IsNullOrEmpty(status);
-                        return noError ? responseTime : -1;
-                    }
-                    catch (Exception ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                        return -1;
-                    }
-                });
-                return t.Result;
+                    string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out int responseTime);
+                    bool noError = Utils.IsNullOrEmpty(status);
+                    return noError ? responseTime : -1;
+                }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                    return -1;
+                }
             }
             catch (Exception ex)
             {

@@ -356,7 +356,7 @@
     <value>Scan import URL successfully</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>The ping of current service: {0}</value>
+    <value>The ping of current service: {0} ms</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>Operation success</value>

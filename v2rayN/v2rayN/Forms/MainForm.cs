@@ -767,8 +767,8 @@ namespace v2rayN.Forms
 
         private void tsbTestMe_Click(object sender, EventArgs e)
         {
-            string result = (new DownloadHandle()).RunAvailabilityCheck(null) + "ms";
-            AppendText(false, string.Format(ResUI.TestMeOutput, result));
+            var updateHandle = new UpdateHandle();
+            updateHandle.RunAvailabilityCheck(UpdateTaskHandler);
         }
 
         private void menuClearStatistic_Click(object sender, EventArgs e)
@@ -1366,7 +1366,10 @@ namespace v2rayN.Forms
                     menuExit_Click(null, null);
                 }
             };
-            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI);
+            Task.Run(() =>
+            {
+                (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI);
+            });
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
@@ -1399,7 +1402,10 @@ namespace v2rayN.Forms
                     AppendText(false, ResUI.MsgUpdateV2rayCoreSuccessfully);
                 }
             };
-            (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI);
+            Task.Run(() =>
+            {
+                (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI);
+            });
         }
 
         private void tsbCheckUpdateGeo_Click(object sender, EventArgs e)
