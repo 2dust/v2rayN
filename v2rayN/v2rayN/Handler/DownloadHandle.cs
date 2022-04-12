@@ -51,7 +51,7 @@ namespace v2rayN.Handler
                 {
                     if (UpdateCompleted != null)
                     {
-                        string msg = string.Format("{0} M/s", value.ToString("#0.0"));
+                        string msg = string.Format("{0} M/s", value.ToString("#0.0")).PadLeft(9, ' ');
                         UpdateCompleted(this, new ResultEventArgs(false, msg));
                     }
                 };
