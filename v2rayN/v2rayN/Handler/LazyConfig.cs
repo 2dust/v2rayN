@@ -94,6 +94,15 @@ namespace v2rayN.Handler
 
             coreInfos.Add(new CoreInfo
             {
+                coreType = ECoreType.clash_meta,
+                coreExes = new List<string> { "Clash.Meta-windows-amd64v1", "Clash.Meta-windows-amd64", "Clash.Meta-windows-386", "Clash.Meta", "clash" },
+                arguments = "-f config.yaml",
+                coreUrl = Global.clashMetaCoreUrl,
+                match = "Clash Meta"
+            });
+
+            coreInfos.Add(new CoreInfo
+            {
                 coreType = ECoreType.hysteria,
                 coreExes = new List<string> { "hysteria-tun-windows-6.0-amd64", "hysteria-tun-windows-6.0-386", "hysteria" },
                 arguments = "",

@@ -957,6 +957,7 @@ namespace v2rayN.Handler
                     case ECoreType.Xray:
                         break;
                     case ECoreType.clash:
+                    case ECoreType.clash_meta:
                         fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp2)}");
                         fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
                         break;
