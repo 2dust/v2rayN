@@ -126,7 +126,7 @@
     <value>3, 17</value>
   </data>
   <metadata name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>327, 17</value>
+    <value>226, 19</value>
   </metadata>
   <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -308,20 +308,8 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
   </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 644</value>
+    <value>356, 666</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -470,6 +458,18 @@
   <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
   <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -515,178 +515,28 @@
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="cmsMsgBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>493, 20</value>
-  </metadata>
-  <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
-    <value>Select All (Ctrl+A)</value>
-  </data>
-  <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
-    <value>Copy (Ctrl+C)</value>
-  </data>
-  <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
-    <value>Copy All</value>
-  </data>
-  <data name="menuMsgBoxClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxClear.Text" xml:space="preserve">
-    <value>Clear All</value>
-  </data>
-  <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
-    <value>Add Routing Rule (Ctrl+V)</value>
-  </data>
-  <data name="menuMsgBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
-  </data>
-  <data name="menuMsgBoxFilter.Text" xml:space="preserve">
-    <value>Set message filters</value>
-  </data>
-  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 136</value>
-  </data>
-  <data name="&gt;&gt;cmsMsgBox.Name" xml:space="preserve">
-    <value>cmsMsgBox</value>
-  </data>
-  <data name="&gt;&gt;cmsMsgBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="txtMsgBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="mainMsgControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="txtMsgBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
-  </data>
-  <data name="txtMsgBox.MaxLength" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="txtMsgBox.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="txtMsgBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="txtMsgBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>946, 177</value>
-  </data>
-  <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
-    <value>txtMsgBox</value>
-  </data>
-  <data name="&gt;&gt;txtMsgBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtMsgBox.Parent" xml:space="preserve">
-    <value>gbMsgTitle</value>
-  </data>
-  <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>228, 18</value>
-  </metadata>
-  <data name="toolSslInboundInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
-  </data>
-  <data name="toolSslInboundInfo.Text" xml:space="preserve">
-    <value>InboundInfo</value>
-  </data>
-  <data name="toolSslBlank1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 21</value>
-  </data>
-  <data name="toolSslRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 21</value>
-  </data>
-  <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="toolSslServerSpeed.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="toolSslServerSpeed.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 21</value>
-  </data>
-  <data name="toolSslServerSpeed.Text" xml:space="preserve">
-    <value>SPEED Disabled</value>
-  </data>
-  <data name="toolSslServerSpeed.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="ssMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 194</value>
-  </data>
-  <data name="ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>946, 26</value>
-  </data>
-  <data name="ssMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ssMain.Text" xml:space="preserve">
-    <value>statusStrip1</value>
-  </data>
-  <data name="&gt;&gt;ssMain.Name" xml:space="preserve">
-    <value>ssMain</value>
-  </data>
-  <data name="&gt;&gt;ssMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ssMain.Parent" xml:space="preserve">
-    <value>gbMsgTitle</value>
-  </data>
-  <data name="&gt;&gt;ssMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gbMsgTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="gbMsgTitle.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="mainMsgControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="gbMsgTitle.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="mainMsgControl.Size" type="System.Drawing.Size, System.Drawing">
     <value>952, 223</value>
   </data>
-  <data name="gbMsgTitle.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="mainMsgControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="gbMsgTitle.Text" xml:space="preserve">
-    <value>Informations</value>
+  <data name="&gt;&gt;mainMsgControl.Name" xml:space="preserve">
+    <value>mainMsgControl</value>
   </data>
-  <data name="&gt;&gt;gbMsgTitle.Name" xml:space="preserve">
-    <value>gbMsgTitle</value>
+  <data name="&gt;&gt;mainMsgControl.Type" xml:space="preserve">
+    <value>v2rayN.Forms.MainMsgControl, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;gbMsgTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbMsgTitle.Parent" xml:space="preserve">
+  <data name="&gt;&gt;mainMsgControl.Parent" xml:space="preserve">
     <value>splitContainer1.Panel2</value>
   </data>
-  <data name="&gt;&gt;gbMsgTitle.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;mainMsgControl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
@@ -720,7 +570,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -840,10 +690,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>409, 17</value>
+    <value>315, 17</value>
   </metadata>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
@@ -1089,7 +939,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1306,78 +1156,6 @@
   </data>
   <data name="&gt;&gt;tsbServer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxSelectAll.Name" xml:space="preserve">
-    <value>menuMsgBoxSelectAll</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxSelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxCopy.Name" xml:space="preserve">
-    <value>menuMsgBoxCopy</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxCopy.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxCopyAll.Name" xml:space="preserve">
-    <value>menuMsgBoxCopyAll</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxCopyAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxClear.Name" xml:space="preserve">
-    <value>menuMsgBoxClear</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxClear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxAddRoutingRule.Name" xml:space="preserve">
-    <value>menuMsgBoxAddRoutingRule</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxAddRoutingRule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxFilter.Name" xml:space="preserve">
-    <value>menuMsgBoxFilter</value>
-  </data>
-  <data name="&gt;&gt;menuMsgBoxFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslInboundInfo.Name" xml:space="preserve">
-    <value>toolSslInboundInfo</value>
-  </data>
-  <data name="&gt;&gt;toolSslInboundInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank1.Name" xml:space="preserve">
-    <value>toolSslBlank1</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslRoutingRule.Name" xml:space="preserve">
-    <value>toolSslRoutingRule</value>
-  </data>
-  <data name="&gt;&gt;toolSslRoutingRule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
-    <value>toolSslBlank2</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslServerSpeed.Name" xml:space="preserve">
-    <value>toolSslServerSpeed</value>
-  </data>
-  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank4.Name" xml:space="preserve">
-    <value>toolSslBlank4</value>
-  </data>
-  <data name="&gt;&gt;toolSslBlank4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;notifyMain.Name" xml:space="preserve">
     <value>notifyMain</value>

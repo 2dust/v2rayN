@@ -321,47 +321,26 @@
   <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
   </data>
-  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
-    <value>全选 (Ctrl+A)</value>
-  </data>
   <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
-    <value>复制 (Ctrl+C)</value>
   </data>
   <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
   </data>
-  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
-    <value>复制所有</value>
-  </data>
   <data name="menuMsgBoxClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxClear.Text" xml:space="preserve">
-    <value>清除所有</value>
   </data>
   <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
   </data>
-  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
-    <value>快速添加路由规则 (Ctrl+V)</value>
-  </data>
   <data name="menuMsgBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 22</value>
-  </data>
-  <data name="menuMsgBoxFilter.Text" xml:space="preserve">
-    <value>设置信息过滤器</value>
   </data>
   <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>222, 136</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>网速显示未启用</value>
-  </data>
-  <data name="gbMsgTitle.Text" xml:space="preserve">
-    <value>信息</value>
   </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 22</value>

@@ -109,6 +109,12 @@
     <Compile Include="Forms\BaseServerForm.Designer.cs">
       <DependentUpon>BaseServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainMsgControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MainMsgControl.Designer.cs">
+      <DependentUpon>MainMsgControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MsgFilterSetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +291,12 @@
     <EmbeddedResource Include="Forms\MainForm.zh-Hans.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainMsgControl.resx">
+      <DependentUpon>MainMsgControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainMsgControl.zh-Hans.resx">
+      <DependentUpon>MainMsgControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MsgFilterSetForm.resx">
       <DependentUpon>MsgFilterSetForm.cs</DependentUpon>

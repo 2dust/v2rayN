@@ -3,16 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
-using v2rayN.Tool;
-using System.Linq;
 using v2rayN.Resx;
+using v2rayN.Tool;
 
 namespace v2rayN.Forms
 {
@@ -21,7 +19,6 @@ namespace v2rayN.Forms
         private V2rayHandler v2rayHandler;
         private List<VmessItem> lstSelecteds = new List<VmessItem>();
         private StatisticsHandler statistics = null;
-        private string MsgFilter = string.Empty;
         private List<VmessItem> lstVmess = null;
         private string groupId = string.Empty;
 
@@ -527,7 +524,7 @@ namespace v2rayN.Forms
 
             if (Global.reloadV2ray)
             {
-                ClearMsg();
+                mainMsgControl.ClearMsg();
             }
             await Task.Run(() =>
             {
@@ -1038,68 +1035,17 @@ namespace v2rayN.Forms
             AppendText(notify, msg);
         }
 
-        delegate void AppendTextDelegate(string text);
         void AppendText(bool notify, string msg)
         {
             try
             {
-                AppendText(msg);
+                mainMsgControl.AppendText(msg);
                 if (notify)
                 {
                     notifyMsg(msg);
                 }
             }
-            catch
-            {
-            }
-        }
-
-        void AppendText(string text)
-        {
-            if (this.txtMsgBox.InvokeRequired)
-            {
-                Invoke(new AppendTextDelegate(AppendText), new object[] { text });
-            }
-            else
-            {
-                if (!Utils.IsNullOrEmpty(MsgFilter))
-                {
-                    if (!Regex.IsMatch(text, MsgFilter))
-                    {
-                        return;
-                    }
-                }
-                //this.txtMsgBox.AppendText(text);
-                ShowMsg(text);
-            }
-        }
-
-        /// <summary>
-        /// 提示信息
-        /// </summary>
-        /// <param name="msg"></param>
-        private void ShowMsg(string msg)
-        {
-            if (txtMsgBox.Lines.Length > 999)
-            {
-                ClearMsg();
-            }
-            this.txtMsgBox.AppendText(msg);
-            if (!msg.EndsWith(Environment.NewLine))
-            {
-                this.txtMsgBox.AppendText(Environment.NewLine);
-            }
-        }
-
-        /// <summary>
-        /// 清除信息
-        /// </summary>
-        private void ClearMsg()
-        {
-            txtMsgBox.Invoke((Action)delegate
-            {
-                txtMsgBox.Clear();
-            });
+            catch { }
         }
 
         /// <summary>
@@ -1143,7 +1089,7 @@ namespace v2rayN.Forms
             this.Activate();
             this.ShowInTaskbar = true;
             //this.notifyIcon1.Visible = false;
-            this.txtMsgBox.ScrollToCaret();
+            mainMsgControl.ScrollToCaret();
 
             int index = GetLvSelectedIndex(false);
             if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
@@ -1211,7 +1157,7 @@ namespace v2rayN.Forms
             {
                 up /= (ulong)(config.statisticsFreshRate / 1000f);
                 down /= (ulong)(config.statisticsFreshRate / 1000f);
-                toolSslServerSpeed.Text = string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down));
+                mainMsgControl.SetToolSslInfo("speed", string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down)));
 
                 foreach (var it in statistics)
                 {
@@ -1347,7 +1293,7 @@ namespace v2rayN.Forms
                 sb.Append($"{ResUI.SystemProxy} {Global.Loopback}:{config.GetLocalPort(Global.InboundHttp2)}");
             }
 
-            toolSslInboundInfo.Text = sb.ToString();
+            mainMsgControl.SetToolSslInfo("inbound", sb.ToString());
 
             notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
@@ -1507,10 +1453,6 @@ namespace v2rayN.Forms
             //Application.Restart();
         }
 
-
-
-
-
         #endregion
 
 
@@ -1524,7 +1466,7 @@ namespace v2rayN.Forms
             menuRoutings.Visible = config.enableRoutingAdvanced;
             if (!config.enableRoutingAdvanced)
             {
-                toolSslRoutingRule.Text = string.Empty;
+                mainMsgControl.SetToolSslInfo("routing", string.Empty);
                 return;
             }
 
@@ -1547,7 +1489,7 @@ namespace v2rayN.Forms
                 if (config.routingIndex.Equals(k))
                 {
                     ts.Checked = true;
-                    toolSslRoutingRule.Text = item.remarks;
+                    mainMsgControl.SetToolSslInfo("routing", item.remarks);
                 }
                 ts.Click += new EventHandler(ts_Routing_Click);
                 lst.Add(ts);
@@ -1573,66 +1515,5 @@ namespace v2rayN.Forms
             }
         }
         #endregion
-
-        #region MsgBoxMenu
-        private void menuMsgBoxSelectAll_Click(object sender, EventArgs e)
-        {
-            this.txtMsgBox.Focus();
-            this.txtMsgBox.SelectAll();
-        }
-
-        private void menuMsgBoxCopy_Click(object sender, EventArgs e)
-        {
-            var data = this.txtMsgBox.SelectedText.TrimEx();
-            Utils.SetClipboardData(data);
-        }
-
-        private void menuMsgBoxCopyAll_Click(object sender, EventArgs e)
-        {
-            var data = this.txtMsgBox.Text;
-            Utils.SetClipboardData(data);
-        }
-        private void menuMsgBoxClear_Click(object sender, EventArgs e)
-        {
-            this.txtMsgBox.Clear();
-        }
-        private void menuMsgBoxAddRoutingRule_Click(object sender, EventArgs e)
-        {
-            menuMsgBoxCopy_Click(null, null);
-            tsbRoutingSetting_Click(null, null);
-        }
-
-        private void txtMsgBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-            {
-                switch (e.KeyCode)
-                {
-                    case Keys.A:
-                        menuMsgBoxSelectAll_Click(null, null);
-                        break;
-                    case Keys.C:
-                        menuMsgBoxCopy_Click(null, null);
-                        break;
-                    case Keys.V:
-                        menuMsgBoxAddRoutingRule_Click(null, null);
-                        break;
-
-                }
-            }
-
-        }
-        private void menuMsgBoxFilter_Click(object sender, EventArgs e)
-        {
-            var fm = new MsgFilterSetForm();
-            fm.MsgFilter = MsgFilter;
-            if (fm.ShowDialog() == DialogResult.OK)
-            {
-                MsgFilter = fm.MsgFilter;
-                gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, MsgFilter);
-            }
-        }
-        #endregion
-
     }
 }
