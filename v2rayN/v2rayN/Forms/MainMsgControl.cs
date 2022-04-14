@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Base;
+using v2rayN.Mode;
 using v2rayN.Resx;
 
 namespace v2rayN.Forms
@@ -76,6 +77,32 @@ namespace v2rayN.Forms
             {
                 txtMsgBox.Clear();
             });
+        }
+
+        public void DisplayToolStatus(Config config)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{ResUI.LabLocal}:");
+            sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(Global.InboundSocks)}]");
+            sb.Append(" | ");
+            if (config.sysProxyType == ESysProxyType.ForcedChange)
+            {
+                sb.Append($"[{Global.InboundHttp}({ResUI.SystemProxy}):{config.GetLocalPort(Global.InboundHttp)}]");
+            }
+            else
+            {
+                sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp)}]");
+            }
+
+            if (config.inbound[0].allowLANConn)
+            {
+                sb.Append($"  {ResUI.LabLAN}:");
+                sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(Global.InboundSocks2)}]");
+                sb.Append(" | ");
+                sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp2)}]");
+            }
+
+            SetToolSslInfo("inbound", sb.ToString());
         }
 
         public void SetToolSslInfo(string type, string value)

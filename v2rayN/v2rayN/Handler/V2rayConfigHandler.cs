@@ -146,53 +146,62 @@ namespace v2rayN.Handler
         {
             try
             {
-                Inbounds inbound = v2rayConfig.inbounds[0];
-                inbound.tag = Global.InboundSocks;
-                inbound.port = config.inbound[0].localPort;
-                inbound.protocol = config.inbound[0].protocol;
-                if (config.inbound[0].allowLANConn)
-                {
-                    inbound.listen = "0.0.0.0";
-                }
-                else
-                {
-                    inbound.listen = Global.Loopback;
-                }
-                //udp
-                inbound.settings.udp = config.inbound[0].udpEnabled;
-                inbound.sniffing.enabled = config.inbound[0].sniffingEnabled;
+                v2rayConfig.inbounds = new List<Inbounds>();
+
+                Inbounds inbound = GetInbound(config.inbound[0], Global.InboundSocks, 0, true);
+                v2rayConfig.inbounds.Add(inbound);
 
                 //http
-                Inbounds inbound2 = v2rayConfig.inbounds[1];
-                inbound2.tag = Global.InboundHttp;
-                inbound2.port = config.GetLocalPort(Global.InboundHttp);
-                inbound2.protocol = Global.InboundHttp;
-                inbound2.listen = inbound.listen;
-                inbound2.settings.allowTransparent = false;
-                inbound2.sniffing.enabled = inbound.sniffing.enabled;
+                Inbounds inbound2 = GetInbound(config.inbound[0], Global.InboundHttp, 1, false);
+                v2rayConfig.inbounds.Add(inbound2);
 
-                //auth
-                if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                if (config.inbound[0].allowLANConn)
                 {
-                    inbound.settings.auth = "password";
-                    inbound.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
-                    inbound2.settings.auth = "password";
-                    inbound2.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
-                }
+                    Inbounds inbound3 = GetInbound(config.inbound[0], Global.InboundSocks2, 2, true);
+                    v2rayConfig.inbounds.Add(inbound3);
 
-                //http Loopback
-                Inbounds inbound3 = v2rayConfig.inbounds[2];
-                inbound3.tag = Global.InboundHttp2;
-                inbound3.port = config.GetLocalPort(Global.InboundHttp2);
-                inbound3.protocol = Global.InboundHttp;
-                inbound3.listen = Global.Loopback;
-                inbound3.settings.allowTransparent = false;
-                inbound3.sniffing.enabled = inbound.sniffing.enabled;
+                    Inbounds inbound4 = GetInbound(config.inbound[0], Global.InboundHttp2, 3, false);
+                    v2rayConfig.inbounds.Add(inbound4);
+
+                    //auth
+                    if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                    {
+                        inbound3.listen = "0.0.0.0";
+                        inbound3.settings.auth = "password";
+                        inbound3.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+
+                        inbound4.listen = "0.0.0.0";
+                        inbound4.settings.auth = "password";
+                        inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                    }
+                }
             }
             catch
             {
             }
             return 0;
+        }
+
+        private static Inbounds GetInbound(InItem inItem, string tag, int offset, bool bSocks)
+        {
+            string result = Utils.GetEmbedText(Global.v2raySampleInbound);
+            if (Utils.IsNullOrEmpty(result))
+            {
+                return null;
+            }
+
+            var inbound = Utils.FromJson<Inbounds>(result);
+            if (inbound == null)
+            {
+                return null;
+            }
+            inbound.tag = tag;
+            inbound.port = inItem.localPort + offset;
+            inbound.protocol = bSocks ? Global.InboundSocks : Global.InboundHttp;
+            inbound.settings.udp = inItem.udpEnabled;
+            inbound.sniffing.enabled = inItem.sniffingEnabled;
+
+            return inbound;
         }
 
         /// <summary>
@@ -958,7 +967,7 @@ namespace v2rayN.Handler
                         break;
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
-                        fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp2)}");
+                        fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
                         fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
                         break;
                 }

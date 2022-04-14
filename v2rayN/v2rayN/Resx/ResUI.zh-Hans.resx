@@ -463,4 +463,10 @@
   <data name="TooManyServersTip" xml:space="preserve">
     <value>服务器太多，请打开主界面操作</value>
   </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>局域网</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>本地</value>
+  </data>
 </root>

@@ -322,6 +322,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 LAN 的本地化字符串。
+        /// </summary>
+        internal static string LabLAN {
+            get {
+                return ResourceManager.GetString("LabLAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local 的本地化字符串。
+        /// </summary>
+        internal static string LabLocal {
+            get {
+                return ResourceManager.GetString("LabLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         internal static string LvAddress {

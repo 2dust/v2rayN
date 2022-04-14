@@ -208,27 +208,27 @@ namespace v2rayN.Mode
 
         public int GetLocalPort(string protocol)
         {
-            if (protocol == Global.InboundHttp)
+            int localPort = inbound.FirstOrDefault(t => t.protocol == Global.InboundSocks).localPort;
+
+            if (protocol == Global.InboundSocks)
             {
-                return GetLocalPort(Global.InboundSocks) + 1;
+                return localPort;
+            }
+            else if (protocol == Global.InboundHttp)
+            {
+                return localPort + 1;
+            }
+            else if (protocol == Global.InboundSocks2)
+            {
+                return localPort + 2;
             }
             else if (protocol == Global.InboundHttp2)
             {
-                return GetLocalPort(Global.InboundSocks) + 2;
+                return localPort + 3;
             }
             else if (protocol == "speedtest")
             {
-                return GetLocalPort(Global.InboundSocks) + 103;
-            }
-
-            int localPort = 0;
-            foreach (InItem inItem in inbound)
-            {
-                if (inItem.protocol.Equals(protocol))
-                {
-                    localPort = inItem.localPort;
-                    break;
-                }
+                return localPort + 103;
             }
             return localPort;
         }

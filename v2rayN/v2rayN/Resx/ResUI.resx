@@ -463,4 +463,10 @@
   <data name="TooManyServersTip" xml:space="preserve">
     <value>Too many servers, please open the main interface</value>
   </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>LAN</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Local</value>
+  </data>
 </root>

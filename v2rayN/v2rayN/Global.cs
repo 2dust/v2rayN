@@ -65,8 +65,9 @@ namespace v2rayN
         /// </summary>
         public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse.txt";
 
-
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
+
+        public const string v2raySampleInbound = "v2rayN.Sample.SampleInbound.txt";
 
 
         /// <summary>
@@ -112,6 +113,7 @@ namespace v2rayN
 
         public const string InboundSocks = "socks";
         public const string InboundHttp = "http";
+        public const string InboundSocks2 = "socks2";
         public const string InboundHttp2 = "http2";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPITagName = "api";

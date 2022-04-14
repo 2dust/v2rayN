@@ -1277,26 +1277,12 @@ namespace v2rayN.Forms
             }
 
             ConfigHandler.SaveConfig(ref config, false);
-            DisplayToolStatus();
-        }
 
-        private void DisplayToolStatus()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"{Global.InboundSocks} {Global.Loopback}:{config.GetLocalPort(Global.InboundSocks)}");
-            sb.Append(" | ");
-            sb.Append($"{Global.InboundHttp} {Global.Loopback}:{config.GetLocalPort(Global.InboundHttp)}");
-
-            if (config.sysProxyType == ESysProxyType.ForcedChange)
-            {
-                sb.Append(" | ");
-                sb.Append($"{ResUI.SystemProxy} {Global.Loopback}:{config.GetLocalPort(Global.InboundHttp2)}");
-            }
-
-            mainMsgControl.SetToolSslInfo("inbound", sb.ToString());
+            mainMsgControl.DisplayToolStatus(config);
 
             notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
+
         #endregion
 
 

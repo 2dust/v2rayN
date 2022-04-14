@@ -59,7 +59,7 @@ namespace v2rayN.Handler
 
             try
             {
-                int port = config.GetLocalPort(Global.InboundHttp2);
+                int port = config.GetLocalPort(Global.InboundHttp);
                 if (port <= 0)
                 {
                     return false;

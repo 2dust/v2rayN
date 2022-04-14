@@ -474,6 +474,7 @@
     <None Include="Resources\minimize.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Sample\SampleInbound.txt" />
     <None Include="Resources\share.png" />
     <None Include="Resources\promotion.png" />
     <None Include="Resources\sub.png" />

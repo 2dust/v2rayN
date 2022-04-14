@@ -172,7 +172,7 @@ namespace v2rayN.Handler
             {
                 if (webProxy == null)
                 {
-                    var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp2);
+                    var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp);
                     webProxy = new WebProxy(Global.Loopback, httpPort);
                 }
 
@@ -233,7 +233,7 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp2);
+            var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp);
             var webProxy = new WebProxy(Global.Loopback, httpPort);
             if (RunAvailabilityCheck(webProxy) > 0)
             {
