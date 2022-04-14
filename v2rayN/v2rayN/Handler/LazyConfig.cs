@@ -87,7 +87,7 @@ namespace v2rayN.Handler
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.clash,
-                coreExes = new List<string> { "clash-windows-amd64", "clash-windows-386", "clash" },
+                coreExes = new List<string> { "clash-windows-amd64-v3", "clash-windows-amd64", "clash-windows-386", "clash" },
                 arguments = "-f config.json",
                 coreUrl = Global.clashCoreUrl
             });
