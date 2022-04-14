@@ -68,6 +68,8 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.txtautoUpdateSubInterval = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.chkEnableSecurityProtocolTls13 = new System.Windows.Forms.CheckBox();
             this.chkEnableAutoAdjustMainLvColWidth = new System.Windows.Forms.CheckBox();
             this.btnSetLoopback = new System.Windows.Forms.Button();
@@ -374,6 +376,8 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.txtautoUpdateSubInterval);
+            this.tabPage7.Controls.Add(this.label3);
             this.tabPage7.Controls.Add(this.chkEnableSecurityProtocolTls13);
             this.tabPage7.Controls.Add(this.chkEnableAutoAdjustMainLvColWidth);
             this.tabPage7.Controls.Add(this.btnSetLoopback);
@@ -387,6 +391,16 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // txtautoUpdateSubInterval
+            // 
+            resources.ApplyResources(this.txtautoUpdateSubInterval, "txtautoUpdateSubInterval");
+            this.txtautoUpdateSubInterval.Name = "txtautoUpdateSubInterval";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
             // 
             // chkEnableSecurityProtocolTls13
             // 
@@ -697,5 +711,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtpass;
         private System.Windows.Forms.TextBox txtuser;
+        private System.Windows.Forms.TextBox txtautoUpdateSubInterval;
+        private System.Windows.Forms.Label label3;
     }
 }

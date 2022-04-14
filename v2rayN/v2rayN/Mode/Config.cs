@@ -125,10 +125,9 @@ namespace v2rayN.Mode
             get; set;
         }
 
-        public int autoUpdateInterval
-        {
-            get; set;
-        } = 0;
+        public int autoUpdateInterval { get; set; } = 0;
+
+        public int autoUpdateSubInterval { get; set; } = 0;
 
         public bool enableSecurityProtocolTls13
         {

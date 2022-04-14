@@ -250,6 +250,15 @@
   <data name="tabPage7.Text" xml:space="preserve">
     <value>  v2rayN设置  </value>
   </data>
+  <data name="txtautoUpdateSubInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 159</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>自动更新订阅的间隔(单位小时)</value>
+  </data>
   <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
     <value>启用安全协议TLS v1.3 (订阅/检查更新/测速)</value>
   </data>
@@ -263,13 +272,13 @@
     <value>解除Windows10 UWP应用回环代理限制</value>
   </data>
   <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 134</value>
+    <value>248, 134</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 12</value>
+    <value>191, 12</value>
   </data>
   <data name="label15.Text" xml:space="preserve">
-    <value>自动更新订阅和Geo文件的间隔(单位小时)</value>
+    <value>自动更新Geo文件的间隔(单位小时)</value>
   </data>
   <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 16</value>
