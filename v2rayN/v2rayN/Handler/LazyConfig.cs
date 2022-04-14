@@ -96,9 +96,8 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.clash_meta,
                 coreExes = new List<string> { "Clash.Meta-windows-amd64v1", "Clash.Meta-windows-amd64", "Clash.Meta-windows-386", "Clash.Meta", "clash" },
-                arguments = "-f config.yaml",
-                coreUrl = Global.clashMetaCoreUrl,
-                match = "Clash Meta"
+                arguments = "-f config.json",
+                coreUrl = Global.clashMetaCoreUrl
             });
 
             coreInfos.Add(new CoreInfo
@@ -107,6 +106,14 @@ namespace v2rayN.Handler
                 coreExes = new List<string> { "hysteria-tun-windows-6.0-amd64", "hysteria-tun-windows-6.0-386", "hysteria" },
                 arguments = "",
                 coreUrl = Global.hysteriaCoreUrl
+            });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.naiveproxy,
+                coreExes = new List<string> { "naiveproxy", "naive" },
+                arguments = "config.json",
+                coreUrl = Global.naiveproxyCoreUrl
             });
         }
 

@@ -22,6 +22,7 @@ namespace v2rayN.Forms
             cmbCoreType.Items.Add("clash");
             cmbCoreType.Items.Add("clash_meta"); 
             cmbCoreType.Items.Add("hysteria");
+            cmbCoreType.Items.Add("naiveproxy");
             cmbCoreType.Items.Add(string.Empty);
 
             txtAddress.ReadOnly = true;
