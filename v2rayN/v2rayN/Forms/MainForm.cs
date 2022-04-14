@@ -389,13 +389,6 @@ namespace v2rayN.Forms
         {
         }
 
-        private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            if (!Utils.IsNullOrEmpty(e.ClickedItem.Text))
-            {
-                Utils.SetClipboardData(e.ClickedItem.Text);
-            }
-        }
 
         private void lvServers_ColumnClick(object sender, ColumnClickEventArgs e)
         {

@@ -126,11 +126,11 @@
   <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
     <value>Select All (Ctrl+A)</value>
   </data>
+  <data name="&gt;&gt;ssMain.Name" xml:space="preserve">
+    <value>ssMain</value>
+  </data>
   <data name="&gt;&gt;menuMsgBoxSelectAll.Name" xml:space="preserve">
     <value>menuMsgBoxSelectAll</value>
-  </data>
-  <data name="&gt;&gt;txtMsgBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="toolSslServerSpeed.AutoSize" type="System.Boolean, mscorlib">
@@ -145,9 +145,6 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>227, 22</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuMsgBoxCopyAll.Name" xml:space="preserve">
     <value>menuMsgBoxCopyAll</value>
@@ -173,8 +170,8 @@
   <data name="&gt;&gt;toolSslBlank1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+  <data name="&gt;&gt;toolSslInboundInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolSslRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
@@ -187,6 +184,9 @@
   </data>
   <data name="&gt;&gt;txtMsgBox.Name" xml:space="preserve">
     <value>txtMsgBox</value>
+  </data>
+  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 17</value>
   </data>
   <data name="&gt;&gt;menuMsgBoxFilter.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -209,9 +209,6 @@
   <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
     <value>Add Routing Rule (Ctrl+V)</value>
   </data>
-  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="toolSslServerSpeed.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -224,14 +221,14 @@
   <data name="toolSslInboundInfo.Text" xml:space="preserve">
     <value>InboundInfo</value>
   </data>
-  <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;menuMsgBoxAddRoutingRule.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuMsgBoxClear.Name" xml:space="preserve">
     <value>menuMsgBoxClear</value>
+  </data>
+  <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="gbMsgTitle.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -241,9 +238,6 @@
   </data>
   <data name="txtMsgBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 17</value>
-  </data>
-  <data name="&gt;&gt;toolSslInboundInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolSslBlank4.Name" xml:space="preserve">
     <value>toolSslBlank4</value>
@@ -260,14 +254,14 @@
   <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 17</value>
   </data>
-  <data name="&gt;&gt;menuMsgBoxAddRoutingRule.Name" xml:space="preserve">
-    <value>menuMsgBoxAddRoutingRule</value>
-  </data>
   <data name="txtMsgBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="menuMsgBoxClear.Text" xml:space="preserve">
     <value>Clear All</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtMsgBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
@@ -281,6 +275,9 @@
   </data>
   <data name="&gt;&gt;cmsMsgBox.Name" xml:space="preserve">
     <value>cmsMsgBox</value>
+  </data>
+  <data name="txtMsgBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="&gt;&gt;cmsMsgBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -303,8 +300,8 @@
   <data name="&gt;&gt;toolSslBlank4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
-    <value>Copy All</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MainMsgControl</value>
   </data>
   <data name="gbMsgTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -318,26 +315,29 @@
   <data name="toolSslServerSpeed.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
-    <value>Copy (Ctrl+C)</value>
+  <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
+    <value>Copy All</value>
+  </data>
+  <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 17</value>
   </data>
   <data name="ssMain.Text" xml:space="preserve">
     <value>statusStrip1</value>
   </data>
-  <data name="&gt;&gt;menuMsgBoxSelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;menuMsgBoxAddRoutingRule.Name" xml:space="preserve">
+    <value>menuMsgBoxAddRoutingRule</value>
   </data>
   <data name="&gt;&gt;toolSslBlank2.Name" xml:space="preserve">
     <value>toolSslBlank2</value>
   </data>
-  <data name="&gt;&gt;menuMsgBoxCopyAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="menuMsgBoxFilter.Text" xml:space="preserve">
+    <value>Set message filters</value>
   </data>
   <data name="toolSslServerSpeed.Text" xml:space="preserve">
     <value>SPEED Disabled</value>
   </data>
-  <data name="txtMsgBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;txtMsgBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;gbMsgTitle.Name" xml:space="preserve">
     <value>gbMsgTitle</value>
@@ -348,32 +348,32 @@
   <data name="&gt;&gt;ssMain.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MainMsgControl</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txtMsgBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;menuMsgBoxSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuMsgBoxCopy.Name" xml:space="preserve">
     <value>menuMsgBoxCopy</value>
   </data>
-  <data name="toolSslBlank4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 17</value>
+  <data name="&gt;&gt;txtMsgBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ssMain.Name" xml:space="preserve">
-    <value>ssMain</value>
+  <data name="&gt;&gt;toolSslServerSpeed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="menuMsgBoxFilter.Text" xml:space="preserve">
-    <value>Set message filters</value>
+  <data name="menuMsgBoxCopy.Text" xml:space="preserve">
+    <value>Copy (Ctrl+C)</value>
   </data>
   <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>228, 136</value>
   </data>
-  <data name="toolSslServerSpeed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 17</value>
+  <data name="&gt;&gt;menuMsgBoxCopyAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="cmsMsgBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>131, 18</value>
   </metadata>
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>zh-Hans</value>
@@ -381,7 +381,7 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>131, 18</value>
+  <metadata name="cmsMsgBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
 </root>

@@ -130,6 +130,7 @@ namespace v2rayN.Forms
             this.toolSslServerSpeed,
             this.toolSslBlank4});
             this.ssMain.Name = "ssMain";
+            this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
             // 
             // toolSslInboundInfo
             // 

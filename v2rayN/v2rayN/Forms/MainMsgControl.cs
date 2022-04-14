@@ -189,6 +189,14 @@ namespace v2rayN.Forms
                 gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, MsgFilter);
             }
         }
+
+        private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (!Utils.IsNullOrEmpty(e.ClickedItem.Text))
+            {
+                Utils.SetClipboardData(e.ClickedItem.Text);
+            }
+        }
         #endregion
 
 

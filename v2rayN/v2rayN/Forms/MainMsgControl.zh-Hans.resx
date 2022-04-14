@@ -117,25 +117,53 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="gbMsgTitle.Text" xml:space="preserve">
-    <value>信息</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="menuMsgBoxSelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
   </data>
-  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
-    <value>快速添加路由规则 (Ctrl+V)</value>
+  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
+    <value>全选 (Ctrl+A)</value>
   </data>
-  <data name="menuMsgBoxClear.Text" xml:space="preserve">
-    <value>清除所有</value>
+  <data name="menuMsgBoxCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
   </data>
   <data name="menuMsgBoxCopy.Text" xml:space="preserve">
     <value>复制 (Ctrl+C)</value>
   </data>
+  <data name="menuMsgBoxCopyAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
   <data name="menuMsgBoxCopyAll.Text" xml:space="preserve">
     <value>复制所有</value>
+  </data>
+  <data name="menuMsgBoxClear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxClear.Text" xml:space="preserve">
+    <value>清除所有</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
+  </data>
+  <data name="menuMsgBoxAddRoutingRule.Text" xml:space="preserve">
+    <value>快速添加路由规则 (Ctrl+V)</value>
+  </data>
+  <data name="menuMsgBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 22</value>
   </data>
   <data name="menuMsgBoxFilter.Text" xml:space="preserve">
     <value>设置信息过滤器</value>
   </data>
-  <data name="menuMsgBoxSelectAll.Text" xml:space="preserve">
-    <value>全选 (Ctrl+A)</value>
+  <data name="cmsMsgBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>222, 136</value>
+  </data>
+  <data name="toolSslBlank1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 17</value>
+  </data>
+  <data name="toolSslBlank2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 17</value>
+  </data>
+  <data name="gbMsgTitle.Text" xml:space="preserve">
+    <value>信息</value>
   </data>
 </root>
