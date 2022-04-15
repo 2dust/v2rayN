@@ -166,4 +166,7 @@
   <data name="gbMsgTitle.Text" xml:space="preserve">
     <value>信息</value>
   </data>
+  <data name="toolSslServerSpeed.Text" xml:space="preserve">
+    <value>网速显示未启用</value>
+  </data>
 </root>
