@@ -111,10 +111,12 @@ namespace v2rayN.Forms
             }
 
             chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
-            txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
-            txtautoUpdateSubInterval.Text = config.autoUpdateSubInterval.ToString();
             chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
             chkEnableSecurityProtocolTls13.Checked = config.enableSecurityProtocolTls13;
+
+            txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
+            txtautoUpdateSubInterval.Text = config.autoUpdateSubInterval.ToString();
+            txttrayMenuServersLimit.Text = config.trayMenuServersLimit.ToString();
         }
 
         private void InitCoreType()
@@ -305,11 +307,12 @@ namespace v2rayN.Forms
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
-            config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
-            config.autoUpdateSubInterval = Utils.ToInt(txtautoUpdateSubInterval.Text);
             config.uiItem.enableAutoAdjustMainLvColWidth = chkEnableAutoAdjustMainLvColWidth.Checked;
             config.enableSecurityProtocolTls13 = chkEnableSecurityProtocolTls13.Checked;
 
+            config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
+            config.autoUpdateSubInterval = Utils.ToInt(txtautoUpdateSubInterval.Text);
+            config.trayMenuServersLimit = Utils.ToInt(txttrayMenuServersLimit.Text);
             return 0;
         }
 
@@ -339,6 +342,6 @@ namespace v2rayN.Forms
         {
             Process.Start(Utils.GetPath("EnableLoopback.exe"));
         }
-         
+
     }
 }

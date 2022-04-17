@@ -134,6 +134,8 @@ namespace v2rayN.Mode
             get; set;
         }
 
+        public int trayMenuServersLimit { get; set; }
+
         #endregion
 
         #region other entities

@@ -68,6 +68,8 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.txttrayMenuServersLimit = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.txtautoUpdateSubInterval = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.chkEnableSecurityProtocolTls13 = new System.Windows.Forms.CheckBox();
@@ -376,6 +378,8 @@
             // tabPage7
             // 
             resources.ApplyResources(this.tabPage7, "tabPage7");
+            this.tabPage7.Controls.Add(this.txttrayMenuServersLimit);
+            this.tabPage7.Controls.Add(this.label17);
             this.tabPage7.Controls.Add(this.txtautoUpdateSubInterval);
             this.tabPage7.Controls.Add(this.label3);
             this.tabPage7.Controls.Add(this.chkEnableSecurityProtocolTls13);
@@ -391,6 +395,16 @@
             this.tabPage7.Controls.Add(this.chkAutoRun);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // txttrayMenuServersLimit
+            // 
+            resources.ApplyResources(this.txttrayMenuServersLimit, "txttrayMenuServersLimit");
+            this.txttrayMenuServersLimit.Name = "txttrayMenuServersLimit";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
             // 
             // txtautoUpdateSubInterval
             // 
@@ -713,5 +727,7 @@
         private System.Windows.Forms.TextBox txtuser;
         private System.Windows.Forms.TextBox txtautoUpdateSubInterval;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txttrayMenuServersLimit;
+        private System.Windows.Forms.Label label17;
     }
 }

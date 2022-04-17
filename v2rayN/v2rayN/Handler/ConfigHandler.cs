@@ -1206,6 +1206,10 @@ namespace v2rayN.Handler
             {
                 config.routingIndex = 0;
             }
+            if (config.trayMenuServersLimit <= 0)
+            {
+                config.trayMenuServersLimit = 30;
+            }
 
             Global.reloadV2ray = true;
 

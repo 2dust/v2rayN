@@ -121,14 +121,119 @@
     <value>取消(&amp;C)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 469</value>
-  </data>
   <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>
   </data>
   <data name="tabPage1.Text" xml:space="preserve">
     <value>  Core:基础设置  </value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:DNS设置  </value>
+  </data>
+  <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage6.Text" xml:space="preserve">
+    <value>  Core:KCP设置  </value>
+  </data>
+  <data name="txttrayMenuServersLimit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 211</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 12</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>托盘右键菜单服务器展示数量限制</value>
+  </data>
+  <data name="txtautoUpdateSubInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 184</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>自动更新订阅的间隔(单位小时)</value>
+  </data>
+  <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
+    <value>启用安全协议TLS v1.3 (订阅/检查更新/测速)</value>
+  </data>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 16</value>
+  </data>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Text" xml:space="preserve">
+    <value>自动调整服务器列宽在更新订阅后</value>
+  </data>
+  <data name="btnSetLoopback.Text" xml:space="preserve">
+    <value>解除Windows10 UWP应用回环代理限制</value>
+  </data>
+  <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 157</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>自动更新Geo文件的间隔(单位小时)</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
+    <value>更新Core时忽略Geo文件</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 16</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
+    <value>去重时保留序号较小的项</value>
+  </data>
+  <data name="cbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>431, 37</value>
+  </data>
+  <data name="lbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>339, 41</value>
+  </data>
+  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="lbFreshrate.Text" xml:space="preserve">
+    <value>统计刷新频率</value>
+  </data>
+  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 16</value>
+  </data>
+  <data name="chkEnableStatistics.Text" xml:space="preserve">
+    <value>启用统计(实时网速显示和使用流量显示，需要重启)</value>
+  </data>
+  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 16</value>
+  </data>
+  <data name="chkAutoRun.Text" xml:space="preserve">
+    <value>开机自动启动(可能会不成功)</value>
+  </data>
+  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayN设置  </value>
+  </data>
+  <data name="tabPageCoreType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPageCoreType.Text" xml:space="preserve">
+    <value>  Core类型设置  </value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>  系统代理设置  </value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 469</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>648, 437</value>
@@ -220,12 +325,6 @@
   <data name="label2.Text" xml:space="preserve">
     <value>本地监听端口</value>
   </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>  Core:DNS设置  </value>
-  </data>
   <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 12</value>
   </data>
@@ -237,90 +336,6 @@
   </data>
   <data name="label14.Text" xml:space="preserve">
     <value>自定义DNS(可多个,用逗号(,)隔开)</value>
-  </data>
-  <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage6.Text" xml:space="preserve">
-    <value>  Core:KCP设置  </value>
-  </data>
-  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage7.Text" xml:space="preserve">
-    <value>  v2rayN设置  </value>
-  </data>
-  <data name="txtautoUpdateSubInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>248, 159</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 12</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>自动更新订阅的间隔(单位小时)</value>
-  </data>
-  <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
-    <value>启用安全协议TLS v1.3 (订阅/检查更新/测速)</value>
-  </data>
-  <data name="chkEnableAutoAdjustMainLvColWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 16</value>
-  </data>
-  <data name="chkEnableAutoAdjustMainLvColWidth.Text" xml:space="preserve">
-    <value>自动调整服务器列宽在更新订阅后</value>
-  </data>
-  <data name="btnSetLoopback.Text" xml:space="preserve">
-    <value>解除Windows10 UWP应用回环代理限制</value>
-  </data>
-  <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>248, 134</value>
-  </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 12</value>
-  </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>自动更新Geo文件的间隔(单位小时)</value>
-  </data>
-  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 16</value>
-  </data>
-  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
-    <value>更新Core时忽略Geo文件</value>
-  </data>
-  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 16</value>
-  </data>
-  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
-    <value>去重时保留序号较小的项</value>
-  </data>
-  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 12</value>
-  </data>
-  <data name="lbFreshrate.Text" xml:space="preserve">
-    <value>统计刷新频率</value>
-  </data>
-  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 16</value>
-  </data>
-  <data name="chkEnableStatistics.Text" xml:space="preserve">
-    <value>启用统计(实时网速显示和使用流量显示，需要重启v2rayN客户端)</value>
-  </data>
-  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 16</value>
-  </data>
-  <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>开机自动启动(可能会不成功)</value>
-  </data>
-  <data name="tabPageCoreType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPageCoreType.Text" xml:space="preserve">
-    <value>  Core类型设置  </value>
-  </data>
-  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>654, 443</value>
-  </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>  系统代理设置  </value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>654, 443</value>

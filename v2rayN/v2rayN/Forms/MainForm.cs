@@ -345,7 +345,7 @@ namespace v2rayN.Forms
         {
             menuServers.DropDownItems.Clear();
 
-            if (lstVmess.Count > 30)
+            if (lstVmess.Count > config.trayMenuServersLimit)
             {
                 menuServers.DropDownItems.Add(new ToolStripMenuItem(ResUI.TooManyServersTip));
                 return;
