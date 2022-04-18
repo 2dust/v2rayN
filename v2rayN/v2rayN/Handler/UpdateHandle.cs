@@ -178,6 +178,15 @@ namespace v2rayN.Handler
 
             Task.Run(async () =>
             {
+                //Turn off system proxy
+                bool bSysProxyType = false;
+                if (!blProxy && config.sysProxyType == ESysProxyType.ForcedChange)
+                {
+                    bSysProxyType = true;
+                    config.sysProxyType = ESysProxyType.ForcedClear;
+                    SysProxyHandle.UpdateSysProxy(config, false);
+                }
+
                 foreach (var item in config.subItem)
                 {
                     if (item.enabled == false)
@@ -217,7 +226,14 @@ namespace v2rayN.Handler
                     }
                     _updateFunc(false, $"-------------------------------------------------------");
                 }
+                //restore system proxy
+                if (bSysProxyType)
+                {
+                    config.sysProxyType = ESysProxyType.ForcedChange;
+                    SysProxyHandle.UpdateSysProxy(config, false);
+                }
                 _updateFunc(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
+
             });
         }
 
