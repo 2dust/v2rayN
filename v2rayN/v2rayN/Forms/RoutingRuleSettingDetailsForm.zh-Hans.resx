@@ -170,4 +170,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>路由规则详情设置</value>
   </data>
+  <data name="chkAutoSort.Text" xml:space="preserve">
+    <value>保存时Domain和IP自动排序</value>
+  </data>
 </root>
