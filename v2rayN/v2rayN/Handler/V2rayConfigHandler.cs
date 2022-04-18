@@ -941,7 +941,7 @@ namespace v2rayN.Handler
                 string addressFileName = node.address;
                 if (!File.Exists(addressFileName))
                 {
-                    addressFileName = Path.Combine(Utils.GetConfigPath(), addressFileName);
+                    addressFileName = Utils.GetConfigPath(addressFileName);
                 }
                 if (!File.Exists(addressFileName))
                 {

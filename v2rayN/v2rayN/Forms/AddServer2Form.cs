@@ -152,7 +152,7 @@ namespace v2rayN.Forms
                 return;
             }
 
-            address = Path.Combine(Utils.GetConfigPath(), address);
+            address = Utils.GetConfigPath(address);
             Process.Start(address);
         }
     }

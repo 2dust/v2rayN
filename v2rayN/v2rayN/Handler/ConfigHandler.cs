@@ -284,7 +284,17 @@ namespace v2rayN.Handler
                 vmessItem.indexId = string.Empty;
                 vmessItem.remarks = string.Format("{0}-clone", item.remarks);
 
-                AddServerCommon(ref config, vmessItem);
+                if (vmessItem.configType == EConfigType.Custom)
+                {
+                    vmessItem.address = Utils.GetConfigPath(vmessItem.address);
+                    if (AddCustomServer(ref config, vmessItem, false) == 0)
+                    {
+                    }
+                }
+                else
+                {
+                    AddServerCommon(ref config, vmessItem);
+                }
             }
 
             ToJsonFile(config);
@@ -442,7 +452,7 @@ namespace v2rayN.Handler
 
             try
             {
-                File.Copy(fileName, Path.Combine(Utils.GetConfigPath(), newFileName));
+                File.Copy(fileName, Utils.GetConfigPath(newFileName));
                 if (blDelete)
                 {
                     File.Delete(fileName);
