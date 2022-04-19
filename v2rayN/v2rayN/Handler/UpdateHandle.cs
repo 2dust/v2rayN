@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Base;
@@ -185,6 +186,7 @@ namespace v2rayN.Handler
                     bSysProxyType = true;
                     config.sysProxyType = ESysProxyType.ForcedClear;
                     SysProxyHandle.UpdateSysProxy(config, false);
+                    Thread.Sleep(3000);
                 }
 
                 foreach (var item in config.subItem)
