@@ -215,14 +215,22 @@ namespace v2rayN.Base
                         // TODO:   
                         totalRead += read;
 
+                        TimeSpan ts = (DateTime.Now - totalDatetime);
+                        var speed = totalRead * 1d / ts.TotalMilliseconds / 1000;
                         if (canReportProgress)
                         {
-                            TimeSpan ts = (DateTime.Now - totalDatetime);
-                            var speed = totalRead * 1d / ts.TotalMilliseconds / 1000;
                             var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
                             if (progressPercentage != percent)
                             {
                                 progressPercentage = percent;
+                                progress.Report(speed);
+                            }
+                        }
+                        else if (progress != null)
+                        {
+                            if (progressPercentage != Convert.ToInt32(speed * 10))
+                            {
+                                progressPercentage = Convert.ToInt32(speed * 10);
                                 progress.Report(speed);
                             }
                         }
