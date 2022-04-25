@@ -124,6 +124,7 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        public bool enableSystemProxyAdvanced { get; set; }
 
         public int autoUpdateInterval { get; set; } = 0;
 

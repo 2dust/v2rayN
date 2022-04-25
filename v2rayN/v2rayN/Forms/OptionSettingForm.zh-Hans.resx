@@ -373,4 +373,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="chkEnableSystemProxyAdvanced.Text" xml:space="preserve">
+    <value>开启系统代理高级设置 (http/https/ftp/socks)</value>
+  </data>
 </root>

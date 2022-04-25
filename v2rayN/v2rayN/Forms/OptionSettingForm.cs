@@ -58,6 +58,8 @@ namespace v2rayN.Forms
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
 
             txtsystemProxyExceptions.Text = config.systemProxyExceptions;
+
+            chkEnableSystemProxyAdvanced.Checked = config.enableSystemProxyAdvanced;
         }
 
 
@@ -252,6 +254,8 @@ namespace v2rayN.Forms
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
 
             config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
+
+            config.enableSystemProxyAdvanced = chkEnableSystemProxyAdvanced.Checked;
 
             return 0;
         }

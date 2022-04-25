@@ -60,6 +60,7 @@ namespace v2rayN.Handler
             try
             {
                 int port = config.GetLocalPort(Global.InboundHttp);
+                int portSocks = config.GetLocalPort(Global.InboundSocks);
                 if (port <= 0)
                 {
                     return false;
@@ -67,7 +68,17 @@ namespace v2rayN.Handler
                 if (type == ESysProxyType.ForcedChange)
                 {
                     var strExceptions = $"{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
-                    SetIEProxy(true, $"{Global.Loopback}:{port}", strExceptions);
+
+                    var strProxy = string.Empty;
+                    if (config.enableSystemProxyAdvanced)
+                    {
+                        strProxy = string.Format("http={0}:{1};https={0}:{1};ftp={0}:{1};socks={0}:{2}", Global.Loopback, port, portSocks);
+                    }
+                    else
+                    {
+                        strProxy = $"{Global.Loopback}:{port}";
+                    }
+                    SetIEProxy(true, strProxy, strExceptions);
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
@@ -94,41 +105,6 @@ namespace v2rayN.Handler
             catch
             {
             }
-        }
-
-        public static void SetIEProxy(bool enable, bool global, string strProxy)
-        {
-            //Read();
-
-            //if (!_userSettings.UserSettingsRecorded)
-            //{
-            //    // record user settings
-            //    ExecSysproxy("query");
-            //    //ParseQueryStr(_queryStr);
-            //}
-
-            string arguments;
-            if (enable)
-            {
-                arguments = global
-                    ? $"global {strProxy} {Global.IEProxyExceptions}"
-                    : $"pac {strProxy}";
-            }
-            else
-            {
-                // restore user settings
-                string flags = _userSettings.Flags;
-                string proxy_server = _userSettings.ProxyServer ?? "-";
-                string bypass_list = _userSettings.BypassList ?? "-";
-                string pac_url = _userSettings.PacUrl ?? "-";
-                arguments = $"set {flags} {proxy_server} {bypass_list} {pac_url}";
-
-                // have to get new settings
-                _userSettings.UserSettingsRecorded = false;
-            }
-
-            //Save();
-            ExecSysproxy(arguments);
         }
 
 
