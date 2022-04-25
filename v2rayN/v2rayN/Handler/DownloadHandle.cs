@@ -46,12 +46,12 @@ namespace v2rayN.Handler
                     Proxy = webProxy
                 });
 
-                var progress = new Progress<double>();
+                var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
                 {
                     if (UpdateCompleted != null)
                     {
-                        string msg = string.Format("{0} M/s", value.ToString("#0.0")).PadLeft(9, ' ');
+                        string msg = string.Format("{0} M/s", value).PadLeft(9, ' ');
                         UpdateCompleted(this, new ResultEventArgs(false, msg));
                     }
                 };

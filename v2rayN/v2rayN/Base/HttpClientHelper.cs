@@ -162,7 +162,7 @@ namespace v2rayN.Base
             }
         }
 
-        public async Task DownloadDataAsync4Speed(HttpClient client, string url, IProgress<double> progress, CancellationToken token)
+        public async Task DownloadDataAsync4Speed(HttpClient client, string url, IProgress<string> progress, CancellationToken token)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -176,15 +176,15 @@ namespace v2rayN.Base
                 throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
             }
 
-            var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
-            var canReportProgress = total != -1 && progress != null;
+            //var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+            //var canReportProgress = total != -1 && progress != null;
 
             using (var stream = await response.Content.ReadAsStreamAsync())
             {
                 var totalRead = 0L;
                 var buffer = new byte[1024 * 64];
                 var isMoreToRead = true;
-                var progressPercentage = 0;
+                string progressSpeed = string.Empty;
                 DateTime totalDatetime = DateTime.Now;
 
                 do
@@ -216,21 +216,12 @@ namespace v2rayN.Base
                         totalRead += read;
 
                         TimeSpan ts = (DateTime.Now - totalDatetime);
-                        var speed = totalRead * 1d / ts.TotalMilliseconds / 1000;
-                        if (canReportProgress)
+                        var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
+                        if (progress != null)
                         {
-                            var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                            if (progressPercentage != percent)
+                            if (progressSpeed != speed)
                             {
-                                progressPercentage = percent;
-                                progress.Report(speed);
-                            }
-                        }
-                        else if (progress != null)
-                        {
-                            if (progressPercentage != Convert.ToInt32(speed * 10))
-                            {
-                                progressPercentage = Convert.ToInt32(speed * 10);
+                                progressSpeed = speed;
                                 progress.Report(speed);
                             }
                         }
