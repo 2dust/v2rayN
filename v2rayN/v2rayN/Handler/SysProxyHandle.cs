@@ -72,7 +72,7 @@ namespace v2rayN.Handler
                     var strProxy = string.Empty;
                     if (config.enableSystemProxyAdvanced)
                     {
-                        strProxy = string.Format("http={0}:{1};https={0}:{1};ftp={0}:{1};socks={0}:{2}", Global.Loopback, port, portSocks);
+                        strProxy = $"socks={Global.Loopback}:{portSocks}";
                     }
                     else
                     {

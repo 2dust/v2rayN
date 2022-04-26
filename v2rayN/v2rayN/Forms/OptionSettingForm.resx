@@ -1864,7 +1864,7 @@
     <value>43</value>
   </data>
   <data name="chkEnableSystemProxyAdvanced.Text" xml:space="preserve">
-    <value>Enable system proxy advanced settings (http/https/ftp/socks)</value>
+    <value>Enable system proxy advanced settings, use socks protocol</value>
   </data>
   <data name="&gt;&gt;chkEnableSystemProxyAdvanced.Name" xml:space="preserve">
     <value>chkEnableSystemProxyAdvanced</value>

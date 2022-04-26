@@ -374,6 +374,6 @@
     <value>参数设置</value>
   </data>
   <data name="chkEnableSystemProxyAdvanced.Text" xml:space="preserve">
-    <value>开启系统代理高级设置 (http/https/ftp/socks)</value>
+    <value>开启系统代理高级设置, 使用socks协议</value>
   </data>
 </root>
