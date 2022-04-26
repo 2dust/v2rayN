@@ -32,12 +32,59 @@ namespace v2rayN.Handler
         {
             try
             {
+                int index = (int)config.sysProxyType;
+
+                //Load from routing setting
+                var createdIcon = GetNotifyIcon4Routing(config);
+                if (createdIcon != null)
+                {
+                    return createdIcon;
+                }
+
+                //Load from local file
+                var fileName = Utils.GetPath($"NotifyIcon{index + 1}.ico");
+                if (File.Exists(fileName))
+                {
+                    return new Icon(fileName);
+                }
+                switch (index)
+                {
+                    case 0:
+                        return Properties.Resources.NotifyIcon1;
+                    case 1:
+                        return Properties.Resources.NotifyIcon2;
+                    case 2:
+                        return Properties.Resources.NotifyIcon3;
+                }
+
+                return Properties.Resources.NotifyIcon1;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return def;
+            }
+        }
+        private Icon GetNotifyIcon4Routing(Config config)
+        {
+            try
+            {
+                if (!config.enableRoutingAdvanced)
+                {
+                    return null;
+                }
+
+                var item = config.routings[config.routingIndex];
+                if (Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
+                {
+                    return null;
+                }
+
                 Color color = ColorTranslator.FromHtml("#3399CC");
                 int index = (int)config.sysProxyType;
                 if (index > 0)
                 {
                     color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
-                    //color = ColorTranslator.FromHtml(new string[] { "#CC0066", "#CC6600", "#99CC99", "#666699" }[index - 1]);
                 }
 
                 int width = 128;
@@ -47,24 +94,8 @@ namespace v2rayN.Handler
                 Graphics graphics = Graphics.FromImage(bitmap);
                 SolidBrush drawBrush = new SolidBrush(color);
 
-                var customIcon = false;
-                if (config.enableRoutingAdvanced)
-                {
-                    var item = config.routings[config.routingIndex];
-                    if (!Utils.IsNullOrEmpty(item.customIcon) && File.Exists(item.customIcon))
-                    {
-                        graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
-                        graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
-                        customIcon = true;
-                    }
-                }
-                if (!customIcon)
-                {
-                    graphics.FillEllipse(drawBrush, new Rectangle(0, 0, width, height));
-                    int zoom = 16;
-                    graphics.DrawImage(new Bitmap(Properties.Resources.notify, width - zoom, width - zoom), zoom / 2, zoom / 2);
-                }
-
+                graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
+                graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
                 Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
 
                 drawBrush.Dispose();
@@ -76,7 +107,7 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-                return def;
+                return null;
             }
         }
 
