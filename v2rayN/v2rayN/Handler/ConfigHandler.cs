@@ -950,14 +950,39 @@ namespace v2rayN.Handler
                 vmessItem.address = fileName;
                 vmessItem.remarks = "clash_custom";
             }
+            //Is hysteria configuration
+            else if (clipboardData.IndexOf("server") >= 0
+                && clipboardData.IndexOf("up") >= 0
+                && clipboardData.IndexOf("down") >= 0
+                && clipboardData.IndexOf("listen") >= 0)
+            {
+                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
+                File.WriteAllText(fileName, clipboardData);
+
+                vmessItem.coreType = ECoreType.hysteria;
+                vmessItem.address = fileName;
+                vmessItem.remarks = "hysteria_custom";
+            }
+            //Is naiveproxy configuration
+            else if (clipboardData.IndexOf("listen") >= 0
+                && clipboardData.IndexOf("proxy") >= 0)
+            {
+                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
+                File.WriteAllText(fileName, clipboardData);
+
+                vmessItem.coreType = ECoreType.naiveproxy;
+                vmessItem.address = fileName;
+                vmessItem.remarks = "naiveproxy_custom";
+            }
             //Is Other configuration
             else
             {
-                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.txt");
-                File.WriteAllText(fileName, clipboardData);
+                return -1;
+                //var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.txt");
+                //File.WriteAllText(fileName, clipboardData);
 
-                vmessItem.address = fileName;
-                vmessItem.remarks = "other_custom";
+                //vmessItem.address = fileName;
+                //vmessItem.remarks = "other_custom";
             }
 
             if (!Utils.IsNullOrEmpty(subid))
