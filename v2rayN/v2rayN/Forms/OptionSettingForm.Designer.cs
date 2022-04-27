@@ -98,13 +98,14 @@
             this.labCoreType1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.cmbSystemProxyAdvancedProtocol = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.txtsystemProxyExceptions = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chkEnableSystemProxyAdvanced = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -581,13 +582,25 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.chkEnableSystemProxyAdvanced);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.cmbSystemProxyAdvancedProtocol);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.txtsystemProxyExceptions);
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // label18
+            // 
+            resources.ApplyResources(this.label18, "label18");
+            this.label18.Name = "label18";
+            // 
+            // cmbSystemProxyAdvancedProtocol
+            // 
+            this.cmbSystemProxyAdvancedProtocol.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbSystemProxyAdvancedProtocol, "cmbSystemProxyAdvancedProtocol");
+            this.cmbSystemProxyAdvancedProtocol.Name = "cmbSystemProxyAdvancedProtocol";
             // 
             // label13
             // 
@@ -622,12 +635,6 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
-            // chkEnableSystemProxyAdvanced
-            // 
-            resources.ApplyResources(this.chkEnableSystemProxyAdvanced, "chkEnableSystemProxyAdvanced");
-            this.chkEnableSystemProxyAdvanced.Name = "chkEnableSystemProxyAdvanced";
-            this.chkEnableSystemProxyAdvanced.UseVisualStyleBackColor = true;
             // 
             // OptionSettingForm
             // 
@@ -737,6 +744,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txttrayMenuServersLimit;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.CheckBox chkEnableSystemProxyAdvanced;
+        private System.Windows.Forms.ComboBox cmbSystemProxyAdvancedProtocol;
+        private System.Windows.Forms.Label label18;
     }
 }

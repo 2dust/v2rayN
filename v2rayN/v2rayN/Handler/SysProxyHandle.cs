@@ -70,13 +70,16 @@ namespace v2rayN.Handler
                     var strExceptions = $"{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
 
                     var strProxy = string.Empty;
-                    if (config.enableSystemProxyAdvanced)
+                    if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
                     {
-                        strProxy = $"socks={Global.Loopback}:{portSocks}";
+                        strProxy = $"{Global.Loopback}:{port}";
                     }
                     else
                     {
-                        strProxy = $"{Global.Loopback}:{port}";
+                        strProxy = config.systemProxyAdvancedProtocol
+                            .Replace("{ip}", Global.Loopback)
+                            .Replace("{http_port}", port.ToString())
+                            .Replace("{socks_port}", portSocks.ToString());
                     }
                     SetIEProxy(true, strProxy, strExceptions);
                 }

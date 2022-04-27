@@ -18,6 +18,8 @@ namespace v2rayN.Forms
 
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
+            cmbSystemProxyAdvancedProtocol.Items.AddRange(Global.IEProxyProtocols.ToArray());
+
             InitBase();
 
             InitKCP();
@@ -59,7 +61,7 @@ namespace v2rayN.Forms
 
             txtsystemProxyExceptions.Text = config.systemProxyExceptions;
 
-            chkEnableSystemProxyAdvanced.Checked = config.enableSystemProxyAdvanced;
+            cmbSystemProxyAdvancedProtocol.Text = config.systemProxyAdvancedProtocol;
         }
 
 
@@ -255,7 +257,7 @@ namespace v2rayN.Forms
 
             config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
 
-            config.enableSystemProxyAdvanced = chkEnableSystemProxyAdvanced.Checked;
+            config.systemProxyAdvancedProtocol = cmbSystemProxyAdvancedProtocol.Text.TrimEx();
 
             return 0;
         }

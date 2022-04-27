@@ -373,7 +373,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.Text" xml:space="preserve">
-    <value>开启系统代理高级设置, 使用socks协议</value>
+  <data name="label18.Text" xml:space="preserve">
+    <value>高级代理设置, 协议选择(可选)</value>
   </data>
 </root>

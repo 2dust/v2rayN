@@ -1851,32 +1851,56 @@
   <data name="&gt;&gt;tabPageCoreType.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 328</value>
+  <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 346</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>502, 16</value>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>329, 12</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+  <data name="label18.TabIndex" type="System.Int32, mscorlib">
+    <value>45</value>
   </data>
-  <data name="chkEnableSystemProxyAdvanced.Text" xml:space="preserve">
-    <value>Enable system proxy advanced settings, use socks protocol</value>
+  <data name="label18.Text" xml:space="preserve">
+    <value>Advanced proxy settings, protocol selection (optional)</value>
   </data>
-  <data name="&gt;&gt;chkEnableSystemProxyAdvanced.Name" xml:space="preserve">
-    <value>chkEnableSystemProxyAdvanced</value>
+  <data name="&gt;&gt;label18.Name" xml:space="preserve">
+    <value>label18</value>
   </data>
-  <data name="&gt;&gt;chkEnableSystemProxyAdvanced.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chkEnableSystemProxyAdvanced.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label18.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;chkEnableSystemProxyAdvanced.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="cmbSystemProxyAdvancedProtocol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 371</value>
+  </data>
+  <data name="cmbSystemProxyAdvancedProtocol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>638, 20</value>
+  </data>
+  <data name="cmbSystemProxyAdvancedProtocol.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="&gt;&gt;cmbSystemProxyAdvancedProtocol.Name" xml:space="preserve">
+    <value>cmbSystemProxyAdvancedProtocol</value>
+  </data>
+  <data name="&gt;&gt;cmbSystemProxyAdvancedProtocol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbSystemProxyAdvancedProtocol.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;cmbSystemProxyAdvancedProtocol.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1906,7 +1930,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1936,7 +1960,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="txtsystemProxyExceptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 52</value>
@@ -1963,7 +1987,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;txtsystemProxyExceptions.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="groupBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
