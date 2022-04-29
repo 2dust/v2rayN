@@ -6,6 +6,7 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using System.Linq;
 using v2rayN.Tool;
+using System.Threading.Tasks;
 
 namespace v2rayN.Handler
 {
@@ -207,7 +208,25 @@ namespace v2rayN.Handler
         {
             lock (objLock)
             {
-                Utils.ToJsonFile(config, Utils.GetPath(configRes));
+                try
+                {
+                    Task.Run(() =>
+                    {
+                        //save temp file
+                        var temp = $"{configRes}_temp";
+                        if (Utils.ToJsonFile(config, Utils.GetPath(temp)) != 0)
+                        {
+                            return;
+                        }
+
+                        //rename
+                        File.Move(temp, configRes);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog("ToJsonFile", ex);
+                }
             }
         }
 
