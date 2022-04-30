@@ -156,7 +156,11 @@ namespace v2rayN.Handler
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
                 }
-                var result = await HttpClientHelper.GetInstance().GetAsync(client, url);
+
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(1000 * 30);
+
+                var result = await HttpClientHelper.GetInstance().GetAsync(client, url, cts.Token);
                 return result;
             }
             catch (Exception ex)
