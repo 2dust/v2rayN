@@ -210,18 +210,20 @@ namespace v2rayN.Handler
             {
                 try
                 {
-                    Task.Run(() =>
-                    {
-                        //save temp file
-                        var temp = $"{configRes}_temp";
-                        if (Utils.ToJsonFile(config, Utils.GetPath(temp)) != 0)
-                        {
-                            return;
-                        }
 
-                        //rename
-                        File.Move(temp, configRes);
-                    });
+                    //save temp file
+                    var temp = $"{configRes}_temp";
+                    if (Utils.ToJsonFile(config, Utils.GetPath(temp)) != 0)
+                    {
+                        return;
+                    }
+
+                    if (File.Exists(configRes))
+                    {
+                        File.Delete(configRes);
+                    }
+                    //rename
+                    File.Move(temp, configRes);
                 }
                 catch (Exception ex)
                 {
