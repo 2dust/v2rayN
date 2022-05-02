@@ -1033,6 +1033,56 @@ namespace v2rayN.Handler
             }
         }
 
+        private static int AddBatchServers4SsSIP008(ref Config config, string clipboardData, string subid, List<VmessItem> lstOriSub, string groupId)
+        {
+            if (Utils.IsNullOrEmpty(clipboardData))
+            {
+                return -1;
+            }
+
+            if (!Utils.IsNullOrEmpty(subid))
+            {
+                RemoveServerViaSubid(ref config, subid);
+            }
+
+            //SsSIP008
+            var lstSsServer = Utils.FromJson<List<SsServer>>(clipboardData);
+            if (lstSsServer == null || lstSsServer.Count <= 0)
+            {
+                var ssSIP008 = Utils.FromJson<SsSIP008>(clipboardData);
+                if (ssSIP008 != null && ssSIP008.servers != null && ssSIP008.servers.Count > 0)
+                {
+                    lstSsServer = ssSIP008.servers;
+                }
+            }
+
+            if (lstSsServer != null && lstSsServer.Count > 0)
+            {
+                int counter = 0;
+                foreach (var it in lstSsServer)
+                {
+                    var ssItem = new VmessItem()
+                    {
+                        subid = subid,
+                        groupId = groupId,
+                        remarks = it.remarks,
+                        security = it.method,
+                        id = it.password,
+                        address = it.server,
+                        port = Utils.ToInt(it.server_port)
+                    };
+                    if (AddShadowsocksServer(ref config, ssItem, false) == 0)
+                    {
+                        counter++;
+                    }
+                }
+                ToJsonFile(config);
+                return counter;
+            }
+
+            return -1;
+        }
+
         public static int AddBatchServers(ref Config config, string clipboardData, string subid, string groupId)
         {
             List<VmessItem> lstOriSub = null;
@@ -1045,6 +1095,11 @@ namespace v2rayN.Handler
             if (counter < 1)
             {
                 counter = AddBatchServers(ref config, Utils.Base64Decode(clipboardData), subid, lstOriSub, groupId);
+            }
+
+            if (counter < 1)
+            {
+                counter = AddBatchServers4SsSIP008(ref config, clipboardData, subid, lstOriSub, groupId);
             }
 
             //maybe other sub 
