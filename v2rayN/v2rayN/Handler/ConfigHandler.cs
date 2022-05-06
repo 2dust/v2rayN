@@ -15,9 +15,8 @@ namespace v2rayN.Handler
     /// </summary>
     class ConfigHandler
     {
-        //private static string configRes = Global.ConfigFileName;
+        private static string configRes = Global.ConfigFileName;
         private static readonly object objLock = new object();
-        private string configResPath = Utils.GetPath(Global.ConfigFileName);
 
         #region ConfigHandler
 
