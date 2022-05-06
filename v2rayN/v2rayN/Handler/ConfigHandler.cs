@@ -212,8 +212,8 @@ namespace v2rayN.Handler
                 {
 
                     //save temp file
-                    var tempPath = Utils.GetPath($"{configRes}_temp");
                     var resPath = Utils.GetPath(configRes);
+                    var tempPath = $"{resPath}_temp";
                     if (Utils.ToJsonFile(config, tempPath) != 0)
                     {
                         return;
