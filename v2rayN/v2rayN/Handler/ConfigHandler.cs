@@ -15,8 +15,9 @@ namespace v2rayN.Handler
     /// </summary>
     class ConfigHandler
     {
-        private static string configRes = Global.ConfigFileName;
+        //private static string configRes = Global.ConfigFileName;
         private static readonly object objLock = new object();
+        private string configResPath = Utils.GetPath(Global.ConfigFileName);
 
         #region ConfigHandler
 
@@ -212,18 +213,19 @@ namespace v2rayN.Handler
                 {
 
                     //save temp file
-                    var temp = $"{configRes}_temp";
-                    if (Utils.ToJsonFile(config, Utils.GetPath(temp)) != 0)
+                    var tempPath = Utils.GetPath($"{configRes}_temp");
+                    var resPath = Utils.GetPath(configRes);
+                    if (Utils.ToJsonFile(config, tempPath) != 0)
                     {
                         return;
                     }
 
-                    if (File.Exists(configRes))
+                    if (File.Exists(resPath))
                     {
-                        File.Delete(configRes);
+                        File.Delete(resPath);
                     }
                     //rename
-                    File.Move(temp, configRes);
+                    File.Move(tempPath, resPath);
                 }
                 catch (Exception ex)
                 {

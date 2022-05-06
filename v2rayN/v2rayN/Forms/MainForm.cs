@@ -123,7 +123,10 @@ namespace v2rayN.Forms
         {
             try
             {
-                v2rayHandler.V2rayStop();
+                Utils.SaveLog("MyAppExit Begin");
+
+                StorageUI();
+                ConfigHandler.SaveConfig(ref config);
 
                 //HttpProxyHandle.CloseHttpAgent(config);
                 if (blWindowsShutDown)
@@ -135,10 +138,11 @@ namespace v2rayN.Forms
                     SysProxyHandle.UpdateSysProxy(config, true);
                 }
 
-                StorageUI();
-                ConfigHandler.SaveConfig(ref config);
                 statistics?.SaveToFile();
                 statistics?.Close();
+
+                v2rayHandler.V2rayStop();
+                Utils.SaveLog("MyAppExit End");
             }
             catch { }
         }
