@@ -556,7 +556,54 @@ namespace v2rayN
             try
             {
                 string exePath = GetExePath();
-                RegWriteValue(autoRunRegPath, autoRunName, run ? $"\"{exePath}\"" : "");
+                string existsKey = null;
+
+                Dictionary<string, string> existsAutoRunDict = RegFindToDict(autoRunRegPath, n => n.StartsWith(autoRunName));
+                if (existsAutoRunDict.Any())
+                {
+                    existsKey = existsAutoRunDict.Where(kv => kv.Value == exePath || kv.Value == $"\"{exePath}\"").Select(kv => kv.Key).FirstOrDefault();
+                }
+
+                if (run)
+                {
+                    string toSetAutoRunKey = null;
+
+                    if (!existsKey.IsNullOrWhiteSpace())
+                    {
+                        toSetAutoRunKey = existsKey;
+                    }
+
+                    if (toSetAutoRunKey.IsNullOrWhiteSpace())
+                    {
+                        int maxTry = 10;
+
+                        for (int i = 0; i < maxTry; i++)
+                        {
+                            string trySetName = $"{autoRunName}_{GetGUID(false)}";
+
+                            if (!existsAutoRunDict.ContainsKey(trySetName))
+                            {
+                                toSetAutoRunKey = trySetName;
+                                break;
+                            }
+                        }
+
+                        if (toSetAutoRunKey.IsNullOrWhiteSpace())
+                        {
+                            //十次都能重复,别自启动了,买彩票去吧
+                            return;
+                        }
+                    }
+
+                    RegWriteValue(autoRunRegPath, toSetAutoRunKey, $"\"{exePath}\"");
+                }
+                else
+                {
+                    if (!existsKey.IsNullOrWhiteSpace())
+                    {
+                        RegWriteValue(autoRunRegPath, existsKey, string.Empty);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -572,11 +619,14 @@ namespace v2rayN
         {
             try
             {
-                string value = RegReadValue(autoRunRegPath, autoRunName, "");
-                string exePath = GetExePath();
-                if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
+                var dict = RegFindToDict(autoRunRegPath, n => n.StartsWith(autoRunName));
+                if (dict.Any())
                 {
-                    return true;
+                    string exePath = GetExePath();
+                    if (dict.ContainsValue(exePath) || dict.ContainsValue($"\"{exePath}\""))
+                    {
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -612,6 +662,36 @@ namespace v2rayN
         public static string StartupPath()
         {
             return Application.StartupPath;
+        }
+
+        public static Dictionary<string, string> RegFindToDict(string path, Func<string, bool> valueNamePredicate)
+        {
+            RegistryKey regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.OpenSubKey(path, false);
+                string[] valueNames = regKey?.GetValueNames();
+                if (valueNames == null)
+                {
+                    return null;
+                }
+                Dictionary<string, string> kv =
+                    valueNames.Where(valueNamePredicate).ToDictionary(
+                        n => n,
+                        n => regKey?.GetValue(n) as string
+                    );
+
+                return kv;
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+            return null;
         }
 
         public static string RegReadValue(string path, string name, string def)
