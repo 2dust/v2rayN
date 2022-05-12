@@ -23,6 +23,7 @@ using Newtonsoft.Json.Linq;
 using System.Web;
 using log4net;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace v2rayN
 {
@@ -397,6 +398,20 @@ namespace v2rayN
         {
             return HttpUtility.UrlDecode(url);
         }
+
+        public static string GetMD5(string str)
+        {
+            var md5 = MD5.Create();
+            byte[] byteOld = Encoding.UTF8.GetBytes(str);
+            byte[] byteNew = md5.ComputeHash(byteOld);
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in byteNew)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+            return sb.ToString();
+        }
+
         #endregion
 
 
@@ -529,7 +544,13 @@ namespace v2rayN
 
         #region 开机自动启动
 
-        private static string autoRunName = "v2rayNAutoRun";
+        private static string autoRunName
+        {
+            get
+            {
+                return $"v2rayNAutoRun_{GetMD5(StartupPath())}";
+            }
+        }
         private static string autoRunRegPath
         {
             get
