@@ -982,7 +982,7 @@ namespace v2rayN
         // return path to store temporary files
         public static string GetTempPath(string filename = "")
         {
-            string _tempPath = Path.Combine(StartupPath(), "v2ray_win_temp");
+            string _tempPath = Path.Combine(StartupPath(), "guiTemp");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
