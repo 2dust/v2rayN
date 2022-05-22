@@ -73,6 +73,7 @@ namespace v2rayN.Handler
                 //outbound
                 outbound(node, ref v2rayConfig);
 
+                extraTagOutbound(config, ref v2rayConfig);
                 //dns
                 dns(config, ref v2rayConfig);
 
@@ -147,7 +148,7 @@ namespace v2rayN.Handler
             try
             {
                 v2rayConfig.inbounds = new List<Inbounds>();
-
+                //socks
                 Inbounds inbound = GetInbound(config.inbound[0], Global.InboundSocks, 0, true);
                 v2rayConfig.inbounds.Add(inbound);
 
@@ -175,6 +176,15 @@ namespace v2rayN.Handler
                         inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
                     }
                 }
+
+                //自定义TAG
+                //var offset = 4;
+                //var vmessList = config.vmess.Where(v => v.tag != null && v.tag.Trim().Length > 0).ToList();
+                //foreach (var inboundConfig in vmessList)
+                //{
+                //    v2rayConfig.inbounds.Add(GetInbound(config.inbound[0], "TAG-SOCKS-" + inboundConfig.tag, offset++, true));
+                //    v2rayConfig.inbounds.Add(GetInbound(config.inbound[0], "TAG-HTTP-" + inboundConfig.tag, offset++, false));
+                //}
             }
             catch
             {
@@ -204,6 +214,7 @@ namespace v2rayN.Handler
             return inbound;
         }
 
+
         /// <summary>
         /// 路由
         /// </summary>
@@ -228,7 +239,7 @@ namespace v2rayN.Handler
                             {
                                 if (item.enabled)
                                 {
-                                    routingUserRule(item, ref v2rayConfig);
+                                    routingUserRule(item, ref v2rayConfig, config);
                                 }
                             }
                         }
@@ -240,7 +251,7 @@ namespace v2rayN.Handler
                         {
                             foreach (var item in lockedItem.rules)
                             {
-                                routingUserRule(item, ref v2rayConfig);
+                                routingUserRule(item, ref v2rayConfig, config);
                             }
                         }
                     }
@@ -251,10 +262,11 @@ namespace v2rayN.Handler
             }
             return 0;
         }
-        private static int routingUserRule(RulesItem rules, ref V2rayConfig v2rayConfig)
+        private static int routingUserRule(RulesItem rules, ref V2rayConfig v2rayConfig, Config config)
         {
             try
             {
+
                 if (rules == null)
                 {
                     return 0;
@@ -351,18 +363,55 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        private static int extraTagOutbound(Config config, ref V2rayConfig v2rayConfig)
+        {
+            try
+            {
+                var vmessList = config.vmess.ToList();
+                var idSet = new HashSet<String>();// 去重 ，有重复的，按第一个为准
+                foreach (var v in vmessList)
+                {
+                    var id = "[" + v.remarks + "]" + "(" + v.address + ":" + v.port + ")";
+                    if (idSet.Contains(id))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        outbound(v, ref v2rayConfig, true, id);
+                        idSet.Add(id);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return 0;
+        }
+
         /// <summary>
         /// vmess协议服务器配置
         /// </summary>
         /// <param name="node"></param>
         /// <param name="v2rayConfig"></param>
         /// <returns></returns>
-        private static int outbound(VmessItem node, ref V2rayConfig v2rayConfig)
+        private static int outbound(VmessItem node, ref V2rayConfig v2rayConfig, bool extraTagOutbounds = false, string extraTagOutboundTag = "")
         {
             try
             {
                 var config = LazyConfig.Instance.GetConfig();
                 Outbounds outbound = v2rayConfig.outbounds[0];
+                if (extraTagOutbounds)
+                {
+                    string result = Utils.GetEmbedText(SampleClient);
+                    //转成Json
+                    V2rayConfig sampleV2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                    outbound = sampleV2rayConfig.outbounds[0];
+                    //取得一个示例实例
+                    outbound.tag = extraTagOutboundTag;
+                    v2rayConfig.outbounds.Add(outbound);
+                }
                 if (node.configType == EConfigType.Vmess)
                 {
                     VnextItem vnextItem;

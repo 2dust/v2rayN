@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Base;
@@ -22,6 +23,7 @@ namespace v2rayN.Forms
 
         private void RoutingRuleSettingDetailsForm_Load(object sender, EventArgs e)
         {
+            LoadTagData();
             if (Utils.IsNullOrEmpty(rulesItem.outboundTag))
             {
                 ClearBind();
@@ -30,6 +32,15 @@ namespace v2rayN.Forms
             {
                 BindingData();
             }
+        }
+
+        private void LoadTagData()
+        {
+
+            //ID列表 // 有重复时，以第一个为准
+
+            var list = config.vmess.Select(v => "[" + v.remarks + "]" + "(" + v.address + ":" + v.port + ")");
+            cmbOutboundTag.Items.AddRange(list.ToArray());
         }
 
         private void EndBindingData()
