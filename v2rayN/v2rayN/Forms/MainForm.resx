@@ -212,30 +212,6 @@
   <data name="menuMoveToGroup.Text" xml:space="preserve">
     <value>Move to Group</value>
   </data>
-  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>Move to top (T)</value>
-  </data>
-  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveUp.Text" xml:space="preserve">
-    <value>Up (U)</value>
-  </data>
-  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveDown.Text" xml:space="preserve">
-    <value>Down (D)</value>
-  </data>
-  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>Move to bottom (B)</value>
-  </data>
   <data name="menuMoveEvent.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
@@ -464,6 +440,30 @@
   <data name="&gt;&gt;scServers.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveTop.Text" xml:space="preserve">
+    <value>Move to top (T)</value>
+  </data>
+  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveUp.Text" xml:space="preserve">
+    <value>Up (U)</value>
+  </data>
+  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveDown.Text" xml:space="preserve">
+    <value>Down (D)</value>
+  </data>
+  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveBottom.Text" xml:space="preserve">
+    <value>Move to bottom (B)</value>
+  </data>
   <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -587,6 +587,27 @@
   <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 192</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
+    <value>cmsMain</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="notifyMain.Text" xml:space="preserve">
+    <value>v2rayN</value>
+  </data>
+  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 22</value>
+  </data>
+  <data name="menuSysAgentMode.Text" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>243, 22</value>
   </data>
@@ -604,12 +625,6 @@
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
     <value>Do not change system proxy</value>
-  </data>
-  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 22</value>
-  </data>
-  <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>System proxy</value>
   </data>
   <data name="menuRoutings.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 22</value>
@@ -659,21 +674,6 @@
   <data name="menuExit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 192</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
-    <value>cmsMain</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="notifyMain.Text" xml:space="preserve">
-    <value>v2rayN</value>
-  </data>
-  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -701,8 +701,41 @@
   <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>315, 17</value>
   </metadata>
+  <data name="tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>952, 56</value>
+  </data>
+  <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tsMain.Name" xml:space="preserve">
+    <value>tsMain</value>
+  </data>
+  <data name="&gt;&gt;tsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
+  </data>
+  <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 53</value>
+  </data>
+  <data name="tsbSub.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="tsbSub.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 22</value>
@@ -722,18 +755,6 @@
   <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
     <value>Update subscription with proxy</value>
   </data>
-  <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbSub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 53</value>
-  </data>
-  <data name="tsbSub.Text" xml:space="preserve">
-    <value>Subscriptions</value>
-  </data>
-  <data name="tsbSub.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="tsbQRCodeSwitch.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -751,6 +772,18 @@
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
+  </data>
+  <data name="tsbSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 53</value>
+  </data>
+  <data name="tsbSetting.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="tsbSetting.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -785,18 +818,6 @@
   <data name="tsbBackupGuiNConfig.Text" xml:space="preserve">
     <value>BackupGuiConfig</value>
   </data>
-  <data name="tsbSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 53</value>
-  </data>
-  <data name="tsbSetting.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="tsbSetting.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
   </data>
@@ -817,6 +838,18 @@
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
+  </data>
+  <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 53</value>
+  </data>
+  <data name="tsbCheckUpdate.Text" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="tsbCheckUpdate.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
     <value>203, 22</value>
@@ -845,20 +878,20 @@
   <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
     <value>Update Geo files</value>
   </data>
-  <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 53</value>
-  </data>
-  <data name="tsbCheckUpdate.Text" xml:space="preserve">
-    <value>Check for updates</value>
-  </data>
-  <data name="tsbCheckUpdate.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
+  </data>
+  <data name="tsbHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 53</value>
+  </data>
+  <data name="tsbHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="tsbHelp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 22</value>
@@ -887,18 +920,6 @@
   <data name="tsbLanguageZhHans.Text" xml:space="preserve">
     <value>语言-[中文简体]</value>
   </data>
-  <data name="tsbHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 53</value>
-  </data>
-  <data name="tsbHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="tsbHelp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="tsbPromotion.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -926,32 +947,11 @@
   <data name="tsbClose.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>952, 56</value>
-  </data>
-  <data name="tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;tsMain.Name" xml:space="preserve">
-    <value>tsMain</value>
-  </data>
-  <data name="&gt;&gt;tsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>90</value>
+    <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
