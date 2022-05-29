@@ -489,13 +489,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.20.0</Version>
+      <Version>3.21.1</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Core">
-      <Version>2.45.0</Version>
+      <Version>2.46.3</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Tools">
-      <Version>2.45.0</Version>
+      <Version>2.46.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
