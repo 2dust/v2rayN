@@ -149,7 +149,7 @@ namespace v2rayN.Forms
 
         private void RestoreUI()
         {
-            scMain.Panel2Collapsed = true;
+            scServers.Panel2Collapsed = true;
 
             if (!config.uiItem.mainLocation.IsEmpty)
             {
@@ -1418,7 +1418,7 @@ namespace v2rayN.Forms
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
         {
             bool bShow = tsbQRCodeSwitch.Checked;
-            scMain.Panel2Collapsed = !bShow;
+            scServers.Panel2Collapsed = !bShow;
         }
         #endregion
 
