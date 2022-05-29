@@ -555,4 +555,7 @@
   <data name="menuMoveToGroup.Text" xml:space="preserve">
     <value>移至分组</value>
   </data>
+  <data name="menuMoveEvent.Text" xml:space="preserve">
+    <value>上下移至</value>
+  </data>
 </root>

@@ -213,28 +213,34 @@
     <value>Move to Group</value>
   </data>
   <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
+    <value>192, 22</value>
   </data>
   <data name="menuMoveTop.Text" xml:space="preserve">
     <value>Move to top (T)</value>
   </data>
   <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
+    <value>192, 22</value>
   </data>
   <data name="menuMoveUp.Text" xml:space="preserve">
     <value>Up (U)</value>
   </data>
   <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
+    <value>192, 22</value>
   </data>
   <data name="menuMoveDown.Text" xml:space="preserve">
     <value>Down (D)</value>
   </data>
   <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 22</value>
+    <value>192, 22</value>
   </data>
   <data name="menuMoveBottom.Text" xml:space="preserve">
     <value>Move to bottom (B)</value>
+  </data>
+  <data name="menuMoveEvent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuMoveEvent.Text" xml:space="preserve">
+    <value>Move to</value>
   </data>
   <data name="menuSelectAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
@@ -308,20 +314,8 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
   </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 644</value>
+    <value>356, 600</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -469,6 +463,18 @@
   </data>
   <data name="&gt;&gt;scServers.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
   </data>
   <data name="scBig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1049,6 +1055,18 @@
   <data name="&gt;&gt;menuMoveToGroup.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;menuSelectAll.Name" xml:space="preserve">
+    <value>menuSelectAll</value>
+  </data>
+  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuMoveEvent.Name" xml:space="preserve">
+    <value>menuMoveEvent</value>
+  </data>
+  <data name="&gt;&gt;menuMoveEvent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;menuMoveTop.Name" xml:space="preserve">
     <value>menuMoveTop</value>
   </data>
@@ -1071,12 +1089,6 @@
     <value>menuMoveBottom</value>
   </data>
   <data name="&gt;&gt;menuMoveBottom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuSelectAll.Name" xml:space="preserve">
-    <value>menuSelectAll</value>
-  </data>
-  <data name="&gt;&gt;menuSelectAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">

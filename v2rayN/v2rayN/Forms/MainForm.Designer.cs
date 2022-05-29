@@ -48,11 +48,12 @@
             this.menuSetDefaultServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuMoveToGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMoveEvent = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveTop = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveDown = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveBottom = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.menuPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -190,10 +191,7 @@
             this.menuSetDefaultServer,
             this.toolStripSeparator3,
             this.menuMoveToGroup,
-            this.menuMoveTop,
-            this.menuMoveUp,
-            this.menuMoveDown,
-            this.menuMoveBottom,
+            this.menuMoveEvent,
             this.menuSelectAll,
             this.toolStripSeparator9,
             this.menuPingServer,
@@ -208,7 +206,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -299,6 +296,22 @@
             resources.ApplyResources(this.menuMoveToGroup, "menuMoveToGroup");
             this.menuMoveToGroup.Click += new System.EventHandler(this.menuMoveToGroup_Click);
             // 
+            // menuSelectAll
+            // 
+            this.menuSelectAll.Name = "menuSelectAll";
+            resources.ApplyResources(this.menuSelectAll, "menuSelectAll");
+            this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
+            // 
+            // menuMoveEvent
+            // 
+            this.menuMoveEvent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuMoveTop,
+            this.menuMoveUp,
+            this.menuMoveDown,
+            this.menuMoveBottom});
+            this.menuMoveEvent.Name = "menuMoveEvent";
+            resources.ApplyResources(this.menuMoveEvent, "menuMoveEvent");
+            // 
             // menuMoveTop
             // 
             this.menuMoveTop.Name = "menuMoveTop";
@@ -322,12 +335,6 @@
             this.menuMoveBottom.Name = "menuMoveBottom";
             resources.ApplyResources(this.menuMoveBottom, "menuMoveBottom");
             this.menuMoveBottom.Click += new System.EventHandler(this.menuMoveBottom_Click);
-            // 
-            // menuSelectAll
-            // 
-            this.menuSelectAll.Name = "menuSelectAll";
-            resources.ApplyResources(this.menuSelectAll, "menuSelectAll");
-            this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
             // 
             // toolStripSeparator9
             // 
@@ -413,7 +420,6 @@
             // 
             // tsbServer
             // 
-            this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
@@ -852,10 +858,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem menuMoveTop;
-        private System.Windows.Forms.ToolStripMenuItem menuMoveUp;
-        private System.Windows.Forms.ToolStripMenuItem menuMoveDown;
-        private System.Windows.Forms.ToolStripMenuItem menuMoveBottom;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem menuSysAgentMode;
         private System.Windows.Forms.ToolStripMenuItem menuGlobal;
@@ -919,6 +921,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsbGroupSetting;
         private System.Windows.Forms.ToolStripMenuItem menuMoveToGroup;
         private MainMsgControl mainMsgControl;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveEvent;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveTop;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveUp;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveDown;
+        private System.Windows.Forms.ToolStripMenuItem menuMoveBottom;
     }
 }
 
