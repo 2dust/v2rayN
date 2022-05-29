@@ -469,4 +469,7 @@
   <data name="LabLocal" xml:space="preserve">
     <value>Local</value>
   </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Servers (Filter : {0})</value>
+  </data>
 </root>

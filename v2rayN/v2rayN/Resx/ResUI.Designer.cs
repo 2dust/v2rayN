@@ -601,6 +601,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Servers (Filter : {0}) 的本地化字符串。
+        /// </summary>
+        internal static string MsgServerTitle {
+            get {
+                return ResourceManager.GetString("MsgServerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Simplify PAC Success 的本地化字符串。
         /// </summary>
         internal static string MsgSimplifyPAC {

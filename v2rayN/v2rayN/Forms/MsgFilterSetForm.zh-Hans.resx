@@ -135,4 +135,7 @@
   <data name="btnFilterDirect.Text" xml:space="preserve">
     <value>过滤Direct</value>
   </data>
+  <data name="btnClear.Text" xml:space="preserve">
+    <value>清空</value>
+  </data>
 </root>

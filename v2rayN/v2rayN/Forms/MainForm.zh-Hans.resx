@@ -558,4 +558,7 @@
   <data name="menuMoveEvent.Text" xml:space="preserve">
     <value>上下移至</value>
   </data>
+  <data name="menuServerFilter.Text" xml:space="preserve">
+    <value>设置服务器过滤器 (Ctrl+F)</value>
+  </data>
 </root>

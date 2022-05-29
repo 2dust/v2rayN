@@ -46,14 +46,15 @@
             this.menuRemoveDuplicateServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCopyServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetDefaultServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuServerFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuMoveToGroup = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveEvent = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveTop = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveDown = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMoveBottom = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.menuPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -189,6 +190,7 @@
             this.menuRemoveDuplicateServer,
             this.menuCopyServer,
             this.menuSetDefaultServer,
+            this.menuServerFilter,
             this.toolStripSeparator3,
             this.menuMoveToGroup,
             this.menuMoveEvent,
@@ -285,6 +287,12 @@
             resources.ApplyResources(this.menuSetDefaultServer, "menuSetDefaultServer");
             this.menuSetDefaultServer.Click += new System.EventHandler(this.menuSetDefaultServer_Click);
             // 
+            // menuServerFilter
+            // 
+            this.menuServerFilter.Name = "menuServerFilter";
+            resources.ApplyResources(this.menuServerFilter, "menuServerFilter");
+            this.menuServerFilter.Click += new System.EventHandler(this.menuServerFilter_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -295,12 +303,6 @@
             this.menuMoveToGroup.Name = "menuMoveToGroup";
             resources.ApplyResources(this.menuMoveToGroup, "menuMoveToGroup");
             this.menuMoveToGroup.Click += new System.EventHandler(this.menuMoveToGroup_Click);
-            // 
-            // menuSelectAll
-            // 
-            this.menuSelectAll.Name = "menuSelectAll";
-            resources.ApplyResources(this.menuSelectAll, "menuSelectAll");
-            this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
             // 
             // menuMoveEvent
             // 
@@ -335,6 +337,12 @@
             this.menuMoveBottom.Name = "menuMoveBottom";
             resources.ApplyResources(this.menuMoveBottom, "menuMoveBottom");
             this.menuMoveBottom.Click += new System.EventHandler(this.menuMoveBottom_Click);
+            // 
+            // menuSelectAll
+            // 
+            this.menuSelectAll.Name = "menuSelectAll";
+            resources.ApplyResources(this.menuSelectAll, "menuSelectAll");
+            this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
             // 
             // toolStripSeparator9
             // 
@@ -420,6 +428,7 @@
             // 
             // tsbServer
             // 
+            this.tsbServer.DropDown = this.cmsLv;
             this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
             resources.ApplyResources(this.tsbServer, "tsbServer");
             this.tsbServer.Name = "tsbServer";
@@ -926,6 +935,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuMoveUp;
         private System.Windows.Forms.ToolStripMenuItem menuMoveDown;
         private System.Windows.Forms.ToolStripMenuItem menuMoveBottom;
+        private System.Windows.Forms.ToolStripMenuItem menuServerFilter;
     }
 }
 

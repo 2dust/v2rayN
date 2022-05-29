@@ -183,6 +183,7 @@ namespace v2rayN.Forms
         {
             var fm = new MsgFilterSetForm();
             fm.MsgFilter = MsgFilter;
+            fm.ShowDefFilter = true;
             if (fm.ShowDialog() == DialogResult.OK)
             {
                 MsgFilter = fm.MsgFilter;

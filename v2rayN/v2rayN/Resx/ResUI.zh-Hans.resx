@@ -469,4 +469,7 @@
   <data name="LabLocal" xml:space="preserve">
     <value>本地</value>
   </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>服务器 (过滤器 : {0})</value>
+  </data>
 </root>
