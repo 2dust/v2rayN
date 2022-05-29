@@ -103,6 +103,7 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel2);
             this.Name = "MsgFilterSetForm";
