@@ -594,17 +594,30 @@ namespace v2rayN.Handler
                 address = parsedUrl.IdnHost,
                 port = parsedUrl.Port,
             };
-
-            // parse base64 UserInfo
             string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.UriEscaped);
-            string userInfo = Utils.Base64Decode(rawUserInfo);
-            string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
-            if (userInfoParts.Length != 2)
+            //2022-blake3
+            if (rawUserInfo.Contains(":"))
             {
-                return null;
+                string[] userInfoParts = rawUserInfo.Split(new char[] { ':' }, 2);
+                if (userInfoParts.Length != 2)
+                {
+                    return null;
+                }
+                server.security = userInfoParts[0];
+                server.id = Utils.UrlDecode(userInfoParts[1]);
             }
-            server.security = userInfoParts[0];
-            server.id = userInfoParts[1];
+            else
+            {
+                // parse base64 UserInfo
+                string userInfo = Utils.Base64Decode(rawUserInfo);
+                string[] userInfoParts = userInfo.Split(new char[] { ':' }, 2);
+                if (userInfoParts.Length != 2)
+                {
+                    return null;
+                }
+                server.security = userInfoParts[0];
+                server.id = userInfoParts[1];
+            }
 
             NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
             if (queryParameters["plugin"] != null)
