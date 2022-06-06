@@ -94,8 +94,11 @@ namespace v2rayN.Handler
                 Graphics graphics = Graphics.FromImage(bitmap);
                 SolidBrush drawBrush = new SolidBrush(color);
 
-                graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));                
                 graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
+                graphics.FillEllipse(drawBrush, width/2, width/2, width/2, width/2);
+
                 Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
 
                 drawBrush.Dispose();
