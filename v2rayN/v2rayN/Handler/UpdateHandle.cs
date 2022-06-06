@@ -31,14 +31,6 @@ namespace v2rayN.Handler
             }
         }
 
-        private readonly string nLatestUrl = Global.NUrl + "/latest";
-        private const string nUrl = Global.NUrl + "/download/{0}/v2rayN.zip";
-        private readonly string v2flyCoreLatestUrl = Global.v2flyCoreUrl + "/latest";
-        private const string v2flyCoreUrl = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip";
-        private readonly string xrayCoreLatestUrl = Global.xrayCoreUrl + "/latest";
-        private const string xrayCoreUrl = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip";
-        private const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-
         public void CheckUpdateGuiN(Config config, Action<bool, string> update)
         {
             _config = config;
@@ -244,7 +236,7 @@ namespace v2rayN.Handler
         {
             _config = config;
             _updateFunc = update;
-            var url = string.Format(geoUrl, geoName);
+            var url = string.Format(Global.geoUrl, geoName);
 
             DownloadHandle downloadHandle = null;
             if (downloadHandle == null)
@@ -306,23 +298,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                string url;
-                if (type == ECoreType.v2fly)
-                {
-                    url = v2flyCoreLatestUrl;
-                }
-                else if (type == ECoreType.Xray)
-                {
-                    url = xrayCoreLatestUrl;
-                }
-                else if (type == ECoreType.v2rayN)
-                {
-                    url = nLatestUrl;
-                }
-                else
-                {
-                    throw new ArgumentException("Type");
-                }
+                var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
+                string url = coreInfo.coreLatestUrl;               
 
                 var result = await (new DownloadHandle()).UrlRedirectAsync(url, true);
                 if (!Utils.IsNullOrEmpty(result))
@@ -396,6 +373,7 @@ namespace v2rayN.Handler
             try
             {
                 string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
                 string curVersion;
                 string message;
@@ -405,20 +383,20 @@ namespace v2rayN.Handler
                     curVersion = "v" + getCoreVersion(type);
                     message = string.Format(ResUI.IsLatestCore, curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
-                    url = string.Format(v2flyCoreUrl, version, osBit);
+                    url = string.Format(coreInfo.coreDownloadUrl, version, osBit);
                 }
                 else if (type == ECoreType.Xray)
                 {
                     curVersion = "v" + getCoreVersion(type);
                     message = string.Format(ResUI.IsLatestCore, curVersion);
                     string osBit = Environment.Is64BitProcess ? "64" : "32";
-                    url = string.Format(xrayCoreUrl, version, osBit);
+                    url = string.Format(coreInfo.coreDownloadUrl, version, osBit);
                 }
                 else if (type == ECoreType.v2rayN)
                 {
                     curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
                     message = string.Format(ResUI.IsLatestN, curVersion);
-                    url = string.Format(nUrl, version);
+                    url = string.Format(coreInfo.coreDownloadUrl, version);
                 }
                 else
                 {
