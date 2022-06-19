@@ -406,9 +406,7 @@ namespace v2rayN.Handler
                     outbound.mux.enabled = config.muxEnabled;
                     outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
 
-                    //远程服务器底层传输配置
-                    StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(node, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", outbound.streamSettings);
 
                     outbound.protocol = Global.vmessProtocolLite;
                     outbound.settings.servers = null;
@@ -445,6 +443,7 @@ namespace v2rayN.Handler
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
 
+                    boundStreamSettings(node, "out", outbound.streamSettings);
 
                     outbound.protocol = Global.ssProtocolLite;
                     outbound.settings.vnext = null;
@@ -522,9 +521,7 @@ namespace v2rayN.Handler
                     outbound.mux.enabled = config.muxEnabled;
                     outbound.mux.concurrency = config.muxEnabled ? 8 : -1;
 
-                    //远程服务器底层传输配置
-                    StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(node, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", outbound.streamSettings);
 
                     //if xtls
                     if (node.streamSecurity == Global.StreamSecurityX)
@@ -585,10 +582,7 @@ namespace v2rayN.Handler
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
 
-
-                    //远程服务器底层传输配置
-                    StreamSettings streamSettings = outbound.streamSettings;
-                    boundStreamSettings(node, "out", ref streamSettings);
+                    boundStreamSettings(node, "out", outbound.streamSettings);
 
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
@@ -601,18 +595,18 @@ namespace v2rayN.Handler
         }
 
         /// <summary>
-        /// vmess协议远程服务器底层传输配置
+        /// 底层传输配置
         /// </summary>
         /// <param name="node"></param>
         /// <param name="iobound"></param>
         /// <param name="streamSettings"></param>
         /// <returns></returns>
-        private static int boundStreamSettings(VmessItem node, string iobound, ref StreamSettings streamSettings)
+        private static int boundStreamSettings(VmessItem node, string iobound, StreamSettings streamSettings)
         {
             try
             {
                 var config = LazyConfig.Instance.GetConfig();
-                //远程服务器底层传输配置
+
                 streamSettings.network = node.GetNetwork();
                 string host = node.requestHost.TrimEx();
                 string sni = node.sni;
@@ -1088,9 +1082,7 @@ namespace v2rayN.Handler
                     inbound.settings.decryption = node.security;
                 }
 
-                //远程服务器底层传输配置
-                StreamSettings streamSettings = inbound.streamSettings;
-                boundStreamSettings(node, "in", ref streamSettings);
+                boundStreamSettings(node, "in", inbound.streamSettings);
             }
             catch
             {
