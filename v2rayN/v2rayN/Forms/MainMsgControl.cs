@@ -16,7 +16,7 @@ namespace v2rayN.Forms
 {
     public partial class MainMsgControl : UserControl
     {
-        private string MsgFilter = string.Empty;
+        private string _msgFilter = string.Empty;
         delegate void AppendTextDelegate(string text);
 
         public MainMsgControl()
@@ -33,15 +33,15 @@ namespace v2rayN.Forms
 
         public void AppendText(string text)
         {
-            if (this.txtMsgBox.InvokeRequired)
+            if (txtMsgBox.InvokeRequired)
             {
-                Invoke(new AppendTextDelegate(AppendText), new object[] { text });
+                Invoke(new AppendTextDelegate(AppendText), text);
             }
             else
             {
-                if (!Utils.IsNullOrEmpty(MsgFilter))
+                if (!Utils.IsNullOrEmpty(_msgFilter))
                 {
-                    if (!Regex.IsMatch(text, MsgFilter))
+                    if (!Regex.IsMatch(text, _msgFilter))
                     {
                         return;
                     }
@@ -61,10 +61,10 @@ namespace v2rayN.Forms
             {
                 ClearMsg();
             }
-            this.txtMsgBox.AppendText(msg);
+            txtMsgBox.AppendText(msg);
             if (!msg.EndsWith(Environment.NewLine))
             {
-                this.txtMsgBox.AppendText(Environment.NewLine);
+                txtMsgBox.AppendText(Environment.NewLine);
             }
         }
 
@@ -124,7 +124,7 @@ namespace v2rayN.Forms
 
         public void ScrollToCaret()
         {
-            this.txtMsgBox.ScrollToCaret();
+            txtMsgBox.ScrollToCaret();
         }
         #endregion
 
@@ -132,24 +132,24 @@ namespace v2rayN.Forms
         #region MsgBoxMenu
         private void menuMsgBoxSelectAll_Click(object sender, EventArgs e)
         {
-            this.txtMsgBox.Focus();
-            this.txtMsgBox.SelectAll();
+            txtMsgBox.Focus();
+            txtMsgBox.SelectAll();
         }
 
         private void menuMsgBoxCopy_Click(object sender, EventArgs e)
         {
-            var data = this.txtMsgBox.SelectedText.TrimEx();
+            var data = txtMsgBox.SelectedText.TrimEx();
             Utils.SetClipboardData(data);
         }
 
         private void menuMsgBoxCopyAll_Click(object sender, EventArgs e)
         {
-            var data = this.txtMsgBox.Text;
+            var data = txtMsgBox.Text;
             Utils.SetClipboardData(data);
         }
         private void menuMsgBoxClear_Click(object sender, EventArgs e)
         {
-            this.txtMsgBox.Clear();
+            txtMsgBox.Clear();
         }
         private void menuMsgBoxAddRoutingRule_Click(object sender, EventArgs e)
         {
@@ -182,12 +182,12 @@ namespace v2rayN.Forms
         private void menuMsgBoxFilter_Click(object sender, EventArgs e)
         {
             var fm = new MsgFilterSetForm();
-            fm.MsgFilter = MsgFilter;
+            fm.MsgFilter = _msgFilter;
             fm.ShowDefFilter = true;
             if (fm.ShowDialog() == DialogResult.OK)
             {
-                MsgFilter = fm.MsgFilter;
-                gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, MsgFilter);
+                _msgFilter = fm.MsgFilter;
+                gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, _msgFilter);
             }
         }
 

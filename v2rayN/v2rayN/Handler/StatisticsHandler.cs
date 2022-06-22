@@ -31,13 +31,7 @@ namespace v2rayN.Handler
         }
 
 
-        public List<ServerStatItem> Statistic
-        {
-            get
-            {
-                return serverStatistics_.server;
-            }
-        }
+        public List<ServerStatItem> Statistic => serverStatistics_.server;
 
         public StatisticsHandler(Mode.Config config, Action<ulong, ulong, List<ServerStatItem>> update)
         {
@@ -68,7 +62,7 @@ namespace v2rayN.Handler
 
             GrpcInit();
 
-            Task.Run(() => Run());
+            Task.Run(Run);
         }
 
         private void GrpcInit()

@@ -11,10 +11,8 @@ namespace v2rayN.Handler
         private Config _config;
         private List<CoreInfo> coreInfos;
 
-        public static LazyConfig Instance
-        {
-            get { return _instance.Value; }
-        }
+        public static LazyConfig Instance => _instance.Value;
+
         public void SetConfig(ref Config config)
         {
             _config = config;

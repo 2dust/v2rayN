@@ -175,7 +175,7 @@ namespace v2rayN.Handler
             string fileName = string.Empty;
             foreach (string name in lstCoreTemp)
             {
-                string vName = string.Format("{0}.exe", name);
+                string vName = $"{name}.exe";
                 vName = Utils.GetPath(vName);
                 if (File.Exists(vName))
                 {
@@ -217,14 +217,14 @@ namespace v2rayN.Handler
                         StandardOutputEncoding = Encoding.UTF8
                     }
                 };
-                p.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+                p.OutputDataReceived += (sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         string msg = e.Data + Environment.NewLine;
                         ShowMsg(false, msg);
                     }
-                });
+                };
                 p.Start();
                 p.PriorityClass = ProcessPriorityClass.High;
                 p.BeginOutputReadLine();
@@ -272,14 +272,14 @@ namespace v2rayN.Handler
                         StandardOutputEncoding = Encoding.UTF8
                     }
                 };
-                p.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+                p.OutputDataReceived += (sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         string msg = e.Data + Environment.NewLine;
                         ShowMsg(false, msg);
                     }
-                });
+                };
                 p.Start();
                 p.BeginOutputReadLine();
 

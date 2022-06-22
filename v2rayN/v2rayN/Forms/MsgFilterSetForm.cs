@@ -30,12 +30,12 @@ namespace v2rayN.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             MsgFilter = txtMsgFilter.Text;
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
 
         private void btnFilderProxy_Click(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace v2rayN.Forms
         private void btnClear_Click(object sender, EventArgs e)
         {
             MsgFilter = string.Empty;
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
     }
 }

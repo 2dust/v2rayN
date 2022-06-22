@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -43,19 +44,19 @@ namespace v2rayN.Handler
 
             if (actionType == ESpeedActionType.Ping)
             {
-                Task.Run(() => RunPing());
+                Task.Run(RunPing);
             }
             else if (actionType == ESpeedActionType.Tcping)
             {
-                Task.Run(() => RunTcping());
+                Task.Run(RunTcping);
             }
             else if (actionType == ESpeedActionType.Realping)
             {
-                Task.Run(() => RunRealPing());
+                Task.Run(RunRealPing);
             }
             else if (actionType == ESpeedActionType.Speedtest)
             {
-                Task.Run(() => RunSpeedTestAsync());
+                Task.Run(RunSpeedTestAsync);
             }
         }
 
@@ -63,12 +64,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                foreach (var it in _selecteds)
+                foreach (var it in _selecteds.Where(it => it.configType != EConfigType.Custom))
                 {
-                    if (it.configType == EConfigType.Custom)
-                    {
-                        continue;
-                    }
                     try
                     {
                         Task.Run(() => updateFun(it));
@@ -252,7 +249,7 @@ namespace v2rayN.Handler
             {
                 return "Timeout";
             }
-            return string.Format("{0}{1}", time, unit).PadLeft(8, ' ');
+            return $"{time}{unit}".PadLeft(8, ' ');
         }
     }
 }

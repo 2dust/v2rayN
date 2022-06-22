@@ -16,7 +16,7 @@ namespace v2rayN.Forms
 
         private void AddServerForm_Load(object sender, EventArgs e)
         {
-            this.Text = (eConfigType).ToString();
+            Text = (eConfigType).ToString();
             
             cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
             cmbCoreType.Items.Add(string.Empty);
@@ -41,7 +41,7 @@ namespace v2rayN.Forms
                     panSocks.Dock = DockStyle.Fill;
                     panSocks.Visible = true;
                     panTran.Visible = false;
-                    this.Height = this.Height - panTran.Height;
+                    Height = Height - panTran.Height;
                     break;
                 case EConfigType.VLESS:
                     panVless.Dock = DockStyle.Fill;
@@ -65,8 +65,10 @@ namespace v2rayN.Forms
             }
             else
             {
-                vmessItem = new VmessItem();
-                vmessItem.groupId = groupId;
+                vmessItem = new VmessItem
+                {
+                    groupId = groupId
+                };
                 ClearServer();
             }
         }
@@ -106,14 +108,7 @@ namespace v2rayN.Forms
                     break;
             }
 
-            if (vmessItem.coreType == null)
-            {
-                cmbCoreType.Text = string.Empty;
-            }
-            else
-            {
-                cmbCoreType.Text = vmessItem.coreType.ToString();
-            }
+            cmbCoreType.Text = vmessItem.coreType == null ? string.Empty : vmessItem.coreType.ToString();
 
             transportControl.BindingServer(vmessItem);
         }
@@ -267,7 +262,7 @@ namespace v2rayN.Forms
 
             if (ret == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
@@ -284,7 +279,7 @@ namespace v2rayN.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
     }
 }

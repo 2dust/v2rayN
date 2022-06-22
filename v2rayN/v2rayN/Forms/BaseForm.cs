@@ -21,11 +21,11 @@ namespace v2rayN.Forms
                 string file = Utils.GetPath(Global.CustomIconName);
                 if (System.IO.File.Exists(file))
                 {
-                    this.Icon = new System.Drawing.Icon(file);
+                    Icon = new System.Drawing.Icon(file);
                     return;
                 }
 
-                this.Icon = Properties.Resources.NotifyIcon1;
+                Icon = Properties.Resources.NotifyIcon1;
             }
             catch (Exception e)
             {

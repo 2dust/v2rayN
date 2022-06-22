@@ -427,14 +427,7 @@ namespace v2rayN.Handler
                     serversItem.address = node.address;
                     serversItem.port = node.port;
                     serversItem.password = node.id;
-                    if (LazyConfig.Instance.GetShadowsocksSecuritys().Contains(node.security))
-                    {
-                        serversItem.method = node.security;
-                    }
-                    else
-                    {
-                        serversItem.method = "none";
-                    }
+                    serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys().Contains(node.security) ? node.security : "none";
 
 
                     serversItem.ota = false;
@@ -761,10 +754,12 @@ namespace v2rayN.Handler
                         }
                         break;
                     case "grpc":
-                        var grpcSettings = new GrpcSettings();
+                        var grpcSettings = new GrpcSettings
+                        {
+                            serviceName = node.path,
+                            multiMode = (node.headerType == Global.GrpcmultiMode)
+                        };
 
-                        grpcSettings.serviceName = node.path;
-                        grpcSettings.multiMode = (node.headerType == Global.GrpcmultiMode ? true : false);
                         streamSettings.grpcSettings = grpcSettings;
                         break;
                     default:
@@ -785,7 +780,7 @@ namespace v2rayN.Handler
                                 string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
                                 string[] arrHost = host.Split(',');
                                 string host2 = string.Join("\",\"", arrHost);
-                                request = request.Replace("$requestHost$", string.Format("\"{0}\"", host2));
+                                request = request.Replace("$requestHost$", $"\"{host2}\"");
                                 //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
 
                                 //填入自定义Path
@@ -795,7 +790,7 @@ namespace v2rayN.Handler
                                     string[] arrPath = node.path.Split(',');
                                     pathHttp = string.Join("\",\"", arrPath);
                                 }
-                                request = request.Replace("$requestPath$", string.Format("\"{0}\"", pathHttp));
+                                request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
                                 tcpSettings.header.request = Utils.FromJson<object>(request);
                             }
                             else if (iobound.Equals("in"))
@@ -882,7 +877,7 @@ namespace v2rayN.Handler
                 policyObj.system = policySystemSetting;
                 v2rayConfig.policy = policyObj;
 
-                if (!v2rayConfig.inbounds.Exists(item => { return item.tag == tag; }))
+                if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
                 {
                     Inbounds apiInbound = new Inbounds();
                     Inboundsettings apiInboundSettings = new Inboundsettings();
@@ -895,7 +890,7 @@ namespace v2rayN.Handler
                     v2rayConfig.inbounds.Add(apiInbound);
                 }
 
-                if (!v2rayConfig.routing.rules.Exists(item => { return item.outboundTag == tag; }))
+                if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
                 {
                     RulesItem apiRoutingRule = new RulesItem
                     {
@@ -1171,7 +1166,7 @@ namespace v2rayN.Handler
                 vmessItem.port = outbound.settings.vnext[0].port;
                 vmessItem.id = outbound.settings.vnext[0].users[0].id;
                 vmessItem.alterId = outbound.settings.vnext[0].users[0].alterId;
-                vmessItem.remarks = string.Format("import@{0}", DateTime.Now.ToShortDateString());
+                vmessItem.remarks = $"import@{DateTime.Now.ToShortDateString()}";
 
                 //tcp or kcp
                 if (outbound.streamSettings != null
@@ -1316,7 +1311,7 @@ namespace v2rayN.Handler
                 vmessItem.id = inbound.settings.clients[0].id;
                 vmessItem.alterId = inbound.settings.clients[0].alterId;
 
-                vmessItem.remarks = string.Format("import@{0}", DateTime.Now.ToShortDateString());
+                vmessItem.remarks = $"import@{DateTime.Now.ToShortDateString()}";
 
                 //tcp or kcp
                 if (inbound.streamSettings != null

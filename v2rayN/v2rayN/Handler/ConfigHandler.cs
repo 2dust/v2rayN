@@ -304,7 +304,7 @@ namespace v2rayN.Handler
             {
                 VmessItem vmessItem = Utils.DeepCopy(item);
                 vmessItem.indexId = string.Empty;
-                vmessItem.remarks = string.Format("{0}-clone", item.remarks);
+                vmessItem.remarks = $"{item.remarks}-clone";
 
                 if (vmessItem.configType == EConfigType.Custom)
                 {
@@ -469,7 +469,7 @@ namespace v2rayN.Handler
                 return -1;
             }
             var ext = Path.GetExtension(fileName);
-            string newFileName = string.Format("{0}{1}", Utils.GetGUID(), ext);
+            string newFileName = $"{Utils.GetGUID()}{ext}";
             //newFileName = Path.Combine(Utils.GetTempPath(), newFileName);
 
             try
@@ -489,7 +489,7 @@ namespace v2rayN.Handler
             vmessItem.configType = EConfigType.Custom;
             if (Utils.IsNullOrEmpty(vmessItem.remarks))
             {
-                vmessItem.remarks = string.Format("import custom@{0}", DateTime.Now.ToShortDateString());
+                vmessItem.remarks = $"import custom@{DateTime.Now.ToShortDateString()}";
             }
 
 
@@ -814,7 +814,7 @@ namespace v2rayN.Handler
                 && o.path == n.path
                 && o.streamSecurity == n.streamSecurity
                 && o.flow == n.flow
-                && (remarks ? o.remarks == n.remarks : true);
+                && (!remarks || o.remarks == n.remarks);
         }
 
         private static int RemoveVmessItem(Config config, int index)
@@ -1051,7 +1051,7 @@ namespace v2rayN.Handler
             if (lstSsServer == null || lstSsServer.Count <= 0)
             {
                 var ssSIP008 = Utils.FromJson<SsSIP008>(clipboardData);
-                if (ssSIP008 != null && ssSIP008.servers != null && ssSIP008.servers.Count > 0)
+                if (ssSIP008?.servers != null && ssSIP008.servers.Count > 0)
                 {
                     lstSsServer = ssSIP008.servers;
                 }
@@ -1154,12 +1154,9 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            foreach (SubItem item in config.subItem)
+            foreach (var item in config.subItem.Where(item => Utils.IsNullOrEmpty(item.id)))
             {
-                if (Utils.IsNullOrEmpty(item.id))
-                {
-                    item.id = Utils.GetGUID(false);
-                }
+                item.id = Utils.GetGUID(false);
             }
 
             ToJsonFile(config);
@@ -1203,12 +1200,9 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            foreach (GroupItem item in config.groupItem)
+            foreach (var item in config.groupItem.Where(item => Utils.IsNullOrEmpty(item.id)))
             {
-                if (Utils.IsNullOrEmpty(item.id))
-                {
-                    item.id = Utils.GetGUID(false);
-                }
+                item.id = Utils.GetGUID(false);
             }
 
             ToJsonFile(config);

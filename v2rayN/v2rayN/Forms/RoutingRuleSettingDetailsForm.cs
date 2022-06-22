@@ -115,34 +115,28 @@ namespace v2rayN.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             EndBindingData();
-            var hasRule = false;
-            if (rulesItem.domain != null && rulesItem.domain.Count > 0)
-            {
-                hasRule = true;
-            }
-            if (rulesItem.ip != null && rulesItem.ip.Count > 0)
-            {
-                hasRule = true;
-            }
-            if (rulesItem.protocol != null && rulesItem.protocol.Count > 0)
-            {
-                hasRule = true;
-            }
-            if (!Utils.IsNullOrEmpty(rulesItem.port))
-            {
-                hasRule = true;
-            }
+
+            bool hasRule = 
+                rulesItem.domain != null 
+                && rulesItem.domain.Count > 0 
+                || rulesItem.ip != null 
+                && rulesItem.ip.Count > 0 
+                || rulesItem.protocol != null 
+                && rulesItem.protocol.Count > 0 
+                || !Utils.IsNullOrEmpty(rulesItem.port);
+
             if (!hasRule)
             {
                 UI.ShowWarning(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Port/Protocol/Domain/IP"));
                 return;
             }
-            this.DialogResult = DialogResult.OK;
+
+            DialogResult = DialogResult.OK;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
     }
 }

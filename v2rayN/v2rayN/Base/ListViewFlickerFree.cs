@@ -16,37 +16,37 @@ namespace v2rayN.Base
             UpdateStyles();
         }
 
-        public void RegisterDragEvent(Action<int, int> _update)
+        public void RegisterDragEvent(Action<int, int> update)
         {
-            _updateFunc = _update;
-            this.AllowDrop = true;
+            _updateFunc = update;
+            AllowDrop = true;
 
-            this.ItemDrag += new ItemDragEventHandler(this.lv_ItemDrag);
-            this.DragDrop += new DragEventHandler(this.lv_DragDrop);
-            this.DragEnter += new DragEventHandler(this.lv_DragEnter);
-            this.DragOver += new DragEventHandler(this.lv_DragOver);
-            this.DragLeave += new EventHandler(this.lv_DragLeave);
+            ItemDrag += lv_ItemDrag;
+            DragDrop += lv_DragDrop;
+            DragEnter += lv_DragEnter;
+            DragOver += lv_DragOver;
+            DragLeave += lv_DragLeave;
         }
 
         private void lv_DragDrop(object sender, DragEventArgs e)
         {
-            int targetIndex = this.InsertionMark.Index;
+            int targetIndex = InsertionMark.Index;
             if (targetIndex == -1)
             {
                 return;
             }
-            if (this.InsertionMark.AppearsAfterItem)
+            if (InsertionMark.AppearsAfterItem)
             {
                 targetIndex++;
             }
 
 
-            if (this.SelectedIndices.Count <= 0)
+            if (SelectedIndices.Count <= 0)
             {
                 return;
             }
 
-            _updateFunc(this.SelectedIndices[0], targetIndex);
+            _updateFunc(SelectedIndices[0], targetIndex);
 
             //ListViewItem draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
             //this.BeginUpdate();
@@ -63,35 +63,35 @@ namespace v2rayN.Base
 
         private void lv_DragLeave(object sender, EventArgs e)
         {
-            this.InsertionMark.Index = -1;
+            InsertionMark.Index = -1;
         }
 
         private void lv_DragOver(object sender, DragEventArgs e)
         {
-            Point targetPoint = this.PointToClient(new Point(e.X, e.Y));
-            int targetIndex = this.InsertionMark.NearestIndex(targetPoint);
+            Point targetPoint = PointToClient(new Point(e.X, e.Y));
+            int targetIndex = InsertionMark.NearestIndex(targetPoint);
 
             if (targetIndex > -1)
             {
-                Rectangle itemBounds = this.GetItemRect(targetIndex);
-                this.EnsureVisible(targetIndex);
+                Rectangle itemBounds = GetItemRect(targetIndex);
+                EnsureVisible(targetIndex);
 
                 if (targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2))
                 {
-                    this.InsertionMark.AppearsAfterItem = true;
+                    InsertionMark.AppearsAfterItem = true;
                 }
                 else
                 {
-                    this.InsertionMark.AppearsAfterItem = false;
+                    InsertionMark.AppearsAfterItem = false;
                 }
             }
-            this.InsertionMark.Index = targetIndex;
+            InsertionMark.Index = targetIndex;
         }
 
         private void lv_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            this.DoDragDrop(e.Item, DragDropEffects.Move);
-            this.InsertionMark.Index = -1;
+            DoDragDrop(e.Item, DragDropEffects.Move);
+            InsertionMark.Index = -1;
         }
     }
 }

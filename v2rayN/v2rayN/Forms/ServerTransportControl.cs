@@ -9,7 +9,7 @@ namespace v2rayN.Forms
     public partial class ServerTransportControl : UserControl
     {
         public bool AllowXtls { get; set; }
-        private VmessItem vmessItem = null;
+        private VmessItem vmessItem;
 
         public ServerTransportControl()
         {

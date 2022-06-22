@@ -951,7 +951,7 @@ namespace v2rayN
 
         public static string GetDownloadFileName(string url)
         {
-            var fileName = System.IO.Path.GetFileName(url);
+            var fileName = Path.GetFileName(url);
             fileName += "_temp";
 
             return fileName;
