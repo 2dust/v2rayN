@@ -127,7 +127,7 @@
     <value>Please check the server settings first</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value> configuration format is incorrect</value>
+    <value>Invalid configuration format</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually.</value>
@@ -136,7 +136,7 @@
     <value>Downloading...</value>
   </data>
   <data name="downloadSpeed" xml:space="preserve">
-    <value>DOWN</value>
+    <value>Download</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
     <value>Whether to download? {0}</value>
@@ -214,10 +214,10 @@
     <value>Test Results</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
-    <value>Today download traffic</value>
+    <value>Download traffic today</value>
   </data>
   <data name="LvTodayUploadDataAmount" xml:space="preserve">
-    <value>Today upload traffic</value>
+    <value>Upload traffic today</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
     <value>Total download traffic</value>
@@ -229,7 +229,7 @@
     <value>Transport</value>
   </data>
   <data name="MediumFresh" xml:space="preserve">
-    <value>MediumFresh</value>
+    <value>Medium</value>
   </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>Clear original subscription content</value>
@@ -241,7 +241,7 @@
     <value>Failed to import subscription content</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Get the subscription content successfully</value>
+    <value>Get subscription content successfully</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>No valid subscriptions set</value>
@@ -301,7 +301,7 @@
     <value>Scan completed, no valid QR code found</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value> operation failed, please check retry</value>
+    <value> operation failed, please check and retry</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
     <value>Please Fill Remarks</value>
@@ -310,13 +310,13 @@
     <value>Please select the encryption method</value>
   </data>
   <data name="PleaseSelectProtocol" xml:space="preserve">
-    <value>Please select an agreement</value>
+    <value>Please select a protocol</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>Please select the server first</value>
   </data>
   <data name="QuickFresh" xml:space="preserve">
-    <value>QuickFresh</value>
+    <value>Fast</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
@@ -331,23 +331,23 @@
     <value>The server configuration file is saved at: {0}</value>
   </data>
   <data name="SlowFresh" xml:space="preserve">
-    <value>SlowFresh</value>
+    <value>Slow</value>
   </data>
   <data name="SpeedServerTips" xml:space="preserve">
-    <value>Note: After this function relies on the Http global proxy test, please manually adjust the Http global proxy and active node!</value>
+    <value>Note: This feature relies on the Http global proxy. Please manually adjust the Http global proxy and active node after testing.</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
-    <value>PAC failed to start. Run it with Admin right.</value>
+    <value>PAC failed to start. Please run this program as Administrator.</value>
   </data>
   <data name="StartService" xml:space="preserve">
     <value>Start service ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Successful configuration
+    <value>Configuration successful
 {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Successfully imported custom configuration server</value>
+    <value>Custom configuration server imported successfully.</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
     <value>{0} servers have been imported from clipboard.</value>
@@ -389,7 +389,7 @@
     <value>Download GeoFile: {0} successfully</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
-    <value>Informations (Filter : {0})</value>
+    <value>Information (Filter : {0})</value>
   </data>
   <data name="LvCustomIcon" xml:space="preserve">
     <value>Custom Icon</value>

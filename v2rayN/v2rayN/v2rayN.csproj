@@ -307,6 +307,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionSettingForm.zh-Hans.resx">
       <DependentUpon>OptionSettingForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\QRCodeControl.zh-Hans.resx">
       <DependentUpon>QRCodeControl.cs</DependentUpon>
