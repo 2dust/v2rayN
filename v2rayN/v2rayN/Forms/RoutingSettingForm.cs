@@ -10,8 +10,8 @@ namespace v2rayN.Forms
 {
     public partial class RoutingSettingForm : BaseForm
     {
-        private List<int> lvSelecteds = new List<int>();
-        private RoutingItem lockedItem;
+        private readonly List<int> _lvSelecteds = new List<int>();
+        private RoutingItem _lockedItem;
         public RoutingSettingForm()
         {
             InitializeComponent();
@@ -58,7 +58,7 @@ namespace v2rayN.Forms
 
             if (ConfigHandler.SaveRouting(ref config) == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
@@ -68,7 +68,7 @@ namespace v2rayN.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
         private void chkenableRoutingAdvanced_CheckedChanged_1(object sender, EventArgs e)
         {
@@ -78,20 +78,20 @@ namespace v2rayN.Forms
         {
             if (chkenableRoutingAdvanced.Checked)
             {
-                this.tabPageProxy.Parent = null;
-                this.tabPageDirect.Parent = null;
-                this.tabPageBlock.Parent = null;
-                this.tabPageRuleList.Parent = tabNormal;
+                tabPageProxy.Parent = null;
+                tabPageDirect.Parent = null;
+                tabPageBlock.Parent = null;
+                tabPageRuleList.Parent = tabNormal;
                 MenuItemBasic.Enabled = false;
                 MenuItemAdvanced.Enabled = true;
 
             }
             else
             {
-                this.tabPageProxy.Parent = tabNormal;
-                this.tabPageDirect.Parent = tabNormal;
-                this.tabPageBlock.Parent = tabNormal;
-                this.tabPageRuleList.Parent = null;
+                tabPageProxy.Parent = tabNormal;
+                tabPageDirect.Parent = tabNormal;
+                tabPageBlock.Parent = tabNormal;
+                tabPageRuleList.Parent = null;
                 MenuItemBasic.Enabled = true;
                 MenuItemAdvanced.Enabled = false;
             }
@@ -102,31 +102,31 @@ namespace v2rayN.Forms
         #region locked
         private void BindingLockedData()
         {
-            lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
-            if (lockedItem != null)
+            _lockedItem = ConfigHandler.GetLockedRoutingItem(ref config);
+            if (_lockedItem != null)
             {
-                txtProxyDomain.Text = Utils.List2String(lockedItem.rules[0].domain, true);
-                txtProxyIp.Text = Utils.List2String(lockedItem.rules[0].ip, true);
+                txtProxyDomain.Text = Utils.List2String(_lockedItem.rules[0].domain, true);
+                txtProxyIp.Text = Utils.List2String(_lockedItem.rules[0].ip, true);
 
-                txtDirectDomain.Text = Utils.List2String(lockedItem.rules[1].domain, true);
-                txtDirectIp.Text = Utils.List2String(lockedItem.rules[1].ip, true);
+                txtDirectDomain.Text = Utils.List2String(_lockedItem.rules[1].domain, true);
+                txtDirectIp.Text = Utils.List2String(_lockedItem.rules[1].ip, true);
 
-                txtBlockDomain.Text = Utils.List2String(lockedItem.rules[2].domain, true);
-                txtBlockIp.Text = Utils.List2String(lockedItem.rules[2].ip, true);
+                txtBlockDomain.Text = Utils.List2String(_lockedItem.rules[2].domain, true);
+                txtBlockIp.Text = Utils.List2String(_lockedItem.rules[2].ip, true);
             }
         }
         private void EndBindingLockedData()
         {
-            if (lockedItem != null)
+            if (_lockedItem != null)
             {
-                lockedItem.rules[0].domain = Utils.String2List(txtProxyDomain.Text.TrimEx());
-                lockedItem.rules[0].ip = Utils.String2List(txtProxyIp.Text.TrimEx());
+                _lockedItem.rules[0].domain = Utils.String2List(txtProxyDomain.Text.TrimEx());
+                _lockedItem.rules[0].ip = Utils.String2List(txtProxyIp.Text.TrimEx());
 
-                lockedItem.rules[1].domain = Utils.String2List(txtDirectDomain.Text.TrimEx());
-                lockedItem.rules[1].ip = Utils.String2List(txtDirectIp.Text.TrimEx());
+                _lockedItem.rules[1].domain = Utils.String2List(txtDirectDomain.Text.TrimEx());
+                _lockedItem.rules[1].ip = Utils.String2List(txtDirectIp.Text.TrimEx());
 
-                lockedItem.rules[2].domain = Utils.String2List(txtBlockDomain.Text.TrimEx());
-                lockedItem.rules[2].ip = Utils.String2List(txtBlockIp.Text.TrimEx());
+                _lockedItem.rules[2].domain = Utils.String2List(txtBlockDomain.Text.TrimEx());
+                _lockedItem.rules[2].ip = Utils.String2List(txtBlockIp.Text.TrimEx());
 
             }
         }
@@ -207,7 +207,7 @@ namespace v2rayN.Forms
         private int GetLvSelectedIndex()
         {
             int index = -1;
-            lvSelecteds.Clear();
+            _lvSelecteds.Clear();
             try
             {
                 if (lvRoutings.SelectedIndices.Count <= 0)
@@ -219,7 +219,7 @@ namespace v2rayN.Forms
                 index = lvRoutings.SelectedIndices[0];
                 foreach (int i in lvRoutings.SelectedIndices)
                 {
-                    lvSelecteds.Add(i);
+                    _lvSelecteds.Add(i);
                 }
                 return index;
             }
@@ -264,7 +264,7 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            for (int k = lvSelecteds.Count - 1; k >= 0; k--)
+            for (int k = _lvSelecteds.Count - 1; k >= 0; k--)
             {
                 config.routings.RemoveAt(index);
             }

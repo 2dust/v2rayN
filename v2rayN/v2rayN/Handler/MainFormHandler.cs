@@ -24,10 +24,8 @@ namespace v2rayN.Handler
         //private List<int> _selecteds;
         //private Thread _workThread;
         //Action<int, string> _updateFunc;
-        public static MainFormHandler Instance
-        {
-            get { return instance.Value; }
-        }
+        public static MainFormHandler Instance => instance.Value;
+
         public Icon GetNotifyIcon(Config config, Icon def)
         {
             try
@@ -84,7 +82,7 @@ namespace v2rayN.Handler
                 int index = (int)config.sysProxyType;
                 if (index > 0)
                 {
-                    color = (new Color[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
+                    color = (new[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
                 }
 
                 int width = 128;

@@ -26,8 +26,8 @@ namespace v2rayN.Handler
 
             public ResultEventArgs(bool success, string msg)
             {
-                this.Success = success;
-                this.Msg = msg;
+                Success = success;
+                Msg = msg;
             }
         }
 
@@ -209,16 +209,12 @@ namespace v2rayN.Handler
                     else
                     {
                         int ret = ConfigHandler.AddBatchServers(ref config, result, id, groupId);
-                        if (ret > 0)
-                        {
-                            _updateFunc(false, $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}");
-                        }
-                        else
-                        {
-                            _updateFunc(false, $"{hashCode}{ResUI.MsgFailedImportSubscription}");
-                        }
+                        _updateFunc(false,
+                            ret > 0
+                                ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
+                                : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
                     }
-                    _updateFunc(false, $"-------------------------------------------------------");
+                    _updateFunc(false, "-------------------------------------------------------");
                 }
                 //restore system proxy
                 if (bSysProxyType)
@@ -331,7 +327,7 @@ namespace v2rayN.Handler
                 string filePath = string.Empty;
                 foreach (string name in coreInfo.coreExes)
                 {
-                    string vName = string.Format("{0}.exe", name);
+                    string vName = $"{name}.exe";
                     vName = Utils.GetPath(vName);
                     if (File.Exists(vName))
                     {

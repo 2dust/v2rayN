@@ -15,9 +15,9 @@ namespace v2rayN.Forms
         {
             get; set;
         }
-        protected RoutingItem routingItem = null;
+        protected RoutingItem routingItem;
 
-        private List<int> lvSelecteds = new List<int>();
+        private readonly List<int> lvSelecteds = new List<int>();
         public RoutingRuleSettingForm()
         {
             InitializeComponent();
@@ -25,14 +25,7 @@ namespace v2rayN.Forms
 
         private void RoutingRuleSettingForm_Load(object sender, EventArgs e)
         {
-            if (EditIndex >= 0)
-            {
-                routingItem = config.routings[EditIndex];
-            }
-            else
-            {
-                routingItem = new RoutingItem();
-            }
+            routingItem = EditIndex >= 0 ? config.routings[EditIndex] : new RoutingItem();
             if (routingItem.rules == null)
             {
                 routingItem.rules = new List<RulesItem>();
@@ -86,10 +79,8 @@ namespace v2rayN.Forms
             lvRoutings.BeginUpdate();
             lvRoutings.Items.Clear();
 
-            for (int k = 0; k < routingItem.rules.Count; k++)
+            foreach (var item in routingItem.rules)
             {
-                var item = routingItem.rules[k];
-
                 ListViewItem lvItem = new ListViewItem("");
                 Utils.AddSubItem(lvItem, "outboundTag", item.outboundTag);
                 Utils.AddSubItem(lvItem, "port", item.port);
@@ -112,7 +103,7 @@ namespace v2rayN.Forms
 
             if (ConfigHandler.AddRoutingItem(ref config, routingItem, EditIndex) == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
@@ -122,7 +113,7 @@ namespace v2rayN.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {

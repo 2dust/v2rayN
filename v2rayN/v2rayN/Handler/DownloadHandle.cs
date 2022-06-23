@@ -29,8 +29,8 @@ namespace v2rayN.Handler
 
             public ResultEventArgs(bool success, string msg)
             {
-                this.Success = success;
-                this.Msg = msg;
+                Success = success;
+                Msg = msg;
             }
         }
 
@@ -51,7 +51,7 @@ namespace v2rayN.Handler
                 {
                     if (UpdateCompleted != null)
                     {
-                        string msg = string.Format("{0} M/s", value).PadLeft(9, ' ');
+                        string msg = $"{value} M/s".PadLeft(9, ' ');
                         UpdateCompleted(this, new ResultEventArgs(false, msg));
                     }
                 };
@@ -88,7 +88,7 @@ namespace v2rayN.Handler
                 {
                     if (UpdateCompleted != null)
                     {
-                        string msg = string.Format("...{0}%", value);
+                        string msg = $"...{value}%";
                         UpdateCompleted(this, new ResultEventArgs(value > 100 ? true : false, msg));
                     }
                 };

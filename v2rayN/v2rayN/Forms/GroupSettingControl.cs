@@ -23,7 +23,7 @@ namespace v2rayN.Forms
 
         private void GroupSettingControl_Load(object sender, EventArgs e)
         {
-            this.Height = grbMain.Height;
+            Height = grbMain.Height;
             BindingSub();
         }
 

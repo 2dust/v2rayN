@@ -101,7 +101,7 @@ namespace v2rayN.Forms
 
             if (ConfigHandler.SaveConfig(ref config, false) == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
@@ -111,7 +111,7 @@ namespace v2rayN.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
 
         private void btnReset_Click(object sender, EventArgs e)
