@@ -173,4 +173,7 @@
   <data name="chkAutoSort.Text" xml:space="preserve">
     <value>保存时Domain和IP自动排序</value>
   </data>
+  <data name="linkRuleobjectDoc.Text" xml:space="preserve">
+    <value>规则详细说明文档</value>
+  </data>
 </root>

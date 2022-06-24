@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -137,6 +138,11 @@ namespace v2rayN.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+        }
+
+        private void linkRuleobjectDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://www.v2fly.org/config/routing.html#ruleobject");
         }
     }
 }

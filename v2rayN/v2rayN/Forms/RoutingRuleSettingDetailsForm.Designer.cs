@@ -50,6 +50,7 @@
             this.txtIP = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtDomain = new System.Windows.Forms.TextBox();
+            this.linkRuleobjectDoc = new System.Windows.Forms.LinkLabel();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -64,6 +65,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.linkRuleobjectDoc);
             this.panel3.Controls.Add(this.chkEnabled);
             this.panel3.Controls.Add(this.clbInboundTag);
             this.panel3.Controls.Add(this.label2);
@@ -90,7 +92,9 @@
             this.clbInboundTag.FormattingEnabled = true;
             this.clbInboundTag.Items.AddRange(new object[] {
             resources.GetString("clbInboundTag.Items"),
-            resources.GetString("clbInboundTag.Items1")});
+            resources.GetString("clbInboundTag.Items1"),
+            resources.GetString("clbInboundTag.Items2"),
+            resources.GetString("clbInboundTag.Items3")});
             this.clbInboundTag.MultiColumn = true;
             this.clbInboundTag.Name = "clbInboundTag";
             // 
@@ -208,6 +212,13 @@
             resources.ApplyResources(this.txtDomain, "txtDomain");
             this.txtDomain.Name = "txtDomain";
             // 
+            // linkRuleobjectDoc
+            // 
+            resources.ApplyResources(this.linkRuleobjectDoc, "linkRuleobjectDoc");
+            this.linkRuleobjectDoc.Name = "linkRuleobjectDoc";
+            this.linkRuleobjectDoc.TabStop = true;
+            this.linkRuleobjectDoc.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRuleobjectDoc_LinkClicked);
+            // 
             // RoutingRuleSettingDetailsForm
             // 
             resources.ApplyResources(this, "$this");
@@ -255,5 +266,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.CheckBox chkAutoSort;
+        private System.Windows.Forms.LinkLabel linkRuleobjectDoc;
     }
 }
