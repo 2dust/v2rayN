@@ -567,4 +567,7 @@
   <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
     <value>Update Clash.Meta Core</value>
   </data>
+  <data name="menuSortServerResult.Text" xml:space="preserve">
+    <value>按测试结果排序 (Ctrl+E)</value>
+  </data>
 </root>

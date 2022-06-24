@@ -60,6 +60,7 @@
             this.menuTcpingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRealPingServer = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSpeedServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSortServerResult = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbTestMe = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClearServerStatistics = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -203,6 +204,7 @@
             this.menuTcpingServer,
             this.menuRealPingServer,
             this.menuSpeedServer,
+            this.menuSortServerResult,
             this.tsbTestMe,
             this.menuClearServerStatistics,
             this.toolStripSeparator6,
@@ -376,6 +378,12 @@
             this.menuSpeedServer.Name = "menuSpeedServer";
             resources.ApplyResources(this.menuSpeedServer, "menuSpeedServer");
             this.menuSpeedServer.Click += new System.EventHandler(this.menuSpeedServer_Click);
+            // 
+            // menuSortServerResult
+            // 
+            this.menuSortServerResult.Name = "menuSortServerResult";
+            resources.ApplyResources(this.menuSortServerResult, "menuSortServerResult");
+            this.menuSortServerResult.Click += new System.EventHandler(this.menuSortServerResult_Click);
             // 
             // tsbTestMe
             // 
@@ -963,6 +971,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateClashCore;
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateClashMetaCore;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
+        private System.Windows.Forms.ToolStripMenuItem menuSortServerResult;
     }
 }
 

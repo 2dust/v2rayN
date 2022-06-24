@@ -281,6 +281,12 @@
   <data name="menuSpeedServer.Text" xml:space="preserve">
     <value>Test servers download speed (Ctrl+T)</value>
   </data>
+  <data name="menuSortServerResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="menuSortServerResult.Text" xml:space="preserve">
+    <value>Sort by test result (Ctrl+E)</value>
+  </data>
   <data name="tsbTestMe.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
@@ -333,7 +339,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 600</value>
+    <value>356, 644</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -1146,6 +1152,12 @@
     <value>menuSpeedServer</value>
   </data>
   <data name="&gt;&gt;menuSpeedServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuSortServerResult.Name" xml:space="preserve">
+    <value>menuSortServerResult</value>
+  </data>
+  <data name="&gt;&gt;menuSortServerResult.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsbTestMe.Name" xml:space="preserve">
