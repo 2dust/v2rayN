@@ -561,4 +561,10 @@
   <data name="menuServerFilter.Text" xml:space="preserve">
     <value>设置服务器过滤器 (Ctrl+F)</value>
   </data>
+  <data name="tsbCheckUpdateClashCore.Text" xml:space="preserve">
+    <value>Update clash Core</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
+    <value>Update Clash.Meta Core</value>
+  </data>
 </root>

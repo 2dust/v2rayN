@@ -320,8 +320,20 @@
   <data name="menuExport2SubContent.Text" xml:space="preserve">
     <value>Export subscription (base64) share to clipboard</value>
   </data>
+  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 53</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageAboveText</value>
+  </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 622</value>
+    <value>356, 600</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -469,18 +481,6 @@
   </data>
   <data name="&gt;&gt;scServers.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="tsbServer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 53</value>
-  </data>
-  <data name="tsbServer.Text" xml:space="preserve">
-    <value>Servers</value>
-  </data>
-  <data name="tsbServer.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
   </data>
   <data name="scBig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -825,28 +825,43 @@
     <value>6, 56</value>
   </data>
   <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="tsbCheckUpdateN.Text" xml:space="preserve">
     <value>v2rayN (this software)</value>
   </data>
   <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>Update v2flyCore</value>
+    <value>Update v2fly Core</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
-    <value>Update XrayCore</value>
+    <value>Update Xray Core</value>
+  </data>
+  <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 6</value>
+  </data>
+  <data name="tsbCheckUpdateClashCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateClashCore.Text" xml:space="preserve">
+    <value>Update clash Core</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
+    <value>Update Clash.Meta Core</value>
   </data>
   <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 6</value>
+    <value>216, 6</value>
   </data>
   <data name="tsbCheckUpdateGeo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 22</value>
+    <value>219, 22</value>
   </data>
   <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
     <value>Update Geo files</value>
@@ -1389,6 +1404,24 @@
     <value>tsbCheckUpdateXrayCore</value>
   </data>
   <data name="&gt;&gt;tsbCheckUpdateXrayCore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator16.Name" xml:space="preserve">
+    <value>toolStripSeparator16</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateClashCore.Name" xml:space="preserve">
+    <value>tsbCheckUpdateClashCore</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateClashCore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateClashMetaCore.Name" xml:space="preserve">
+    <value>tsbCheckUpdateClashMetaCore</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateClashMetaCore.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator15.Name" xml:space="preserve">

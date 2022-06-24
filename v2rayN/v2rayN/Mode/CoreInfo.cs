@@ -16,7 +16,9 @@ namespace v2rayN.Mode
 
         public string coreLatestUrl { get; set; }
 
-        public string coreDownloadUrl { get; set; }
+        public string coreDownloadUrl32 { get; set; }
+
+        public string coreDownloadUrl64 { get; set; }
 
         public string match { get; set; }
     }

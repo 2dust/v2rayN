@@ -295,7 +295,7 @@ namespace v2rayN.Handler
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
-                string url = coreInfo.coreLatestUrl;               
+                string url = coreInfo.coreLatestUrl;
 
                 var result = await (new DownloadHandle()).UrlRedirectAsync(url, true);
                 if (!Utils.IsNullOrEmpty(result))
@@ -374,29 +374,41 @@ namespace v2rayN.Handler
                 string curVersion;
                 string message;
                 string url;
-                if (type == ECoreType.v2fly)
+                switch (type)
                 {
-                    curVersion = "v" + getCoreVersion(type);
-                    message = string.Format(ResUI.IsLatestCore, curVersion);
-                    string osBit = Environment.Is64BitProcess ? "64" : "32";
-                    url = string.Format(coreInfo.coreDownloadUrl, version, osBit);
-                }
-                else if (type == ECoreType.Xray)
-                {
-                    curVersion = "v" + getCoreVersion(type);
-                    message = string.Format(ResUI.IsLatestCore, curVersion);
-                    string osBit = Environment.Is64BitProcess ? "64" : "32";
-                    url = string.Format(coreInfo.coreDownloadUrl, version, osBit);
-                }
-                else if (type == ECoreType.v2rayN)
-                {
-                    curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
-                    message = string.Format(ResUI.IsLatestN, curVersion);
-                    url = string.Format(coreInfo.coreDownloadUrl, version);
-                }
-                else
-                {
-                    throw new ArgumentException("Type");
+                    case ECoreType.v2fly:
+                    case ECoreType.Xray:
+                        {
+                            curVersion = "v" + getCoreVersion(type);
+                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            string osBit = Environment.Is64BitProcess ? "64" : "32";
+                            url = string.Format(coreInfo.coreDownloadUrl64, version, osBit);
+                            break;
+                        }
+                    case ECoreType.clash:
+                    case ECoreType.clash_meta:
+                        {
+                            curVersion = "";//getCoreVersion(type);
+                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            if (Environment.Is64BitProcess)
+                            {
+                                url = string.Format(coreInfo.coreDownloadUrl64, version);
+                            }
+                            else
+                            {
+                                url = string.Format(coreInfo.coreDownloadUrl32, version);
+                            }
+                            break;
+                        }
+                    case ECoreType.v2rayN:
+                        {
+                            curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
+                            message = string.Format(ResUI.IsLatestN, curVersion);
+                            url = string.Format(coreInfo.coreDownloadUrl64, version);
+                            break;
+                        }
+                    default:
+                        throw new ArgumentException("Type");
                 }
 
                 if (curVersion == version)

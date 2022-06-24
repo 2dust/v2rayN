@@ -67,9 +67,9 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.tabGroup = new System.Windows.Forms.TabControl();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.scBig = new System.Windows.Forms.SplitContainer();
             this.gbServers = new System.Windows.Forms.GroupBox();
             this.mainMsgControl = new v2rayN.Forms.MainMsgControl();
@@ -111,6 +111,9 @@
             this.tsbCheckUpdateN = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateCore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateXrayCore = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbCheckUpdateClashCore = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCheckUpdateClashMetaCore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCheckUpdateGeo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
@@ -208,6 +211,7 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
+            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -414,6 +418,13 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
+            // tsbServer
+            // 
+            this.tsbServer.DropDown = this.cmsLv;
+            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
+            resources.ApplyResources(this.tsbServer, "tsbServer");
+            this.tsbServer.Name = "tsbServer";
+            // 
             // tabGroup
             // 
             resources.ApplyResources(this.tabGroup, "tabGroup");
@@ -425,13 +436,6 @@
             // 
             resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
             this.qrCodeControl.Name = "qrCodeControl";
-            // 
-            // tsbServer
-            // 
-            this.tsbServer.DropDown = this.cmsLv;
-            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
-            resources.ApplyResources(this.tsbServer, "tsbServer");
-            this.tsbServer.Name = "tsbServer";
             // 
             // scBig
             // 
@@ -707,6 +711,9 @@
             this.tsbCheckUpdateN,
             this.tsbCheckUpdateCore,
             this.tsbCheckUpdateXrayCore,
+            this.toolStripSeparator16,
+            this.tsbCheckUpdateClashCore,
+            this.tsbCheckUpdateClashMetaCore,
             this.toolStripSeparator15,
             this.tsbCheckUpdateGeo});
             this.tsbCheckUpdate.Image = global::v2rayN.Properties.Resources.checkupdate;
@@ -730,6 +737,23 @@
             this.tsbCheckUpdateXrayCore.Name = "tsbCheckUpdateXrayCore";
             resources.ApplyResources(this.tsbCheckUpdateXrayCore, "tsbCheckUpdateXrayCore");
             this.tsbCheckUpdateXrayCore.Click += new System.EventHandler(this.tsbCheckUpdateXrayCore_Click);
+            // 
+            // toolStripSeparator16
+            // 
+            this.toolStripSeparator16.Name = "toolStripSeparator16";
+            resources.ApplyResources(this.toolStripSeparator16, "toolStripSeparator16");
+            // 
+            // tsbCheckUpdateClashCore
+            // 
+            this.tsbCheckUpdateClashCore.Name = "tsbCheckUpdateClashCore";
+            resources.ApplyResources(this.tsbCheckUpdateClashCore, "tsbCheckUpdateClashCore");
+            this.tsbCheckUpdateClashCore.Click += new System.EventHandler(this.tsbCheckUpdateClashCore_Click);
+            // 
+            // tsbCheckUpdateClashMetaCore
+            // 
+            this.tsbCheckUpdateClashMetaCore.Name = "tsbCheckUpdateClashMetaCore";
+            resources.ApplyResources(this.tsbCheckUpdateClashMetaCore, "tsbCheckUpdateClashMetaCore");
+            this.tsbCheckUpdateClashMetaCore.Click += new System.EventHandler(this.tsbCheckUpdateClashMetaCore_Click);
             // 
             // toolStripSeparator15
             // 
@@ -936,6 +960,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuMoveDown;
         private System.Windows.Forms.ToolStripMenuItem menuMoveBottom;
         private System.Windows.Forms.ToolStripMenuItem menuServerFilter;
+        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateClashCore;
+        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateClashMetaCore;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
     }
 }
 

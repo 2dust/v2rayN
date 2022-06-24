@@ -1327,6 +1327,16 @@ namespace v2rayN.Forms
             CheckUpdateCore(ECoreType.Xray);
         }
 
+        private void tsbCheckUpdateClashCore_Click(object sender, EventArgs e)
+        {
+            CheckUpdateCore(ECoreType.clash);
+        }
+
+        private void tsbCheckUpdateClashMetaCore_Click(object sender, EventArgs e)
+        {
+            CheckUpdateCore(ECoreType.clash_meta);
+        }
+
         private void CheckUpdateCore(ECoreType type)
         {
             void _updateUI(bool success, string msg)
