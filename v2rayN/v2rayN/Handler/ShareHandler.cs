@@ -582,7 +582,19 @@ namespace v2rayN.Handler
             NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
             if (queryParameters["plugin"] != null)
             {
-                return null;
+                //obfs-host exists
+                var obfsHost = queryParameters["plugin"].Split(';').FirstOrDefault(t => t.Contains("obfs-host"));
+                if (queryParameters["plugin"].Contains("obfs=http") && !Utils.IsNullOrEmpty(obfsHost))
+                {
+                    obfsHost = obfsHost.Replace("obfs-host=", "");
+                    server.network = Global.DefaultNetwork;
+                    server.headerType = Global.TcpHeaderHttp;
+                    server.requestHost = obfsHost;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             return server;
