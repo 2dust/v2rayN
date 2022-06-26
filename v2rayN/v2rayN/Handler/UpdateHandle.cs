@@ -200,6 +200,10 @@ namespace v2rayN.Handler
 
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
                     var result = await (new DownloadHandle()).DownloadStringAsync(url, blProxy, userAgent);
+                    if (blProxy && Utils.IsNullOrEmpty(result))
+                    {
+                        result = await (new DownloadHandle()).DownloadStringAsync(url, false, userAgent);
+                    }
 
                     _updateFunc(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
                     if (Utils.IsNullOrEmpty(result))
