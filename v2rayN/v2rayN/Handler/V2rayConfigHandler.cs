@@ -956,6 +956,18 @@ namespace v2rayN.Handler
                         break;
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
+                        //remove the original 
+                        var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
+                        if (indexPort >= 0)
+                        {
+                            fileContent.RemoveAt(indexPort);
+                        }
+                        indexPort = fileContent.FindIndex(t => t.Contains("socks-port:"));
+                        if (indexPort >= 0)
+                        {
+                            fileContent.RemoveAt(indexPort);
+                        }
+
                         fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
                         fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
                         break;
