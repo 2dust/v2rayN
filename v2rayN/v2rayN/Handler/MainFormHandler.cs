@@ -95,7 +95,7 @@ namespace v2rayN.Handler
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));                
                 graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
-                graphics.FillEllipse(drawBrush, width/2, width/2, width/2, width/2);
+                graphics.FillEllipse(drawBrush, width / 2, width / 2, width / 2, width / 2);
 
                 Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
 
@@ -118,8 +118,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType != EConfigType.Vmess
-                && item.configType != EConfigType.VLESS)
+            if (item.configType == EConfigType.Custom)
             {
                 UI.Show(ResUI.NonVmessService);
                 return;
@@ -158,7 +157,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType != EConfigType.Vmess
+            if (item.configType != EConfigType.VMess
                 && item.configType != EConfigType.VLESS)
             {
                 UI.Show(ResUI.NonVmessService);

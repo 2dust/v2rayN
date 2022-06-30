@@ -289,10 +289,10 @@
     <value>此功能依赖Http全局代理,请先设置正确。</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>非vmess或ss协议</value>
+    <value>非VMess或ss协议</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
-    <value>非Vmess服务，此功能无效</value>
+    <value>非标准服务，此功能无效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>找不到Core，下载地址: {0}</value>

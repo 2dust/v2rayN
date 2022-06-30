@@ -363,7 +363,7 @@ namespace v2rayN.Handler
             {
                 var config = LazyConfig.Instance.GetConfig();
                 Outbounds outbound = v2rayConfig.outbounds[0];
-                if (node.configType == EConfigType.Vmess)
+                if (node.configType == EConfigType.VMess)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -1076,7 +1076,7 @@ namespace v2rayN.Handler
                 usersItem.id = node.id;
                 usersItem.email = Global.userEMail;
 
-                if (node.configType == EConfigType.Vmess)
+                if (node.configType == EConfigType.VMess)
                 {
                     inbound.protocol = Global.vmessProtocolLite;
                     usersItem.alterId = node.alterId;
@@ -1492,7 +1492,7 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    if (it.configType == EConfigType.Vmess || it.configType == EConfigType.VLESS)
+                    if (it.configType == EConfigType.VMess || it.configType == EConfigType.VLESS)
                     {
                         if (!Utils.IsGuidByParse(configCopy.GetVmessItem(it.indexId).id))
                         {

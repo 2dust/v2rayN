@@ -245,7 +245,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddServer(ref Config config, VmessItem vmessItem, bool toFile = true)
         {
-            vmessItem.configType = EConfigType.Vmess;
+            vmessItem.configType = EConfigType.VMess;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
@@ -609,7 +609,7 @@ namespace v2rayN.Handler
                 {
                     return 0;
                 }
-                if (vmessItem.configType == EConfigType.Vmess)
+                if (vmessItem.configType == EConfigType.VMess)
                 {
                     string path = "";
                     string host = "";
@@ -896,7 +896,7 @@ namespace v2rayN.Handler
                 //groupId
                 vmessItem.groupId = groupId;
 
-                if (vmessItem.configType == EConfigType.Vmess)
+                if (vmessItem.configType == EConfigType.VMess)
                 {
                     if (AddServer(ref config, vmessItem, false) == 0)
                     {

@@ -282,7 +282,7 @@ namespace v2rayN.Mode
         public VmessItem()
         {
             indexId = string.Empty;
-            configType = EConfigType.Vmess;
+            configType = EConfigType.VMess;
             configVersion = 2;
             sort = 0;
             address = string.Empty;
@@ -323,7 +323,7 @@ namespace v2rayN.Mode
             }
             switch (configType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                 case EConfigType.Shadowsocks:
                 case EConfigType.Socks:
                 case EConfigType.VLESS:

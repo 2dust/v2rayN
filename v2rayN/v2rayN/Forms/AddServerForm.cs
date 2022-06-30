@@ -23,7 +23,7 @@ namespace v2rayN.Forms
 
             switch (eConfigType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                     panVmess.Dock = DockStyle.Fill;
                     panVmess.Visible = true;
 
@@ -84,7 +84,7 @@ namespace v2rayN.Forms
 
             switch (eConfigType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                     txtId.Text = vmessItem.id;
                     txtAlterId.Text = vmessItem.alterId.ToString();
                     cmbSecurity.Text = vmessItem.security;
@@ -124,7 +124,7 @@ namespace v2rayN.Forms
 
             switch (eConfigType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                     txtId.Text = "";
                     txtAlterId.Text = "0";
                     cmbSecurity.Text = Global.DefaultSecurity;
@@ -164,7 +164,7 @@ namespace v2rayN.Forms
 
             switch (eConfigType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                     id = txtId.Text;
                     alterId = txtAlterId.Text;
                     security = cmbSecurity.Text;
@@ -241,7 +241,7 @@ namespace v2rayN.Forms
             int ret = -1;
             switch (eConfigType)
             {
-                case EConfigType.Vmess:
+                case EConfigType.VMess:
                     ret = ConfigHandler.AddServer(ref config, vmessItem);
                     break;
                 case EConfigType.Shadowsocks:

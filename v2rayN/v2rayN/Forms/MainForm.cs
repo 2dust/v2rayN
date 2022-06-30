@@ -666,7 +666,7 @@ namespace v2rayN.Forms
 
         private void menuAddVmessServer_Click(object sender, EventArgs e)
         {
-            ShowServerForm(EConfigType.Vmess, -1);
+            ShowServerForm(EConfigType.VMess, -1);
         }
 
         private void menuAddVlessServer_Click(object sender, EventArgs e)

@@ -31,7 +31,7 @@ namespace v2rayN.Handler
 
                 switch (item.configType)
                 {
-                    case EConfigType.Vmess:
+                    case EConfigType.VMess:
                         url = ShareVmess(item);
                         break;
                     case EConfigType.Shadowsocks:
@@ -374,7 +374,7 @@ namespace v2rayN.Handler
             msg = string.Empty;
             var vmessItem = new VmessItem
             {
-                configType = EConfigType.Vmess
+                configType = EConfigType.VMess
             };
 
             result = result.Substring(Global.vmessProtocol.Length);
@@ -422,7 +422,7 @@ namespace v2rayN.Handler
         {
             VmessItem vmessItem = new VmessItem
             {
-                configType = EConfigType.Vmess
+                configType = EConfigType.VMess
             };
             result = result.Substring(Global.vmessProtocol.Length);
             int indexSplit = result.IndexOf("?");
@@ -460,7 +460,7 @@ namespace v2rayN.Handler
         {
             VmessItem i = new VmessItem
             {
-                configType = EConfigType.Vmess,
+                configType = EConfigType.VMess,
                 security = "auto"
             };
 

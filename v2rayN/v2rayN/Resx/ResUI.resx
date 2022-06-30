@@ -289,10 +289,10 @@
     <value> This feature relies on the Http global proxy, please set it correctly first.</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-vmess or ss protocol</value>
+    <value>Non-VMess or ss protocol</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
-    <value> non-Vmess service, this feature is invalid</value>
+    <value> non-standard service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>Core not found, please download: {0}</value>
