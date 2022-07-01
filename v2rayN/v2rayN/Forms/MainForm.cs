@@ -1138,6 +1138,12 @@ namespace v2rayN.Forms
             ShowInTaskbar = false;
 
             SetVisibleCore(false);
+
+            //write Handle to reg
+            if (IsHandleCreated)
+            {
+                Utils.RegWriteValue(Global.MyRegPath, Utils.WindowHwndKey, Convert.ToString((long)Handle));
+            }
         }
 
         #endregion

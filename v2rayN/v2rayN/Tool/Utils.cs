@@ -24,6 +24,7 @@ using System.Web;
 using log4net;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace v2rayN
 {
@@ -1111,5 +1112,30 @@ namespace v2rayN
 
         #endregion
 
+
+        #region Windows API
+
+        public static string WindowHwndKey
+        {
+            get
+            {
+                return $"WindowHwnd_{GetMD5(StartupPath())}";
+            }
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool SetProcessDPIAware();
+
+        [DllImport("user32.dll")]
+        public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern int SwitchToThisWindow(IntPtr hwnd, bool fUnknown);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsWindow(IntPtr hwnd);
+
+
+        #endregion
     }
 }
