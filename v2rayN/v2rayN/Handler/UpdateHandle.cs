@@ -198,20 +198,31 @@ namespace v2rayN.Handler
                         continue;
                     }
 
+                    var downloadHandle = new DownloadHandle();
+                    downloadHandle.Error += (sender2, args) =>
+                    {
+                        _updateFunc(false, $"{hashCode}{args.GetException().Message}");
+                    };
+
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
-                    var result = await (new DownloadHandle()).DownloadStringAsync(url, blProxy, userAgent);
+                    var result = await downloadHandle.DownloadStringAsync(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
                     {
-                        result = await (new DownloadHandle()).DownloadStringAsync(url, false, userAgent);
+                        result = await downloadHandle.DownloadStringAsync(url, false, userAgent);
                     }
 
-                    _updateFunc(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
                     if (Utils.IsNullOrEmpty(result))
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
                     }
                     else
                     {
+                        _updateFunc(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
+                        if (result.Length < 99)
+                        {
+                            _updateFunc(false, $"{hashCode}{result}");
+                        }
+
                         int ret = ConfigHandler.AddBatchServers(ref config, result, id, groupId);
                         _updateFunc(false,
                             ret > 0

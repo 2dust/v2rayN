@@ -45,17 +45,9 @@ namespace v2rayN.Base
             {
                 return null;
             }
-            try
-            {
-                HttpResponseMessage response = await httpClient.GetAsync(url);
+            HttpResponseMessage response = await httpClient.GetAsync(url);
 
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog("GetAsync", ex);
-            }
-            return null;
+            return await response.Content.ReadAsStringAsync();
         }
         public async Task<string> GetAsync(HttpClient client, string url, CancellationToken token)
         {
@@ -63,16 +55,12 @@ namespace v2rayN.Base
             {
                 return null;
             }
-            try
+            HttpResponseMessage response = await client.GetAsync(url, token);
+            if (!response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await client.GetAsync(url, token);
-                return await response.Content.ReadAsStringAsync();
+                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
             }
-            catch (Exception ex)
-            {
-                Utils.SaveLog("GetAsync", ex);
-            }
-            return null;
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task PutAsync(string url, Dictionary<string, string> headers)
