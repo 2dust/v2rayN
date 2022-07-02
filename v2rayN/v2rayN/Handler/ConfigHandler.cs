@@ -481,8 +481,9 @@ namespace v2rayN.Handler
                     File.Delete(fileName);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 return -1;
             }
 

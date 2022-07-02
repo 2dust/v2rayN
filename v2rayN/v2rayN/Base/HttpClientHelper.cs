@@ -51,8 +51,9 @@ namespace v2rayN.Base
 
                 return await response.Content.ReadAsStringAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog("GetAsync", ex);
             }
             return null;
         }

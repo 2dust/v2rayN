@@ -51,8 +51,9 @@ namespace v2rayN.Handler
                 }
                 return url;
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 return "";
             }
         }
@@ -360,8 +361,9 @@ namespace v2rayN.Handler
                     return null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.Incorrectconfiguration;
                 return null;
             }

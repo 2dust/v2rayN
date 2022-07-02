@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using ZXing;
 using ZXing.QrCode;
 
@@ -34,8 +35,9 @@ namespace v2rayN.Handler
                 img = (Image)bmp;
                 return img;
             }
-            catch
+            catch(Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 return img;
             }
         }

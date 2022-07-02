@@ -83,8 +83,9 @@ namespace v2rayN.Handler
 
                 msg = string.Format(ResUI.SuccessfulConfiguration, $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog("GenerateClientConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -130,8 +131,9 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -176,8 +178,9 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -246,8 +249,9 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -345,8 +349,9 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -581,8 +586,9 @@ namespace v2rayN.Handler
                     outbound.settings.vnext = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -804,8 +810,9 @@ namespace v2rayN.Handler
                         break;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -849,8 +856,9 @@ namespace v2rayN.Handler
                     };
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -1040,8 +1048,9 @@ namespace v2rayN.Handler
 
                 msg = string.Format(ResUI.SuccessfulConfiguration, node.GetSummary());
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -1091,8 +1100,9 @@ namespace v2rayN.Handler
 
                 boundStreamSettings(node, "in", inbound.streamSettings);
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -1112,8 +1122,9 @@ namespace v2rayN.Handler
                     v2rayConfig.outbounds[0].settings = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -1258,8 +1269,9 @@ namespace v2rayN.Handler
                     vmessItem.streamSecurity = Global.StreamSecurity;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.IncorrectClientConfiguration;
                 return null;
             }
@@ -1403,8 +1415,9 @@ namespace v2rayN.Handler
                     vmessItem.streamSecurity = Global.StreamSecurity;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.IncorrectClientConfiguration;
                 return null;
             }
@@ -1472,7 +1485,10 @@ namespace v2rayN.Handler
                 {
                     lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
+                }
 
                 log(configCopy, ref v2rayConfig, false);
                 //routing(config, ref v2rayConfig);
@@ -1548,8 +1564,9 @@ namespace v2rayN.Handler
                 //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
                 return Utils.ToJson(v2rayConfig);
             }
-            catch
+            catch (Exception ex)
             {
+                Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return "";
             }
