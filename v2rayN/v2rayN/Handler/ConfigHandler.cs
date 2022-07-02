@@ -54,11 +54,9 @@ namespace v2rayN.Handler
                     //Mux
                     muxEnabled = false,
 
-                    // 默认不开启统计
                     enableStatistics = false,
 
-                    // 默认中等刷新率
-                    statisticsFreshRate = (int)Global.StatisticsFreshRate.medium,
+                    statisticsFreshRate = 1,
 
                     enableRoutingAdvanced = true
                 };
@@ -158,7 +156,10 @@ namespace v2rayN.Handler
             {
                 config.groupItem = new List<GroupItem>();
             }
-
+            if (config.statisticsFreshRate > 100)
+            {
+                config.statisticsFreshRate = 1;
+            }
 
             if (config == null
                 || config.vmess.Count <= 0

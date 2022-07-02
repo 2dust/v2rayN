@@ -1189,8 +1189,8 @@ namespace v2rayN.Forms
         {
             try
             {
-                up /= (ulong)(config.statisticsFreshRate / 1000f);
-                down /= (ulong)(config.statisticsFreshRate / 1000f);
+                up /= (ulong)(config.statisticsFreshRate);
+                down /= (ulong)(config.statisticsFreshRate);
                 mainMsgControl.SetToolSslInfo("speed", string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down)));
 
                 foreach (var it in statistics)

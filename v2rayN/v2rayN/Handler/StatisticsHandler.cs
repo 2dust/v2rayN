@@ -127,7 +127,7 @@ namespace v2rayN.Handler
                             }
                         }
                     }
-                    Thread.Sleep(config_.statisticsFreshRate);
+                    Thread.Sleep(1000 * config_.statisticsFreshRate);
                     channel_.ConnectAsync();
                 }
                 catch (Exception ex)

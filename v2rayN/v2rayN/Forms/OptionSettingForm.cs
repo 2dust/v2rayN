@@ -19,7 +19,7 @@ namespace v2rayN.Forms
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
             cmbSystemProxyAdvancedProtocol.Items.AddRange(Global.IEProxyProtocols.ToArray());
-
+           
             InitBase();
 
             InitKCP();
@@ -88,31 +88,8 @@ namespace v2rayN.Forms
             chkAutoRun.Checked = Utils.IsAutoRun();
 
             chkEnableStatistics.Checked = config.enableStatistics;
+            numStatisticsFreshRate.Value = config.statisticsFreshRate;
             chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
-
-            ComboItem[] cbSource = new ComboItem[]
-            {
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = ResUI.QuickFresh},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = ResUI.MediumFresh},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = ResUI.SlowFresh},
-            };
-            cbFreshrate.DataSource = cbSource;
-
-            cbFreshrate.DisplayMember = "Text";
-            cbFreshrate.ValueMember = "ID";
-
-            switch (config.statisticsFreshRate)
-            {
-                case (int)Global.StatisticsFreshRate.quick:
-                    cbFreshrate.SelectedItem = cbSource[0];
-                    break;
-                case (int)Global.StatisticsFreshRate.medium:
-                    cbFreshrate.SelectedItem = cbSource[1];
-                    break;
-                case (int)Global.StatisticsFreshRate.slow:
-                    cbFreshrate.SelectedItem = cbSource[2];
-                    break;
-            }
 
             chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
             chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
@@ -309,7 +286,8 @@ namespace v2rayN.Forms
 
             bool lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
-            config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
+            config.statisticsFreshRate = Convert.ToInt32(numStatisticsFreshRate.Value);
+
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;

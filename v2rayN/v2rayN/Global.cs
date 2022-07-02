@@ -191,12 +191,6 @@ namespace v2rayN
         /// </summary>
         public const string CustomIconName = "v2rayN.ico";
 
-        public enum StatisticsFreshRate
-        {
-            quick = 1000,
-            medium = 2000,
-            slow = 3000
-        }
         public const string StatisticLogOverall = "StatisticLogOverall.json";
 
         public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
