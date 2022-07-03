@@ -157,12 +157,6 @@ namespace v2rayN.Handler
                 Inbounds inbound2 = GetInbound(config.inbound[0], Global.InboundHttp, 1, false);
                 v2rayConfig.inbounds.Add(inbound2);
 
-                // 端口转发
-                foreach (var item in config.portForwarding)
-                {
-                    v2rayConfig.inbounds.Add(GetPortForwarding(item));
-                }
-
                 if (config.inbound[0].allowLANConn)
                 {
                     Inbounds inbound3 = GetInbound(config.inbound[0], Global.InboundSocks2, 2, true);
@@ -182,6 +176,12 @@ namespace v2rayN.Handler
                         inbound4.settings.auth = "password";
                         inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
                     }
+                }
+
+                // 端口转发
+                foreach (var item in config.portForwarding)
+                {
+                    v2rayConfig.inbounds.Add(GetPortForwarding(item));
                 }
             }
             catch (Exception ex)
