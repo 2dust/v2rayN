@@ -181,7 +181,10 @@ namespace v2rayN.Handler
                 // 端口转发
                 foreach (var item in config.portForwarding)
                 {
-                    v2rayConfig.inbounds.Add(GetPortForwarding(item));
+                    if (item.enable)
+                    {
+                        v2rayConfig.inbounds.Add(GetPortForwarding(item));
+                    }
                 }
             }
             catch (Exception ex)
