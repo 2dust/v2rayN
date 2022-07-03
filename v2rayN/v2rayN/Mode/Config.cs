@@ -150,6 +150,14 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// 端口转发（基于InItem）
+        /// </summary>
+        public List<PortForwardingItem> portForwarding
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// vmess服务器信息
         /// </summary>
         public List<VmessItem> vmess
@@ -596,6 +604,67 @@ namespace v2rayN.Mode
         public string user { get; set; }
 
         public string pass { get; set; }
+
+    }
+
+    [Serializable]
+    public class PortForwardingItem
+    {
+        /// <summary>
+        /// TAG
+        /// </summary>
+        public string tag
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 本地监听IP
+        /// </summary>
+        public string localIp
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 本地监听端口
+        /// </summary>
+        public int localPort
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 目标主机
+        /// </summary>
+        public string dstHost
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 目标端口
+        /// </summary>
+        public int dstPort
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 网络[network: "tcp" | "udp" | "tcp,udp"]，默认为tcp
+        /// </summary>
+        public string network
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool enable
+        {
+            get; set;
+        }
 
     }
 

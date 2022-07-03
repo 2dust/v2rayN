@@ -90,6 +90,13 @@ namespace v2rayN.Handler
                     config.inbound[0].protocol = Global.InboundSocks;
                 }
             }
+
+            // 端口转发
+            if (config.portForwarding == null)
+            {
+                config.portForwarding = new List<PortForwardingItem>();
+            }
+
             //路由规则
             if (Utils.IsNullOrEmpty(config.domainStrategy))
             {

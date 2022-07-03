@@ -379,4 +379,31 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="tabPage4.Text" xml:space="preserve">
+    <value>  端口转发  </value>
+  </data>
+  <data name="portForwardingDstHostLabel.Text" xml:space="preserve">
+    <value>目标主机</value>
+  </data>
+  <data name="portForwardingDstPortLabel.Text" xml:space="preserve">
+    <value>目标端口</value>
+  </data>
+  <data name="portForwardingLocalIpLabel.Text" xml:space="preserve">
+    <value>本地监听IP</value>
+  </data>
+  <data name="portForwardingLocalPortLabel.Text" xml:space="preserve">
+    <value>本地监听端口</value>
+  </data>
+  <data name="portForwardingNetworkLabel.Text" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="portForwardingTagLabel.Text" xml:space="preserve">
+    <value>命名</value>
+  </data>
+  <data name="portForwardingAddButton.Text" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="portForwardingRemoveButton.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
 </root>

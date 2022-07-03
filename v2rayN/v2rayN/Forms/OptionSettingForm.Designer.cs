@@ -103,6 +103,22 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.txtsystemProxyExceptions = new System.Windows.Forms.TextBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.portForwardingNetworkLabel = new System.Windows.Forms.Label();
+            this.portForwardingNetworkComboBox = new System.Windows.Forms.ComboBox();
+            this.portForwardingDstPortLabel = new System.Windows.Forms.Label();
+            this.portForwardingDstPortTextBox = new System.Windows.Forms.TextBox();
+            this.portForwardingDstHostLabel = new System.Windows.Forms.Label();
+            this.portForwardingLocalPortLabel = new System.Windows.Forms.Label();
+            this.portForwardingLocalIpLabel = new System.Windows.Forms.Label();
+            this.portForwardingTagLabel = new System.Windows.Forms.Label();
+            this.portForwardingRemoveButton = new System.Windows.Forms.Button();
+            this.portForwardingAddButton = new System.Windows.Forms.Button();
+            this.portForwardingDstHostTextBox = new System.Windows.Forms.TextBox();
+            this.portForwardingLocalPortTextBox = new System.Windows.Forms.TextBox();
+            this.portForwardingLocalIpTextBox = new System.Windows.Forms.TextBox();
+            this.portForwardingTagTextBox = new System.Windows.Forms.TextBox();
+            this.tsbPortForwardingCheckListBox = new System.Windows.Forms.CheckedListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -116,39 +132,40 @@
             this.tabPageCoreType.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
             // 
-            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // tabControl1
             // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPageCoreType);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtpass);
@@ -165,6 +182,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtlocalPort);
             this.groupBox1.Controls.Add(this.label2);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -214,8 +232,8 @@
             // 
             // cmbprotocol
             // 
-            resources.ApplyResources(this.cmbprotocol, "cmbprotocol");
             this.cmbprotocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbprotocol, "cmbprotocol");
             this.cmbprotocol.FormattingEnabled = true;
             this.cmbprotocol.Items.AddRange(new object[] {
             resources.GetString("cmbprotocol.Items"),
@@ -241,7 +259,6 @@
             // 
             // cmbloglevel
             // 
-            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbloglevel.FormattingEnabled = true;
             this.cmbloglevel.Items.AddRange(new object[] {
@@ -250,6 +267,7 @@
             resources.GetString("cmbloglevel.Items2"),
             resources.GetString("cmbloglevel.Items3"),
             resources.GetString("cmbloglevel.Items4")});
+            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.Name = "cmbloglevel";
             // 
             // label5
@@ -269,10 +287,10 @@
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.linkDnsObjectDoc);
             this.tabPage2.Controls.Add(this.txtremoteDNS);
             this.tabPage2.Controls.Add(this.label14);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
@@ -295,7 +313,6 @@
             // 
             // tabPage6
             // 
-            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Controls.Add(this.chkKcpcongestion);
             this.tabPage6.Controls.Add(this.txtKcpwriteBufferSize);
             this.tabPage6.Controls.Add(this.label10);
@@ -309,6 +326,7 @@
             this.tabPage6.Controls.Add(this.label7);
             this.tabPage6.Controls.Add(this.txtKcpmtu);
             this.tabPage6.Controls.Add(this.label6);
+            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
@@ -380,7 +398,6 @@
             // 
             // tabPage7
             // 
-            resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Controls.Add(this.numStatisticsFreshRate);
             this.tabPage7.Controls.Add(this.txttrayMenuServersLimit);
             this.tabPage7.Controls.Add(this.label17);
@@ -396,6 +413,7 @@
             this.tabPage7.Controls.Add(this.lbFreshrate);
             this.tabPage7.Controls.Add(this.chkEnableStatistics);
             this.tabPage7.Controls.Add(this.chkAutoRun);
+            resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
@@ -484,7 +502,6 @@
             // 
             // tabPageCoreType
             // 
-            resources.ApplyResources(this.tabPageCoreType, "tabPageCoreType");
             this.tabPageCoreType.Controls.Add(this.cmbCoreType6);
             this.tabPageCoreType.Controls.Add(this.labCoreType6);
             this.tabPageCoreType.Controls.Add(this.cmbCoreType5);
@@ -497,14 +514,15 @@
             this.tabPageCoreType.Controls.Add(this.labCoreType2);
             this.tabPageCoreType.Controls.Add(this.cmbCoreType1);
             this.tabPageCoreType.Controls.Add(this.labCoreType1);
+            resources.ApplyResources(this.tabPageCoreType, "tabPageCoreType");
             this.tabPageCoreType.Name = "tabPageCoreType";
             this.tabPageCoreType.UseVisualStyleBackColor = true;
             // 
             // cmbCoreType6
             // 
-            resources.ApplyResources(this.cmbCoreType6, "cmbCoreType6");
             this.cmbCoreType6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType6.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType6, "cmbCoreType6");
             this.cmbCoreType6.Name = "cmbCoreType6";
             // 
             // labCoreType6
@@ -514,9 +532,9 @@
             // 
             // cmbCoreType5
             // 
-            resources.ApplyResources(this.cmbCoreType5, "cmbCoreType5");
             this.cmbCoreType5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType5.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType5, "cmbCoreType5");
             this.cmbCoreType5.Name = "cmbCoreType5";
             // 
             // labCoreType5
@@ -526,9 +544,9 @@
             // 
             // cmbCoreType4
             // 
-            resources.ApplyResources(this.cmbCoreType4, "cmbCoreType4");
             this.cmbCoreType4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType4.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType4, "cmbCoreType4");
             this.cmbCoreType4.Name = "cmbCoreType4";
             // 
             // labCoreType4
@@ -538,9 +556,9 @@
             // 
             // cmbCoreType3
             // 
-            resources.ApplyResources(this.cmbCoreType3, "cmbCoreType3");
             this.cmbCoreType3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType3.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType3, "cmbCoreType3");
             this.cmbCoreType3.Name = "cmbCoreType3";
             // 
             // labCoreType3
@@ -550,9 +568,9 @@
             // 
             // cmbCoreType2
             // 
-            resources.ApplyResources(this.cmbCoreType2, "cmbCoreType2");
             this.cmbCoreType2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType2.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType2, "cmbCoreType2");
             this.cmbCoreType2.Name = "cmbCoreType2";
             // 
             // labCoreType2
@@ -562,9 +580,9 @@
             // 
             // cmbCoreType1
             // 
-            resources.ApplyResources(this.cmbCoreType1, "cmbCoreType1");
             this.cmbCoreType1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType1.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType1, "cmbCoreType1");
             this.cmbCoreType1.Name = "cmbCoreType1";
             // 
             // labCoreType1
@@ -574,19 +592,19 @@
             // 
             // tabPage3
             // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.cmbSystemProxyAdvancedProtocol);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.txtsystemProxyExceptions);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -597,8 +615,8 @@
             // 
             // cmbSystemProxyAdvancedProtocol
             // 
-            resources.ApplyResources(this.cmbSystemProxyAdvancedProtocol, "cmbSystemProxyAdvancedProtocol");
             this.cmbSystemProxyAdvancedProtocol.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbSystemProxyAdvancedProtocol, "cmbSystemProxyAdvancedProtocol");
             this.cmbSystemProxyAdvancedProtocol.Name = "cmbSystemProxyAdvancedProtocol";
             // 
             // label13
@@ -616,11 +634,119 @@
             resources.ApplyResources(this.txtsystemProxyExceptions, "txtsystemProxyExceptions");
             this.txtsystemProxyExceptions.Name = "txtsystemProxyExceptions";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.portForwardingNetworkLabel);
+            this.tabPage4.Controls.Add(this.portForwardingNetworkComboBox);
+            this.tabPage4.Controls.Add(this.portForwardingDstPortLabel);
+            this.tabPage4.Controls.Add(this.portForwardingDstPortTextBox);
+            this.tabPage4.Controls.Add(this.portForwardingDstHostLabel);
+            this.tabPage4.Controls.Add(this.portForwardingLocalPortLabel);
+            this.tabPage4.Controls.Add(this.portForwardingLocalIpLabel);
+            this.tabPage4.Controls.Add(this.portForwardingTagLabel);
+            this.tabPage4.Controls.Add(this.portForwardingRemoveButton);
+            this.tabPage4.Controls.Add(this.portForwardingAddButton);
+            this.tabPage4.Controls.Add(this.portForwardingDstHostTextBox);
+            this.tabPage4.Controls.Add(this.portForwardingLocalPortTextBox);
+            this.tabPage4.Controls.Add(this.portForwardingLocalIpTextBox);
+            this.tabPage4.Controls.Add(this.portForwardingTagTextBox);
+            this.tabPage4.Controls.Add(this.tsbPortForwardingCheckListBox);
+            resources.ApplyResources(this.tabPage4, "tabPage4");
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // portForwardingNetworkLabel
+            // 
+            resources.ApplyResources(this.portForwardingNetworkLabel, "portForwardingNetworkLabel");
+            this.portForwardingNetworkLabel.Name = "portForwardingNetworkLabel";
+            // 
+            // portForwardingNetworkComboBox
+            // 
+            this.portForwardingNetworkComboBox.FormattingEnabled = true;
+            this.portForwardingNetworkComboBox.Items.AddRange(new object[] {
+            resources.GetString("portForwardingNetworkComboBox.Items"),
+            resources.GetString("portForwardingNetworkComboBox.Items1"),
+            resources.GetString("portForwardingNetworkComboBox.Items2")});
+            resources.ApplyResources(this.portForwardingNetworkComboBox, "portForwardingNetworkComboBox");
+            this.portForwardingNetworkComboBox.Name = "portForwardingNetworkComboBox";
+            // 
+            // portForwardingDstPortLabel
+            // 
+            resources.ApplyResources(this.portForwardingDstPortLabel, "portForwardingDstPortLabel");
+            this.portForwardingDstPortLabel.Name = "portForwardingDstPortLabel";
+            // 
+            // portForwardingDstPortTextBox
+            // 
+            resources.ApplyResources(this.portForwardingDstPortTextBox, "portForwardingDstPortTextBox");
+            this.portForwardingDstPortTextBox.Name = "portForwardingDstPortTextBox";
+            // 
+            // portForwardingDstHostLabel
+            // 
+            resources.ApplyResources(this.portForwardingDstHostLabel, "portForwardingDstHostLabel");
+            this.portForwardingDstHostLabel.Name = "portForwardingDstHostLabel";
+            // 
+            // portForwardingLocalPortLabel
+            // 
+            resources.ApplyResources(this.portForwardingLocalPortLabel, "portForwardingLocalPortLabel");
+            this.portForwardingLocalPortLabel.Name = "portForwardingLocalPortLabel";
+            // 
+            // portForwardingLocalIpLabel
+            // 
+            resources.ApplyResources(this.portForwardingLocalIpLabel, "portForwardingLocalIpLabel");
+            this.portForwardingLocalIpLabel.Name = "portForwardingLocalIpLabel";
+            // 
+            // portForwardingTagLabel
+            // 
+            resources.ApplyResources(this.portForwardingTagLabel, "portForwardingTagLabel");
+            this.portForwardingTagLabel.Name = "portForwardingTagLabel";
+            // 
+            // portForwardingRemoveButton
+            // 
+            resources.ApplyResources(this.portForwardingRemoveButton, "portForwardingRemoveButton");
+            this.portForwardingRemoveButton.Name = "portForwardingRemoveButton";
+            this.portForwardingRemoveButton.UseVisualStyleBackColor = true;
+            this.portForwardingRemoveButton.Click += new System.EventHandler(this.portForwardingRemoveButton_Click);
+            // 
+            // portForwardingAddButton
+            // 
+            resources.ApplyResources(this.portForwardingAddButton, "portForwardingAddButton");
+            this.portForwardingAddButton.Name = "portForwardingAddButton";
+            this.portForwardingAddButton.UseVisualStyleBackColor = true;
+            this.portForwardingAddButton.Click += new System.EventHandler(this.portForwardingAddButton_Click);
+            // 
+            // portForwardingDstHostTextBox
+            // 
+            resources.ApplyResources(this.portForwardingDstHostTextBox, "portForwardingDstHostTextBox");
+            this.portForwardingDstHostTextBox.Name = "portForwardingDstHostTextBox";
+            // 
+            // portForwardingLocalPortTextBox
+            // 
+            resources.ApplyResources(this.portForwardingLocalPortTextBox, "portForwardingLocalPortTextBox");
+            this.portForwardingLocalPortTextBox.Name = "portForwardingLocalPortTextBox";
+            // 
+            // portForwardingLocalIpTextBox
+            // 
+            resources.ApplyResources(this.portForwardingLocalIpTextBox, "portForwardingLocalIpTextBox");
+            this.portForwardingLocalIpTextBox.Name = "portForwardingLocalIpTextBox";
+            // 
+            // portForwardingTagTextBox
+            // 
+            resources.ApplyResources(this.portForwardingTagTextBox, "portForwardingTagTextBox");
+            this.portForwardingTagTextBox.Name = "portForwardingTagTextBox";
+            // 
+            // tsbPortForwardingCheckListBox
+            // 
+            this.tsbPortForwardingCheckListBox.FormattingEnabled = true;
+            resources.ApplyResources(this.tsbPortForwardingCheckListBox, "tsbPortForwardingCheckListBox");
+            this.tsbPortForwardingCheckListBox.Name = "tsbPortForwardingCheckListBox";
+            this.tsbPortForwardingCheckListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tsbPortForwardingCheckListBox_ItemChecked);
+            this.tsbPortForwardingCheckListBox.SelectedIndexChanged += new System.EventHandler(this.tsbPortForwardingCheckListBox_SelectedIndexChanged);
+            // 
             // panel2
             // 
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
@@ -662,6 +788,8 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -746,5 +874,21 @@
         private System.Windows.Forms.ComboBox cmbSystemProxyAdvancedProtocol;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.NumericUpDown numStatisticsFreshRate;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.CheckedListBox tsbPortForwardingCheckListBox;
+        private System.Windows.Forms.TextBox portForwardingDstHostTextBox;
+        private System.Windows.Forms.TextBox portForwardingLocalPortTextBox;
+        private System.Windows.Forms.TextBox portForwardingLocalIpTextBox;
+        private System.Windows.Forms.TextBox portForwardingTagTextBox;
+        private System.Windows.Forms.Label portForwardingTagLabel;
+        private System.Windows.Forms.Button portForwardingRemoveButton;
+        private System.Windows.Forms.Button portForwardingAddButton;
+        private System.Windows.Forms.Label portForwardingDstPortLabel;
+        private System.Windows.Forms.TextBox portForwardingDstPortTextBox;
+        private System.Windows.Forms.Label portForwardingDstHostLabel;
+        private System.Windows.Forms.Label portForwardingLocalPortLabel;
+        private System.Windows.Forms.Label portForwardingLocalIpLabel;
+        private System.Windows.Forms.Label portForwardingNetworkLabel;
+        private System.Windows.Forms.ComboBox portForwardingNetworkComboBox;
     }
 }

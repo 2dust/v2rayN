@@ -157,6 +157,12 @@ namespace v2rayN.Handler
                 Inbounds inbound2 = GetInbound(config.inbound[0], Global.InboundHttp, 1, false);
                 v2rayConfig.inbounds.Add(inbound2);
 
+                // 端口转发
+                foreach (var item in config.portForwarding)
+                {
+                    v2rayConfig.inbounds.Add(GetPortForwarding(item));
+                }
+
                 if (config.inbound[0].allowLANConn)
                 {
                     Inbounds inbound3 = GetInbound(config.inbound[0], Global.InboundSocks2, 2, true);
@@ -204,6 +210,25 @@ namespace v2rayN.Handler
             inbound.settings.udp = inItem.udpEnabled;
             inbound.sniffing.enabled = inItem.sniffingEnabled;
 
+            return inbound;
+        }
+
+        private static Inbounds GetPortForwarding(PortForwardingItem portForwardingItem)
+        {
+            Inbounds inbound = new Inbounds();
+            inbound.tag = portForwardingItem.tag;
+            inbound.listen = portForwardingItem.localIp;
+            inbound.port = portForwardingItem.localPort;
+            inbound.protocol = Global.InboundAPIProtocal;
+            Inboundsettings settings = new Inboundsettings();
+            settings.udp = true;
+            settings.address = portForwardingItem.dstHost;
+            settings.port = portForwardingItem.dstPort;
+            settings.network = portForwardingItem.network;
+            settings.timeout = 0;
+            settings.followRedirect = false;
+            settings.userLevel = 0;
+            inbound.settings = settings;
             return inbound;
         }
 

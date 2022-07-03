@@ -129,6 +129,31 @@ namespace v2rayN.Mode
         public string address { get; set; }
 
         /// <summary>
+        /// 端口，端口转发使用
+        /// </summary>
+        public int port { get; set; }
+
+        /// <summary>
+        /// 网络类型，端口转发使用["tcp" | "udp" | "tcp,udp"]
+        /// </summary>
+        public string network { get; set; }
+
+        /// <summary>
+        /// 连接空闲的时间限制，端口转发使用
+        /// </summary>
+        public int timeout { get; set; }
+
+        /// <summary>
+        /// 端口转发使用
+        /// </summary>
+        public bool followRedirect { get; set; }
+
+        /// <summary>
+        /// 端口转发使用
+        /// </summary>
+        public int userLevel { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public List<UsersItem> clients { get; set; }

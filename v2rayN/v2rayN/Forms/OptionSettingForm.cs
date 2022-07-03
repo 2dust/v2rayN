@@ -27,6 +27,10 @@ namespace v2rayN.Forms
             InitGUI();
 
             InitCoreType();
+
+            InitPortForwardingCheckListBox();
+
+            InitPortForwardingParamGUI(0);
         }
 
         /// <summary>
@@ -327,5 +331,92 @@ namespace v2rayN.Forms
             Process.Start(Utils.GetPath("EnableLoopback.exe"));
         }
 
+        private void InitPortForwardingCheckListBox()
+        {
+            for (int i = 0; i < config.portForwarding.Count; i++)
+            {
+                tsbPortForwardingCheckListBox.Items.Add(config.portForwarding[i].tag);
+                tsbPortForwardingCheckListBox.SetItemChecked(i, Boolean.Equals(config.portForwarding[i].enable, true));
+            }
+        }
+
+        private void InitPortForwardingParamGUI(int index)
+        {
+            if (index >= 0 && index < config.portForwarding.Count)
+            {
+                var item = config.portForwarding[index];
+                portForwardingTagTextBox.Text = item.tag;
+                portForwardingLocalIpTextBox.Text = item.localIp;
+                portForwardingLocalPortTextBox.Text = item.localPort.ToString();
+                portForwardingDstHostTextBox.Text = item.dstHost;
+                portForwardingDstPortTextBox.Text = item.dstPort.ToString();
+                portForwardingNetworkComboBox.Text = item.network;
+            }
+        }
+
+        private void SyncPortForwardingConfig(int index)
+        {
+            var item = new PortForwardingItem()
+            {
+                tag = portForwardingTagTextBox.Text,
+                localIp = portForwardingLocalIpTextBox.Text,
+                localPort = Convert.ToInt32(portForwardingLocalPortTextBox.Text),
+                dstHost = portForwardingDstHostTextBox.Text,
+                dstPort = Convert.ToInt32(portForwardingDstPortTextBox.Text),
+                network = portForwardingNetworkComboBox.Text,
+                enable = tsbPortForwardingCheckListBox.GetItemChecked(index),
+            };
+            if (index >= 0 && index < config.portForwarding.Count)
+            {
+                config.portForwarding[index] = item;
+            } else
+            {
+                config.portForwarding.Add(item);
+            }
+        }
+
+        private void portForwardingAddButton_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(portForwardingTagTextBox.Text))
+            {
+                return;
+            }
+            var index = tsbPortForwardingCheckListBox.Items.IndexOf(portForwardingTagTextBox.Text);
+            if (index == -1)
+            {
+                tsbPortForwardingCheckListBox.Items.Add(portForwardingTagTextBox.Text);
+                SyncPortForwardingConfig(tsbPortForwardingCheckListBox.Items.Count - 1);
+                tsbPortForwardingCheckListBox.SetItemChecked(tsbPortForwardingCheckListBox.Items.Count - 1, true);
+                tsbPortForwardingCheckListBox.SelectedIndex = tsbPortForwardingCheckListBox.Items.Count - 1;
+            }
+            else if (index != -1 && tsbPortForwardingCheckListBox.SelectedIndex == index)
+            {
+                SyncPortForwardingConfig(index);
+            }
+            else if (index != -1 && tsbPortForwardingCheckListBox.SelectedIndex != index)
+            {
+                tsbPortForwardingCheckListBox.SelectedIndex = index;
+            }
+        }
+
+        private void portForwardingRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (tsbPortForwardingCheckListBox.SelectedIndex > -1)
+            {
+                config.portForwarding.RemoveAt(tsbPortForwardingCheckListBox.SelectedIndex);
+                tsbPortForwardingCheckListBox.Items.RemoveAt(tsbPortForwardingCheckListBox.SelectedIndex);
+                tsbPortForwardingCheckListBox.SelectedIndex = tsbPortForwardingCheckListBox.Items.Count > 0 ? 0 : -1;
+            }
+        }
+
+        private void tsbPortForwardingCheckListBox_ItemChecked(object sender, ItemCheckEventArgs e)
+        { 
+            config.portForwarding[e.Index].enable = e.NewValue == CheckState.Checked ? true : false;
+        }
+
+        private void tsbPortForwardingCheckListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitPortForwardingParamGUI(tsbPortForwardingCheckListBox.SelectedIndex);
+        }
     }
 }
