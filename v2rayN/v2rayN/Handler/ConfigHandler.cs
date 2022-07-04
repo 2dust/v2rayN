@@ -978,7 +978,9 @@ namespace v2rayN.Handler
             else if (clipboardData.IndexOf("server") >= 0
                 && clipboardData.IndexOf("up") >= 0
                 && clipboardData.IndexOf("down") >= 0
-                && clipboardData.IndexOf("listen") >= 0)
+                && clipboardData.IndexOf("listen") >= 0
+                && clipboardData.IndexOf("<html>") < 0
+                && clipboardData.IndexOf("<body>") < 0)
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                 File.WriteAllText(fileName, clipboardData);
@@ -989,7 +991,9 @@ namespace v2rayN.Handler
             }
             //Is naiveproxy configuration
             else if (clipboardData.IndexOf("listen") >= 0
-                && clipboardData.IndexOf("proxy") >= 0)
+                && clipboardData.IndexOf("proxy") >= 0
+                && clipboardData.IndexOf("<html>") < 0
+                && clipboardData.IndexOf("<body>") < 0)
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                 File.WriteAllText(fileName, clipboardData);
