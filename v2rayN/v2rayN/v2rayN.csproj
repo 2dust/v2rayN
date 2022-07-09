@@ -476,6 +476,7 @@
     <None Include="Resources\minimize.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Image1.png" />
     <Content Include="Resources\NotifyIcon1.ico" />
     <Content Include="Resources\NotifyIcon2.ico" />
     <Content Include="Resources\NotifyIcon3.ico" />
@@ -502,6 +503,9 @@
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.14</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialSkin.2">
+      <Version>2.3.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>

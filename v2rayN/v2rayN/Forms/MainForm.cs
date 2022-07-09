@@ -1542,5 +1542,9 @@ namespace v2rayN.Forms
         }
         #endregion
 
+        private void tsbCheckUpdate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
