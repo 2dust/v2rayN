@@ -12,7 +12,7 @@ namespace v2rayN.Forms
         }
         private void QRCodeControl_Load(object sender, System.EventArgs e)
         {
-            txtUrl.MouseUp += txtUrl_MouseUp;      
+            txtUrl.MouseUp += txtUrl_MouseUp;
         }
 
         void txtUrl_MouseUp(object sender, MouseEventArgs e)
@@ -20,11 +20,11 @@ namespace v2rayN.Forms
             txtUrl.SelectAll();
         }
 
-        public void showQRCode(int Index, Config config)
+        public void showQRCode(VmessItem item)
         {
-            if (Index >= 0)
+            if (item != null)
             {
-                string url = ConfigHandler.GetVmessQRCode(config, Index);
+                string url = ShareHandler.GetShareUrl(item);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     picQRCode.Image = null;
@@ -32,7 +32,7 @@ namespace v2rayN.Forms
                     return;
                 }
                 txtUrl.Text = url;
-                picQRCode.Image = QRCodeHelper.GetQRCode(url);                
+                picQRCode.Image = QRCodeHelper.GetQRCode(url);
             }
         }
     }

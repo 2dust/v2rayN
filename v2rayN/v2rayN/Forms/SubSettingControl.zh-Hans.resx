@@ -118,8 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnRemove.Text" xml:space="preserve">
-    <value>移除</value>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>所属分组</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 12</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>User Agent(可选)</value>
+  </data>
+  <data name="btnShare.Text" xml:space="preserve">
+    <value>分享</value>
   </data>
   <data name="chkEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 16</value>
@@ -127,8 +139,8 @@
   <data name="chkEnabled.Text" xml:space="preserve">
     <value>启用</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>订阅详情</value>
+  <data name="btnRemove.Text" xml:space="preserve">
+    <value>移除</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
@@ -141,5 +153,8 @@
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>地址 (url)</value>
+  </data>
+  <data name="grbMain.Text" xml:space="preserve">
+    <value>订阅详情</value>
   </data>
 </root>

@@ -130,7 +130,7 @@
     <value>配置格式不正确</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。在自定义配置inbound中有socks port等于设置中的port时，系统代理才可用</value>
+    <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。如需使用系统代理请手工修改监听端口。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下载开始...</value>
@@ -155,9 +155,6 @@
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>读取配置文件失败</value>
-  </data>
-  <data name="FillCorrectAlterId" xml:space="preserve">
-    <value>请填写正确格式额外ID</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>请填写正确格式服务器端口</value>
@@ -238,7 +235,7 @@
     <value>清除原订阅内容</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>下载V2ray成功</value>
+    <value>下载Core成功</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>导入订阅内容失败</value>
@@ -271,7 +268,7 @@
     <value>开始更新 PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
-    <value>订阅内容解码失败(非BASE64码)</value>
+    <value>无效的订阅内容</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>正在解压......</value>
@@ -283,22 +280,22 @@
     <value>更新订阅开始</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>更新V2rayCore成功</value>
+    <value>更新Core成功</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>更新V2rayCore成功！正在重启服务...</value>
+    <value>更新Core成功！正在重启服务...</value>
   </data>
   <data name="NeedHttpGlobalProxy" xml:space="preserve">
     <value>此功能依赖Http全局代理,请先设置正确。</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>非vmess或ss协议</value>
+    <value>非VMess或ss协议</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
-    <value>非Vmess服务，此功能无效</value>
+    <value>非标准服务，此功能无效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>找不到 v2ray-core，下载地址: {0}</value>
+    <value>找不到Core，下载地址: {0}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成,未发现有效二维码</value>
@@ -359,6 +356,120 @@
     <value>扫描导入URL成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>当前服务的真连接延迟: {0}</value>
+    <value>当前服务的真连接延迟: {0} ms</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>操作成功</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>请先选择规则</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>是否确定移除规则?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0},必填其中一项.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>别名</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>地址(Url)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>请填写地址(Url)</value>
+  </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>是否追加规则?选择是则追加,选择否则替换</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>下载 GeoFile: {0} 成功</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>信息 (过滤器 : {0})</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>自定义图标</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>请填写正确的自定义DNS</value>
+  </data>
+  <data name="TransportPathTip1" xml:space="preserve">
+    <value>*ws path</value>
+  </data>
+  <data name="TransportPathTip2" xml:space="preserve">
+    <value>*h2 path</value>
+  </data>
+  <data name="TransportPathTip3" xml:space="preserve">
+    <value>*QUIC 加密密钥</value>
+  </data>
+  <data name="TransportPathTip4" xml:space="preserve">
+    <value>*grpc serviceName</value>
+  </data>
+  <data name="TransportRequestHostTip1" xml:space="preserve">
+    <value>*http host中间逗号(,)隔开</value>
+  </data>
+  <data name="TransportRequestHostTip2" xml:space="preserve">
+    <value>*ws host</value>
+  </data>
+  <data name="TransportRequestHostTip3" xml:space="preserve">
+    <value>*h2 host中间逗号(,)隔开</value>
+  </data>
+  <data name="TransportRequestHostTip4" xml:space="preserve">
+    <value>*QUIC 加密方式</value>
+  </data>
+  <data name="TransportHeaderTypeTip1" xml:space="preserve">
+    <value>*tcp伪装类型</value>
+  </data>
+  <data name="TransportHeaderTypeTip2" xml:space="preserve">
+    <value>*kcp伪装类型</value>
+  </data>
+  <data name="TransportHeaderTypeTip3" xml:space="preserve">
+    <value>*QUIC伪装类型</value>
+  </data>
+  <data name="TransportHeaderTypeTip4" xml:space="preserve">
+    <value>*grpc 模式</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>传输层安全</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*Kcp seed</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>注册全局热键 {0} 失败,原因 {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>注册全局热键 {0} 成功</value>
+  </data>
+  <data name="UngroupedServers" xml:space="preserve">
+    <value>未分组服务器</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>所有服务器</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>请浏览导入服务器配置</value>
+  </data>
+  <data name="SystemProxy" xml:space="preserve">
+    <value>系统代理</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>测速中...</value>
+  </data>
+  <data name="TooManyServersTip" xml:space="preserve">
+    <value>服务器太多，请打开主界面操作</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>局域网</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>服务器 (过滤器 : {0})</value>
   </data>
 </root>

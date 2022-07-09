@@ -30,13 +30,8 @@ namespace v2rayN.Handler
             get; set;
         }
 
-        public List<ServerStatItem> Statistic
-        {
-            get
-            {
-                return serverStatistics_.server;
-            }
-        }
+
+        public List<ServerStatItem> Statistic => serverStatistics_.server;
 
         public StatisticsHandler(Mode.Config config, Action<ulong, ulong, List<ServerStatItem>> update)
         {
@@ -67,7 +62,7 @@ namespace v2rayN.Handler
 
             GrpcInit();
 
-            Task.Run(() => Run());
+            Task.Run(Run);
         }
 
         private void GrpcInit()
@@ -110,12 +105,12 @@ namespace v2rayN.Handler
                         }
                         catch (Exception ex)
                         {
-                            Utils.SaveLog(ex.Message, ex);
+                            //Utils.SaveLog(ex.Message, ex);
                         }
 
                         if (res != null)
                         {
-                            string itemId = config_.getItemId();
+                            string itemId = config_.indexId;
                             ServerStatItem serverStatItem = GetServerStatItem(itemId);
 
                             //TODO: parse output
@@ -132,12 +127,12 @@ namespace v2rayN.Handler
                             }
                         }
                     }
-                    Thread.Sleep(config_.statisticsFreshRate);
+                    Thread.Sleep(1000 * config_.statisticsFreshRate);
                     channel_.ConnectAsync();
                 }
                 catch (Exception ex)
                 {
-                    Utils.SaveLog(ex.Message, ex);
+                    //Utils.SaveLog(ex.Message, ex);
                 }
             }
         }
@@ -188,6 +183,25 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+        public void ClearAllServerStatistics()
+        {
+            if (serverStatistics_ != null)
+            {
+                foreach (var item in serverStatistics_.server)
+                {
+                    item.todayUp = 0;
+                    item.todayDown = 0;
+                    item.totalUp = 0;
+                    item.totalDown = 0;
+                    // update ui display to zero
+                    updateFunc_(0, 0, new List<ServerStatItem> { item });
+                }
+
+                // update statistic json file
+                SaveToFile();
             }
         }
 
@@ -251,7 +265,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                //Utils.SaveLog(ex.Message, ex);
             }
         }
 

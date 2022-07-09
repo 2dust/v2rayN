@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
     public partial class AddServer2Form : BaseServerForm
-    { 
+    {
 
         public AddServer2Form()
         {
@@ -15,12 +18,24 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
-            if (EditIndex >= 0)
+            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
+            cmbCoreType.Items.Add("clash");
+            cmbCoreType.Items.Add("clash_meta"); 
+            cmbCoreType.Items.Add("hysteria");
+            cmbCoreType.Items.Add("naiveproxy");
+            cmbCoreType.Items.Add(string.Empty);
+
+            txtAddress.ReadOnly = true;
+            if (vmessItem != null)
             {
                 BindingServer();
             }
             else
             {
+                vmessItem = new VmessItem
+                {
+                    groupId = groupId
+                };
                 ClearServer();
             }
         }
@@ -30,10 +45,10 @@ namespace v2rayN.Forms
         /// </summary>
         private void BindingServer()
         {
-            vmessItem = config.vmess[EditIndex];
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
-            txtAddress.ReadOnly = true;
+
+            cmbCoreType.Text = vmessItem.coreType == null ? string.Empty : vmessItem.coreType.ToString();
         }
 
 
@@ -50,24 +65,83 @@ namespace v2rayN.Forms
             string remarks = txtRemarks.Text;
             if (Utils.IsNullOrEmpty(remarks))
             {
-                UI.Show(UIRes.I18N("PleaseFillRemarks"));
+                UI.Show(ResUI.PleaseFillRemarks);
+                return;
+            }
+            if (Utils.IsNullOrEmpty(txtAddress.Text))
+            {
+                UI.Show(ResUI.FillServerAddressCustom);
                 return;
             }
             vmessItem.remarks = remarks;
-
-            if (ConfigHandler.EditCustomServer(ref config, vmessItem, EditIndex) == 0)
+            if (Utils.IsNullOrEmpty(cmbCoreType.Text))
             {
-                this.DialogResult = DialogResult.OK;
+                vmessItem.coreType = null;
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                vmessItem.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), cmbCoreType.Text);
+            }
+
+            if (ConfigHandler.EditCustomServer(ref config, vmessItem) == 0)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                UI.ShowWarning(ResUI.OperationFailed);
             }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = Utils.IsNullOrEmpty(vmessItem.indexId) ? DialogResult.Cancel : DialogResult.OK;
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            UI.Show(ResUI.CustomServerTips);
+
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Config|*.json|YAML|*.yaml|All|*.*"
+            };
+            if (fileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            string fileName = fileDialog.FileName;
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            vmessItem.address = fileName;
+            vmessItem.remarks = txtRemarks.Text;
+
+            if (ConfigHandler.AddCustomServer(ref config, vmessItem, false) == 0)
+            {
+                BindingServer();
+                UI.Show(ResUI.SuccessfullyImportedCustomServer);
+            }
+            else
+            {
+                UI.ShowWarning(ResUI.FailedImportedCustomServer);
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            var address = txtAddress.Text;
+            if (Utils.IsNullOrEmpty(address))
+            {
+                UI.Show(ResUI.FillServerAddressCustom);
+                return;
+            }
+
+            address = Utils.GetConfigPath(address);
+            Process.Start(address);
         }
     }
 }

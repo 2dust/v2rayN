@@ -1,23 +1,49 @@
-﻿{	 
-	"log": {
-		"access": "",
-		"error": "",
-		"loglevel": "error"
-	},
+﻿{
 	"log": {
 		"access": "Vaccess.log",
 		"error": "Verror.log",
 		"loglevel": "warning"
 	},
-	"inbounds": [
-		{
-			"tag": "proxy",
+	"inbounds": [{
+			"tag": "tag1",
 			"port": 10808,
 			"protocol": "socks",
 			"listen": "127.0.0.1",
 			"settings": {
 				"auth": "noauth",
 				"udp": true
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls"
+				]
+			}
+		},
+		{
+			"tag": "tag2",
+			"port": 10809,
+			"protocol": "http",
+			"listen": "127.0.0.1",
+			"settings": {
+				"allowTransparent": false
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls"
+				]
+			}
+		},
+		{
+			"tag": "tag3",
+			"port": 10809,
+			"protocol": "http",
+			"listen": "127.0.0.1",
+			"settings": {
+				"allowTransparent": false
 			},
 			"sniffing": {
 				"enabled": true,
@@ -37,7 +63,6 @@
 					"port": 10086,
 					"users": [{
 						"id": "a3482e88-686a-4a58-8126-99c9df64b7bf",
-						"alterId": 64,
 						"security": "auto"
 					}]
 				}],
