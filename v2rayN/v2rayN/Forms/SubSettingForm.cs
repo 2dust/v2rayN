@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -68,24 +69,19 @@ namespace v2rayN.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (config.subItem.Count <= 0)
-            {
-                AddSub();
-            }
-
             if (ConfigHandler.SaveSubItem(ref config) == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(ResUI.OperationFailed);
             }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

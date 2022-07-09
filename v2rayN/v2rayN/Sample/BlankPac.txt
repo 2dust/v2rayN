@@ -1,5 +1,0 @@
-var proxy = "__PROXY__";
-
-function FindProxyForURL(url, host) {
-    return proxy;
-}

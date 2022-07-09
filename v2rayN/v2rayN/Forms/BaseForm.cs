@@ -7,7 +7,6 @@ namespace v2rayN.Forms
     public partial class BaseForm : Form
     {
         protected static Config config;
-        protected static System.Drawing.Icon icon;
 
         public BaseForm()
         {
@@ -19,16 +18,14 @@ namespace v2rayN.Forms
         {
             try
             {
-                if (icon == null)
+                string file = Utils.GetPath(Global.CustomIconName);
+                if (System.IO.File.Exists(file))
                 {
-                    string file = Utils.GetPath(Global.CustomIconName);
-                    if (!System.IO.File.Exists(file))
-                    {
-                        return;
-                    }
-                    icon = new System.Drawing.Icon(file);
+                    Icon = new System.Drawing.Icon(file);
+                    return;
                 }
-                this.Icon = icon;
+
+                Icon = Properties.Resources.NotifyIcon1;
             }
             catch (Exception e)
             {

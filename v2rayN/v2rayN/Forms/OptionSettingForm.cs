@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
-using v2rayN.Handler;
 using v2rayN.Base;
-using v2rayN.HttpProxyHandler;
+using v2rayN.Handler;
+using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Forms
 {
@@ -16,15 +18,15 @@ namespace v2rayN.Forms
 
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
+            cmbSystemProxyAdvancedProtocol.Items.AddRange(Global.IEProxyProtocols.ToArray());
+           
             InitBase();
-
-            InitRouting();
 
             InitKCP();
 
             InitGUI();
 
-            InitUserPAC();
+            InitCoreType();
         }
 
         /// <summary>
@@ -46,47 +48,22 @@ namespace v2rayN.Forms
                 cmbprotocol.Text = config.inbound[0].protocol.ToString();
                 chkudpEnabled.Checked = config.inbound[0].udpEnabled;
                 chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
+                chkAllowLANConn.Checked = config.inbound[0].allowLANConn;
+                txtuser.Text = config.inbound[0].user;
+                txtpass.Text = config.inbound[0].pass;
 
-                txtlocalPort2.Text = $"{config.inbound[0].localPort + 1}";
-                cmbprotocol2.Text = Global.InboundHttp;
-
-                if (config.inbound.Count > 1)
-                {
-                    txtlocalPort2.Text = config.inbound[1].localPort.ToString();
-                    cmbprotocol2.Text = config.inbound[1].protocol.ToString();
-                    chkudpEnabled2.Checked = config.inbound[1].udpEnabled;
-                    chksniffingEnabled2.Checked = config.inbound[1].sniffingEnabled;
-                    chkAllowIn2.Checked = true;
-                }
-                else
-                {
-                    chkAllowIn2.Checked = false;
-                }
-                chkAllowIn2State();
             }
 
             //remoteDNS
             txtremoteDNS.Text = config.remoteDNS;
 
-            cmblistenerType.SelectedIndex = (int)config.listenerType;
-
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
+
+            txtsystemProxyExceptions.Text = config.systemProxyExceptions;
+
+            cmbSystemProxyAdvancedProtocol.Text = config.systemProxyAdvancedProtocol;
         }
 
-        /// <summary>
-        /// 初始化路由设置
-        /// </summary>
-        private void InitRouting()
-        {
-            //路由
-            cmbdomainStrategy.Text = config.domainStrategy;
-            int.TryParse(config.routingMode, out int routingMode);
-            cmbroutingMode.SelectedIndex = routingMode;
-
-            txtUseragent.Text = Utils.List2String(config.useragent, true);
-            txtUserdirect.Text = Utils.List2String(config.userdirect, true);
-            txtUserblock.Text = Utils.List2String(config.userblock, true);
-        }
 
         /// <summary>
         /// 初始化KCP设置
@@ -110,45 +87,46 @@ namespace v2rayN.Forms
             //开机自动启动
             chkAutoRun.Checked = Utils.IsAutoRun();
 
-            //自定义GFWList
-            txturlGFWList.Text = config.urlGFWList;
-
-            chkAllowLANConn.Checked = config.allowLANConn;
             chkEnableStatistics.Checked = config.enableStatistics;
+            numStatisticsFreshRate.Value = config.statisticsFreshRate;
             chkKeepOlderDedupl.Checked = config.keepOlderDedupl;
 
+            chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
+            chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
+            chkEnableSecurityProtocolTls13.Checked = config.enableSecurityProtocolTls13;
 
-
-
-            ComboItem[] cbSource = new ComboItem[]
-            {
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.quick, Text = UIRes.I18N("QuickFresh")},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.medium, Text = UIRes.I18N("MediumFresh")},
-                new ComboItem{ID = (int)Global.StatisticsFreshRate.slow, Text = UIRes.I18N("SlowFresh")},
-            };
-            cbFreshrate.DataSource = cbSource;
-
-            cbFreshrate.DisplayMember = "Text";
-            cbFreshrate.ValueMember = "ID";
-
-            switch (config.statisticsFreshRate)
-            {
-                case (int)Global.StatisticsFreshRate.quick:
-                    cbFreshrate.SelectedItem = cbSource[0];
-                    break;
-                case (int)Global.StatisticsFreshRate.medium:
-                    cbFreshrate.SelectedItem = cbSource[1];
-                    break;
-                case (int)Global.StatisticsFreshRate.slow:
-                    cbFreshrate.SelectedItem = cbSource[2];
-                    break;
-            }
-
+            txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
+            txtautoUpdateSubInterval.Text = config.autoUpdateSubInterval.ToString();
+            txttrayMenuServersLimit.Text = config.trayMenuServersLimit.ToString();
         }
 
-        private void InitUserPAC()
+        private void InitCoreType()
         {
-            txtuserPacRule.Text = Utils.List2String(config.userPacRule, true);
+            if (config.coreTypeItem == null)
+            {
+                config.coreTypeItem = new List<CoreTypeItem>();
+            }
+
+            foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
+            {
+                if (config.coreTypeItem.FindIndex(t => t.configType == it) >= 0)
+                {
+                    continue;
+                }
+
+                config.coreTypeItem.Add(new CoreTypeItem()
+                {
+                    configType = it,
+                    coreType = ECoreType.Xray
+                });
+            }
+            for (int k = 1; k <= config.coreTypeItem.Count; k++)
+            {
+                var item = config.coreTypeItem[k - 1];
+                ((ComboBox)tabPageCoreType.Controls[$"cmbCoreType{k}"]).Items.AddRange(Global.coreTypes.ToArray());
+                tabPageCoreType.Controls[$"labCoreType{k}"].Text = item.configType.ToString();
+                tabPageCoreType.Controls[$"cmbCoreType{k}"].Text = item.coreType.ToString();
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -158,10 +136,6 @@ namespace v2rayN.Forms
                 return;
             }
 
-            if (SaveRouting() != 0)
-            {
-                return;
-            }
 
             if (SaveKCP() != 0)
             {
@@ -173,18 +147,18 @@ namespace v2rayN.Forms
                 return;
             }
 
-            if (SaveUserPAC() != 0)
+            if (SaveCoreType() != 0)
             {
                 return;
             }
 
             if (ConfigHandler.SaveConfig(ref config) == 0)
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {
-                UI.ShowWarning(UIRes.I18N("OperationFailed"));
+                UI.ShowWarning(ResUI.OperationFailed);
             }
         }
 
@@ -206,54 +180,45 @@ namespace v2rayN.Forms
             string protocol = cmbprotocol.Text.TrimEx();
             bool udpEnabled = chkudpEnabled.Checked;
             bool sniffingEnabled = chksniffingEnabled.Checked;
+            bool allowLANConn = chkAllowLANConn.Checked;
             if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
             {
-                UI.Show(UIRes.I18N("FillLocalListeningPort"));
+                UI.Show(ResUI.FillLocalListeningPort);
                 return -1;
             }
             if (Utils.IsNullOrEmpty(protocol))
             {
-                UI.Show(UIRes.I18N("PleaseSelectProtocol"));
+                UI.Show(ResUI.PleaseSelectProtocol);
                 return -1;
             }
+
+            var remoteDNS = txtremoteDNS.Text.TrimEx();
+            var obj = Utils.ParseJson(remoteDNS);
+            if (obj != null && obj.ContainsKey("servers"))
+            {
+            }
+            else
+            {
+                if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
+                {
+                    UI.Show(ResUI.FillCorrectDNSText);
+                    return -1;
+                }
+            }
+
             config.inbound[0].localPort = Utils.ToInt(localPort);
             config.inbound[0].protocol = protocol;
             config.inbound[0].udpEnabled = udpEnabled;
             config.inbound[0].sniffingEnabled = sniffingEnabled;
+            config.inbound[0].allowLANConn = allowLANConn;
+            config.inbound[0].user = txtuser.Text;
+            config.inbound[0].pass = txtpass.Text;
 
-            //本地监听2
-            string localPort2 = txtlocalPort2.Text.TrimEx();
-            string protocol2 = cmbprotocol2.Text.TrimEx();
-            bool udpEnabled2 = chkudpEnabled2.Checked;
-            bool sniffingEnabled2 = chksniffingEnabled2.Checked;
-            if (chkAllowIn2.Checked)
+            if (config.inbound.Count > 1)
             {
-                if (Utils.IsNullOrEmpty(localPort2) || !Utils.IsNumberic(localPort2))
-                {
-                    UI.Show(UIRes.I18N("FillLocalListeningPort"));
-                    return -1;
-                }
-                if (Utils.IsNullOrEmpty(protocol2))
-                {
-                    UI.Show(UIRes.I18N("PleaseSelectProtocol"));
-                    return -1;
-                }
-                if (config.inbound.Count < 2)
-                {
-                    config.inbound.Add(new Mode.InItem());
-                }
-                config.inbound[1].localPort = Utils.ToInt(localPort2);
-                config.inbound[1].protocol = protocol2;
-                config.inbound[1].udpEnabled = udpEnabled2;
-                config.inbound[1].sniffingEnabled = sniffingEnabled2;
+                config.inbound.RemoveAt(1);
             }
-            else
-            {
-                if (config.inbound.Count > 1)
-                {
-                    config.inbound.RemoveAt(1);
-                }
-            }
+
 
             //日志     
             config.logEnabled = logEnabled;
@@ -262,39 +227,18 @@ namespace v2rayN.Forms
             //Mux
             config.muxEnabled = muxEnabled;
 
-            //remoteDNS
+            //remoteDNS          
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
-
-            config.listenerType = (ListenerType)Enum.ToObject(typeof(ListenerType), cmblistenerType.SelectedIndex);
 
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
 
-            return 0;
-        }
+            config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
 
-        /// <summary>
-        /// 保存路由设置
-        /// </summary>
-        /// <returns></returns>
-        private int SaveRouting()
-        {
-            //路由            
-            string domainStrategy = cmbdomainStrategy.Text;
-            string routingMode = cmbroutingMode.SelectedIndex.ToString();
-
-            string useragent = txtUseragent.Text.TrimEx();
-            string userdirect = txtUserdirect.Text.TrimEx();
-            string userblock = txtUserblock.Text.TrimEx();
-
-            config.domainStrategy = domainStrategy;
-            config.routingMode = routingMode;
-
-            config.useragent = Utils.String2List(useragent);
-            config.userdirect = Utils.String2List(userdirect);
-            config.userblock = Utils.String2List(userblock);
+            config.systemProxyAdvancedProtocol = cmbSystemProxyAdvancedProtocol.Text.TrimEx();
 
             return 0;
         }
+
 
         /// <summary>
         /// 保存KCP设置
@@ -317,7 +261,7 @@ namespace v2rayN.Forms
                 || Utils.IsNullOrEmpty(readBufferSize) || !Utils.IsNumberic(readBufferSize)
                 || Utils.IsNullOrEmpty(writeBufferSize) || !Utils.IsNumberic(writeBufferSize))
             {
-                UI.Show(UIRes.I18N("FillKcpParameters"));
+                UI.Show(ResUI.FillKcpParameters);
                 return -1;
             }
             config.kcpItem.mtu = Utils.ToInt(mtu);
@@ -340,123 +284,48 @@ namespace v2rayN.Forms
             //开机自动启动
             Utils.SetAutoRun(chkAutoRun.Checked);
 
-            //自定义GFWList
-            config.urlGFWList = txturlGFWList.Text.TrimEx();
-
-            config.allowLANConn = chkAllowLANConn.Checked;
-
             bool lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
-            config.statisticsFreshRate = (int)cbFreshrate.SelectedValue;
+            config.statisticsFreshRate = Convert.ToInt32(numStatisticsFreshRate.Value);
+
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
-            //if(lastEnableStatistics != config.enableStatistics)
-            //{
-            //    /// https://stackoverflow.com/questions/779405/how-do-i-restart-my-c-sharp-winform-application
-            //    // Shut down the current app instance.
-            //    Application.Exit();
+            config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
+            config.uiItem.enableAutoAdjustMainLvColWidth = chkEnableAutoAdjustMainLvColWidth.Checked;
+            config.enableSecurityProtocolTls13 = chkEnableSecurityProtocolTls13.Checked;
 
-            //    // Restart the app passing "/restart [processId]" as cmd line args
-            //    Process.Start(Application.ExecutablePath, "/restart " + Process.GetCurrentProcess().Id);
-            //}
+            config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
+            config.autoUpdateSubInterval = Utils.ToInt(txtautoUpdateSubInterval.Text);
+            config.trayMenuServersLimit = Utils.ToInt(txttrayMenuServersLimit.Text);
             return 0;
         }
 
-        private int SaveUserPAC()
+        private int SaveCoreType()
         {
-            string userPacRule = txtuserPacRule.Text.TrimEx();
-            userPacRule = userPacRule.Replace("\"", "");
-
-            config.userPacRule = Utils.String2List(userPacRule);
+            for (int k = 1; k <= config.coreTypeItem.Count; k++)
+            {
+                var item = config.coreTypeItem[k - 1];
+                item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), tabPageCoreType.Controls[$"cmbCoreType{k}"].Text);
+            }
 
             return 0;
         }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
         }
 
-        private void chkAllowIn2_CheckedChanged(object sender, EventArgs e)
+
+        private void linkDnsObjectDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            chkAllowIn2State();
+            Process.Start("https://www.v2fly.org/config/dns.html#dnsobject");
         }
-        private void chkAllowIn2State()
+
+        private void btnSetLoopback_Click(object sender, EventArgs e)
         {
-            bool blAllow2 = chkAllowIn2.Checked;
-            txtlocalPort2.Enabled =
-            cmbprotocol2.Enabled =
-            chkudpEnabled2.Enabled = blAllow2;
+            Process.Start(Utils.GetPath("EnableLoopback.exe"));
         }
 
-        private void btnSetDefRountingRule_Click(object sender, EventArgs e)
-        {
-            txtUseragent.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.agentTag);
-            txtUserdirect.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.directTag);
-            txtUserblock.Text = Utils.GetEmbedText(Global.CustomRoutingFileName + Global.blockTag);
-            cmbroutingMode.SelectedIndex = 3;
-
-            List<string> lstUrl = new List<string>
-            {
-                Global.CustomRoutingListUrl + Global.agentTag,
-                Global.CustomRoutingListUrl + Global.directTag,
-                Global.CustomRoutingListUrl + Global.blockTag
-            };
-
-            List<TextBox> lstTxt = new List<TextBox>
-            {
-                txtUseragent,
-                txtUserdirect,
-                txtUserblock
-            };
-
-            for (int k = 0; k < lstUrl.Count; k++)
-            {
-                TextBox txt = lstTxt[k];
-                DownloadHandle downloadHandle = new DownloadHandle();
-                downloadHandle.UpdateCompleted += (sender2, args) =>
-                {
-                    if (args.Success)
-                    {
-                        string result = args.Msg;
-                        if (Utils.IsNullOrEmpty(result))
-                        {
-                            return;
-                        }
-                        txt.Text = result;
-                    }
-                    else
-                    {
-                        AppendText(false, args.Msg);
-                    }
-                };
-                downloadHandle.Error += (sender2, args) =>
-                {
-                    AppendText(true, args.GetException().Message);
-                };
-
-                downloadHandle.WebDownloadString(lstUrl[k]);
-            }
-        }
-        void AppendText(bool notify, string text)
-        {
-            labRoutingTips.Text = text;
-        }
-
-        private void linkLabelRoutingDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.v2fly.org/config/routing.html");
-        }
-    }
-
-    class ComboItem
-    {
-        public int ID
-        {
-            get; set;
-        }
-        public string Text
-        {
-            get; set;
-        }
     }
 }

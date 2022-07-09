@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using v2rayN.Forms;
-using v2rayN.Properties;
 using v2rayN.Tool;
 
 namespace v2rayN
 {
     static class Program
     {
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool SetProcessDPIAware();
-
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
@@ -21,20 +16,21 @@ namespace v2rayN
         {
             if (Environment.OSVersion.Version.Major >= 6)
             {
-                SetProcessDPIAware();
+                Utils.SetProcessDPIAware();
             }
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
 
             //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             if (!IsDuplicateInstance())
             {
-
-                Utils.SaveLog("v2rayN start up " + Utils.GetVersion());
+                Logging.Setup();
+                Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+                Logging.ClearLogs();
 
                 //设置语言环境
                 string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, "zh-Hans");
@@ -42,10 +38,26 @@ namespace v2rayN
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
+                Application.Run(new MainForm()); 
             }
             else
             {
+                try
+                {
+                    //read handle from reg and show the window
+                    long.TryParse(Utils.RegReadValue(Global.MyRegPath, Utils.WindowHwndKey, ""), out long llong);
+                    if (llong > 0)
+                    {
+                        var hwnd = (IntPtr)llong;
+                        if (Utils.IsWindow(hwnd))
+                        {
+                            Utils.ShowWindow(hwnd, 4);
+                            Utils.SwitchToThisWindow(hwnd, true);
+                            return;
+                        }
+                    }
+                }
+                catch { }
                 UI.ShowWarning($"v2rayN is already running(v2rayN已经运行)");
             }
         }
@@ -81,7 +93,7 @@ namespace v2rayN
 
             string name = Utils.GetExePath(); // Allow different locations to run
             name = name.Replace("\\", "/"); // https://stackoverflow.com/questions/20714120/could-not-find-a-part-of-the-path-error-while-creating-mutex
-            
+
             Global.mutexObj = new Mutex(false, name, out bool bCreatedNew);
             return !bCreatedNew;
         }
