@@ -57,7 +57,8 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    ShowMsg(true, msg);
+                    ShowMsg(false, msg);
+                    ShowMsg(true, $"[{config.GetGroupRemarks(item.groupId)}] {item.GetSummary()}");
                     V2rayRestart();
                 }
             }

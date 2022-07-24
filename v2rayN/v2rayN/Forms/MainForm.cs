@@ -1082,7 +1082,7 @@ namespace v2rayN.Forms
         /// <param name="msg"></param>
         private void notifyMsg(string msg)
         {
-            notifyMain.Text = msg;
+            notifyMain.Text = (msg.Length <= 63 ? msg : msg.Substring(1, 63));
         }
 
         #endregion

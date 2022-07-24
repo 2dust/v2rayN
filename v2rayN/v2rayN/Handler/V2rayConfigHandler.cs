@@ -81,7 +81,8 @@ namespace v2rayN.Handler
 
                 Utils.ToJsonFile(v2rayConfig, fileName, false);
 
-                msg = string.Format(ResUI.SuccessfulConfiguration, $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
+                //msg = string.Format(ResUI.SuccessfulConfiguration, $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
+                msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
             catch (Exception ex)
             {
