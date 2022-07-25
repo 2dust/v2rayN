@@ -118,14 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="linkRuleobjectDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 12</value>
+  </data>
+  <data name="linkRuleobjectDoc.Text" xml:space="preserve">
+    <value>规则详细说明文档</value>
+  </data>
   <data name="chkEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>670, 18</value>
+    <value>670, 48</value>
   </data>
   <data name="clbInboundTag.Location" type="System.Drawing.Point, System.Drawing">
     <value>372, 16</value>
   </data>
   <data name="clbInboundTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 20</value>
+    <value>347, 20</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>279, 20</value>
@@ -154,6 +160,12 @@
   <data name="cmbOutboundTag.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 16</value>
   </data>
+  <data name="chkAutoSort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 16</value>
+  </data>
+  <data name="chkAutoSort.Text" xml:space="preserve">
+    <value>保存时Domain和IP自动排序</value>
+  </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
   </data>
@@ -169,11 +181,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>路由规则详情设置</value>
-  </data>
-  <data name="chkAutoSort.Text" xml:space="preserve">
-    <value>保存时Domain和IP自动排序</value>
-  </data>
-  <data name="linkRuleobjectDoc.Text" xml:space="preserve">
-    <value>规则详细说明文档</value>
   </data>
 </root>
