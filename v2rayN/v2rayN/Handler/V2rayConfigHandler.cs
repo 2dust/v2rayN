@@ -833,6 +833,14 @@ namespace v2rayN.Handler
                     return 0;
                 }
 
+                //Outbound Freedom domainStrategy
+                if (!string.IsNullOrWhiteSpace(config.domainStrategy4Freedom))
+                {
+                    var outbound = v2rayConfig.outbounds[1];
+                    outbound.settings.domainStrategy = config.domainStrategy4Freedom;
+                    outbound.settings.userLevel = 0;
+                }
+
                 var obj = Utils.ParseJson(config.remoteDNS);
                 if (obj != null && obj.ContainsKey("servers"))
                 {
@@ -1481,10 +1489,13 @@ namespace v2rayN.Handler
                     msg = ResUI.FailedGenDefaultConfiguration;
                     return "";
                 }
-                List<IPEndPoint> lstIpEndPoints = null;
+                List<IPEndPoint> lstIpEndPoints = new List<IPEndPoint>();
+                List<TcpConnectionInformation> lstTcpConns = new List<TcpConnectionInformation>();
                 try
                 {
-                    lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
+                    lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
                 }
                 catch (Exception ex)
                 {
@@ -1522,6 +1533,10 @@ namespace v2rayN.Handler
                     for (int k = httpPort; k < 65536; k++)
                     {
                         if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == k) >= 0)
+                        {
+                            continue;
+                        }
+                        if (lstTcpConns != null && lstTcpConns.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
                         {
                             continue;
                         }

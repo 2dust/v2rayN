@@ -50,6 +50,8 @@
             this.txtlocalPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cmbdomainStrategy4Freedom = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.linkDnsObjectDoc = new System.Windows.Forms.LinkLabel();
             this.txtremoteDNS = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -270,11 +272,30 @@
             // tabPage2
             // 
             resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Controls.Add(this.cmbdomainStrategy4Freedom);
+            this.tabPage2.Controls.Add(this.label19);
             this.tabPage2.Controls.Add(this.linkDnsObjectDoc);
             this.tabPage2.Controls.Add(this.txtremoteDNS);
             this.tabPage2.Controls.Add(this.label14);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // cmbdomainStrategy4Freedom
+            // 
+            resources.ApplyResources(this.cmbdomainStrategy4Freedom, "cmbdomainStrategy4Freedom");
+            this.cmbdomainStrategy4Freedom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbdomainStrategy4Freedom.FormattingEnabled = true;
+            this.cmbdomainStrategy4Freedom.Items.AddRange(new object[] {
+            resources.GetString("cmbdomainStrategy4Freedom.Items"),
+            resources.GetString("cmbdomainStrategy4Freedom.Items1"),
+            resources.GetString("cmbdomainStrategy4Freedom.Items2"),
+            resources.GetString("cmbdomainStrategy4Freedom.Items3")});
+            this.cmbdomainStrategy4Freedom.Name = "cmbdomainStrategy4Freedom";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
             // 
             // linkDnsObjectDoc
             // 
@@ -746,5 +767,7 @@
         private System.Windows.Forms.ComboBox cmbSystemProxyAdvancedProtocol;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.NumericUpDown numStatisticsFreshRate;
+        private System.Windows.Forms.ComboBox cmbdomainStrategy4Freedom;
+        private System.Windows.Forms.Label label19;
     }
 }

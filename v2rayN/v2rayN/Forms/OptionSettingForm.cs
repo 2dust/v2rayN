@@ -56,6 +56,7 @@ namespace v2rayN.Forms
 
             //remoteDNS
             txtremoteDNS.Text = config.remoteDNS;
+            cmbdomainStrategy4Freedom.Text = config.domainStrategy4Freedom;
 
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
 
@@ -229,6 +230,7 @@ namespace v2rayN.Forms
 
             //remoteDNS          
             config.remoteDNS = txtremoteDNS.Text.TrimEx();
+            config.domainStrategy4Freedom = cmbdomainStrategy4Freedom.Text;
 
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
 

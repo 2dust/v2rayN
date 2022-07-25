@@ -85,6 +85,14 @@ namespace v2rayN.Mode
         }
 
         /// <summary>
+        /// Outbound Freedom domainStrategy
+        /// </summary>
+        public string domainStrategy4Freedom
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// 是否允许不安全连接
         /// </summary>
         public bool defAllowInsecure
