@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -18,11 +19,15 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
-            cmbCoreType.Items.AddRange(Global.coreTypes.ToArray());
-            cmbCoreType.Items.Add("clash");
-            cmbCoreType.Items.Add("clash_meta"); 
-            cmbCoreType.Items.Add("hysteria");
-            cmbCoreType.Items.Add("naiveproxy");
+            List<string> coreTypes = new List<string> ();
+            foreach (ECoreType it in Enum.GetValues(typeof(ECoreType)))
+            {
+                if (it == ECoreType.v2rayN)
+                    continue;
+                coreTypes.Add(it.ToString());
+            }
+
+            cmbCoreType.Items.AddRange(coreTypes.ToArray());          
             cmbCoreType.Items.Add(string.Empty);
 
             txtAddress.ReadOnly = true;

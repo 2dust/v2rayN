@@ -932,7 +932,23 @@ namespace v2rayN.Forms
             }
             if (ConfigHandler.SetDefaultServer(ref config, lstVmess[index]) == 0)
             {
-                RefreshServers();
+                //RefreshServers();
+                for (int k = 0; k < lstVmess.Count; k++)
+                {
+                    if (config.IsActiveNode(lstVmess[k]))
+                    {
+                        lvServers.Items[k].SubItems[0].Text = "√";
+                        lvServers.Items[k].ForeColor = Color.DodgerBlue;
+                        lvServers.Items[k].Font = new Font(lvServers.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        lvServers.Items[k].SubItems[0].Text = "";
+                        lvServers.Items[k].ForeColor = lvServers.ForeColor;
+                        lvServers.Items[k].Font = new Font(lvServers.Font, FontStyle.Regular);
+                    }
+                }
+                RefreshServersMenu();
                 _ = LoadV2ray();
             }
             return 0;
