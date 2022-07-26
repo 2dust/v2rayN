@@ -138,6 +138,14 @@ namespace v2rayN.Handler
                 arguments = "config.json",
                 coreUrl = Global.naiveproxyCoreUrl
             });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.tuic,
+                coreExes = new List<string> { "tuic-client", "tuic" },
+                arguments = "-c config.json",
+                coreUrl = Global.tuicCoreUrl
+            });
         }
 
     }

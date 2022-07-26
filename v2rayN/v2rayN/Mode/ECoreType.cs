@@ -9,6 +9,7 @@ namespace v2rayN.Mode
         clash_meta = 12,
         hysteria = 21,
         naiveproxy = 22,
+        tuic = 23,
         v2rayN = 99
     }
 }
