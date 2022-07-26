@@ -43,18 +43,16 @@ body:
   - type: checkboxes
     id: "latest-version"
     attributes:
-      label: 我确认已更新至最新版本
-      description: 否则请更新后尝试
+      label: "我确认已更新至最新版本"
+      description: "否则请更新后尝试"
       options:
         - label: 是
-    validations:
-      required: true
+          required: true
   - type: checkboxes
     id: "issues"
     attributes:
-      label: 我确认已查询历史issues
-      description: 否则请查询后提出
+      label: "我确认已查询历史issues"
+      description: "否则请查询后提出"
       options:
         - label: 是
-    validations:
-      required: true
+          required: true
