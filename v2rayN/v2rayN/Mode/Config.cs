@@ -561,7 +561,13 @@ namespace v2rayN.Mode
         {
             get; set;
         } = string.Empty;
+
         public ECoreType? coreType
+        {
+            get; set;
+        }
+
+        public int preSocksPort
         {
             get; set;
         }

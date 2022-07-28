@@ -117,34 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>自定义配置</value>
-  </data>
-  <data name="btnBrowse.Text" xml:space="preserve">
-    <value>浏览(&amp;B)</value>
-  </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>取消(&amp;C)</value>
-  </data>
-  <data name="btnEdit.Text" xml:space="preserve">
-    <value>编辑(&amp;E)</value>
-  </data>
-  <data name="btnOK.Text" xml:space="preserve">
-    <value>确定(&amp;O)</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>服务器</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>337, 41</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>* 自定义配置的Socks端口值，可不设置；当设置此值后，将使用V2ray-core额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Socks端口</value>
+  </data>
+  <data name="btnEdit.Text" xml:space="preserve">
+    <value>编辑(&amp;E)</value>
+  </data>
+  <data name="labCoreType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
   <data name="labCoreType.Text" xml:space="preserve">
     <value>Core类型</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>地址(address)</value>
+  <data name="btnBrowse.Text" xml:space="preserve">
+    <value>浏览(&amp;B)</value>
   </data>
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
   </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
+  </data>
   <data name="label6.Text" xml:space="preserve">
     <value>别名(remarks)</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>地址(address)</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定(&amp;O)</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>自定义配置</value>
   </data>
 </root>

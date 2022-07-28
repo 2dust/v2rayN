@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServer2Form));
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtPreSocksPort = new System.Windows.Forms.TextBox();
             this.btnEdit = new System.Windows.Forms.Button();
             this.cmbCoreType = new System.Windows.Forms.ComboBox();
             this.labCoreType = new System.Windows.Forms.Label();
@@ -49,14 +52,18 @@
             // 
             // btnClose
             // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.txtPreSocksPort);
             this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.cmbCoreType);
             this.groupBox1.Controls.Add(this.labCoreType);
@@ -66,9 +73,23 @@
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // txtPreSocksPort
+            // 
+            resources.ApplyResources(this.txtPreSocksPort, "txtPreSocksPort");
+            this.txtPreSocksPort.Name = "txtPreSocksPort";
             // 
             // btnEdit
             // 
@@ -79,9 +100,9 @@
             // 
             // cmbCoreType
             // 
+            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
             this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType.FormattingEnabled = true;
-            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
             this.cmbCoreType.Name = "cmbCoreType";
             // 
             // labCoreType
@@ -123,9 +144,9 @@
             // 
             // panel2
             // 
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
@@ -174,5 +195,8 @@
         private System.Windows.Forms.ComboBox cmbCoreType;
         private System.Windows.Forms.Label labCoreType;
         private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtPreSocksPort;
+        private System.Windows.Forms.Label label3;
     }
 }

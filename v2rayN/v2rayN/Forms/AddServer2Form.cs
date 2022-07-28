@@ -19,7 +19,7 @@ namespace v2rayN.Forms
 
         private void AddServer2Form_Load(object sender, EventArgs e)
         {
-            List<string> coreTypes = new List<string> ();
+            List<string> coreTypes = new List<string>();
             foreach (ECoreType it in Enum.GetValues(typeof(ECoreType)))
             {
                 if (it == ECoreType.v2rayN)
@@ -27,7 +27,7 @@ namespace v2rayN.Forms
                 coreTypes.Add(it.ToString());
             }
 
-            cmbCoreType.Items.AddRange(coreTypes.ToArray());          
+            cmbCoreType.Items.AddRange(coreTypes.ToArray());
             cmbCoreType.Items.Add(string.Empty);
 
             txtAddress.ReadOnly = true;
@@ -52,6 +52,7 @@ namespace v2rayN.Forms
         {
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
+            txtPreSocksPort.Text = vmessItem.preSocksPort.ToString();
 
             cmbCoreType.Text = vmessItem.coreType == null ? string.Empty : vmessItem.coreType.ToString();
         }
@@ -79,6 +80,8 @@ namespace v2rayN.Forms
                 return;
             }
             vmessItem.remarks = remarks;
+            vmessItem.preSocksPort = Utils.ToInt(txtPreSocksPort.Text);
+
             if (Utils.IsNullOrEmpty(cmbCoreType.Text))
             {
                 vmessItem.coreType = null;

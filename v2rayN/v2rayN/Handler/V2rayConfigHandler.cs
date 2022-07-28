@@ -27,8 +27,9 @@ namespace v2rayN.Handler
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static int GenerateClientConfig(VmessItem node, string fileName, bool blExport, out string msg)
+        public static int GenerateClientConfig(VmessItem node, string fileName, out string msg, out string content)
         {
+            content = string.Empty;
             try
             {
                 if (node == null)
@@ -42,47 +43,22 @@ namespace v2rayN.Handler
                 {
                     return GenerateClientCustomConfig(node, fileName, out msg);
                 }
-
-                //取得默认配置
-                string result = Utils.GetEmbedText(SampleClient);
-                if (Utils.IsNullOrEmpty(result))
+                else
                 {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
+                    V2rayConfig v2rayConfig = null;
+                    if (GenerateClientConfigContent(node, false, ref v2rayConfig, out msg) != 0)
+                    {
+                        return -1;
+                    }
+                    if (Utils.IsNullOrEmpty(fileName))
+                    {
+                        content = Utils.ToJson(v2rayConfig);
+                    }
+                    else
+                    {
+                        Utils.ToJsonFile(v2rayConfig, fileName, false);
+                    }
                 }
-
-                //转成Json
-                V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
-                if (v2rayConfig == null)
-                {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
-                }
-
-                var config = LazyConfig.Instance.GetConfig();
-
-                //开始修改配置
-                log(config, ref v2rayConfig, blExport);
-
-                //本地端口
-                inbound(config, ref v2rayConfig);
-
-                //路由
-                routing(config, ref v2rayConfig);
-
-                //outbound
-                outbound(node, ref v2rayConfig);
-
-                //dns
-                dns(config, ref v2rayConfig);
-
-                // TODO: 统计配置
-                statistic(config, ref v2rayConfig);
-
-                Utils.ToJsonFile(v2rayConfig, fileName, false);
-
-                //msg = string.Format(ResUI.SuccessfulConfiguration, $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
-                msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
             catch (Exception ex)
             {
@@ -92,6 +68,8 @@ namespace v2rayN.Handler
             }
             return 0;
         }
+
+
 
         /// <summary>
         /// 日志
@@ -964,38 +942,102 @@ namespace v2rayN.Handler
                 }
 
                 //overwrite port
-                var fileContent = File.ReadAllLines(fileName).ToList();
-                var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
-                switch (coreType)
+                if (node.preSocksPort <= 0)
                 {
-                    case ECoreType.v2fly:
-                    case ECoreType.Xray:
-                        break;
-                    case ECoreType.clash:
-                    case ECoreType.clash_meta:
-                        //remove the original 
-                        var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
-                        if (indexPort >= 0)
-                        {
-                            fileContent.RemoveAt(indexPort);
-                        }
-                        indexPort = fileContent.FindIndex(t => t.Contains("socks-port:"));
-                        if (indexPort >= 0)
-                        {
-                            fileContent.RemoveAt(indexPort);
-                        }
+                    var fileContent = File.ReadAllLines(fileName).ToList();
+                    var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+                    switch (coreType)
+                    {
+                        case ECoreType.v2fly:
+                        case ECoreType.Xray:
+                            break;
+                        case ECoreType.clash:
+                        case ECoreType.clash_meta:
+                            //remove the original 
+                            var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
+                            if (indexPort >= 0)
+                            {
+                                fileContent.RemoveAt(indexPort);
+                            }
+                            indexPort = fileContent.FindIndex(t => t.Contains("socks-port:"));
+                            if (indexPort >= 0)
+                            {
+                                fileContent.RemoveAt(indexPort);
+                            }
 
-                        fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
-                        fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
-                        break;
+                            fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
+                            fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
+                            break;
+                    }
+                    File.WriteAllLines(fileName, fileContent);
                 }
-                File.WriteAllLines(fileName, fileContent);
 
-                msg = string.Format(ResUI.SuccessfulConfiguration, $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
+                //msg = string.Format(ResUI.SuccessfulConfiguration, $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
+                msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
             catch (Exception ex)
             {
                 Utils.SaveLog("GenerateClientCustomConfig", ex);
+                msg = ResUI.FailedGenDefaultConfiguration;
+                return -1;
+            }
+            return 0;
+        }
+
+        public static int GenerateClientConfigContent(VmessItem node, bool blExport, ref V2rayConfig v2rayConfig, out string msg)
+        {
+            try
+            {
+                if (node == null)
+                {
+                    msg = ResUI.CheckServerSettings;
+                    return -1;
+                }
+
+                msg = ResUI.InitialConfiguration;
+
+                //取得默认配置
+                string result = Utils.GetEmbedText(SampleClient);
+                if (Utils.IsNullOrEmpty(result))
+                {
+                    msg = ResUI.FailedGetDefaultConfiguration;
+                    return -1;
+                }
+
+                //转成Json
+                v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                if (v2rayConfig == null)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+
+                var config = LazyConfig.Instance.GetConfig();
+
+                //开始修改配置
+                log(config, ref v2rayConfig, blExport);
+
+                //本地端口
+                inbound(config, ref v2rayConfig);
+
+                //路由
+                routing(config, ref v2rayConfig);
+
+                //outbound
+                outbound(node, ref v2rayConfig);
+
+                //dns
+                dns(config, ref v2rayConfig);
+
+                //stat
+                statistic(config, ref v2rayConfig);
+
+                //msg = string.Format(ResUI.SuccessfulConfiguration, $"[{config.GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
+                msg = string.Format(ResUI.SuccessfulConfiguration, "");
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("GenerateClientConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -1442,7 +1484,12 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int Export2ClientConfig(VmessItem node, string fileName, out string msg)
         {
-            return GenerateClientConfig(node, fileName, true, out msg);
+            V2rayConfig v2rayConfig = null;
+            if (GenerateClientConfigContent(node, true, ref v2rayConfig, out msg) != 0)
+            {
+                return -1;
+            }
+            return Utils.ToJsonFile(v2rayConfig, fileName, false);
         }
 
         /// <summary>
