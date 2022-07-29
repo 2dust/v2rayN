@@ -13,6 +13,7 @@ namespace v2rayN
         public const string UpdateUrl = AboutUrl + @"/releases";
         public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
         public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
+        public const string SagerNetCoreUrl = "https://github.com/SagerNet/v2ray-core/releases";
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
         public const string clashCoreUrl = "https://github.com/Dreamacro/clash/releases";
         public const string clashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
@@ -207,11 +208,12 @@ namespace v2rayN
 
         public static readonly List<string> vmessSecuritys = new List<string> { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
         public static readonly List<string> ssSecuritys = new List<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+        public static readonly List<string> ssSecuritysInSagerNet = new List<string> { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
         public static readonly List<string> ssSecuritysInXray = new List<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
         public static readonly List<string> xtlsFlows = new List<string> { "", "xtls-rprx-origin", "xtls-rprx-origin-udp443", "xtls-rprx-direct", "xtls-rprx-direct-udp443" };
         public static readonly List<string> networks = new List<string> { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> kcpHeaderTypes = new List<string> { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new List<string> { "v2fly", "Xray" };
+        public static readonly List<string> coreTypes = new List<string> { "v2fly", "SagerNet", "Xray" };
         public const string GrpcgunMode = "gun";
         public const string GrpcmultiMode = "multi";
 

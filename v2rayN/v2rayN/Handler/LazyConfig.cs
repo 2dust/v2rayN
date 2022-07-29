@@ -28,6 +28,10 @@ namespace v2rayN.Handler
             {
                 return Global.ssSecuritys;
             }
+            if (GetCoreType(null, EConfigType.Shadowsocks) == ECoreType.SagerNet)
+            {
+                return Global.ssSecuritysInSagerNet;
+            }
 
             return Global.ssSecuritysInXray;
         }
@@ -82,6 +86,18 @@ namespace v2rayN.Handler
                 coreLatestUrl = Global.v2flyCoreUrl + "/latest",
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                match = "V2Ray"
+            });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.SagerNet,
+                coreExes = new List<string> { "v2ray" },
+                arguments = "run",
+                coreUrl = Global.SagerNetCoreUrl,
+                coreLatestUrl = Global.SagerNetCoreUrl + "/latest",
+                coreDownloadUrl32 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrl64 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray"
             });
 

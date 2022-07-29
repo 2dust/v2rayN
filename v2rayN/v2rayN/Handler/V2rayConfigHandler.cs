@@ -949,6 +949,7 @@ namespace v2rayN.Handler
                     switch (coreType)
                     {
                         case ECoreType.v2fly:
+                        case ECoreType.SagerNet:
                         case ECoreType.Xray:
                             break;
                         case ECoreType.clash:
