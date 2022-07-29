@@ -1364,6 +1364,11 @@ namespace v2rayN.Forms
             CheckUpdateCore(ECoreType.v2fly);
         }
 
+        private void tsbCheckUpdateSagerNetCore_Click(object sender, EventArgs e)
+        {
+            CheckUpdateCore(ECoreType.SagerNet);
+        }
+
         private void tsbCheckUpdateXrayCore_Click(object sender, EventArgs e)
         {
             CheckUpdateCore(ECoreType.Xray);
