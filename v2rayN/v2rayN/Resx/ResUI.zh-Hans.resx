@@ -472,4 +472,7 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>服务器 (过滤器 : {0})</value>
   </data>
+  <data name="NetFrameworkRequirementsTip" xml:space="preserve">
+    <value>正常使用此版本需要.NET Framework 4.8，请更新后重启</value>
+  </data>
 </root>
