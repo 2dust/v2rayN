@@ -87,6 +87,12 @@ namespace v2rayN.Forms
             MainFormHandler.Instance.RegisterGlobalHotkey(config, OnHotkeyHandler, UpdateTaskHandler);
 
             _ = LoadV2ray();
+
+            if (!Utils.CheckForDotNetVersion())
+            {
+                UI.ShowWarning(ResUI.NetFrameworkRequirementsTip);
+                AppendText(false, ResUI.NetFrameworkRequirementsTip);
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -340,7 +346,7 @@ namespace v2rayN.Forms
             if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
             {
                 lvServers.Items[index].Selected = true;
-                lvServers.EnsureVisible(index); // workaround
+                lvServers.SetScrollPosition(index);
             }
         }
 
@@ -1139,7 +1145,7 @@ namespace v2rayN.Forms
             if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
             {
                 lvServers.Items[index].Selected = true;
-                lvServers.EnsureVisible(index); // workaround
+                lvServers.SetScrollPosition(index); 
             }
 
             SetVisibleCore(true);

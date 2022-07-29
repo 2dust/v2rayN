@@ -709,6 +709,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Normal use of this version requires .NET Framework 4.8 的本地化字符串。
+        /// </summary>
+        internal static string NetFrameworkRequirementsTip {
+            get {
+                return ResourceManager.GetString("NetFrameworkRequirementsTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Non-VMess or ss protocol 的本地化字符串。
         /// </summary>
         internal static string NonvmessOrssProtocol {

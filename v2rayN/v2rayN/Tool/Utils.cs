@@ -694,7 +694,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="release">需要的版本4.6.2=394802;4.8=528040</param>
         /// <returns></returns>
-        public static bool GetDotNetRelease(int release)
+        public static bool CheckForDotNetVersion(int release = 528040)
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
             using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))

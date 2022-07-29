@@ -472,4 +472,7 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>Servers (Filter : {0})</value>
   </data>
+  <data name="NetFrameworkRequirementsTip" xml:space="preserve">
+    <value>Normal use of this version requires .NET Framework 4.8</value>
+  </data>
 </root>
