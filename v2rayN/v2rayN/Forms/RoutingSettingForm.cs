@@ -20,6 +20,7 @@ namespace v2rayN.Forms
         private void RoutingSettingForm_Load(object sender, EventArgs e)
         {
             ConfigHandler.InitBuiltinRouting(ref config);
+            cmbdomainMatcher.Items.AddRange(Global.domainMatchers.ToArray());
 
             cmbdomainStrategy.Text = config.domainStrategy;
             chkenableRoutingAdvanced.Checked = config.enableRoutingAdvanced;

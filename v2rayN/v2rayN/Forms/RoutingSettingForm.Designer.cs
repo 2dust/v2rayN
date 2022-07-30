@@ -45,6 +45,7 @@
             this.menuRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetDefaultRouting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuImportAdvancedRules = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemAdvanced = new System.Windows.Forms.ToolStripMenuItem();
             this.menuServer = new System.Windows.Forms.MenuStrip();
@@ -71,7 +72,6 @@
             this.txtBlockDomain = new System.Windows.Forms.TextBox();
             this.tabPageRuleList = new System.Windows.Forms.TabPage();
             this.lvRoutings = new v2rayN.Base.ListViewFlickerFree();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.cmsLv.SuspendLayout();
@@ -135,9 +135,6 @@
             // 
             this.cmbdomainMatcher.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbdomainMatcher.FormattingEnabled = true;
-            this.cmbdomainMatcher.Items.AddRange(new object[] {
-            resources.GetString("cmbdomainMatcher.Items"),
-            resources.GetString("cmbdomainMatcher.Items1")});
             resources.ApplyResources(this.cmbdomainMatcher, "cmbdomainMatcher");
             this.cmbdomainMatcher.Name = "cmbdomainMatcher";
             // 
@@ -208,6 +205,11 @@
             this.menuSetDefaultRouting.Name = "menuSetDefaultRouting";
             resources.ApplyResources(this.menuSetDefaultRouting, "menuSetDefaultRouting");
             this.menuSetDefaultRouting.Click += new System.EventHandler(this.menuSetDefaultRouting_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // menuImportAdvancedRules
             // 
@@ -389,11 +391,6 @@
             this.lvRoutings.UseCompatibleStateImageBehavior = false;
             this.lvRoutings.View = System.Windows.Forms.View.Details;
             this.lvRoutings.DoubleClick += new System.EventHandler(this.lvRoutings_DoubleClick);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // RoutingSettingForm
             // 
