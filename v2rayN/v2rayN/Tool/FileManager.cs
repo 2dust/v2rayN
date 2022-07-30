@@ -94,6 +94,10 @@ namespace v2rayN.Tool
                         }
                     }
                 }
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
             }
             catch (Exception ex)
             {
