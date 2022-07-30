@@ -111,6 +111,7 @@
             this.tsbCheckUpdate = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbCheckUpdateN = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateCore = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCheckUpdateSagerNetCore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbCheckUpdateXrayCore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCheckUpdateClashCore = new System.Windows.Forms.ToolStripMenuItem();
@@ -718,6 +719,7 @@
             this.tsbCheckUpdate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbCheckUpdateN,
             this.tsbCheckUpdateCore,
+            this.tsbCheckUpdateSagerNetCore,
             this.tsbCheckUpdateXrayCore,
             this.toolStripSeparator16,
             this.tsbCheckUpdateClashCore,
@@ -739,6 +741,12 @@
             this.tsbCheckUpdateCore.Name = "tsbCheckUpdateCore";
             resources.ApplyResources(this.tsbCheckUpdateCore, "tsbCheckUpdateCore");
             this.tsbCheckUpdateCore.Click += new System.EventHandler(this.tsbCheckUpdateCore_Click);
+            // 
+            // tsbCheckUpdateSagerNetCore
+            // 
+            this.tsbCheckUpdateSagerNetCore.Name = "tsbCheckUpdateSagerNetCore";
+            resources.ApplyResources(this.tsbCheckUpdateSagerNetCore, "tsbCheckUpdateSagerNetCore");
+            this.tsbCheckUpdateSagerNetCore.Click += new System.EventHandler(this.tsbCheckUpdateSagerNetCore_Click);
             // 
             // tsbCheckUpdateXrayCore
             // 
@@ -972,6 +980,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateClashMetaCore;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         private System.Windows.Forms.ToolStripMenuItem menuSortServerResult;
+        private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateSagerNetCore;
     }
 }
 

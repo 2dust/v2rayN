@@ -392,6 +392,7 @@ namespace v2rayN.Handler
                 switch (type)
                 {
                     case ECoreType.v2fly:
+                    case ECoreType.SagerNet:
                     case ECoreType.Xray:
                         {
                             curVersion = "v" + getCoreVersion(type);

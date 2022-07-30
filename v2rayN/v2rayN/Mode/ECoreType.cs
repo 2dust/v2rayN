@@ -5,6 +5,7 @@ namespace v2rayN.Mode
     {
         v2fly = 1,
         Xray = 2,
+        SagerNet = 3,
         clash = 11,
         clash_meta = 12,
         hysteria = 21,

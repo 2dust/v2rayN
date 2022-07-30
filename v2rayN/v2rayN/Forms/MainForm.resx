@@ -842,6 +842,9 @@
   <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
     <value>Update v2fly Core</value>
   </data>
+  <data name="tsbCheckUpdateSagerNetCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
   <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 22</value>
   </data>
@@ -1412,6 +1415,12 @@
   <data name="&gt;&gt;tsbCheckUpdateCore.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsbCheckUpdateSagerNetCore.Name" xml:space="preserve">
+    <value>tsbCheckUpdateSagerNetCore</value>
+  </data>
+  <data name="&gt;&gt;tsbCheckUpdateSagerNetCore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tsbCheckUpdateXrayCore.Name" xml:space="preserve">
     <value>tsbCheckUpdateXrayCore</value>
   </data>
@@ -1513,5 +1522,8 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
+    <value>Update SagerNet Core</value>
   </data>
 </root>

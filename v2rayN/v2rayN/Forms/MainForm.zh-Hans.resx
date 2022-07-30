@@ -570,4 +570,7 @@
   <data name="menuSortServerResult.Text" xml:space="preserve">
     <value>按测试结果排序 (Ctrl+E)</value>
   </data>
+  <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
+    <value>SagerNet-Core</value>
+  </data>
 </root>
