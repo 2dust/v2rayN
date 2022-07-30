@@ -360,7 +360,7 @@ namespace v2rayN.Handler
 
                 Process p = new Process();
                 p.StartInfo.FileName = filePath;
-                p.StartInfo.Arguments = "-version";
+                p.StartInfo.Arguments = coreInfo.versionArg;
                 p.StartInfo.WorkingDirectory = Utils.StartupPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
@@ -369,7 +369,19 @@ namespace v2rayN.Handler
                 p.Start();
                 p.WaitForExit(5000);
                 string echo = p.StandardOutput.ReadToEnd();
-                string version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
+                string version = string.Empty;
+                switch (type)
+                {
+                    case ECoreType.v2fly:
+                    case ECoreType.SagerNet:
+                    case ECoreType.Xray:
+                        version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
+                        break;
+                    case ECoreType.clash:
+                    case ECoreType.clash_meta:
+                        version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
+                        break;
+                }
                 return version;
             }
             catch (Exception ex)
@@ -404,7 +416,7 @@ namespace v2rayN.Handler
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
                         {
-                            curVersion = "";//getCoreVersion(type);
+                            curVersion = getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);
                             if (Environment.Is64BitProcess)
                             {

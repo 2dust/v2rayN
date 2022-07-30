@@ -529,7 +529,7 @@ namespace v2rayN.Handler
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
 
-            if (!LazyConfig.Instance.GetShadowsocksSecuritys().Contains(vmessItem.security))
+            if (!LazyConfig.Instance.GetShadowsocksSecuritys(vmessItem).Contains(vmessItem.security))
             {
                 return -1;
             }

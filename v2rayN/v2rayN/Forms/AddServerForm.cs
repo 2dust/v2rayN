@@ -35,7 +35,7 @@ namespace v2rayN.Forms
                     //panTran.Visible = false;
                     //this.Height = this.Height - panTran.Height;
 
-                    cmbSecurity3.Items.AddRange(LazyConfig.Instance.GetShadowsocksSecuritys().ToArray());
+                    cmbSecurity3.Items.AddRange(LazyConfig.Instance.GetShadowsocksSecuritys(vmessItem).ToArray());
                     break;
                 case EConfigType.Socks:
                     panSocks.Dock = DockStyle.Fill;

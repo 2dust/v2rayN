@@ -411,7 +411,7 @@ namespace v2rayN.Handler
                     serversItem.address = node.address;
                     serversItem.port = node.port;
                     serversItem.password = node.id;
-                    serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys().Contains(node.security) ? node.security : "none";
+                    serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys(node).Contains(node.security) ? node.security : "none";
 
 
                     serversItem.ota = false;
