@@ -217,6 +217,7 @@ namespace v2rayN
         public static readonly List<string> domainMatchers = new List<string> { "linear", "mph", "" };
         public const string GrpcgunMode = "gun";
         public const string GrpcmultiMode = "multi";
+        public const string CheckMark = "√";
 
         #endregion
 

@@ -170,7 +170,7 @@ namespace v2rayN.Forms
                 string def = string.Empty;
                 if (config.routingIndex.Equals(k))
                 {
-                    def = "√";
+                    def = Global.CheckMark;
                 }
 
                 ListViewItem lvItem = new ListViewItem(def);

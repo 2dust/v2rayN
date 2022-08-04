@@ -160,7 +160,15 @@ namespace v2rayN.Forms
 
             if (!config.uiItem.mainLocation.IsEmpty)
             {
-                Location = config.uiItem.mainLocation;
+                if (config.uiItem.mainLocation.X >= SystemInformation.WorkingArea.Width
+                    || config.uiItem.mainLocation.Y >= SystemInformation.WorkingArea.Height)
+                {
+                    Location = new Point(0, 0);
+                }
+                else
+                {
+                    Location = config.uiItem.mainLocation;
+                }
             }
             if (!config.uiItem.mainSize.IsEmpty)
             {
@@ -289,11 +297,11 @@ namespace v2rayN.Forms
 
             for (int k = 0; k < lstVmess.Count; k++)
             {
-                string def = string.Empty;
+                string def = (k + 1).ToString();
                 VmessItem item = lstVmess[k];
                 if (config.IsActiveNode(item))
                 {
-                    def = "√";
+                    def = Global.CheckMark;
                 }
 
                 ListViewItem lvItem = new ListViewItem(def);
@@ -943,13 +951,13 @@ namespace v2rayN.Forms
                 {
                     if (config.IsActiveNode(lstVmess[k]))
                     {
-                        lvServers.Items[k].SubItems[0].Text = "√";
+                        lvServers.Items[k].SubItems[0].Text = Global.CheckMark;
                         lvServers.Items[k].ForeColor = Color.DodgerBlue;
                         lvServers.Items[k].Font = new Font(lvServers.Font, FontStyle.Bold);
                     }
                     else
                     {
-                        lvServers.Items[k].SubItems[0].Text = "";
+                        lvServers.Items[k].SubItems[0].Text = (k + 1).ToString();
                         lvServers.Items[k].ForeColor = lvServers.ForeColor;
                         lvServers.Items[k].Font = new Font(lvServers.Font, FontStyle.Regular);
                     }
@@ -1145,7 +1153,7 @@ namespace v2rayN.Forms
             if (index >= 0 && index < lvServers.Items.Count && lvServers.Items.Count > 0)
             {
                 lvServers.Items[index].Selected = true;
-                lvServers.SetScrollPosition(index); 
+                lvServers.SetScrollPosition(index);
             }
 
             SetVisibleCore(true);
