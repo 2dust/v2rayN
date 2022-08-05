@@ -20,7 +20,7 @@ namespace v2rayN.Forms
         private List<VmessItem> lstSelecteds = new List<VmessItem>();
         private StatisticsHandler statistics;
         private List<VmessItem> lstVmess;
-        private string groupId = string.Empty;
+        private string _groupId = string.Empty;
         private string serverFilter = string.Empty;
 
         #region Window 事件
@@ -226,13 +226,17 @@ namespace v2rayN.Forms
         private void RefreshServers()
         {
             lstVmess = config.vmess
-                .Where(it => Utils.IsNullOrEmpty(groupId) || it.groupId == groupId)
+                .Where(it => Utils.IsNullOrEmpty(_groupId) || it.groupId == _groupId)
                 .Where(it => Utils.IsNullOrEmpty(serverFilter) || it.remarks.Contains(serverFilter))
                 .OrderBy(it => it.sort)
                 .ToList();
 
             ConfigHandler.SetDefaultServer(config, lstVmess);
-            RefreshServersView();
+            BeginInvoke(new Action(() =>
+            {
+                RefreshServersView();
+            }));
+
             RefreshServersMenu();
         }
 
@@ -491,9 +495,9 @@ namespace v2rayN.Forms
             {
                 return;
             }
-            groupId = string.Empty;
+            _groupId = string.Empty;
             //groupId = tabGroup.TabPages[tabGroup.SelectedIndex].Name;
-            groupId = tabGroup.SelectedTab.Name;
+            _groupId = tabGroup.SelectedTab.Name;
 
             RefreshServers();
 
@@ -604,7 +608,7 @@ namespace v2rayN.Forms
                 fm = new AddServerForm();
             }
             fm.vmessItem = index >= 0 ? lstVmess[index] : null;
-            fm.groupId = groupId;
+            fm.groupId = _groupId;
             fm.eConfigType = configType;
             if (fm.ShowDialog() == DialogResult.OK)
             {
@@ -1026,7 +1030,7 @@ namespace v2rayN.Forms
         private void menuAddServers_Click(object sender, EventArgs e)
         {
             string clipboardData = Utils.GetClipboardData();
-            int ret = ConfigHandler.AddBatchServers(ref config, clipboardData, "", groupId);
+            int ret = ConfigHandler.AddBatchServers(ref config, clipboardData, "", _groupId);
             if (ret > 0)
             {
                 RefreshServers();
@@ -1056,7 +1060,7 @@ namespace v2rayN.Forms
             }
             else
             {
-                int ret = ConfigHandler.AddBatchServers(ref config, result, "", groupId);
+                int ret = ConfigHandler.AddBatchServers(ref config, result, "", _groupId);
                 if (ret > 0)
                 {
                     RefreshServers();
@@ -1067,11 +1071,11 @@ namespace v2rayN.Forms
 
         private void menuUpdateSubscriptions_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess(false);
+            UpdateSubscriptionProcess("", false);
         }
         private void menuUpdateSubViaProxy_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess(true);
+            UpdateSubscriptionProcess("", true);
         }
 
         private void tsbBackupGuiNConfig_Click(object sender, EventArgs e)
@@ -1458,18 +1462,18 @@ namespace v2rayN.Forms
 
         private void tsbSubUpdate_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess(false);
+            UpdateSubscriptionProcess("", false);
         }
 
         private void tsbSubUpdateViaProxy_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess(true);
+            UpdateSubscriptionProcess("", true);
         }
 
         /// <summary>
         /// the subscription update process
         /// </summary>
-        private void UpdateSubscriptionProcess(bool blProxy)
+        private void UpdateSubscriptionProcess(string groupId, bool blProxy)
         {
             void _updateUI(bool success, string msg)
             {
@@ -1487,7 +1491,7 @@ namespace v2rayN.Forms
                 }
             };
 
-            (new UpdateHandle()).UpdateSubscriptionProcess(config, blProxy, _updateUI);
+            (new UpdateHandle()).UpdateSubscriptionProcess(config, groupId, blProxy, _updateUI);
         }
 
         private void tsbQRCodeSwitch_CheckedChanged(object sender, EventArgs e)
@@ -1577,5 +1581,14 @@ namespace v2rayN.Forms
         }
         #endregion
 
+        private void tsbSubGroupUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(_groupId, true);
+        }
+
+        private void tsbSubGroupUpdateViaProxy_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(_groupId, true);
+        }
     }
 }

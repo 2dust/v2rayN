@@ -573,4 +573,10 @@
   <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
     <value>SagerNet-Core</value>
   </data>
+  <data name="tsbSubGroupUpdate.Text" xml:space="preserve">
+    <value>更新当前分组订阅(不通过代理)</value>
+  </data>
+  <data name="tsbSubGroupUpdateViaProxy.Text" xml:space="preserve">
+    <value>更新当前分组订阅(通过代理)</value>
+  </data>
 </root>

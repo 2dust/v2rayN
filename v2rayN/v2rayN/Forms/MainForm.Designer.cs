@@ -128,6 +128,8 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
+            this.tsbSubGroupUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbSubGroupUpdateViaProxy = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scServers)).BeginInit();
             this.scServers.Panel1.SuspendLayout();
             this.scServers.Panel2.SuspendLayout();
@@ -612,7 +614,9 @@
             this.tsbSub.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSubSetting,
             this.tsbSubUpdate,
-            this.tsbSubUpdateViaProxy});
+            this.tsbSubUpdateViaProxy,
+            this.tsbSubGroupUpdate,
+            this.tsbSubGroupUpdateViaProxy});
             this.tsbSub.Image = global::v2rayN.Properties.Resources.sub;
             resources.ApplyResources(this.tsbSub, "tsbSub");
             this.tsbSub.Name = "tsbSub";
@@ -848,6 +852,18 @@
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
+            // tsbSubGroupUpdate
+            // 
+            this.tsbSubGroupUpdate.Name = "tsbSubGroupUpdate";
+            resources.ApplyResources(this.tsbSubGroupUpdate, "tsbSubGroupUpdate");
+            this.tsbSubGroupUpdate.Click += new System.EventHandler(this.tsbSubGroupUpdate_Click);
+            // 
+            // tsbSubGroupUpdateViaProxy
+            // 
+            this.tsbSubGroupUpdateViaProxy.Name = "tsbSubGroupUpdateViaProxy";
+            resources.ApplyResources(this.tsbSubGroupUpdateViaProxy, "tsbSubGroupUpdateViaProxy");
+            this.tsbSubGroupUpdateViaProxy.Click += new System.EventHandler(this.tsbSubGroupUpdateViaProxy_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -981,6 +997,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         private System.Windows.Forms.ToolStripMenuItem menuSortServerResult;
         private System.Windows.Forms.ToolStripMenuItem tsbCheckUpdateSagerNetCore;
+        private System.Windows.Forms.ToolStripMenuItem tsbSubGroupUpdate;
+        private System.Windows.Forms.ToolStripMenuItem tsbSubGroupUpdateViaProxy;
     }
 }
 

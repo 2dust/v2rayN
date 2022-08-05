@@ -159,7 +159,7 @@ namespace v2rayN.Handler
         }
 
 
-        public void UpdateSubscriptionProcess(Config config, bool blProxy, Action<bool, string> update)
+        public void UpdateSubscriptionProcess(Config config, string groupId, bool blProxy, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
@@ -190,10 +190,15 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
+                    if (!Utils.IsNullOrEmpty(groupId) && item.groupId != groupId)
+                    {
+                        continue;
+                    }
+
                     string id = item.id.TrimEx();
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
-                    string groupId = item.groupId.TrimEx();
+                    //string groupId = item.groupId.TrimEx();
                     string hashCode = $"{item.remarks}->";
                     if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
                     {
@@ -226,7 +231,7 @@ namespace v2rayN.Handler
                             _updateFunc(false, $"{hashCode}{result}");
                         }
 
-                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, groupId);
+                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, item.groupId.TrimEx());
                         _updateFunc(false,
                             ret > 0
                                 ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"

@@ -218,30 +218,6 @@
   <data name="menuMoveToGroup.Text" xml:space="preserve">
     <value>Move to Group</value>
   </data>
-  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveTop.Text" xml:space="preserve">
-    <value>Move to top (T)</value>
-  </data>
-  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveUp.Text" xml:space="preserve">
-    <value>Up (U)</value>
-  </data>
-  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveDown.Text" xml:space="preserve">
-    <value>Down (D)</value>
-  </data>
-  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="menuMoveBottom.Text" xml:space="preserve">
-    <value>Move to bottom (B)</value>
-  </data>
   <data name="menuMoveEvent.Size" type="System.Drawing.Size, System.Drawing">
     <value>355, 22</value>
   </data>
@@ -339,7 +315,7 @@
     <value>ImageAboveText</value>
   </data>
   <data name="cmsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 644</value>
+    <value>356, 622</value>
   </data>
   <data name="&gt;&gt;cmsLv.Name" xml:space="preserve">
     <value>cmsLv</value>
@@ -488,6 +464,30 @@
   <data name="&gt;&gt;scServers.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="menuMoveTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveTop.Text" xml:space="preserve">
+    <value>Move to top (T)</value>
+  </data>
+  <data name="menuMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveUp.Text" xml:space="preserve">
+    <value>Up (U)</value>
+  </data>
+  <data name="menuMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveDown.Text" xml:space="preserve">
+    <value>Down (D)</value>
+  </data>
+  <data name="menuMoveBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="menuMoveBottom.Text" xml:space="preserve">
+    <value>Move to bottom (B)</value>
+  </data>
   <data name="scBig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -599,6 +599,27 @@
   <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 192</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
+    <value>cmsMain</value>
+  </data>
+  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="notifyMain.Text" xml:space="preserve">
+    <value>v2rayN</value>
+  </data>
+  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 22</value>
+  </data>
+  <data name="menuSysAgentMode.Text" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
   <data name="menuKeepClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>243, 22</value>
   </data>
@@ -616,12 +637,6 @@
   </data>
   <data name="menuKeepNothing.Text" xml:space="preserve">
     <value>Do not change system proxy</value>
-  </data>
-  <data name="menuSysAgentMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 22</value>
-  </data>
-  <data name="menuSysAgentMode.Text" xml:space="preserve">
-    <value>System proxy</value>
   </data>
   <data name="menuRoutings.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 22</value>
@@ -671,21 +686,6 @@
   <data name="menuExit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="cmsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 192</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Name" xml:space="preserve">
-    <value>cmsMain</value>
-  </data>
-  <data name="&gt;&gt;cmsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="notifyMain.Text" xml:space="preserve">
-    <value>v2rayN</value>
-  </data>
-  <data name="notifyMain.Visible" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -717,22 +717,34 @@
     <value>6, 56</value>
   </data>
   <data name="tsbSubSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 22</value>
+    <value>317, 22</value>
   </data>
   <data name="tsbSubSetting.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="tsbSubUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 22</value>
+    <value>317, 22</value>
   </data>
   <data name="tsbSubUpdate.Text" xml:space="preserve">
     <value>Update subscription without proxy</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 22</value>
+    <value>317, 22</value>
   </data>
   <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
     <value>Update subscription with proxy</value>
+  </data>
+  <data name="tsbSubGroupUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>317, 22</value>
+  </data>
+  <data name="tsbSubGroupUpdate.Text" xml:space="preserve">
+    <value>Update group subscription without proxy</value>
+  </data>
+  <data name="tsbSubGroupUpdateViaProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>317, 22</value>
+  </data>
+  <data name="tsbSubGroupUpdateViaProxy.Text" xml:space="preserve">
+    <value>Update group subscription with proxy</value>
   </data>
   <data name="tsbSub.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -763,39 +775,6 @@
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
-  </data>
-  <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="tsbOptionSetting.Text" xml:space="preserve">
-    <value>OptionSetting</value>
-  </data>
-  <data name="tsbRoutingSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="tsbRoutingSetting.Text" xml:space="preserve">
-    <value>RoutingSetting</value>
-  </data>
-  <data name="tsbGlobalHotkeySetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="tsbGlobalHotkeySetting.Text" xml:space="preserve">
-    <value>GlobalHotkeySetting</value>
-  </data>
-  <data name="tsbGroupSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="tsbGroupSetting.Text" xml:space="preserve">
-    <value>GroupSetting</value>
-  </data>
-  <data name="toolStripSeparator14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 6</value>
-  </data>
-  <data name="tsbBackupGuiNConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 22</value>
-  </data>
-  <data name="tsbBackupGuiNConfig.Text" xml:space="preserve">
-    <value>BackupGuiConfig</value>
   </data>
   <data name="tsbSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -830,51 +809,6 @@
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
   </data>
-  <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateN.Text" xml:space="preserve">
-    <value>v2rayN (this software)</value>
-  </data>
-  <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
-    <value>Update v2fly Core</value>
-  </data>
-  <data name="tsbCheckUpdateSagerNetCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
-    <value>Update Xray Core</value>
-  </data>
-  <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 6</value>
-  </data>
-  <data name="tsbCheckUpdateClashCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateClashCore.Text" xml:space="preserve">
-    <value>Update clash Core</value>
-  </data>
-  <data name="tsbCheckUpdateClashMetaCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
-    <value>Update Clash.Meta Core</value>
-  </data>
-  <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 6</value>
-  </data>
-  <data name="tsbCheckUpdateGeo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 22</value>
-  </data>
-  <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
-    <value>Update Geo files</value>
-  </data>
   <data name="tsbCheckUpdate.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -889,33 +823,6 @@
   </data>
   <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 56</value>
-  </data>
-  <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbAbout.Text" xml:space="preserve">
-    <value>v2rayN Project</value>
-  </data>
-  <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
-    <value>V2Ray Website</value>
-  </data>
-  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 6</value>
-  </data>
-  <data name="tsbLanguageDef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbLanguageDef.Text" xml:space="preserve">
-    <value>Language-[English]</value>
-  </data>
-  <data name="tsbLanguageZhHans.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="tsbLanguageZhHans.Text" xml:space="preserve">
-    <value>语言-[中文简体]</value>
   </data>
   <data name="tsbHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -976,6 +883,114 @@
   </data>
   <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="tsbOptionSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="tsbOptionSetting.Text" xml:space="preserve">
+    <value>OptionSetting</value>
+  </data>
+  <data name="tsbRoutingSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="tsbRoutingSetting.Text" xml:space="preserve">
+    <value>RoutingSetting</value>
+  </data>
+  <data name="tsbGlobalHotkeySetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="tsbGlobalHotkeySetting.Text" xml:space="preserve">
+    <value>GlobalHotkeySetting</value>
+  </data>
+  <data name="tsbGroupSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="tsbGroupSetting.Text" xml:space="preserve">
+    <value>GroupSetting</value>
+  </data>
+  <data name="toolStripSeparator14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 6</value>
+  </data>
+  <data name="tsbBackupGuiNConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 22</value>
+  </data>
+  <data name="tsbBackupGuiNConfig.Text" xml:space="preserve">
+    <value>BackupGuiConfig</value>
+  </data>
+  <data name="tsbCheckUpdateN.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateN.Text" xml:space="preserve">
+    <value>v2rayN (this software)</value>
+  </data>
+  <data name="tsbCheckUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
+    <value>Update v2fly Core</value>
+  </data>
+  <data name="tsbCheckUpdateSagerNetCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
+    <value>Update SagerNet Core</value>
+  </data>
+  <data name="tsbCheckUpdateXrayCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
+    <value>Update Xray Core</value>
+  </data>
+  <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 6</value>
+  </data>
+  <data name="tsbCheckUpdateClashCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateClashCore.Text" xml:space="preserve">
+    <value>Update clash Core</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
+    <value>Update Clash.Meta Core</value>
+  </data>
+  <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 6</value>
+  </data>
+  <data name="tsbCheckUpdateGeo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
+    <value>Update Geo files</value>
+  </data>
+  <data name="tsbAbout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbAbout.Text" xml:space="preserve">
+    <value>v2rayN Project</value>
+  </data>
+  <data name="tsbV2rayWebsite.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
+    <value>V2Ray Website</value>
+  </data>
+  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 6</value>
+  </data>
+  <data name="tsbLanguageDef.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbLanguageDef.Text" xml:space="preserve">
+    <value>Language-[English]</value>
+  </data>
+  <data name="tsbLanguageZhHans.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="tsbLanguageZhHans.Text" xml:space="preserve">
+    <value>语言-[中文简体]</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1517,13 +1532,22 @@
   <data name="&gt;&gt;tsbClose.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsbSubGroupUpdate.Name" xml:space="preserve">
+    <value>tsbSubGroupUpdate</value>
+  </data>
+  <data name="&gt;&gt;tsbSubGroupUpdate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbSubGroupUpdateViaProxy.Name" xml:space="preserve">
+    <value>tsbSubGroupUpdateViaProxy</value>
+  </data>
+  <data name="&gt;&gt;tsbSubGroupUpdateViaProxy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>v2rayN.Forms.BaseForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
-    <value>Update SagerNet Core</value>
   </data>
 </root>
