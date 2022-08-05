@@ -388,4 +388,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>参数设置</value>
   </data>
+  <data name="chkEnableCheckPreReleaseUpdate.Text" xml:space="preserve">
+    <value>检查Pre-Release更新</value>
+  </data>
 </root>

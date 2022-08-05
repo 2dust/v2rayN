@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -31,7 +34,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void CheckUpdateGuiN(Config config, Action<bool, string> update)
+        public void CheckUpdateGuiN(Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
             _updateFunc = update;
@@ -97,11 +100,11 @@ namespace v2rayN.Handler
                 }
             };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, "v2rayN"));
-            CheckUpdateAsync(ECoreType.v2rayN);
+            CheckUpdateAsync(ECoreType.v2rayN, preRelease);
         }
 
 
-        public void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update)
+        public void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
             _updateFunc = update;
@@ -152,7 +155,7 @@ namespace v2rayN.Handler
                 }
             };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, "Core"));
-            CheckUpdateAsync(type);
+            CheckUpdateAsync(type, preRelease);
         }
 
 
@@ -305,17 +308,17 @@ namespace v2rayN.Handler
 
         #region private
 
-        private async void CheckUpdateAsync(ECoreType type)
+        private async void CheckUpdateAsync(ECoreType type, bool preRelease)
         {
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
-                string url = coreInfo.coreLatestUrl;
+                string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandle()).UrlRedirectAsync(url, true);
+                var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
                 if (!Utils.IsNullOrEmpty(result))
                 {
-                    responseHandler(type, result);
+                    responseHandler(type, result, preRelease);
                 }
                 else
                 {
@@ -391,11 +394,20 @@ namespace v2rayN.Handler
                 return "";
             }
         }
-        private void responseHandler(ECoreType type, string redirectUrl)
+        private void responseHandler(ECoreType type, string gitHubReleaseApi, bool preRelease)
         {
             try
             {
-                string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                var gitHubReleases = JsonConvert.DeserializeObject<List<GitHubRelease>>(gitHubReleaseApi);
+                string version;
+                if (preRelease)
+                {
+                    version = gitHubReleases!.First().TagName;
+                }
+                else
+                {
+                    version = gitHubReleases!.First(r => r.Prerelease == false).TagName;
+                }
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
                 string curVersion;

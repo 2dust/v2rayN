@@ -2,6 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <LangVersion>preview</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0A9785E6-D256-4B73-9757-4EF59955FD1E}</ProjectGuid>
@@ -209,6 +210,7 @@
     <Compile Include="Mode\ESysProxyType.cs" />
     <Compile Include="Mode\EMove.cs" />
     <Compile Include="Mode\EServerColName.cs" />
+    <Compile Include="Mode\GitHubRelease.cs" />
     <Compile Include="Mode\RoutingItem.cs" />
     <Compile Include="Mode\RulesItem.cs" />
     <Compile Include="Mode\ServerStatistics.cs" />

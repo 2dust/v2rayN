@@ -14,7 +14,7 @@ namespace v2rayN.Mode
 
         public string coreUrl { get; set; }
 
-        public string coreLatestUrl { get; set; }
+        public string coreReleaseApiUrl { get; set; }
 
         public string coreDownloadUrl32 { get; set; }
 
