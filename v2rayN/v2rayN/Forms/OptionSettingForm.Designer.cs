@@ -75,6 +75,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.txtautoUpdateSubInterval = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.chkEnableCheckPreReleaseUpdate = new System.Windows.Forms.CheckBox();
             this.chkEnableSecurityProtocolTls13 = new System.Windows.Forms.CheckBox();
             this.chkEnableAutoAdjustMainLvColWidth = new System.Windows.Forms.CheckBox();
             this.btnSetLoopback = new System.Windows.Forms.Button();
@@ -407,6 +408,7 @@
             this.tabPage7.Controls.Add(this.label17);
             this.tabPage7.Controls.Add(this.txtautoUpdateSubInterval);
             this.tabPage7.Controls.Add(this.label3);
+            this.tabPage7.Controls.Add(this.chkEnableCheckPreReleaseUpdate);
             this.tabPage7.Controls.Add(this.chkEnableSecurityProtocolTls13);
             this.tabPage7.Controls.Add(this.chkEnableAutoAdjustMainLvColWidth);
             this.tabPage7.Controls.Add(this.btnSetLoopback);
@@ -444,6 +446,12 @@
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            // 
+            // chkEnableCheckPreReleaseUpdate
+            // 
+            resources.ApplyResources(this.chkEnableCheckPreReleaseUpdate, "chkEnableCheckPreReleaseUpdate");
+            this.chkEnableCheckPreReleaseUpdate.Name = "chkEnableCheckPreReleaseUpdate";
+            this.chkEnableCheckPreReleaseUpdate.UseVisualStyleBackColor = true;
             // 
             // chkEnableSecurityProtocolTls13
             // 
@@ -769,5 +777,6 @@
         private System.Windows.Forms.NumericUpDown numStatisticsFreshRate;
         private System.Windows.Forms.ComboBox cmbdomainStrategy4Freedom;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.CheckBox chkEnableCheckPreReleaseUpdate;
     }
 }

@@ -98,6 +98,7 @@ namespace v2rayN.Forms
 
             txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
             txtautoUpdateSubInterval.Text = config.autoUpdateSubInterval.ToString();
+            chkEnableCheckPreReleaseUpdate.Checked = config.checkPreReleaseUpdate;
             txttrayMenuServersLimit.Text = config.trayMenuServersLimit.ToString();
         }
 
@@ -298,6 +299,7 @@ namespace v2rayN.Forms
 
             config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
             config.autoUpdateSubInterval = Utils.ToInt(txtautoUpdateSubInterval.Text);
+            config.checkPreReleaseUpdate = chkEnableCheckPreReleaseUpdate.Checked;
             config.trayMenuServersLimit = Utils.ToInt(txttrayMenuServersLimit.Text);
             return 0;
         }

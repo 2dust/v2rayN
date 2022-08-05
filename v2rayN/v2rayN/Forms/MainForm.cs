@@ -1364,7 +1364,7 @@ namespace v2rayN.Forms
                     menuExit_Click(null, null);
                 }
             };
-            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI);
+            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI, config.checkPreReleaseUpdate);
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
@@ -1412,7 +1412,7 @@ namespace v2rayN.Forms
                     AppendText(false, ResUI.MsgUpdateV2rayCoreSuccessfully);
                 }
             };
-            (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI);
+            (new UpdateHandle()).CheckUpdateCore(type, config, _updateUI, config.checkPreReleaseUpdate);
         }
 
         private void tsbCheckUpdateGeo_Click(object sender, EventArgs e)
