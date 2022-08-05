@@ -707,6 +707,13 @@ namespace v2rayN
             }
         }
 
+        public static string MainMsgFilterKey
+        {
+            get
+            {
+                return $"MainMsgFilter_{GetMD5(StartupPath())}";
+            }
+        }
         #endregion
 
         #region 测速

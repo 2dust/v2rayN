@@ -26,7 +26,11 @@ namespace v2rayN.Forms
 
         private void MainMsgControl_Load(object sender, EventArgs e)
         {
-
+            _msgFilter = Utils.RegReadValue(Global.MyRegPath, Utils.MainMsgFilterKey, "");
+            if (!Utils.IsNullOrEmpty(_msgFilter))
+            {
+                gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, _msgFilter);
+            }
         }
 
         #region 提示信息
@@ -188,6 +192,7 @@ namespace v2rayN.Forms
             {
                 _msgFilter = fm.MsgFilter;
                 gbMsgTitle.Text = string.Format(ResUI.MsgInformationTitle, _msgFilter);
+                Utils.RegWriteValue(Global.MyRegPath, Utils.MainMsgFilterKey, _msgFilter);
             }
         }
 
