@@ -96,6 +96,8 @@
             this.tsbSubSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbSubUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbSubUpdateViaProxy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbSubGroupUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbSubGroupUpdateViaProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbQRCodeSwitch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbSetting = new System.Windows.Forms.ToolStripDropDownButton();
@@ -128,8 +130,6 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.tsbSubGroupUpdate = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbSubGroupUpdateViaProxy = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scServers)).BeginInit();
             this.scServers.Panel1.SuspendLayout();
             this.scServers.Panel2.SuspendLayout();
@@ -193,11 +193,11 @@
             this.menuAddServers,
             this.menuScanScreen,
             this.toolStripSeparator1,
+            this.menuServerFilter,
             this.menuRemoveServer,
             this.menuRemoveDuplicateServer,
             this.menuCopyServer,
             this.menuSetDefaultServer,
-            this.menuServerFilter,
             this.toolStripSeparator3,
             this.menuMoveToGroup,
             this.menuMoveEvent,
@@ -216,7 +216,6 @@
             this.menuExport2ShareUrl,
             this.menuExport2SubContent});
             this.cmsLv.Name = "cmsLv";
-            this.cmsLv.OwnerItem = this.tsbServer;
             resources.ApplyResources(this.cmsLv, "cmsLv");
             // 
             // menuAddVmessServer
@@ -639,6 +638,18 @@
             resources.ApplyResources(this.tsbSubUpdateViaProxy, "tsbSubUpdateViaProxy");
             this.tsbSubUpdateViaProxy.Click += new System.EventHandler(this.tsbSubUpdateViaProxy_Click);
             // 
+            // tsbSubGroupUpdate
+            // 
+            this.tsbSubGroupUpdate.Name = "tsbSubGroupUpdate";
+            resources.ApplyResources(this.tsbSubGroupUpdate, "tsbSubGroupUpdate");
+            this.tsbSubGroupUpdate.Click += new System.EventHandler(this.tsbSubGroupUpdate_Click);
+            // 
+            // tsbSubGroupUpdateViaProxy
+            // 
+            this.tsbSubGroupUpdateViaProxy.Name = "tsbSubGroupUpdateViaProxy";
+            resources.ApplyResources(this.tsbSubGroupUpdateViaProxy, "tsbSubGroupUpdateViaProxy");
+            this.tsbSubGroupUpdateViaProxy.Click += new System.EventHandler(this.tsbSubGroupUpdateViaProxy_Click);
+            // 
             // tsbQRCodeSwitch
             // 
             this.tsbQRCodeSwitch.CheckOnClick = true;
@@ -851,18 +862,6 @@
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
-            // 
-            // tsbSubGroupUpdate
-            // 
-            this.tsbSubGroupUpdate.Name = "tsbSubGroupUpdate";
-            resources.ApplyResources(this.tsbSubGroupUpdate, "tsbSubGroupUpdate");
-            this.tsbSubGroupUpdate.Click += new System.EventHandler(this.tsbSubGroupUpdate_Click);
-            // 
-            // tsbSubGroupUpdateViaProxy
-            // 
-            this.tsbSubGroupUpdateViaProxy.Name = "tsbSubGroupUpdateViaProxy";
-            resources.ApplyResources(this.tsbSubGroupUpdateViaProxy, "tsbSubGroupUpdateViaProxy");
-            this.tsbSubGroupUpdateViaProxy.Click += new System.EventHandler(this.tsbSubGroupUpdateViaProxy_Click);
             // 
             // MainForm
             // 
