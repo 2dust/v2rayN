@@ -398,7 +398,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var gitHubReleases = JsonConvert.DeserializeObject<List<GitHubRelease>>(gitHubReleaseApi);
+                var gitHubReleases =  Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);                 
                 string version;
                 if (preRelease)
                 {
