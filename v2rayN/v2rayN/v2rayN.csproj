@@ -492,18 +492,18 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.21.1</Version>
+      <Version>3.21.4</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Core">
       <Version>2.46.3</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Tools">
-      <Version>2.46.3</Version>
+      <Version>2.47.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.14</Version>
+      <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
