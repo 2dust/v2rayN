@@ -594,6 +594,12 @@ namespace v2rayN
         {
             try
             {
+                //clear
+                if (!RegReadValue(autoRunRegPath, "v2rayNAutoRun", "").IsNullOrEmpty())
+                {
+                    RegWriteValue(autoRunRegPath, "v2rayNAutoRun", "");
+                }
+
                 string value = RegReadValue(autoRunRegPath, autoRunName, "");
                 string exePath = GetExePath();
                 if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
