@@ -158,18 +158,18 @@ namespace v2rayN.Forms
         {
             scServers.Panel2Collapsed = true;
 
-            if (!config.uiItem.mainLocation.IsEmpty)
-            {
-                if (config.uiItem.mainLocation.X >= SystemInformation.WorkingArea.Width
-                    || config.uiItem.mainLocation.Y >= SystemInformation.WorkingArea.Height)
-                {
-                    Location = new Point(0, 0);
-                }
-                else
-                {
-                    Location = config.uiItem.mainLocation;
-                }
-            }
+            //if (!config.uiItem.mainLocation.IsEmpty)
+            //{
+            //    if (config.uiItem.mainLocation.X >= SystemInformation.WorkingArea.Width
+            //        || config.uiItem.mainLocation.Y >= SystemInformation.WorkingArea.Height)
+            //    {
+            //        Location = new Point(0, 0);
+            //    }
+            //    else
+            //    {
+            //        Location = config.uiItem.mainLocation;
+            //    }
+            //}
             if (!config.uiItem.mainSize.IsEmpty)
             {
                 Width = config.uiItem.mainSize.Width;
