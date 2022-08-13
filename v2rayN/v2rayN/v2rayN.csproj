@@ -492,7 +492,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.21.4</Version>
+      <Version>3.21.5</Version>
     </PackageReference>
     <PackageReference Include="Grpc.Core">
       <Version>2.46.3</Version>
