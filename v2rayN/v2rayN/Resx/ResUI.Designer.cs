@@ -736,7 +736,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Core not found, please download: {0} 的本地化字符串。
+        ///   查找类似 Core not found({0}), please download: {1} 的本地化字符串。
         /// </summary>
         internal static string NotFoundCore {
             get {

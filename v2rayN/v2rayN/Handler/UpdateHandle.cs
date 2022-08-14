@@ -361,7 +361,7 @@ namespace v2rayN.Handler
 
                 if (!File.Exists(filePath))
                 {
-                    string msg = string.Format(ResUI.NotFoundCore, @"");
+                    string msg = string.Format(ResUI.NotFoundCore, @"", "");
                     //ShowMsg(true, msg);
                     return "";
                 }
@@ -403,7 +403,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var gitHubReleases =  Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);                 
+                var gitHubReleases = Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);
                 string version;
                 if (preRelease)
                 {

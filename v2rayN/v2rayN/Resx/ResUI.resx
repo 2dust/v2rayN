@@ -295,7 +295,7 @@
     <value> non-standard service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>Core not found, please download: {0}</value>
+    <value>Core not found({0}), please download: {1}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>Scan completed, no valid QR code found</value>

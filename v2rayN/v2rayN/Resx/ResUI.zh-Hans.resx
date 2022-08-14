@@ -295,7 +295,7 @@
     <value>非标准服务，此功能无效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>找不到Core，下载地址: {0}</value>
+    <value>找不到Core(文件名:{0})，下载地址: {1}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成,未发现有效二维码</value>

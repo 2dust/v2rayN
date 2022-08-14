@@ -186,7 +186,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, coreInfo.coreUrl);
+                string msg = string.Format(ResUI.NotFoundCore, string.Join(", ", lstCoreTemp.ToArray()), coreInfo.coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
