@@ -145,12 +145,12 @@ namespace v2rayN.Handler
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.hysteria,
-                coreExes = new List<string> { "hysteria-tun-windows-6.0-amd64", "hysteria-tun-windows-6.0-386", "hysteria" },
+                coreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },
                 arguments = "",
                 coreUrl = Global.hysteriaCoreUrl,
                 coreReleaseApiUrl = Global.hysteriaCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
-                coreDownloadUrl32 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-tun-windows-6.0-386.exe",
-                coreDownloadUrl64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-tun-windows-6.0-amd64.exe",
+                coreDownloadUrl32 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-386.exe",
+                coreDownloadUrl64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-amd64.exe",
             });
 
             coreInfos.Add(new CoreInfo
