@@ -579,4 +579,7 @@
   <data name="tsbSubGroupUpdateViaProxy.Text" xml:space="preserve">
     <value>更新当前分组订阅(通过代理)</value>
   </data>
+  <data name="tsbRestoreGuiNConfig.Text" xml:space="preserve">
+    <value>恢复v2rayN配置文件</value>
+  </data>
 </root>

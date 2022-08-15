@@ -232,6 +232,46 @@ namespace v2rayN.Handler
             }
         }
 
+        public bool RestoreGuiNConfig(ref Config config)
+        {
+            var fileContent = string.Empty;
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.InitialDirectory = Utils.GetBackupPath("");
+                fileDialog.Filter = "guiNConfig|*.json|All|*.*";
+                fileDialog.FilterIndex = 2;
+                fileDialog.RestoreDirectory = true;
+
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileContent = Utils.LoadResource(fileDialog.FileName);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            if (Utils.IsNullOrEmpty(fileContent))
+            {
+                UI.ShowWarning(ResUI.OperationFailed);
+                return false;
+            }
+
+            var resConfig = Utils.FromJson<Config>(fileContent);
+            if (resConfig == null)
+            {
+                UI.ShowWarning(ResUI.OperationFailed);
+                return false;
+            }
+            //backup first
+            BackupGuiNConfig(config, true);
+
+            config = resConfig;
+            LazyConfig.Instance.SetConfig(ref config);
+
+            return true;
+        }
+
         public void UpdateTask(Config config, Action<bool, string> update)
         {
             Task.Run(() => UpdateTaskRun(config, update));

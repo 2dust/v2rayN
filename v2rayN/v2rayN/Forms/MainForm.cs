@@ -811,6 +811,7 @@ namespace v2rayN.Forms
             if (statistics != null)
             {
                 statistics.ClearAllServerStatistics();
+                RefreshServers();
             }
         }
 
@@ -1081,6 +1082,14 @@ namespace v2rayN.Forms
         private void tsbBackupGuiNConfig_Click(object sender, EventArgs e)
         {
             MainFormHandler.Instance.BackupGuiNConfig(config);
+        }
+
+        private void tsbRestoreGuiNConfig_Click(object sender, EventArgs e)
+        {
+            if (MainFormHandler.Instance.RestoreGuiNConfig(ref config))
+            {
+                RefreshServers();
+            }
         }
         #endregion
 
@@ -1469,6 +1478,15 @@ namespace v2rayN.Forms
         {
             UpdateSubscriptionProcess("", true);
         }
+        private void tsbSubGroupUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(_groupId, true);
+        }
+
+        private void tsbSubGroupUpdateViaProxy_Click(object sender, EventArgs e)
+        {
+            UpdateSubscriptionProcess(_groupId, true);
+        }
 
         /// <summary>
         /// the subscription update process
@@ -1581,14 +1599,5 @@ namespace v2rayN.Forms
         }
         #endregion
 
-        private void tsbSubGroupUpdate_Click(object sender, EventArgs e)
-        {
-            UpdateSubscriptionProcess(_groupId, true);
-        }
-
-        private void tsbSubGroupUpdateViaProxy_Click(object sender, EventArgs e)
-        {
-            UpdateSubscriptionProcess(_groupId, true);
-        }
     }
 }

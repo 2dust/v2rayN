@@ -190,15 +190,16 @@ namespace v2rayN.Handler
         {
             if (serverStatistics_ != null)
             {
-                foreach (var item in serverStatistics_.server)
-                {
-                    item.todayUp = 0;
-                    item.todayDown = 0;
-                    item.totalUp = 0;
-                    item.totalDown = 0;
-                    // update ui display to zero
-                    updateFunc_(0, 0, new List<ServerStatItem> { item });
-                }
+                //foreach (var item in serverStatistics_.server)
+                //{
+                //    item.todayUp = 0;
+                //    item.todayDown = 0;
+                //    item.totalUp = 0;
+                //    item.totalDown = 0;
+                //    // update ui display to zero
+                //    updateFunc_(0, 0, new List<ServerStatItem> { item });
+                //}
+                serverStatistics_.server = new List<ServerStatItem>();
 
                 // update statistic json file
                 SaveToFile();
