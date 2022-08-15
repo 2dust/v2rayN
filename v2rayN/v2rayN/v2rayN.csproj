@@ -3,49 +3,12 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>preview</LangVersion>
     <OutputType>WinExe</OutputType>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>发布\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <Copyright>Copyright © 2019-2022 (GPLv3)</Copyright>
+    <FileVersion>5.33</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>v2rayN.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>BD431FE78E8A6683106E7110882AE5C41CBF5C60</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>v2rayN_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>v2rayN.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Data.Linq" />
@@ -57,71 +20,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Base\ListViewFlickerFree.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Forms\MainMsgControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\ServerTransportControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\GroupSettingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\QRCodeControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\SubSettingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <EmbeddedResource Include="Sample\custom_routing_white" />
-    <EmbeddedResource Include="Sample\custom_routing_global" />
-    <EmbeddedResource Include="Sample\custom_routing_locked" />
-    <EmbeddedResource Include="Sample\custom_routing_black" />
     <Protobuf Include="Protos\Statistics.proto" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="v2rayN.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sample\SampleClientConfig.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sample\SampleHttprequest.txt" />
-    <EmbeddedResource Include="Sample\SampleHttpresponse.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 和 x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\NotifyIcon1.ico" />
-    <Content Include="Resources\NotifyIcon2.ico" />
-    <Content Include="Resources\NotifyIcon3.ico" />
-    <EmbeddedResource Include="Sample\SampleInbound.txt" />
-    <Content Include="Resources\help.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
