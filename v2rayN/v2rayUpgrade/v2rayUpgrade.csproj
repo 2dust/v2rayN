@@ -5,6 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Copyright>Copyright © 2019-2020 (GPLv3)</Copyright>
     <FileVersion>1.1.0.0</FileVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
