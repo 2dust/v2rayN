@@ -1,0 +1,28 @@
+﻿<Window x:Class="v2rayUpgrade.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="v2rayUpgrade" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="50px">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Label Margin="20px" Content="v2rayN will restart automatically after successful upgrade"
+                   FontSize="15" />
+            <Label Margin="20px" Content="升级成功后将自动重启v2rayN" FontSize="15" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Margin="50px" Grid.Column="0" Content="_Upgrade(升级)" Click="ButtonOK_OnClick" />
+            <Button Margin="50px" Grid.Column="1" Content="_Exit(退出)" Click="ButtonClose_OnClick" />
+        </Grid>
+    </Grid>
+</Window>
