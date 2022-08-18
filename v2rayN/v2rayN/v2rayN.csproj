@@ -11,6 +11,30 @@
     <ApplicationIcon>v2rayN.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Sample\custom_routing_black" />
+    <None Remove="Sample\custom_routing_global" />
+    <None Remove="Sample\custom_routing_locked" />
+    <None Remove="Sample\custom_routing_rules" />
+    <None Remove="Sample\custom_routing_white" />
+    <None Remove="Sample\SampleClientConfig.txt" />
+    <None Remove="Sample\SampleHttprequest.txt" />
+    <None Remove="Sample\SampleHttpresponse.txt" />
+    <None Remove="Sample\SampleInbound.txt" />
+    <None Remove="Sample\SampleServerConfig.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sample\custom_routing_black" />
+    <EmbeddedResource Include="Sample\custom_routing_global" />
+    <EmbeddedResource Include="Sample\custom_routing_locked" />
+    <EmbeddedResource Include="Sample\custom_routing_rules" />
+    <EmbeddedResource Include="Sample\custom_routing_white" />
+    <EmbeddedResource Include="Sample\SampleClientConfig.txt" />
+    <EmbeddedResource Include="Sample\SampleHttprequest.txt" />
+    <EmbeddedResource Include="Sample\SampleHttpresponse.txt" />
+    <EmbeddedResource Include="Sample\SampleInbound.txt" />
+    <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Messaging" />
@@ -51,9 +75,8 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy /y $(SolutionDir)v2rayUpgrade\$(OutDir)* $(TargetDir)
-
-del $(TargetDir)*.xml $(TargetDir)*.so $(TargetDir)*.dylib
+    <PostBuildEvent>del $(TargetDir)*.xml $(TargetDir)*.so $(TargetDir)*.dylib
 if not "$(ConfigurationName)" == "Debug" del $(TargetDir)*.pdb</PostBuildEvent>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 </Project>
