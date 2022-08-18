@@ -814,7 +814,7 @@ namespace v2rayN.Handler
                 && o.headerType == n.headerType
                 && o.requestHost == n.requestHost
                 && o.path == n.path
-                && o.streamSecurity == n.streamSecurity
+                && (o.configType == EConfigType.Trojan || o.streamSecurity == n.streamSecurity)
                 && o.flow == n.flow
                 && o.sni == n.sni
                 && (!remarks || o.remarks == n.remarks);
