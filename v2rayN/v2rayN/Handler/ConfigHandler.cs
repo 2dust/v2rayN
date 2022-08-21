@@ -156,7 +156,7 @@ namespace v2rayN.Handler
             {
                 config.groupItem = new List<GroupItem>();
             }
-            if (config.statisticsFreshRate > 100)
+            if (config.statisticsFreshRate > 100 || config.statisticsFreshRate < 1)
             {
                 config.statisticsFreshRate = 1;
             }

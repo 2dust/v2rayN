@@ -290,6 +290,10 @@ namespace v2rayN.Forms
             bool lastEnableStatistics = config.enableStatistics;
             config.enableStatistics = chkEnableStatistics.Checked;
             config.statisticsFreshRate = Convert.ToInt32(numStatisticsFreshRate.Value);
+            if (config.statisticsFreshRate > 100 || config.statisticsFreshRate < 1)
+            {
+                config.statisticsFreshRate = 1;
+            }
 
             config.keepOlderDedupl = chkKeepOlderDedupl.Checked;
 
