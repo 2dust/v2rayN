@@ -1530,6 +1530,11 @@ namespace v2rayN.Forms
         {
             SetCurrentLanguage("zh-Hans");
         }
+
+        private void tsbLanguageID_Click(object sender, EventArgs e)
+        {
+            SetCurrentLanguage("id");
+        }
         private void SetCurrentLanguage(string value)
         {
             Utils.RegWriteValue(Global.MyRegPath, Global.MyRegKeyLanguage, value);

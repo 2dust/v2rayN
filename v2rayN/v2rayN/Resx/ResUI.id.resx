@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Tambahkan aturan baru? Pilih ya untuk tambahkan, pilih lainnya untuk mengganti</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>Semua server</value>
+  </data>
+  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
+    <value>Ekspor kumpulan langganan ke papan klip berhasil</value>
+  </data>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>Ekspor kumpulan URL ke papan klip berhasil</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Harap cek pengaturan server</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value>Format konfigurasi salah</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Perhatian, konfigurasi khusus bergantung pada konfigurasi anda sendiri dan tidak berfungsi dengan semua pengaturan. Jika anda ingin menggunakan proksi sistem, harap mengubah listening port secara manual.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Mengunduh...</value>
+  </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>Mengunduh</value>
+  </data>
+  <data name="DownloadYesNo" xml:space="preserve">
+    <value>Yakin untuk mengunduh? {0}</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Gagal mengubah file konfigurasi</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Gagal menghasilkan file konfigurasi bawaan</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value>Gagal mendapatkan konfigurasi bawaan</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Gagal mengimpor konfigurasi khusus server</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Gagal membaca file konfigurasi</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>Harap mengisi DNS khusus dengan benar</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Harap mengisi format port server dengan benar</value>
+  </data>
+  <data name="FillKcpParameters" xml:space="preserve">
+    <value>Harap mengisi parameter KCP dengan benar</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Harap mengisi listening port lokal</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Harap mengisi kata sandi</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Harap mengisi alamat server</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Silakan telusuri untuk mengimpor konfigurasi server</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>Harap mengisi user ID</value>
+  </data>
+  <data name="IncorrectClientConfiguration" xml:space="preserve">
+    <value> bukan file konfigurasi klien yang benar, harap periksa</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value> bukan konfigurasi yang benar, silakan periksa</value>
+  </data>
+  <data name="IncorrectServerConfiguration" xml:space="preserve">
+    <value> bukan file konfigurasi server yang benar, harap periksa</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>Konfigurasi awal</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} paling terbaru.</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} paling terbaru.</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>LAN</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Lokal</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Alamat</value>
+  </data>
+  <data name="LvAlias" xml:space="preserve">
+    <value>Alias</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Jumlah</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>Ikon Khusus</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Kemananan</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>komentar</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Tipe</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Subs</value>
+  </data>
+  <data name="LvTestResults" xml:space="preserve">
+    <value>Hasil Tes</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Arus unduhan hari ini</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Arus unggahan hari ini</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total arus unduhan</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total arus unggahan</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="MediumFresh" xml:space="preserve">
+    <value>Sedang</value>
+  </data>
+  <data name="MsgClearSubscription" xml:space="preserve">
+    <value>Bersihkan isi langganan yang asli</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>Berhasil mengunduh GeoFile: {0}</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Berhasil mengunduh Core</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Gagal mengimpor isi langganan</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Berhasil mendapatkan isi langganan</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>Informasi (Filter : {0})</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>Harap mengisi alamat (url)</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>Tidak ada set langganan yang valid</value>
+  </data>
+  <data name="MsgPACUpdateFailed" xml:space="preserve">
+    <value>Gagal mengupdate PAC</value>
+  </data>
+  <data name="MsgPACUpdateSuccessfully" xml:space="preserve">
+    <value>Berhasil mengupdate PAC</value>
+  </data>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>{0} selesai &amp; sukses</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Server (Filter : {0})</value>
+  </data>
+  <data name="MsgSimplifyPAC" xml:space="preserve">
+    <value>Berhasil menyederhanakan PAC</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Memulai mendapatkan langganan</value>
+  </data>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Memulai pembaruan {0}...</value>
+  </data>
+  <data name="MsgStartUpdatingPAC" xml:space="preserve">
+    <value>Memulai pembaruan PAC...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Isi langganan tidak valid</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>sedang membongkar...</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Pembaruan langganan berakhir</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Pembaruan langganan dimulai</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Berhasil memperbarui Core</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>Berhasil memperbarui Core! Memulai ulang layanan...</value>
+  </data>
+  <data name="NeedHttpGlobalProxy" xml:space="preserve">
+    <value> Fitur ini mengandalkan proxy global Http, harap atur dengan benar terlebih dahulu.</value>
+  </data>
+  <data name="NetFrameworkRequirementsTip" xml:space="preserve">
+    <value>Membutuhkan .NET Framework 4.8 untuk menggunakan program ini</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Non-VMess or ss protocol</value>
+  </data>
+  <data name="NonVmessService" xml:space="preserve">
+    <value>layanan non-standar, fitur ini tidak valid</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>Tidak ditemukan Core({0}), harap mengunduh: {1}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Pemindaian selesai, tidak ditemukan kode QR yang valid</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value> operation failed, please check and retry</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operation success</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Please Fill Remarks</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Harap pilih metode enkripsi</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Harap pilih protokol</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>Harap pilih aturan</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Harap pilih server</value>
+  </data>
+  <data name="QuickFresh" xml:space="preserve">
+    <value>Cepat</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>Global hotkey {0} registered failed, reason {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>Global hotkey {0} registered successfully</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>Yakin untuk menghapus aturan?</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Yakin untuk menghapus server?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0},One of the required.</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>The client configuration file is saved at: {0}</value>
+  </data>
+  <data name="SaveServerConfigurationIn" xml:space="preserve">
+    <value>File konfigurasi server tersiman sebagai: {0}</value>
+  </data>
+  <data name="SlowFresh" xml:space="preserve">
+    <value>Lambat</value>
+  </data>
+  <data name="SpeedServerTips" xml:space="preserve">
+    <value>Note: This feature relies on the Http global proxy. Please manually adjust the Http global proxy and active node after testing.</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Tes Kecepatan...</value>
+  </data>
+  <data name="StartPacFailed" xml:space="preserve">
+    <value>Gagal memulai PAC. Harap jalankan program sebagai Admin</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Start service ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Konfigurasi berhasil</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Custom configuration server imported successfully.</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>Berhasil mengimpor server {0} dari papan klip.</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Berhasil mengimpor URL dari pemindai</value>
+  </data>
+  <data name="SystemProxy" xml:space="preserve">
+    <value>Proksi sistem</value>
+  </data>
+  <data name="TestMeOutput" xml:space="preserve">
+    <value>The ping of current service: {0} ms</value>
+  </data>
+  <data name="TooManyServersTip" xml:space="preserve">
+    <value>Terlalu banyak server, harap buka antarmuka utama</value>
+  </data>
+  <data name="UngroupedServers" xml:space="preserve">
+    <value>Ungrouped</value>
+  </data>
+</root>

@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="menuAddCustomServer.Text" xml:space="preserve">
+    <value>Add a custom configuration server</value>
+  </data>
+  <data name="menuAddServers.Text" xml:space="preserve">
+    <value>Import bulk URL from clipboard (Ctrl+V)</value>
+  </data>
+  <data name="menuAddServers2.Text" xml:space="preserve">
+    <value>Import bulk URL from clipboard</value>
+  </data>
+  <data name="menuAddShadowsocksServer.Text" xml:space="preserve">
+    <value>Tambah server [Shadowsocks]</value>
+  </data>
+  <data name="menuAddSocksServer.Text" xml:space="preserve">
+    <value>Tambah server [Socks]</value>
+  </data>
+  <data name="menuAddTrojanServer.Text" xml:space="preserve">
+    <value>Tambah server [Trojan]</value>
+  </data>
+  <data name="menuAddVlessServer.Text" xml:space="preserve">
+    <value>Tambah server [VLESS]</value>
+  </data>
+  <data name="menuAddVmessServer.Text" xml:space="preserve">
+    <value>Tambah server [VMess]</value>
+  </data>
+  <data name="menuClearServerStatistics.Text" xml:space="preserve">
+    <value>Clear all service statistics</value>
+  </data>
+  <data name="menuCopyServer.Text" xml:space="preserve">
+    <value>Clone selected server</value>
+  </data>
+  <data name="menuExit.Text" xml:space="preserve">
+    <value>Keluar</value>
+  </data>
+  <data name="menuExport2ClientConfig.Text" xml:space="preserve">
+    <value>Export selected server for client configuration</value>
+  </data>
+  <data name="menuExport2ServerConfig.Text" xml:space="preserve">
+    <value>Export selected server for server configuration</value>
+  </data>
+  <data name="menuExport2ShareUrl.Text" xml:space="preserve">
+    <value>Export share URLs to clipboard (Ctrl+C)</value>
+  </data>
+  <data name="menuExport2SubContent.Text" xml:space="preserve">
+    <value>Export subscription (base64) share to clipboard</value>
+  </data>
+  <data name="menuGlobal.Text" xml:space="preserve">
+    <value>Atur proksi sistem</value>
+  </data>
+  <data name="menuKeepClear.Text" xml:space="preserve">
+    <value>Bersihkan proksi sistem</value>
+  </data>
+  <data name="menuKeepNothing.Text" xml:space="preserve">
+    <value>Jangan ubah proksi sistem</value>
+  </data>
+  <data name="menuMoveBottom.Text" xml:space="preserve">
+    <value>Pindah ke bawah (B)</value>
+  </data>
+  <data name="menuMoveDown.Text" xml:space="preserve">
+    <value>Bawah (D)</value>
+  </data>
+  <data name="menuMoveEvent.Text" xml:space="preserve">
+    <value>Pindah ke</value>
+  </data>
+  <data name="menuMoveToGroup.Text" xml:space="preserve">
+    <value>Pindah ke Grup</value>
+  </data>
+  <data name="menuMoveTop.Text" xml:space="preserve">
+    <value>Pindah ke atas (T)</value>
+  </data>
+  <data name="menuMoveUp.Text" xml:space="preserve">
+    <value>Atas (U)</value>
+  </data>
+  <data name="menuPingServer.Text" xml:space="preserve">
+    <value>Test servers ping (Ctrl+P)</value>
+  </data>
+  <data name="menuRealPingServer.Text" xml:space="preserve">
+    <value>Test servers real delay (Ctrl+R)</value>
+  </data>
+  <data name="menuRemoveDuplicateServer.Text" xml:space="preserve">
+    <value>Remove duplicate servers</value>
+  </data>
+  <data name="menuRemoveServer.Text" xml:space="preserve">
+    <value>Remove selected servers (Delete)</value>
+  </data>
+  <data name="menuRoutings.Text" xml:space="preserve">
+    <value>Routing</value>
+  </data>
+  <data name="menuScanScreen.Text" xml:space="preserve">
+    <value>Scan QR code on the screen (Ctrl+S)</value>
+  </data>
+  <data name="menuScanScreen2.Text" xml:space="preserve">
+    <value>Scan QR code on the screen</value>
+  </data>
+  <data name="menuSelectAll.Text" xml:space="preserve">
+    <value>Pilih Semua (Ctrl+A)</value>
+  </data>
+  <data name="menuServerFilter.Text" xml:space="preserve">
+    <value>Set server filter (Ctrl+F)</value>
+  </data>
+  <data name="menuServers.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="menuSetDefaultServer.Text" xml:space="preserve">
+    <value>Set as active server (Enter)</value>
+  </data>
+  <data name="menuSortServerResult.Text" xml:space="preserve">
+    <value>Sort by test result (Ctrl+E)</value>
+  </data>
+  <data name="menuSpeedServer.Text" xml:space="preserve">
+    <value>Test servers download speed (Ctrl+T)</value>
+  </data>
+  <data name="menuSysAgentMode.Text" xml:space="preserve">
+    <value>Proksi Sistem</value>
+  </data>
+  <data name="menuTcpingServer.Text" xml:space="preserve">
+    <value>Test servers with tcping (Ctrl+O)</value>
+  </data>
+  <data name="menuUpdateSubscriptions.Text" xml:space="preserve">
+    <value>Update subscription without proxy</value>
+  </data>
+  <data name="menuUpdateSubViaProxy.Text" xml:space="preserve">
+    <value>Update subscriptions via proxy</value>
+  </data>
+  <data name="notifyMain.Text" xml:space="preserve">
+    <value>v2rayN</value>
+  </data>
+  <data name="tsbAbout.Text" xml:space="preserve">
+    <value>v2rayN Project</value>
+  </data>
+  <data name="tsbBackupGuiNConfig.Text" xml:space="preserve">
+    <value>BackupGuiConfig</value>
+  </data>
+  <data name="tsbCheckUpdate.Text" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="tsbCheckUpdateClashCore.Text" xml:space="preserve">
+    <value>Update clash Core</value>
+  </data>
+  <data name="tsbCheckUpdateClashMetaCore.Text" xml:space="preserve">
+    <value>Update Clash.Meta Core</value>
+  </data>
+  <data name="tsbCheckUpdateCore.Text" xml:space="preserve">
+    <value>Update v2fly Core</value>
+  </data>
+  <data name="tsbCheckUpdateGeo.Text" xml:space="preserve">
+    <value>Update Geo files</value>
+  </data>
+  <data name="tsbCheckUpdateN.Text" xml:space="preserve">
+    <value>v2rayN (this software)</value>
+  </data>
+  <data name="tsbCheckUpdateSagerNetCore.Text" xml:space="preserve">
+    <value>Update SagerNet Core</value>
+  </data>
+  <data name="tsbCheckUpdateXrayCore.Text" xml:space="preserve">
+    <value>Update Xray Core</value>
+  </data>
+  <data name="tsbClose.Text" xml:space="preserve">
+    <value>Tutup</value>
+  </data>
+  <data name="tsbGlobalHotkeySetting.Text" xml:space="preserve">
+    <value>GlobalHotkeySetting</value>
+  </data>
+  <data name="tsbGroupSetting.Text" xml:space="preserve">
+    <value>GroupSetting</value>
+  </data>
+  <data name="tsbHelp.Text" xml:space="preserve">
+    <value>Bantuan</value>
+  </data>
+  <data name="tsbLanguageDef.Text" xml:space="preserve">
+    <value>Language-[English]</value>
+  </data>
+  <data name="tsbLanguageID.Text" xml:space="preserve">
+    <value>Bahasa Indonesia</value>
+  </data>
+  <data name="tsbLanguageZhHans.Text" xml:space="preserve">
+    <value>语言-[中文简体]</value>
+  </data>
+  <data name="tsbOptionSetting.Text" xml:space="preserve">
+    <value>OptionSetting</value>
+  </data>
+  <data name="tsbPromotion.Text" xml:space="preserve">
+    <value>  Promosi  </value>
+  </data>
+  <data name="tsbQRCodeSwitch.Text" xml:space="preserve">
+    <value>Bagikan</value>
+  </data>
+  <data name="tsbReload.Text" xml:space="preserve">
+    <value>Restart service</value>
+  </data>
+  <data name="tsbRestoreGuiNConfig.Text" xml:space="preserve">
+    <value>RestoreGuiNConfig</value>
+  </data>
+  <data name="tsbRoutingSetting.Text" xml:space="preserve">
+    <value>RoutingSetting</value>
+  </data>
+  <data name="tsbServer.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="tsbSetting.Text" xml:space="preserve">
+    <value>Pengaturan</value>
+  </data>
+  <data name="tsbSub.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="tsbSubGroupUpdate.Text" xml:space="preserve">
+    <value>Update group subscription without proxy</value>
+  </data>
+  <data name="tsbSubGroupUpdateViaProxy.Text" xml:space="preserve">
+    <value>Update group subscription with proxy</value>
+  </data>
+  <data name="tsbSubSetting.Text" xml:space="preserve">
+    <value>Pengaturan</value>
+  </data>
+  <data name="tsbSubUpdate.Text" xml:space="preserve">
+    <value>Update subscription without proxy</value>
+  </data>
+  <data name="tsbSubUpdateViaProxy.Text" xml:space="preserve">
+    <value>Update subscription with proxy</value>
+  </data>
+  <data name="tsbTestMe.Text" xml:space="preserve">
+    <value>Test current service status</value>
+  </data>
+  <data name="tsbV2rayWebsite.Text" xml:space="preserve">
+    <value>Situs V2Ray</value>
+  </data>
+</root>
