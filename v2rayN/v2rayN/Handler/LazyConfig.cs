@@ -80,14 +80,14 @@ namespace v2rayN.Handler
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.v2fly,
-                coreExes = new List<string> { "wv2ray", "v2ray" },
-                arguments = "",
+                coreExes = new List<string> { "v2ray" },
+                arguments = "run",
                 coreUrl = Global.v2flyCoreUrl,
                 coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
-                versionArg = "-version"
+                versionArg = "version"
             });
 
             coreInfos.Add(new CoreInfo
