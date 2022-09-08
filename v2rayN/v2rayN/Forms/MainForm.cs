@@ -1382,7 +1382,7 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
         {
-            CheckUpdateCore(ECoreType.v2fly);
+            CheckUpdateCore(ECoreType.v2fly_v5);
         }
 
         private void tsbCheckUpdateSagerNetCore_Click(object sender, EventArgs e)

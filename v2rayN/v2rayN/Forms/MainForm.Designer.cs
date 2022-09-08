@@ -68,9 +68,9 @@
             this.menuExport2ServerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2ShareUrl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExport2SubContent = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.tabGroup = new System.Windows.Forms.TabControl();
             this.qrCodeControl = new v2rayN.Forms.QRCodeControl();
-            this.tsbServer = new System.Windows.Forms.ToolStripDropDownButton();
             this.scBig = new System.Windows.Forms.SplitContainer();
             this.gbServers = new System.Windows.Forms.GroupBox();
             this.mainMsgControl = new v2rayN.Forms.MainMsgControl();
@@ -107,6 +107,7 @@
             this.tsbGroupSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbBackupGuiNConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbRestoreGuiNConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -130,7 +131,6 @@
             this.tsbPromotion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
-            this.tsbRestoreGuiNConfig = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.scServers)).BeginInit();
             this.scServers.Panel1.SuspendLayout();
             this.scServers.Panel2.SuspendLayout();
@@ -430,6 +430,13 @@
             resources.ApplyResources(this.menuExport2SubContent, "menuExport2SubContent");
             this.menuExport2SubContent.Click += new System.EventHandler(this.menuExport2SubContent_Click);
             // 
+            // tsbServer
+            // 
+            this.tsbServer.DropDown = this.cmsLv;
+            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
+            resources.ApplyResources(this.tsbServer, "tsbServer");
+            this.tsbServer.Name = "tsbServer";
+            // 
             // tabGroup
             // 
             resources.ApplyResources(this.tabGroup, "tabGroup");
@@ -441,13 +448,6 @@
             // 
             resources.ApplyResources(this.qrCodeControl, "qrCodeControl");
             this.qrCodeControl.Name = "qrCodeControl";
-            // 
-            // tsbServer
-            // 
-            this.tsbServer.DropDown = this.cmsLv;
-            this.tsbServer.Image = global::v2rayN.Properties.Resources.server;
-            resources.ApplyResources(this.tsbServer, "tsbServer");
-            this.tsbServer.Name = "tsbServer";
             // 
             // scBig
             // 
@@ -715,6 +715,12 @@
             resources.ApplyResources(this.tsbBackupGuiNConfig, "tsbBackupGuiNConfig");
             this.tsbBackupGuiNConfig.Click += new System.EventHandler(this.tsbBackupGuiNConfig_Click);
             // 
+            // tsbRestoreGuiNConfig
+            // 
+            this.tsbRestoreGuiNConfig.Name = "tsbRestoreGuiNConfig";
+            resources.ApplyResources(this.tsbRestoreGuiNConfig, "tsbRestoreGuiNConfig");
+            this.tsbRestoreGuiNConfig.Click += new System.EventHandler(this.tsbRestoreGuiNConfig_Click);
+            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
@@ -865,12 +871,6 @@
             resources.ApplyResources(this.tsbClose, "tsbClose");
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
-            // 
-            // tsbRestoreGuiNConfig
-            // 
-            this.tsbRestoreGuiNConfig.Name = "tsbRestoreGuiNConfig";
-            resources.ApplyResources(this.tsbRestoreGuiNConfig, "tsbRestoreGuiNConfig");
-            this.tsbRestoreGuiNConfig.Click += new System.EventHandler(this.tsbRestoreGuiNConfig_Click);
             // 
             // MainForm
             // 

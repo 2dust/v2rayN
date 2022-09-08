@@ -213,7 +213,7 @@ namespace v2rayN
         public static readonly List<string> xtlsFlows = new List<string> { "", "xtls-rprx-origin", "xtls-rprx-origin-udp443", "xtls-rprx-direct", "xtls-rprx-direct-udp443" };
         public static readonly List<string> networks = new List<string> { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> kcpHeaderTypes = new List<string> { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new List<string> { "v2fly", "SagerNet", "Xray" };
+        public static readonly List<string> coreTypes = new List<string> { "v2fly", "SagerNet", "Xray" , "v2fly_v5" };
         public static readonly List<string> domainMatchers = new List<string> { "linear", "mph", "" };
         public const string GrpcgunMode = "gun";
         public const string GrpcmultiMode = "multi";

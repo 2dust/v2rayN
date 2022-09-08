@@ -383,6 +383,7 @@ namespace v2rayN.Handler
                     case ECoreType.v2fly:
                     case ECoreType.SagerNet:
                     case ECoreType.Xray:
+                    case ECoreType.v2fly_v5:
                         version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
                         break;
                     case ECoreType.clash:
@@ -423,6 +424,7 @@ namespace v2rayN.Handler
                     case ECoreType.v2fly:
                     case ECoreType.SagerNet:
                     case ECoreType.Xray:
+                    case ECoreType.v2fly_v5:
                         {
                             curVersion = "v" + getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);

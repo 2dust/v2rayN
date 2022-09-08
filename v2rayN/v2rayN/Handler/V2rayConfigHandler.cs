@@ -951,6 +951,7 @@ namespace v2rayN.Handler
                         case ECoreType.v2fly:
                         case ECoreType.SagerNet:
                         case ECoreType.Xray:
+                        case ECoreType.v2fly_v5:
                             break;
                         case ECoreType.clash:
                         case ECoreType.clash_meta:

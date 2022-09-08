@@ -31,7 +31,7 @@ namespace v2rayN.Handler
             if (GetCoreType(vmessItem, EConfigType.Shadowsocks) == ECoreType.Xray)
             {
                 return Global.ssSecuritysInXray;
-            }        
+            }
 
             return Global.ssSecuritysInSagerNet;
         }
@@ -93,12 +93,25 @@ namespace v2rayN.Handler
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.SagerNet,
-                coreExes = new List<string> { "v2ray" },
+                coreExes = new List<string> { "SagerNet", "v2ray" },
                 arguments = "run",
                 coreUrl = Global.SagerNetCoreUrl,
                 coreReleaseApiUrl = Global.SagerNetCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
                 coreDownloadUrl32 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                match = "V2Ray",
+                versionArg = "version"
+            });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.v2fly_v5,
+                coreExes = new List<string> { "v2ray" },
+                arguments = "run",
+                coreUrl = Global.v2flyCoreUrl,
+                coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
+                coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
                 versionArg = "version"
             });
