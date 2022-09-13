@@ -125,9 +125,9 @@
   <data name="scServers.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 21</value>
   </data>
-  <data name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="cmsLv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>226, 19</value>
-  </data>
+  </metadata>
   <data name="menuAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>423, 24</value>
   </data>
@@ -368,10 +368,10 @@
 </value>
   </data>
   <data name="lvServers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 24</value>
   </data>
   <data name="lvServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1003, 338</value>
+    <value>1003, 334</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lvServers.TabIndex" type="System.Int32, mscorlib">
@@ -396,7 +396,7 @@
     <value>0, 0</value>
   </data>
   <data name="tabGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1003, 20</value>
+    <value>1003, 24</value>
   </data>
   <data name="tabGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -593,12 +593,12 @@
   <data name="&gt;&gt;scBig.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="notifyMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </data>
-  <data name="cmsMain.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="cmsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>137, 17</value>
-  </data>
+  </metadata>
   <data name="cmsMain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -713,9 +713,9 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>315, 17</value>
-  </data>
+  </metadata>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 59</value>
   </data>
@@ -1001,12 +1001,12 @@
   <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>64</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 15</value>
   </data>
