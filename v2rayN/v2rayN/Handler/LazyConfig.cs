@@ -181,6 +181,14 @@ namespace v2rayN.Handler
                 arguments = "-c config.json",
                 coreUrl = Global.tuicCoreUrl
             });
+            
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.sing-box,
+                coreExes = new List<string> { "sing-box-client", "sing-box" },
+                arguments = "-c config.json",
+                coreUrl = Global.sing-boxCoreUrl
+            });
         }
 
     }
