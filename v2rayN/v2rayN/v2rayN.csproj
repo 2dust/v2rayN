@@ -5,7 +5,7 @@
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
     <Copyright>Copyright © 2019-2022 (GPLv3)</Copyright>
-    <FileVersion>5.35</FileVersion>
+    <FileVersion>5.36</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>v2rayN.ico</ApplicationIcon>
