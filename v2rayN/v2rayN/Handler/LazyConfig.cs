@@ -184,10 +184,10 @@ namespace v2rayN.Handler
             
             coreInfos.Add(new CoreInfo
             {
-                coreType = ECoreType.sing-box,
+                coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
-                arguments = "-c config.json",
-                coreUrl = Global.sing-boxCoreUrl
+                arguments = "run",
+                coreUrl = Global.singboxCoreUrl
             });
         }
 

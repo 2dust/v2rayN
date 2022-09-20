@@ -20,7 +20,7 @@ namespace v2rayN
         public const string hysteriaCoreUrl = "https://github.com/HyNetwork/hysteria/releases";
         public const string naiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
         public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
-        public const string sing-boxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
+        public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
         public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
 
 
