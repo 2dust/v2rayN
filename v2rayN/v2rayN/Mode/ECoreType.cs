@@ -12,6 +12,7 @@ namespace v2rayN.Mode
         hysteria = 21,
         naiveproxy = 22,
         tuic = 23,
+        sing-box = 24,
         v2rayN = 99
     }
 }
