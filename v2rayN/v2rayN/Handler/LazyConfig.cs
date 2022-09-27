@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 using v2rayN.Mode;
 using System.Linq;
 
@@ -67,6 +68,10 @@ namespace v2rayN.Handler
         private void InitCoreInfo()
         {
             coreInfos = new List<CoreInfo>();
+
+            // Detects microarch level v3
+            // See https://github.com/golang/go/wiki/MinimumRequirements#amd64
+            bool bArchV3 = Avx2.X64.IsSupported;
 
             coreInfos.Add(new CoreInfo
             {
@@ -137,7 +142,7 @@ namespace v2rayN.Handler
                 coreUrl = Global.clashCoreUrl,
                 coreReleaseApiUrl = Global.clashCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
                 coreDownloadUrl32 = Global.clashCoreUrl + "/download/{0}/clash-windows-386-{0}.zip",
-                coreDownloadUrl64 = Global.clashCoreUrl + "/download/{0}/clash-windows-amd64-{0}.zip",
+                coreDownloadUrl64 = Global.clashCoreUrl + "/download/{0}/clash-windows-amd64" + (bArchV3 ? "-v3" : "") + "-{0}.zip",
                 match = "v",
                 versionArg = "-v"
             });
@@ -150,7 +155,7 @@ namespace v2rayN.Handler
                 coreUrl = Global.clashMetaCoreUrl,
                 coreReleaseApiUrl = Global.clashMetaCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
                 coreDownloadUrl32 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-386-{0}.zip",
-                coreDownloadUrl64 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-amd64-compatible-{0}.zip",
+                coreDownloadUrl64 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-amd64" + (bArchV3 ? "" : "-compatible") + "-{0}.zip",
                 match = "v",
                 versionArg = "-v"
             });
