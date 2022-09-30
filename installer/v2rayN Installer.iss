@@ -24,7 +24,7 @@ LicenseFile=..\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=lowest
 OutputDir=..\installer
-OutputBaseFilename=v2rayN Installer v{MyAppVersion}
+OutputBaseFilename=v2rayN Installer v{#MyAppVersion}
 SetupIconFile=..\v2rayN\v2rayN\v2rayN.ico
 Compression=lzma
 SolidCompression=yes
