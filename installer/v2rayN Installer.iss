@@ -20,12 +20,12 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=D:\Barname nevisi\ramtinak\ramtinak\v2rayN\LICENSE
+LicenseFile=..\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
-OutputDir=D:\Barname nevisi\ramtinak\ramtinak\v2rayN\installer
-OutputBaseFilename=v2rayN Installer
-SetupIconFile=D:\Barname nevisi\ramtinak\ramtinak\v2rayN\v2rayN\v2rayN\v2rayN.ico
+PrivilegesRequired=lowest
+OutputDir=..\installer
+OutputBaseFilename=v2rayN Installer v{MyAppVersion}
+SetupIconFile=..\v2rayN\v2rayN\v2rayN.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -37,8 +37,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Barname nevisi\ramtinak\ramtinak\v2rayN\v2rayN\v2rayN\bin\Debug\net48\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Barname nevisi\ramtinak\ramtinak\v2rayN\v2rayN\v2rayN\bin\Debug\net48\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\v2rayN\v2rayN\bin\Debug\net48\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\v2rayN\v2rayN\bin\Debug\net48\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs                         
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
