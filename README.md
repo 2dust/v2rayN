@@ -16,3 +16,6 @@ A V2Ray client for Windows, support [Xray core](https://github.com/XTLS/Xray-cor
 - Microsoft [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net48-offline-installer)
 - v2fly core [https://github.com/v2fly/v2ray-core/releases](https://github.com/v2fly/v2ray-core/releases)
 - Xray core [https://github.com/XTLS/Xray-core/releases](https://github.com/XTLS/Xray-core/releases)
+
+### Telegram Channel
+[github_2dust](https://t.me/github_2dust)
