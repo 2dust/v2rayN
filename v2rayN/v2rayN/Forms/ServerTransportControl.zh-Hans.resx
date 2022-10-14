@@ -119,49 +119,49 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tipNetwork.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 12</value>
+    <value>182, 15</value>
   </data>
   <data name="tipNetwork.Text" xml:space="preserve">
     <value>*默认tcp,选错会无法连接</value>
   </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 28</value>
+    <value>169, 36</value>
   </data>
   <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 20</value>
+    <value>290, 23</value>
   </data>
   <data name="labNetwork.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 12</value>
+    <value>139, 15</value>
   </data>
   <data name="labNetwork.Text" xml:space="preserve">
     <value>传输协议(network)</value>
   </data>
   <data name="labPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 12</value>
+    <value>85, 15</value>
   </data>
   <data name="labPath.Text" xml:space="preserve">
     <value>路径(path)</value>
   </data>
   <data name="labStreamSecurity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 12</value>
+    <value>122, 15</value>
   </data>
   <data name="labStreamSecurity.Text" xml:space="preserve">
     <value>传输层安全(tls)</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 92</value>
+    <value>169, 117</value>
   </data>
   <data name="txtRequestHost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>331, 20</value>
+    <value>442, 20</value>
   </data>
   <data name="labHeaderType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 12</value>
+    <value>115, 15</value>
   </data>
   <data name="labHeaderType.Text" xml:space="preserve">
     <value>伪装类型(type)</value>
   </data>
   <data name="labRequestHost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 12</value>
+    <value>115, 15</value>
   </data>
   <data name="labRequestHost.Text" xml:space="preserve">
     <value>伪装域名(host)</value>
@@ -169,25 +169,25 @@
   <data name="gbTransport.Text" xml:space="preserve">
     <value>底层传输方式(transport)</value>
   </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 11</value>
-  </data>
   <data name="clbAlpn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>331, 7</value>
+    <value>427, 9</value>
   </data>
   <data name="clbAlpn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 20</value>
+    <value>208, 24</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>378, 14</value>
   </data>
   <data name="txtSNI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>391, 21</value>
+    <value>391, 25</value>
   </data>
   <data name="labAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 12</value>
+    <value>217, 15</value>
   </data>
   <data name="labAllowInsecure.Text" xml:space="preserve">
     <value>跳过证书验证(allowInsecure)</value>
   </data>
   <data name="cmbAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 7</value>
+    <value>247, 10</value>
   </data>
 </root>
