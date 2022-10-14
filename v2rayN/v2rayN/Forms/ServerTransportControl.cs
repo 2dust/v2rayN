@@ -32,6 +32,7 @@ namespace v2rayN.Forms
             {
                 cmbStreamSecurity.Items.Add(Global.StreamSecurityX);
             }
+            cmbFingerprint.Items.AddRange(Global.fingerprints.ToArray());
         }
 
         public void BindingServer(VmessItem item)
@@ -45,6 +46,7 @@ namespace v2rayN.Forms
             cmbStreamSecurity.Text = vmessItem.streamSecurity;
             cmbAllowInsecure.Text = vmessItem.allowInsecure;
             txtSNI.Text = vmessItem.sni;
+            cmbFingerprint.Text = vmessItem.fingerprint;
 
             if (vmessItem.alpn != null)
             {
@@ -68,7 +70,8 @@ namespace v2rayN.Forms
             cmbStreamSecurity.Text = "";
             cmbAllowInsecure.Text = "";
             txtPath.Text = "";
-            txtSNI.Text = "";
+            txtSNI.Text = ""; 
+            cmbFingerprint.Text = "";
             for (int i = 0; i < clbAlpn.Items.Count; i++)
             {
                 clbAlpn.SetItemChecked(i, false);
@@ -84,6 +87,7 @@ namespace v2rayN.Forms
             string streamSecurity = cmbStreamSecurity.Text;
             string allowInsecure = cmbAllowInsecure.Text;
             string sni = txtSNI.Text;
+            string fingerprint = cmbFingerprint.Text;
 
             vmessItem.network = network;
             vmessItem.headerType = headerType;
@@ -92,6 +96,7 @@ namespace v2rayN.Forms
             vmessItem.streamSecurity = streamSecurity;
             vmessItem.allowInsecure = allowInsecure;
             vmessItem.sni = sni;
+            vmessItem.fingerprint = fingerprint;
 
             var alpn = new List<string>();
             for (int i = 0; i < clbAlpn.Items.Count; i++)

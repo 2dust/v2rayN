@@ -133,11 +133,11 @@ namespace v2rayN.Mode
             get; set;
         }
         public string systemProxyAdvancedProtocol { get; set; }
-        
+
         public int autoUpdateInterval { get; set; } = 0;
 
         public int autoUpdateSubInterval { get; set; } = 0;
-        
+
         public bool checkPreReleaseUpdate { get; set; } = false;
 
         public bool enableSecurityProtocolTls13
@@ -573,6 +573,8 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
+        public string fingerprint { get; set; }
     }
 
     [Serializable]

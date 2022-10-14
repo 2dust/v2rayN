@@ -422,6 +422,12 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
+        /// <summary>
+        /// "chrome" | "firefox" | "safari" | "randomized"
+        /// </summary>
+        public string fingerprint { get; set; }
+
     }
 
     public class TcpSettings

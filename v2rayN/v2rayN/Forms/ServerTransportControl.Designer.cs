@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerTransportControl));
             this.gbTransport = new System.Windows.Forms.GroupBox();
             this.panTlsMore = new System.Windows.Forms.Panel();
+            this.labfingerprint = new System.Windows.Forms.Label();
+            this.cmbFingerprint = new System.Windows.Forms.ComboBox();
             this.clbAlpn = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSNI = new System.Windows.Forms.TextBox();
@@ -78,6 +80,8 @@
             // 
             // panTlsMore
             // 
+            this.panTlsMore.Controls.Add(this.labfingerprint);
+            this.panTlsMore.Controls.Add(this.cmbFingerprint);
             this.panTlsMore.Controls.Add(this.clbAlpn);
             this.panTlsMore.Controls.Add(this.label1);
             this.panTlsMore.Controls.Add(this.txtSNI);
@@ -86,6 +90,18 @@
             this.panTlsMore.Controls.Add(this.cmbAllowInsecure);
             resources.ApplyResources(this.panTlsMore, "panTlsMore");
             this.panTlsMore.Name = "panTlsMore";
+            // 
+            // labfingerprint
+            // 
+            resources.ApplyResources(this.labfingerprint, "labfingerprint");
+            this.labfingerprint.Name = "labfingerprint";
+            // 
+            // cmbFingerprint
+            // 
+            this.cmbFingerprint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFingerprint.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbFingerprint, "cmbFingerprint");
+            this.cmbFingerprint.Name = "cmbFingerprint";
             // 
             // clbAlpn
             // 
@@ -246,5 +262,7 @@
         private System.Windows.Forms.ComboBox cmbHeaderType;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckedListBox clbAlpn;
+        private System.Windows.Forms.Label labfingerprint;
+        private System.Windows.Forms.ComboBox cmbFingerprint;
     }
 }

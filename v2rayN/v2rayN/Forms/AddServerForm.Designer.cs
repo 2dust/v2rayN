@@ -65,6 +65,8 @@
             this.cmbSecurity = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panAddr = new System.Windows.Forms.Panel();
+            this.cmbCoreType = new System.Windows.Forms.ComboBox();
+            this.labCoreType = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
@@ -76,8 +78,6 @@
             this.panTop = new System.Windows.Forms.Panel();
             this.panTran = new System.Windows.Forms.Panel();
             this.transportControl = new v2rayN.Forms.ServerTransportControl();
-            this.cmbCoreType = new System.Windows.Forms.ComboBox();
-            this.labCoreType = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panSocks.SuspendLayout();
             this.panSs.SuspendLayout();
@@ -329,6 +329,18 @@
             resources.ApplyResources(this.panAddr, "panAddr");
             this.panAddr.Name = "panAddr";
             // 
+            // cmbCoreType
+            // 
+            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCoreType.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
+            this.cmbCoreType.Name = "cmbCoreType";
+            // 
+            // labCoreType
+            // 
+            resources.ApplyResources(this.labCoreType, "labCoreType");
+            this.labCoreType.Name = "labCoreType";
+            // 
             // label6
             // 
             resources.ApplyResources(this.label6, "label6");
@@ -389,18 +401,6 @@
             this.transportControl.AllowXtls = false;
             resources.ApplyResources(this.transportControl, "transportControl");
             this.transportControl.Name = "transportControl";
-            // 
-            // cmbCoreType
-            // 
-            this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCoreType.FormattingEnabled = true;
-            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
-            this.cmbCoreType.Name = "cmbCoreType";
-            // 
-            // labCoreType
-            // 
-            resources.ApplyResources(this.labCoreType, "labCoreType");
-            this.labCoreType.Name = "labCoreType";
             // 
             // AddServerForm
             // 

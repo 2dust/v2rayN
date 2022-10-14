@@ -143,10 +143,613 @@
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;label17.Name" xml:space="preserve">
+    <value>label17</value>
+  </data>
+  <data name="&gt;&gt;label17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label17.Parent" xml:space="preserve">
+    <value>panSocks</value>
+  </data>
+  <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;txtSecurity4.Name" xml:space="preserve">
+    <value>txtSecurity4</value>
+  </data>
+  <data name="&gt;&gt;txtSecurity4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtSecurity4.Parent" xml:space="preserve">
+    <value>panSocks</value>
+  </data>
+  <data name="&gt;&gt;txtSecurity4.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label18.Name" xml:space="preserve">
+    <value>label18</value>
+  </data>
+  <data name="&gt;&gt;label18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label18.Parent" xml:space="preserve">
+    <value>panSocks</value>
+  </data>
+  <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;txtId4.Name" xml:space="preserve">
+    <value>txtId4</value>
+  </data>
+  <data name="&gt;&gt;txtId4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtId4.Parent" xml:space="preserve">
+    <value>panSocks</value>
+  </data>
+  <data name="&gt;&gt;txtId4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panSocks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>303, 163</value>
+  </data>
+  <data name="panSocks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 39</value>
+  </data>
+  <data name="panSocks.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="panSocks.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panSocks.Name" xml:space="preserve">
+    <value>panSocks</value>
+  </data>
+  <data name="&gt;&gt;panSocks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panSocks.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panSocks.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;txtId3.Name" xml:space="preserve">
+    <value>txtId3</value>
+  </data>
+  <data name="&gt;&gt;txtId3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtId3.Parent" xml:space="preserve">
+    <value>panSs</value>
+  </data>
+  <data name="&gt;&gt;txtId3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label15.Name" xml:space="preserve">
+    <value>label15</value>
+  </data>
+  <data name="&gt;&gt;label15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
+    <value>panSs</value>
+  </data>
+  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity3.Name" xml:space="preserve">
+    <value>cmbSecurity3</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity3.Parent" xml:space="preserve">
+    <value>panSs</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label16.Name" xml:space="preserve">
+    <value>label16</value>
+  </data>
+  <data name="&gt;&gt;label16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
+    <value>panSs</value>
+  </data>
+  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panSs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 163</value>
+  </data>
+  <data name="panSs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 39</value>
+  </data>
+  <data name="panSs.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="panSs.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panSs.Name" xml:space="preserve">
+    <value>panSs</value>
+  </data>
+  <data name="&gt;&gt;panSs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panSs.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panSs.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>panTrojan</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow6.Name" xml:space="preserve">
+    <value>cmbFlow6</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow6.Parent" xml:space="preserve">
+    <value>panTrojan</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;txtId6.Name" xml:space="preserve">
+    <value>txtId6</value>
+  </data>
+  <data name="&gt;&gt;txtId6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtId6.Parent" xml:space="preserve">
+    <value>panTrojan</value>
+  </data>
+  <data name="&gt;&gt;txtId6.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>panTrojan</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panTrojan.Location" type="System.Drawing.Point, System.Drawing">
+    <value>534, 163</value>
+  </data>
+  <data name="panTrojan.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 39</value>
+  </data>
+  <data name="panTrojan.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="panTrojan.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panTrojan.Name" xml:space="preserve">
+    <value>panTrojan</value>
+  </data>
+  <data name="&gt;&gt;panTrojan.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panTrojan.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panTrojan.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow5.Name" xml:space="preserve">
+    <value>cmbFlow5</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow5.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;cmbFlow5.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;txtId5.Name" xml:space="preserve">
+    <value>txtId5</value>
+  </data>
+  <data name="&gt;&gt;txtId5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtId5.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;txtId5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
+  </data>
+  <data name="&gt;&gt;label9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;btnGUID5.Name" xml:space="preserve">
+    <value>btnGUID5</value>
+  </data>
+  <data name="&gt;&gt;btnGUID5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnGUID5.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;btnGUID5.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity5.Name" xml:space="preserve">
+    <value>cmbSecurity5</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity5.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity5.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="panVless.Location" type="System.Drawing.Point, System.Drawing">
+    <value>396, 166</value>
+  </data>
+  <data name="panVless.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 36</value>
+  </data>
+  <data name="panVless.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="panVless.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panVless.Name" xml:space="preserve">
+    <value>panVless</value>
+  </data>
+  <data name="&gt;&gt;panVless.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panVless.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panVless.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;txtId.Name" xml:space="preserve">
+    <value>txtId</value>
+  </data>
+  <data name="&gt;&gt;txtId.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtId.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;txtId.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;btnGUID.Name" xml:space="preserve">
+    <value>btnGUID</value>
+  </data>
+  <data name="&gt;&gt;btnGUID.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnGUID.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;btnGUID.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;txtAlterId.Name" xml:space="preserve">
+    <value>txtAlterId</value>
+  </data>
+  <data name="&gt;&gt;txtAlterId.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtAlterId.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;txtAlterId.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity.Name" xml:space="preserve">
+    <value>cmbSecurity</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;cmbSecurity.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="panVmess.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 163</value>
+  </data>
+  <data name="panVmess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 39</value>
+  </data>
+  <data name="panVmess.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="panVmess.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panVmess.Name" xml:space="preserve">
+    <value>panVmess</value>
+  </data>
+  <data name="&gt;&gt;panVmess.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panVmess.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panVmess.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType.Name" xml:space="preserve">
+    <value>cmbCoreType</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;cmbCoreType.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labCoreType.Name" xml:space="preserve">
+    <value>labCoreType</value>
+  </data>
+  <data name="&gt;&gt;labCoreType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labCoreType.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;labCoreType.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;txtAddress.Name" xml:space="preserve">
+    <value>txtAddress</value>
+  </data>
+  <data name="&gt;&gt;txtAddress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtAddress.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;txtAddress.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;txtPort.Name" xml:space="preserve">
+    <value>txtPort</value>
+  </data>
+  <data name="&gt;&gt;txtPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtPort.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;txtPort.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;txtRemarks.Name" xml:space="preserve">
+    <value>txtRemarks</value>
+  </data>
+  <data name="&gt;&gt;txtRemarks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtRemarks.Parent" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panAddr.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panAddr.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 17</value>
+  </data>
+  <data name="panAddr.Size" type="System.Drawing.Size, System.Drawing">
+    <value>723, 100</value>
+  </data>
+  <data name="panAddr.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;panAddr.Name" xml:space="preserve">
+    <value>panAddr</value>
+  </data>
+  <data name="&gt;&gt;panAddr.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panAddr.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;panAddr.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 10</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>729, 226</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="label17.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label17.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -245,30 +848,6 @@
   </data>
   <data name="&gt;&gt;txtId4.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="panSocks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 163</value>
-  </data>
-  <data name="panSocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 39</value>
-  </data>
-  <data name="panSocks.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="panSocks.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panSocks.Name" xml:space="preserve">
-    <value>panSocks</value>
-  </data>
-  <data name="&gt;&gt;panSocks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panSocks.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panSocks.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="txtId3.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 7</value>
@@ -372,30 +951,6 @@
   <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="panSs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 163</value>
-  </data>
-  <data name="panSs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 39</value>
-  </data>
-  <data name="panSs.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="panSs.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panSs.Name" xml:space="preserve">
-    <value>panSs</value>
-  </data>
-  <data name="&gt;&gt;panSs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panSs.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panSs.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -497,30 +1052,6 @@
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="panTrojan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>534, 163</value>
-  </data>
-  <data name="panTrojan.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 39</value>
-  </data>
-  <data name="panTrojan.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="panTrojan.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panTrojan.Name" xml:space="preserve">
-    <value>panTrojan</value>
-  </data>
-  <data name="&gt;&gt;panTrojan.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panTrojan.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panTrojan.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -735,30 +1266,6 @@
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="panVless.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 166</value>
-  </data>
-  <data name="panVless.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 36</value>
-  </data>
-  <data name="panVless.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="panVless.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panVless.Name" xml:space="preserve">
-    <value>panVless</value>
-  </data>
-  <data name="&gt;&gt;panVless.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panVless.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panVless.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -953,30 +1460,6 @@
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="panVmess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 163</value>
-  </data>
-  <data name="panVmess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 39</value>
-  </data>
-  <data name="panVmess.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="panVmess.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panVmess.Name" xml:space="preserve">
-    <value>panVmess</value>
-  </data>
-  <data name="&gt;&gt;panVmess.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panVmess.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panVmess.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="cmbCoreType.Location" type="System.Drawing.Point, System.Drawing">
     <value>625, 8</value>
@@ -1173,56 +1656,41 @@
   <data name="&gt;&gt;txtRemarks.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="panAddr.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="&gt;&gt;btnOK.Name" xml:space="preserve">
+    <value>btnOK</value>
   </data>
-  <data name="panAddr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 17</value>
+  <data name="&gt;&gt;btnOK.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="panAddr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>723, 100</value>
+  <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
+    <value>panBottom</value>
   </data>
-  <data name="panAddr.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;panAddr.Name" xml:space="preserve">
-    <value>panAddr</value>
+  <data name="panBottom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
-  <data name="&gt;&gt;panAddr.Type" xml:space="preserve">
+  <data name="panBottom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 501</value>
+  </data>
+  <data name="panBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>729, 60</value>
+  </data>
+  <data name="panBottom.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;panBottom.Name" xml:space="preserve">
+    <value>panBottom</value>
+  </data>
+  <data name="&gt;&gt;panBottom.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panAddr.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;panAddr.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 10</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 221</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panBottom.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;panBottom.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>303, 17</value>
@@ -1247,30 +1715,6 @@
   </data>
   <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="panBottom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="panBottom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 461</value>
-  </data>
-  <data name="panBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 60</value>
-  </data>
-  <data name="panBottom.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;panBottom.Name" xml:space="preserve">
-    <value>panBottom</value>
-  </data>
-  <data name="&gt;&gt;panBottom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panBottom.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panBottom.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="panTop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1303,7 +1747,7 @@
     <value>0, 0</value>
   </data>
   <data name="transportControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 230</value>
+    <value>729, 265</value>
   </data>
   <data name="transportControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1312,7 +1756,7 @@
     <value>transportControl</value>
   </data>
   <data name="&gt;&gt;transportControl.Type" xml:space="preserve">
-    <value>v2rayN.Forms.ServerTransportControl, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>v2rayN.Forms.ServerTransportControl, v2rayN, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;transportControl.Parent" xml:space="preserve">
     <value>panTran</value>
@@ -1324,10 +1768,10 @@
     <value>Bottom</value>
   </data>
   <data name="panTran.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 231</value>
+    <value>0, 236</value>
   </data>
   <data name="panTran.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 230</value>
+    <value>729, 265</value>
   </data>
   <data name="panTran.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1354,7 +1798,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>729, 521</value>
+    <value>729, 561</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edit or add a [VMess] server</value>
@@ -1363,6 +1807,6 @@
     <value>AddServerForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>v2rayN.Forms.BaseServerForm, v2rayN, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>v2rayN.Forms.BaseServerForm, v2rayN, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

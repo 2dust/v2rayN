@@ -597,7 +597,8 @@ namespace v2rayN.Handler
                     TlsSettings tlsSettings = new TlsSettings
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure),
-                        alpn = node.GetAlpn()
+                        alpn = node.GetAlpn(),
+                        fingerprint = node.fingerprint
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -618,7 +619,8 @@ namespace v2rayN.Handler
                     TlsSettings xtlsSettings = new TlsSettings
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure),
-                        alpn = node.GetAlpn()
+                        alpn = node.GetAlpn(),
+                        fingerprint = node.fingerprint
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
