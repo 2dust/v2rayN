@@ -156,6 +156,12 @@ namespace v2rayN.Handler
                         inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
                     }
                 }
+
+                if (config.inbound[0].addGlobalProxyPort)
+                {
+                    Inbounds inbound5 = GetInbound(config.inbound[0], Global.InboundSocksG, 4, true);
+                    v2rayConfig.inbounds.Add(inbound5);
+                }
             }
             catch (Exception ex)
             {
@@ -201,6 +207,17 @@ namespace v2rayN.Handler
                 {
                     v2rayConfig.routing.domainStrategy = config.domainStrategy;
                     v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(config.domainMatcher) ? null : config.domainMatcher;
+
+                    if (config.inbound[0].addGlobalProxyPort)
+                    {
+                        var item = new RulesItem();
+                        var inTag = new List<String>();
+                        inTag.Add("socksG");
+                        item.type = "field";
+                        item.inboundTag = inTag;
+                        item.outboundTag = "proxy";
+                        v2rayConfig.routing.rules.Add(item);
+                    }
 
                     if (config.enableRoutingAdvanced)
                     {

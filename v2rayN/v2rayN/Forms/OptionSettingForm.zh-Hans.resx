@@ -163,6 +163,12 @@
   <data name="chkAllowLANConn.Text" xml:space="preserve">
     <value>允许来自局域网的连接</value>
   </data>
+  <data name="chkaddGlobalProxyPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 16</value>
+  </data>
+  <data name="chkaddGlobalProxyPort.Text" xml:space="preserve">
+    <value>增加一个本地全局socks端口</value>
+  </data>
   <data name="chksniffingEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 16</value>
   </data>

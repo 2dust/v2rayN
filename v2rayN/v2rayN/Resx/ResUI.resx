@@ -475,4 +475,7 @@
   <data name="NetFrameworkRequirementsTip" xml:space="preserve">
     <value>Normal use of this version requires .NET Framework 4.8</value>
   </data>
+  <data name="LabLocalGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
 </root>

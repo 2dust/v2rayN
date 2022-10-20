@@ -33,6 +33,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkaddGlobalProxyPort = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtpass = new System.Windows.Forms.TextBox();
@@ -70,6 +71,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkEnableCheckPreReleaseUpdate = new System.Windows.Forms.CheckBox();
             this.numStatisticsFreshRate = new System.Windows.Forms.NumericUpDown();
             this.txttrayMenuServersLimit = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -108,7 +110,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chkEnableCheckPreReleaseUpdate = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -151,6 +152,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkaddGlobalProxyPort);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txtpass);
@@ -170,6 +172,12 @@
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // chkaddGlobalProxyPort
+            // 
+            resources.ApplyResources(this.chkaddGlobalProxyPort, "chkaddGlobalProxyPort");
+            this.chkaddGlobalProxyPort.Name = "chkaddGlobalProxyPort";
+            this.chkaddGlobalProxyPort.UseVisualStyleBackColor = true;
             // 
             // label16
             // 
@@ -422,6 +430,12 @@
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // chkEnableCheckPreReleaseUpdate
+            // 
+            resources.ApplyResources(this.chkEnableCheckPreReleaseUpdate, "chkEnableCheckPreReleaseUpdate");
+            this.chkEnableCheckPreReleaseUpdate.Name = "chkEnableCheckPreReleaseUpdate";
+            this.chkEnableCheckPreReleaseUpdate.UseVisualStyleBackColor = true;
+            // 
             // numStatisticsFreshRate
             // 
             resources.ApplyResources(this.numStatisticsFreshRate, "numStatisticsFreshRate");
@@ -658,12 +672,6 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
-            // chkEnableCheckPreReleaseUpdate
-            // 
-            resources.ApplyResources(this.chkEnableCheckPreReleaseUpdate, "chkEnableCheckPreReleaseUpdate");
-            this.chkEnableCheckPreReleaseUpdate.Name = "chkEnableCheckPreReleaseUpdate";
-            this.chkEnableCheckPreReleaseUpdate.UseVisualStyleBackColor = true;
-            // 
             // OptionSettingForm
             // 
             resources.ApplyResources(this, "$this");
@@ -778,5 +786,6 @@
         private System.Windows.Forms.ComboBox cmbdomainStrategy4Freedom;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox chkEnableCheckPreReleaseUpdate;
+        private System.Windows.Forms.CheckBox chkaddGlobalProxyPort;
     }
 }
