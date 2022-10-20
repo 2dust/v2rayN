@@ -106,6 +106,12 @@ namespace v2rayN.Forms
                 sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp2)}]");
             }
 
+            if (config.inbound[0].addGlobalProxyPort)
+            {
+                sb.Append($"  {ResUI.LabLocalGlobal}:");
+                sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(Global.InboundSocksG)}]");
+            }
+
             SetToolSslInfo("inbound", sb.ToString());
         }
 

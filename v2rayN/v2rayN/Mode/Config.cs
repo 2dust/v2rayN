@@ -238,6 +238,10 @@ namespace v2rayN.Mode
             {
                 return localPort + 3;
             }
+            else if (protocol == Global.InboundSocksG)
+            {
+                return localPort + 4;
+            }
             else if (protocol == "speedtest")
             {
                 return localPort + 103;
@@ -610,6 +614,8 @@ namespace v2rayN.Mode
         public bool sniffingEnabled { get; set; } = true;
 
         public bool allowLANConn { get; set; }
+
+        public bool addGlobalProxyPort { get; set; }
 
         public string user { get; set; }
 

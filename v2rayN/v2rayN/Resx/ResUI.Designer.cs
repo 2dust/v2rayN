@@ -338,7 +338,18 @@ namespace v2rayN.Resx {
                 return ResourceManager.GetString("LabLocal", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Local 的本地化字符串。
+        /// </summary>
+        internal static string LabLocalGlobal
+        {
+            get
+            {
+                return ResourceManager.GetString("LabLocalGlobal", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>

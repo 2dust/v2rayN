@@ -49,6 +49,7 @@ namespace v2rayN.Forms
                 chkudpEnabled.Checked = config.inbound[0].udpEnabled;
                 chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
                 chkAllowLANConn.Checked = config.inbound[0].allowLANConn;
+                chkaddGlobalProxyPort.Checked = config.inbound[0].addGlobalProxyPort;
                 txtuser.Text = config.inbound[0].user;
                 txtpass.Text = config.inbound[0].pass;
 
@@ -183,6 +184,7 @@ namespace v2rayN.Forms
             bool udpEnabled = chkudpEnabled.Checked;
             bool sniffingEnabled = chksniffingEnabled.Checked;
             bool allowLANConn = chkAllowLANConn.Checked;
+            bool addGlobalProxyPort = chkaddGlobalProxyPort.Checked;
             if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
             {
                 UI.Show(ResUI.FillLocalListeningPort);
@@ -213,6 +215,7 @@ namespace v2rayN.Forms
             config.inbound[0].udpEnabled = udpEnabled;
             config.inbound[0].sniffingEnabled = sniffingEnabled;
             config.inbound[0].allowLANConn = allowLANConn;
+            config.inbound[0].addGlobalProxyPort = addGlobalProxyPort;
             config.inbound[0].user = txtuser.Text;
             config.inbound[0].pass = txtpass.Text;
 
