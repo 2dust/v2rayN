@@ -70,6 +70,7 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkEnableCheckPreReleaseUpdate = new System.Windows.Forms.CheckBox();
             this.numStatisticsFreshRate = new System.Windows.Forms.NumericUpDown();
             this.txttrayMenuServersLimit = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -108,7 +109,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chkEnableCheckPreReleaseUpdate = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -285,11 +285,6 @@
             // 
             this.cmbdomainStrategy4Freedom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbdomainStrategy4Freedom.FormattingEnabled = true;
-            this.cmbdomainStrategy4Freedom.Items.AddRange(new object[] {
-            resources.GetString("cmbdomainStrategy4Freedom.Items"),
-            resources.GetString("cmbdomainStrategy4Freedom.Items1"),
-            resources.GetString("cmbdomainStrategy4Freedom.Items2"),
-            resources.GetString("cmbdomainStrategy4Freedom.Items3")});
             resources.ApplyResources(this.cmbdomainStrategy4Freedom, "cmbdomainStrategy4Freedom");
             this.cmbdomainStrategy4Freedom.Name = "cmbdomainStrategy4Freedom";
             // 
@@ -421,6 +416,12 @@
             resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableCheckPreReleaseUpdate
+            // 
+            resources.ApplyResources(this.chkEnableCheckPreReleaseUpdate, "chkEnableCheckPreReleaseUpdate");
+            this.chkEnableCheckPreReleaseUpdate.Name = "chkEnableCheckPreReleaseUpdate";
+            this.chkEnableCheckPreReleaseUpdate.UseVisualStyleBackColor = true;
             // 
             // numStatisticsFreshRate
             // 
@@ -657,12 +658,6 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
-            // chkEnableCheckPreReleaseUpdate
-            // 
-            resources.ApplyResources(this.chkEnableCheckPreReleaseUpdate, "chkEnableCheckPreReleaseUpdate");
-            this.chkEnableCheckPreReleaseUpdate.Name = "chkEnableCheckPreReleaseUpdate";
-            this.chkEnableCheckPreReleaseUpdate.UseVisualStyleBackColor = true;
             // 
             // OptionSettingForm
             // 
