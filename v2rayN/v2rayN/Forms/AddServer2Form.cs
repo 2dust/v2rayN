@@ -113,7 +113,7 @@ namespace v2rayN.Forms
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Multiselect = false,
-                Filter = "Config|*.json|YAML|*.yaml|All|*.*"
+                Filter = "Config|*.json|YAML|*.yaml;*.yml|All|*.*"
             };
             if (fileDialog.ShowDialog() != DialogResult.OK)
             {
