@@ -19,7 +19,9 @@ namespace v2rayN.Forms
         private void OptionSettingForm_Load(object sender, EventArgs e)
         {
             cmbSystemProxyAdvancedProtocol.Items.AddRange(Global.IEProxyProtocols.ToArray());
-           
+            cmbdomainStrategy4Freedom.Items.Clear();
+            cmbdomainStrategy4Freedom.Items.AddRange(Global.domainStrategy4Freedoms.ToArray());
+
             InitBase();
 
             InitKCP();
