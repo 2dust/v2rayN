@@ -22,6 +22,8 @@ namespace v2rayN.Mode
 
         public string match { get; set; }
         public string versionArg { get; set; }
-        
+
+        public bool redirectInfo { get; set; }
+
     }
 }

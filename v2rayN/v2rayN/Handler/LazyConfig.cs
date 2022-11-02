@@ -87,7 +87,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
-                versionArg = "-version"
+                versionArg = "-version",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -100,7 +101,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
-                versionArg = "version"
+                versionArg = "version",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -113,7 +115,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
-                versionArg = "version"
+                versionArg = "version",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -126,7 +129,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
                 match = "Xray",
-                versionArg = "-version"
+                versionArg = "-version",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -139,7 +143,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.clashCoreUrl + "/download/{0}/clash-windows-386-{0}.zip",
                 coreDownloadUrl64 = Global.clashCoreUrl + "/download/{0}/clash-windows-amd64-{0}.zip",
                 match = "v",
-                versionArg = "-v"
+                versionArg = "-v",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -152,7 +157,8 @@ namespace v2rayN.Handler
                 coreDownloadUrl32 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-386-{0}.zip",
                 coreDownloadUrl64 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-amd64-compatible-{0}.zip",
                 match = "v",
-                versionArg = "-v"
+                versionArg = "-v",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -164,6 +170,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.hysteriaCoreUrl.Replace(@"https://github.com", @"https://api.github.com/repos"),
                 coreDownloadUrl32 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-386.exe",
                 coreDownloadUrl64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-amd64.exe",
+                redirectInfo = true,
             });
 
             coreInfos.Add(new CoreInfo
@@ -171,7 +178,8 @@ namespace v2rayN.Handler
                 coreType = ECoreType.naiveproxy,
                 coreExes = new List<string> { "naiveproxy", "naive" },
                 arguments = "config.json",
-                coreUrl = Global.naiveproxyCoreUrl
+                coreUrl = Global.naiveproxyCoreUrl,
+                redirectInfo = false,
             });
 
             coreInfos.Add(new CoreInfo
@@ -179,15 +187,17 @@ namespace v2rayN.Handler
                 coreType = ECoreType.tuic,
                 coreExes = new List<string> { "tuic-client", "tuic" },
                 arguments = "-c config.json",
-                coreUrl = Global.tuicCoreUrl
+                coreUrl = Global.tuicCoreUrl,
+                redirectInfo = true,
             });
-            
+
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
                 arguments = "run",
-                coreUrl = Global.singboxCoreUrl
+                coreUrl = Global.singboxCoreUrl,
+                redirectInfo = true,
             });
         }
 

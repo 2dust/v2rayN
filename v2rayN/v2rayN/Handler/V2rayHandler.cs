@@ -212,24 +212,29 @@ namespace v2rayN.Handler
                         Arguments = coreInfo.arguments,
                         WorkingDirectory = Utils.StartupPath(),
                         UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
+                        RedirectStandardOutput = coreInfo.redirectInfo,
+                        RedirectStandardError = coreInfo.redirectInfo,
                         CreateNoWindow = true,
-                        StandardOutputEncoding = Encoding.UTF8,
-                        StandardErrorEncoding = Encoding.UTF8
+                        StandardOutputEncoding = coreInfo.redirectInfo ? Encoding.UTF8 : null,
+                        StandardErrorEncoding = coreInfo.redirectInfo ? Encoding.UTF8 : null,
                     }
                 };
-                p.OutputDataReceived += (sender, e) =>
+                if (coreInfo.redirectInfo)
                 {
-                    if (!String.IsNullOrEmpty(e.Data))
+                    p.OutputDataReceived += (sender, e) =>
                     {
-                        string msg = e.Data + Environment.NewLine;
-                        ShowMsg(false, msg);
-                    }
-                };
+                        if (!String.IsNullOrEmpty(e.Data))
+                        {
+                            string msg = e.Data + Environment.NewLine;
+                            ShowMsg(false, msg);
+                        }
+                    };
+                }
                 p.Start();
-                p.PriorityClass = ProcessPriorityClass.High;
-                p.BeginOutputReadLine();
+                if (coreInfo.redirectInfo)
+                {
+                    p.BeginOutputReadLine();
+                }
                 _process = p;
 
                 if (p.WaitForExit(1000))
