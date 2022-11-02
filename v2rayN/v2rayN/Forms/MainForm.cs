@@ -1268,6 +1268,7 @@ namespace v2rayN.Forms
             AppendText(false, msg);
             if (success)
             {
+                RefreshServers();
                 Global.reloadV2ray = true;
                 await LoadV2ray();
             }
