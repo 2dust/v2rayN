@@ -164,6 +164,9 @@
   <data name="menuMsgBoxFilter.Size" type="System.Drawing.Size, System.Drawing">
     <value>227, 22</value>
   </data>
+  <data name="txtMsgBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9pt</value>
+  </data>
   <data name="&gt;&gt;toolSslBlank2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
