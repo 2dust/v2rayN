@@ -515,6 +515,16 @@ namespace v2rayN.Handler
                         outbound.mux.enabled = false;
                         outbound.mux.concurrency = -1;
                     }
+                    else if (node.streamSecurity == Global.StreamSecurity)
+                    {
+                        if (!Utils.IsNullOrEmpty(node.flow))
+                        {
+                            usersItem.flow = node.flow;
+
+                            outbound.mux.enabled = false;
+                            outbound.mux.concurrency = -1;
+                        }
+                    }
 
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
