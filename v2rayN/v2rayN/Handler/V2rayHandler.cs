@@ -63,7 +63,7 @@ namespace v2rayN.Handler
                 }
 
                 //start a socks service
-                if (item.configType == EConfigType.Custom && item.preSocksPort > 0)
+                if (_process != null && !_process.HasExited && item.configType == EConfigType.Custom && item.preSocksPort > 0)
                 {
                     var itemSocks = new VmessItem()
                     {
@@ -239,7 +239,7 @@ namespace v2rayN.Handler
 
                 if (p.WaitForExit(1000))
                 {
-                    throw new Exception(p.StandardError.ReadToEnd());
+                    throw new Exception(coreInfo.redirectInfo ? p.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
                 Global.processJob.AddProcess(p.Handle);
