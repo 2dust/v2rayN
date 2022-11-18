@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>لغو کنید(&amp;C)</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 469</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>  Core:تنظیمات پایه  </value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>648, 437</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>认رمز احراز هویت证密码</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 65</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>نام کاربری احراز هویت</value>
+  </data>
+  <data name="chkdefAllowInsecure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 208</value>
+  </data>
+  <data name="chkdefAllowInsecure.Size" type="System.Drawing.Size, System.Drawing">
+    <value>324, 16</value>
+  </data>
+  <data name="chkdefAllowInsecure.Text" xml:space="preserve">
+    <value>هنگامی که tls برای امنیت لایه انتقال انتخاب شده است，تأیید گواهی به طور پیش فرض نادیده گرفته می شود(allowInsecure)</value>
+  </data>
+  <data name="chkAllowLANConn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="chkAllowLANConn.Text" xml:space="preserve">
+    <value>اتصالات از LAN را مجاز کنید</value>
+  </data>
+  <data name="chksniffingEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="chksniffingEnabled.Text" xml:space="preserve">
+    <value>تشخیص ترافیک را روشن کنید</value>
+  </data>
+  <data name="chkmuxEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 145</value>
+  </data>
+  <data name="chkmuxEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
+  <data name="chkmuxEnabled.Text" xml:space="preserve">
+    <value>Multiplexing Mux را روشن کنید</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 29</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>پروتکل</value>
+  </data>
+  <data name="chkudpEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 16</value>
+  </data>
+  <data name="chkudpEnabled.Text" xml:space="preserve">
+    <value>UDP را فعال کنید</value>
+  </data>
+  <data name="chklogEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 176</value>
+  </data>
+  <data name="chklogEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 16</value>
+  </data>
+  <data name="chklogEnabled.Text" xml:space="preserve">
+    <value>ثبت گزارش محلی(به طور پیش فرض خاموش است)</value>
+  </data>
+  <data name="cmbloglevel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, 174</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>193, 178</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 12</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>سطح گزارش</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 12</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>پورت گوش دادن محلی</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>  Core:DNSبرپایی  </value>
+  </data>
+  <data name="cmbdomainStrategy4Freedom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>223, 413</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 417</value>
+  </data>
+  <data name="linkDnsObjectDoc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 12</value>
+  </data>
+  <data name="linkDnsObjectDoc.Text" xml:space="preserve">
+    <value>پشتیبانی برای پر کردنDnsObject,JSONقالب</value>
+  </data>
+  <data name="txtremoteDNS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>638, 366</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>فرمت DNS سفارشی(چندگانه,با کاما(,)جدا از هم)</value>
+  </data>
+  <data name="tabPage6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage6.Text" xml:space="preserve">
+    <value>  Core:KCPبرپایی  </value>
+  </data>
+  <data name="tabPage7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage7.Text" xml:space="preserve">
+    <value>  v2rayNبرپایی  </value>
+  </data>
+  <data name="numStatisticsFreshRate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>472, 37</value>
+  </data>
+  <data name="txttrayMenuServersLimit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 211</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 12</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>با کلیک راست در منو سرور محدودیت تعداد نمایش دهید</value>
+  </data>
+  <data name="txtautoUpdateSubInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 184</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 12</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>تمدید خودکار فاصله اشتراک(واحد ساعت)</value>
+  </data>
+  <data name="chkEnableSecurityProtocolTls13.Text" xml:space="preserve">
+    <value>پروتکل امنیتی TLS نسخه 1.3 را فعال کنید (اشتراک، ابونمان/به روز رسانی را بررسی کنید/تست سرعت)</value>
+  </data>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 16</value>
+  </data>
+  <data name="chkEnableAutoAdjustMainLvColWidth.Text" xml:space="preserve">
+    <value>تنظیم خودکار عرض ستون سرور پس از به‌روزرسانی اشتراک</value>
+  </data>
+  <data name="btnSetLoopback.Text" xml:space="preserve">
+    <value>محدودیت های پروکسی Loopback برنامه UWP ویندوز 10 را حذف کنید</value>
+  </data>
+  <data name="txtautoUpdateInterval.Location" type="System.Drawing.Point, System.Drawing">
+    <value>248, 157</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>فاصله زمانی فایل Geo را به‌طور خودکار به‌روزرسانی کنید(واحد ساعت)</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="chkIgnoreGeoUpdateCore.Text" xml:space="preserve">
+    <value>هنگام به‌روزرسانی Core، فایل‌های Geo را نادیده بگیرید</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 16</value>
+  </data>
+  <data name="chkKeepOlderDedupl.Text" xml:space="preserve">
+    <value>هنگام کپی برداری، موارد با شماره دنباله کوچکتر را نگه دارید</value>
+  </data>
+  <data name="lbFreshrate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>339, 41</value>
+  </data>
+  <data name="lbFreshrate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="lbFreshrate.Text" xml:space="preserve">
+    <value>نرخ تازه سازی آمار(در چند ثانیه)</value>
+  </data>
+  <data name="chkEnableStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 16</value>
+  </data>
+  <data name="chkEnableStatistics.Text" xml:space="preserve">
+    <value>فعال کردن آمار(نمایش زمان واقعی سرعت شبکه و نمایش مصرف ترافیک，نیاز به راه اندازی مجدد)</value>
+  </data>
+  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 16</value>
+  </data>
+  <data name="chkAutoRun.Text" xml:space="preserve">
+    <value>به طور خودکار در هنگام بوت شروع می شود(ممکن است موفق نباشد)</value>
+  </data>
+  <data name="tabPageCoreType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPageCoreType.Text" xml:space="preserve">
+    <value>  تنظیم نوع core  </value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>  تنظیمات پراکسی سیستم  </value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 443</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>استثنا</value>
+  </data>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 12</value>
+  </data>
+  <data name="label18.Text" xml:space="preserve">
+    <value>تنظیمات پیشرفته پروکسی, انتخاب پروتکل(اختیاری)</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>از نقطه ویرگول استفاده کنید(;)جداگانه، مجزا</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>239, 12</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>برای آدرس هایی که با آن شروع می شوند از سرور پروکسی استفاده نکنید:</value>
+  </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 479</value>
+  </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 60</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>مطمئن(&amp;O)</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>662, 10</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>662, 539</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>تنظیمات پارامتر</value>
+  </data>
+  <data name="chkEnableCheckPreReleaseUpdate.Text" xml:space="preserve">
+    <value>به‌روزرسانی‌های پیش از انتشار را بررسی کنید(لطفا با احتیاط استفاده کنید)</value>
+  </data>
+</root>
