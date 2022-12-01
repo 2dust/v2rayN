@@ -458,7 +458,7 @@ namespace v2rayN.Handler
                         throw new ArgumentException("Type");
                 }
 
-                if (string.Compare(curVersion, version, true) >= 0)
+                if (curVersion == version)
                 {
                     AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
                     return;
