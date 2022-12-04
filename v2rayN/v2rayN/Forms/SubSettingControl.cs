@@ -62,14 +62,7 @@ namespace v2rayN.Forms
                 subItem.userAgent = txtUserAgent.Text.TrimEx();
 
                 var index = groupItem.FindIndex(t => t.remarks == cmbGroup.Text);
-                if (index >= 0)
-                {
-                    subItem.groupId = groupItem[index].id;
-                }
-                else
-                {
-                    subItem.groupId = string.Empty;
-                }
+                subItem.groupId = index >= 0 ? groupItem[index].id : string.Empty;
             }
         }
         private void txtRemarks_Leave(object sender, EventArgs e)

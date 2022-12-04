@@ -36,8 +36,7 @@ namespace v2rayN.Base
 
         public static IEnumerable<string> NonWhiteSpaceLines(this TextReader reader)
         {
-            string line;
-            while ((line = reader.ReadLine()) != null)
+            while (reader.ReadLine() is { } line)
             {
                 if (line.IsWhiteSpace()) continue;
                 yield return line;

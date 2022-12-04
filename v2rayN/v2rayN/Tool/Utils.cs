@@ -45,11 +45,9 @@ namespace v2rayN
             try
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream(res))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    result = reader.ReadToEnd();
-                }
+                using Stream stream = assembly.GetManifestResourceStream(res);
+                using StreamReader reader = new StreamReader(stream);
+                result = reader.ReadToEnd();
             }
             catch (Exception ex)
             {
@@ -69,10 +67,8 @@ namespace v2rayN
 
             try
             {
-                using (StreamReader reader = new StreamReader(res))
-                {
-                    result = reader.ReadToEnd();
-                }
+                using StreamReader reader = new StreamReader(res);
+                result = reader.ReadToEnd();
             }
             catch (Exception ex)
             {
@@ -385,7 +381,7 @@ namespace v2rayN
         public static string HumanFy(ulong amount)
         {
             ToHumanReadable(amount, out double result, out string unit);
-            return $"{string.Format("{0:f1}", result)} {unit}";
+            return $"{$"{result:f1}"} {unit}";
         }
 
 
@@ -545,29 +541,18 @@ namespace v2rayN
 
         #region 开机自动启动
 
-        private static string autoRunName
-        {
-            get
-            {
-                return $"v2rayNAutoRun_{GetMD5(StartupPath())}";
-            }
-        }
-        private static string autoRunRegPath
-        {
-            get
-            {
-                return @"Software\Microsoft\Windows\CurrentVersion\Run";
-                //if (Environment.Is64BitProcess)
-                //{
-                //    return @"Software\Microsoft\Windows\CurrentVersion\Run";
-                //}
-                //else
-                //{
-                //    return @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run";
-                //}
-            }
-        }
+        private static string autoRunName => $"v2rayNAutoRun_{GetMD5(StartupPath())}";
 
+        private static string autoRunRegPath => @"Software\Microsoft\Windows\CurrentVersion\Run";
+
+        //if (Environment.Is64BitProcess)
+        //{
+        //    return @"Software\Microsoft\Windows\CurrentVersion\Run";
+        //}
+        //else
+        //{
+        //    return @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run";
+        //}
         /// <summary>
         /// 开机自动启动
         /// </summary>
@@ -703,23 +688,16 @@ namespace v2rayN
         public static bool CheckForDotNetVersion(int release = 528040)
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            using RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
+            if (ndpKey != null && ndpKey.GetValue("Release") != null)
             {
-                if (ndpKey != null && ndpKey.GetValue("Release") != null)
-                {
-                    return (int)ndpKey.GetValue("Release") >= release ? true : false;
-                }
-                return false;
+                return (int)ndpKey.GetValue("Release") >= release ? true : false;
             }
+            return false;
         }
 
-        public static string MainMsgFilterKey
-        {
-            get
-            {
-                return $"MainMsgFilter_{GetMD5(StartupPath())}";
-            }
-        }
+        public static string MainMsgFilterKey => $"MainMsgFilter_{GetMD5(StartupPath())}";
+
         #endregion
 
         #region 测速
@@ -837,14 +815,12 @@ namespace v2rayN
                 string location = GetExePath();
                 if (blFull)
                 {
-                    return string.Format("v2rayN - V{0} - {1}",
-                            FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
-                            File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
+                    return
+                        $"v2rayN - V{FileVersionInfo.GetVersionInfo(location).FileVersion.ToString()} - {File.GetLastWriteTime(location).ToString("yyyy/MM/dd")}";
                 }
                 else
                 {
-                    return string.Format("v2rayN/{0}",
-                        FileVersionInfo.GetVersionInfo(location).FileVersion.ToString());
+                    return $"v2rayN/{FileVersionInfo.GetVersionInfo(location).FileVersion.ToString()}";
                 }
             }
             catch (Exception ex)
@@ -1076,42 +1052,40 @@ namespace v2rayN
             {
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    using (Bitmap fullImage = new Bitmap(screen.Bounds.Width,
-                                                    screen.Bounds.Height))
+                    using Bitmap fullImage = new Bitmap(screen.Bounds.Width,
+                        screen.Bounds.Height);
+                    using (Graphics g = Graphics.FromImage(fullImage))
                     {
-                        using (Graphics g = Graphics.FromImage(fullImage))
+                        g.CopyFromScreen(screen.Bounds.X,
+                            screen.Bounds.Y,
+                            0, 0,
+                            fullImage.Size,
+                            CopyPixelOperation.SourceCopy);
+                    }
+                    int maxTry = 10;
+                    for (int i = 0; i < maxTry; i++)
+                    {
+                        int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
+                        int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
+                        Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
+                        Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
+
+                        double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
+                        using (Graphics g = Graphics.FromImage(target))
                         {
-                            g.CopyFromScreen(screen.Bounds.X,
-                                             screen.Bounds.Y,
-                                             0, 0,
-                                             fullImage.Size,
-                                             CopyPixelOperation.SourceCopy);
+                            g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
+                                cropRect,
+                                GraphicsUnit.Pixel);
                         }
-                        int maxTry = 10;
-                        for (int i = 0; i < maxTry; i++)
+
+                        BitmapLuminanceSource source = new BitmapLuminanceSource(target);
+                        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                        QRCodeReader reader = new QRCodeReader();
+                        Result result = reader.decode(bitmap);
+                        if (result != null)
                         {
-                            int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
-                            int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                            Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                            Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
-
-                            double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
-                            using (Graphics g = Graphics.FromImage(target))
-                            {
-                                g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
-                                                cropRect,
-                                                GraphicsUnit.Pixel);
-                            }
-
-                            BitmapLuminanceSource source = new BitmapLuminanceSource(target);
-                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                            QRCodeReader reader = new QRCodeReader();
-                            Result result = reader.decode(bitmap);
-                            if (result != null)
-                            {
-                                string ret = result.Text;
-                                return ret;
-                            }
+                            string ret = result.Text;
+                            return ret;
                         }
                     }
                 }
@@ -1128,13 +1102,7 @@ namespace v2rayN
 
         #region Windows API
 
-        public static string WindowHwndKey
-        {
-            get
-            {
-                return $"WindowHwnd_{GetMD5(StartupPath())}";
-            }
-        }
+        public static string WindowHwndKey => $"WindowHwnd_{GetMD5(StartupPath())}";
 
         [DllImport("user32.dll")]
         public static extern bool SetProcessDPIAware();

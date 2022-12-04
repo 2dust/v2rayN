@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -18,10 +17,7 @@ namespace v2rayN.Forms
 
         private void GlobalHotkeySettingForm_Load(object sender, EventArgs e)
         {
-            if (config.globalHotkeys == null)
-            {
-                config.globalHotkeys = new List<KeyEventItem>();
-            }
+            config.globalHotkeys ??= new List<KeyEventItem>();
 
             foreach (EGlobalHotkey it in Enum.GetValues(typeof(EGlobalHotkey)))
             {

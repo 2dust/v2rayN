@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -149,24 +150,15 @@ namespace v2rayN.Handler
                     serverStatistics_ = Utils.FromJson<ServerStatistics>(result);
                 }
 
-                if (serverStatistics_ == null)
-                {
-                    serverStatistics_ = new ServerStatistics();
-                }
-                if (serverStatistics_.server == null)
-                {
-                    serverStatistics_.server = new List<ServerStatItem>();
-                }
+                serverStatistics_ ??= new ServerStatistics();
+                serverStatistics_.server ??= new List<ServerStatItem>();
 
                 long ticks = DateTime.Now.Date.Ticks;
-                foreach (ServerStatItem item in serverStatistics_.server)
+                foreach (var item in serverStatistics_.server.Where(item => item.dateNow != ticks))
                 {
-                    if (item.dateNow != ticks)
-                    {
-                        item.todayUp = 0;
-                        item.todayDown = 0;
-                        item.dateNow = ticks;
-                    }
+                    item.todayUp = 0;
+                    item.todayDown = 0;
+                    item.dateNow = ticks;
                 }
             }
             catch (Exception ex)

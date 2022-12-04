@@ -18,10 +18,7 @@ namespace v2rayN.Forms
 
         private void SubSettingForm_Load(object sender, EventArgs e)
         {
-            if (config.subItem == null)
-            {
-                config.subItem = new List<SubItem>();
-            }
+            config.subItem ??= new List<SubItem>();
 
             RefreshSubsView();
         }

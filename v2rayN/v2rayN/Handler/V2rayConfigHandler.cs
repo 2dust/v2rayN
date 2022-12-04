@@ -246,21 +246,21 @@ namespace v2rayN.Handler
                 {
                     rules.port = null;
                 }
-                if (rules.domain != null && rules.domain.Count == 0)
+                if (rules.domain is { Count: 0 })
                 {
                     rules.domain = null;
                 }
-                if (rules.ip != null && rules.ip.Count == 0)
+                if (rules.ip is { Count: 0 })
                 {
                     rules.ip = null;
                 }
-                if (rules.protocol != null && rules.protocol.Count == 0)
+                if (rules.protocol is { Count: 0 })
                 {
                     rules.protocol = null;
                 }
 
                 var hasDomainIp = false;
-                if (rules.domain != null && rules.domain.Count > 0)
+                if (rules.domain is { Count: > 0 })
                 {
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
@@ -284,7 +284,7 @@ namespace v2rayN.Handler
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
-                if (rules.ip != null && rules.ip.Count > 0)
+                if (rules.ip is { Count: > 0 })
                 {
                     var it = Utils.DeepCopy(rules);
                     it.domain = null;
@@ -314,7 +314,7 @@ namespace v2rayN.Handler
                         it.type = "field";
                         v2rayConfig.routing.rules.Add(it);
                     }
-                    else if (rules.protocol != null && rules.protocol.Count > 0)
+                    else if (rules.protocol is { Count: > 0 })
                     {
                         var it = Utils.DeepCopy(rules);
                         //it.domain = null;
@@ -377,14 +377,7 @@ namespace v2rayN.Handler
                     usersItem.id = node.id;
                     usersItem.alterId = node.alterId;
                     usersItem.email = Global.userEMail;
-                    if (Global.vmessSecuritys.Contains(node.security))
-                    {
-                        usersItem.security = node.security;
-                    }
-                    else
-                    {
-                        usersItem.security = Global.DefaultSecurity;
-                    }
+                    usersItem.security = Global.vmessSecuritys.Contains(node.security) ? node.security : Global.DefaultSecurity;
 
                     //Mux
                     outbound.mux.enabled = config.muxEnabled;
@@ -503,14 +496,7 @@ namespace v2rayN.Handler
                     //if xtls
                     if (node.streamSecurity == Global.StreamSecurityX)
                     {
-                        if (Utils.IsNullOrEmpty(node.flow))
-                        {
-                            usersItem.flow = Global.xtlsFlows[1];
-                        }
-                        else
-                        {
-                            usersItem.flow = node.flow.Replace("splice", "direct");
-                        }
+                        usersItem.flow = Utils.IsNullOrEmpty(node.flow) ? Global.xtlsFlows[1] : node.flow.Replace("splice", "direct");
 
                         outbound.mux.enabled = false;
                         outbound.mux.concurrency = -1;
@@ -553,14 +539,9 @@ namespace v2rayN.Handler
                     //if xtls
                     if (node.streamSecurity == Global.StreamSecurityX)
                     {
-                        if (Utils.IsNullOrEmpty(node.flow))
-                        {
-                            serversItem.flow = Global.xtlsFlows[1];
-                        }
-                        else
-                        {
-                            serversItem.flow = node.flow.Replace("splice", "direct");
-                        }
+                        serversItem.flow = Utils.IsNullOrEmpty(node.flow)
+                            ? Global.xtlsFlows[1]
+                            : node.flow.Replace("splice", "direct");
 
                         outbound.mux.enabled = false;
                         outbound.mux.concurrency = -1;
@@ -660,7 +641,7 @@ namespace v2rayN.Handler
                         }
                         else if (iobound.Equals("in"))
                         {
-                            kcpSettings.uplinkCapacity = config.kcpItem.downlinkCapacity; ;
+                            kcpSettings.uplinkCapacity = config.kcpItem.downlinkCapacity;
                             kcpSettings.downlinkCapacity = config.kcpItem.downlinkCapacity;
                         }
                         else
@@ -1423,10 +1404,6 @@ namespace v2rayN.Handler
                         if (!Utils.IsNullOrEmpty(request))
                         {
                             V2rayTcpRequest v2rayTcpRequest = Utils.FromJson<V2rayTcpRequest>(request);
-                            if (v2rayTcpRequest != null
-                                && v2rayTcpRequest.headers != null
-                                && v2rayTcpRequest.headers.Host != null
-                                && v2rayTcpRequest.headers.Host.Count > 0)
                             {
                                 vmessItem.requestHost = v2rayTcpRequest.headers.Host[0];
                             }
@@ -1465,17 +1442,14 @@ namespace v2rayN.Handler
                     {
                         vmessItem.path = inbound.streamSettings.httpSettings.path;
                     }
-                    if (inbound.streamSettings.httpSettings.host != null
-                        && inbound.streamSettings.httpSettings.host.Count > 0)
+                    if (inbound.streamSettings.httpSettings.host is { Count: > 0 })
                     {
                         vmessItem.requestHost = Utils.List2String(inbound.streamSettings.httpSettings.host);
                     }
                 }
 
                 //tls
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.security != null
-                    && inbound.streamSettings.security == Global.StreamSecurity)
+                if (inbound.streamSettings is { security: Global.StreamSecurity })
                 {
                     vmessItem.streamSecurity = Global.StreamSecurity;
                 }

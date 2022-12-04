@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using v2rayN.Mode;
 using v2rayN.Base;
 using System.Linq;
 using v2rayN.Tool;
-using System.Threading.Tasks;
 
 namespace v2rayN.Handler
 {
@@ -101,36 +99,22 @@ namespace v2rayN.Handler
             //}
 
             //kcp
-            if (config.kcpItem == null)
+            config.kcpItem ??= new KcpItem
             {
-                config.kcpItem = new KcpItem
-                {
-                    mtu = 1350,
-                    tti = 50,
-                    uplinkCapacity = 12,
-                    downlinkCapacity = 100,
-                    readBufferSize = 2,
-                    writeBufferSize = 2,
-                    congestion = false
-                };
-            }
-            if (config.uiItem == null)
+                mtu = 1350,
+                tti = 50,
+                uplinkCapacity = 12,
+                downlinkCapacity = 100,
+                readBufferSize = 2,
+                writeBufferSize = 2,
+                congestion = false
+            };
+            config.uiItem ??= new UIItem()
             {
-                config.uiItem = new UIItem()
-                {
-                    enableAutoAdjustMainLvColWidth = true
-                };
-            }
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-
-
-            if (config.constItem == null)
-            {
-                config.constItem = new ConstItem();
-            }
+                enableAutoAdjustMainLvColWidth = true
+            };
+            config.uiItem.mainLvColWidth ??= new Dictionary<string, int>();
+            config.constItem ??= new ConstItem();
             if (Utils.IsNullOrEmpty(config.constItem.speedTestUrl))
             {
                 config.constItem.speedTestUrl = Global.SpeedTestUrl;
@@ -148,15 +132,9 @@ namespace v2rayN.Handler
             //    config.remoteDNS = "1.1.1.1";
             //}
 
-            if (config.subItem == null)
-            {
-                config.subItem = new List<SubItem>();
-            }
-            if (config.groupItem == null)
-            {
-                config.groupItem = new List<GroupItem>();
-            }
-            if (config.statisticsFreshRate > 100 || config.statisticsFreshRate < 1)
+            config.subItem ??= new List<SubItem>();
+            config.groupItem ??= new List<GroupItem>();
+            if (config.statisticsFreshRate is > 100 or < 1)
             {
                 config.statisticsFreshRate = 1;
             }
@@ -1260,10 +1238,7 @@ namespace v2rayN.Handler
 
         public static int AddformMainLvColWidth(ref Config config, string name, int width)
         {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
+            config.uiItem.mainLvColWidth ??= new Dictionary<string, int>();
             if (config.uiItem.mainLvColWidth.ContainsKey(name))
             {
                 config.uiItem.mainLvColWidth[name] = width;
@@ -1278,18 +1253,8 @@ namespace v2rayN.Handler
         }
         public static int GetformMainLvColWidth(ref Config config, string name, int width)
         {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-            if (config.uiItem.mainLvColWidth.ContainsKey(name))
-            {
-                return config.uiItem.mainLvColWidth[name];
-            }
-            else
-            {
-                return width;
-            }
+            config.uiItem.mainLvColWidth ??= new Dictionary<string, int>();
+            return config.uiItem.mainLvColWidth.ContainsKey(name) ? config.uiItem.mainLvColWidth[name] : width;
         }
 
         #endregion
@@ -1308,7 +1273,7 @@ namespace v2rayN.Handler
 
             }
             //move locked item
-            int index = config.routings.FindIndex(it => it.locked == true);
+            int index = config.routings.FindIndex(it => it.locked);
             if (index != -1)
             {
                 var item = Utils.DeepCopy(config.routings[index]);
@@ -1339,7 +1304,7 @@ namespace v2rayN.Handler
             else
             {
                 config.routings.Add(item);
-                int indexLocked = config.routings.FindIndex(it => it.locked == true);
+                int indexLocked = config.routings.FindIndex(it => it.locked);
                 if (indexLocked != -1)
                 {
                     var itemLocked = Utils.DeepCopy(config.routings[indexLocked]);
@@ -1370,10 +1335,7 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
-            if (routingItem.rules == null)
-            {
-                routingItem.rules = new List<RulesItem>();
-            }
+            routingItem.rules ??= new List<RulesItem>();
             if (blReplace)
             {
                 routingItem.rules.Clear();
@@ -1485,10 +1447,7 @@ namespace v2rayN.Handler
 
         public static int InitBuiltinRouting(ref Config config, bool blImportAdvancedRules = false)
         {
-            if (config.routings == null)
-            {
-                config.routings = new List<RoutingItem>();
-            }
+            config.routings ??= new List<RoutingItem>();
 
             if (blImportAdvancedRules || config.routings.Count(it => it.locked != true) <= 0)
             {
@@ -1543,11 +1502,7 @@ namespace v2rayN.Handler
 
         public static RoutingItem GetLockedRoutingItem(ref Config config)
         {
-            if (config.routings == null)
-            {
-                return null;
-            }
-            return config.routings.Find(it => it.locked == true);
+            return config.routings?.Find(it => it.locked);
         }
         #endregion
     }

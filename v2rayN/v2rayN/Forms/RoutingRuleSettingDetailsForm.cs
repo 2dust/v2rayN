@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using v2rayN.Base;
-using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
@@ -117,13 +116,10 @@ namespace v2rayN.Forms
         {
             EndBindingData();
 
-            bool hasRule = 
-                rulesItem.domain != null 
-                && rulesItem.domain.Count > 0 
-                || rulesItem.ip != null 
-                && rulesItem.ip.Count > 0 
-                || rulesItem.protocol != null 
-                && rulesItem.protocol.Count > 0 
+            bool hasRule =
+                rulesItem.domain is { Count: > 0 }
+                || rulesItem.ip is { Count: > 0 }
+                || rulesItem.protocol is { Count: > 0 }
                 || !Utils.IsNullOrEmpty(rulesItem.port);
 
             if (!hasRule)

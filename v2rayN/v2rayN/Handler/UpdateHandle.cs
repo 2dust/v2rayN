@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -405,15 +404,7 @@ namespace v2rayN.Handler
             try
             {
                 var gitHubReleases = Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);
-                string version;
-                if (preRelease)
-                {
-                    version = gitHubReleases!.First().TagName;
-                }
-                else
-                {
-                    version = gitHubReleases!.First(r => r.Prerelease == false).TagName;
-                }
+                var version = preRelease ? gitHubReleases!.First().TagName : gitHubReleases!.First(r => r.Prerelease == false).TagName;
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
                 string curVersion;
@@ -437,14 +428,9 @@ namespace v2rayN.Handler
                         {
                             curVersion = getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);
-                            if (Environment.Is64BitProcess)
-                            {
-                                url = string.Format(coreInfo.coreDownloadUrl64, version);
-                            }
-                            else
-                            {
-                                url = string.Format(coreInfo.coreDownloadUrl32, version);
-                            }
+                            url = string.Format(Environment.Is64BitProcess 
+                                ? coreInfo.coreDownloadUrl64 
+                                : coreInfo.coreDownloadUrl32, version);
                             break;
                         }
                     case ECoreType.v2rayN:

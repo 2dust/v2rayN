@@ -76,14 +76,7 @@ namespace v2rayN.Base
                 Rectangle itemBounds = GetItemRect(targetIndex);
                 EnsureVisible(targetIndex);
 
-                if (targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2))
-                {
-                    InsertionMark.AppearsAfterItem = true;
-                }
-                else
-                {
-                    InsertionMark.AppearsAfterItem = false;
-                }
+                InsertionMark.AppearsAfterItem = targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2);
             }
             InsertionMark.Index = targetIndex;
         }

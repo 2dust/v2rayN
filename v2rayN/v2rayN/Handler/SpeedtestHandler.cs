@@ -13,10 +13,10 @@ namespace v2rayN.Handler
 {
     class SpeedtestHandler
     {
-        private Config _config;
-        private V2rayHandler _v2rayHandler;
-        private List<ServerTestItem> _selecteds;
-        Action<string, string> _updateFunc;
+        private readonly Config _config;
+        private readonly V2rayHandler _v2rayHandler;
+        private readonly List<ServerTestItem> _selecteds;
+        private readonly Action<string, string> _updateFunc;
 
         public SpeedtestHandler(Config config)
         {
@@ -137,8 +137,7 @@ namespace v2rayN.Handler
                         try
                         {
                             WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
-                            int responseTime = -1;
-                            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
+                            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out var responseTime);
                             string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
 
                             _config.GetVmessItem(it.indexId)?.SetTestResult(output);

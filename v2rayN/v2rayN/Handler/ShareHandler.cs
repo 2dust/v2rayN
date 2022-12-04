@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 using v2rayN.Base;
 using v2rayN.Mode;
@@ -104,7 +101,7 @@ namespace v2rayN.Handler
             //url = Utils.Base64Encode(url);
             //new Sip002
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            url = $"{pw}@{GetIpv6(item.address)}:{ item.port}";
+            url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
             url = $"{Global.ssProtocol}{url}{remark}";
             return url;
         }
@@ -125,7 +122,7 @@ namespace v2rayN.Handler
             //url = Utils.Base64Encode(url);
             //new
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            url = $"{pw}@{GetIpv6(item.address)}:{ item.port}";
+            url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
             url = $"{Global.socksProtocol}{url}{remark}";
             return url;
         }
@@ -142,10 +139,7 @@ namespace v2rayN.Handler
             GetStdTransport(item, null, ref dicQuery);
             string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            url = string.Format("{0}@{1}:{2}",
-            item.id,
-            GetIpv6(item.address),
-            item.port);
+            url = $"{item.id}@{GetIpv6(item.address)}:{item.port}";
             url = $"{Global.trojanProtocol}{url}{query}{remark}";
             return url;
         }
@@ -158,22 +152,14 @@ namespace v2rayN.Handler
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
-            var dicQuery = new Dictionary<string, string>();
-            if (!Utils.IsNullOrEmpty(item.security))
+            var dicQuery = new Dictionary<string, string>
             {
-                dicQuery.Add("encryption", item.security);
-            }
-            else
-            {
-                dicQuery.Add("encryption", "none");
-            }
+                { "encryption", !Utils.IsNullOrEmpty(item.security) ? item.security : "none" }
+            };
             GetStdTransport(item, "none", ref dicQuery);
             string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            url = string.Format("{0}@{1}:{2}",
-            item.id,
-            GetIpv6(item.address),
-            item.port);
+            url = $"{item.id}@{GetIpv6(item.address)}:{item.port}";
             url = $"{Global.vlessProtocol}{url}{query}{remark}";
             return url;
         }
@@ -204,7 +190,7 @@ namespace v2rayN.Handler
             {
                 dicQuery.Add("sni", item.sni);
             }
-            if (item.alpn != null && item.alpn.Count > 0)
+            if (item.alpn is { Count: > 0 })
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(Utils.List2String(item.alpn)));
             }
@@ -261,7 +247,7 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(item.path))
                     {
                         dicQuery.Add("serviceName", Utils.UrlEncode(item.path));
-                        if (item.headerType == Global.GrpcgunMode || item.headerType == Global.GrpcmultiMode)
+                        if (item.headerType is Global.GrpcgunMode or Global.GrpcmultiMode)
                         {
                             dicQuery.Add("mode", Utils.UrlEncode(item.headerType));
                         }

@@ -9,14 +9,14 @@ namespace v2rayN.Tool
     {
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> query, string propertyName)
         {
-            return _OrderBy<T>(query, propertyName, false);
+            return _OrderBy(query, propertyName, false);
         }
         public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> query, string propertyName)
         {
-            return _OrderBy<T>(query, propertyName, true);
+            return _OrderBy(query, propertyName, true);
         }
 
-        static IOrderedQueryable<T> _OrderBy<T>(IQueryable<T> query, string propertyName, bool isDesc)
+        private static IOrderedQueryable<T> _OrderBy<T>(IQueryable<T> query, string propertyName, bool isDesc)
         {
             string methodname = (isDesc) ? "OrderByDescendingInternal" : "OrderByInternal";
 
@@ -35,7 +35,8 @@ namespace v2rayN.Tool
         {//public
             return query.OrderByDescending(_GetLamba<T, TProp>(memberProperty));
         }
-        static Expression<Func<T, TProp>> _GetLamba<T, TProp>(PropertyInfo memberProperty)
+
+        private static Expression<Func<T, TProp>> _GetLamba<T, TProp>(PropertyInfo memberProperty)
         {
             if (memberProperty.PropertyType != typeof(TProp)) throw new Exception();
 

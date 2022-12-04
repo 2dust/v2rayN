@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -26,10 +25,7 @@ namespace v2rayN.Forms
         private void RoutingRuleSettingForm_Load(object sender, EventArgs e)
         {
             routingItem = EditIndex >= 0 ? config.routings[EditIndex] : new RoutingItem();
-            if (routingItem.rules == null)
-            {
-                routingItem.rules = new List<RulesItem>();
-            }
+            routingItem.rules ??= new List<RulesItem>();
 
             txtRemarks.Text = routingItem.remarks ?? string.Empty;
             txtUrl.Text = routingItem.url ?? string.Empty;
@@ -351,11 +347,7 @@ namespace v2rayN.Forms
         }
         private int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
         {
-            bool blReplace = false;
-            if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == DialogResult.No)
-            {
-                blReplace = true;
-            }
+            bool blReplace = UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == DialogResult.No;
             return ConfigHandler.AddBatchRoutingRules(ref routingItem, clipboardData, blReplace);
         }
 

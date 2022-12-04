@@ -1,14 +1,12 @@
 ﻿using NHotkey;
 using NHotkey.WindowsForms;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Mode;
-using System.Linq;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler

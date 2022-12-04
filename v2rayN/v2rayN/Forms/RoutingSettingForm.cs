@@ -26,10 +26,7 @@ namespace v2rayN.Forms
             chkenableRoutingAdvanced.Checked = config.enableRoutingAdvanced;
             cmbdomainMatcher.Text = config.domainMatcher;
 
-            if (config.routings == null)
-            {
-                config.routings = new List<RoutingItem>();
-            }
+            config.routings ??= new List<RoutingItem>();
             InitRoutingsView();
             RefreshRoutingsView();
 
@@ -162,7 +159,7 @@ namespace v2rayN.Forms
             for (int k = 0; k < config.routings.Count; k++)
             {
                 var item = config.routings[k];
-                if (item.locked == true)
+                if (item.locked)
                 {
                     continue;
                 }

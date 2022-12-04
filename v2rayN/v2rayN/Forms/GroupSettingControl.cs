@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using v2rayN.Base;
-using v2rayN.Handler;
 using v2rayN.Mode;
 
 namespace v2rayN.Forms

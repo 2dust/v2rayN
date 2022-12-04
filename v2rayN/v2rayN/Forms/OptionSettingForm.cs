@@ -106,10 +106,7 @@ namespace v2rayN.Forms
 
         private void InitCoreType()
         {
-            if (config.coreTypeItem == null)
-            {
-                config.coreTypeItem = new List<CoreTypeItem>();
-            }
+            config.coreTypeItem ??= new List<CoreTypeItem>();
 
             foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
             {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -58,7 +57,7 @@ namespace v2rayN.Base
             HttpResponseMessage response = await client.GetAsync(url, token);
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception($"The request returned with HTTP status code {response.StatusCode}");
             }
             return await response.Content.ReadAsStringAsync();
         }
@@ -77,11 +76,11 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
             if (string.IsNullOrEmpty(fileName))
             {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
             if (File.Exists(fileName))
             {
@@ -92,59 +91,55 @@ namespace v2rayN.Base
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception($"The request returned with HTTP status code {response.StatusCode}");
             }
 
-            var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+            var total = response.Content.Headers.ContentLength ?? -1L;
             var canReportProgress = total != -1 && progress != null;
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var file = File.Create(fileName);
+            var totalRead = 0L;
+            var buffer = new byte[1024 * 1024];
+            var isMoreToRead = true;
+            var progressPercentage = 0;
+
+            do
             {
-                using (var file = File.Create(fileName))
+                token.ThrowIfCancellationRequested();
+
+                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+
+                if (read == 0)
                 {
-                    var totalRead = 0L;
-                    var buffer = new byte[1024 * 1024];
-                    var isMoreToRead = true;
-                    var progressPercentage = 0;
+                    isMoreToRead = false;
+                }
+                else
+                {
+                    var data = new byte[read];
+                    buffer.ToList().CopyTo(0, data, 0, read);
 
-                    do
-                    {
-                        token.ThrowIfCancellationRequested();
+                    // TODO: put here the code to write the file to disk
+                    await file.WriteAsync(data, 0, read, token);
 
-                        var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                    totalRead += read;
 
-                        if (read == 0)
-                        {
-                            isMoreToRead = false;
-                        }
-                        else
-                        {
-                            var data = new byte[read];
-                            buffer.ToList().CopyTo(0, data, 0, read);
-
-                            // TODO: put here the code to write the file to disk
-                            file.Write(data, 0, read);
-
-                            totalRead += read;
-
-                            if (canReportProgress)
-                            {
-                                var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                                if (progressPercentage != percent && percent % 10 == 0)
-                                {
-                                    progressPercentage = percent;
-                                    progress.Report(percent);
-                                }
-                            }
-                        }
-                    } while (isMoreToRead);
-                    file.Close();
                     if (canReportProgress)
                     {
-                        progress.Report(101);
-
+                        var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
+                        if (progressPercentage != percent && percent % 10 == 0)
+                        {
+                            progressPercentage = percent;
+                            progress.Report(percent);
+                        }
                     }
                 }
+            } while (isMoreToRead);
+            file.Close();
+            if (canReportProgress)
+            {
+                progress.Report(101);
+
             }
         }
 
@@ -152,68 +147,66 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception($"The request returned with HTTP status code {response.StatusCode}");
             }
 
             //var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
             //var canReportProgress = total != -1 && progress != null;
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            using var stream = await response.Content.ReadAsStreamAsync();
+            var totalRead = 0L;
+            var buffer = new byte[1024 * 64];
+            var isMoreToRead = true;
+            string progressSpeed = string.Empty;
+            DateTime totalDatetime = DateTime.Now;
+
+            do
             {
-                var totalRead = 0L;
-                var buffer = new byte[1024 * 64];
-                var isMoreToRead = true;
-                string progressSpeed = string.Empty;
-                DateTime totalDatetime = DateTime.Now;
-
-                do
+                if (token.IsCancellationRequested)
                 {
-                    if (token.IsCancellationRequested)
+                    if (totalRead > 0)
                     {
-                        if (totalRead > 0)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            token.ThrowIfCancellationRequested();
-                        }
-                    }
-
-                    var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
-
-                    if (read == 0)
-                    {
-                        isMoreToRead = false;
+                        return;
                     }
                     else
                     {
-                        var data = new byte[read];
-                        buffer.ToList().CopyTo(0, data, 0, read);
+                        token.ThrowIfCancellationRequested();
+                    }
+                }
 
-                        // TODO:   
-                        totalRead += read;
+                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
 
-                        TimeSpan ts = (DateTime.Now - totalDatetime);
-                        var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
-                        if (progress != null)
+                if (read == 0)
+                {
+                    isMoreToRead = false;
+                }
+                else
+                {
+                    var data = new byte[read];
+                    buffer.ToList().CopyTo(0, data, 0, read);
+
+                    // TODO:   
+                    totalRead += read;
+
+                    TimeSpan ts = (DateTime.Now - totalDatetime);
+                    var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
+                    if (progress != null)
+                    {
+                        if (progressSpeed != speed)
                         {
-                            if (progressSpeed != speed)
-                            {
-                                progressSpeed = speed;
-                                progress.Report(speed);
-                            }
+                            progressSpeed = speed;
+                            progress.Report(speed);
                         }
                     }
-                } while (isMoreToRead);
-            }
+                }
+            } while (isMoreToRead);
         }
 
     }

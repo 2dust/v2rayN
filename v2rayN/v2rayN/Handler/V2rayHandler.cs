@@ -63,7 +63,7 @@ namespace v2rayN.Handler
                 }
 
                 //start a socks service
-                if (_process != null && !_process.HasExited && item.configType == EConfigType.Custom && item.preSocksPort > 0)
+                if (_process is { HasExited: false } && item.configType == EConfigType.Custom && item.preSocksPort > 0)
                 {
                     var itemSocks = new VmessItem()
                     {

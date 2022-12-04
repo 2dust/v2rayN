@@ -63,14 +63,7 @@ namespace v2rayN.Forms
         private void MainForm_VisibleChanged(object sender, EventArgs e)
         {
             if (statistics == null || !statistics.Enable) return;
-            if ((sender as Form).Visible)
-            {
-                statistics.UpdateUI = true;
-            }
-            else
-            {
-                statistics.UpdateUI = false;
-            }
+            statistics.UpdateUI = (sender as Form).Visible;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -232,10 +225,7 @@ namespace v2rayN.Forms
                 .ToList();
 
             ConfigHandler.SetDefaultServer(config, lstVmess);
-            BeginInvoke(new Action(() =>
-            {
-                RefreshServersView();
-            }));
+            BeginInvoke(new Action(RefreshServersView));
 
             RefreshServersMenu();
         }
@@ -319,7 +309,7 @@ namespace v2rayN.Forms
                 Utils.AddSubItem(lvItem, EServerColName.subRemarks.ToString(), item.GetSubRemarks(config));
                 Utils.AddSubItem(lvItem, EServerColName.testResult.ToString(), item.testResult);
 
-                if (statistics != null && statistics.Enable)
+                if (statistics is { Enable: true })
                 {
                     string totalUp = string.Empty,
                         totalDown = string.Empty,
@@ -1048,10 +1038,7 @@ namespace v2rayN.Forms
         {
             HideForm();
 
-            string result = await Task.Run(() =>
-            {
-                return Utils.ScanScreen();
-            });
+            string result = await Task.Run(Utils.ScanScreen);
 
             ShowForm();
 
@@ -1234,7 +1221,7 @@ namespace v2rayN.Forms
             {
                 up /= (ulong)(config.statisticsFreshRate);
                 down /= (ulong)(config.statisticsFreshRate);
-                mainMsgControl.SetToolSslInfo("speed", string.Format("{0}/s↑ | {1}/s↓", Utils.HumanFy(up), Utils.HumanFy(down)));
+                mainMsgControl.SetToolSslInfo("speed", $"{Utils.HumanFy(up)}/s↑ | {Utils.HumanFy(down)}/s↓");
 
                 foreach (var it in statistics)
                 {
@@ -1560,7 +1547,7 @@ namespace v2rayN.Forms
             for (int k = 0; k < config.routings.Count; k++)
             {
                 var item = config.routings[k];
-                if (item.locked == true)
+                if (item.locked)
                 {
                     continue;
                 }

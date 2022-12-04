@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Mode;
@@ -89,14 +83,9 @@ namespace v2rayN.Forms
             sb.Append($"{ResUI.LabLocal}:");
             sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(Global.InboundSocks)}]");
             sb.Append(" | ");
-            if (config.sysProxyType == ESysProxyType.ForcedChange)
-            {
-                sb.Append($"[{Global.InboundHttp}({ResUI.SystemProxy}):{config.GetLocalPort(Global.InboundHttp)}]");
-            }
-            else
-            {
-                sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp)}]");
-            }
+            sb.Append(config.sysProxyType == ESysProxyType.ForcedChange
+                ? $"[{Global.InboundHttp}({ResUI.SystemProxy}):{config.GetLocalPort(Global.InboundHttp)}]"
+                : $"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp)}]");
 
             if (config.inbound[0].allowLANConn)
             {

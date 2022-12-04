@@ -11,8 +11,8 @@ namespace v2rayN.Tool
         {
             try
             {
-                using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                    fs.Write(content, 0, content.Length);
+                using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+                fs.Write(content, 0, content.Length);
                 return true;
             }
             catch (Exception ex)
@@ -31,14 +31,12 @@ namespace v2rayN.Tool
                 byte[] buffer = new byte[4096];
                 int n;
 
-                using (FileStream fs = File.Create(fileName))
-                using (GZipStream input = new GZipStream(new MemoryStream(content),
-                        CompressionMode.Decompress, false))
+                using FileStream fs = File.Create(fileName);
+                using GZipStream input = new GZipStream(new MemoryStream(content),
+                    CompressionMode.Decompress, false);
+                while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        fs.Write(buffer, 0, n);
-                    }
+                    fs.Write(buffer, 0, n);
                 }
             }
             catch (Exception ex)
@@ -56,11 +54,9 @@ namespace v2rayN.Tool
         {
             try
             {
-                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (StreamReader sr = new StreamReader(fs, encoding))
-                {
-                    return sr.ReadToEnd();
-                }
+                using FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using StreamReader sr = new StreamReader(fs, encoding);
+                return sr.ReadToEnd();
             }
             catch (Exception ex)
             {
@@ -111,18 +107,16 @@ namespace v2rayN.Tool
         {
             try
             {
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                using ZipArchive archive = ZipFile.OpenRead(fileName);
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        if (entry.Length == 0)
-                            continue;
+                    if (entry.Length == 0)
+                        continue;
 
-                        string entryOuputPath = Utils.GetPath(entry.FullName);
-                        FileInfo fileInfo = new FileInfo(entryOuputPath);
-                        fileInfo.Directory.Create();
-                        entry.ExtractToFile(entryOuputPath, true);
-                    }
+                    string entryOuputPath = Utils.GetPath(entry.FullName);
+                    FileInfo fileInfo = new FileInfo(entryOuputPath);
+                    fileInfo.Directory.Create();
+                    entry.ExtractToFile(entryOuputPath, true);
                 }
             }
             catch (Exception ex)

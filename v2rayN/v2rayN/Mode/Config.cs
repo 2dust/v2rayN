@@ -275,11 +275,9 @@ namespace v2rayN.Mode
 
         public string GetGroupRemarks(string groupId)
         {
-            if (string.IsNullOrEmpty(groupId))
-            {
-                return string.Empty;
-            }
-            return groupItem.Where(it => it.id == groupId).FirstOrDefault()?.remarks;
+            return string.IsNullOrEmpty(groupId) 
+                ? string.Empty 
+                : groupItem.FirstOrDefault(it => it.id == groupId)?.remarks;
         }
 
         #endregion
@@ -316,21 +314,14 @@ namespace v2rayN.Mode
         #region function
         public string GetSummary()
         {
-            string summary = string.Format("[{0}] ", (configType).ToString());
+            string summary = $"[{(configType).ToString()}] ";
             string[] arrAddr = address.Split('.');
-            string addr;
-            if (arrAddr.Length > 2)
+            string addr = arrAddr.Length switch
             {
-                addr = $"{arrAddr[0]}***{arrAddr[arrAddr.Length - 1]}";
-            }
-            else if (arrAddr.Length > 1)
-            {
-                addr = $"***{arrAddr[arrAddr.Length - 1]}";
-            }
-            else
-            {
-                addr = address;
-            }
+                > 2 => $"{arrAddr[0]}***{arrAddr[arrAddr.Length - 1]}",
+                > 1 => $"***{arrAddr[arrAddr.Length - 1]}",
+                _ => address
+            };
             switch (configType)
             {
                 case EConfigType.VMess:
@@ -338,10 +329,10 @@ namespace v2rayN.Mode
                 case EConfigType.Socks:
                 case EConfigType.VLESS:
                 case EConfigType.Trojan:
-                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    summary += $"{remarks}({addr}:{port})";
                     break;
                 default:
-                    summary += string.Format("{0}", remarks);
+                    summary += $"{remarks}";
                     break;
             }
             return summary;
@@ -372,23 +363,12 @@ namespace v2rayN.Mode
                 return subRemarks;
             }
             var group = config.groupItem.FirstOrDefault(t => t.id == groupId);
-            if (group != null)
-            {
-                return group.remarks;
-            }
-            return groupId.Substring(0, 4);
+            return group != null ? group.remarks : groupId.Substring(0, 4);
         }
 
         public List<string> GetAlpn()
         {
-            if (alpn != null && alpn.Count > 0)
-            {
-                return alpn;
-            }
-            else
-            {
-                return null;
-            }
+            return alpn is { Count: > 0 } ? alpn : null;
         }
         public string GetNetwork()
         {

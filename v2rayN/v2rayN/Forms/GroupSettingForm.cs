@@ -18,10 +18,7 @@ namespace v2rayN.Forms
 
         private void GroupSettingForm_Load(object sender, EventArgs e)
         {
-            if (config.groupItem == null)
-            {
-                config.groupItem = new List<GroupItem>();
-            }
+            config.groupItem ??= new List<GroupItem>();
 
             RefreshGroupsView();
         }
