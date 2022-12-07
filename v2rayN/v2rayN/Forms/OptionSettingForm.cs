@@ -53,7 +53,7 @@ namespace v2rayN.Forms
                 chkAllowLANConn.Checked = config.inbound[0].allowLANConn;
                 txtuser.Text = config.inbound[0].user;
                 txtpass.Text = config.inbound[0].pass;
-
+                chkUseSamePortForLocalAndLan.Checked = config.inbound[0].useSamePortForLocalAndLan;
             }
 
             //remoteDNS
@@ -185,6 +185,7 @@ namespace v2rayN.Forms
             bool udpEnabled = chkudpEnabled.Checked;
             bool sniffingEnabled = chksniffingEnabled.Checked;
             bool allowLANConn = chkAllowLANConn.Checked;
+            bool useSamePortForLocalAndLan = chkUseSamePortForLocalAndLan.Checked;
             if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
             {
                 UI.Show(ResUI.FillLocalListeningPort);
@@ -215,6 +216,7 @@ namespace v2rayN.Forms
             config.inbound[0].udpEnabled = udpEnabled;
             config.inbound[0].sniffingEnabled = sniffingEnabled;
             config.inbound[0].allowLANConn = allowLANConn;
+            config.inbound[0].useSamePortForLocalAndLan = useSamePortForLocalAndLan;
             config.inbound[0].user = txtuser.Text;
             config.inbound[0].pass = txtpass.Text;
 

@@ -138,22 +138,40 @@ namespace v2rayN.Handler
 
                 if (config.inbound[0].allowLANConn)
                 {
-                    Inbounds inbound3 = GetInbound(config.inbound[0], Global.InboundSocks2, 2, true);
-                    inbound3.listen = "0.0.0.0";
-                    v2rayConfig.inbounds.Add(inbound3);
-
-                    Inbounds inbound4 = GetInbound(config.inbound[0], Global.InboundHttp2, 3, false);
-                    inbound4.listen = "0.0.0.0";
-                    v2rayConfig.inbounds.Add(inbound4);
-
-                    //auth
-                    if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                    if (config.inbound[0].useSamePortForLocalAndLan)
                     {
-                        inbound3.settings.auth = "password";
-                        inbound3.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                        inbound.listen = "0.0.0.0";
+                        inbound2.listen = "0.0.0.0";
 
-                        inbound4.settings.auth = "password";
-                        inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                        //auth
+                        if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                        {
+                            inbound.settings.auth = "password";
+                            inbound.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+
+                            inbound2.settings.auth = "password";
+                            inbound2.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                        }
+                    }
+                    else
+                    {
+                        Inbounds inbound3 = GetInbound(config.inbound[0], Global.InboundSocks2, 2, true);
+                        inbound3.listen = "0.0.0.0";
+                        v2rayConfig.inbounds.Add(inbound3);
+
+                        Inbounds inbound4 = GetInbound(config.inbound[0], Global.InboundHttp2, 3, false);
+                        inbound4.listen = "0.0.0.0";
+                        v2rayConfig.inbounds.Add(inbound4);
+
+                        //auth
+                        if (!Utils.IsNullOrEmpty(config.inbound[0].user) && !Utils.IsNullOrEmpty(config.inbound[0].pass))
+                        {
+                            inbound3.settings.auth = "password";
+                            inbound3.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+
+                            inbound4.settings.auth = "password";
+                            inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                        }
                     }
                 }
             }

@@ -391,4 +391,7 @@
   <data name="chkEnableCheckPreReleaseUpdate.Text" xml:space="preserve">
     <value>检查Pre-Release更新(请谨慎启用)</value>
   </data>
+  <data name="chkUseSamePortForLocalAndLan.Text" xml:space="preserve">
+    <value>为局域网和本地回环使用相通的端口</value>
+  </data>
 </root>

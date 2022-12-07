@@ -100,10 +100,19 @@ namespace v2rayN.Forms
 
             if (config.inbound[0].allowLANConn)
             {
+                var inboudSocks2 = Global.InboundSocks2;
+                var inboudHttp2 = Global.InboundHttp2;
+
+                if (config.inbound[0].useSamePortForLocalAndLan)
+                {
+                    inboudSocks2 = Global.InboundSocks;
+                    inboudHttp2 = Global.InboundHttp;
+                }
+
                 sb.Append($"  {ResUI.LabLAN}:");
-                sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(Global.InboundSocks2)}]");
+                sb.Append($"[{Global.InboundSocks}:{config.GetLocalPort(inboudSocks2)}]");
                 sb.Append(" | ");
-                sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(Global.InboundHttp2)}]");
+                sb.Append($"[{Global.InboundHttp}:{config.GetLocalPort(inboudHttp2)}]");
             }
 
             SetToolSslInfo("inbound", sb.ToString());

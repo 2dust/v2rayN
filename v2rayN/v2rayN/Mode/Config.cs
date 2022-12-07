@@ -615,6 +615,7 @@ namespace v2rayN.Mode
 
         public string pass { get; set; }
 
+        public bool useSamePortForLocalAndLan { get; set; }
     }
 
     [Serializable]
