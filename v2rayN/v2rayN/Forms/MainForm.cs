@@ -1370,15 +1370,17 @@ namespace v2rayN.Forms
 
         private void tsbCheckUpdateN_Click(object sender, EventArgs e)
         {
-            void _updateUI(bool success, string msg)
-            {
-                AppendText(false, msg);
-                if (success)
-                {
-                    menuExit_Click(null, null);
-                }
-            };
-            (new UpdateHandle()).CheckUpdateGuiN(config, _updateUI, config.checkPreReleaseUpdate);
+            Process.Start(Global.UpdateUrl);
+
+            //void _updateUI(bool success, string msg)
+            //{
+            //    AppendText(false, msg);
+            //    if (success)
+            //    {
+            //        menuExit_Click(null, null);
+            //    }
+            //};
+            //(new UpdateHandle()).CheckUpdateGuiN(config, _updateUI, config.checkPreReleaseUpdate);
         }
 
         private void tsbCheckUpdateCore_Click(object sender, EventArgs e)
