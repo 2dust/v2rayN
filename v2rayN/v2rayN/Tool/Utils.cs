@@ -413,6 +413,30 @@ namespace v2rayN
             return sb.ToString();
         }
 
+        public static string GetPunycode(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return url;
+            }
+            try
+            {
+                Uri uri = new Uri(url);
+                if (uri.Host == uri.IdnHost)
+                {
+                    return url;
+                }
+                else
+                {
+                    return url.Replace(uri.Host, uri.IdnHost);
+                }
+            }
+            catch
+            {
+                return url;
+            }
+        }
+
         #endregion
 
 

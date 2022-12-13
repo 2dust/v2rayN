@@ -212,6 +212,7 @@ namespace v2rayN.Handler
                         _updateFunc(false, $"{hashCode}{args.GetException().Message}");
                     };
 
+                    url = Utils.GetPunycode(url);
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
                     var result = await downloadHandle.DownloadStringAsync(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
