@@ -299,6 +299,13 @@ namespace v2rayN.Handler
                             update(success, msg);
                             if (success)
                                 Utils.SaveLog("subscription" + msg);
+                            else
+                                updateHandle.UpdateSubscriptionProcess(config, "", false, (bool success, string msg) =>
+                                {
+                                    update(success, msg);
+                                    if (success)
+                                        Utils.SaveLog("subscription" + msg);
+                                });
                         });
                         autoUpdateSubTime = dtNow;
                     }
