@@ -1483,7 +1483,7 @@ namespace v2rayN.Forms
         }
         private void tsbSubGroupUpdate_Click(object sender, EventArgs e)
         {
-            UpdateSubscriptionProcess(_groupId, true);
+            UpdateSubscriptionProcess(_groupId, false);
         }
 
         private void tsbSubGroupUpdateViaProxy_Click(object sender, EventArgs e)
