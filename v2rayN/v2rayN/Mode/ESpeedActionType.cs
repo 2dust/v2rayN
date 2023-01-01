@@ -6,6 +6,7 @@ namespace v2rayN.Mode
         Ping,
         Tcping,
         Realping,
-        Speedtest
+        Speedtest,
+        Mixedtest
     }
 }

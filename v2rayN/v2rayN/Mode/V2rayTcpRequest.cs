@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace v2rayN.Mode
+﻿namespace v2rayN.Mode
 {
     /// <summary>
     /// Tcp伪装http的Request，只要Host

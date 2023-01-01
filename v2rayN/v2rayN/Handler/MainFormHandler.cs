@@ -1,14 +1,11 @@
 ﻿using NHotkey;
-using NHotkey.WindowsForms;
-using System;
-using System.Collections.Generic;
+using NHotkey.Wpf;
 using System.Drawing;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using v2rayN.Mode;
-using System.Linq;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler
@@ -26,7 +23,7 @@ namespace v2rayN.Handler
         //Action<int, string> _updateFunc;
         public static MainFormHandler Instance => instance.Value;
 
-        public Icon GetNotifyIcon(Config config, Icon def)
+        public Icon GetNotifyIcon(Config config)
         {
             try
             {
@@ -53,6 +50,8 @@ namespace v2rayN.Handler
                         return Properties.Resources.NotifyIcon2;
                     case 2:
                         return Properties.Resources.NotifyIcon3;
+                    case 3:
+                        return Properties.Resources.NotifyIcon2;
                 }
 
                 return Properties.Resources.NotifyIcon1;
@@ -60,9 +59,29 @@ namespace v2rayN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-                return def;
+                return Properties.Resources.NotifyIcon1;
             }
         }
+
+        public System.Windows.Media.ImageSource GetAppIcon(Config config)
+        {
+            int index = 1;
+            switch ((int)config.sysProxyType)
+            {
+                case 0:
+                    index = 1;
+                    break;
+                case 1:
+                case 3:
+                    index = 2;
+                    break;
+                case 2:
+                    index = 3;
+                    break;
+            }
+            return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
+        }
+
         private Icon GetNotifyIcon4Routing(Config config)
         {
             try
@@ -72,8 +91,8 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var item = config.routings[config.routingIndex];
-                if (Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
+                var item = ConfigHandler.GetDefaultRouting(ref config);
+                if (item == null || Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
                 {
                     return null;
                 }
@@ -112,7 +131,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Export2ClientConfig(VmessItem item, Config config)
+        public void Export2ClientConfig(ProfileItem item, Config config)
         {
             if (item == null)
             {
@@ -141,7 +160,7 @@ namespace v2rayN.Handler
             }
             //Config configCopy = Utils.DeepCopy(config);
             //configCopy.index = index;
-            if (V2rayConfigHandler.Export2ClientConfig(item, fileName, out string msg) != 0)
+            if (CoreConfigHandler.Export2ClientConfig(item, fileName, out string msg) != 0)
             {
                 UI.Show(msg);
             }
@@ -151,7 +170,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Export2ServerConfig(VmessItem item, Config config)
+        public void Export2ServerConfig(ProfileItem item, Config config)
         {
             if (item == null)
             {
@@ -181,7 +200,7 @@ namespace v2rayN.Handler
             }
             //Config configCopy = Utils.DeepCopy(config);
             //configCopy.index = index;
-            if (V2rayConfigHandler.Export2ServerConfig(item, fileName, out string msg) != 0)
+            if (CoreConfigHandler.Export2ServerConfig(item, fileName, out string msg) != 0)
             {
                 UI.Show(msg);
             }
@@ -344,29 +363,30 @@ namespace v2rayN.Handler
                     continue;
                 }
 
-                Keys keys = (Keys)item.KeyCode;
+                var modifiers = ModifierKeys.None;
                 if (item.Control)
                 {
-                    keys |= Keys.Control;
+                    modifiers |= ModifierKeys.Control;
                 }
                 if (item.Alt)
                 {
-                    keys |= Keys.Alt;
+                    modifiers |= ModifierKeys.Alt;
                 }
                 if (item.Shift)
                 {
-                    keys |= Keys.Shift;
+                    modifiers |= ModifierKeys.Shift;
                 }
 
+                var gesture = new KeyGesture(KeyInterop.KeyFromVirtualKey((int)item.KeyCode), modifiers);
                 try
                 {
-                    HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), keys, handler);
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey.ToString()} = {keys}");
+                    HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), gesture, handler);
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey.ToString()}");
                     update(false, msg);
                 }
                 catch (Exception ex)
                 {
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey.ToString()} = {keys}", ex.Message);
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey.ToString()}", ex.Message);
                     update(false, msg);
                     Utils.SaveLog(msg);
                 }

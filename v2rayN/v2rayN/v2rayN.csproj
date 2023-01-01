@@ -1,82 +1,101 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <OutputType>WinExe</OutputType>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Copyright>Copyright © 2019-2022 (GPLv3)</Copyright>
-    <FileVersion>5.39</FileVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>v2rayN.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Sample\custom_routing_black" />
-    <None Remove="Sample\custom_routing_global" />
-    <None Remove="Sample\custom_routing_locked" />
-    <None Remove="Sample\custom_routing_rules" />
-    <None Remove="Sample\custom_routing_white" />
-    <None Remove="Sample\SampleClientConfig.txt" />
-    <None Remove="Sample\SampleHttprequest.txt" />
-    <None Remove="Sample\SampleHttpresponse.txt" />
-    <None Remove="Sample\SampleInbound.txt" />
-    <None Remove="Sample\SampleServerConfig.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sample\custom_routing_black" />
-    <EmbeddedResource Include="Sample\custom_routing_global" />
-    <EmbeddedResource Include="Sample\custom_routing_locked" />
-    <EmbeddedResource Include="Sample\custom_routing_rules" />
-    <EmbeddedResource Include="Sample\custom_routing_white" />
-    <EmbeddedResource Include="Sample\SampleClientConfig.txt" />
-    <EmbeddedResource Include="Sample\SampleHttprequest.txt" />
-    <EmbeddedResource Include="Sample\SampleHttpresponse.txt" />
-    <EmbeddedResource Include="Sample\SampleInbound.txt" />
-    <EmbeddedResource Include="Sample\SampleServerConfig.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <Protobuf Include="Protos\Statistics.proto" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.21.5</Version>
-    </PackageReference>
-    <PackageReference Include="Grpc.Core">
-      <Version>2.46.3</Version>
-    </PackageReference>
-    <PackageReference Include="Grpc.Tools">
-      <Version>2.47.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="NHotkey">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="NHotkey.WindowsForms">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="ZXing.Net">
-      <Version>0.16.8</Version>
-    </PackageReference>
-  </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>del $(TargetDir)*.xml $(TargetDir)*.so $(TargetDir)*.dylib
-if not "$(ConfigurationName)" == "Debug" del $(TargetDir)*.pdb</PostBuildEvent>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>  
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
+		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
+		<FileVersion>6.0</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>		
+		<PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
+		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />		 
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="NHotkey" Version="2.1.0" />
+		<PackageReference Include="NHotkey.Wpf" Version="2.1.0" />
+		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="TaskScheduler" Version="2.10.1" /> 
+		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.10" />
+		<PackageReference Include="ReactiveUI.Fody" Version="18.4.1" />
+		<PackageReference Include="ReactiveUI.Validation" Version="3.0.22" />
+		<PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
+		<PackageReference Include="Splat.NLog" Version="14.6.1" />
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
+	</ItemGroup>
+	
+	<ItemGroup>       
+        <AdditionalFiles Include="app.manifest" />       
+        <EmbeddedResource Include="Sample\tun_singbox">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Sample\custom_routing_black">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\custom_routing_global">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\custom_routing_locked">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\custom_routing_rules">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\custom_routing_white">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\SampleClientConfig">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\SampleHttprequest">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\SampleHttpresponse">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\SampleInbound">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\SampleServerConfig">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="v2rayN.ico">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <Resource Include="Resources\NotifyIcon1.ico" />
+        <Resource Include="Resources\NotifyIcon2.ico" />
+        <Resource Include="Resources\NotifyIcon3.ico" />
+        <Resource Include="v2rayN.ico">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup> 	 
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\PacLib\PacLib.csproj" />
+	  <ProjectReference Include="..\ProtosLib\ProtosLib.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Resx\ResUI.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResUI.resx</DependentUpon>
+		</Compile>		
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resx\ResUI.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ResUI.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>

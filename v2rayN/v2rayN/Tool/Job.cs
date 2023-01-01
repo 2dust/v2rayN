@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
@@ -34,7 +33,7 @@ namespace v2rayN
                 Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
                 if (!SetInformationJobObject(handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr,
-                        (uint) length))
+                        (uint)length))
                     throw new Exception(string.Format("Unable to set information.  Error: {0}",
                         Marshal.GetLastWin32Error()));
             }

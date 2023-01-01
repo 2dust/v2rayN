@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
@@ -14,19 +10,19 @@ namespace v2rayN.Handler
     class SpeedtestHandler
     {
         private Config _config;
-        private V2rayHandler _v2rayHandler;
+        private CoreHandler _coreHandler;
         private List<ServerTestItem> _selecteds;
-        Action<string, string> _updateFunc;
+        Action<string, string, string> _updateFunc;
 
         public SpeedtestHandler(Config config)
         {
             _config = config;
         }
 
-        public SpeedtestHandler(Config config, V2rayHandler v2rayHandler, List<VmessItem> selecteds, ESpeedActionType actionType, Action<string, string> update)
+        public SpeedtestHandler(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<string, string, string> update)
         {
             _config = config;
-            _v2rayHandler = v2rayHandler;
+            _coreHandler = coreHandler;
             //_selecteds = Utils.DeepCopy(selecteds);
             _updateFunc = update;
 
@@ -41,22 +37,23 @@ namespace v2rayN.Handler
                     configType = it.configType
                 });
             }
-
-            if (actionType == ESpeedActionType.Ping)
+            switch (actionType)
             {
-                Task.Run(RunPing);
-            }
-            else if (actionType == ESpeedActionType.Tcping)
-            {
-                Task.Run(RunTcping);
-            }
-            else if (actionType == ESpeedActionType.Realping)
-            {
-                Task.Run(RunRealPing);
-            }
-            else if (actionType == ESpeedActionType.Speedtest)
-            {
-                Task.Run(RunSpeedTestAsync);
+                case ESpeedActionType.Ping:
+                    Task.Run(RunPing);
+                    break;
+                case ESpeedActionType.Tcping:
+                    Task.Run(RunTcping);
+                    break;
+                case ESpeedActionType.Realping:
+                    Task.Run(RunRealPing);
+                    break;
+                case ESpeedActionType.Speedtest:
+                    Task.Run(RunSpeedTestAsync);
+                    break;
+                case ESpeedActionType.Mixedtest:
+                    Task.Run(RunMixedtestAsync);
+                    break;
             }
         }
 
@@ -89,9 +86,11 @@ namespace v2rayN.Handler
         {
             RunPingSub((ServerTestItem it) =>
             {
-                long time = Utils.Ping(it.address);
+                long time = Ping(it.address);
+                var output = FormatOut(time, Global.DelayUnit);
 
-                _updateFunc(it.indexId, FormatOut(time, "ms"));
+                LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                UpdateFunc(it.indexId, output);
             });
         }
 
@@ -100,22 +99,24 @@ namespace v2rayN.Handler
             RunPingSub((ServerTestItem it) =>
             {
                 int time = GetTcpingTime(it.address, it.port);
+                var output = FormatOut(time, Global.DelayUnit);
 
-                _updateFunc(it.indexId, FormatOut(time, "ms"));
+                LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                UpdateFunc(it.indexId, output);
             });
         }
 
-        private void RunRealPing()
+        private async Task RunRealPing()
         {
             int pid = -1;
             try
             {
                 string msg = string.Empty;
 
-                pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
+                pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
                 if (pid < 0)
                 {
-                    _updateFunc(_selecteds[0].indexId, ResUI.OperationFailed);
+                    UpdateFunc("", ResUI.FailedToRunCore);
                     return;
                 }
 
@@ -136,13 +137,13 @@ namespace v2rayN.Handler
                     {
                         try
                         {
-                            WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
-                            int responseTime = -1;
-                            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, out responseTime);
-                            string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
+                            LazyConfig.Instance.SetTestResult(it.indexId, "-1", "");
 
-                            _config.GetVmessItem(it.indexId)?.SetTestResult(output);
-                            _updateFunc(it.indexId, output);
+                            WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
+                            string output = GetRealPingTime(downloadHandle, webProxy);
+
+                            LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                            UpdateFunc(it.indexId, output);
                         }
                         catch (Exception ex)
                         {
@@ -159,37 +160,29 @@ namespace v2rayN.Handler
             }
             finally
             {
-                if (pid > 0) _v2rayHandler.V2rayStopPid(pid);
+                if (pid > 0) _coreHandler.CoreStopPid(pid);
             }
         }
-
         private async Task RunSpeedTestAsync()
         {
             string testIndexId = string.Empty;
             int pid = -1;
 
-            pid = _v2rayHandler.LoadV2rayConfigString(_config, _selecteds);
+            pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
             if (pid < 0)
             {
-                _updateFunc(_selecteds[0].indexId, ResUI.OperationFailed);
+                UpdateFunc("", ResUI.FailedToRunCore);
                 return;
             }
 
             string url = _config.constItem.speedTestUrl;
-            DownloadHandle downloadHandle2 = new DownloadHandle();
-            downloadHandle2.UpdateCompleted += (sender2, args) =>
-            {
-                _config.GetVmessItem(testIndexId)?.SetTestResult(args.Msg);
-                _updateFunc(testIndexId, args.Msg);
-            };
-            downloadHandle2.Error += (sender2, args) =>
-            {
-                _updateFunc(testIndexId, args.GetException().Message);
-            };
+            DownloadHandle downloadHandle = new DownloadHandle();
 
-            var timeout = 8;
+            var timeout = 10;
             foreach (var it in _selecteds)
             {
+                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
+                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
                 if (!it.allowTest)
                 {
                     continue;
@@ -199,15 +192,41 @@ namespace v2rayN.Handler
                     continue;
                 }
                 testIndexId = it.indexId;
-                if (_config.FindIndexId(it.indexId) < 0) continue;
+
+                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                if (item is null) continue;
 
                 WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
-                await downloadHandle2.DownloadDataAsync(url, webProxy, timeout);
+
+                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                {
+                    decimal.TryParse(msg, out decimal dec);
+                    if (dec > 0)
+                    {
+                        _ = LazyConfig.Instance.SetTestResult(it.indexId, "", msg);
+                    }
+                    UpdateFunc(it.indexId, "", msg);
+                });
             }
 
-            if (pid > 0) _v2rayHandler.V2rayStopPid(pid);
+            if (pid > 0)
+            {
+                _coreHandler.CoreStopPid(pid);
+            }
+        }
+        private async Task RunMixedtestAsync()
+        {
+            await RunRealPing();
+
+            await RunSpeedTestAsync();
         }
 
+        public string GetRealPingTime(DownloadHandle downloadHandle, WebProxy webProxy)
+        {
+            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, 10, out int responseTime);
+            //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
+            return FormatOut(Utils.IsNullOrEmpty(status) ? responseTime : -1, Global.DelayUnit);
+        }
 
         private int GetTcpingTime(string url, int port)
         {
@@ -243,13 +262,56 @@ namespace v2rayN.Handler
             return responseTime;
         }
 
+
+        /// <summary>
+        /// Ping
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public long Ping(string host)
+        {
+            long roundtripTime = -1;
+            try
+            {
+                int timeout = 30;
+                int echoNum = 2;
+                Ping pingSender = new Ping();
+                for (int i = 0; i < echoNum; i++)
+                {
+                    PingReply reply = pingSender.Send(host, timeout);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        if (reply.RoundtripTime < 0)
+                        {
+                            continue;
+                        }
+                        if (roundtripTime < 0 || reply.RoundtripTime < roundtripTime)
+                        {
+                            roundtripTime = reply.RoundtripTime;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return -1;
+            }
+            return roundtripTime;
+        }
+
         private string FormatOut(object time, string unit)
         {
-            if (time.ToString().Equals("-1"))
-            {
-                return "Timeout";
-            }
-            return $"{time}{unit}".PadLeft(8, ' ');
+            //if (time.ToString().Equals("-1"))
+            //{
+            //    return "Timeout";
+            //}
+            return $"{time}";
+        }
+
+        private void UpdateFunc(string indexId, string delay, string speed = "")
+        {
+            _updateFunc(indexId, delay, speed);
         }
     }
 }

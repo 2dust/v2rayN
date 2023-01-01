@@ -19,10 +19,10 @@ namespace v2rayN.Resx {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ResUI {
+    public class ResUI {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace v2rayN.Resx {
         ///   返回此类使用的缓存的 ResourceManager 实例。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("v2rayN.Resx.ResUI", typeof(ResUI).Assembly);
@@ -51,7 +51,7 @@ namespace v2rayN.Resx {
         ///   使用此强类型资源类的所有资源查找执行重写。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Do you want to append rules? Choose yes to append, choose otherwise to replace 的本地化字符串。
         /// </summary>
-        internal static string AddBatchRoutingRulesYesNo {
+        public static string AddBatchRoutingRulesYesNo {
             get {
                 return ResourceManager.GetString("AddBatchRoutingRulesYesNo", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 All servers 的本地化字符串。
         /// </summary>
-        internal static string AllGroupServers {
+        public static string AllGroupServers {
             get {
                 return ResourceManager.GetString("AllGroupServers", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Batch export subscription to clipboard successfully 的本地化字符串。
         /// </summary>
-        internal static string BatchExportSubscriptionSuccessfully {
+        public static string BatchExportSubscriptionSuccessfully {
             get {
                 return ResourceManager.GetString("BatchExportSubscriptionSuccessfully", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Batch export share URL to clipboard successfully 的本地化字符串。
         /// </summary>
-        internal static string BatchExportURLSuccessfully {
+        public static string BatchExportURLSuccessfully {
             get {
                 return ResourceManager.GetString("BatchExportURLSuccessfully", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please check the server settings first 的本地化字符串。
         /// </summary>
-        internal static string CheckServerSettings {
+        public static string CheckServerSettings {
             get {
                 return ResourceManager.GetString("CheckServerSettings", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Invalid configuration format 的本地化字符串。
         /// </summary>
-        internal static string ConfigurationFormatIncorrect {
+        public static string ConfigurationFormatIncorrect {
             get {
                 return ResourceManager.GetString("ConfigurationFormatIncorrect", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually. 的本地化字符串。
         /// </summary>
-        internal static string CustomServerTips {
+        public static string CustomServerTips {
             get {
                 return ResourceManager.GetString("CustomServerTips", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Downloading... 的本地化字符串。
         /// </summary>
-        internal static string Downloading {
+        public static string Downloading {
             get {
                 return ResourceManager.GetString("Downloading", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Download 的本地化字符串。
         /// </summary>
-        internal static string downloadSpeed {
+        public static string downloadSpeed {
             get {
                 return ResourceManager.GetString("downloadSpeed", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Whether to download? {0} 的本地化字符串。
         /// </summary>
-        internal static string DownloadYesNo {
+        public static string DownloadYesNo {
             get {
                 return ResourceManager.GetString("DownloadYesNo", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Failed to convert configuration file 的本地化字符串。
         /// </summary>
-        internal static string FailedConversionConfiguration {
+        public static string FailedConversionConfiguration {
             get {
                 return ResourceManager.GetString("FailedConversionConfiguration", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Failed to generate default configuration file 的本地化字符串。
         /// </summary>
-        internal static string FailedGenDefaultConfiguration {
+        public static string FailedGenDefaultConfiguration {
             get {
                 return ResourceManager.GetString("FailedGenDefaultConfiguration", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  Failed to get the default configuration 的本地化字符串。
         /// </summary>
-        internal static string FailedGetDefaultConfiguration {
+        public static string FailedGetDefaultConfiguration {
             get {
                 return ResourceManager.GetString("FailedGetDefaultConfiguration", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Failed to import custom configuration server 的本地化字符串。
         /// </summary>
-        internal static string FailedImportedCustomServer {
+        public static string FailedImportedCustomServer {
             get {
                 return ResourceManager.GetString("FailedImportedCustomServer", resourceCulture);
             }
@@ -189,16 +189,25 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Failed to read configuration file 的本地化字符串。
         /// </summary>
-        internal static string FailedReadConfiguration {
+        public static string FailedReadConfiguration {
             get {
                 return ResourceManager.GetString("FailedReadConfiguration", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Failed to run Core, please see the log 的本地化字符串。
+        /// </summary>
+        public static string FailedToRunCore {
+            get {
+                return ResourceManager.GetString("FailedToRunCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill in the correct custom DNS 的本地化字符串。
         /// </summary>
-        internal static string FillCorrectDNSText {
+        public static string FillCorrectDNSText {
             get {
                 return ResourceManager.GetString("FillCorrectDNSText", resourceCulture);
             }
@@ -207,7 +216,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the correct format server port 的本地化字符串。
         /// </summary>
-        internal static string FillCorrectServerPort {
+        public static string FillCorrectServerPort {
             get {
                 return ResourceManager.GetString("FillCorrectServerPort", resourceCulture);
             }
@@ -216,7 +225,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the KCP parameters correctly 的本地化字符串。
         /// </summary>
-        internal static string FillKcpParameters {
+        public static string FillKcpParameters {
             get {
                 return ResourceManager.GetString("FillKcpParameters", resourceCulture);
             }
@@ -225,7 +234,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the local listening port 的本地化字符串。
         /// </summary>
-        internal static string FillLocalListeningPort {
+        public static string FillLocalListeningPort {
             get {
                 return ResourceManager.GetString("FillLocalListeningPort", resourceCulture);
             }
@@ -234,7 +243,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the password 的本地化字符串。
         /// </summary>
-        internal static string FillPassword {
+        public static string FillPassword {
             get {
                 return ResourceManager.GetString("FillPassword", resourceCulture);
             }
@@ -243,7 +252,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the server address 的本地化字符串。
         /// </summary>
-        internal static string FillServerAddress {
+        public static string FillServerAddress {
             get {
                 return ResourceManager.GetString("FillServerAddress", resourceCulture);
             }
@@ -252,7 +261,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please browse to import server configuration 的本地化字符串。
         /// </summary>
-        internal static string FillServerAddressCustom {
+        public static string FillServerAddressCustom {
             get {
                 return ResourceManager.GetString("FillServerAddressCustom", resourceCulture);
             }
@@ -261,16 +270,25 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the user ID 的本地化字符串。
         /// </summary>
-        internal static string FillUUID {
+        public static string FillUUID {
             get {
                 return ResourceManager.GetString("FillUUID", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Transport 的本地化字符串。
+        /// </summary>
+        public static string GbTransport {
+            get {
+                return ResourceManager.GetString("GbTransport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似  is not the correct client configuration file, please check 的本地化字符串。
         /// </summary>
-        internal static string IncorrectClientConfiguration {
+        public static string IncorrectClientConfiguration {
             get {
                 return ResourceManager.GetString("IncorrectClientConfiguration", resourceCulture);
             }
@@ -279,7 +297,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  is not the correct configuration, please check 的本地化字符串。
         /// </summary>
-        internal static string Incorrectconfiguration {
+        public static string Incorrectconfiguration {
             get {
                 return ResourceManager.GetString("Incorrectconfiguration", resourceCulture);
             }
@@ -288,7 +306,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  is not the correct server configuration file, please check 的本地化字符串。
         /// </summary>
-        internal static string IncorrectServerConfiguration {
+        public static string IncorrectServerConfiguration {
             get {
                 return ResourceManager.GetString("IncorrectServerConfiguration", resourceCulture);
             }
@@ -297,7 +315,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Initial Configuration 的本地化字符串。
         /// </summary>
-        internal static string InitialConfiguration {
+        public static string InitialConfiguration {
             get {
                 return ResourceManager.GetString("InitialConfiguration", resourceCulture);
             }
@@ -306,7 +324,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 {0} already up to date. 的本地化字符串。
         /// </summary>
-        internal static string IsLatestCore {
+        public static string IsLatestCore {
             get {
                 return ResourceManager.GetString("IsLatestCore", resourceCulture);
             }
@@ -315,7 +333,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 {0} already up to date. 的本地化字符串。
         /// </summary>
-        internal static string IsLatestN {
+        public static string IsLatestN {
             get {
                 return ResourceManager.GetString("IsLatestN", resourceCulture);
             }
@@ -324,7 +342,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 LAN 的本地化字符串。
         /// </summary>
-        internal static string LabLAN {
+        public static string LabLAN {
             get {
                 return ResourceManager.GetString("LabLAN", resourceCulture);
             }
@@ -333,7 +351,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Local 的本地化字符串。
         /// </summary>
-        internal static string LabLocal {
+        public static string LabLocal {
             get {
                 return ResourceManager.GetString("LabLocal", resourceCulture);
             }
@@ -342,7 +360,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
-        internal static string LvAddress {
+        public static string LvAddress {
             get {
                 return ResourceManager.GetString("LvAddress", resourceCulture);
             }
@@ -351,7 +369,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Alias 的本地化字符串。
         /// </summary>
-        internal static string LvAlias {
+        public static string LvAlias {
             get {
                 return ResourceManager.GetString("LvAlias", resourceCulture);
             }
@@ -360,7 +378,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Count 的本地化字符串。
         /// </summary>
-        internal static string LvCount {
+        public static string LvCount {
             get {
                 return ResourceManager.GetString("LvCount", resourceCulture);
             }
@@ -369,34 +387,52 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Custom Icon 的本地化字符串。
         /// </summary>
-        internal static string LvCustomIcon {
+        public static string LvCustomIcon {
             get {
                 return ResourceManager.GetString("LvCustomIcon", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Enabled Update 的本地化字符串。
+        /// </summary>
+        public static string LvEnabled {
+            get {
+                return ResourceManager.GetString("LvEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Security 的本地化字符串。
         /// </summary>
-        internal static string LvEncryptionMethod {
+        public static string LvEncryptionMethod {
             get {
                 return ResourceManager.GetString("LvEncryptionMethod", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Remarks regular filter 的本地化字符串。
+        /// </summary>
+        public static string LvFilter {
+            get {
+                return ResourceManager.GetString("LvFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
-        internal static string LvPort {
+        public static string LvPort {
             get {
                 return ResourceManager.GetString("LvPort", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 remarks 的本地化字符串。
+        ///   查找类似 Remarks 的本地化字符串。
         /// </summary>
-        internal static string LvRemarks {
+        public static string LvRemarks {
             get {
                 return ResourceManager.GetString("LvRemarks", resourceCulture);
             }
@@ -405,34 +441,61 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Type 的本地化字符串。
         /// </summary>
-        internal static string LvServiceType {
+        public static string LvServiceType {
             get {
                 return ResourceManager.GetString("LvServiceType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Subs 的本地化字符串。
+        ///   查找类似 Sort 的本地化字符串。
         /// </summary>
-        internal static string LvSubscription {
+        public static string LvSort {
+            get {
+                return ResourceManager.GetString("LvSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subs group 的本地化字符串。
+        /// </summary>
+        public static string LvSubscription {
             get {
                 return ResourceManager.GetString("LvSubscription", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Delay(ms) 的本地化字符串。
+        /// </summary>
+        public static string LvTestDelay {
+            get {
+                return ResourceManager.GetString("LvTestDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Test Results 的本地化字符串。
         /// </summary>
-        internal static string LvTestResults {
+        public static string LvTestResults {
             get {
                 return ResourceManager.GetString("LvTestResults", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Speed(M/s) 的本地化字符串。
+        /// </summary>
+        public static string LvTestSpeed {
+            get {
+                return ResourceManager.GetString("LvTestSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 TLS 的本地化字符串。
         /// </summary>
-        internal static string LvTLS {
+        public static string LvTLS {
             get {
                 return ResourceManager.GetString("LvTLS", resourceCulture);
             }
@@ -441,7 +504,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Download traffic today 的本地化字符串。
         /// </summary>
-        internal static string LvTodayDownloadDataAmount {
+        public static string LvTodayDownloadDataAmount {
             get {
                 return ResourceManager.GetString("LvTodayDownloadDataAmount", resourceCulture);
             }
@@ -450,7 +513,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Upload traffic today 的本地化字符串。
         /// </summary>
-        internal static string LvTodayUploadDataAmount {
+        public static string LvTodayUploadDataAmount {
             get {
                 return ResourceManager.GetString("LvTodayUploadDataAmount", resourceCulture);
             }
@@ -459,7 +522,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Total download traffic 的本地化字符串。
         /// </summary>
-        internal static string LvTotalDownloadDataAmount {
+        public static string LvTotalDownloadDataAmount {
             get {
                 return ResourceManager.GetString("LvTotalDownloadDataAmount", resourceCulture);
             }
@@ -468,7 +531,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Total upload traffic 的本地化字符串。
         /// </summary>
-        internal static string LvTotalUploadDataAmount {
+        public static string LvTotalUploadDataAmount {
             get {
                 return ResourceManager.GetString("LvTotalUploadDataAmount", resourceCulture);
             }
@@ -477,34 +540,763 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Transport 的本地化字符串。
         /// </summary>
-        internal static string LvTransportProtocol {
+        public static string LvTransportProtocol {
             get {
                 return ResourceManager.GetString("LvTransportProtocol", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Url 的本地化字符串。
+        ///   查找类似 Url(Optional) 的本地化字符串。
         /// </summary>
-        internal static string LvUrl {
+        public static string LvUrl {
             get {
                 return ResourceManager.GetString("LvUrl", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 User Agent 的本地化字符串。
+        /// </summary>
+        public static string LvUserAgent {
+            get {
+                return ResourceManager.GetString("LvUserAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Medium 的本地化字符串。
         /// </summary>
-        internal static string MediumFresh {
+        public static string MediumFresh {
             get {
                 return ResourceManager.GetString("MediumFresh", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Add a custom configuration server 的本地化字符串。
+        /// </summary>
+        public static string menuAddCustomServer {
+            get {
+                return ResourceManager.GetString("menuAddCustomServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import bulk URL from clipboard (Ctrl+V) 的本地化字符串。
+        /// </summary>
+        public static string menuAddServerViaClipboard {
+            get {
+                return ResourceManager.GetString("menuAddServerViaClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scan QR code on the screen (Ctrl+S) 的本地化字符串。
+        /// </summary>
+        public static string menuAddServerViaScan {
+            get {
+                return ResourceManager.GetString("menuAddServerViaScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [Shadowsocks] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddShadowsocksServer {
+            get {
+                return ResourceManager.GetString("menuAddShadowsocksServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [Socks] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddSocksServer {
+            get {
+                return ResourceManager.GetString("menuAddSocksServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [Trojan] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddTrojanServer {
+            get {
+                return ResourceManager.GetString("menuAddTrojanServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [VLESS] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddVlessServer {
+            get {
+                return ResourceManager.GetString("menuAddVlessServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [VMess] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddVmessServer {
+            get {
+                return ResourceManager.GetString("menuAddVmessServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Check Update 的本地化字符串。
+        /// </summary>
+        public static string menuCheckUpdate {
+            get {
+                return ResourceManager.GetString("menuCheckUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear all service statistics 的本地化字符串。
+        /// </summary>
+        public static string menuClearServerStatistics {
+            get {
+                return ResourceManager.GetString("menuClearServerStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        public static string menuClose {
+            get {
+                return ResourceManager.GetString("menuClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clone selected server 的本地化字符串。
+        /// </summary>
+        public static string menuCopyServer {
+            get {
+                return ResourceManager.GetString("menuCopyServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        public static string menuExit {
+            get {
+                return ResourceManager.GetString("menuExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export selected server for client configuration 的本地化字符串。
+        /// </summary>
+        public static string menuExport2ClientConfig {
+            get {
+                return ResourceManager.GetString("menuExport2ClientConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export selected server for server configuration 的本地化字符串。
+        /// </summary>
+        public static string menuExport2ServerConfig {
+            get {
+                return ResourceManager.GetString("menuExport2ServerConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export share URLs to clipboard (Ctrl+C) 的本地化字符串。
+        /// </summary>
+        public static string menuExport2ShareUrl {
+            get {
+                return ResourceManager.GetString("menuExport2ShareUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export subscription (base64) share to clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport2SubContent {
+            get {
+                return ResourceManager.GetString("menuExport2SubContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 GlobalHotkeySetting 的本地化字符串。
+        /// </summary>
+        public static string menuGlobalHotkeySetting {
+            get {
+                return ResourceManager.GetString("menuGlobalHotkeySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help 的本地化字符串。
+        /// </summary>
+        public static string menuHelp {
+            get {
+                return ResourceManager.GetString("menuHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import old config guiNConfig 的本地化字符串。
+        /// </summary>
+        public static string menuImportOldGuiConfig {
+            get {
+                return ResourceManager.GetString("menuImportOldGuiConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import Rules From Clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuImportRulesFromClipboard {
+            get {
+                return ResourceManager.GetString("menuImportRulesFromClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import Rules From File 的本地化字符串。
+        /// </summary>
+        public static string menuImportRulesFromFile {
+            get {
+                return ResourceManager.GetString("menuImportRulesFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import Rules From Sub Url 的本地化字符串。
+        /// </summary>
+        public static string menuImportRulesFromUrl {
+            get {
+                return ResourceManager.GetString("menuImportRulesFromUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 One-click test Latency and speed (Ctrl+E) 的本地化字符串。
+        /// </summary>
+        public static string menuMixedTestServer {
+            get {
+                return ResourceManager.GetString("menuMixedTestServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move to bottom (B) 的本地化字符串。
+        /// </summary>
+        public static string menuMoveBottom {
+            get {
+                return ResourceManager.GetString("menuMoveBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Down (D) 的本地化字符串。
+        /// </summary>
+        public static string menuMoveDown {
+            get {
+                return ResourceManager.GetString("menuMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Move to top (T) 的本地化字符串。
+        /// </summary>
+        public static string menuMoveTop {
+            get {
+                return ResourceManager.GetString("menuMoveTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Up (U) 的本地化字符串。
+        /// </summary>
+        public static string menuMoveUp {
+            get {
+                return ResourceManager.GetString("menuMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear All 的本地化字符串。
+        /// </summary>
+        public static string menuMsgViewClear {
+            get {
+                return ResourceManager.GetString("menuMsgViewClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy (Ctrl+C) 的本地化字符串。
+        /// </summary>
+        public static string menuMsgViewCopy {
+            get {
+                return ResourceManager.GetString("menuMsgViewCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy All 的本地化字符串。
+        /// </summary>
+        public static string menuMsgViewCopyAll {
+            get {
+                return ResourceManager.GetString("menuMsgViewCopyAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set message filters 的本地化字符串。
+        /// </summary>
+        public static string menuMsgViewFilter {
+            get {
+                return ResourceManager.GetString("menuMsgViewFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select All (Ctrl+A) 的本地化字符串。
+        /// </summary>
+        public static string menuMsgViewSelectAll {
+            get {
+                return ResourceManager.GetString("menuMsgViewSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 OptionSetting 的本地化字符串。
+        /// </summary>
+        public static string menuOptionSetting {
+            get {
+                return ResourceManager.GetString("menuOptionSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test servers ping (Ctrl+P) 的本地化字符串。
+        /// </summary>
+        public static string menuPingServer {
+            get {
+                return ResourceManager.GetString("menuPingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Promotion 的本地化字符串。
+        /// </summary>
+        public static string menuPromotion {
+            get {
+                return ResourceManager.GetString("menuPromotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test servers real delay (Ctrl+R) 的本地化字符串。
+        /// </summary>
+        public static string menuRealPingServer {
+            get {
+                return ResourceManager.GetString("menuRealPingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reload 的本地化字符串。
+        /// </summary>
+        public static string menuReload {
+            get {
+                return ResourceManager.GetString("menuReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove duplicate servers 的本地化字符串。
+        /// </summary>
+        public static string menuRemoveDuplicateServer {
+            get {
+                return ResourceManager.GetString("menuRemoveDuplicateServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove selected servers (Delete) 的本地化字符串。
+        /// </summary>
+        public static string menuRemoveServer {
+            get {
+                return ResourceManager.GetString("menuRemoveServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Routing 的本地化字符串。
+        /// </summary>
+        public static string menuRouting {
+            get {
+                return ResourceManager.GetString("menuRouting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Advanced Function 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingAdvanced {
+            get {
+                return ResourceManager.GetString("menuRoutingAdvanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingAdvancedAdd {
+            get {
+                return ResourceManager.GetString("menuRoutingAdvancedAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import Advanced Rules 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingAdvancedImportRules {
+            get {
+                return ResourceManager.GetString("menuRoutingAdvancedImportRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove selected 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingAdvancedRemove {
+            get {
+                return ResourceManager.GetString("menuRoutingAdvancedRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set as active rule 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingAdvancedSetDefault {
+            get {
+                return ResourceManager.GetString("menuRoutingAdvancedSetDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Basic Function 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingBasic {
+            get {
+                return ResourceManager.GetString("menuRoutingBasic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import Basic Rules 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingBasicImportRules {
+            get {
+                return ResourceManager.GetString("menuRoutingBasicImportRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RoutingRuleDetailsSetting 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingRuleDetailsSetting {
+            get {
+                return ResourceManager.GetString("menuRoutingRuleDetailsSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule Setting 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingRuleSetting {
+            get {
+                return ResourceManager.GetString("menuRoutingRuleSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RoutingSetting 的本地化字符串。
+        /// </summary>
+        public static string menuRoutingSetting {
+            get {
+                return ResourceManager.GetString("menuRoutingSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule Add 的本地化字符串。
+        /// </summary>
+        public static string menuRuleAdd {
+            get {
+                return ResourceManager.GetString("menuRuleAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Selected Rules 的本地化字符串。
+        /// </summary>
+        public static string menuRuleExportSelected {
+            get {
+                return ResourceManager.GetString("menuRuleExportSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule List 的本地化字符串。
+        /// </summary>
+        public static string menuRuleList {
+            get {
+                return ResourceManager.GetString("menuRuleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove Rules 的本地化字符串。
+        /// </summary>
+        public static string menuRuleRemove {
+            get {
+                return ResourceManager.GetString("menuRuleRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select All (Ctrl+A) 的本地化字符串。
+        /// </summary>
+        public static string menuSelectAll {
+            get {
+                return ResourceManager.GetString("menuSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Servers 的本地化字符串。
+        /// </summary>
+        public static string menuServers {
+            get {
+                return ResourceManager.GetString("menuServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set as active server (Enter) 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultServer {
+            get {
+                return ResourceManager.GetString("menuSetDefaultServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Setting 的本地化字符串。
+        /// </summary>
+        public static string menuSetting {
+            get {
+                return ResourceManager.GetString("menuSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Share Server (Ctrl+D) 的本地化字符串。
+        /// </summary>
+        public static string menuShareServer {
+            get {
+                return ResourceManager.GetString("menuShareServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sort by test result 的本地化字符串。
+        /// </summary>
+        public static string menuSortServerResult {
+            get {
+                return ResourceManager.GetString("menuSortServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test servers download speed (Ctrl+T) 的本地化字符串。
+        /// </summary>
+        public static string menuSpeedServer {
+            get {
+                return ResourceManager.GetString("menuSpeedServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        public static string menuSubAdd {
+            get {
+                return ResourceManager.GetString("menuSubAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete 的本地化字符串。
+        /// </summary>
+        public static string menuSubDelete {
+            get {
+                return ResourceManager.GetString("menuSubDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit 的本地化字符串。
+        /// </summary>
+        public static string menuSubEdit {
+            get {
+                return ResourceManager.GetString("menuSubEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update current subscription without proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSubGroupUpdate {
+            get {
+                return ResourceManager.GetString("menuSubGroupUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update current subscription with proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSubGroupUpdateViaProxy {
+            get {
+                return ResourceManager.GetString("menuSubGroupUpdateViaProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subscription group 的本地化字符串。
+        /// </summary>
+        public static string menuSubscription {
+            get {
+                return ResourceManager.GetString("menuSubscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subscription group Setting 的本地化字符串。
+        /// </summary>
+        public static string menuSubSetting {
+            get {
+                return ResourceManager.GetString("menuSubSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Share 的本地化字符串。
+        /// </summary>
+        public static string menuSubShare {
+            get {
+                return ResourceManager.GetString("menuSubShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update subscription without proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSubUpdate {
+            get {
+                return ResourceManager.GetString("menuSubUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update subscription with proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSubUpdateViaProxy {
+            get {
+                return ResourceManager.GetString("menuSubUpdateViaProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 System proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSystemproxy {
+            get {
+                return ResourceManager.GetString("menuSystemproxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear system proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSystemProxyClear {
+            get {
+                return ResourceManager.GetString("menuSystemProxyClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Do not change system proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSystemProxyNothing {
+            get {
+                return ResourceManager.GetString("menuSystemProxyNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pac Mode 的本地化字符串。
+        /// </summary>
+        public static string menuSystemProxyPac {
+            get {
+                return ResourceManager.GetString("menuSystemProxyPac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set system proxy 的本地化字符串。
+        /// </summary>
+        public static string menuSystemProxySet {
+            get {
+                return ResourceManager.GetString("menuSystemProxySet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test servers with tcping (Ctrl+O) 的本地化字符串。
+        /// </summary>
+        public static string menuTcpingServer {
+            get {
+                return ResourceManager.GetString("menuTcpingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test current service status 的本地化字符串。
+        /// </summary>
+        public static string menuTestMe {
+            get {
+                return ResourceManager.GetString("menuTestMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} Website 的本地化字符串。
+        /// </summary>
+        public static string menuWebsiteItem {
+            get {
+                return ResourceManager.GetString("menuWebsiteItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clear original subscription content 的本地化字符串。
         /// </summary>
-        internal static string MsgClearSubscription {
+        public static string MsgClearSubscription {
             get {
                 return ResourceManager.GetString("MsgClearSubscription", resourceCulture);
             }
@@ -513,7 +1305,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Download GeoFile: {0} successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgDownloadGeoFileSuccessfully {
+        public static string MsgDownloadGeoFileSuccessfully {
             get {
                 return ResourceManager.GetString("MsgDownloadGeoFileSuccessfully", resourceCulture);
             }
@@ -522,7 +1314,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Download Core successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgDownloadV2rayCoreSuccessfully {
+        public static string MsgDownloadV2rayCoreSuccessfully {
             get {
                 return ResourceManager.GetString("MsgDownloadV2rayCoreSuccessfully", resourceCulture);
             }
@@ -531,25 +1323,34 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Failed to import subscription content 的本地化字符串。
         /// </summary>
-        internal static string MsgFailedImportSubscription {
+        public static string MsgFailedImportSubscription {
             get {
                 return ResourceManager.GetString("MsgFailedImportSubscription", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Filter, support regular 的本地化字符串。
+        /// </summary>
+        public static string MsgFilterTitle {
+            get {
+                return ResourceManager.GetString("MsgFilterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Get subscription content successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgGetSubscriptionSuccessfully {
+        public static string MsgGetSubscriptionSuccessfully {
             get {
                 return ResourceManager.GetString("MsgGetSubscriptionSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Information (Filter : {0}) 的本地化字符串。
+        ///   查找类似 Information 的本地化字符串。
         /// </summary>
-        internal static string MsgInformationTitle {
+        public static string MsgInformationTitle {
             get {
                 return ResourceManager.GetString("MsgInformationTitle", resourceCulture);
             }
@@ -558,7 +1359,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please fill in the address (Url) 的本地化字符串。
         /// </summary>
-        internal static string MsgNeedUrl {
+        public static string MsgNeedUrl {
             get {
                 return ResourceManager.GetString("MsgNeedUrl", resourceCulture);
             }
@@ -567,7 +1368,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 No valid subscriptions set 的本地化字符串。
         /// </summary>
-        internal static string MsgNoValidSubscription {
+        public static string MsgNoValidSubscription {
             get {
                 return ResourceManager.GetString("MsgNoValidSubscription", resourceCulture);
             }
@@ -576,7 +1377,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 PAC update failed 的本地化字符串。
         /// </summary>
-        internal static string MsgPACUpdateFailed {
+        public static string MsgPACUpdateFailed {
             get {
                 return ResourceManager.GetString("MsgPACUpdateFailed", resourceCulture);
             }
@@ -585,7 +1386,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 PAC update succeeded 的本地化字符串。
         /// </summary>
-        internal static string MsgPACUpdateSuccessfully {
+        public static string MsgPACUpdateSuccessfully {
             get {
                 return ResourceManager.GetString("MsgPACUpdateSuccessfully", resourceCulture);
             }
@@ -594,16 +1395,16 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Resolve {0} successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgParsingSuccessfully {
+        public static string MsgParsingSuccessfully {
             get {
                 return ResourceManager.GetString("MsgParsingSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Servers (Filter : {0}) 的本地化字符串。
+        ///   查找类似 Servers Filter 的本地化字符串。
         /// </summary>
-        internal static string MsgServerTitle {
+        public static string MsgServerTitle {
             get {
                 return ResourceManager.GetString("MsgServerTitle", resourceCulture);
             }
@@ -612,7 +1413,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Simplify PAC Success 的本地化字符串。
         /// </summary>
-        internal static string MsgSimplifyPAC {
+        public static string MsgSimplifyPAC {
             get {
                 return ResourceManager.GetString("MsgSimplifyPAC", resourceCulture);
             }
@@ -621,7 +1422,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Start getting subscriptions 的本地化字符串。
         /// </summary>
-        internal static string MsgStartGettingSubscriptions {
+        public static string MsgStartGettingSubscriptions {
             get {
                 return ResourceManager.GetString("MsgStartGettingSubscriptions", resourceCulture);
             }
@@ -630,7 +1431,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Start updating {0}... 的本地化字符串。
         /// </summary>
-        internal static string MsgStartUpdating {
+        public static string MsgStartUpdating {
             get {
                 return ResourceManager.GetString("MsgStartUpdating", resourceCulture);
             }
@@ -639,7 +1440,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Start updating PAC... 的本地化字符串。
         /// </summary>
-        internal static string MsgStartUpdatingPAC {
+        public static string MsgStartUpdatingPAC {
             get {
                 return ResourceManager.GetString("MsgStartUpdatingPAC", resourceCulture);
             }
@@ -648,7 +1449,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Invalid subscription content 的本地化字符串。
         /// </summary>
-        internal static string MsgSubscriptionDecodingFailed {
+        public static string MsgSubscriptionDecodingFailed {
             get {
                 return ResourceManager.GetString("MsgSubscriptionDecodingFailed", resourceCulture);
             }
@@ -657,7 +1458,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 is unpacking... 的本地化字符串。
         /// </summary>
-        internal static string MsgUnpacking {
+        public static string MsgUnpacking {
             get {
                 return ResourceManager.GetString("MsgUnpacking", resourceCulture);
             }
@@ -666,7 +1467,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Update subscription end 的本地化字符串。
         /// </summary>
-        internal static string MsgUpdateSubscriptionEnd {
+        public static string MsgUpdateSubscriptionEnd {
             get {
                 return ResourceManager.GetString("MsgUpdateSubscriptionEnd", resourceCulture);
             }
@@ -675,7 +1476,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Update subscription starts 的本地化字符串。
         /// </summary>
-        internal static string MsgUpdateSubscriptionStart {
+        public static string MsgUpdateSubscriptionStart {
             get {
                 return ResourceManager.GetString("MsgUpdateSubscriptionStart", resourceCulture);
             }
@@ -684,7 +1485,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Update Core successfully 的本地化字符串。
         /// </summary>
-        internal static string MsgUpdateV2rayCoreSuccessfully {
+        public static string MsgUpdateV2rayCoreSuccessfully {
             get {
                 return ResourceManager.GetString("MsgUpdateV2rayCoreSuccessfully", resourceCulture);
             }
@@ -693,7 +1494,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Update Core successfully! Restarting service... 的本地化字符串。
         /// </summary>
-        internal static string MsgUpdateV2rayCoreSuccessfullyMore {
+        public static string MsgUpdateV2rayCoreSuccessfullyMore {
             get {
                 return ResourceManager.GetString("MsgUpdateV2rayCoreSuccessfullyMore", resourceCulture);
             }
@@ -702,7 +1503,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  This feature relies on the Http global proxy, please set it correctly first. 的本地化字符串。
         /// </summary>
-        internal static string NeedHttpGlobalProxy {
+        public static string NeedHttpGlobalProxy {
             get {
                 return ResourceManager.GetString("NeedHttpGlobalProxy", resourceCulture);
             }
@@ -711,7 +1512,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Normal use of this version requires .NET Framework 4.8 的本地化字符串。
         /// </summary>
-        internal static string NetFrameworkRequirementsTip {
+        public static string NetFrameworkRequirementsTip {
             get {
                 return ResourceManager.GetString("NetFrameworkRequirementsTip", resourceCulture);
             }
@@ -720,7 +1521,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Non-VMess or ss protocol 的本地化字符串。
         /// </summary>
-        internal static string NonvmessOrssProtocol {
+        public static string NonvmessOrssProtocol {
             get {
                 return ResourceManager.GetString("NonvmessOrssProtocol", resourceCulture);
             }
@@ -729,25 +1530,34 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  non-standard service, this feature is invalid 的本地化字符串。
         /// </summary>
-        internal static string NonVmessService {
+        public static string NonVmessService {
             get {
                 return ResourceManager.GetString("NonVmessService", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Core not found({0}), please download: {1} 的本地化字符串。
+        ///   查找类似 The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2} 的本地化字符串。
         /// </summary>
-        internal static string NotFoundCore {
+        public static string NotFoundCore {
             get {
                 return ResourceManager.GetString("NotFoundCore", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Not Run As Admin 的本地化字符串。
+        /// </summary>
+        public static string NotRunAsAdmin {
+            get {
+                return ResourceManager.GetString("NotRunAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan completed, no valid QR code found 的本地化字符串。
         /// </summary>
-        internal static string NoValidQRcodeFound {
+        public static string NoValidQRcodeFound {
             get {
                 return ResourceManager.GetString("NoValidQRcodeFound", resourceCulture);
             }
@@ -756,7 +1566,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似  operation failed, please check and retry 的本地化字符串。
         /// </summary>
-        internal static string OperationFailed {
+        public static string OperationFailed {
             get {
                 return ResourceManager.GetString("OperationFailed", resourceCulture);
             }
@@ -765,7 +1575,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Operation success 的本地化字符串。
         /// </summary>
-        internal static string OperationSuccess {
+        public static string OperationSuccess {
             get {
                 return ResourceManager.GetString("OperationSuccess", resourceCulture);
             }
@@ -774,7 +1584,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please Fill Remarks 的本地化字符串。
         /// </summary>
-        internal static string PleaseFillRemarks {
+        public static string PleaseFillRemarks {
             get {
                 return ResourceManager.GetString("PleaseFillRemarks", resourceCulture);
             }
@@ -783,7 +1593,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please select the encryption method 的本地化字符串。
         /// </summary>
-        internal static string PleaseSelectEncryption {
+        public static string PleaseSelectEncryption {
             get {
                 return ResourceManager.GetString("PleaseSelectEncryption", resourceCulture);
             }
@@ -792,7 +1602,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please select a protocol 的本地化字符串。
         /// </summary>
-        internal static string PleaseSelectProtocol {
+        public static string PleaseSelectProtocol {
             get {
                 return ResourceManager.GetString("PleaseSelectProtocol", resourceCulture);
             }
@@ -801,7 +1611,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please select rules 的本地化字符串。
         /// </summary>
-        internal static string PleaseSelectRules {
+        public static string PleaseSelectRules {
             get {
                 return ResourceManager.GetString("PleaseSelectRules", resourceCulture);
             }
@@ -810,7 +1620,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Please select the server first 的本地化字符串。
         /// </summary>
-        internal static string PleaseSelectServer {
+        public static string PleaseSelectServer {
             get {
                 return ResourceManager.GetString("PleaseSelectServer", resourceCulture);
             }
@@ -819,7 +1629,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Fast 的本地化字符串。
         /// </summary>
-        internal static string QuickFresh {
+        public static string QuickFresh {
             get {
                 return ResourceManager.GetString("QuickFresh", resourceCulture);
             }
@@ -828,7 +1638,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Global hotkey {0} registered failed, reason {1} 的本地化字符串。
         /// </summary>
-        internal static string RegisterGlobalHotkeyFailed {
+        public static string RegisterGlobalHotkeyFailed {
             get {
                 return ResourceManager.GetString("RegisterGlobalHotkeyFailed", resourceCulture);
             }
@@ -837,7 +1647,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Global hotkey {0} registered successfully 的本地化字符串。
         /// </summary>
-        internal static string RegisterGlobalHotkeySuccessfully {
+        public static string RegisterGlobalHotkeySuccessfully {
             get {
                 return ResourceManager.GetString("RegisterGlobalHotkeySuccessfully", resourceCulture);
             }
@@ -846,7 +1656,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Servers deduplication completed. Old: {0}, New: {1}. 的本地化字符串。
         /// </summary>
-        internal static string RemoveDuplicateServerResult {
+        public static string RemoveDuplicateServerResult {
             get {
                 return ResourceManager.GetString("RemoveDuplicateServerResult", resourceCulture);
             }
@@ -855,7 +1665,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Are you sure to remove the rules? 的本地化字符串。
         /// </summary>
-        internal static string RemoveRules {
+        public static string RemoveRules {
             get {
                 return ResourceManager.GetString("RemoveRules", resourceCulture);
             }
@@ -864,7 +1674,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Are you sure to remove the server? 的本地化字符串。
         /// </summary>
-        internal static string RemoveServer {
+        public static string RemoveServer {
             get {
                 return ResourceManager.GetString("RemoveServer", resourceCulture);
             }
@@ -873,16 +1683,25 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 {0},One of the required. 的本地化字符串。
         /// </summary>
-        internal static string RoutingRuleDetailRequiredTips {
+        public static string RoutingRuleDetailRequiredTips {
             get {
                 return ResourceManager.GetString("RoutingRuleDetailRequiredTips", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Run As Admin 的本地化字符串。
+        /// </summary>
+        public static string RunAsAdmin {
+            get {
+                return ResourceManager.GetString("RunAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The client configuration file is saved at: {0} 的本地化字符串。
         /// </summary>
-        internal static string SaveClientConfigurationIn {
+        public static string SaveClientConfigurationIn {
             get {
                 return ResourceManager.GetString("SaveClientConfigurationIn", resourceCulture);
             }
@@ -891,7 +1710,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 The server configuration file is saved at: {0} 的本地化字符串。
         /// </summary>
-        internal static string SaveServerConfigurationIn {
+        public static string SaveServerConfigurationIn {
             get {
                 return ResourceManager.GetString("SaveServerConfigurationIn", resourceCulture);
             }
@@ -900,7 +1719,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Slow 的本地化字符串。
         /// </summary>
-        internal static string SlowFresh {
+        public static string SlowFresh {
             get {
                 return ResourceManager.GetString("SlowFresh", resourceCulture);
             }
@@ -909,16 +1728,16 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Note: This feature relies on the Http global proxy. Please manually adjust the Http global proxy and active node after testing. 的本地化字符串。
         /// </summary>
-        internal static string SpeedServerTips {
+        public static string SpeedServerTips {
             get {
                 return ResourceManager.GetString("SpeedServerTips", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Speed Test... 的本地化字符串。
+        ///   查找类似 Testing... 的本地化字符串。
         /// </summary>
-        internal static string Speedtesting {
+        public static string Speedtesting {
             get {
                 return ResourceManager.GetString("Speedtesting", resourceCulture);
             }
@@ -927,7 +1746,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 PAC failed to start. Please run this program as Administrator. 的本地化字符串。
         /// </summary>
-        internal static string StartPacFailed {
+        public static string StartPacFailed {
             get {
                 return ResourceManager.GetString("StartPacFailed", resourceCulture);
             }
@@ -936,9 +1755,18 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Start service ({0})... 的本地化字符串。
         /// </summary>
-        internal static string StartService {
+        public static string StartService {
             get {
                 return ResourceManager.GetString("StartService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Group please leave blank here 的本地化字符串。
+        /// </summary>
+        public static string SubUrlTips {
+            get {
+                return ResourceManager.GetString("SubUrlTips", resourceCulture);
             }
         }
         
@@ -946,7 +1774,7 @@ namespace v2rayN.Resx {
         ///   查找类似 Configuration successful
         ///{0} 的本地化字符串。
         /// </summary>
-        internal static string SuccessfulConfiguration {
+        public static string SuccessfulConfiguration {
             get {
                 return ResourceManager.GetString("SuccessfulConfiguration", resourceCulture);
             }
@@ -955,7 +1783,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Custom configuration server imported successfully. 的本地化字符串。
         /// </summary>
-        internal static string SuccessfullyImportedCustomServer {
+        public static string SuccessfullyImportedCustomServer {
             get {
                 return ResourceManager.GetString("SuccessfullyImportedCustomServer", resourceCulture);
             }
@@ -964,7 +1792,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 {0} servers have been imported from clipboard. 的本地化字符串。
         /// </summary>
-        internal static string SuccessfullyImportedServerViaClipboard {
+        public static string SuccessfullyImportedServerViaClipboard {
             get {
                 return ResourceManager.GetString("SuccessfullyImportedServerViaClipboard", resourceCulture);
             }
@@ -973,7 +1801,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Scan import URL successfully 的本地化字符串。
         /// </summary>
-        internal static string SuccessfullyImportedServerViaScan {
+        public static string SuccessfullyImportedServerViaScan {
             get {
                 return ResourceManager.GetString("SuccessfullyImportedServerViaScan", resourceCulture);
             }
@@ -982,25 +1810,952 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 System proxy 的本地化字符串。
         /// </summary>
-        internal static string SystemProxy {
+        public static string SystemProxy {
             get {
                 return ResourceManager.GetString("SystemProxy", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Address 的本地化字符串。
+        /// </summary>
+        public static string TbAddress {
+            get {
+                return ResourceManager.GetString("TbAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 AllowInsecure 的本地化字符串。
+        /// </summary>
+        public static string TbAllowInsecure {
+            get {
+                return ResourceManager.GetString("TbAllowInsecure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alpn 的本地化字符串。
+        /// </summary>
+        public static string TbAlpn {
+            get {
+                return ResourceManager.GetString("TbAlpn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 AlterId 的本地化字符串。
+        /// </summary>
+        public static string TbAlterId {
+            get {
+                return ResourceManager.GetString("TbAlterId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Domain and ip are auto sorted when saving 的本地化字符串。
+        /// </summary>
+        public static string TbAutoSort {
+            get {
+                return ResourceManager.GetString("TbAutoSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Browse 的本地化字符串。
+        /// </summary>
+        public static string TbBrowse {
+            get {
+                return ResourceManager.GetString("TbBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        public static string TbCancel {
+            get {
+                return ResourceManager.GetString("TbCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear system proxy 的本地化字符串。
+        /// </summary>
+        public static string TbClearSystemProxy {
+            get {
+                return ResourceManager.GetString("TbClearSystemProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Confirm 的本地化字符串。
+        /// </summary>
+        public static string TbConfirm {
+            get {
+                return ResourceManager.GetString("TbConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Core Type 的本地化字符串。
+        /// </summary>
+        public static string TbCoreType {
+            get {
+                return ResourceManager.GetString("TbCoreType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Display GUI 的本地化字符串。
+        /// </summary>
+        public static string TbDisplayGUI {
+            get {
+                return ResourceManager.GetString("TbDisplayGUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Display Log 的本地化字符串。
+        /// </summary>
+        public static string TbDisplayLog {
+            get {
+                return ResourceManager.GetString("TbDisplayLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Support DnsObject 的本地化字符串。
+        /// </summary>
+        public static string TbDnsObjectDoc {
+            get {
+                return ResourceManager.GetString("TbDnsObjectDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Domain Matcher 的本地化字符串。
+        /// </summary>
+        public static string TbdomainMatcher {
+            get {
+                return ResourceManager.GetString("TbdomainMatcher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Domain strategy 的本地化字符串。
+        /// </summary>
+        public static string TbdomainStrategy {
+            get {
+                return ResourceManager.GetString("TbdomainStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit 的本地化字符串。
+        /// </summary>
+        public static string TbEdit {
+            get {
+                return ResourceManager.GetString("TbEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable advanced function 的本地化字符串。
+        /// </summary>
+        public static string TbenableRoutingAdvanced {
+            get {
+                return ResourceManager.GetString("TbenableRoutingAdvanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Tun 的本地化字符串。
+        /// </summary>
+        public static string TbEnableTunAs {
+            get {
+                return ResourceManager.GetString("TbEnableTunAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fingerprint 的本地化字符串。
+        /// </summary>
+        public static string TbFingerprint {
+            get {
+                return ResourceManager.GetString("TbFingerprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Flow 的本地化字符串。
+        /// </summary>
+        public static string TbFlow5 {
+            get {
+                return ResourceManager.GetString("TbFlow5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 GlobalHotkey Setting 的本地化字符串。
+        /// </summary>
+        public static string TbGlobalHotkeySetting {
+            get {
+                return ResourceManager.GetString("TbGlobalHotkeySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set directly by pressing the keyboard, Take effect after restart 的本地化字符串。
+        /// </summary>
+        public static string TbGlobalHotkeySettingTip {
+            get {
+                return ResourceManager.GetString("TbGlobalHotkeySettingTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Generate 的本地化字符串。
+        /// </summary>
+        public static string TbGUID {
+            get {
+                return ResourceManager.GetString("TbGUID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Camouflage type 的本地化字符串。
+        /// </summary>
+        public static string TbHeaderType {
+            get {
+                return ResourceManager.GetString("TbHeaderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UUID(id) 的本地化字符串。
+        /// </summary>
+        public static string TbId {
+            get {
+                return ResourceManager.GetString("TbId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Password 的本地化字符串。
+        /// </summary>
+        public static string TbId3 {
+            get {
+                return ResourceManager.GetString("TbId3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Password(Optional) 的本地化字符串。
+        /// </summary>
+        public static string TbId4 {
+            get {
+                return ResourceManager.GetString("TbId4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UUID(id) 的本地化字符串。
+        /// </summary>
+        public static string TbId5 {
+            get {
+                return ResourceManager.GetString("TbId5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Transport protocol(network) 的本地化字符串。
+        /// </summary>
+        public static string TbNetwork {
+            get {
+                return ResourceManager.GetString("TbNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Do not change system proxy 的本地化字符串。
+        /// </summary>
+        public static string TbNotChangeSystemProxy {
+            get {
+                return ResourceManager.GetString("TbNotChangeSystemProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Path 的本地化字符串。
+        /// </summary>
+        public static string TbPath {
+            get {
+                return ResourceManager.GetString("TbPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Port 的本地化字符串。
+        /// </summary>
+        public static string TbPort {
+            get {
+                return ResourceManager.GetString("TbPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 txtPreSocksPort 的本地化字符串。
+        /// </summary>
+        public static string TbPreSocksPort {
+            get {
+                return ResourceManager.GetString("TbPreSocksPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alias (remarks) 的本地化字符串。
+        /// </summary>
+        public static string TbRemarks {
+            get {
+                return ResourceManager.GetString("TbRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Camouflage domain(host) 的本地化字符串。
+        /// </summary>
+        public static string TbRequestHost {
+            get {
+                return ResourceManager.GetString("TbRequestHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        public static string TbReset {
+            get {
+                return ResourceManager.GetString("TbReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 3.Block Domain or IP 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingTabBlock {
+            get {
+                return ResourceManager.GetString("TbRoutingTabBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 2.Direct Domain or IP 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingTabDirect {
+            get {
+                return ResourceManager.GetString("TbRoutingTabDirect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 1.Proxy Domain or IP 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingTabProxy {
+            get {
+                return ResourceManager.GetString("TbRoutingTabProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pre-defined Rule Set List 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingTabRuleList {
+            get {
+                return ResourceManager.GetString("TbRoutingTabRuleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 *Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt; 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingTips {
+            get {
+                return ResourceManager.GetString("TbRoutingTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ruleobject Doc 的本地化字符串。
+        /// </summary>
+        public static string TbRuleobjectDoc {
+            get {
+                return ResourceManager.GetString("TbRuleobjectDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Encryption method (security) 的本地化字符串。
+        /// </summary>
+        public static string TbSecurity {
+            get {
+                return ResourceManager.GetString("TbSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Encryption 的本地化字符串。
+        /// </summary>
+        public static string TbSecurity3 {
+            get {
+                return ResourceManager.GetString("TbSecurity3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User(Optional) 的本地化字符串。
+        /// </summary>
+        public static string TbSecurity4 {
+            get {
+                return ResourceManager.GetString("TbSecurity4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Encryption 的本地化字符串。
+        /// </summary>
+        public static string TbSecurity5 {
+            get {
+                return ResourceManager.GetString("TbSecurity5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set system proxy 的本地化字符串。
+        /// </summary>
+        public static string TbSetSystemProxy {
+            get {
+                return ResourceManager.GetString("TbSetSystemProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Advanced proxy settings, protocol selection (optional) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAdvancedProtocol {
+            get {
+                return ResourceManager.GetString("TbSettingsAdvancedProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Allow connections from the LAN 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAllowLAN {
+            get {
+                return ResourceManager.GetString("TbSettingsAllowLAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Auto hide startup 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoHideStartup {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoHideStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automatic latency test interval (minutes) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoTest {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automatic update interval of subscriptions (hours) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoUpdate {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automatic update interval of and Geo (hours) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoUpdateInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoUpdateInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Color 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsColor {
+            get {
+                return ResourceManager.GetString("TbSettingsColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Dark Mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsColorMode {
+            get {
+                return ResourceManager.GetString("TbSettingsColorMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Core: basic settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCore {
+            get {
+                return ResourceManager.GetString("TbSettingsCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Core: DNS settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCoreDns {
+            get {
+                return ResourceManager.GetString("TbSettingsCoreDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Core: KCP settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCoreKcp {
+            get {
+                return ResourceManager.GetString("TbSettingsCoreKcp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 CoreType settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCoreType {
+            get {
+                return ResourceManager.GetString("TbSettingsCoreType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 AllowInsecure 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDefAllowInsecure {
+            get {
+                return ResourceManager.GetString("TbSettingsDefAllowInsecure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Outbound Freedom domainStrategy 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDomainStrategy4Freedom {
+            get {
+                return ResourceManager.GetString("TbSettingsDomainStrategy4Freedom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automatically adjust column width after updating subscription 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableAutoAdjustMainLvColWidth {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableAutoAdjustMainLvColWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Check for pre-release updates 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableCheckPreReleaseUpdate {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableCheckPreReleaseUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Exception 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsException {
+            get {
+                return ResourceManager.GetString("TbSettingsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Exception. Do not use proxy server for addresses beginning with,Use semicolon (;) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsExceptionTip {
+            get {
+                return ResourceManager.GetString("TbSettingsExceptionTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Http Port 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsHttpPort {
+            get {
+                return ResourceManager.GetString("TbSettingsHttpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ignore Geo files when updating core 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsIgnoreGeoUpdateCore {
+            get {
+                return ResourceManager.GetString("TbSettingsIgnoreGeoUpdateCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable IPv6 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsIpv6 {
+            get {
+                return ResourceManager.GetString("TbSettingsIpv6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep older when deduplication 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsKeepOlderDedupl {
+            get {
+                return ResourceManager.GetString("TbSettingsKeepOlderDedupl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Language 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLanguage {
+            get {
+                return ResourceManager.GetString("TbSettingsLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Record local logs 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLogEnabled {
+            get {
+                return ResourceManager.GetString("TbSettingsLogEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Log Level 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLogLevel {
+            get {
+                return ResourceManager.GetString("TbSettingsLogLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Turn on Mux Multiplexing 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMuxEnabled {
+            get {
+                return ResourceManager.GetString("TbSettingsMuxEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 v2rayN settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsN {
+            get {
+                return ResourceManager.GetString("TbSettingsN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Port for LAN 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsNewPort4LAN {
+            get {
+                return ResourceManager.GetString("TbSettingsNewPort4LAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pac listen port 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsPacListenPort {
+            get {
+                return ResourceManager.GetString("TbSettingsPacListenPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Auth pass 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsPass {
+            get {
+                return ResourceManager.GetString("TbSettingsPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom DNS (multiple, separated by commas (,)) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsRemoteDNS {
+            get {
+                return ResourceManager.GetString("TbSettingsRemoteDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RouteOnly 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsRouteOnly {
+            get {
+                return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 After modifying the following parameters, click Save to take effect 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSaveTip {
+            get {
+                return ResourceManager.GetString("TbSettingsSaveTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set Win10 UWP Loopback 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSetUWP {
+            get {
+                return ResourceManager.GetString("TbSettingsSetUWP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Turn on Sniffing 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSniffingEnabled {
+            get {
+                return ResourceManager.GetString("TbSettingsSniffingEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Socks Port 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSocksPort {
+            get {
+                return ResourceManager.GetString("TbSettingsSocksPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start on boot 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsStartBoot {
+            get {
+                return ResourceManager.GetString("TbSettingsStartBoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Statistics (Require restart) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsStatistics {
+            get {
+                return ResourceManager.GetString("TbSettingsStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Statistics freshrate (second) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsStatisticsFreshRate {
+            get {
+                return ResourceManager.GetString("TbSettingsStatisticsFreshRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subscription conversion Url 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSubConvert {
+            get {
+                return ResourceManager.GetString("TbSettingsSubConvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 System proxy settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSystemproxy {
+            get {
+                return ResourceManager.GetString("TbSettingsSystemproxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Security Protocol TLS v1.3 (subscription/update) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTLS13 {
+            get {
+                return ResourceManager.GetString("TbSettingsTLS13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tray right-click menu servers display limit 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTrayMenuServersLimit {
+            get {
+                return ResourceManager.GetString("TbSettingsTrayMenuServersLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 TunMode settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunMode {
+            get {
+                return ResourceManager.GetString("TbSettingsTunMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Direct IP CIDR, separated by commas (,) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeDirectIP {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeDirectIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Direct Process name, separated by commas (,) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeDirectProcess {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeDirectProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show console 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeShowWindow {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeShowWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable UDP 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUdpEnabled {
+            get {
+                return ResourceManager.GetString("TbSettingsUdpEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Auth user 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUser {
+            get {
+                return ResourceManager.GetString("TbSettingsUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SNI 的本地化字符串。
+        /// </summary>
+        public static string TbSNI {
+            get {
+                return ResourceManager.GetString("TbSNI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 TLS 的本地化字符串。
+        /// </summary>
+        public static string TbStreamSecurity {
+            get {
+                return ResourceManager.GetString("TbStreamSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pac Mode 的本地化字符串。
+        /// </summary>
+        public static string TbSystemProxyPac {
+            get {
+                return ResourceManager.GetString("TbSystemProxyPac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The ping of current service: {0} ms 的本地化字符串。
         /// </summary>
-        internal static string TestMeOutput {
+        public static string TestMeOutput {
             get {
                 return ResourceManager.GetString("TestMeOutput", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   查找类似 Routing setting is changed 的本地化字符串。
+        /// </summary>
+        public static string TipChangeRouting {
+            get {
+                return ResourceManager.GetString("TipChangeRouting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 System proxy setting is changed 的本地化字符串。
+        /// </summary>
+        public static string TipChangeSystemProxy {
+            get {
+                return ResourceManager.GetString("TipChangeSystemProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 *Default value tcp 的本地化字符串。
+        /// </summary>
+        public static string TipNetwork {
+            get {
+                return ResourceManager.GetString("TipNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 * After setting this value, an socks service will be started using V2ray to provide functions such as speed display 的本地化字符串。
+        /// </summary>
+        public static string TipPreSocksPort {
+            get {
+                return ResourceManager.GetString("TipPreSocksPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Too many servers, please open the main interface 的本地化字符串。
         /// </summary>
-        internal static string TooManyServersTip {
+        public static string TooManyServersTip {
             get {
                 return ResourceManager.GetString("TooManyServersTip", resourceCulture);
             }
@@ -1009,7 +2764,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *tcp camouflage type 的本地化字符串。
         /// </summary>
-        internal static string TransportHeaderTypeTip1 {
+        public static string TransportHeaderTypeTip1 {
             get {
                 return ResourceManager.GetString("TransportHeaderTypeTip1", resourceCulture);
             }
@@ -1018,7 +2773,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *kcp camouflage type 的本地化字符串。
         /// </summary>
-        internal static string TransportHeaderTypeTip2 {
+        public static string TransportHeaderTypeTip2 {
             get {
                 return ResourceManager.GetString("TransportHeaderTypeTip2", resourceCulture);
             }
@@ -1027,7 +2782,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *QUIC camouflage type 的本地化字符串。
         /// </summary>
-        internal static string TransportHeaderTypeTip3 {
+        public static string TransportHeaderTypeTip3 {
             get {
                 return ResourceManager.GetString("TransportHeaderTypeTip3", resourceCulture);
             }
@@ -1036,7 +2791,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *grpc mode 的本地化字符串。
         /// </summary>
-        internal static string TransportHeaderTypeTip4 {
+        public static string TransportHeaderTypeTip4 {
             get {
                 return ResourceManager.GetString("TransportHeaderTypeTip4", resourceCulture);
             }
@@ -1045,7 +2800,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *ws path 的本地化字符串。
         /// </summary>
-        internal static string TransportPathTip1 {
+        public static string TransportPathTip1 {
             get {
                 return ResourceManager.GetString("TransportPathTip1", resourceCulture);
             }
@@ -1054,7 +2809,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *h2 path 的本地化字符串。
         /// </summary>
-        internal static string TransportPathTip2 {
+        public static string TransportPathTip2 {
             get {
                 return ResourceManager.GetString("TransportPathTip2", resourceCulture);
             }
@@ -1063,7 +2818,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *QUIC key/Kcp seed 的本地化字符串。
         /// </summary>
-        internal static string TransportPathTip3 {
+        public static string TransportPathTip3 {
             get {
                 return ResourceManager.GetString("TransportPathTip3", resourceCulture);
             }
@@ -1072,7 +2827,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *grpc serviceName 的本地化字符串。
         /// </summary>
-        internal static string TransportPathTip4 {
+        public static string TransportPathTip4 {
             get {
                 return ResourceManager.GetString("TransportPathTip4", resourceCulture);
             }
@@ -1081,7 +2836,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *Kcp seed 的本地化字符串。
         /// </summary>
-        internal static string TransportPathTip5 {
+        public static string TransportPathTip5 {
             get {
                 return ResourceManager.GetString("TransportPathTip5", resourceCulture);
             }
@@ -1090,7 +2845,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *http host Separated by commas (,) 的本地化字符串。
         /// </summary>
-        internal static string TransportRequestHostTip1 {
+        public static string TransportRequestHostTip1 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip1", resourceCulture);
             }
@@ -1099,7 +2854,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *ws host 的本地化字符串。
         /// </summary>
-        internal static string TransportRequestHostTip2 {
+        public static string TransportRequestHostTip2 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip2", resourceCulture);
             }
@@ -1108,7 +2863,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *h2 host Separated by commas (,) 的本地化字符串。
         /// </summary>
-        internal static string TransportRequestHostTip3 {
+        public static string TransportRequestHostTip3 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip3", resourceCulture);
             }
@@ -1117,7 +2872,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 *QUIC securty 的本地化字符串。
         /// </summary>
-        internal static string TransportRequestHostTip4 {
+        public static string TransportRequestHostTip4 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip4", resourceCulture);
             }
@@ -1126,7 +2881,7 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Ungrouped 的本地化字符串。
         /// </summary>
-        internal static string UngroupedServers {
+        public static string UngroupedServers {
             get {
                 return ResourceManager.GetString("UngroupedServers", resourceCulture);
             }

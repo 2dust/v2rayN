@@ -12,7 +12,8 @@ namespace v2rayN.Mode
         network,
         streamSecurity,
         subRemarks,
-        testResult,
+        delay,
+        speed,
 
         todayDown,
         todayUp,

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace v2rayN.Base
 {
@@ -58,7 +52,7 @@ namespace v2rayN.Base
             HttpResponseMessage response = await client.GetAsync(url, token);
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception(string.Format("{0}", response.StatusCode));
             }
             return await response.Content.ReadAsStringAsync();
         }
@@ -92,7 +86,7 @@ namespace v2rayN.Base
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception(string.Format("{0}", response.StatusCode));
             }
 
             var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
@@ -159,7 +153,7 @@ namespace v2rayN.Base
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception(string.Format("{0}", response.StatusCode));
             }
 
             //var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
@@ -172,6 +166,7 @@ namespace v2rayN.Base
                 var isMoreToRead = true;
                 string progressSpeed = string.Empty;
                 DateTime totalDatetime = DateTime.Now;
+                int totalSecond = 0;
 
                 do
                 {
@@ -202,9 +197,10 @@ namespace v2rayN.Base
                         totalRead += read;
 
                         TimeSpan ts = (DateTime.Now - totalDatetime);
-                        var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
-                        if (progress != null)
+                        if (progress != null && ts.Seconds > totalSecond)
                         {
+                            totalSecond = ts.Seconds;
+                            var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
                             if (progressSpeed != speed)
                             {
                                 progressSpeed = speed;

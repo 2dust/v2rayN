@@ -1,30 +1,32 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using NLog;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Windows.Forms;
-using System.Drawing;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using v2rayN.Base;
+using v2rayN.Mode;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
-using System.Security.Principal;
-using v2rayN.Base;
-using Newtonsoft.Json.Linq;
-using System.Web;
-using log4net;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Runtime.InteropServices;
+using ZXing.Windows.Compatibility;
 
 namespace v2rayN
 {
@@ -91,12 +93,16 @@ namespace v2rayN
         {
             try
             {
+                if (string.IsNullOrEmpty(strJson))
+                {
+                    return default;
+                }
                 T obj = JsonConvert.DeserializeObject<T>(strJson);
                 return obj;
             }
             catch
             {
-                return JsonConvert.DeserializeObject<T>("");
+                return default;
             }
         }
 
@@ -105,14 +111,21 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToJson(Object obj)
+        public static string ToJson(Object obj, bool indented = true)
         {
             string result = string.Empty;
             try
             {
-                result = JsonConvert.SerializeObject(obj,
+                if (indented)
+                {
+                    result = JsonConvert.SerializeObject(obj,
                                            Formatting.Indented,
                                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                }
+                else
+                {
+                    result = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                }
             }
             catch (Exception ex)
             {
@@ -165,8 +178,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
-
+                //SaveLog(ex.Message, ex);
                 return null;
             }
         }
@@ -340,18 +352,19 @@ namespace v2rayN
         /// <param name="amount">bytes</param>
         /// <param name="result">转换之后的数据</param>
         /// <param name="unit">单位</param>
-        public static void ToHumanReadable(ulong amount, out double result, out string unit)
+        public static void ToHumanReadable(long amount, out double result, out string unit)
         {
             uint factor = 1024u;
-            ulong KBs = amount / factor;
+            //long KBs = amount / factor;
+            long KBs = amount;
             if (KBs > 0)
             {
                 // multi KB
-                ulong MBs = KBs / factor;
+                long MBs = KBs / factor;
                 if (MBs > 0)
                 {
                     // multi MB
-                    ulong GBs = MBs / factor;
+                    long GBs = MBs / factor;
                     if (GBs > 0)
                     {
                         // multi GB
@@ -382,13 +395,11 @@ namespace v2rayN
             }
         }
 
-        public static string HumanFy(ulong amount)
+        public static string HumanFy(long amount)
         {
             ToHumanReadable(amount, out double result, out string unit);
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
-
-
 
         public static string UrlEncode(string url)
         {
@@ -411,6 +422,13 @@ namespace v2rayN
                 sb.Append(b.ToString("x2"));
             }
             return sb.ToString();
+        }
+        public static ImageSource IconToImageSource(Icon icon)
+        {
+            return Imaging.CreateBitmapSourceFromHIcon(
+                icon.Handle,
+                new System.Windows.Int32Rect(0, 0, icon.Width, icon.Height),
+                BitmapSizeOptions.FromEmptyOptions());
         }
 
         public static string GetPunycode(string url)
@@ -466,7 +484,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty(string text)
+        public static bool IsNullOrEmpty(string? text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -569,28 +587,6 @@ namespace v2rayN
 
         #region 开机自动启动
 
-        private static string autoRunName
-        {
-            get
-            {
-                return $"v2rayNAutoRun_{GetMD5(StartupPath())}";
-            }
-        }
-        private static string autoRunRegPath
-        {
-            get
-            {
-                return @"Software\Microsoft\Windows\CurrentVersion\Run";
-                //if (Environment.Is64BitProcess)
-                //{
-                //    return @"Software\Microsoft\Windows\CurrentVersion\Run";
-                //}
-                //else
-                //{
-                //    return @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run";
-                //}
-            }
-        }
 
         /// <summary>
         /// 开机自动启动
@@ -602,7 +598,7 @@ namespace v2rayN
             try
             {
                 string exePath = GetExePath();
-                RegWriteValue(autoRunRegPath, autoRunName, run ? $"\"{exePath}\"" : "");
+                RegWriteValue(Global.AutoRunRegPath, Global.AutoRunName, run ? $"\"{exePath}\"" : "");
             }
             catch (Exception ex)
             {
@@ -619,12 +615,12 @@ namespace v2rayN
             try
             {
                 //clear
-                if (!RegReadValue(autoRunRegPath, "v2rayNAutoRun", "").IsNullOrEmpty())
+                if (!RegReadValue(Global.AutoRunRegPath, Global.AutoRunName, "").IsNullOrEmpty())
                 {
-                    RegWriteValue(autoRunRegPath, "v2rayNAutoRun", "");
+                    RegWriteValue(Global.AutoRunRegPath, Global.AutoRunName, "");
                 }
 
-                string value = RegReadValue(autoRunRegPath, autoRunName, "");
+                string value = RegReadValue(Global.AutoRunRegPath, Global.AutoRunName, "");
                 string exePath = GetExePath();
                 if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
                 {
@@ -737,76 +733,32 @@ namespace v2rayN
             }
         }
 
-        public static string MainMsgFilterKey
-        {
-            get
-            {
-                return $"MainMsgFilter_{GetMD5(StartupPath())}";
-            }
-        }
         #endregion
 
         #region 测速
 
         /// <summary>
-        /// Ping
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public static long Ping(string host)
-        {
-            long roundtripTime = -1;
-            try
-            {
-                int timeout = 30;
-                int echoNum = 2;
-                Ping pingSender = new Ping();
-                for (int i = 0; i < echoNum; i++)
-                {
-                    PingReply reply = pingSender.Send(host, timeout);
-                    if (reply.Status == IPStatus.Success)
-                    {
-                        if (reply.RoundtripTime < 0)
-                        {
-                            continue;
-                        }
-                        if (roundtripTime < 0 || reply.RoundtripTime < roundtripTime)
-                        {
-                            roundtripTime = reply.RoundtripTime;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-                return -1;
-            }
-            return roundtripTime;
-        }
-
-        /// <summary>
         /// 取得本机 IP Address
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetHostIPAddress()
-        {
-            List<string> lstIPAddress = new List<string>();
-            try
-            {
-                IPHostEntry IpEntry = Dns.GetHostEntry(Dns.GetHostName());
-                foreach (IPAddress ipa in IpEntry.AddressList)
-                {
-                    if (ipa.AddressFamily == AddressFamily.InterNetwork)
-                        lstIPAddress.Add(ipa.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-            return lstIPAddress;
-        }
+        //public static List<string> GetHostIPAddress()
+        //{
+        //    List<string> lstIPAddress = new List<string>();
+        //    try
+        //    {
+        //        IPHostEntry IpEntry = Dns.GetHostEntry(Dns.GetHostName());
+        //        foreach (IPAddress ipa in IpEntry.AddressList)
+        //        {
+        //            if (ipa.AddressFamily == AddressFamily.InterNetwork)
+        //                lstIPAddress.Add(ipa.ToString());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SaveLog(ex.Message, ex);
+        //    }
+        //    return lstIPAddress;
+        //}
 
         public static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
         {
@@ -982,10 +934,6 @@ namespace v2rayN
             }
         }
 
-        public static void AddSubItem(ListViewItem i, string name, string text)
-        {
-            i.SubItems.Add(new ListViewItem.ListViewSubItem() { Name = name, Text = text });
-        }
 
         public static string GetDownloadFileName(string url)
         {
@@ -1012,6 +960,27 @@ namespace v2rayN
         public static bool IsGuidByParse(string strSrc)
         {
             return Guid.TryParse(strSrc, out Guid g);
+        }
+        public static void ProcessStart(string fileName)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(fileName) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex.Message, ex);
+            }
+        }
+
+        public static void SetDarkBorder(System.Windows.Window window, bool dark)
+        {
+            // Make sure the handle is created before the window is shown
+            IntPtr hWnd = new System.Windows.Interop.WindowInteropHelper(window).EnsureHandle();
+            int attribute = dark ? 1 : 0;
+            uint attributeSize = (uint)Marshal.SizeOf(attribute);
+            DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
+            DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
         }
         #endregion
 
@@ -1072,6 +1041,39 @@ namespace v2rayN
                 return Path.Combine(_tempPath, filename);
             }
         }
+        public static string GetBinPath(string filename, ECoreType? coreType = null)
+        {
+            string _tempPath = Path.Combine(StartupPath(), "bin");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            if (coreType != null)
+            {
+                _tempPath = Path.Combine(_tempPath, coreType.ToString()!);
+                if (!Directory.Exists(_tempPath))
+                {
+                    Directory.CreateDirectory(_tempPath);
+                }
+            }
+            return Path.Combine(_tempPath, filename);
+        }
+        public static string GetLogPath(string filename = "")
+        {
+            string _tempPath = Path.Combine(StartupPath(), "guiLogs");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            if (string.IsNullOrEmpty(filename))
+            {
+                return _tempPath;
+            }
+            else
+            {
+                return Path.Combine(_tempPath, filename);
+            }
+        }
 
         #endregion
 
@@ -1085,8 +1087,12 @@ namespace v2rayN
         public static void SaveLog(string strTitle, Exception ex)
         {
             var logger = LogManager.GetLogger("Log2");
-            logger.Debug(strTitle);
-            logger.Debug(ex);
+            logger.Debug($"{strTitle},{ex.Message}");
+            logger.Debug(ex.StackTrace);
+            if (ex != null && ex.InnerException != null)
+            {
+                logger.Error(ex.InnerException);
+            }
         }
 
         #endregion
@@ -1152,26 +1158,16 @@ namespace v2rayN
 
         #region Windows API
 
-        public static string WindowHwndKey
+
+        [Flags]
+        public enum DWMWINDOWATTRIBUTE : uint
         {
-            get
-            {
-                return $"WindowHwnd_{GetMD5(StartupPath())}";
-            }
+            DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19,
+            DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
         }
 
-        [DllImport("user32.dll")]
-        public static extern bool SetProcessDPIAware();
-
-        [DllImport("user32.dll")]
-        public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
-
-        [DllImport("user32.dll")]
-        public static extern int SwitchToThisWindow(IntPtr hwnd, bool fUnknown);
-
-        [DllImport("user32.dll")]
-        public static extern bool IsWindow(IntPtr hwnd);
-
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attribute, ref int attributeValue, uint attributeSize);
 
         #endregion
     }

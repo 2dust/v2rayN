@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Splat;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -53,7 +48,7 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
+                            string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                             fileName = Utils.UrlEncode(fileName);
                             Process process = new Process
                             {
@@ -96,6 +91,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
+                    Locator.Current.GetService<NoticeHandler>()?.Enqueue(args.Msg);
                     _updateFunc(false, args.Msg);
                 }
             };
@@ -151,6 +147,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
+                    Locator.Current.GetService<NoticeHandler>()?.Enqueue(args.Msg);
                     _updateFunc(false, args.Msg);
                 }
             };
@@ -159,14 +156,15 @@ namespace v2rayN.Handler
         }
 
 
-        public void UpdateSubscriptionProcess(Config config, string groupId, bool blProxy, Action<bool, string> update)
+        public void UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
 
             _updateFunc(false, ResUI.MsgUpdateSubscriptionStart);
+            var subItem = LazyConfig.Instance.SubItems();
 
-            if (config.subItem == null || config.subItem.Count <= 0)
+            if (subItem == null || subItem.Count <= 0)
             {
                 _updateFunc(false, ResUI.MsgNoValidSubscription);
                 return;
@@ -184,13 +182,13 @@ namespace v2rayN.Handler
                     Thread.Sleep(3000);
                 }
 
-                foreach (var item in config.subItem)
+                foreach (var item in subItem)
                 {
                     if (item.enabled == false)
                     {
                         continue;
                     }
-                    if (!Utils.IsNullOrEmpty(groupId) && item.groupId != groupId)
+                    if (!Utils.IsNullOrEmpty(subId) && item.id != subId)
                     {
                         continue;
                     }
@@ -198,7 +196,6 @@ namespace v2rayN.Handler
                     string id = item.id.TrimEx();
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
-                    //string groupId = item.groupId.TrimEx();
                     string hashCode = $"{item.remarks}->";
                     if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
                     {
@@ -212,7 +209,9 @@ namespace v2rayN.Handler
                         _updateFunc(false, $"{hashCode}{args.GetException().Message}");
                     };
 
+                    //idn to idc
                     url = Utils.GetPunycode(url);
+
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
                     var result = await downloadHandle.DownloadStringAsync(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
@@ -232,7 +231,7 @@ namespace v2rayN.Handler
                             _updateFunc(false, $"{hashCode}{result}");
                         }
 
-                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, item.groupId.TrimEx());
+                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, true);
                         _updateFunc(false,
                             ret > 0
                                 ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
@@ -271,15 +270,14 @@ namespace v2rayN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
+                            string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                             if (File.Exists(fileName))
                             {
-                                string targetPath = Utils.GetPath($"{geoName}.dat");
-                                if (File.Exists(targetPath))
+                                Global.coreTypes.ForEach(it =>
                                 {
-                                    File.Delete(targetPath);
-                                }
-                                File.Move(fileName, targetPath);
+                                    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
+                                    File.Copy(fileName, targetPath, true);
+                                });
                                 //_updateFunc(true, "");
                             }
                         }
@@ -352,7 +350,7 @@ namespace v2rayN.Handler
                 foreach (string name in coreInfo.coreExes)
                 {
                     string vName = $"{name}.exe";
-                    vName = Utils.GetPath(vName);
+                    vName = Utils.GetBinPath(vName, coreInfo.coreType);
                     if (File.Exists(vName))
                     {
                         filePath = vName;
@@ -362,7 +360,7 @@ namespace v2rayN.Handler
 
                 if (!File.Exists(filePath))
                 {
-                    string msg = string.Format(ResUI.NotFoundCore, @"", "");
+                    string msg = string.Format(ResUI.NotFoundCore, @"", "", "");
                     //ShowMsg(true, msg);
                     return "";
                 }

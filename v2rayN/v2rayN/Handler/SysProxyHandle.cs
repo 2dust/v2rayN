@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using PacLib;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Threading;
 using v2rayN.Mode;
 using v2rayN.Properties;
 using v2rayN.Tool;
@@ -59,8 +57,9 @@ namespace v2rayN.Handler
 
             try
             {
-                int port = config.GetLocalPort(Global.InboundHttp);
-                int portSocks = config.GetLocalPort(Global.InboundSocks);
+                int port = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
+                int portSocks = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
+                int portPac = LazyConfig.Instance.GetLocalPort(ESysProxyType.Pac.ToString());
                 if (port <= 0)
                 {
                     return false;
@@ -89,6 +88,17 @@ namespace v2rayN.Handler
                 }
                 else if (type == ESysProxyType.Unchanged)
                 {
+                }
+                else if (type == ESysProxyType.Pac)
+                {
+                    PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+                    var strProxy = $"{Global.httpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+                    SetIEProxy(false, strProxy, "");
+                }
+
+                if (type != ESysProxyType.Pac)
+                {
+                    PacHandler.Stop();
                 }
             }
             catch (Exception ex)

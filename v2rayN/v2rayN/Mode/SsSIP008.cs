@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace v2rayN.Mode
+﻿namespace v2rayN.Mode
 {
     public class SsSIP008
     {

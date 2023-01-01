@@ -1,13 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using v2rayN.Base;
 using v2rayN.Resx;
 
@@ -35,14 +31,14 @@ namespace v2rayN.Handler
             }
         }
 
-        public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout)
+        public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> update)
         {
+            var hasValue = false;
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Speedtesting));
 
-                var client = new HttpClient(new WebRequestHandler()
+                var client = new HttpClient(new SocketsHttpHandler()
                 {
                     Proxy = webProxy
                 });
@@ -50,10 +46,11 @@ namespace v2rayN.Handler
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
                 {
-                    if (UpdateCompleted != null)
+                    hasValue = true;
+                    if (update != null)
                     {
-                        string msg = $"{value} M/s".PadLeft(9, ' ');
-                        UpdateCompleted(this, new ResultEventArgs(false, msg));
+                        string msg = $"{value}";
+                        update(false, msg);
                     }
                 };
 
@@ -66,11 +63,13 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                //Utils.SaveLog(ex.Message, ex);
-                Error?.Invoke(this, new ErrorEventArgs(ex)); 
-                if (ex.InnerException != null)
+                if (!hasValue)
                 {
-                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+                    update(false, ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        update(false, ex.InnerException.Message);
+                    }
                 }
             }
             return 0;
@@ -83,7 +82,7 @@ namespace v2rayN.Handler
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
 
-                var client = new HttpClient(new WebRequestHandler()
+                var client = new HttpClient(new SocketsHttpHandler()
                 {
                     Proxy = GetWebProxy(blProxy)
                 });
@@ -101,7 +100,7 @@ namespace v2rayN.Handler
                 var cancellationToken = new CancellationTokenSource();
                 _ = HttpClientHelper.GetInstance().DownloadFileAsync(client,
                        url,
-                       Utils.GetPath(Utils.GetDownloadFileName(url)),
+                       Utils.GetTempPath(Utils.GetDownloadFileName(url)),
                        progress,
                        cancellationToken.Token);
             }
@@ -109,7 +108,7 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
 
-                Error?.Invoke(this, new ErrorEventArgs(ex)); 
+                Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
                     Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
@@ -120,7 +119,7 @@ namespace v2rayN.Handler
         public async Task<string> UrlRedirectAsync(string url, bool blProxy)
         {
             Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-            WebRequestHandler webRequestHandler = new WebRequestHandler
+            var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
                 Proxy = GetWebProxy(blProxy)
@@ -148,7 +147,7 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-                var client = new HttpClient(new WebRequestHandler()
+                var client = new HttpClient(new SocketsHttpHandler()
                 {
                     Proxy = GetWebProxy(blProxy)
                 });
@@ -190,13 +189,13 @@ namespace v2rayN.Handler
             {
                 if (webProxy == null)
                 {
-                    var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp);
+                    var httpPort = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
                     webProxy = new WebProxy(Global.Loopback, httpPort);
                 }
 
                 try
                 {
-                    string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, out int responseTime);
+                    string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, 10, out int responseTime);
                     bool noError = Utils.IsNullOrEmpty(status);
                     return noError ? responseTime : -1;
                 }
@@ -213,14 +212,14 @@ namespace v2rayN.Handler
             }
         }
 
-        public string GetRealPingTime(string url, WebProxy webProxy, out int responseTime)
+        public string GetRealPingTime(string url, WebProxy webProxy, int downloadTimeout, out int responseTime)
         {
             string msg = string.Empty;
             responseTime = -1;
             try
             {
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                myHttpWebRequest.Timeout = 30 * 1000;
+                myHttpWebRequest.Timeout = downloadTimeout * 1000;
                 myHttpWebRequest.Proxy = webProxy;
 
                 Stopwatch timer = new Stopwatch();
@@ -251,7 +250,7 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            var httpPort = LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp);
+            var httpPort = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
             if (!SocketCheck(Global.Loopback, httpPort))
             {
                 return null;

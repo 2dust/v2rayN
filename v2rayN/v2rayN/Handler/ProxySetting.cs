@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Runtime.InteropServices;
 
 namespace v2rayN.Handler

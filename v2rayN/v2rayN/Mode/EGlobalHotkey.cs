@@ -7,5 +7,6 @@ namespace v2rayN.Mode
         SystemProxyClear = 1,
         SystemProxySet = 2,
         SystemProxyUnchanged = 3,
+        SystemProxyPac = 4,
     }
 }

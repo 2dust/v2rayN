@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Text;
 
@@ -68,7 +67,7 @@ namespace v2rayN.Tool
                 throw ex;
             }
         }
-        public static bool ZipExtractToFile(string fileName, string ignoredName)
+        public static bool ZipExtractToFile(string fileName, string toPath, string ignoredName)
         {
             try
             {
@@ -86,42 +85,12 @@ namespace v2rayN.Tool
                             {
                                 continue;
                             }
-                            entry.ExtractToFile(Utils.GetPath(entry.Name), true);
+                            entry.ExtractToFile(Path.Combine(toPath, entry.Name), true);
                         }
                         catch (IOException ex)
                         {
                             Utils.SaveLog(ex.Message, ex);
                         }
-                    }
-                }
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                return false;
-            }
-            return true;
-        }
-
-        public static bool ZipExtractToFullFile(string fileName)
-        {
-            try
-            {
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        if (entry.Length == 0)
-                            continue;
-
-                        string entryOuputPath = Utils.GetPath(entry.FullName);
-                        FileInfo fileInfo = new FileInfo(entryOuputPath);
-                        fileInfo.Directory.Create();
-                        entry.ExtractToFile(entryOuputPath, true);
                     }
                 }
             }

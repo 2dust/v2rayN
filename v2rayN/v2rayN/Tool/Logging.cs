@@ -1,11 +1,7 @@
-﻿using log4net;
-using log4net.Appender;
-using log4net.Core;
-using log4net.Layout;
-using log4net.Repository.Hierarchy;
-using System;
+﻿using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace v2rayN.Tool
 {
@@ -13,32 +9,13 @@ namespace v2rayN.Tool
     {
         public static void Setup()
         {
-            var hierarchy = (Hierarchy)LogManager.GetRepository();
-
-            var patternLayout = new PatternLayout
-            {
-                ConversionPattern = "%date [%thread] %-5level %logger - %message%newline"
-            };
-            patternLayout.ActivateOptions();
-
-            var roller = new RollingFileAppender
-            {
-                AppendToFile = true,
-                RollingStyle = RollingFileAppender.RollingMode.Date,
-                DatePattern = "yyyy-MM-dd'.txt'",
-                File = Utils.GetPath(@"guiLogs\"),
-                Layout = patternLayout,
-                StaticLogFileName = false
-            };
-            roller.ActivateOptions();
-            hierarchy.Root.AddAppender(roller);
-
-            var memory = new MemoryAppender();
-            memory.ActivateOptions();
-            hierarchy.Root.AddAppender(memory);
-
-            hierarchy.Root.Level = Level.Debug;
-            hierarchy.Configured = true;
+            LoggingConfiguration config = new LoggingConfiguration();
+            FileTarget fileTarget = new FileTarget();
+            config.AddTarget("file", fileTarget);
+            fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
+            fileTarget.FileName = Utils.GetLogPath("${shortdate}.txt");
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
+            LogManager.Configuration = config;
         }
 
         public static void ClearLogs()
@@ -48,7 +25,7 @@ namespace v2rayN.Tool
                 try
                 {
                     var now = DateTime.Now.AddMonths(-1);
-                    var dir = Utils.GetPath(@"guiLogs\");
+                    var dir = Utils.GetLogPath();
                     var files = Directory.GetFiles(dir, "*.txt");
                     foreach (var filePath in files)
                     {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace v2rayN.Mode
+﻿namespace v2rayN.Mode
 {
     /// <summary>
     /// v2ray配置文件实体类
@@ -175,14 +173,9 @@ namespace v2rayN.Mode
     }
     public class Sniffing
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public bool enabled { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public List<string> destOverride { get; set; }
+        public bool routeOnly { get; set; }
     }
 
     public class Outbounds
@@ -547,14 +540,12 @@ namespace v2rayN.Mode
 
     public class GrpcSettings
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public string serviceName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public bool multiMode { get; set; }
+        public int idle_timeout { get; set; }
+        public int health_check_timeout { get; set; }
+        public bool permit_without_stream { get; set; }
+        public int initial_windows_size { get; set; }
     }
 
     public class AccountsItem

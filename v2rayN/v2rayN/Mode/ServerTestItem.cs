@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace v2rayN.Mode
+﻿namespace v2rayN.Mode
 {
     [Serializable]
     class ServerTestItem

@@ -1,0 +1,120 @@
+﻿<Application
+    x:Class="v2rayN.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:v2rayN"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    ShutdownMode="OnExplicitShutdown"
+    StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme
+                    BaseTheme="Light"
+                    PrimaryColor="DeepPurple"
+                    SecondaryColor="Lime" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <system:Double x:Key="MenuItemHeight">26</system:Double>
+            <Thickness
+                x:Key="ServerItemMargin"
+                Bottom="4"
+                Left="4"
+                Right="4"
+                Top="4" />
+            <Thickness
+                x:Key="SettingItemMargin"
+                Bottom="8"
+                Left="8"
+                Right="8"
+                Top="8" />
+            <Style
+                x:Key="ModuleTitle"
+                BasedOn="{StaticResource MaterialDesignTextBlock}"
+                TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style
+                x:Key="ToolbarTextBlock"
+                BasedOn="{StaticResource MaterialDesignTextBlock}"
+                TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+            <Style
+                x:Key="StatusbarItem"
+                BasedOn="{StaticResource MaterialDesignTextBlock}"
+                TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+            <Style TargetType="{x:Type TextElement}">
+                <Setter Property="FontWeight" Value="Regular" />
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontWeight" Value="Regular" />
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+            </Style>
+            <Style x:Key="lvItemSelected" TargetType="{x:Type ListViewItem}">
+                <Setter Property="Height" Value="20" />
+                <Setter Property="FontSize" Value="12" />
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="true">
+                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="GridViewColumnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Height" Value="30" />
+            </Style>
+            <Style
+                x:Key="ListItemCheckBox"
+                BasedOn="{StaticResource MaterialDesignUserForegroundCheckBox}"
+                TargetType="{x:Type CheckBox}">
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+            <Style x:Key="ListItemChip" TargetType="{x:Type materialDesign:Chip}">
+                <Setter Property="FontSize" Value="11" />
+            </Style>
+            <Style
+                x:Key="DefButton"
+                BasedOn="{StaticResource MaterialDesignRaisedButton}"
+                TargetType="{x:Type ButtonBase}">
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+            <Style
+                x:Key="DefContextMenu"
+                BasedOn="{StaticResource MaterialDesignContextMenu}"
+                TargetType="{x:Type ContextMenu}">
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <Style
+                x:Key="ToolbarMenu"
+                BasedOn="{StaticResource MaterialDesignMenu}"
+                TargetType="{x:Type Menu}">
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+            <Style
+                x:Key="DefComboBox"
+                BasedOn="{StaticResource MaterialDesignComboBox}"
+                TargetType="{x:Type ComboBox}">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+            <Style
+                x:Key="DefDataGrid"
+                BasedOn="{StaticResource MaterialDesignDataGrid}"
+                TargetType="{x:Type DataGrid}">
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+        </ResourceDictionary>
+
+    </Application.Resources>
+
+</Application>

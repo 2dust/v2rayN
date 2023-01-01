@@ -1,0 +1,111 @@
+{
+  "dns": {
+    "servers": [      
+      {
+        "tag": "google",
+        "address": "tls://8.8.8.8"
+      },
+      {
+        "tag": "local",
+        "address": "223.5.5.5",
+        "detour": "direct"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": "category-ads-all",
+        "server": "block",
+        "disable_cache": true
+      }
+    ],
+    "strategy": "ipv4_only"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "interface_name": "singbox_tun",
+      "inet4_address": "172.19.0.1/30",
+
+      "mtu": $mtu$,
+      "auto_route": true,
+      "strict_route": $strict_route$,
+      "stack": "$stack$",
+      "endpoint_independent_nat": true,
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "socks",
+      "tag": "proxy",
+      "udp_fragment": true,
+      "server": "127.0.0.1",
+      "server_port": $socksPort$
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "dns",
+      "tag": "dns_out"
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "rules": [
+      {
+        "inbound": "dns_in",
+        "outbound": "dns_out"
+      },
+      {
+        "protocol": "dns",
+        "outbound": "dns_out"
+      },
+      {
+        "network": "udp",
+        "port": [
+          135,
+          137,
+          138,
+          139,
+          5353
+        ],
+        "outbound": "block"
+      },
+      {
+        "ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "outbound": "block"
+      },
+      {
+        "source_ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "outbound": "block"
+      },
+      {
+        "port": 53,
+        "process_name": [ $dnsProcessName$],
+        "outbound": "dns_out"
+      },
+      {
+        "process_name": [ $directProcessName$],
+        "outbound": "direct"
+      }
+      $ruleDirectIPs$
+      $ruleDirectProcess$
+    ]
+  }
+}

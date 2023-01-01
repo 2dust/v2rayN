@@ -5,6 +5,7 @@ namespace v2rayN.Mode
     {
         ForcedClear = 0,
         ForcedChange = 1,
-        Unchanged = 2
+        Unchanged = 2,
+        Pac = 3
     }
 }
