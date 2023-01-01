@@ -136,7 +136,7 @@
     <value>Downloading...</value>
   </data>
   <data name="downloadSpeed" xml:space="preserve">
-    <value>Download</value>
+    <value>دانلود</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
     <value>Whether to download? {0}</value>
@@ -193,16 +193,16 @@
     <value>{0} already up to date.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
-    <value>Address</value>
+    <value>آدرس</value>
   </data>
   <data name="LvAlias" xml:space="preserve">
     <value>Alias</value>
   </data>
   <data name="LvEncryptionMethod" xml:space="preserve">
-    <value>Security</value>
+    <value>امنیت</value>
   </data>
   <data name="LvPort" xml:space="preserve">
-    <value>Port</value>
+    <value>پورت</value>
   </data>
   <data name="LvServiceType" xml:space="preserve">
     <value>Type</value>
@@ -602,7 +602,7 @@
     <value>Export subscription (base64) share to clipboard</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Add a custom configuration server</value>
+    <value>یک سرور پیکربندی سفارشی اضافه شود</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
     <value>Add [Shadowsocks] server</value>
@@ -641,37 +641,37 @@
     <value>اضافه کردن</value>
   </data>
   <data name="menuSubDelete" xml:space="preserve">
-    <value>Delete</value>
+    <value>حذف</value>
   </data>
   <data name="menuSubEdit" xml:space="preserve">
-    <value>Edit</value>
+    <value>ویرایش</value>
   </data>
   <data name="menuSubShare" xml:space="preserve">
-    <value>Share</value>
+    <value>اشتراک</value>
   </data>
   <data name="LvEnabled" xml:space="preserve">
-    <value>Enabled Update</value>
+    <value>به روز رسانی فعال شد</value>
   </data>
   <data name="LvSort" xml:space="preserve">
-    <value>Sort</value>
+    <value>مرتب سازی</value>
   </data>
   <data name="LvUserAgent" xml:space="preserve">
-    <value>User Agent</value>
+    <value>عامل کاربر</value>
   </data>
   <data name="TbCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>لغو</value>
   </data>
   <data name="TbConfirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>تایید</value>
   </data>
   <data name="GbTransport" xml:space="preserve">
     <value>Transport</value>
   </data>
   <data name="TbAddress" xml:space="preserve">
-    <value>Address</value>
+    <value>آدرس</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>AllowInsecure</value>
+    <value>اجازه ناامن</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>Alpn</value>
@@ -692,10 +692,10 @@
     <value>Transport protocol(network)</value>
   </data>
   <data name="TbPath" xml:space="preserve">
-    <value>Path</value>
+    <value>مسیر</value>
   </data>
   <data name="TbPort" xml:space="preserve">
-    <value>Port</value>
+    <value>پورت</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
     <value>Alias (remarks)</value>
@@ -725,7 +725,7 @@
     <value>Generate</value>
   </data>
   <data name="TbId3" xml:space="preserve">
-    <value>Password</value>
+    <value>رمزعبور</value>
   </data>
   <data name="TbId4" xml:space="preserve">
     <value>Password(Optional)</value>
@@ -752,7 +752,7 @@
     <value>Browse</value>
   </data>
   <data name="TbEdit" xml:space="preserve">
-    <value>Edit</value>
+    <value>ویرایش</value>
   </data>
   <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
     <value>Advanced proxy settings, protocol selection (optional)</value>
@@ -797,7 +797,7 @@
     <value>Check for pre-release updates</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
-    <value>Exception</value>
+    <value>استثنا</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>Exception. Do not use proxy server for addresses beginning with,Use semicolon (;)</value>
@@ -869,7 +869,7 @@
     <value>Tray right-click menu servers display limit</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
-    <value>Enable UDP</value>
+    <value>UDP را فعال شود</value>
   </data>
   <data name="TbSettingsUser" xml:space="preserve">
     <value>Auth user</value>
@@ -890,10 +890,10 @@
     <value>Do not change system proxy</value>
   </data>
   <data name="TbReset" xml:space="preserve">
-    <value>Reset</value>
+    <value>بازنشانی</value>
   </data>
   <data name="TbSetSystemProxy" xml:space="preserve">
-    <value>Set system proxy</value>
+    <value>تنظیم پراکسی سیستم</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
     <value>Pac Mode</value>
@@ -905,10 +905,10 @@
     <value>مسیریابی</value>
   </data>
   <data name="NotRunAsAdmin" xml:space="preserve">
-    <value>Not Run As Admin</value>
+    <value>به عنوان ادمین اجرا نمی شود</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
-    <value>Run As Admin</value>
+    <value>اجرا به عنوان ادمین/value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
     <value>Move to bottom (B)</value>
@@ -956,7 +956,7 @@
     <value>Domain strategy</value>
   </data>
   <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>Enable advanced function</value>
+    <value>فعال کردن عملکرد پیشرفته</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3.Block Domain or IP</value>
@@ -983,7 +983,7 @@
     <value>Import Rules From Sub Url</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
-    <value>Rule Setting</value>
+    <value>تنظیم قانون</value>
   </data>
   <data name="menuRuleAdd" xml:space="preserve">
     <value>Rule Add</value>
@@ -1025,7 +1025,7 @@
     <value>One-click test Latency and speed (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>Delay(ms)</value>
+    <value>تاخیر (میلی‌ثانیه)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
     <value>Speed(M/s)</value>
@@ -1058,6 +1058,6 @@
     <value>Direct Process name, separated by commas (,)</value>
   </data>
   <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>Show console</value>
+    <value>نمایش کنسول</value>
   </data>
 </root>
