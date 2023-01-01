@@ -41,6 +41,8 @@ namespace v2rayN.ViewModels
             {
                 SaveSub();
             });
+
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
         private void SaveSub()
         {

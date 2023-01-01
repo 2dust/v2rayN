@@ -115,6 +115,8 @@ namespace v2rayN.ViewModels
             {
                 SaveRouting();
             });
+
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         public void RefreshRulesItems()
