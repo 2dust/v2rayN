@@ -908,7 +908,7 @@
     <value>به عنوان ادمین اجرا نمی شود</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
-    <value>اجرا به عنوان ادمین/value>
+    <value>اجرا به عنوان ادمین</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
     <value>Move to bottom (B)</value>
