@@ -11,9 +11,9 @@ namespace v2rayN.Handler
     /// </summary>
     class CoreHandler
     {
-        private static string coreCConfigRes = Global.coreConfigFileName;
-        private CoreInfo coreInfo;
-        private int processId = 0;
+        private static string _coreCConfigRes = Global.coreConfigFileName;
+        private CoreInfo _coreInfo;
+        private int _processId = 0;
         private Process _process;
         Action<bool, string> _updateFunc;
 
@@ -38,7 +38,7 @@ namespace v2rayN.Handler
                     ShowMsg(false, ResUI.CheckServerSettings);
                     return;
                 }
-                string fileName = Utils.GetConfigPath(coreCConfigRes);
+                string fileName = Utils.GetConfigPath(_coreCConfigRes);
                 if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
                 {
                     ShowMsg(false, msg);
@@ -62,7 +62,7 @@ namespace v2rayN.Handler
                     };
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, null, out string msg2, out string configStr) == 0)
                     {
-                        processId = CoreStartViaString(configStr);
+                        _processId = CoreStartViaString(configStr);
                     }
                 }
             }
@@ -96,17 +96,17 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    if (coreInfo == null || coreInfo.coreExes == null)
+                    if (_coreInfo == null || _coreInfo.coreExes == null)
                     {
                         return;
                     }
-                    foreach (string vName in coreInfo.coreExes)
+                    foreach (string vName in _coreInfo.coreExes)
                     {
                         Process[] existing = Process.GetProcessesByName(vName);
                         foreach (Process p in existing)
                         {
                             string path = p.MainModule.FileName;
-                            if (path == $"{Utils.GetBinPath(vName, coreInfo.coreType)}.exe")
+                            if (path == $"{Utils.GetBinPath(vName, _coreInfo.coreType)}.exe")
                             {
                                 KillProcess(p);
                             }
@@ -114,10 +114,10 @@ namespace v2rayN.Handler
                     }
                 }
 
-                if (processId > 0)
+                if (_processId > 0)
                 {
-                    CoreStopPid(processId);
-                    processId = 0;
+                    CoreStopPid(_processId);
+                    _processId = 0;
                 }
 
             }
@@ -140,10 +140,10 @@ namespace v2rayN.Handler
             }
         }
 
-        private string CoreFindexe(List<string> lstCoreTemp)
+        private string CoreFindexe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
-            foreach (string name in lstCoreTemp)
+            foreach (string name in coreInfo.coreExes)
             {
                 string vName = $"{name}.exe";
                 vName = Utils.GetBinPath(vName, coreInfo.coreType);
@@ -155,7 +155,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", lstCoreTemp.ToArray()), coreInfo.coreUrl);
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -167,7 +167,7 @@ namespace v2rayN.Handler
 
             try
             {
-                string fileName = CoreFindexe(coreInfo.coreExes);
+                string fileName = CoreFindexe(_coreInfo);
                 if (fileName == "") return;
 
                 Process p = new Process
@@ -175,7 +175,7 @@ namespace v2rayN.Handler
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = fileName,
-                        Arguments = coreInfo.arguments,
+                        Arguments = _coreInfo.arguments,
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = node.displayLog,
@@ -224,7 +224,8 @@ namespace v2rayN.Handler
 
             try
             {
-                string fileName = CoreFindexe(new List<string> { "xray", "wxray", "wv2ray", "v2ray" });
+                var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.Xray);
+                string fileName = CoreFindexe(coreInfo);
                 if (fileName == "") return -1;
 
                 Process p = new Process
@@ -305,9 +306,9 @@ namespace v2rayN.Handler
             }
             var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
 
-            coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+            _coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
 
-            if (coreInfo == null)
+            if (_coreInfo == null)
             {
                 return -1;
             }

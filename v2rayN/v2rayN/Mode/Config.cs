@@ -45,6 +45,8 @@
             get; set;
         }
 
+        public bool autoRun { get; set; }
+
         /// <summary>
         /// 启用实时网速和流量统计
         /// </summary>
@@ -124,9 +126,9 @@
         }
         public string systemProxyAdvancedProtocol { get; set; }
 
-        public int autoUpdateInterval { get; set; } = 0;
+        public int autoUpdateInterval { get; set; } = 10;
 
-        public int autoUpdateSubInterval { get; set; } = 0;
+        public int autoUpdateSubInterval { get; set; } = 10;
 
         public bool checkPreReleaseUpdate { get; set; } = false;
 
@@ -135,7 +137,7 @@
             get; set;
         }
 
-        public int trayMenuServersLimit { get; set; }
+        public int trayMenuServersLimit { get; set; } = 20;
 
         public bool autoHideStartup { get; set; }
 
