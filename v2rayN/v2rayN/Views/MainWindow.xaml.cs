@@ -184,6 +184,10 @@ namespace v2rayN.Views
                     }
                 }));
             }
+            else if (action == "ProfilesFocus")
+            {
+                lstProfiles.Focus();
+            }
         }
 
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
@@ -212,10 +216,10 @@ namespace v2rayN.Views
         }
         private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)
         {
-            if (e.Row.GetIndex() == 0)
-            {
-                lstProfiles.Focus();
-            }
+            //if (e.Row.GetIndex() == 0)
+            //{
+            //    lstProfiles.Focus();
+            //}
 
             e.Row.Header = e.Row.GetIndex() + 1;
         }
@@ -323,15 +327,15 @@ namespace v2rayN.Views
                 {
                     ViewModel?.MoveServer(EMove.Top);
                 }
-                else if (e.Key == Key.B)
+                else if (e.Key == Key.U)
                 {
                     ViewModel?.MoveServer(EMove.Up);
                 }
-                else if (e.Key == Key.U)
+                else if (e.Key == Key.D)
                 {
                     ViewModel?.MoveServer(EMove.Down);
                 }
-                else if (e.Key == Key.D)
+                else if (e.Key == Key.B)
                 {
                     ViewModel?.MoveServer(EMove.Bottom);
                 }

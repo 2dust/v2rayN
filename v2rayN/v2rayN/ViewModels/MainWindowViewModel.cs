@@ -638,6 +638,8 @@ namespace v2rayN.ViewModels
             _subId = SelectedSub?.id;
 
             RefreshServers();
+
+            _updateView("ProfilesFocus");
         }
 
         private void ServerFilterChanged(bool c)
