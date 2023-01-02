@@ -113,6 +113,8 @@ namespace v2rayN.ViewModels
             {
                 SaveRouting();
             });
+
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         #region locked

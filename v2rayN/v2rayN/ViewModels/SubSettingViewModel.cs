@@ -5,6 +5,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
+using System.Windows;
 using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -30,7 +31,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
         public bool IsModified { get; set; }
 
-        public SubSettingViewModel()
+        public SubSettingViewModel(Window view)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -59,6 +60,8 @@ namespace v2rayN.ViewModels
             {
                 SubShare();
             }, canEditRemove);
+
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         public void RefreshSubItems()

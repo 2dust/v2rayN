@@ -11,7 +11,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-            ViewModel = new SubSettingViewModel();
+            ViewModel = new SubSettingViewModel(this);
             lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
 
             this.WhenActivated(disposables =>
