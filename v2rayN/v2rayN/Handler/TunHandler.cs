@@ -200,6 +200,7 @@ namespace v2rayN.Base
                 {
                     return;
                 }
+                var showWindow = _config.tunModeItem.showWindow;
                 Process p = new Process
                 {
                     StartInfo = new ProcessStartInfo
@@ -207,8 +208,9 @@ namespace v2rayN.Base
                         FileName = fileName,
                         Arguments = $"run -c {Utils.GetConfigPath(_tunConfigName)}",
                         WorkingDirectory = Utils.GetConfigPath(),
-                        UseShellExecute = _config.tunModeItem.showWindow,
-                        CreateNoWindow = !_config.tunModeItem.showWindow,
+                        UseShellExecute = showWindow,
+                        CreateNoWindow = !showWindow,
+                        RedirectStandardError = !showWindow,
                         Verb = "runas",
                     }
                 };
@@ -217,7 +219,14 @@ namespace v2rayN.Base
                 _isRunning = true;
                 if (p.WaitForExit(1000))
                 {
-                    throw new Exception("start tun mode fail");
+                    if (showWindow)
+                    {
+                        throw new Exception("start tun mode fail");
+                    }
+                    else
+                    {
+                        throw new Exception(p.StandardError.ReadToEnd());
+                    }
                 }
 
                 Global.processJob.AddProcess(p.Handle);
