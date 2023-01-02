@@ -597,13 +597,21 @@ namespace v2rayN
         {
             try
             {
-                string exePath = GetExePath();
-                RegWriteValue(Global.AutoRunRegPath, Global.AutoRunName, run ? $"\"{exePath}\"" : "");
+                var autoRunName = $"{Global.AutoRunName}_{GetMD5(StartupPath())}";
+
+                //delete first
+                RegWriteValue(Global.AutoRunRegPath, autoRunName, "");
+
+                if (run)
+                {
+                    string exePath = $"\"{GetExePath()}\"";
+                    RegWriteValue(Global.AutoRunRegPath, autoRunName, exePath);
+                }
             }
             catch (Exception ex)
             {
                 SaveLog(ex.Message, ex);
-            }
+            }             
         }
 
         /// <summary>

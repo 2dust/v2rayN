@@ -125,7 +125,7 @@ namespace v2rayN.ViewModels
             #endregion
 
             #region UI
-            AutoRun = Utils.IsAutoRun();
+            AutoRun = _config.autoRun;
             EnableStatistics = _config.enableStatistics;
             StatisticsFreshRate = _config.statisticsFreshRate;
             KeepOlderDedupl = _config.keepOlderDedupl;
@@ -282,6 +282,7 @@ namespace v2rayN.ViewModels
 
             //UI
             Utils.SetAutoRun(AutoRun);
+            _config.autoRun = AutoRun;
             _config.enableStatistics = EnableStatistics;
             _config.statisticsFreshRate = StatisticsFreshRate;
             if (_config.statisticsFreshRate > 100 || _config.statisticsFreshRate < 1)
