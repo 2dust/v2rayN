@@ -206,7 +206,7 @@ namespace v2rayN.Base
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = fileName,
-                        Arguments = $"run -c {Utils.GetConfigPath(_tunConfigName)}",
+                        Arguments = $"run -c \"{Utils.GetConfigPath(_tunConfigName)}\"",
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = showWindow,
                         CreateNoWindow = !showWindow,
