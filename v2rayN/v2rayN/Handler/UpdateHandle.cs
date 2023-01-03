@@ -457,6 +457,17 @@ namespace v2rayN.Handler
                         throw new ArgumentException("Type");
                 }
 
+                if (type == ECoreType.v2rayN)
+                {
+                    decimal.TryParse(curVersion, out decimal decCur);
+                    decimal.TryParse(version, out decimal dec);
+                    if (decCur >= dec)
+                    {
+                        AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
+                        return;
+                    }
+                }
+
                 if (curVersion == version)
                 {
                     AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
