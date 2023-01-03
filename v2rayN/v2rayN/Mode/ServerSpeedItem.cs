@@ -1,12 +1,8 @@
 ﻿namespace v2rayN.Mode
 {
     [Serializable]
-    class ServerSpeedItem
+    class ServerSpeedItem : ServerStatItem
     {
-        public string indexId
-        {
-            get; set;
-        }
         public long proxyUp
         {
             get; set;

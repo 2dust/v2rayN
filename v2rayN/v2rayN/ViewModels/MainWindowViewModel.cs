@@ -533,6 +533,24 @@ namespace v2rayN.ViewModels
                     }
                     SpeedProxyDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
                     SpeedDirectDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+
+                    if (update.proxyUp + update.proxyDown > 0)
+                    {
+                        var second = DateTime.Now.Second;
+                        if (second % 3 == 0)
+                        {
+                            var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
+                            if (item != null)
+                            {
+                                item.todayDown = Utils.HumanFy(update.todayDown);
+                                item.todayUp = Utils.HumanFy(update.todayUp);
+                                item.totalDown = Utils.HumanFy(update.totalDown);
+                                item.totalUp = Utils.HumanFy(update.totalUp);
+
+                                _profileItems.Replace(item, Utils.DeepCopy(item));
+                            }
+                        }
+                    }
                 }));
             }
             catch (Exception ex)

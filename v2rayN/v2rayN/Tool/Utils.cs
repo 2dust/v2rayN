@@ -611,7 +611,7 @@ namespace v2rayN
             catch (Exception ex)
             {
                 SaveLog(ex.Message, ex);
-            }             
+            }
         }
 
         /// <summary>
