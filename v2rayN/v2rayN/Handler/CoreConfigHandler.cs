@@ -1463,8 +1463,8 @@ namespace v2rayN.Handler
                     }
                     if (it.configType == EConfigType.VMess || it.configType == EConfigType.VLESS)
                     {
-                        var item2 = LazyConfig.Instance.GetProfileItem(config.indexId);
-                        if (item2 is null || !Utils.IsGuidByParse(item2.id))
+                        var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
+                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
                         {
                             continue;
                         }
