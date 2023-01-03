@@ -1060,4 +1060,7 @@
   <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
     <value>显示控制台</value>
   </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>移至订阅分组</value>
+  </data>
 </root>

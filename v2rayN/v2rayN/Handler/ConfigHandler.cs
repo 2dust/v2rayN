@@ -1217,6 +1217,22 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        public static int MoveToGroup(Config config, List<ProfileItem> lstProfile, string subid)
+        {
+            foreach (var it in lstProfile)
+            {
+                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                if (item is null)
+                {
+                    continue;
+                }
+
+                item.subid = subid;
+                SqliteHelper.Instance.Update(item);
+            }
+
+            return 0;
+        }
         #endregion
 
         #region UI

@@ -1060,4 +1060,7 @@
   <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
     <value>Show console</value>
   </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>Move to group</value>
+  </data>
 </root>

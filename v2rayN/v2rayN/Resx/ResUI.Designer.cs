@@ -808,6 +808,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Move to group 的本地化字符串。
+        /// </summary>
+        public static string menuMoveToGroup {
+            get {
+                return ResourceManager.GetString("menuMoveToGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Move to top (T) 的本地化字符串。
         /// </summary>
         public static string menuMoveTop {

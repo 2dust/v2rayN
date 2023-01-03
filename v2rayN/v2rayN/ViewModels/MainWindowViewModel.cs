@@ -62,6 +62,8 @@ namespace v2rayN.ViewModels
         [Reactive]
         public SubItem SelectedSub { get; set; }
         [Reactive]
+        public SubItem SelectedMoveToGroup { get; set; }
+        [Reactive]
         public RoutingItem SelectedRouting { get; set; }
         [Reactive]
         public ComboItem SelectedServer { get; set; }
@@ -86,7 +88,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
         public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-        //servers move
+        //servers move   
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
@@ -205,6 +207,7 @@ namespace v2rayN.ViewModels
 
             SelectedProfile = new();
             SelectedSub = new();
+            SelectedMoveToGroup = new();
             SelectedRouting = new();
             SelectedServer = new();
 
@@ -220,6 +223,10 @@ namespace v2rayN.ViewModels
                 x => x.SelectedSub,
                 y => y != null && !y.remarks.IsNullOrEmpty() && _subId != y.id)
                     .Subscribe(c => SubSelectedChanged(c));
+            this.WhenAnyValue(
+                 x => x.SelectedMoveToGroup,
+                 y => y != null && !y.remarks.IsNullOrEmpty())
+                     .Subscribe(c => MoveToGroup(c));            
 
             this.WhenAnyValue(
                 x => x.SelectedRouting,
@@ -305,7 +312,7 @@ namespace v2rayN.ViewModels
             {
                 ShareServer();
             }, canEditRemove);
-            //servers move
+            //servers move   
             MoveTopCmd = ReactiveCommand.Create(() =>
             {
                 MoveServer(EMove.Top);
@@ -767,7 +774,7 @@ namespace v2rayN.ViewModels
         private int GetProfileItems(out List<ProfileItem> lstSelecteds)
         {
             lstSelecteds = new List<ProfileItem>();
-            if (SelectedProfiles == null && SelectedProfiles.Count() <= 0)
+            if (SelectedProfiles == null || SelectedProfiles.Count() <= 0)
             {
                 return -1;
             }
@@ -1015,6 +1022,26 @@ namespace v2rayN.ViewModels
         }
 
         //move server
+        private void MoveToGroup(bool c)
+        {
+            if (!c)
+            {
+                return;
+            }
+
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            {
+                return;
+            }
+
+            ConfigHandler.MoveToGroup(_config, lstSelecteds, SelectedMoveToGroup.id);
+            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+
+            RefreshServers();
+            SelectedMoveToGroup = new();
+            //Reload();
+        }
+
         public void MoveServer(EMove eMove)
         {
             var item = _lstProfile.FirstOrDefault(t => t.indexId == SelectedProfile.indexId);

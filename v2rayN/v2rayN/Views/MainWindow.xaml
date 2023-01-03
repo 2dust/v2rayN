@@ -452,6 +452,23 @@
                                     Header="{x:Static resx:ResUI.menuShareServer}" />
                                 <Separator />
                                 <MenuItem
+                                    x:Name="menuMoveToGroup"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuMoveToGroup}">
+                                    <MenuItem Height="Auto">
+                                        <MenuItem.Header>
+                                            <DockPanel>
+                                                <ComboBox
+                                                    x:Name="cmbMoveToGroup"
+                                                    Width="200"
+                                                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
+                                                    DisplayMemberPath="remarks"
+                                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                            </DockPanel>
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                </MenuItem>
+                                <MenuItem
                                     x:Name="menuMoveTop"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuMoveTop}" />
