@@ -11,6 +11,7 @@ namespace v2rayN.Views
         public RoutingSettingWindow()
         {
             InitializeComponent();
+            this.Closing += RoutingSettingWindow_Closing;
             this.PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
             lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
             lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
@@ -59,6 +60,14 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
             });
+        }
+
+        private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (ViewModel?.IsModified == true)
+            {
+                this.DialogResult = true;
+            }
         }
 
         private void RoutingSettingWindow_PreviewKeyDown(object sender, KeyEventArgs e)
