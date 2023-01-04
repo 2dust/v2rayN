@@ -893,7 +893,7 @@ namespace v2rayN.Handler
                     //filter
                     if (!Utils.IsNullOrEmpty(subFilter))
                     {
-                        if (!Regex.IsMatch(profileItem.remarks, subFilter))
+                        if (Regex.IsMatch(profileItem.remarks, subFilter))
                         {
                             continue;
                         }
