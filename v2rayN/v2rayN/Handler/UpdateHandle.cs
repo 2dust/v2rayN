@@ -278,6 +278,8 @@ namespace v2rayN.Handler
                                     string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
                                     File.Copy(fileName, targetPath, true);
                                 });
+
+                                File.Delete(fileName);
                                 //_updateFunc(true, "");
                             }
                         }

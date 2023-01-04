@@ -8,6 +8,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Drawing;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
@@ -1285,6 +1286,11 @@ namespace v2rayN.ViewModels
                     Reload();
 
                     _noticeHandler?.SendMessage(ResUI.MsgUpdateV2rayCoreSuccessfully);
+
+                    if (File.Exists(fileName))
+                    {
+                        File.Delete(fileName);
+                    }
                 }
             };
             (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, _config.checkPreReleaseUpdate);
