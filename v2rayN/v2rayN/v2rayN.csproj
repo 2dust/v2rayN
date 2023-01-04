@@ -9,7 +9,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.2</FileVersion>
+		<FileVersion>6.3</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>		
