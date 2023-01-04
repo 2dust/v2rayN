@@ -1,11 +1,13 @@
 ﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
+using System.Drawing;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -372,18 +374,21 @@ namespace v2rayN.Views
         {
             if (_config.uiItem.mainWidth > 0 && _config.uiItem.mainHeight > 0)
             {
-                if (_config.uiItem.mainWidth > SystemInformation.WorkingArea.Width)
-                {
-                    _config.uiItem.mainWidth = SystemInformation.WorkingArea.Width * 2 / 3;
-                }
-                if (_config.uiItem.mainHeight > SystemInformation.WorkingArea.Height)
-                {
-                    _config.uiItem.mainHeight = SystemInformation.WorkingArea.Height * 2 / 3;
-                }
-
-                this.Width = _config.uiItem.mainWidth;
-                this.Height = _config.uiItem.mainHeight;
+                Width = _config.uiItem.mainWidth;
+                Height = _config.uiItem.mainHeight;
             }
+
+            IntPtr hWnd = new WindowInteropHelper(this).EnsureHandle();
+            Graphics g = Graphics.FromHwnd(hWnd);
+            if (Width > SystemInformation.WorkingArea.Width * 96 / g.DpiX)
+            {
+                Width = SystemInformation.WorkingArea.Width * 96 / g.DpiX;
+            }
+            if (Height > SystemInformation.WorkingArea.Height * 96 / g.DpiY)
+            {
+                Height = SystemInformation.WorkingArea.Height * 96 / g.DpiY;
+            }
+
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
             {
                 var width = ConfigHandler.GetformMainLvColWidth(ref _config, ((EServerColName)k).ToString(), Convert.ToInt32(lstProfiles.Columns[k].Width.Value));
