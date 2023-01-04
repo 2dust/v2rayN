@@ -92,7 +92,7 @@ namespace v2rayN.Handler
                         where 1=1 ";
             if (!Utils.IsNullOrEmpty(subid))
             {
-                sql += $" and a.subid = {subid}";
+                sql += $" and a.subid = '{subid}'";
             }
             if (!Utils.IsNullOrEmpty(filter))
             {

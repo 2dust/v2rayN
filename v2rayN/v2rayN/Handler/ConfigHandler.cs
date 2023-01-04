@@ -1194,11 +1194,11 @@ namespace v2rayN.Handler
             }
             if (isSub)
             {
-                SqliteHelper.Instance.Execute($"delete from ProfileItem where isSub = 1 and subid = {subid}");
+                SqliteHelper.Instance.Execute($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");
             }
             else
             {
-                SqliteHelper.Instance.Execute($"delete from ProfileItem where subid = {subid}");
+                SqliteHelper.Instance.Execute($"delete from ProfileItem where subid = '{subid}'");
             }
 
             return 0;
