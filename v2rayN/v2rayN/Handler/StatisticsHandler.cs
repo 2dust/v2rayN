@@ -14,6 +14,8 @@ namespace v2rayN.Handler
         private StatsService.StatsServiceClient client_;
         private bool exitFlag_;
         private ServerStatItem _serverStatItem;
+        private List<ServerStatItem> _lstServerStat;
+        public List<ServerStatItem> ServerStat => _lstServerStat;
 
         Action<ServerSpeedItem> updateFunc_;
 
@@ -83,11 +85,13 @@ namespace v2rayN.Handler
                             GetServerStatItem(config_.indexId);
                             ParseOutput(res.Stat, out ServerSpeedItem server);
 
-                            _serverStatItem.todayUp += server.proxyUp;
-                            _serverStatItem.todayDown += server.proxyDown;
-                            _serverStatItem.totalUp += server.proxyUp;
-                            _serverStatItem.totalDown += server.proxyDown;
-
+                            if (server.proxyUp != 0 || server.proxyDown != 0)
+                            {
+                                _serverStatItem.todayUp += server.proxyUp;
+                                _serverStatItem.todayDown += server.proxyDown;
+                                _serverStatItem.totalUp += server.proxyUp;
+                                _serverStatItem.totalDown += server.proxyDown;
+                            }
                             if (Global.ShowInTaskbar)
                             {
                                 server.indexId = config_.indexId;
@@ -97,11 +101,6 @@ namespace v2rayN.Handler
                                 server.totalDown = _serverStatItem.totalDown;
                                 updateFunc_(server);
                             }
-                            if (server.proxyUp != 0 || server.proxyDown != 0)
-                            {
-                                _ = SqliteHelper.Instance.UpdateAsync(_serverStatItem);
-                            }
-
                         }
                     }
                     var sleep = config_.statisticsFreshRate < 1 ? 1 : config_.statisticsFreshRate;
@@ -118,12 +117,27 @@ namespace v2rayN.Handler
         {
             SqliteHelper.Instance.Execute($"delete from ServerStatItem ");
             _serverStatItem = null;
+            _lstServerStat = new();
+        }
+
+        public void SaveTo()
+        {
+            try
+            {
+                SqliteHelper.Instance.UpdateAll(_lstServerStat);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
         }
 
         private void Init()
         {
             long ticks = DateTime.Now.Date.Ticks;
             SqliteHelper.Instance.Execute($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
+
+            _lstServerStat = SqliteHelper.Instance.Table<ServerStatItem>().ToList();
         }
 
         private void GetServerStatItem(string indexId)
@@ -136,7 +150,7 @@ namespace v2rayN.Handler
 
             if (_serverStatItem == null)
             {
-                _serverStatItem = SqliteHelper.Instance.Table<ServerStatItem>().FirstOrDefault(t => t.indexId == indexId);
+                _serverStatItem = _lstServerStat.FirstOrDefault(t => t.indexId == indexId);                
                 if (_serverStatItem == null)
                 {
                     _serverStatItem = new ServerStatItem
@@ -149,6 +163,7 @@ namespace v2rayN.Handler
                         dateNow = ticks
                     };
                     _ = SqliteHelper.Instance.Replacesync(_serverStatItem);
+                    _lstServerStat.Add(_serverStatItem);
                 }
             }
 

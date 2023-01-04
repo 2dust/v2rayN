@@ -637,6 +637,7 @@ namespace v2rayN.ViewModels
                     SysProxyHandle.UpdateSysProxy(_config, true);
                 }
 
+                _statistics?.SaveTo();
                 _statistics?.Close();
 
                 _coreHandler.CoreStop();
@@ -685,7 +686,7 @@ namespace v2rayN.ViewModels
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {
-                lstServerStat = LazyConfig.Instance.ServerStatItems();
+                lstServerStat = _statistics.ServerStat;
             }
             lstModel = (from t in lstModel
                         join t2 in lstServerStat

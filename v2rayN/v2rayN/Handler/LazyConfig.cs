@@ -134,11 +134,6 @@ namespace v2rayN.Handler
             return SqliteHelper.Instance.ExecuteAsync(sql);
         }
 
-        public List<ServerStatItem> ServerStatItems()
-        {
-            return SqliteHelper.Instance.Table<ServerStatItem>().ToList();
-        }
-
         public List<RoutingItem> RoutingItems()
         {
             return SqliteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).ToList();
