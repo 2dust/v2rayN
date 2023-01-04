@@ -226,7 +226,7 @@ namespace v2rayN.ViewModels
             this.WhenAnyValue(
                  x => x.SelectedMoveToGroup,
                  y => y != null && !y.remarks.IsNullOrEmpty())
-                     .Subscribe(c => MoveToGroup(c));            
+                     .Subscribe(c => MoveToGroup(c));
 
             this.WhenAnyValue(
                 x => x.SelectedRouting,

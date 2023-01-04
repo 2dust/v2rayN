@@ -40,7 +40,7 @@ namespace v2rayN.Views
         private void LstSubscription_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ViewModel?.EditSub(false);
-        }         
+        }
 
         private void menuClose_Click(object sender, System.Windows.RoutedEventArgs e)
         {

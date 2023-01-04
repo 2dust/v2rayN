@@ -210,7 +210,7 @@ namespace v2rayN.Base
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = showWindow,
                         CreateNoWindow = !showWindow,
-                        RedirectStandardError = !showWindow,
+                        //RedirectStandardError = !showWindow,
                         Verb = "runas",
                     }
                 };
@@ -219,14 +219,14 @@ namespace v2rayN.Base
                 _isRunning = true;
                 if (p.WaitForExit(1000))
                 {
-                    if (showWindow)
-                    {
-                        throw new Exception("start tun mode fail");
-                    }
-                    else
-                    {
-                        throw new Exception(p.StandardError.ReadToEnd());
-                    }
+                    //if (showWindow)
+                    //{
+                    throw new Exception("start tun mode fail");
+                    //}
+                    //else
+                    //{
+                    //    throw new Exception(p.StandardError.ReadToEnd());
+                    //}
                 }
 
                 Global.processJob.AddProcess(p.Handle);
