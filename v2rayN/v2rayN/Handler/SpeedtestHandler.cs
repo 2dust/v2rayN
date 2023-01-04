@@ -165,7 +165,6 @@ namespace v2rayN.Handler
         }
         private async Task RunSpeedTestAsync()
         {
-            string testIndexId = string.Empty;
             int pid = -1;
 
             pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
@@ -181,8 +180,6 @@ namespace v2rayN.Handler
             var timeout = 10;
             foreach (var it in _selecteds)
             {
-                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
-                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
                 if (!it.allowTest)
                 {
                     continue;
@@ -191,7 +188,8 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                testIndexId = it.indexId;
+                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
+                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
