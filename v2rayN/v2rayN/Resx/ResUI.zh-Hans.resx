@@ -1063,4 +1063,7 @@
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>移至订阅分组</value>
   </data>
+  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
+    <value>自定义配置模板</value>
+  </data>
 </root>

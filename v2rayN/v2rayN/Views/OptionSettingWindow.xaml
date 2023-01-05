@@ -646,6 +646,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
@@ -688,7 +689,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -702,7 +704,34 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTunModeCustomTemplate}" />
+                        <TextBox
+                            x:Name="txtCustomTemplate"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Width="600"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Top"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap" />
+                        <Button
+                            x:Name="btnBrowse"
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Width="100"
+                            Margin="2,0,8,0"
+                            Click="btnBrowse_Click"
+                            Content="{x:Static resx:ResUI.TbBrowse}"
+                            Style="{StaticResource DefButton}" />
                     </Grid>
 
                     <Grid Margin="{StaticResource SettingItemMargin}">

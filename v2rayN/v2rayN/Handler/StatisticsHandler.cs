@@ -150,7 +150,7 @@ namespace v2rayN.Handler
 
             if (_serverStatItem == null)
             {
-                _serverStatItem = _lstServerStat.FirstOrDefault(t => t.indexId == indexId);                
+                _serverStatItem = _lstServerStat.FirstOrDefault(t => t.indexId == indexId);
                 if (_serverStatItem == null)
                 {
                     _serverStatItem = new ServerStatItem

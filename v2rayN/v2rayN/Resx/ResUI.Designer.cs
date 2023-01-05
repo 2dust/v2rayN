@@ -2645,6 +2645,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Custom Template 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeCustomTemplate {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeCustomTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Direct IP CIDR, separated by commas (,) 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunModeDirectIP {

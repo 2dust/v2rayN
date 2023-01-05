@@ -72,7 +72,16 @@ namespace v2rayN.Base
         private bool Init()
         {
             coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
+            //Template
             string configStr = Utils.GetEmbedText(Global.TunSingboxFileName);
+            if (!Utils.IsNullOrEmpty(_config.tunModeItem.customTemplate) && File.Exists(_config.tunModeItem.customTemplate))
+            {
+                var customTemplate = File.ReadAllText(_config.tunModeItem.customTemplate);
+                if (!Utils.IsNullOrEmpty(customTemplate))
+                {
+                    configStr = customTemplate;
+                }
+            }
             if (Utils.IsNullOrEmpty(configStr))
             {
                 return false;

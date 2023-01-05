@@ -70,6 +70,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool TunStrictRoute { get; set; }
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
+        [Reactive] public string TunCustomTemplate { get; set; }
         [Reactive] public string TunDirectIP { get; set; }
         [Reactive] public string TunDirectProcess { get; set; }
         #endregion
@@ -150,6 +151,7 @@ namespace v2rayN.ViewModels
             TunStrictRoute = _config.tunModeItem.strictRoute;
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
+            TunCustomTemplate = _config.tunModeItem.customTemplate;
             TunDirectIP = Utils.List2String(_config.tunModeItem.directIP, true);
             TunDirectProcess = Utils.List2String(_config.tunModeItem.directProcess, true);
 
@@ -308,6 +310,7 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.strictRoute = TunStrictRoute;
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
+            _config.tunModeItem.customTemplate = TunCustomTemplate;
             _config.tunModeItem.directIP = Utils.String2List(TunDirectIP);
             _config.tunModeItem.directProcess = Utils.String2List(TunDirectProcess);
 

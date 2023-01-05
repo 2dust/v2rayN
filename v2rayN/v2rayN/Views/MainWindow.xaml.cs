@@ -529,7 +529,7 @@ namespace v2rayN.Views
                 // (this will be automatically reflected to lstView.ItemsSource)
                 e.Effects = DragDropEffects.Move;
 
-               ViewModel?.MoveServerTo(startIndex, item);
+                ViewModel?.MoveServerTo(startIndex, item);
 
                 startIndex = -1;
             }

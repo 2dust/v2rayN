@@ -1063,4 +1063,7 @@
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>Move to group</value>
   </data>
+  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
+    <value>Custom Template</value>
+  </data>
 </root>

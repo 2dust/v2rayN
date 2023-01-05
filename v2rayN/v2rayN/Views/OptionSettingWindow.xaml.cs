@@ -100,6 +100,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TunCustomTemplate, v => v.txtCustomTemplate.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunDirectIP, v => v.txtDirectIP.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunDirectProcess, v => v.txtDirectProcess.Text).DisposeWith(disposables);
 
@@ -124,6 +125,13 @@ namespace v2rayN.Views
         {
             this.Close();
         }
+        private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog1.Filter = "tunConfig|*.json|All|*.*";
+            openFileDialog1.ShowDialog();
 
+            txtCustomTemplate.Text = openFileDialog1.FileName;
+        }
     }
 }
