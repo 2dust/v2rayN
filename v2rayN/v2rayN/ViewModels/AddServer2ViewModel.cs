@@ -86,6 +86,7 @@ namespace v2rayN.ViewModels
                 item.remarks = SelectedSource.remarks;
                 item.address = SelectedSource.address;
                 item.coreType = SelectedSource.coreType;
+                item.displayLog = SelectedSource.displayLog;
                 item.preSocksPort = SelectedSource.preSocksPort;
             }
 
