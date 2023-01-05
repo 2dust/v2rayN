@@ -1064,6 +1064,17 @@ namespace v2rayN.ViewModels
             }
         }
 
+        public void MoveServerTo(int startIndex, ProfileItemModel targetItem)
+        {
+            var targetIndex = _profileItems.IndexOf(targetItem);
+            if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
+            {
+                if (ConfigHandler.MoveServer(ref _config, ref _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
+                {
+                    RefreshServers();
+                }
+            }
+        }
 
         public void ServerSpeedtest(ESpeedActionType actionType)
         {

@@ -8,10 +8,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
 using v2rayN.ViewModels;
+using Point = System.Windows.Point;
 using SystemInformation = System.Windows.Forms.SystemInformation;
 
 namespace v2rayN.Views
@@ -31,6 +33,10 @@ namespace v2rayN.Views
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
+            lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
+            lstProfiles.MouseMove += LstProfiles_MouseMove;
+            lstProfiles.DragEnter += LstProfiles_DragEnter;
+            lstProfiles.Drop += LstProfiles_Drop;
 
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
@@ -171,8 +177,7 @@ namespace v2rayN.Views
             var IsAdministrator = Utils.IsAdministrator();
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
-            togEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Hidden;
-            txtEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Hidden;
+            spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
         }
 
         #region Event 
@@ -438,6 +443,100 @@ namespace v2rayN.Views
 
 
         #endregion
+        #region Drag and Drop
+
+        private Point startPoint = new Point();
+        private int startIndex = -1;
+        private string formatData = "ProfileItemModel";
+
+        /// <summary>
+        /// Helper to search up the VisualTree
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="current"></param>
+        /// <returns></returns>
+        private static T? FindAnchestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+
+
+        private void LstProfiles_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Get current mouse position
+            startPoint = e.GetPosition(null);
+        }
+        private void LstProfiles_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the current mouse position
+            Point mousePos = e.GetPosition(null);
+            Vector diff = startPoint - mousePos;
+
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                       Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            {
+                // Get the dragged Item
+                var listView = sender as DataGrid;
+                if (listView == null) return;
+                var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
+                if (listViewItem == null) return;           // Abort
+                                                            // Find the data behind the ListViewItem
+                ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                if (item == null) return;                   // Abort
+                                                            // Initialize the drag & drop operation
+                startIndex = lstProfiles.SelectedIndex;
+                DataObject dragData = new DataObject(formatData, item);
+                DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
+            }
+        }
+
+        private void LstProfiles_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(formatData) || sender != e.Source)
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        private void LstProfiles_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(formatData) && sender == e.Source)
+            {
+                // Get the drop Item destination
+                var listView = sender as DataGrid;
+                if (listView == null) return;
+                var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
+                if (listViewItem == null)
+                {
+                    // Abort
+                    e.Effects = DragDropEffects.None;
+                    return;
+                }
+                // Find the data behind the Item
+                ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                if (item == null) return;
+                // Move item into observable collection 
+                // (this will be automatically reflected to lstView.ItemsSource)
+                e.Effects = DragDropEffects.Move;
+
+               ViewModel?.MoveServerTo(startIndex, item);
+
+                startIndex = -1;
+            }
+        }
+
+        #endregion
+
 
     }
 }

@@ -350,11 +350,12 @@
                         </StackPanel>
 
                         <StackPanel
+                            x:Name="spEnableTun"
                             Width="auto"
                             Margin="8,0"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Left">
-                            <TextBlock x:Name="txtEnableTun" Text="{x:Static resx:ResUI.TbEnableTunAs}" />
+                            <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
                             <ToggleButton
                                 x:Name="togEnableTun"
                                 Margin="4"
@@ -411,6 +412,7 @@
                         x:Name="lstProfiles"
                         Grid.Row="0"
                         materialDesign:DataGridAssist.CellPadding="1,0"
+                        AllowDrop="True"
                         AutoGenerateColumns="False"
                         BorderThickness="1"
                         CanUserAddRows="False"
