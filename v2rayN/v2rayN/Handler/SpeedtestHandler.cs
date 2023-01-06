@@ -12,6 +12,7 @@ namespace v2rayN.Handler
         private Config _config;
         private CoreHandler _coreHandler;
         private List<ServerTestItem> _selecteds;
+        private ESpeedActionType _actionType;
         Action<string, string, string> _updateFunc;
 
         public SpeedtestHandler(Config config)
@@ -23,7 +24,7 @@ namespace v2rayN.Handler
         {
             _config = config;
             _coreHandler = coreHandler;
-            //_selecteds = Utils.DeepCopy(selecteds);
+            _actionType = actionType;
             _updateFunc = update;
 
             _selecteds = new List<ServerTestItem>();
@@ -106,7 +107,7 @@ namespace v2rayN.Handler
             });
         }
 
-        private async Task RunRealPing()
+        private Task RunRealPing()
         {
             int pid = -1;
             try
@@ -117,7 +118,7 @@ namespace v2rayN.Handler
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 DownloadHandle downloadHandle = new DownloadHandle();
@@ -144,6 +145,8 @@ namespace v2rayN.Handler
 
                             LazyConfig.Instance.SetTestResult(it.indexId, output, "");
                             UpdateFunc(it.indexId, output);
+                            int.TryParse(output, out int delay);
+                            it.delay = delay;
                         }
                         catch (Exception ex)
                         {
@@ -162,10 +165,17 @@ namespace v2rayN.Handler
             {
                 if (pid > 0) _coreHandler.CoreStopPid(pid);
             }
+
+            return Task.CompletedTask;
         }
+
         private async Task RunSpeedTestAsync()
         {
             int pid = -1;
+            if (_actionType == ESpeedActionType.Mixedtest)
+            {
+                _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
+            }
 
             pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
             if (pid < 0)
@@ -185,6 +195,10 @@ namespace v2rayN.Handler
                     continue;
                 }
                 if (it.configType == EConfigType.Custom)
+                {
+                    continue;
+                }
+                if (it.delay < 0)
                 {
                     continue;
                 }
@@ -215,6 +229,8 @@ namespace v2rayN.Handler
         private async Task RunMixedtestAsync()
         {
             await RunRealPing();
+
+            Thread.Sleep(1000);
 
             await RunSpeedTestAsync();
         }

@@ -1087,7 +1087,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             //ClearTestResult();
-            SpeedtestHandler statistics = new SpeedtestHandler(_config, _coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
+            new SpeedtestHandler(_config, _coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         private void Export2ClientConfig()
