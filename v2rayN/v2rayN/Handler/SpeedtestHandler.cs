@@ -187,7 +187,7 @@ namespace v2rayN.Handler
             string url = _config.constItem.speedTestUrl;
             DownloadHandle downloadHandle = new DownloadHandle();
 
-            var timeout = 10;
+            var timeout = 8;
             foreach (var it in _selecteds)
             {
                 if (!it.allowTest)
