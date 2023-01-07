@@ -60,6 +60,7 @@ namespace v2rayN.Mode
         public bool colorModeDark { get; set; }
         public string? colorPrimaryName { get; set; }
         public string currentLanguage { get; set; }
+        public bool enableDragDropSort { get; set; }
         public Dictionary<string, int> mainLvColWidth { get; set; }
     }
 

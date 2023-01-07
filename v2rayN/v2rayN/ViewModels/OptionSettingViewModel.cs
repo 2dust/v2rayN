@@ -55,6 +55,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
+        [Reactive] public bool EnableDragDropSort { get; set; }        
         [Reactive] public int autoUpdateInterval { get; set; }
         [Reactive] public int autoUpdateSubInterval { get; set; }
         [Reactive] public int trayMenuServersLimit { get; set; }
@@ -135,6 +136,7 @@ namespace v2rayN.ViewModels
             EnableSecurityProtocolTls13 = _config.enableSecurityProtocolTls13;
             AutoHideStartup = _config.autoHideStartup;
             EnableCheckPreReleaseUpdate = _config.checkPreReleaseUpdate;
+            EnableDragDropSort = _config.uiItem.enableDragDropSort;
             autoUpdateInterval = _config.autoUpdateInterval;
             autoUpdateSubInterval = _config.autoUpdateSubInterval;
             trayMenuServersLimit = _config.trayMenuServersLimit;
@@ -299,6 +301,7 @@ namespace v2rayN.ViewModels
             _config.autoUpdateInterval = autoUpdateInterval;
             _config.autoUpdateSubInterval = autoUpdateSubInterval;
             _config.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
+            _config.uiItem.enableDragDropSort = EnableDragDropSort;
             _config.trayMenuServersLimit = trayMenuServersLimit;
 
             //systemProxy

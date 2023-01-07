@@ -2393,6 +2393,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Server Drag Drop Sort(Require restart) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableDragDropSort {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableDragDropSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Exception 的本地化字符串。
         /// </summary>
         public static string TbSettingsException {

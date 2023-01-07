@@ -412,7 +412,6 @@
                         x:Name="lstProfiles"
                         Grid.Row="0"
                         materialDesign:DataGridAssist.CellPadding="1,0"
-                        AllowDrop="True"
                         AutoGenerateColumns="False"
                         BorderThickness="1"
                         CanUserAddRows="False"

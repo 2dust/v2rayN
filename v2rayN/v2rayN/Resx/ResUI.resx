@@ -1066,4 +1066,7 @@
   <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
     <value>Custom Template</value>
   </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>Enable Server Drag Drop Sort(Require restart)</value>
+  </data>
 </root>

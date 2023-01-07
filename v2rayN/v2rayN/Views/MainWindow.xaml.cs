@@ -33,10 +33,14 @@ namespace v2rayN.Views
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
-            lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
-            lstProfiles.MouseMove += LstProfiles_MouseMove;
-            lstProfiles.DragEnter += LstProfiles_DragEnter;
-            lstProfiles.Drop += LstProfiles_Drop;
+            if (_config.uiItem.enableDragDropSort)
+            {
+                lstProfiles.AllowDrop = true;
+                lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
+                lstProfiles.MouseMove += LstProfiles_MouseMove;
+                lstProfiles.DragEnter += LstProfiles_DragEnter;
+                lstProfiles.Drop += LstProfiles_Drop;
+            }
 
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
