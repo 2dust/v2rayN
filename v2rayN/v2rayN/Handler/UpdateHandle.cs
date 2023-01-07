@@ -232,6 +232,11 @@ namespace v2rayN.Handler
                         }
 
                         int ret = ConfigHandler.AddBatchServers(ref config, result, id, true);
+                        if (ret <= 0)
+                        {
+                            Utils.SaveLog("FailedImportSubscription");
+                            Utils.SaveLog(result);
+                        }
                         _updateFunc(false,
                             ret > 0
                                 ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
