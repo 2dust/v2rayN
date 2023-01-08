@@ -112,8 +112,8 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
-        public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
+        public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubGroupUpdateViaProxyCmd { get; }
 
         //Setting
@@ -388,13 +388,13 @@ namespace v2rayN.ViewModels
             {
                 UpdateSubscriptionProcess("", false);
             });
-            SubGroupUpdateCmd = ReactiveCommand.Create(() =>
-            {
-                UpdateSubscriptionProcess(_subId, true);
-            });
             SubUpdateViaProxyCmd = ReactiveCommand.Create(() =>
             {
-                UpdateSubscriptionProcess("", false);
+                UpdateSubscriptionProcess("", true);
+            });
+            SubGroupUpdateCmd = ReactiveCommand.Create(() =>
+            {
+                UpdateSubscriptionProcess(_subId, false);
             });
             SubGroupUpdateViaProxyCmd = ReactiveCommand.Create(() =>
             {
