@@ -228,21 +228,15 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(coreInfo);
                 if (fileName == "") return -1;
 
-                var pathTemp = Utils.GetConfigPath($"temp_{Utils.GetGUID(false)}.json");
-                File.WriteAllText(pathTemp, configStr);
-                if (!File.Exists(pathTemp))
-                {
-                    return -1;
-                }
-
                 Process p = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = fileName,
-                        Arguments = $"-config \"{pathTemp}\"",
+                        Arguments = "-config stdin:",
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
+                        RedirectStandardInput = true,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         CreateNoWindow = true,
@@ -261,16 +255,15 @@ namespace v2rayN.Handler
                 p.Start();
                 p.BeginOutputReadLine();
 
+                p.StandardInput.Write(configStr);
+                p.StandardInput.Close();
+
                 if (p.WaitForExit(1000))
                 {
                     throw new Exception(p.StandardError.ReadToEnd());
                 }
 
                 Global.processJob.AddProcess(p.Handle);
-
-                Thread.Sleep(1000);
-                File.Delete(pathTemp);
-                
                 return p.Id;
             }
             catch (Exception ex)
