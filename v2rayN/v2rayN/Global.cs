@@ -12,7 +12,7 @@
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
         public const string clashCoreUrl = "https://github.com/Dreamacro/clash/releases";
         public const string clashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
-        public const string hysteriaCoreUrl = "https://github.com/HyNetwork/hysteria/releases";
+        public const string hysteriaCoreUrl = "https://github.com/apernet/hysteria/releases";
         public const string naiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
         public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
         public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
