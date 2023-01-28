@@ -43,6 +43,7 @@ namespace v2rayN.Views
             }
 
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
+            this.DataContext = ViewModel;
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             Global.Languages.ForEach(it =>
@@ -181,7 +182,7 @@ namespace v2rayN.Views
             var IsAdministrator = Utils.IsAdministrator();
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
-            spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
+            //spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
         }
 
         #region Event 

@@ -1481,7 +1481,7 @@ namespace v2rayN.ViewModels
         {
             if (EnableTun)
             {
-                TunHandler.Instance.Start();
+                EnableTun = TunHandler.Instance.Start();
             }
             else
             {

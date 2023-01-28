@@ -40,7 +40,7 @@ namespace v2rayN.Base
                  });
         }
 
-        public void Start()
+        public bool Start()
         {
             var socksPort = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
 
@@ -58,10 +58,11 @@ namespace v2rayN.Base
                 CoreStop();
                 if (Init() == false)
                 {
-                    return;
+                    return false;
                 }
-                CoreStart();
+                return CoreStart();
             }
+            return false;
         }
 
         public void Stop()
@@ -200,14 +201,14 @@ namespace v2rayN.Base
             return fileName;
         }
 
-        private void CoreStart()
+        private bool CoreStart()
         {
             try
             {
                 string fileName = CoreFindexe();
                 if (fileName == "")
                 {
-                    return;
+                    return false;
                 }
                 var showWindow = _config.tunModeItem.showWindow;
                 Process p = new Process
@@ -239,10 +240,13 @@ namespace v2rayN.Base
                 }
 
                 Global.processJob.AddProcess(p.Handle);
+                return true;
             }
             catch (Exception ex)
             {
+                _isRunning = false;
                 Utils.SaveLog(ex.Message, ex);
+                return false;
             }
         }
 

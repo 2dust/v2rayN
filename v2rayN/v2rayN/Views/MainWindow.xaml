@@ -359,7 +359,8 @@
                             <ToggleButton
                                 x:Name="togEnableTun"
                                 Margin="4"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                IsChecked="{Binding EnableTun}"/>
                         </StackPanel>
 
                         <StackPanel
