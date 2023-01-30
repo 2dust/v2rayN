@@ -413,7 +413,7 @@
                     <DataGrid
                         x:Name="lstProfiles"
                         Grid.Row="0"
-                        materialDesign:DataGridAssist.CellPadding="1,0"
+                        materialDesign:DataGridAssist.CellPadding="2,2"
                         AutoGenerateColumns="False"
                         BorderThickness="1"
                         CanUserAddRows="False"
