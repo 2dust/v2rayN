@@ -690,6 +690,28 @@ namespace v2rayN.Handler
             {
                 lstProfile[i].sort = (i + 1) * 10;
             }
+            if (name == EServerColName.delay)
+            {
+                var maxSort = lstProfile.Max(t => t.sort) + 10;
+                foreach (var item in lstProfile)
+                {
+                    if (item.delay <= 0)
+                    {
+                        item.sort = maxSort;
+                    }
+                }
+            }
+            if (name == EServerColName.speed)
+            {
+                var maxSort = lstProfile.Max(t => t.sort) + 10;
+                foreach (var item in lstProfile)
+                {
+                    if (item.speed <= 0)
+                    {
+                        item.sort = maxSort;
+                    }
+                }
+            }
 
             SqliteHelper.Instance.UpdateAll(lstProfile);
 

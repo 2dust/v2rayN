@@ -49,7 +49,7 @@
                         VerticalAlignment="Center"
                         ClipToBounds="True"
                         Style="{StaticResource MaterialDesignToolBar}">
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -95,7 +95,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -127,7 +127,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -165,7 +165,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem x:Name="menuReload" Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -176,7 +176,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -217,7 +217,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem x:Name="menuHelp" Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -228,7 +228,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuPromotion"
                                 Padding="8,0"
@@ -242,7 +242,7 @@
                             </MenuItem>
                         </Menu>
                         <Separator />
-                        <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuClose"
                                 Padding="8,0"
