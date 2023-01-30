@@ -57,6 +57,8 @@ namespace v2rayN.Mode
         public bool enableAutoAdjustMainLvColWidth { get; set; }
         public double mainWidth { get; set; }
         public double mainHeight { get; set; }
+        public double mainGirdHeight1 { get; set; }
+        public double mainGirdHeight2 { get; set; }
         public bool colorModeDark { get; set; }
         public string? colorPrimaryName { get; set; }
         public string currentLanguage { get; set; }

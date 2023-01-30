@@ -397,6 +397,11 @@ namespace v2rayN.Views
             {
                 Height = SystemInformation.WorkingArea.Height * 96 / g.DpiY;
             }
+            if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)
+            {
+                gridMain.RowDefinitions[0].Height = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
+                gridMain.RowDefinitions[2].Height = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+            }
 
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
             {
@@ -420,6 +425,8 @@ namespace v2rayN.Views
             {
                 ConfigHandler.AddformMainLvColWidth(ref _config, ((EServerColName)k).ToString(), Convert.ToInt32(lstProfiles.Columns[k].ActualWidth));
             }
+            _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain.RowDefinitions[0].ActualHeight + 0.1);
+            _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain.RowDefinitions[2].ActualHeight + 0.1);
         }
 
         private void AddHelpMenuItem()

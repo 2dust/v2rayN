@@ -404,7 +404,7 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
 
-                <Grid>
+                <Grid x:Name="gridMain">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="10" />
