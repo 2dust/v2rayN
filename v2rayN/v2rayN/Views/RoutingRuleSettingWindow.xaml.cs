@@ -75,15 +75,15 @@ namespace v2rayN.Views
                 {
                     ViewModel?.MoveRule(EMove.Top);
                 }
-                else if (e.Key == Key.B)
+                else if (e.Key == Key.U)
                 {
                     ViewModel?.MoveRule(EMove.Up);
                 }
-                else if (e.Key == Key.U)
+                else if (e.Key == Key.D)
                 {
                     ViewModel?.MoveRule(EMove.Down);
                 }
-                else if (e.Key == Key.D)
+                else if (e.Key == Key.B)
                 {
                     ViewModel?.MoveRule(EMove.Bottom);
                 }
