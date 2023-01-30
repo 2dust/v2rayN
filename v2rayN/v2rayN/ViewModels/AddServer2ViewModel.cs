@@ -26,6 +26,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> BrowseServerCmd { get; }
         public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
+        public bool IsModified { get; set; }
 
         public AddServer2ViewModel(ProfileItem profileItem, Window view)
         {
@@ -128,7 +129,11 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.AddCustomServer(ref _config, item, false) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedCustomServer);
-                _view.DialogResult = true;
+                if (!Utils.IsNullOrEmpty(item.indexId))
+                {
+                    SelectedSource = Utils.DeepCopy(item);
+                }
+                IsModified = true;
             }
             else
             {

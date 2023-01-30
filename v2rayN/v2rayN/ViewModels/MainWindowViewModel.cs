@@ -800,6 +800,7 @@ namespace v2rayN.ViewModels
                 {
                     subid = _subId,
                     configType = eConfigType,
+                    displayLog = false
                 };
             }
             else
