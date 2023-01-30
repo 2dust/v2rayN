@@ -638,7 +638,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
             {
-                profileItem.allowInsecure = config.defAllowInsecure.ToString();
+                profileItem.allowInsecure = config.defAllowInsecure.ToString().ToLower();
             }
 
             AddServerCommon(ref config, profileItem);
@@ -750,7 +750,7 @@ namespace v2rayN.Handler
             profileItem.configVersion = 2;
             if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
             {
-                profileItem.allowInsecure = config.defAllowInsecure.ToString();
+                profileItem.allowInsecure = config.defAllowInsecure.ToString().ToLower();
             }
             if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.networks.Contains(profileItem.network))
             {

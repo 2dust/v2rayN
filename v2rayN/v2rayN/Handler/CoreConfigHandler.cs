@@ -554,7 +554,7 @@ namespace v2rayN.Handler
 
                     TlsSettings tlsSettings = new TlsSettings
                     {
-                        allowInsecure = Utils.ToBool(node.allowInsecure),
+                        allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                         fingerprint = node.fingerprint
                     };
@@ -576,7 +576,7 @@ namespace v2rayN.Handler
 
                     TlsSettings xtlsSettings = new TlsSettings
                     {
-                        allowInsecure = Utils.ToBool(node.allowInsecure),
+                        allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                         fingerprint = node.fingerprint
                     };
