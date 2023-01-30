@@ -26,6 +26,10 @@ namespace v2rayN.Views
                 ClearMsg();
                 return;
             }
+            if (!togAutoRefresh.IsChecked.Value)
+            {
+                return;
+            }
             var MsgFilter = txtMsgFilter.Text.TrimEx();
             if (!Utils.IsNullOrEmpty(MsgFilter))
             {

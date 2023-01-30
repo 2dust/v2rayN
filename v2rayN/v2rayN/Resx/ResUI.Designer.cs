@@ -1862,6 +1862,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 AutoRefresh 的本地化字符串。
+        /// </summary>
+        public static string TbAutoRefresh {
+            get {
+                return ResourceManager.GetString("TbAutoRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Domain and ip are auto sorted when saving 的本地化字符串。
         /// </summary>
         public static string TbAutoSort {

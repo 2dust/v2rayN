@@ -1069,4 +1069,7 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>启用服务器拖放排序(需重启)</value>
   </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>自动刷新</value>
+  </data>
 </root>

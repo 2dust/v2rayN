@@ -27,6 +27,15 @@
                 Margin="8,0"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True" />
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleButton
+                x:Name="togAutoRefresh"
+                Margin="8,0"
+                HorizontalAlignment="Left"
+                IsChecked="True" />
         </StackPanel>
         <TextBox
             Name="txtMsg"

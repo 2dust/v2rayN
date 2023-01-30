@@ -1069,4 +1069,7 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Enable Server Drag Drop Sort(Require restart)</value>
   </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>AutoRefresh</value>
+  </data>
 </root>
