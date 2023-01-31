@@ -684,6 +684,8 @@ namespace v2rayN.ViewModels
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
             _lstProfile = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(lstModel));
 
+            ConfigHandler.SetDefaultServer(_config, _lstProfile);
+
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {
@@ -704,7 +706,7 @@ namespace v2rayN.ViewModels
                             network = t.network,
                             streamSecurity = t.streamSecurity,
                             subRemarks = t.subRemarks,
-                            isActive = t.isActive,
+                            isActive = t.indexId == _config.indexId,
                             delay = t.delay,
                             delayVal = t.delay != 0 ? $"{t.delay} {Global.DelayUnit}" : string.Empty,
                             speedVal = t.speed != 0 ? $"{t.speed} {Global.SpeedUnit}" : string.Empty,
@@ -713,8 +715,6 @@ namespace v2rayN.ViewModels
                             totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
                             totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
                         }).ToList();
-
-            ConfigHandler.SetDefaultServer(_config, _lstProfile);
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -1134,7 +1134,7 @@ namespace v2rayN.ViewModels
             if (sb.Length > 0)
             {
                 Utils.SetClipboardData(sb.ToString());
-                _noticeHandler?.Enqueue(ResUI.BatchExportURLSuccessfully);
+                _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }
         }
 
@@ -1159,7 +1159,7 @@ namespace v2rayN.ViewModels
             if (sb.Length > 0)
             {
                 Utils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
-                _noticeHandler?.Enqueue(ResUI.BatchExportSubscriptionSuccessfully);
+                _noticeHandler?.SendMessage(ResUI.BatchExportSubscriptionSuccessfully);
             }
         }
 

@@ -85,8 +85,7 @@ namespace v2rayN.Handler
         public List<ProfileItemModel> ProfileItems(string subid, string filter)
         {
             var sql = @$"select a.* 
-                           ,b.remarks subRemarks
-                           ,case when a.indexId = '{_config.indexId}' then true else false end isActive
+                           ,b.remarks subRemarks                           
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id 
                         where 1=1 ";
