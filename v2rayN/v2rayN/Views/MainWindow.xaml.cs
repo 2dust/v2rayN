@@ -241,7 +241,14 @@ namespace v2rayN.Views
 
         private void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel?.EditServer(false, EConfigType.Custom);
+            if (_config.uiItem.doubleClick2Activate)
+            {
+                ViewModel?.SetDefaultServer();
+            }
+            else
+            {
+                ViewModel?.EditServer(false, EConfigType.Custom);
+            }
         }
 
         private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)

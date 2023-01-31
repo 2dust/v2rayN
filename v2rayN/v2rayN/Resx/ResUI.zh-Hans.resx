@@ -1078,4 +1078,7 @@
   <data name="menuEditServer" xml:space="preserve">
     <value>编辑服务器 (Ctrl+D)</value>
   </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>主界面双击设为活动服务器</value>
+  </data>
 </root>

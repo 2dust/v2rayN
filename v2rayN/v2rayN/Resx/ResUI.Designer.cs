@@ -2402,6 +2402,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Double-click server make active 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDoubleClick2Activate {
+            get {
+                return ResourceManager.GetString("TbSettingsDoubleClick2Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Automatically adjust column width after updating subscription 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableAutoAdjustMainLvColWidth {

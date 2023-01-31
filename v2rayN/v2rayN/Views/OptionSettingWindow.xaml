@@ -419,6 +419,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -571,16 +572,30 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
+                        <ToggleButton
+                            x:Name="togDoubleClick2Activate"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAutoUpdateInterval}" />
                         <TextBox
                             x:Name="txtautoUpdateInterval"
-                            Grid.Row="11"
+                            Grid.Row="12"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}" />
 
                         <TextBlock
-                            Grid.Row="12"
+                            Grid.Row="13"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -588,13 +603,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsAutoUpdate}" />
                         <TextBox
                             x:Name="txtautoUpdateSubInterval"
-                            Grid.Row="12"
+                            Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}" />
 
                         <TextBlock
-                            Grid.Row="13"
+                            Grid.Row="14"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -602,7 +617,7 @@
                             Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
                         <TextBox
                             x:Name="txttrayMenuServersLimit"
-                            Grid.Row="13"
+                            Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}" />

@@ -63,6 +63,7 @@ namespace v2rayN.Mode
         public string? colorPrimaryName { get; set; }
         public string currentLanguage { get; set; }
         public bool enableDragDropSort { get; set; }
+        public bool doubleClick2Activate { get; set; }
         public Dictionary<string, int> mainLvColWidth { get; set; }
     }
 

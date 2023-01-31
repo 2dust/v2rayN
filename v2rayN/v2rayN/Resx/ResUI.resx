@@ -1078,4 +1078,7 @@
   <data name="menuEditServer" xml:space="preserve">
     <value>Edit Server (Ctrl+D)</value>
   </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>Double-click server make active</value>
+  </data>
 </root>

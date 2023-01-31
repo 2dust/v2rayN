@@ -560,7 +560,16 @@ namespace v2rayN.ViewModels
                                 item.totalDown = Utils.HumanFy(update.totalDown);
                                 item.totalUp = Utils.HumanFy(update.totalUp);
 
-                                _profileItems.Replace(item, Utils.DeepCopy(item));
+                                if (SelectedProfile?.indexId == item.indexId)
+                                {
+                                    var temp = Utils.DeepCopy(item);
+                                    _profileItems.Replace(item, temp);
+                                    SelectedProfile = temp;
+                                }
+                                else
+                                {
+                                    _profileItems.Replace(item, Utils.DeepCopy(item));
+                                }
                             }
                         }
                     }
@@ -727,7 +736,15 @@ namespace v2rayN.ViewModels
                 _profileItems.AddRange(lstModel);
                 if (lstModel.Count > 0)
                 {
-                    SelectedProfile = lstModel[0];
+                    var selected = lstModel.FirstOrDefault(t => t.indexId == _config.indexId);
+                    if (selected != null)
+                    {
+                        SelectedProfile = selected;
+                    }
+                    else
+                    {
+                        SelectedProfile = lstModel[0];
+                    }
                 }
 
                 RefreshServersMenu();
@@ -918,7 +935,7 @@ namespace v2rayN.ViewModels
 
         public void SetDefaultServer()
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile.indexId))
+            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
             {
                 return;
             }
