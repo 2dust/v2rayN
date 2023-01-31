@@ -899,7 +899,7 @@
     <value>حالت Pac</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>اشتراک گذاری سرور(Ctrl+D)</value>
+    <value>اشتراک گذاری سرور(Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>مسیریابی</value>

@@ -682,6 +682,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Edit Server (Ctrl+D) 的本地化字符串。
+        /// </summary>
+        public static string menuEditServer {
+            get {
+                return ResourceManager.GetString("menuEditServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Exit 的本地化字符串。
         /// </summary>
         public static string menuExit {
@@ -1114,7 +1123,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Share Server (Ctrl+D) 的本地化字符串。
+        ///   查找类似 Share Server (Ctrl+F) 的本地化字符串。
         /// </summary>
         public static string menuShareServer {
             get {

@@ -899,7 +899,7 @@
     <value>Pac模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>分享服务器 (Ctrl+D)</value>
+    <value>分享服务器 (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>路由</value>
@@ -1074,5 +1074,8 @@
   </data>
   <data name="SpeedtestingSkip" xml:space="preserve">
     <value>跳过测试</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>编辑服务器 (Ctrl+D)</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using ProtosLib.Statistics;
 using System.Net;
 using System.Net.Sockets;
 using v2rayN.Base;

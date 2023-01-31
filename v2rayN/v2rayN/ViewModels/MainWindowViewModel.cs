@@ -84,6 +84,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
         //servers delete
+        public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RemoveServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RemoveDuplicateServerCmd { get; }
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
@@ -293,6 +294,10 @@ namespace v2rayN.ViewModels
                 return ScanScreenTaskAsync();
             });
             //servers delete
+            EditServerCmd = ReactiveCommand.Create(() =>
+            {
+                EditServer(false, EConfigType.Custom);
+            }, canEditRemove);
             RemoveServerCmd = ReactiveCommand.Create(() =>
             {
                 RemoveServer();

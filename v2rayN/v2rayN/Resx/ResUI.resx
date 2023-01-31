@@ -899,7 +899,7 @@
     <value>Pac Mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Share Server (Ctrl+D)</value>
+    <value>Share Server (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routing</value>
@@ -1074,5 +1074,8 @@
   </data>
   <data name="SpeedtestingSkip" xml:space="preserve">
     <value>Skip test</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>Edit Server (Ctrl+D)</value>
   </data>
 </root>
