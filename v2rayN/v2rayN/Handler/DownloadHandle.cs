@@ -195,7 +195,8 @@ namespace v2rayN.Handler
 
                 try
                 {
-                    string status = GetRealPingTime(Global.SpeedPingTestUrl, webProxy, 10, out int responseTime);
+                    var config = LazyConfig.Instance.GetConfig();
+                    string status = GetRealPingTime(config.constItem.speedPingTestUrl, webProxy, 10, out int responseTime);
                     bool noError = Utils.IsNullOrEmpty(status);
                     return noError ? responseTime : -1;
                 }
