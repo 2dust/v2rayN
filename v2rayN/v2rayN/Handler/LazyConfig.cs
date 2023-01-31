@@ -95,6 +95,10 @@ namespace v2rayN.Handler
             }
             if (!Utils.IsNullOrEmpty(filter))
             {
+                if (filter.Contains("'"))
+                {
+                    filter = filter.Replace("'", "");
+                }
                 sql += $" and a.remarks like '%{filter}%'";
             }
             sql += " order by a.sort";

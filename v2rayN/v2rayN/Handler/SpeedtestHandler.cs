@@ -222,7 +222,7 @@ namespace v2rayN.Handler
                     continue;
                 }
                 if (it.delay < 0)
-                {    
+                {
                     UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }

@@ -55,7 +55,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
-        [Reactive] public bool EnableDragDropSort { get; set; }        
+        [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public int autoUpdateInterval { get; set; }
         [Reactive] public int autoUpdateSubInterval { get; set; }
         [Reactive] public int trayMenuServersLimit { get; set; }
