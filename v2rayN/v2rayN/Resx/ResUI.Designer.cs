@@ -1753,6 +1753,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Skip test 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingSkip {
+            get {
+                return ResourceManager.GetString("SpeedtestingSkip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 PAC failed to start. Please run this program as Administrator. 的本地化字符串。
         /// </summary>
         public static string StartPacFailed {

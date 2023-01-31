@@ -1072,4 +1072,7 @@
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
   </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>跳过测试</value>
+  </data>
 </root>

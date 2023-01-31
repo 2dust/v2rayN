@@ -30,6 +30,10 @@ namespace v2rayN.Handler
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
+                if (it.configType == EConfigType.Custom)
+                {
+                    continue;
+                }
                 _selecteds.Add(new ServerTestItem()
                 {
                     indexId = it.indexId,
@@ -38,6 +42,25 @@ namespace v2rayN.Handler
                     configType = it.configType
                 });
             }
+            //clear test result
+            foreach (var it in _selecteds)
+            {
+                switch (actionType)
+                {
+                    case ESpeedActionType.Ping:
+                    case ESpeedActionType.Tcping:
+                    case ESpeedActionType.Realping:
+                        UpdateFunc(it.indexId, ResUI.Speedtesting, "");
+                        break;
+                    case ESpeedActionType.Speedtest:
+                        UpdateFunc(it.indexId, "", ResUI.Speedtesting);
+                        break;
+                    case ESpeedActionType.Mixedtest:
+                        UpdateFunc(it.indexId, ResUI.Speedtesting, ResUI.Speedtesting);
+                        break;
+                }
+            }
+
             switch (actionType)
             {
                 case ESpeedActionType.Ping:
@@ -199,11 +222,11 @@ namespace v2rayN.Handler
                     continue;
                 }
                 if (it.delay < 0)
-                {
+                {    
+                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }
                 _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
-                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
