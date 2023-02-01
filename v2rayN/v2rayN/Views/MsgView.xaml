@@ -21,12 +21,13 @@
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource PrimaryHueLightBrush}"
                 Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-            <TextBox
-                x:Name="txtMsgFilter"
+            <ComboBox
+                x:Name="cmbMsgFilter"
                 Width="200"
                 Margin="8,0"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
-                materialDesign:TextFieldAssist.HasClearButton="True" />
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                IsEditable="True" />
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"

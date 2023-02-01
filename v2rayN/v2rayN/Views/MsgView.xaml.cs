@@ -12,6 +12,11 @@ namespace v2rayN.Views
         {
             InitializeComponent();
             MessageBus.Current.Listen<string>("MsgView").Subscribe(x => DelegateAppendText(x));
+            Global.PresetMsgFilters.ForEach(it =>
+            {
+                cmbMsgFilter.Items.Add(it);
+            });
+            cmbMsgFilter.Items.Add(string.Empty);
         }
 
         void DelegateAppendText(string msg)
@@ -30,7 +35,7 @@ namespace v2rayN.Views
             {
                 return;
             }
-            var MsgFilter = txtMsgFilter.Text.TrimEx();
+            var MsgFilter = cmbMsgFilter.Text.TrimEx();
             if (!Utils.IsNullOrEmpty(MsgFilter))
             {
                 if (!Regex.IsMatch(msg, MsgFilter))
