@@ -1081,4 +1081,7 @@
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>主界面双击设为活动服务器</value>
   </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>测试完成</value>
+  </data>
 </root>

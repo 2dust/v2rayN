@@ -248,6 +248,7 @@ namespace v2rayN.Handler
             {
                 _coreHandler.CoreStopPid(pid);
             }
+            UpdateFunc("", ResUI.SpeedtestingCompleted);
         }
         private async Task RunMixedtestAsync()
         {

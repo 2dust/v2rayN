@@ -1081,4 +1081,7 @@
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Double-click server make active</value>
   </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>Test completed</value>
+  </data>
 </root>
