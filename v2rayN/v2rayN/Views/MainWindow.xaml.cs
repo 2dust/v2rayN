@@ -254,11 +254,19 @@ namespace v2rayN.Views
         private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             var colHeader = sender as DataGridColumnHeader;
-            if (colHeader == null || colHeader.TabIndex < 0)
+            if (colHeader == null || colHeader.TabIndex < 0 || colHeader.Column == null)
             {
                 return;
             }
-            if (colHeader.TabIndex == 0)
+
+            //find index
+            var index = lstProfiles.Columns.IndexOf(colHeader.Column);
+            if (index < 0)
+            {
+                index = colHeader.TabIndex;
+            }
+
+            if (index == 0)
             {
                 foreach (var it in lstProfiles.Columns)
                 {
@@ -268,7 +276,7 @@ namespace v2rayN.Views
                 return;
             }
 
-            ViewModel?.SortServer(colHeader.TabIndex);
+            ViewModel?.SortServer(index);
         }
 
         private void menuSelectAll_Click(object sender, RoutedEventArgs e)
