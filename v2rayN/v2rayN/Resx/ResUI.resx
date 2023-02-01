@@ -1084,4 +1084,7 @@
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>Test completed</value>
   </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>Default TLS fingerprint</value>
+  </data>
 </root>

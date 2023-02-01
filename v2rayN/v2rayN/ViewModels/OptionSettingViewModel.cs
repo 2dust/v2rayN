@@ -28,6 +28,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool logEnabled { get; set; }
         [Reactive] public string loglevel { get; set; }
         [Reactive] public bool defAllowInsecure { get; set; }
+        [Reactive] public string defFingerprint { get; set; }
         #endregion
 
         #region Core DNS
@@ -110,6 +111,7 @@ namespace v2rayN.ViewModels
             logEnabled = _config.logEnabled;
             loglevel = _config.loglevel;
             defAllowInsecure = _config.defAllowInsecure;
+            defFingerprint = _config.defFingerprint;
             #endregion
 
             #region Core DNS
@@ -269,6 +271,7 @@ namespace v2rayN.ViewModels
             _config.loglevel = loglevel;
             _config.muxEnabled = muxEnabled;
             _config.defAllowInsecure = defAllowInsecure;
+            _config.defFingerprint = defFingerprint;
 
 
             //DNS

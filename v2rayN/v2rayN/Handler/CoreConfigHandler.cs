@@ -556,7 +556,7 @@ namespace v2rayN.Handler
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
-                        fingerprint = node.fingerprint
+                        fingerprint = node.fingerprint.IsNullOrEmpty() ? config.defFingerprint : node.fingerprint
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {
@@ -578,7 +578,7 @@ namespace v2rayN.Handler
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
-                        fingerprint = node.fingerprint
+                        fingerprint = node.fingerprint.IsNullOrEmpty() ? config.defFingerprint : node.fingerprint
                     };
                     if (!string.IsNullOrWhiteSpace(sni))
                     {

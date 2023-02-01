@@ -1084,4 +1084,7 @@
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>测试完成</value>
   </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>默认TLS指纹(fingerprint)</value>
+  </data>
 </root>

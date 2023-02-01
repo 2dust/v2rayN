@@ -62,6 +62,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -235,6 +236,20 @@
                         Grid.Column="1"
                         Margin="{StaticResource SettingItemMargin}"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="0"
+                        Margin="{StaticResource SettingItemMargin}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsDefFingerprint}" />
+                    <ComboBox
+                        x:Name="cmbdefFingerprint"
+                        Grid.Row="12"
+                        Grid.Column="1"
+                        Margin="{StaticResource SettingItemMargin}" />
+
                 </Grid>
             </TabItem>
 

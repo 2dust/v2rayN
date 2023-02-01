@@ -16,7 +16,6 @@ namespace v2rayN.Views
             {
                 cmbMsgFilter.Items.Add(it);
             });
-            cmbMsgFilter.Items.Add(string.Empty);
         }
 
         void DelegateAppendText(string msg)
