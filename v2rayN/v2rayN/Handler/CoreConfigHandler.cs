@@ -546,6 +546,15 @@ namespace v2rayN.Handler
                 streamSettings.network = node.GetNetwork();
                 string host = node.requestHost.TrimEx();
                 string sni = node.sni;
+                string useragent = "";
+                if (!config.customizeUserAgent.IsNullOrEmpty())
+                {
+                    useragent = config.customizeUserAgent;
+                }
+                else if (!config.defUserAgent.IsNullOrEmpty())
+                {
+                    useragent = Global.userAgentTxt[config.defUserAgent];
+                }
 
                 //if tls
                 if (node.streamSecurity == Global.StreamSecurity)
@@ -634,18 +643,21 @@ namespace v2rayN.Handler
                         WsSettings wsSettings = new WsSettings
                         {
                         };
-
+                        wsSettings.headers = new Headers
+                        {
+                        };
                         string path = node.path;
                         if (!string.IsNullOrWhiteSpace(host))
                         {
-                            wsSettings.headers = new Headers
-                            {
-                                Host = host
-                            };
+                            wsSettings.headers.Host = host;
                         }
                         if (!string.IsNullOrWhiteSpace(path))
                         {
                             wsSettings.path = path;
+                        }
+                        if (!string.IsNullOrWhiteSpace(useragent))
+                        {
+                            wsSettings.headers.UserAgent = useragent;
                         }
                         streamSettings.wsSettings = wsSettings;
 
@@ -730,7 +742,7 @@ namespace v2rayN.Handler
                                 string host2 = string.Join("\",\"", arrHost);
                                 request = request.Replace("$requestHost$", $"\"{host2}\"");
                                 //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
-
+                                request = request.Replace("$requestUserAgent$", $"\"{useragent}\"");
                                 //Path
                                 string pathHttp = @"/";
                                 if (!Utils.IsNullOrEmpty(node.path))

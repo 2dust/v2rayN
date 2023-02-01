@@ -2393,6 +2393,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Customize User-Agent 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCustomizeUserAgent {
+            get {
+                return ResourceManager.GetString("TbSettingsCustomizeUserAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 AllowInsecure 的本地化字符串。
         /// </summary>
         public static string TbSettingsDefAllowInsecure {
@@ -2407,6 +2416,15 @@ namespace v2rayN.Resx {
         public static string TbSettingsDefFingerprint {
             get {
                 return ResourceManager.GetString("TbSettingsDefFingerprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User-Agent 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDefUserAgent {
+            get {
+                return ResourceManager.GetString("TbSettingsDefUserAgent", resourceCulture);
             }
         }
         
