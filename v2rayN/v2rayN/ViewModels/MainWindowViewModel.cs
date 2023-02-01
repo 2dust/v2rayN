@@ -905,12 +905,16 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
+            var exists = lstSelecteds.Exists(t => t.indexId == _config.indexId);
 
             ConfigHandler.RemoveServer(_config, lstSelecteds);
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
 
             RefreshServers();
-            Reload();
+            if (exists)
+            {
+                Reload();
+            }
         }
 
         private void RemoveDuplicateServer()
