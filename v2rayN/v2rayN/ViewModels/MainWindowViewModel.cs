@@ -212,6 +212,10 @@ namespace v2rayN.ViewModels
             SelectedMoveToGroup = new();
             SelectedRouting = new();
             SelectedServer = new();
+            if (_config.tunModeItem.enableTun && Utils.IsAdministrator())
+            {
+                EnableTun = true;
+            }
 
             //RefreshServers();
             InitSubscriptionView();
@@ -255,7 +259,7 @@ namespace v2rayN.ViewModels
               x => x.EnableTun,
                y => y == true)
                   .Subscribe(c => DoEnableTun(c));
-
+           
             BindingUI();
             RestoreUI();
             AutoHideStartup();
@@ -1679,7 +1683,7 @@ namespace v2rayN.ViewModels
 
         private void AutoHideStartup()
         {
-            if (_config.autoHideStartup)
+            if (_config.uiItem.autoHideStartup)
             {
                 Observable.Range(1, 1)
                  .Delay(TimeSpan.FromSeconds(1))

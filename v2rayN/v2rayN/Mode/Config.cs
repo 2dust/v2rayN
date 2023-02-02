@@ -143,8 +143,6 @@
 
         public int trayMenuServersLimit { get; set; } = 20;
 
-        public bool autoHideStartup { get; set; }
-
         #endregion
 
         #region other entities

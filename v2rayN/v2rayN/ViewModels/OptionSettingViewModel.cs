@@ -141,7 +141,7 @@ namespace v2rayN.ViewModels
             IgnoreGeoUpdateCore = _config.ignoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
             EnableSecurityProtocolTls13 = _config.enableSecurityProtocolTls13;
-            AutoHideStartup = _config.autoHideStartup;
+            AutoHideStartup = _config.uiItem.autoHideStartup;
             EnableCheckPreReleaseUpdate = _config.checkPreReleaseUpdate;
             EnableDragDropSort = _config.uiItem.enableDragDropSort;
             DoubleClick2Activate = _config.uiItem.doubleClick2Activate;
@@ -309,7 +309,7 @@ namespace v2rayN.ViewModels
             _config.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
             _config.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
-            _config.autoHideStartup = AutoHideStartup;
+            _config.uiItem.autoHideStartup = AutoHideStartup;
             _config.autoUpdateInterval = autoUpdateInterval;
             _config.autoUpdateSubInterval = autoUpdateSubInterval;
             _config.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
