@@ -1,4 +1,6 @@
-﻿namespace v2rayN.Mode
+﻿using Newtonsoft.Json;
+
+namespace v2rayN.Mode
 {
     /// <summary>
     /// v2ray配置文件实体类
@@ -505,6 +507,12 @@
         /// 
         /// </summary>
         public string Host { get; set; }
+
+        /// <summary>
+        /// 用户代理
+        /// </summary>
+        [JsonProperty("User-Agent")]
+        public string UserAgent { get; set; }
     }
 
     public class HttpSettings

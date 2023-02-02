@@ -1087,4 +1087,10 @@
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
     <value>Default TLS fingerprint</value>
   </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>User-Agent</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>This parameter is valid only for tcp/http and ws</value>
+  </data>
 </root>

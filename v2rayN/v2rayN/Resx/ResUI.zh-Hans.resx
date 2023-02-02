@@ -1087,4 +1087,10 @@
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
     <value>默认TLS指纹(fingerprint)</value>
   </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>用户代理(UA)</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>仅对tcp/http、ws协议生效</value>
+  </data>
 </root>

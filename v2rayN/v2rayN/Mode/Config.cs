@@ -95,6 +95,11 @@
         public string defFingerprint { get; set; }
 
         /// <summary>
+        /// 默认用户代理
+        /// </summary>
+        public string defUserAgent { get; set; }
+
+        /// <summary>
         /// 域名解析策略
         /// </summary>
         public string domainStrategy

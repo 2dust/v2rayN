@@ -25,6 +25,10 @@ namespace v2rayN.Views
             {
                 cmbdefFingerprint.Items.Add(it);
             });
+            Global.userAgent.ForEach(it =>
+            {
+                cmbdefUserAgent.Items.Add(it);
+            });
             Global.domainStrategy4Freedoms.ForEach(it =>
             {
                 cmbdomainStrategy4Freedom.Items.Add(it);
@@ -68,6 +72,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.loglevel, v => v.cmbloglevel.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.defAllowInsecure, v => v.togdefAllowInsecure.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.defFingerprint, v => v.cmbdefFingerprint.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.defUserAgent, v => v.cmbdefUserAgent.Text).DisposeWith(disposables);
 
 
                 this.Bind(ViewModel, vm => vm.domainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.Text).DisposeWith(disposables);

@@ -2411,6 +2411,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 User-Agent 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDefUserAgent {
+            get {
+                return ResourceManager.GetString("TbSettingsDefUserAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This parameter is valid only for tcp/http and ws 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDefUserAgentTips {
+            get {
+                return ResourceManager.GetString("TbSettingsDefUserAgentTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Outbound Freedom domainStrategy 的本地化字符串。
         /// </summary>
         public static string TbSettingsDomainStrategy4Freedom {
