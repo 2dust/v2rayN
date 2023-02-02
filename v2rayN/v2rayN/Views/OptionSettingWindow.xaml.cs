@@ -1,15 +1,23 @@
 ﻿using ReactiveUI;
+using System.Globalization;
+using System.IO;
 using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Media;
+using v2rayN.Handler;
+using v2rayN.Mode;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
     public partial class OptionSettingWindow
     {
+        private static Config _config;
+
         public OptionSettingWindow()
         {
             InitializeComponent();
+            _config = LazyConfig.Instance.GetConfig();
 
             ViewModel = new OptionSettingViewModel(this);
 
@@ -54,6 +62,34 @@ namespace v2rayN.Views
                 cmbCoreType5.Items.Add(it);
                 cmbCoreType6.Items.Add(it);
             });
+
+            //fill fonts
+            try
+            {
+                var dir = new DirectoryInfo(Utils.GetPath(@"Resources\Fonts"));
+                var files = dir.GetFiles("*.ttf");
+                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
+                foreach (var it in files)
+                {
+                    var glyphTypeface = new GlyphTypeface(new Uri(Utils.GetPath(@$"Resources\Fonts\{it.Name}")));
+                    var fontFace = glyphTypeface.Win32FaceNames[new CultureInfo("en-us")];
+                    if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
+                    {
+                        continue;
+                    }
+                    var fontFamily = glyphTypeface.Win32FamilyNames[new CultureInfo(culture)];
+                    if (Utils.IsNullOrEmpty(fontFamily))
+                    {
+                        continue;
+                    }
+                    cmbcurrentFontFamily.Items.Add(fontFamily);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("fill fonts error", ex);
+            }
+            cmbcurrentFontFamily.Items.Add(string.Empty);
 
             this.WhenActivated(disposables =>
             {
@@ -102,6 +138,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.autoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.autoUpdateSubInterval, v => v.txtautoUpdateSubInterval.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.trayMenuServersLimit, v => v.txttrayMenuServersLimit.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.currentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
 
 
                 this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);

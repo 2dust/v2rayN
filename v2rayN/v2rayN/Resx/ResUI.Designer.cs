@@ -2393,6 +2393,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 FontFamily(Require restart) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCurrentFontFamily {
+            get {
+                return ResourceManager.GetString("TbSettingsCurrentFontFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy the font TTF file to the directory Resources\Fonts, restart the settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCurrentFontFamilyTip {
+            get {
+                return ResourceManager.GetString("TbSettingsCurrentFontFamilyTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 AllowInsecure 的本地化字符串。
         /// </summary>
         public static string TbSettingsDefAllowInsecure {
@@ -2654,11 +2672,29 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 http port=socks port+1 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSocksPortTip {
+            get {
+                return ResourceManager.GetString("TbSettingsSocksPortTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Start on boot 的本地化字符串。
         /// </summary>
         public static string TbSettingsStartBoot {
             get {
                 return ResourceManager.GetString("TbSettingsStartBoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set this with admin privileges, get admin privileges after startup 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsStartBootTip {
+            get {
+                return ResourceManager.GetString("TbSettingsStartBootTip", resourceCulture);
             }
         }
         

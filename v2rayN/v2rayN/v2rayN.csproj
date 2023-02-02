@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>		
-		<PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />		 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="NHotkey" Version="2.1.0" />
@@ -104,6 +104,9 @@
 	<ItemGroup>
 	  <None Update="Resources\Fonts\SourceHanSansCN-Regular.ttf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Fonts\微软雅黑.ttf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 

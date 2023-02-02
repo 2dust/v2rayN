@@ -64,8 +64,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -74,204 +74,212 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsSocksPort}" />
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSocksPort}" />
                         <TextBox
-                        x:Name="txtlocalPort"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                            x:Name="txtlocalPort"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="{StaticResource ServerItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSocksPortTip}" />
 
                         <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsUdpEnabled}" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUdpEnabled}" />
                         <ToggleButton
-                        x:Name="togudpEnabled"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togudpEnabled"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsSniffingEnabled}" />
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSniffingEnabled}" />
                         <ToggleButton
-                        x:Name="togsniffingEnabled"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togsniffingEnabled"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsRouteOnly}" />
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsRouteOnly}" />
                         <ToggleButton
-                        x:Name="togrouteOnly"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togrouteOnly"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsAllowLAN}" />
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsAllowLAN}" />
                         <ToggleButton
-                        x:Name="togAllowLANConn"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togAllowLANConn"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsNewPort4LAN}" />
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsNewPort4LAN}" />
                         <ToggleButton
-                        x:Name="togNewPort4LAN"
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togNewPort4LAN"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsUser}" />
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUser}" />
                         <TextBox
-                        x:Name="txtuser"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                            x:Name="txtuser"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}" />
 
                         <TextBlock
-                        Grid.Row="7"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsPass}" />
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsPass}" />
                         <TextBox
-                        x:Name="txtpass"
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                            x:Name="txtpass"
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}" />
 
                         <TextBlock
-                        Grid.Row="8"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
                         <ToggleButton
-                        x:Name="togmuxEnabled"
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togmuxEnabled"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="9"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
                         <ToggleButton
-                        x:Name="toglogEnabled"
-                        Grid.Row="9"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="toglogEnabled"
+                            Grid.Row="9"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="10"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsLogLevel}" />
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsLogLevel}" />
                         <ComboBox
-                        x:Name="cmbloglevel"
-                        Grid.Row="10"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        materialDesign:HintAssist.Hint="Level" />
+                            x:Name="cmbloglevel"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            materialDesign:HintAssist.Hint="Level" />
 
                         <TextBlock
-                        Grid.Row="11"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsDefAllowInsecure}" />
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDefAllowInsecure}" />
                         <ToggleButton
-                        x:Name="togdefAllowInsecure"
-                        Grid.Row="11"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left" />
+                            x:Name="togdefAllowInsecure"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
 
                         <TextBlock
-                        Grid.Row="12"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsDefFingerprint}" />
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDefFingerprint}" />
                         <ComboBox
-                        x:Name="cmbdefFingerprint"
-                        Grid.Row="12"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}" />
+                            x:Name="cmbdefFingerprint"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}" />
 
                         <TextBlock
-                        Grid.Row="13"
-                        Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsDefUserAgent}" />
+                            Grid.Row="13"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDefUserAgent}" />
                         <ComboBox
-                        x:Name="cmbdefUserAgent"
-                        Grid.Row="13"
-                        Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}" IsEditable="True" />
+                            x:Name="cmbdefUserAgent"
+                            Grid.Row="13"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            IsEditable="True" />
                         <TextBlock
-                        Grid.Row="13"
-                        Grid.Column="3"
-                        Margin="{StaticResource SettingItemMargin}"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
+                            Grid.Row="13"
+                            Grid.Column="3"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -462,6 +470,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
@@ -477,6 +486,13 @@
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"
                             HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="{StaticResource ServerItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsStartBootTip}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -659,6 +675,27 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}" />
+
+                        <TextBlock
+                            Grid.Row="15"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
+                        <ComboBox
+                            x:Name="cmbcurrentFontFamily"
+                            Grid.Row="15"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            MaxDropDownHeight="1000" />
+                        <TextBlock
+                            Grid.Row="15"
+                            Grid.Column="2"
+                            Margin="{StaticResource ServerItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

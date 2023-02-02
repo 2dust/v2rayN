@@ -1088,9 +1088,21 @@
     <value>默认TLS指纹(fingerprint)</value>
   </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
-    <value>用户代理(UA)</value>
+    <value>用户代理(User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
     <value>仅对tcp/http、ws协议生效</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>当前字体(需重启)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>拷贝字体TTF文件到目录Resources\Fonts，重启设置</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>http端口=socks端口+1</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>以管理员权限设置此项，在启动后获得管理员权限</value>
   </data>
 </root>

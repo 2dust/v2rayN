@@ -62,6 +62,8 @@ namespace v2rayN.ViewModels
         [Reactive] public int autoUpdateInterval { get; set; }
         [Reactive] public int autoUpdateSubInterval { get; set; }
         [Reactive] public int trayMenuServersLimit { get; set; }
+        [Reactive] public string currentFontFamily { get; set; }
+
         #endregion
 
         #region System proxy
@@ -146,6 +148,8 @@ namespace v2rayN.ViewModels
             autoUpdateInterval = _config.autoUpdateInterval;
             autoUpdateSubInterval = _config.autoUpdateSubInterval;
             trayMenuServersLimit = _config.trayMenuServersLimit;
+            currentFontFamily = _config.uiItem.currentFontFamily;
+
             #endregion
 
             #region System proxy
@@ -312,6 +316,7 @@ namespace v2rayN.ViewModels
             _config.uiItem.enableDragDropSort = EnableDragDropSort;
             _config.uiItem.doubleClick2Activate = DoubleClick2Activate;
             _config.trayMenuServersLimit = trayMenuServersLimit;
+            _config.uiItem.currentFontFamily = currentFontFamily;
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;

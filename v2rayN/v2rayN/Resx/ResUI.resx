@@ -1093,4 +1093,16 @@
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
     <value>This parameter is valid only for tcp/http and ws</value>
   </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>FontFamily(Require restart)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>Copy the font TTF file to the directory Resources\Fonts, restart the settings</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>http port=socks port+1</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>Set this with admin privileges, get admin privileges after startup</value>
+  </data>
 </root>
