@@ -130,7 +130,7 @@
     <value>فرمت پیکربندی نادرست است</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually.</value>
+    <value>توجه داشته باشید که پیکربندی سفارشی کاملاً به پیکربندی خود شما بستگی دارد و با همه تنظیمات کار نمی کند. اگر می خواهید از پروکسی سیستم استفاده کنید، لطفاً پورت درحال شنود را به صورت دستی تغییر دهید.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>درحال دانلود...</value>
@@ -187,10 +187,10 @@
     <value>پیکربندی اولیه</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} در حال حاضر به روز است.</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} در حال حاضر به روز است.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>آدرس</value>
@@ -262,28 +262,28 @@
     <value>شروع به دریافت اشتراک شد</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
-    <value>Start updating {0}...</value>
+    <value>شروع بروزرسانی {0}...</value>
   </data>
   <data name="MsgStartUpdatingPAC" xml:space="preserve">
-    <value>Start updating PAC...</value>
+    <value>شروع بروزرسانی PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>محتوای اشتراک نامعتبر است</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>is unpacking...</value>
+    <value>در حال باز کردن بسته می باشد ...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>Update subscription end</value>
+    <value>بروزرسانی اشتراک به پایان رسید</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>Update subscription starts</value>
+    <value>بروزرسانی اشتراک شروع شد</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Update Core successfully</value>
+    <value>هسته با موفقیت بروزرسانی شد</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>Update Core successfully! Restarting service...</value>
+    <value>هسته با موفقیت بروزرسانی شد! راه اندازی مجدد سرویس...</value>
   </data>
   <data name="NeedHttpGlobalProxy" xml:space="preserve">
     <value> This feature relies on the Http global proxy, please set it correctly first.</value>
@@ -301,7 +301,7 @@
     <value>Scan completed, no valid QR code found</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value> operation failed, please check and retry</value>
+    <value> عملیات انجام نشد، لطفا بررسی کنید و دوباره امتحان کنید</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
     <value>Please Fill Remarks</value>
@@ -343,20 +343,20 @@
     <value>Start service ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Configuration successful
+    <value>پیکربندی با موفقیت انجام شد
 {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>سرور پیکربندی سفارشی با موفقیت وارد شد.</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} servers have been imported from clipboard.</value>
+    <value>{0} سرورها از کلیپ بورد وارد شده اند.</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import URL successfully</value>
+    <value>اسکن URL وارد کردن با موفقیت</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>The ping of current service: {0} ms</value>
+    <value>پینگ سرویس فعلی: {0} ms</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>موفقیت عملیات</value>
@@ -368,7 +368,7 @@
     <value>آیا مطمئن هستید که قوانین را حذف می کنید؟</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0},One of the required.</value>
+    <value>{0},یکی از مورد نیاز.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>Remarks</value>
@@ -386,7 +386,7 @@
     <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>Download GeoFile: {0} successfully</value>
+    <value>دانلود GeoFile: {0} با موفقیت</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>اطلاعات</value>
@@ -536,7 +536,7 @@
     <value>پروکسی سیستم تغییر نکند</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>Pac Mode</value>
+    <value>حالت Pac</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
     <value>تنظیم پراکسی سیستم</value>
@@ -791,10 +791,10 @@
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Automatically adjust column width after updating subscription</value>
+    <value>پس از به‌روزرسانی اشتراک، عرض ستون را به صورت خودکار تنظیم شود</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
-    <value>به روز رسانی های پیش از انتشار را بررسی کنید</value>
+    <value>به روز رسانی های پیش از انتشار را بررسی شود</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
     <value>استثنا</value>
@@ -827,13 +827,13 @@
     <value>تنظیمات v2rayN</value>
   </data>
   <data name="TbSettingsPacListenPort" xml:space="preserve">
-    <value>Pac listen port</value>
+    <value>Pac پورت درحال شنود</value>
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Auth pass</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>Custom DNS (multiple, separated by commas (,))</value>
+    <value>سفارشی DNS (multiple, separated by commas (,))</value>
   </data>
   <data name="TbSettingsSaveTip" xml:space="preserve">
     <value>After modifying the following parameters, click Save to take effect</value>
@@ -845,16 +845,16 @@
     <value>Turn on Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Socks Port</value>
+    <value>ساکس Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
-    <value>Start on boot</value>
+    <value>درهنگام راه ائدازی شروع شود</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Enable Statistics (Require restart)</value>
+    <value>فعال کردن آمار (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsStatisticsFreshRate" xml:space="preserve">
-    <value>Statistics freshrate (second)</value>
+    <value>نرخ تازه سازی آمار (ثانیه)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion Url</value>
@@ -884,7 +884,7 @@
     <value>تنظیم کلید میانبر جهانی</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Set directly by pressing the keyboard, Take effect after restart</value>
+    <value>مستقیماً با فشار دادن صفحه کلید تنظیم کنید، بعد از راه اندازی مجدد اعمال شود</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>پروکسی سیستم را تغییر ندهید</value>
@@ -929,7 +929,7 @@
     <value>{0} Website</value>
   </data>
   <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>Advanced Function</value>
+    <value>عملکرد پیشرفته</value>
   </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>اضافه کردن</value>
@@ -1001,7 +1001,7 @@
     <value>تنظیم جزئیات قانون مسیریابی</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Domain and ip are auto sorted when saving</value>
+    <value>دامنه و آی پی در هنگام ذخیره به طور خودکار مرتب می شوند</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>Ruleobject Doc</value>
