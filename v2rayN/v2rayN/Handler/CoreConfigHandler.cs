@@ -547,13 +547,16 @@ namespace v2rayN.Handler
                 string host = node.requestHost.TrimEx();
                 string sni = node.sni;
                 string useragent = "";
-                if (!config.customizeUserAgent.IsNullOrEmpty())
+                if (!config.defUserAgent.IsNullOrEmpty())
                 {
-                    useragent = config.customizeUserAgent;
-                }
-                else if (!config.defUserAgent.IsNullOrEmpty())
-                {
-                    useragent = Global.userAgentTxt[config.defUserAgent];
+                    try
+                    {
+                        useragent = Global.userAgentTxt[config.defUserAgent];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        useragent = config.defUserAgent;
+                    }
                 }
 
                 //if tls

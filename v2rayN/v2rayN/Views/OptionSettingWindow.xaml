@@ -70,6 +70,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
@@ -264,21 +265,13 @@
                         x:Name="cmbdefUserAgent"
                         Grid.Row="13"
                         Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}" />
-
+                        Margin="{StaticResource SettingItemMargin}" IsEditable="True" />
                         <TextBlock
-                        Grid.Row="14"
-                        Grid.Column="0"
+                        Grid.Row="13"
+                        Grid.Column="3"
                         Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsCustomizeUserAgent}" />
-                        <TextBox
-                        x:Name="txtcustomizeUserAgent"
-                        Grid.Row="14"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

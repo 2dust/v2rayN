@@ -1060,10 +1060,10 @@
   <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
     <value>نمایش کنسول</value>
   </data>
-  <data name="TbSettingsCustomizeUserAgent" xml:space="preserve">
-    <value>Customize User-Agent</value>
-  </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
     <value>User-Agent</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>This parameter is valid only for tcp/http and ws</value>
   </data>
 </root>
