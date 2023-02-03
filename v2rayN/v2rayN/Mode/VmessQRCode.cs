@@ -63,5 +63,10 @@
         /// TLS alpn
         /// </summary>
         public string alpn { get; set; } = string.Empty;
+        /// <summary>
+        /// TLS fingerprint
+        /// </summary>
+        public string fp { get; set; } = string.Empty;
+        
     }
 }

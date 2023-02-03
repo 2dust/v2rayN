@@ -71,7 +71,8 @@ namespace v2rayN.Handler
                 path = item.path,
                 tls = item.streamSecurity,
                 sni = item.sni,
-                alpn = item.alpn
+                alpn = item.alpn,
+                fp = item.fingerprint
             };
 
             url = Utils.ToJson(vmessQRCode);
@@ -201,6 +202,10 @@ namespace v2rayN.Handler
             if (!Utils.IsNullOrEmpty(item.alpn))
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+            }
+            if (!Utils.IsNullOrEmpty(item.fingerprint))
+            {
+                dicQuery.Add("fp", Utils.UrlEncode(item.fingerprint));
             }
 
             dicQuery.Add("type", !Utils.IsNullOrEmpty(item.network) ? item.network : "tcp");
@@ -408,6 +413,7 @@ namespace v2rayN.Handler
             profileItem.streamSecurity = Utils.ToString(vmessQRCode.tls);
             profileItem.sni = Utils.ToString(vmessQRCode.sni);
             profileItem.alpn = Utils.ToString(vmessQRCode.alpn);
+            profileItem.fingerprint = Utils.ToString(vmessQRCode.fp);
 
             return profileItem;
         }
@@ -759,6 +765,7 @@ namespace v2rayN.Handler
             item.streamSecurity = query["security"] ?? "";
             item.sni = query["sni"] ?? "";
             item.alpn = Utils.UrlDecode(query["alpn"] ?? "");
+            item.fingerprint = Utils.UrlDecode(query["fp"] ?? "");
             item.network = query["type"] ?? "tcp";
             switch (item.network)
             {
