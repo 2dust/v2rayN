@@ -602,6 +602,7 @@
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource ServerItemMargin}"
+                    IsEditable="True"
                     Style="{StaticResource DefComboBox}" />
 
                 <TextBlock

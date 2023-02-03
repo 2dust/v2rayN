@@ -95,7 +95,7 @@
         public static readonly List<string> coreTypes = new List<string> { "v2fly", "SagerNet", "Xray", "v2fly_v5" };
         public static readonly List<string> domainStrategys = new List<string> { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> domainMatchers = new List<string> { "linear", "mph", "" };
-        public static readonly List<string> fingerprints = new List<string> { "chrome", "firefox", "safari", "randomized", "" };
+        public static readonly List<string> fingerprints = new List<string> { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
         public static readonly List<string> userAgent = new List<string> { "chrome", "firefox", "safari", "edge", "none" };
         public static readonly Dictionary<string, string> userAgentTxt = new Dictionary<string, string>
         {

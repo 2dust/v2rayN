@@ -259,7 +259,8 @@
                             x:Name="cmbdefFingerprint"
                             Grid.Row="12"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="13"
