@@ -1,10 +1,6 @@
 {
   "dns": {
-    "servers": [      
-      {
-        "tag": "google",
-        "address": "tls://8.8.8.8"
-      },
+    "servers": [    
       {
         "tag": "local",
         "address": "223.5.5.5",
