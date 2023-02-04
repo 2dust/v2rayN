@@ -537,7 +537,12 @@ namespace v2rayN.ViewModels
             _noticeHandler?.SendMessage(msg);
             if (success)
             {
+                RefreshServers();
                 Reload();
+                if (_config.uiItem.enableAutoAdjustMainLvColWidth)
+                {
+                    _updateView("AdjustMainLvColWidth");
+                }
             }
         }
         private void UpdateStatisticsHandler(ServerSpeedItem update)
@@ -1220,21 +1225,8 @@ namespace v2rayN.ViewModels
         }
 
         private void UpdateSubscriptionProcess(string subId, bool blProxy)
-        {
-            void _updateUI(bool success, string msg)
-            {
-                _noticeHandler?.SendMessage(msg);
-                if (success)
-                {
-                    RefreshServers();
-                    if (_config.uiItem.enableAutoAdjustMainLvColWidth)
-                    {
-                        _updateView("AdjustMainLvColWidth");
-                    }
-                }
-            };
-
-            (new UpdateHandle()).UpdateSubscriptionProcess(_config, subId, blProxy, _updateUI);
+        {         
+            (new UpdateHandle()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
 
         #endregion
