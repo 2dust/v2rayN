@@ -114,6 +114,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 AcceptsReturn="True"
+                Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
 
             <TextBlock
@@ -146,6 +147,7 @@
                 Margin="4"
                 VerticalAlignment="Top"
                 AcceptsReturn="True"
+                Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
 
             <TextBlock
@@ -163,6 +165,7 @@
                 Margin="4"
                 VerticalAlignment="Top"
                 AcceptsReturn="True"
+                Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowse"

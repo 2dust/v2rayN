@@ -224,10 +224,11 @@
                         <GroupBox
                             Grid.Column="0"
                             Header="Domain"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtProxyDomain"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -235,10 +236,11 @@
                         <GroupBox
                             Grid.Column="2"
                             Header="IP"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtProxyIP"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -255,10 +257,11 @@
                         <GroupBox
                             Grid.Column="0"
                             Header="Domain"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtDirectDomain"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -266,10 +269,11 @@
                         <GroupBox
                             Grid.Column="2"
                             Header="IP"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtDirectIP"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -286,10 +290,11 @@
                         <GroupBox
                             Grid.Column="0"
                             Header="Domain"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtBlockDomain"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -297,10 +302,11 @@
                         <GroupBox
                             Grid.Column="2"
                             Header="IP"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtBlockIP"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>

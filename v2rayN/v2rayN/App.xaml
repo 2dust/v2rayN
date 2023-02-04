@@ -17,6 +17,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <system:Double x:Key="MenuItemHeight">26</system:Double>
+            <system:Double x:Key="StdFontSize">12</system:Double>
+            <system:Double x:Key="StdFontSize1">14</system:Double>
+            <system:Double x:Key="StdFontSize2">16</system:Double>
             <Thickness
                 x:Key="ServerItemMargin"
                 Bottom="4"
@@ -33,19 +36,19 @@
                 x:Key="ModuleTitle"
                 BasedOn="{StaticResource MaterialDesignTextBlock}"
                 TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize2}" />
             </Style>
             <Style
                 x:Key="ToolbarTextBlock"
                 BasedOn="{StaticResource MaterialDesignTextBlock}"
                 TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
             </Style>
             <Style
                 x:Key="StatusbarItem"
                 BasedOn="{StaticResource MaterialDesignTextBlock}"
                 TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
                 <Setter Property="Padding" Value="0" />
             </Style>
             <Style TargetType="{x:Type TextElement}">
@@ -58,7 +61,7 @@
             </Style>
             <Style x:Key="lvItemSelected" TargetType="{x:Type ListViewItem}">
                 <Setter Property="Height" Value="20" />
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="true">
                         <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
@@ -76,22 +79,19 @@
                 x:Key="ListItemCheckBox"
                 BasedOn="{StaticResource MaterialDesignUserForegroundCheckBox}"
                 TargetType="{x:Type CheckBox}">
-                <Setter Property="FontSize" Value="12" />
-            </Style>
-            <Style x:Key="ListItemChip" TargetType="{x:Type materialDesign:Chip}">
-                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
             </Style>
             <Style
                 x:Key="DefButton"
                 BasedOn="{StaticResource MaterialDesignRaisedButton}"
                 TargetType="{x:Type ButtonBase}">
-                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize1}" />
             </Style>
             <Style
                 x:Key="DefContextMenu"
                 BasedOn="{StaticResource MaterialDesignContextMenu}"
                 TargetType="{x:Type ContextMenu}">
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize1}" />
                 <Setter Property="FontFamily" Value="{x:Static conv:MaterialDesignFonts.MyFont}" />
             </Style>
 
@@ -99,7 +99,7 @@
                 x:Key="ToolbarMenu"
                 BasedOn="{StaticResource MaterialDesignMenu}"
                 TargetType="{x:Type Menu}">
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize1}" />
                 <Setter Property="FontFamily" Value="{x:Static conv:MaterialDesignFonts.MyFont}" />
             </Style>
 
@@ -107,15 +107,35 @@
                 x:Key="DefComboBox"
                 BasedOn="{StaticResource MaterialDesignComboBox}"
                 TargetType="{x:Type ComboBox}">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
                 <Setter Property="HorizontalAlignment" Value="Left" />
             </Style>
             <Style
                 x:Key="DefDataGrid"
                 BasedOn="{StaticResource MaterialDesignDataGrid}"
                 TargetType="{x:Type DataGrid}">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
             </Style>
+            <Style
+                x:Key="DefTextBox"
+                BasedOn="{StaticResource MaterialDesignTextBox}"
+                TargetType="{x:Type TextBox}">
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+            </Style>
+            <Style
+                x:Key="MyOutlinedTextBox"
+                BasedOn="{StaticResource MaterialDesignOutlinedTextBox}"
+                TargetType="{x:Type TextBox}">
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+            </Style>
+            <Style
+                x:Key="MyGroupBox"
+                BasedOn="{StaticResource MaterialDesignGroupBox}"
+                TargetType="{x:Type GroupBox}">
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+            </Style>
+
+
         </ResourceDictionary>
 
     </Application.Resources>

@@ -65,7 +65,8 @@
                 Grid.Column="1"
                 Width="200"
                 Margin="4"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                Style="{StaticResource DefTextBox}" />
 
             <TextBlock
                 Grid.Row="2"
@@ -80,6 +81,7 @@
                 Grid.Column="1"
                 Margin="4"
                 HorizontalAlignment="Left"
+                FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
 
             <TextBlock
@@ -94,6 +96,7 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 Margin="4"
+                FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
 
             <TextBlock
@@ -143,7 +146,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <CheckBox x:Name="chkAutoSort">
-                    <TextBlock Text="{x:Static resx:ResUI.TbAutoSort}" />
+                    <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.TbAutoSort}" />
                 </CheckBox>
             </StackPanel>
             <Button
@@ -172,10 +175,11 @@
             <GroupBox
                 Grid.Column="0"
                 Header="Domain"
-                Style="{StaticResource MaterialDesignGroupBox}">
+                Style="{StaticResource MyGroupBox}">
                 <TextBox
                     Name="txtDomain"
                     AcceptsReturn="True"
+                    Style="{StaticResource DefTextBox}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
             </GroupBox>
@@ -183,10 +187,11 @@
             <GroupBox
                 Grid.Column="2"
                 Header="IP"
-                Style="{StaticResource MaterialDesignGroupBox}">
+                Style="{StaticResource MyGroupBox}">
                 <TextBox
                     Name="txtIP"
                     AcceptsReturn="True"
+                    Style="{StaticResource DefTextBox}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
             </GroupBox>

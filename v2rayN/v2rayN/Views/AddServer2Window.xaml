@@ -73,7 +73,7 @@
                     Margin="4"
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -91,7 +91,7 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}" />
                 <StackPanel
                     Grid.Row="2"
                     Grid.Column="2"
@@ -125,6 +125,7 @@
                     Width="200"
                     Margin="4"
                     HorizontalAlignment="Left"
+                    FontSize="{DynamicResource StdFontSize}"
                     MaxDropDownHeight="1000"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}" />
 
@@ -157,7 +158,7 @@
                     Margin="4"
                     HorizontalAlignment="Left"
                     AcceptsReturn="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}" />
                 <StackPanel
                     Grid.Row="6"
                     Grid.Column="1"

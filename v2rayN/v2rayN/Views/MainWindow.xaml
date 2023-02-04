@@ -323,7 +323,8 @@
                             Width="200"
                             Margin="8,0"
                             materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
-                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Style="{StaticResource DefTextBox}" />
                     </ToolBar>
                 </ToolBarTray>
 
@@ -374,6 +375,7 @@
                                 Width="120"
                                 Margin="8,0"
                                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
+                                FontSize="{DynamicResource StdFontSize}"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}">
                                 <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
                                 <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
@@ -387,6 +389,7 @@
                                 Margin="8,0"
                                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                                 DisplayMemberPath="remarks"
+                                FontSize="{DynamicResource StdFontSize}"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                         </StackPanel>
 
@@ -495,6 +498,7 @@
                                                     Width="200"
                                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
                                                     DisplayMemberPath="remarks"
+                                                    FontSize="{DynamicResource StdFontSize}"
                                                     Style="{StaticResource MaterialDesignFilledComboBox}" />
                                             </DockPanel>
                                         </MenuItem.Header>
@@ -703,6 +707,7 @@
                                         MaxWidth="300"
                                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                                         DisplayMemberPath="remarks"
+                                        FontSize="{DynamicResource StdFontSize}"
                                         Style="{StaticResource MaterialDesignFilledComboBox}" />
                                 </DockPanel>
                             </MenuItem.Header>
@@ -715,6 +720,7 @@
                                         MaxWidth="300"
                                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuServers}"
                                         DisplayMemberPath="Text"
+                                        FontSize="{DynamicResource StdFontSize}"
                                         Style="{StaticResource MaterialDesignFilledComboBox}" />
                                 </DockPanel>
                             </MenuItem.Header>

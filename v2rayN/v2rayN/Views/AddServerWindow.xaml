@@ -83,7 +83,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -97,7 +98,8 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="3"
@@ -112,7 +114,8 @@
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource ServerItemMargin}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
             </Grid>
 
             <Separator
@@ -148,7 +151,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
                 <Button
                     x:Name="btnGUID"
                     Grid.Row="1"
@@ -171,7 +175,8 @@
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource ServerItemMargin}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="3"
@@ -216,7 +221,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -261,7 +267,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -275,7 +282,8 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
             </Grid>
             <Grid
@@ -306,7 +314,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
                 <Button
                     x:Name="btnGUID5"
                     Grid.Row="1"
@@ -344,7 +353,8 @@
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource ServerItemMargin}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
             </Grid>
             <Grid
                 x:Name="gridTrojan"
@@ -373,7 +383,8 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -478,7 +489,8 @@
                     Grid.Row="3"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
                 <TextBlock
                     x:Name="tipRequestHost"
                     Grid.Row="3"
@@ -500,7 +512,8 @@
                     Grid.Row="4"
                     Grid.Column="1"
                     Width="400"
-                    Margin="{StaticResource ServerItemMargin}" />
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
                 <TextBlock
                     x:Name="tipPath"
                     Grid.Row="4"
@@ -572,7 +585,8 @@
                     Grid.Column="1"
                     Width="400"
                     Margin="{StaticResource ServerItemMargin}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
 
                 <TextBlock
                     Grid.Row="2"

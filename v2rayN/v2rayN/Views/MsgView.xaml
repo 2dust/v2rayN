@@ -20,6 +20,7 @@
                 Margin="8,0"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource PrimaryHueLightBrush}"
+                Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.MsgInformationTitle}" />
             <ComboBox
                 x:Name="cmbMsgFilter"
@@ -27,10 +28,12 @@
                 Margin="8,0"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
-                IsEditable="True" />
+                IsEditable="True"
+                Style="{StaticResource DefComboBox}" />
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
@@ -41,7 +44,7 @@
         <TextBox
             Name="txtMsg"
             BorderThickness="0"
-            FontSize="11"
+            FontSize="{DynamicResource StdFontSize}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             TextWrapping="Wrap"

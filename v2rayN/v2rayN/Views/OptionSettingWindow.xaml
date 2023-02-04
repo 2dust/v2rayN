@@ -85,7 +85,8 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"
@@ -176,7 +177,8 @@
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="7"
@@ -190,7 +192,8 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="8"
@@ -231,8 +234,10 @@
                             x:Name="cmbloglevel"
                             Grid.Row="10"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            materialDesign:HintAssist.Hint="Level" />
+                            materialDesign:HintAssist.Hint="Level"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="11"
@@ -259,8 +264,10 @@
                             x:Name="cmbdefFingerprint"
                             Grid.Row="12"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            IsEditable="True" />
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="13"
@@ -273,8 +280,10 @@
                             x:Name="cmbdefUserAgent"
                             Grid.Row="13"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            IsEditable="True" />
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="13"
                             Grid.Column="3"
@@ -296,7 +305,8 @@
                         <ComboBox
                             x:Name="cmbdomainStrategy4Freedom"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
                     </StackPanel>
 
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -320,6 +330,7 @@
                         VerticalAlignment="Stretch"
                         AcceptsReturn="True"
                         BorderThickness="1"
+                        Style="{StaticResource DefTextBox}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                 </DockPanel>
@@ -353,7 +364,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="mtu" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpmtu"
                         Grid.Row="1"
                         Grid.Column="1"
@@ -367,7 +378,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="tti" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcptti"
                         Grid.Row="2"
                         Grid.Column="1"
@@ -381,7 +392,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="uplinkCapacity" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpuplinkCapacity"
                         Grid.Row="3"
                         Grid.Column="1"
@@ -395,7 +406,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="downlinkCapacity" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpdownlinkCapacity"
                         Grid.Row="4"
                         Grid.Column="1"
@@ -409,7 +420,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="readBufferSize" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpreadBufferSize"
                         Grid.Row="5"
                         Grid.Column="1"
@@ -423,7 +434,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="writeBufferSize" />
-                    <TextBox
+                    <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpwriteBufferSize"
                         Grid.Row="6"
                         Grid.Column="1"
@@ -521,7 +532,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -647,7 +659,8 @@
                             Grid.Row="12"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="13"
@@ -661,7 +674,8 @@
                             Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="14"
@@ -675,7 +689,8 @@
                             Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}" />
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="15"
@@ -688,8 +703,10 @@
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            MaxDropDownHeight="1000" />
+                            MaxDropDownHeight="1000"
+                            Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="2"
@@ -713,8 +730,10 @@
                         <ComboBox
                             x:Name="cmbsystemProxyAdvancedProtocol"
                             Grid.Row="4"
+                            MinWidth="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            materialDesign:HintAssist.Hint="Protocol" />
+                            materialDesign:HintAssist.Hint="Protocol"
+                            Style="{StaticResource DefComboBox}" />
 
                     </StackPanel>
 
@@ -731,6 +750,7 @@
                         VerticalAlignment="Stretch"
                         AcceptsReturn="True"
                         BorderThickness="1"
+                        Style="{StaticResource DefTextBox}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                 </DockPanel>
@@ -799,7 +819,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -814,7 +835,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="5"
@@ -831,6 +853,7 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Top"
                             AcceptsReturn="True"
+                            Style="{StaticResource DefTextBox}"
                             TextWrapping="Wrap" />
                         <Button
                             x:Name="btnBrowse"
@@ -852,10 +875,11 @@
                         <GroupBox
                             Grid.Column="0"
                             Header="{x:Static resx:ResUI.TbSettingsTunModeDirectIP}"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtDirectIP"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -863,10 +887,11 @@
                         <GroupBox
                             Grid.Column="2"
                             Header="{x:Static resx:ResUI.TbSettingsTunModeDirectProcess}"
-                            Style="{StaticResource MaterialDesignGroupBox}">
+                            Style="{StaticResource MyGroupBox}">
                             <TextBox
                                 Name="txtDirectProcess"
                                 AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
@@ -901,7 +926,8 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="2"
@@ -915,7 +941,8 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="3"
@@ -929,7 +956,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -943,7 +971,8 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="5"
@@ -957,7 +986,8 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="6"
@@ -971,7 +1001,8 @@
                         Grid.Row="6"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource SettingItemMargin}"
+                        Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>
         </TabControl>
