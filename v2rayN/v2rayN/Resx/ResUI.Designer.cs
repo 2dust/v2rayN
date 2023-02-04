@@ -2402,7 +2402,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Copy the font TTF file to the directory Resources\Fonts, restart the settings 的本地化字符串。
+        ///   查找类似 Copy the font TTF file to the directory guiFonts, restart the settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamilyTip {
             get {

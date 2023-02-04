@@ -1097,7 +1097,7 @@
     <value>FontFamily(Require restart)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Copy the font TTF file to the directory Resources\Fonts, restart the settings</value>
+    <value>Copy the font TTF file to the directory guiFonts, restart the settings</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>http port=socks port+1</value>

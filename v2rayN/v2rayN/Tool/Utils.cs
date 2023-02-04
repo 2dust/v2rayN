@@ -1135,6 +1135,22 @@ namespace v2rayN
                 return Path.Combine(_tempPath, filename);
             }
         }
+        public static string GetFontsPath(string filename = "")
+        {
+            string _tempPath = Path.Combine(StartupPath(), "guiFonts");
+            if (!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
+            if (string.IsNullOrEmpty(filename))
+            {
+                return _tempPath;
+            }
+            else
+            {
+                return Path.Combine(_tempPath, filename);
+            }
+        }
 
         #endregion
 

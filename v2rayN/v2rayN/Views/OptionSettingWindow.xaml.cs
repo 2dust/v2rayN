@@ -66,23 +66,32 @@ namespace v2rayN.Views
             //fill fonts
             try
             {
-                var dir = new DirectoryInfo(Utils.GetPath(@"Resources\Fonts"));
+                var dir = new DirectoryInfo(Utils.GetFontsPath());
                 var files = dir.GetFiles("*.ttf");
                 var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
                 foreach (var it in files)
                 {
-                    var glyphTypeface = new GlyphTypeface(new Uri(Utils.GetPath(@$"Resources\Fonts\{it.Name}")));
-                    var fontFace = glyphTypeface.Win32FaceNames[new CultureInfo("en-us")];
-                    if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
+                    var families = Fonts.GetFontFamilies(Utils.GetFontsPath(it.Name));
+                    foreach (FontFamily family in families)
                     {
-                        continue;
+                        var typefaces = family.GetTypefaces();
+                        foreach (Typeface typeface in typefaces)
+                        {
+                            typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
+                            var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
+                            if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
+                            {
+                                continue;
+                            }
+                            var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
+                            if (Utils.IsNullOrEmpty(fontFamily))
+                            {
+                                continue;
+                            }
+                            cmbcurrentFontFamily.Items.Add(fontFamily);
+                            break;
+                        }
                     }
-                    var fontFamily = glyphTypeface.Win32FamilyNames[new CultureInfo(culture)];
-                    if (Utils.IsNullOrEmpty(fontFamily))
-                    {
-                        continue;
-                    }
-                    cmbcurrentFontFamily.Items.Add(fontFamily);
                 }
             }
             catch (Exception ex)
