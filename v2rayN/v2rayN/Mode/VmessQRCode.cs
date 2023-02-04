@@ -67,6 +67,6 @@
         /// TLS fingerprint
         /// </summary>
         public string fp { get; set; } = string.Empty;
-        
+
     }
 }

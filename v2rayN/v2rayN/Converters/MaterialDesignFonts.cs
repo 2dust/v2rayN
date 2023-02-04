@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using v2rayN.Handler;
 
 namespace v2rayN.Converters

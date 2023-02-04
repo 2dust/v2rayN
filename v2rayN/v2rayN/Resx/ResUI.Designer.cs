@@ -2510,6 +2510,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 FontSize 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFontSize {
+            get {
+                return ResourceManager.GetString("TbSettingsFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Http Port 的本地化字符串。
         /// </summary>
         public static string TbSettingsHttpPort {
@@ -2546,7 +2555,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Language 的本地化字符串。
+        ///   查找类似 Language(Restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsLanguage {
             get {

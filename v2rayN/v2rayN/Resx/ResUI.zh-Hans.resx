@@ -548,7 +548,7 @@
     <value>暗黑模式</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>语言</value>
+    <value>语言(重启)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>从剪贴板导入批量URL (Ctrl+V)</value>
@@ -1104,5 +1104,8 @@
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理员权限设置此项，在启动后获得管理员权限</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>字体大小</value>
   </data>
 </root>

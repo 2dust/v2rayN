@@ -77,6 +77,7 @@
         public const string CommandClearMsg = "CommandClearMsg";
         public const string DelayUnit = "";
         public const string SpeedUnit = "";
+        public const int MinFontSize = 10;
 
         public static readonly List<string> IEProxyProtocols = new List<string> {
                         "{ip}:{http_port}",

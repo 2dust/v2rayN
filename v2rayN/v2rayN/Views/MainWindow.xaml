@@ -261,37 +261,74 @@
                             HorizontalAlignment="Right"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                             <StackPanel Margin="8">
-                                <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-                                    <ToggleButton x:Name="togDarkMode" Margin="8" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="togDarkMode"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="8" />
+
                                     <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsColor}" />
                                     <ComboBox
                                         x:Name="cmbSwatches"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
                                         Width="100"
                                         Margin="8"
                                         DisplayMemberPath="Name"
                                         Style="{StaticResource DefComboBox}" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
+
                                     <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
+                                    <ComboBox
+                                        x:Name="cmbCurrentFontSize"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Width="100"
+                                        Margin="8"
+                                        Style="{StaticResource DefComboBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                                     <ComboBox
                                         x:Name="cmbCurrentLanguage"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
                                         Width="100"
                                         Margin="8"
                                         materialDesign:HintAssist.Hint="Language"
                                         Style="{StaticResource DefComboBox}" />
-                                </StackPanel>
+
+                                </Grid>
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </ToolBar>

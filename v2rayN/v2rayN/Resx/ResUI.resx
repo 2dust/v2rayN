@@ -548,7 +548,7 @@
     <value>Dark Mode</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>Language</value>
+    <value>Language(Restart)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>Import bulk URL from clipboard (Ctrl+V)</value>
@@ -1104,5 +1104,8 @@
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Set this with admin privileges, get admin privileges after startup</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>FontSize</value>
   </data>
 </root>

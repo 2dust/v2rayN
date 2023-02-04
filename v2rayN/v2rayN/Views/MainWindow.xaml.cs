@@ -45,6 +45,11 @@ namespace v2rayN.Views
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
+            for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
+            {
+                cmbCurrentFontSize.Items.Add(i.ToString());
+            }
+
             Global.Languages.ForEach(it =>
             {
                 cmbCurrentLanguage.Items.Add(it);
@@ -173,6 +178,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.Swatches, v => v.cmbSwatches.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
             });
 
