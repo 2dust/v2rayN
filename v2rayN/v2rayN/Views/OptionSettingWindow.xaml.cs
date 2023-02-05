@@ -68,7 +68,8 @@ namespace v2rayN.Views
             {
                 var dir = new DirectoryInfo(Utils.GetFontsPath());
                 var files = dir.GetFiles("*.ttf");
-                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
+                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us"; 
+                var culture2 = "en-us";
                 foreach (var it in files)
                 {
                     var families = Fonts.GetFontFamilies(Utils.GetFontsPath(it.Name));
@@ -86,7 +87,11 @@ namespace v2rayN.Views
                             var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
                             if (Utils.IsNullOrEmpty(fontFamily))
                             {
-                                continue;
+                                fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture2)];
+                                if (Utils.IsNullOrEmpty(fontFamily))
+                                {
+                                    continue;
+                                }
                             }
                             cmbcurrentFontFamily.Items.Add(fontFamily);
                             break;
