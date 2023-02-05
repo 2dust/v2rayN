@@ -179,8 +179,9 @@ namespace v2rayN.Handler
             return inbound;
         }
 
-        private static int routing(Config config, ref V2rayConfig v2rayConfig)
+        private static int routing(Config config, ref V2rayConfig v2rayConfig, out HashSet<string> usedOutboundTags)
         {
+            usedOutboundTags = new HashSet<string>();
             try
             {
                 if (v2rayConfig.routing != null
@@ -204,6 +205,7 @@ namespace v2rayN.Handler
                                 if (item.enabled)
                                 {
                                     routingUserRule(item, ref v2rayConfig);
+                                    usedOutboundTags.Add(item.outboundTag);
                                 }
                             }
                         }
@@ -302,12 +304,32 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private static int outbound(ProfileItem node, ref V2rayConfig v2rayConfig)
+        private static Outbounds createOutbound(ProfileItem node)
         {
+            var outbound = new Outbounds
+            {
+                tag = node.remarks,
+                protocol = node.configType switch
+                {
+                    EConfigType.VMess => Global.vmessProtocolLite,
+                    EConfigType.Shadowsocks => Global.ssProtocolLite,
+                    EConfigType.VLESS => Global.vlessProtocolLite,
+                    EConfigType.Trojan => Global.trojanProtocolLite,
+                    EConfigType.Socks => Global.socksProtocolLite,
+                    _ => "unknown"
+                },
+                settings = new Outboundsettings
+                {
+                    vnext = new List<VnextItem> { new VnextItem { users = new List<UsersItem>() } },
+                    servers = new List<ServersItem>(),
+                    response = new Response()
+                },
+                streamSettings = new StreamSettings(),
+                mux = new Mux()
+            };
             try
             {
                 var config = LazyConfig.Instance.GetConfig();
-                Outbounds outbound = v2rayConfig.outbounds[0];
                 if (node.configType == EConfigType.VMess)
                 {
                     VnextItem vnextItem;
@@ -528,6 +550,26 @@ namespace v2rayN.Handler
 
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+            return outbound;
+        }
+
+        private static int outbound(ProfileItem node, ref V2rayConfig v2rayConfig)
+        {
+            try
+            {
+                if (v2rayConfig.outbounds.Count <= 0)
+                {
+                    v2rayConfig.outbounds.Add(createOutbound(node));
+                }
+                else
+                {
+                    v2rayConfig.outbounds[0] = createOutbound(node);
                 }
             }
             catch (Exception ex)
@@ -956,7 +998,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int GenerateClientConfigContent(ProfileItem node, bool blExport, ref V2rayConfig v2rayConfig, out string msg)
+        private static int GenerateClientConfigContent(ProfileItem node, bool blExport, ref V2rayConfig v2rayConfig, out string msg)
         {
             try
             {
@@ -988,10 +1030,20 @@ namespace v2rayN.Handler
 
                 inbound(config, ref v2rayConfig);
 
-                routing(config, ref v2rayConfig);
+                routing(config, ref v2rayConfig, out HashSet<string> usedTags);
 
+                v2rayConfig.outbounds.Clear();
                 //outbound
                 outbound(node, ref v2rayConfig);
+                // first outbound is current active node, of which name is always "proxy"
+                v2rayConfig.outbounds[0].tag = Global.agentTag;
+
+                // append all outbound used by custom routing rules
+                var allOutbounds = SqliteHelper.Instance.Table<ProfileItem>().Where(i => usedTags.Contains(i.remarks));
+                foreach (var item in allOutbounds)
+                {
+                    v2rayConfig.outbounds.Add(createOutbound(item));
+                }
 
                 //dns
                 dns(config, ref v2rayConfig);

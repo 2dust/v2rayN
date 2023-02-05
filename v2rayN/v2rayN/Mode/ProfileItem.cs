@@ -247,5 +247,56 @@ namespace v2rayN.Mode
         public string fingerprint { get; set; }
 
         public bool displayLog { get; set; } = true;
+
+        // TODO: change ProfileItem and other models to C# records
+        public override bool Equals(object? obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((ProfileItem)obj);
+        }
+
+        protected bool Equals(ProfileItem other) {
+            return indexId == other.indexId && configType == other.configType && configVersion == other.configVersion &&
+                   sort == other.sort && address == other.address && port == other.port && id == other.id &&
+                   alterId == other.alterId && security == other.security && network == other.network &&
+                   remarks == other.remarks && headerType == other.headerType && requestHost == other.requestHost &&
+                   path == other.path && streamSecurity == other.streamSecurity && allowInsecure == other.allowInsecure &&
+                   delay == other.delay && speed == other.speed && subid == other.subid && isSub == other.isSub &&
+                   flow == other.flow && sni == other.sni && alpn == other.alpn && coreType == other.coreType &&
+                   preSocksPort == other.preSocksPort && fingerprint == other.fingerprint && displayLog == other.displayLog;
+        }
+
+        public override int GetHashCode() {
+            var hashCode = new HashCode();
+            hashCode.Add(indexId);
+            hashCode.Add((int)configType);
+            hashCode.Add(configVersion);
+            hashCode.Add(sort);
+            hashCode.Add(address);
+            hashCode.Add(port);
+            hashCode.Add(id);
+            hashCode.Add(alterId);
+            hashCode.Add(security);
+            hashCode.Add(network);
+            hashCode.Add(remarks);
+            hashCode.Add(headerType);
+            hashCode.Add(requestHost);
+            hashCode.Add(path);
+            hashCode.Add(streamSecurity);
+            hashCode.Add(allowInsecure);
+            hashCode.Add(delay);
+            hashCode.Add(speed);
+            hashCode.Add(subid);
+            hashCode.Add(isSub);
+            hashCode.Add(flow);
+            hashCode.Add(sni);
+            hashCode.Add(alpn);
+            hashCode.Add(coreType);
+            hashCode.Add(preSocksPort);
+            hashCode.Add(fingerprint);
+            hashCode.Add(displayLog);
+            return hashCode.ToHashCode();
+        }
     }
 }

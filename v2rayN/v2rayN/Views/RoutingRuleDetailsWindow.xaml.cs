@@ -20,6 +20,10 @@ namespace v2rayN.Views
             cmbOutboundTag.Items.Add(Global.agentTag);
             cmbOutboundTag.Items.Add(Global.directTag);
             cmbOutboundTag.Items.Add(Global.blockTag);
+            foreach (var profileItem in SqliteHelper.Instance.Table<ProfileItem>())
+            {
+                cmbOutboundTag.Items.Add(profileItem.remarks);
+            }
             Global.Protocols.ForEach(it =>
             {
                 clbProtocol.Items.Add(it);
