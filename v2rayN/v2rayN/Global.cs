@@ -108,7 +108,7 @@
         };
         public static readonly List<string> allowInsecures = new List<string> { "true", "false", "" };
         public static readonly List<string> domainStrategy4Freedoms = new List<string> { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
-        public static readonly List<string> Languages = new List<string> { "zh-Hans", "en", "fa-Ir" };
+        public static readonly List<string> Languages = new List<string> { "zh-Hans", "en", "fa-Ir", "ru" };
         public static readonly List<string> alpns = new List<string> { "h2", "http/1.1", "h2,http/1.1", "" };
         public static readonly List<string> LogLevel = new List<string> { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new List<string> { "socks", "http", "socks2", "http2" };
