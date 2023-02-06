@@ -1108,4 +1108,16 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>FontSize</value>
   </data>
+  <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
+    <value>Proxy IP CIDR, separated by commas (,)</value>
+  </data>
+  <data name="TbSettingsTunModeProxyProcess" xml:space="preserve">
+    <value>Proxy Process name, separated by commas (,)</value>
+  </data>
+  <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
+    <value>Bypass Mode</value>
+  </data>
+  <data name="TbSettingsTunModeBypassModeTip" xml:space="preserve">
+    <value>Enable: If no route matches, the final proxy</value>
+  </data>
 </root>

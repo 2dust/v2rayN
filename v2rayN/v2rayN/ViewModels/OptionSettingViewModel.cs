@@ -77,8 +77,12 @@ namespace v2rayN.ViewModels
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
         [Reactive] public string TunCustomTemplate { get; set; }
+        [Reactive] public bool TunBypassMode { get; set; }
+        [Reactive] public bool TunBypassMode2 { get; set; }
         [Reactive] public string TunDirectIP { get; set; }
         [Reactive] public string TunDirectProcess { get; set; }
+        [Reactive] public string TunProxyIP { get; set; }
+        [Reactive] public string TunProxyProcess { get; set; }
         #endregion
 
         #region CoreType
@@ -164,8 +168,14 @@ namespace v2rayN.ViewModels
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
             TunCustomTemplate = _config.tunModeItem.customTemplate;
+            TunBypassMode = _config.tunModeItem.bypassMode;
             TunDirectIP = Utils.List2String(_config.tunModeItem.directIP, true);
             TunDirectProcess = Utils.List2String(_config.tunModeItem.directProcess, true);
+            TunProxyIP = Utils.List2String(_config.tunModeItem.proxyIP, true);
+            TunProxyProcess = Utils.List2String(_config.tunModeItem.proxyProcess, true);
+            this.WhenAnyValue(
+              x => x.TunBypassMode)
+              .Subscribe(c => TunBypassMode2 = !TunBypassMode);
 
             #endregion
 
@@ -328,8 +338,11 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
             _config.tunModeItem.customTemplate = TunCustomTemplate;
+            _config.tunModeItem.bypassMode = TunBypassMode;
             _config.tunModeItem.directIP = Utils.String2List(TunDirectIP);
             _config.tunModeItem.directProcess = Utils.String2List(TunDirectProcess);
+            _config.tunModeItem.proxyIP = Utils.String2List(TunProxyIP);
+            _config.tunModeItem.proxyProcess = Utils.String2List(TunProxyProcess);
 
             //coreType 
             SaveCoreType();

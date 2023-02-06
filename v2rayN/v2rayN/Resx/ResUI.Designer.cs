@@ -2771,6 +2771,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Bypass Mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeBypassMode {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeBypassMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable: If no route matches, the final proxy 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeBypassModeTip {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeBypassModeTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Custom Template 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunModeCustomTemplate {
@@ -2794,6 +2812,24 @@ namespace v2rayN.Resx {
         public static string TbSettingsTunModeDirectProcess {
             get {
                 return ResourceManager.GetString("TbSettingsTunModeDirectProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy IP CIDR, separated by commas (,) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeProxyIP {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeProxyIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy Process name, separated by commas (,) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunModeProxyProcess {
+            get {
+                return ResourceManager.GetString("TbSettingsTunModeProxyProcess", resourceCulture);
             }
         }
         

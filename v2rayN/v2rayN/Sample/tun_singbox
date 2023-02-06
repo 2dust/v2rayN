@@ -1,4 +1,10 @@
 {
+  "log": {
+    "disabled": false,
+    "level": "info",
+    $log_output$
+    "timestamp": true
+  },
   "dns": {
     "servers": [    
       {
@@ -23,6 +29,7 @@
   "inbounds": [
     {
       "type": "tun",
+      "tag": "tun-in",
       "interface_name": "singbox_tun",
       "inet4_address": "172.19.0.1/30",
 
@@ -102,6 +109,9 @@
       }
       $ruleDirectIPs$
       $ruleDirectProcess$
+      $ruleProxyIPs$
+      $ruleProxyProcess$
+      $ruleFinally$
     ]
   }
 }

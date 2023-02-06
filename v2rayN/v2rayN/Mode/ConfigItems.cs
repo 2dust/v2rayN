@@ -110,8 +110,11 @@ namespace v2rayN.Mode
         public string stack { get; set; }
         public int mtu { get; set; }
         public string customTemplate { get; set; }
+        public bool bypassMode { get; set; } = true;
         public List<string> directIP { get; set; }
         public List<string> directProcess { get; set; }
+        public List<string> proxyIP { get; set; }
+        public List<string> proxyProcess { get; set; }
 
     }
 }

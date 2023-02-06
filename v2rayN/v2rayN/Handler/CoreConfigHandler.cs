@@ -88,9 +88,10 @@ namespace v2rayN.Handler
                 {
                     if (config.logEnabled)
                     {
+                        var dtNow = DateTime.Now;
                         v2rayConfig.log.loglevel = config.loglevel;
-                        v2rayConfig.log.access = Utils.GetLogPath(v2rayConfig.log.access);
-                        v2rayConfig.log.error = Utils.GetLogPath(v2rayConfig.log.error);
+                        v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow.ToString("yyyy-MM-dd")}.txt");
+                        v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow.ToString("yyyy-MM-dd")}.txt");
                     }
                     else
                     {
