@@ -18,8 +18,9 @@
             </ResourceDictionary.MergedDictionaries>
             <system:Double x:Key="MenuItemHeight">26</system:Double>
             <system:Double x:Key="StdFontSize">12</system:Double>
-            <system:Double x:Key="StdFontSize1">14</system:Double>
-            <system:Double x:Key="StdFontSize2">16</system:Double>
+            <system:Double x:Key="StdFontSize1">13</system:Double>
+            <system:Double x:Key="StdFontSize2">14</system:Double>
+            <system:Double x:Key="StdFontSizeMsg">11</system:Double>
             <Thickness
                 x:Key="ServerItemMargin"
                 Bottom="4"

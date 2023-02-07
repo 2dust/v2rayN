@@ -1616,8 +1616,9 @@ namespace v2rayN.ViewModels
                           _config.uiItem.currentFontSize = CurrentFontSize;
                           double size = (long)CurrentFontSize;
                           Application.Current.Resources["StdFontSize"] = size;
-                          Application.Current.Resources["StdFontSize1"] = size + 2;
-                          Application.Current.Resources["StdFontSize2"] = size + 4;
+                          Application.Current.Resources["StdFontSize1"] = size + 1;
+                          Application.Current.Resources["StdFontSize2"] = size + 2;
+                          Application.Current.Resources["StdFontSizeMsg"] = size - 1;
 
                           ConfigHandler.SaveConfig(ref _config);
                       }
