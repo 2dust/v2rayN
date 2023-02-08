@@ -79,11 +79,11 @@ namespace v2rayN.Views
                         foreach (Typeface typeface in typefaces)
                         {
                             typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
-                            var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
-                            if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
-                            {
-                                continue;
-                            }
+                            //var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
+                            //if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
+                            //{
+                            //    continue;
+                            //}
                             var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
                             if (Utils.IsNullOrEmpty(fontFamily))
                             {
