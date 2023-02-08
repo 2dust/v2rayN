@@ -1225,7 +1225,7 @@ namespace v2rayN.ViewModels
         }
 
         private void UpdateSubscriptionProcess(string subId, bool blProxy)
-        {         
+        {
             (new UpdateHandle()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
 

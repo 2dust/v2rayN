@@ -195,10 +195,10 @@ namespace v2rayN.Handler
         private async Task RunSpeedTestAsync()
         {
             int pid = -1;
-            if (_actionType == ESpeedActionType.Mixedtest)
-            {
-                _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
-            }
+            //if (_actionType == ESpeedActionType.Mixedtest)
+            //{
+            //    _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
+            //}
 
             pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
             if (pid < 0)
@@ -207,10 +207,11 @@ namespace v2rayN.Handler
                 return;
             }
 
-            string url = _config.constItem.speedTestUrl;
+            string url = _config.speedTestItem.speedTestUrl;
+            var timeout = _config.speedTestItem.speedTestTimeout;
+
             DownloadHandle downloadHandle = new DownloadHandle();
 
-            var timeout = 8;
             foreach (var it in _selecteds)
             {
                 if (!it.allowTest)
@@ -221,11 +222,11 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                if (it.delay < 0)
-                {
-                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
-                    continue;
-                }
+                //if (it.delay < 0)
+                //{
+                //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                //    continue;
+                //}
                 _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
@@ -250,18 +251,71 @@ namespace v2rayN.Handler
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
         }
+
+        private async Task RunSpeedTestMulti()
+        {
+            int pid = -1;
+            pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
+            if (pid < 0)
+            {
+                UpdateFunc("", ResUI.FailedToRunCore);
+                return;
+            }
+
+            string url = _config.speedTestItem.speedTestUrl;
+            var timeout = _config.speedTestItem.speedTestTimeout;
+
+            DownloadHandle downloadHandle = new DownloadHandle();
+
+            foreach (var it in _selecteds)
+            {
+                if (!it.allowTest)
+                {
+                    continue;
+                }
+                if (it.configType == EConfigType.Custom)
+                {
+                    continue;
+                }
+                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
+
+                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                if (item is null) continue;
+
+                WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
+                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                {
+                    decimal.TryParse(msg, out decimal dec);
+                    if (dec > 0)
+                    {
+                        _ = LazyConfig.Instance.SetTestResult(it.indexId, "", msg);
+                    }
+                    UpdateFunc(it.indexId, "", msg);
+                });
+                Thread.Sleep(2000);
+            }
+
+            Thread.Sleep((timeout + 2) * 1000);
+
+            if (pid > 0)
+            {
+                _coreHandler.CoreStopPid(pid);
+            }
+            UpdateFunc("", ResUI.SpeedtestingCompleted);
+        }
+
         private async Task RunMixedtestAsync()
         {
             await RunRealPing();
 
             Thread.Sleep(1000);
 
-            await RunSpeedTestAsync();
+            await RunSpeedTestMulti();
         }
 
         public string GetRealPingTime(DownloadHandle downloadHandle, WebProxy webProxy)
         {
-            string status = downloadHandle.GetRealPingTime(_config.constItem.speedPingTestUrl, webProxy, 10, out int responseTime);
+            string status = downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10, out int responseTime);
             //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
             return FormatOut(Utils.IsNullOrEmpty(status) ? responseTime : -1, Global.DelayUnit);
         }

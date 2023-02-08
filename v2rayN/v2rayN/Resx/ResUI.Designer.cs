@@ -790,7 +790,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 One-click test Latency and speed (Ctrl+E) 的本地化字符串。
+        ///   查找类似 One-click multi test Latency and speed (Ctrl+E) 的本地化字符串。
         /// </summary>
         public static string menuMixedTestServer {
             get {
@@ -2686,6 +2686,24 @@ namespace v2rayN.Resx {
         public static string TbSettingsSocksPortTip {
             get {
                 return ResourceManager.GetString("TbSettingsSocksPortTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SpeedTest Single Timeout Value 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSpeedTestTimeout {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SpeedTest Url 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSpeedTestUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestUrl", resourceCulture);
             }
         }
         

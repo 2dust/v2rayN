@@ -184,12 +184,12 @@ namespace v2rayN.Base
             configStr = configStr.Replace("$ruleProxyIPs$", "");
             configStr = configStr.Replace("$ruleProxyProcess$", "");
             configStr = configStr.Replace("$ruleFinally$", "");
-             
+
 
             File.WriteAllText(Utils.GetConfigPath(_tunConfigName), configStr);
 
             return true;
-        }        
+        }
 
         private void CoreStop()
         {

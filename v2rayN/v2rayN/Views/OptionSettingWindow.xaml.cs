@@ -63,12 +63,21 @@ namespace v2rayN.Views
                 cmbCoreType6.Items.Add(it);
             });
 
+            for (int i = 2; i <= 6; i++)
+            {
+                cmbSpeedTestTimeout.Items.Add(i * 5);
+            }
+            Global.SpeedTestUrls.ForEach(it =>
+            {
+                cmbSpeedTestUrl.Items.Add(it);
+            });
+
             //fill fonts
             try
             {
                 var dir = new DirectoryInfo(Utils.GetFontsPath());
                 var files = dir.GetFiles("*.ttf");
-                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us"; 
+                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var it in files)
                 {
@@ -153,6 +162,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.autoUpdateSubInterval, v => v.txtautoUpdateSubInterval.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.trayMenuServersLimit, v => v.txttrayMenuServersLimit.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.currentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
 
 
                 this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);

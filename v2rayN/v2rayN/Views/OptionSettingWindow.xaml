@@ -478,6 +478,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -660,6 +662,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
@@ -675,6 +678,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
@@ -690,6 +694,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
@@ -714,6 +719,36 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}" />
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSpeedTestTimeout}" />
+                        <ComboBox
+                            x:Name="cmbSpeedTestTimeout"
+                            Grid.Row="16"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="17"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
+                        <ComboBox
+                            x:Name="cmbSpeedTestUrl"
+                            Grid.Row="17"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

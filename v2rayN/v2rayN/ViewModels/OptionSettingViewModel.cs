@@ -63,6 +63,8 @@ namespace v2rayN.ViewModels
         [Reactive] public int autoUpdateSubInterval { get; set; }
         [Reactive] public int trayMenuServersLimit { get; set; }
         [Reactive] public string currentFontFamily { get; set; }
+        [Reactive] public int SpeedTestTimeout { get; set; }
+        [Reactive] public string SpeedTestUrl { get; set; }
 
         #endregion
 
@@ -153,6 +155,8 @@ namespace v2rayN.ViewModels
             autoUpdateSubInterval = _config.autoUpdateSubInterval;
             trayMenuServersLimit = _config.trayMenuServersLimit;
             currentFontFamily = _config.uiItem.currentFontFamily;
+            SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
+            SpeedTestUrl = _config.speedTestItem.speedTestUrl;
 
             #endregion
 
@@ -327,6 +331,8 @@ namespace v2rayN.ViewModels
             _config.uiItem.doubleClick2Activate = DoubleClick2Activate;
             _config.trayMenuServersLimit = trayMenuServersLimit;
             _config.uiItem.currentFontFamily = currentFontFamily;
+            _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
+            _config.speedTestItem.speedTestUrl = SpeedTestUrl;
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;

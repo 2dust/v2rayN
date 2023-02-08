@@ -73,8 +73,6 @@ namespace v2rayN.Mode
     [Serializable]
     public class ConstItem
     {
-        public string speedTestUrl { get; set; }
-        public string speedPingTestUrl { get; set; }
         public string defIEProxyExceptions { get; set; }
     }
 
@@ -117,4 +115,14 @@ namespace v2rayN.Mode
         public List<string> proxyProcess { get; set; }
 
     }
+
+    [Serializable]
+    public class SpeedTestItem
+    {
+        public int speedTestTimeout { get; set; }
+        public string speedTestUrl { get; set; }
+        public string speedPingTestUrl { get; set; }
+
+    }
+
 }

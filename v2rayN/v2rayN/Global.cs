@@ -17,7 +17,6 @@
         public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
         public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
         public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-        public const string SpeedTestUrl = @"http://cachefly.cachefly.net/10mb.test";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
@@ -116,6 +115,7 @@
         public static readonly List<string> TunMtus = new List<string> { "9000", "1500" };
         public static readonly List<string> TunStacks = new List<string> { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new List<string> { "^(?!.*proxy).*$", "^(?!.*direct).*$", "" };
+        public static readonly List<string> SpeedTestUrls = new List<string> { @"http://cachefly.cachefly.net/100mb.test", @"http://cachefly.cachefly.net/10mb.test" };
 
         #endregion
 

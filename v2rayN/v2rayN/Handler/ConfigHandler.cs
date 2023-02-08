@@ -150,14 +150,6 @@ namespace v2rayN.Handler
             {
                 config.constItem = new ConstItem();
             }
-            if (Utils.IsNullOrEmpty(config.constItem.speedTestUrl))
-            {
-                config.constItem.speedTestUrl = Global.SpeedTestUrl;
-            }
-            if (Utils.IsNullOrEmpty(config.constItem.speedPingTestUrl))
-            {
-                config.constItem.speedPingTestUrl = Global.SpeedPingTestUrl;
-            }
             if (Utils.IsNullOrEmpty(config.constItem.defIEProxyExceptions))
             {
                 config.constItem.defIEProxyExceptions = Global.IEProxyExceptions;
@@ -166,6 +158,23 @@ namespace v2rayN.Handler
             //{
             //    config.remoteDNS = "1.1.1.1";
             //}
+
+            if (config.speedTestItem == null)
+            {
+                config.speedTestItem = new();
+            }
+            if (config.speedTestItem.speedTestTimeout < 10)
+            {
+                config.speedTestItem.speedTestTimeout = 10;
+            }
+            if (Utils.IsNullOrEmpty(config.speedTestItem.speedTestUrl))
+            {
+                config.speedTestItem.speedTestUrl = Global.SpeedTestUrls[0];
+            }
+            if (Utils.IsNullOrEmpty(config.speedTestItem.speedPingTestUrl))
+            {
+                config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
+            }
 
             if (config.statisticsFreshRate > 100 || config.statisticsFreshRate < 1)
             {

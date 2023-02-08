@@ -1022,7 +1022,7 @@
     <value>RouteOnly</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>一键测试延迟和速度 (Ctrl+E)</value>
+    <value>一键多线程测试延迟和速度 (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>延迟(ms)</value>
@@ -1119,5 +1119,11 @@
   </data>
   <data name="TbSettingsTunModeBypassModeTip" xml:space="preserve">
     <value>启用：路由无匹配则最终代理</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>测速单个超时值</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>测速文件地址</value>
   </data>
 </root>

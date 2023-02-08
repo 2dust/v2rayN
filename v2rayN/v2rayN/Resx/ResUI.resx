@@ -1022,7 +1022,7 @@
     <value>RouteOnly</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>One-click test Latency and speed (Ctrl+E)</value>
+    <value>One-click multi test Latency and speed (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>Delay(ms)</value>
@@ -1119,5 +1119,11 @@
   </data>
   <data name="TbSettingsTunModeBypassModeTip" xml:space="preserve">
     <value>Enable: If no route matches, the final proxy</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>SpeedTest Single Timeout Value</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>SpeedTest Url</value>
   </data>
 </root>

@@ -152,6 +152,7 @@
         public GrpcItem grpcItem { get; set; }
         public UIItem uiItem { get; set; }
         public ConstItem constItem { get; set; }
+        public SpeedTestItem speedTestItem { get; set; }
         public List<InItem> inbound { get; set; }
         public List<KeyEventItem> globalHotkeys { get; set; }
         public List<CoreTypeItem> coreTypeItem { get; set; }

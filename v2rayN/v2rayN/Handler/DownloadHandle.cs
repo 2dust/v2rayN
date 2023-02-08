@@ -33,20 +33,13 @@ namespace v2rayN.Handler
 
         public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> update)
         {
-            var hasValue = false;
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
 
-                var client = new HttpClient(new SocketsHttpHandler()
-                {
-                    Proxy = webProxy
-                });
-
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
                 {
-                    hasValue = true;
                     if (update != null)
                     {
                         string msg = $"{value}";
@@ -54,22 +47,17 @@ namespace v2rayN.Handler
                     }
                 };
 
-                var cancellationToken = new CancellationTokenSource();
-                cancellationToken.CancelAfter(downloadTimeout * 1000);
-                await HttpClientHelper.GetInstance().DownloadDataAsync4Speed(client,
+                await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
                       url,
                       progress,
-                      cancellationToken.Token);
+                      downloadTimeout);
             }
             catch (Exception ex)
             {
-                if (!hasValue)
+                update(false, ex.Message);
+                if (ex.InnerException != null)
                 {
-                    update(false, ex.Message);
-                    if (ex.InnerException != null)
-                    {
-                        update(false, ex.InnerException.Message);
-                    }
+                    update(false, ex.InnerException.Message);
                 }
             }
             return 0;
@@ -196,7 +184,7 @@ namespace v2rayN.Handler
                 try
                 {
                     var config = LazyConfig.Instance.GetConfig();
-                    string status = GetRealPingTime(config.constItem.speedPingTestUrl, webProxy, 10, out int responseTime);
+                    string status = GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10, out int responseTime);
                     bool noError = Utils.IsNullOrEmpty(status);
                     return noError ? responseTime : -1;
                 }
