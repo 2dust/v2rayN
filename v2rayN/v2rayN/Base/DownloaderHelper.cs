@@ -1,4 +1,5 @@
 ﻿using Downloader;
+using System.IO;
 using System.Net;
 
 namespace v2rayN.Base
@@ -80,6 +81,73 @@ namespace v2rayN.Base
             //    string text = reader.ReadToEnd();
             //    stream.Dispose();
             //}
+
+            downloader.Dispose();
+            downloader = null;
+            downloadOpt = null;
+        }
+
+        public async Task DownloadFileAsync(IWebProxy webProxy, string url, string fileName, IProgress<double> progress, int timeout)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException("fileName");
+            }
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            var cancellationToken = new CancellationTokenSource();
+            cancellationToken.CancelAfter(timeout * 1000);
+
+            var downloadOpt = new DownloadConfiguration()
+            {
+                Timeout = timeout * 1000,
+                MaxTryAgainOnFailover = 2,
+                RequestConfiguration =
+                {
+                    Timeout= timeout * 1000,
+                    Proxy = webProxy
+                }
+            };
+
+            var progressPercentage = 0;
+            var hasValue = false;
+            var downloader = new DownloadService(downloadOpt);
+            downloader.DownloadStarted += (sender, value) =>
+            {
+                if (progress != null)
+                {
+                    progress.Report(0);
+                }
+            };
+            downloader.DownloadProgressChanged += (sender, value) =>
+            {
+                hasValue = true;
+                var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
+                if (progressPercentage != percent && percent % 10 == 0)
+                {
+                    progressPercentage = percent;
+                    progress.Report(percent);
+                }
+            };
+            downloader.DownloadFileCompleted += (sender, value) =>
+            {
+                if (progress != null)
+                {
+                    if (hasValue && value.Error == null)
+                    {
+                        progress.Report(101);
+                    }
+                }
+            };
+
+            await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
 
             downloader.Dispose();
             downloader = null;
