@@ -70,7 +70,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 All servers 的本地化字符串。
+        ///   查找类似 All 的本地化字符串。
         /// </summary>
         public static string AllGroupServers {
             get {

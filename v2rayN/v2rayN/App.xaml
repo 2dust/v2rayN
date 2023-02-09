@@ -135,6 +135,12 @@
                 TargetType="{x:Type GroupBox}">
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
             </Style>
+            <Style
+                x:Key="MyChipListBoxItem"
+                BasedOn="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBoxItem}"
+                TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Margin" Value="-4,0" />
+            </Style>
 
 
         </ResourceDictionary>

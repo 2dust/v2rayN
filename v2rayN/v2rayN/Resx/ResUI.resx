@@ -449,7 +449,7 @@
     <value>Ungrouped</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
-    <value>All servers</value>
+    <value>All</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Please browse to import server configuration</value>
