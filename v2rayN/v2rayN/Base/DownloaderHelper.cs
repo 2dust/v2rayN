@@ -13,6 +13,62 @@ namespace v2rayN.Base
         {
         }
 
+        public async Task<string> DownloadStringAsync(IWebProxy webProxy, string url, string? userAgent, int timeout)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            var cancellationToken = new CancellationTokenSource();
+            cancellationToken.CancelAfter(timeout * 1000);
+
+            Uri uri = new Uri(url);
+            //Authorization Header
+            var headers = new WebHeaderCollection();
+            if (!Utils.IsNullOrEmpty(uri.UserInfo))
+            {
+                headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
+            }
+
+            var downloadOpt = new DownloadConfiguration()
+            {
+                Timeout = timeout * 1000,
+                MaxTryAgainOnFailover = 2,
+                RequestConfiguration =
+                {
+                    Headers = headers,
+                    UserAgent = userAgent,
+                    Timeout = timeout * 1000,
+                    Proxy = webProxy
+                }
+            };
+
+            string text = string.Empty;
+            using (var downloader = new DownloadService(downloadOpt))
+            {
+                downloader.DownloadFileCompleted += (sender, value) =>
+                {
+                    if (value.Error != null)
+                    {
+                        throw new Exception(string.Format("{0}", value.Error.Message));
+                    }
+                };
+                using (var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        text = reader.ReadToEnd();
+                    }
+                }
+            }
+
+            downloadOpt = null;
+
+            return text;
+        }
+
+
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
         {
             if (string.IsNullOrEmpty(url))
@@ -38,52 +94,45 @@ namespace v2rayN.Base
             int totalSecond = 0;
             var hasValue = false;
             double maxSpeed = 0;
-            var downloader = new DownloadService(downloadOpt);
-            //downloader.DownloadStarted += (sender, value) =>
-            //{
-            //    if (progress != null)
-            //    {
-            //        progress.Report("Start download data...");
-            //    }
-            //};
-            downloader.DownloadProgressChanged += (sender, value) =>
+            using (var downloader = new DownloadService(downloadOpt))
             {
-                TimeSpan ts = (DateTime.Now - totalDatetime);
-                if (progress != null && ts.Seconds > totalSecond)
+                //downloader.DownloadStarted += (sender, value) =>
+                //{
+                //    if (progress != null)
+                //    {
+                //        progress.Report("Start download data...");
+                //    }
+                //};
+                downloader.DownloadProgressChanged += (sender, value) =>
                 {
-                    hasValue = true;
-                    totalSecond = ts.Seconds;
-                    if (value.BytesPerSecondSpeed > maxSpeed)
+                    TimeSpan ts = (DateTime.Now - totalDatetime);
+                    if (progress != null && ts.Seconds > totalSecond)
                     {
-                        maxSpeed = value.BytesPerSecondSpeed;
-                        var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
-                        progress.Report(speed);
+                        hasValue = true;
+                        totalSecond = ts.Seconds;
+                        if (value.BytesPerSecondSpeed > maxSpeed)
+                        {
+                            maxSpeed = value.BytesPerSecondSpeed;
+                            var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
+                            progress.Report(speed);
+                        }
                     }
-                }
-            };
-            downloader.DownloadFileCompleted += (sender, value) =>
-            {
-                if (progress != null)
+                };
+                downloader.DownloadFileCompleted += (sender, value) =>
                 {
-                    if (!hasValue && value.Error != null)
+                    if (progress != null)
                     {
-                        progress.Report(value.Error?.Message);
+                        if (!hasValue && value.Error != null)
+                        {
+                            progress.Report(value.Error?.Message);
+                        }
                     }
-                }
-            };
-            progress.Report("......");
+                };
+                progress.Report("......");
 
-            await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
-            //var stream = await downloader.DownloadFileTaskAsync(url);
-
-            //using (StreamReader reader = new StreamReader(stream))
-            //{
-            //    string text = reader.ReadToEnd();
-            //    stream.Dispose();
-            //}
-
-            downloader.Dispose();
-            downloader = null;
+                await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
+            }
+           
             downloadOpt = null;
         }
 
@@ -118,39 +167,39 @@ namespace v2rayN.Base
 
             var progressPercentage = 0;
             var hasValue = false;
-            var downloader = new DownloadService(downloadOpt);
-            downloader.DownloadStarted += (sender, value) =>
+            using (var downloader = new DownloadService(downloadOpt))
             {
-                if (progress != null)
+                downloader.DownloadStarted += (sender, value) =>
                 {
-                    progress.Report(0);
-                }
-            };
-            downloader.DownloadProgressChanged += (sender, value) =>
-            {
-                hasValue = true;
-                var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                if (progressPercentage != percent && percent % 10 == 0)
-                {
-                    progressPercentage = percent;
-                    progress.Report(percent);
-                }
-            };
-            downloader.DownloadFileCompleted += (sender, value) =>
-            {
-                if (progress != null)
-                {
-                    if (hasValue && value.Error == null)
+                    if (progress != null)
                     {
-                        progress.Report(101);
+                        progress.Report(0);
                     }
-                }
-            };
+                };
+                downloader.DownloadProgressChanged += (sender, value) =>
+                {
+                    hasValue = true;
+                    var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
+                    if (progressPercentage != percent && percent % 10 == 0)
+                    {
+                        progressPercentage = percent;
+                        progress.Report(percent);
+                    }
+                };
+                downloader.DownloadFileCompleted += (sender, value) =>
+                {
+                    if (progress != null)
+                    {
+                        if (hasValue && value.Error == null)
+                        {
+                            progress.Report(101);
+                        }
+                    }
+                };
 
-            await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
+                await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
+            }
 
-            downloader.Dispose();
-            downloader = null;
             downloadOpt = null;
         }
     }
