@@ -34,6 +34,10 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
+                if (it.port <= 0)
+                {
+                    continue;
+                }
                 _selecteds.Add(new ServerTestItem()
                 {
                     indexId = it.indexId,

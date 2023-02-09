@@ -339,7 +339,10 @@
                         VerticalAlignment="Center"
                         ClipToBounds="True"
                         Style="{StaticResource MaterialDesignToolBar}">
-                        <ListBox x:Name="lstGroup" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+                        <ListBox
+                            x:Name="lstGroup"
+                            FontSize="{DynamicResource StdFontSize}"
+                            Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding remarks}" />
