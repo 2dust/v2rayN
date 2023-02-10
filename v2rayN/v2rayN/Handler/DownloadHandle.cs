@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using v2rayN.Base;
 using v2rayN.Resx;
@@ -132,6 +133,51 @@ namespace v2rayN.Handler
 
                 var webProxy = GetWebProxy(blProxy);
                 var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+                if (ex.InnerException != null)
+                {
+                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// DownloadString
+        /// </summary> 
+        /// <param name="url"></param>
+        public async Task<string> DownloadStringAsyncOri(string url, bool blProxy, string userAgent)
+        {
+            try
+            {
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                var client = new HttpClient(new SocketsHttpHandler()
+                {
+                    Proxy = GetWebProxy(blProxy)
+                });
+
+                if (Utils.IsNullOrEmpty(userAgent))
+                {
+                    userAgent = $"{Utils.GetVersion(false)}";
+                }
+                client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
+
+                Uri uri = new Uri(url);
+                //Authorization Header
+                if (!Utils.IsNullOrEmpty(uri.UserInfo))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
+                }
+
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(1000 * 30);
+
+                var result = await HttpClientHelper.GetInstance().GetAsync(client, url, cts.Token);
                 return result;
             }
             catch (Exception ex)
