@@ -326,7 +326,7 @@ namespace v2rayN.Handler
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
                 string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
+                var result = await (new DownloadHandle()).DownloadStringAsyncOri(url, true, "");
                 if (!Utils.IsNullOrEmpty(result))
                 {
                     responseHandler(type, result, preRelease);
