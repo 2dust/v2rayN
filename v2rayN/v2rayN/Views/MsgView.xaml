@@ -47,6 +47,7 @@
             FontSize="{DynamicResource StdFontSizeMsg}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
+            TextAlignment="Left"
             TextWrapping="Wrap"
             VerticalScrollBarVisibility="Visible">
             <TextBox.ContextMenu>
