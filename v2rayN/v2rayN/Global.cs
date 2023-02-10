@@ -3,6 +3,8 @@
     class Global
     {
         #region const
+        public const string githubUrl = "https://github.com";
+        public const string githubApiUrl = "https://api.github.com/repos";
         public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
