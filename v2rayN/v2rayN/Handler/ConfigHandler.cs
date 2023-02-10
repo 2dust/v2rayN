@@ -43,8 +43,7 @@ namespace v2rayN.Handler
             if (config == null)
             {
                 config = new Config
-                {
-                   
+                {                   
                 };
             }
             if (config.coreBasicItem == null)
@@ -311,21 +310,46 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(routing);
             }
 
-            config = Utils.FromJson<Config>(Utils.ToJson(configOld));
-            if (config.tunModeItem == null)
+            config = Utils.FromJson<Config>(Utils.ToJson(configOld));          
+
+            if (config.coreBasicItem == null)
             {
-                config.tunModeItem = new TunModeItem
+                config.coreBasicItem = new()
                 {
-                    enableTun = false,
-                    showWindow = true,
-                    mtu = 9000,
+                    logEnabled = configOld.logEnabled,
+                    loglevel = configOld.loglevel,
+                    muxEnabled = configOld.muxEnabled,
+                };
+            }             
+        
+            if (config.routingBasicItem == null)
+            {
+                config.routingBasicItem = new()
+                {
+                    enableRoutingAdvanced = configOld.enableRoutingAdvanced,
+                    domainStrategy = configOld.domainStrategy
+                };
+            }
+
+            if (config.guiItem == null)
+            {
+                config.guiItem = new()
+                {
+                    enableStatistics = configOld.enableStatistics,
+                    statisticsFreshRate = configOld.statisticsFreshRate,
+                    keepOlderDedupl = configOld.keepOlderDedupl,
+                    ignoreGeoUpdateCore = configOld.ignoreGeoUpdateCore,
+                    autoUpdateInterval = configOld.autoUpdateInterval,
+                    checkPreReleaseUpdate = configOld.checkPreReleaseUpdate,
+                    enableSecurityProtocolTls13 = configOld.enableSecurityProtocolTls13,
+                    trayMenuServersLimit = configOld.trayMenuServersLimit,
                 };
             }
 
             GetDefaultServer(ref config);
             GetDefaultRouting(ref config);
             SaveConfig(ref config);
-            LazyConfig.Instance.SetConfig(ref config);
+            LoadConfig(ref config);
 
             return 0;
         }
