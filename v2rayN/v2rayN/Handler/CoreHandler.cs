@@ -20,6 +20,9 @@ namespace v2rayN.Handler
         public CoreHandler(Action<bool, string> update)
         {
             _updateFunc = update;
+
+            Environment.SetEnvironmentVariable("v2ray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
         public void LoadCore(Config config)

@@ -278,11 +278,13 @@ namespace v2rayN.Handler
                             string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                             if (File.Exists(fileName))
                             {
-                                Global.coreTypes.ForEach(it =>
-                                {
-                                    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
-                                    File.Copy(fileName, targetPath, true);
-                                });
+                                //Global.coreTypes.ForEach(it =>
+                                //{
+                                //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
+                                //    File.Copy(fileName, targetPath, true);
+                                //});
+                                string targetPath = Utils.GetBinPath($"{geoName}.dat");
+                                File.Copy(fileName, targetPath, true);
 
                                 File.Delete(fileName);
                                 //_updateFunc(true, "");

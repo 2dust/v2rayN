@@ -1117,7 +1117,14 @@ namespace v2rayN
                     Directory.CreateDirectory(_tempPath);
                 }
             }
-            return Path.Combine(_tempPath, filename);
+            if (string.IsNullOrEmpty(filename))
+            {
+                return _tempPath;
+            }
+            else
+            {
+                return Path.Combine(_tempPath, filename);
+            }
         }
         public static string GetLogPath(string filename = "")
         {

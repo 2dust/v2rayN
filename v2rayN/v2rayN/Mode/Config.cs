@@ -116,10 +116,7 @@
             get; set;
         }
 
-        public bool ignoreGeoUpdateCore
-        {
-            get; set;
-        }
+        public bool ignoreGeoUpdateCore { get; set; } = true;
 
         /// <summary>
         /// systemProxyExceptions
