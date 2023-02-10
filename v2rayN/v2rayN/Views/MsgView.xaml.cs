@@ -3,19 +3,27 @@ using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
 using v2rayN.Base;
+using v2rayN.Handler;
+using v2rayN.Mode;
 
 namespace v2rayN.Views
 {
     public partial class MsgView
     {
+        private static Config _config;
         public MsgView()
         {
             InitializeComponent();
+            _config = LazyConfig.Instance.GetConfig();
             MessageBus.Current.Listen<string>("MsgView").Subscribe(x => DelegateAppendText(x));
             Global.PresetMsgFilters.ForEach(it =>
             {
                 cmbMsgFilter.Items.Add(it);
             });
+            if (!_config.uiItem.mainMsgFilter.IsNullOrEmpty())
+            {
+                cmbMsgFilter.Text = _config.uiItem.mainMsgFilter;
+            }
         }
 
         void DelegateAppendText(string msg)
@@ -86,6 +94,10 @@ namespace v2rayN.Views
         private void menuMsgViewClear_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             ClearMsg();
+        } 
+        private void cmbMsgFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            _config.uiItem.mainMsgFilter = cmbMsgFilter.Text.TrimEx();
         }
 
     }

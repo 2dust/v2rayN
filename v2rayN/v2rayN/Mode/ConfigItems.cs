@@ -122,6 +122,7 @@ namespace v2rayN.Mode
         public bool enableDragDropSort { get; set; }
         public bool doubleClick2Activate { get; set; }
         public bool autoHideStartup { get; set; } = true;
+        public string mainMsgFilter { get; set; }
         public Dictionary<string, int> mainLvColWidth { get; set; }
     }
 

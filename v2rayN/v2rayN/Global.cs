@@ -114,7 +114,7 @@
         public static readonly List<string> Protocols = new List<string> { "http", "tls", "bittorrent" };
         public static readonly List<string> TunMtus = new List<string> { "9000", "1500" };
         public static readonly List<string> TunStacks = new List<string> { "gvisor", "system" };
-        public static readonly List<string> PresetMsgFilters = new List<string> { "^(?!.*proxy).*$", "^(?!.*direct).*$", "" };
+        public static readonly List<string> PresetMsgFilters = new List<string> { "proxy", "direct", "block", "" };
         public static readonly List<string> SpeedTestUrls = new List<string> { @"http://cachefly.cachefly.net/100mb.test", @"http://cachefly.cachefly.net/10mb.test" };
 
         #endregion

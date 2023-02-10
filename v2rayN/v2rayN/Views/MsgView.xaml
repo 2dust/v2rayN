@@ -29,7 +29,8 @@
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEditable="True"
-                Style="{StaticResource DefComboBox}" />
+                Style="{StaticResource DefComboBox}"
+                TextBoxBase.TextChanged="cmbMsgFilter_TextChanged" />
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
