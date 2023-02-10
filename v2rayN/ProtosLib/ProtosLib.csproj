@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>	  
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;ARM64</Platforms>	  
   </PropertyGroup>
 	
 	<ItemGroup>

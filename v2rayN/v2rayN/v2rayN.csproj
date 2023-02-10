@@ -10,6 +10,8 @@
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
 		<FileVersion>6.9</FileVersion>
+		<Platforms>AnyCPU;ARM64</Platforms>
+		<GenerateSatelliteAssembliesForCore>true</GenerateSatelliteAssembliesForCore>
 	</PropertyGroup>
 
 	<ItemGroup>		

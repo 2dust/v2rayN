@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
