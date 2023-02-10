@@ -825,7 +825,7 @@ namespace v2rayN.Handler
 
         private static int statistic(Config config, ref V2rayConfig v2rayConfig)
         {
-            if (config.enableStatistics)
+            if (config.guiItem.enableStatistics)
             {
                 string tag = Global.InboundAPITagName;
                 API apiObj = new API();

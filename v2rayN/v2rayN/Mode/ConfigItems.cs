@@ -2,6 +2,7 @@
 
 namespace v2rayN.Mode
 {
+    [Serializable]
     public class CoreBasicItem
     {
         /// <summary>
@@ -31,7 +32,6 @@ namespace v2rayN.Mode
         /// </summary>
         public string defUserAgent { get; set; }
     }
-
 
     [Serializable]
     public class InItem
@@ -80,6 +80,30 @@ namespace v2rayN.Mode
         public int health_check_timeout { get; set; }
         public bool permit_without_stream { get; set; }
         public int initial_windows_size { get; set; }
+    }
+
+    [Serializable]
+    public class GUIItem
+    {
+        public bool autoRun { get; set; }
+
+        public bool enableStatistics { get; set; }
+
+        public int statisticsFreshRate { get; set; }
+
+        public bool keepOlderDedupl { get; set; }
+
+        public bool ignoreGeoUpdateCore { get; set; } = true;
+
+        public int autoUpdateInterval { get; set; } = 10;
+
+        public int autoUpdateSubInterval { get; set; } = 10;
+
+        public bool checkPreReleaseUpdate { get; set; } = false;
+
+        public bool enableSecurityProtocolTls13 { get; set; }
+
+        public int trayMenuServersLimit { get; set; } = 20;
     }
 
     [Serializable]

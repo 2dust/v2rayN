@@ -44,10 +44,7 @@ namespace v2rayN.Handler
             {
                 config = new Config
                 {
-                    enableStatistics = false,
-
-                    statisticsFreshRate = 1,
-
+                   
                     enableRoutingAdvanced = true
                 };
             }
@@ -134,6 +131,14 @@ namespace v2rayN.Handler
                     mtu = 9000,
                 };
             }
+            if (config.guiItem == null)
+            {
+                config.guiItem = new()
+                {
+                    enableStatistics = false,
+                    statisticsFreshRate = 1,
+                };
+            }
             if (config.uiItem == null)
             {
                 config.uiItem = new UIItem()
@@ -180,9 +185,9 @@ namespace v2rayN.Handler
                 config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
 
-            if (config.statisticsFreshRate > 100 || config.statisticsFreshRate < 1)
+            if (config.guiItem.statisticsFreshRate > 100 || config.guiItem.statisticsFreshRate < 1)
             {
-                config.statisticsFreshRate = 1;
+                config.guiItem.statisticsFreshRate = 1;
             }
 
             if (config == null)
@@ -758,7 +763,7 @@ namespace v2rayN.Handler
         public static int DedupServerList(ref Config config, ref List<ProfileItem> lstProfile)
         {
             List<ProfileItem> source = lstProfile;
-            bool keepOlder = config.keepOlderDedupl;
+            bool keepOlder = config.guiItem.keepOlderDedupl;
 
             List<ProfileItem> list = new List<ProfileItem>();
             if (!keepOlder) source.Reverse(); // Remove the early items first

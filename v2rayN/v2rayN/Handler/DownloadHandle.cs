@@ -35,7 +35,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -67,7 +67,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
 
                 var progress = new Progress<double>();
@@ -101,7 +101,7 @@ namespace v2rayN.Handler
 
         public async Task<string> UrlRedirectAsync(string url, bool blProxy)
         {
-            Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+            Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -129,7 +129,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
 
                 var webProxy = GetWebProxy(blProxy);
                 var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
@@ -155,7 +155,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
                     Proxy = GetWebProxy(blProxy)

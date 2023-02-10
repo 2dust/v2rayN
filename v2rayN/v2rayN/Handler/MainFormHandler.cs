@@ -309,9 +309,9 @@ namespace v2rayN.Handler
             {
                 var dtNow = DateTime.Now;
 
-                if (config.autoUpdateSubInterval > 0)
+                if (config.guiItem.autoUpdateSubInterval > 0)
                 {
-                    if ((dtNow - autoUpdateSubTime).Hours % config.autoUpdateSubInterval == 0)
+                    if ((dtNow - autoUpdateSubTime).Hours % config.guiItem.autoUpdateSubInterval == 0)
                     {
                         updateHandle.UpdateSubscriptionProcess(config, "", true, (bool success, string msg) =>
                         {
@@ -324,9 +324,9 @@ namespace v2rayN.Handler
                     Thread.Sleep(60000);
                 }
 
-                if (config.autoUpdateInterval > 0)
+                if (config.guiItem.autoUpdateInterval > 0)
                 {
-                    if ((dtNow - autoUpdateGeoTime).Hours % config.autoUpdateInterval == 0)
+                    if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)
                     {
                         updateHandle.UpdateGeoFile("geosite", config, (bool success, string msg) =>
                         {

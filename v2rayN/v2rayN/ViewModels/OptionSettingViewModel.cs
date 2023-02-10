@@ -140,20 +140,20 @@ namespace v2rayN.ViewModels
             #endregion
 
             #region UI
-            AutoRun = _config.autoRun;
-            EnableStatistics = _config.enableStatistics;
-            StatisticsFreshRate = _config.statisticsFreshRate;
-            KeepOlderDedupl = _config.keepOlderDedupl;
-            IgnoreGeoUpdateCore = _config.ignoreGeoUpdateCore;
+            AutoRun = _config.guiItem.autoRun;
+            EnableStatistics = _config.guiItem.enableStatistics;
+            StatisticsFreshRate = _config.guiItem.statisticsFreshRate;
+            KeepOlderDedupl = _config.guiItem.keepOlderDedupl;
+            IgnoreGeoUpdateCore = _config.guiItem.ignoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
-            EnableSecurityProtocolTls13 = _config.enableSecurityProtocolTls13;
+            EnableSecurityProtocolTls13 = _config.guiItem.enableSecurityProtocolTls13;
             AutoHideStartup = _config.uiItem.autoHideStartup;
-            EnableCheckPreReleaseUpdate = _config.checkPreReleaseUpdate;
+            EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
             EnableDragDropSort = _config.uiItem.enableDragDropSort;
             DoubleClick2Activate = _config.uiItem.doubleClick2Activate;
-            autoUpdateInterval = _config.autoUpdateInterval;
-            autoUpdateSubInterval = _config.autoUpdateSubInterval;
-            trayMenuServersLimit = _config.trayMenuServersLimit;
+            autoUpdateInterval = _config.guiItem.autoUpdateInterval;
+            autoUpdateSubInterval = _config.guiItem.autoUpdateSubInterval;
+            trayMenuServersLimit = _config.guiItem.trayMenuServersLimit;
             currentFontFamily = _config.uiItem.currentFontFamily;
             SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
             SpeedTestUrl = _config.speedTestItem.speedTestUrl;
@@ -312,24 +312,24 @@ namespace v2rayN.ViewModels
 
             //UI
             Utils.SetAutoRun(AutoRun);
-            _config.autoRun = AutoRun;
-            _config.enableStatistics = EnableStatistics;
-            _config.statisticsFreshRate = StatisticsFreshRate;
-            if (_config.statisticsFreshRate > 100 || _config.statisticsFreshRate < 1)
+            _config.guiItem.autoRun = AutoRun;
+            _config.guiItem.enableStatistics = EnableStatistics;
+            _config.guiItem.statisticsFreshRate = StatisticsFreshRate;
+            if (_config.guiItem.statisticsFreshRate > 100 || _config.guiItem.statisticsFreshRate < 1)
             {
-                _config.statisticsFreshRate = 1;
+                _config.guiItem.statisticsFreshRate = 1;
             }
-            _config.keepOlderDedupl = KeepOlderDedupl;
-            _config.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
+            _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
+            _config.guiItem.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
-            _config.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
+            _config.guiItem.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.uiItem.autoHideStartup = AutoHideStartup;
-            _config.autoUpdateInterval = autoUpdateInterval;
-            _config.autoUpdateSubInterval = autoUpdateSubInterval;
-            _config.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
+            _config.guiItem.autoUpdateInterval = autoUpdateInterval;
+            _config.guiItem.autoUpdateSubInterval = autoUpdateSubInterval;
+            _config.guiItem.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
             _config.uiItem.enableDragDropSort = EnableDragDropSort;
             _config.uiItem.doubleClick2Activate = DoubleClick2Activate;
-            _config.trayMenuServersLimit = trayMenuServersLimit;
+            _config.guiItem.trayMenuServersLimit = trayMenuServersLimit;
             _config.uiItem.currentFontFamily = currentFontFamily;
             _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
             _config.speedTestItem.speedTestUrl = SpeedTestUrl;

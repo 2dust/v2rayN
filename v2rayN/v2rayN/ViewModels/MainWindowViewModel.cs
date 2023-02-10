@@ -506,7 +506,7 @@ namespace v2rayN.ViewModels
             //MainFormHandler.Instance.BackupGuiNConfig(_config, true);
             _coreHandler = new CoreHandler(UpdateHandler);
 
-            if (_config.enableStatistics)
+            if (_config.guiItem.enableStatistics)
             {
                 _statistics = new StatisticsHandler(_config, UpdateStatisticsHandler);
             }
@@ -773,7 +773,7 @@ namespace v2rayN.ViewModels
         private void RefreshServersMenu()
         {
             _servers.Clear();
-            if (_lstProfile.Count > _config.trayMenuServersLimit)
+            if (_lstProfile.Count > _config.guiItem.trayMenuServersLimit)
             {
                 return;
             }
@@ -1301,7 +1301,7 @@ namespace v2rayN.ViewModels
                     MyAppExit(false);
                 }
             };
-            (new UpdateHandle()).CheckUpdateGuiN(_config, _updateUI, _config.checkPreReleaseUpdate);
+            (new UpdateHandle()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
         private void CheckUpdateCore(ECoreType type)
@@ -1316,7 +1316,7 @@ namespace v2rayN.ViewModels
                     string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(msg));
                     string toPath = Utils.GetBinPath("", type);
 
-                    FileManager.ZipExtractToFile(fileName, toPath, _config.ignoreGeoUpdateCore ? "geo" : "");
+                    FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
 
                     _noticeHandler?.SendMessage(ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
@@ -1330,7 +1330,7 @@ namespace v2rayN.ViewModels
                     }
                 }
             };
-            (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, _config.checkPreReleaseUpdate);
+            (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
         private void CheckUpdateGeo()

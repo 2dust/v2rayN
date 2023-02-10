@@ -434,7 +434,7 @@ namespace v2rayN.Views
                 var width = ConfigHandler.GetformMainLvColWidth(ref _config, ((EServerColName)k).ToString(), Convert.ToInt32(lstProfiles.Columns[k].Width.Value));
                 lstProfiles.Columns[k].Width = width;
             }
-            if (!_config.enableStatistics)
+            if (!_config.guiItem.enableStatistics)
             {
                 colTodayUp.Visibility = Visibility.Hidden;
                 colTodayDown.Visibility = Visibility.Hidden;

@@ -27,7 +27,7 @@ namespace v2rayN.Handler
         public StatisticsHandler(Mode.Config config, Action<ServerSpeedItem> update)
         {
             config_ = config;
-            Enable = config.enableStatistics;
+            Enable = config.guiItem.enableStatistics;
             updateFunc_ = update;
             exitFlag_ = false;
 
@@ -103,7 +103,7 @@ namespace v2rayN.Handler
                             }
                         }
                     }
-                    var sleep = config_.statisticsFreshRate < 1 ? 1 : config_.statisticsFreshRate;
+                    var sleep = config_.guiItem.statisticsFreshRate < 1 ? 1 : config_.guiItem.statisticsFreshRate;
                     Thread.Sleep(1000 * sleep);
                     channel_.ConnectAsync();
                 }
