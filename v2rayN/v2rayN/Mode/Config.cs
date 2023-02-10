@@ -8,59 +8,16 @@
     {
         #region property
               
-        public string indexId
-        {
-            get; set;
-        }     
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ESysProxyType sysProxyType
-        {
-            get; set;
-        }     
-
-        /// <summary>
-        /// 自定义远程DNS
-        /// </summary>
-        public string remoteDNS
-        {
-            get; set;
-        }
-
+        public string indexId { get; set; }
+         
+        public string remoteDNS { get; set; }
         /// <summary>
         /// Outbound Freedom domainStrategy
         /// </summary>
-        public string domainStrategy4Freedom
-        {
-            get; set;
-        }       
+        public string domainStrategy4Freedom { get; set; }
 
-        /// <summary>
-        /// 域名解析策略
-        /// </summary>
-        public string domainStrategy
-        {
-            get; set;
-        }
-        public string domainMatcher
-        {
-            get; set;
-        }
-        public string routingIndexId { get; set; }
-        public bool enableRoutingAdvanced
-        {
-            get; set;
-        }  
-
-        /// <summary>
-        /// systemProxyExceptions
-        /// </summary>
-        public string systemProxyExceptions
-        {
-            get; set;
-        }
+        public ESysProxyType sysProxyType { get; set; }
+        public string systemProxyExceptions { get; set; }
         public string systemProxyAdvancedProtocol { get; set; }
 
         #endregion
@@ -71,6 +28,7 @@
         public TunModeItem tunModeItem { get; set; }
         public KcpItem kcpItem { get; set; }
         public GrpcItem grpcItem { get; set; }
+        public RoutingBasicItem routingBasicItem { get; set; }
         public GUIItem guiItem { get; set; }
         public UIItem uiItem { get; set; }
         public ConstItem constItem { get; set; }

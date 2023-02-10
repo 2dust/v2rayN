@@ -187,10 +187,10 @@ namespace v2rayN.Handler
                 if (v2rayConfig.routing != null
                   && v2rayConfig.routing.rules != null)
                 {
-                    v2rayConfig.routing.domainStrategy = config.domainStrategy;
-                    v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(config.domainMatcher) ? null : config.domainMatcher;
+                    v2rayConfig.routing.domainStrategy = config.routingBasicItem.domainStrategy;
+                    v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(config.routingBasicItem.domainMatcher) ? null : config.routingBasicItem.domainMatcher;
 
-                    if (config.enableRoutingAdvanced)
+                    if (config.routingBasicItem.enableRoutingAdvanced)
                     {
                         var routing = ConfigHandler.GetDefaultRouting(ref config);
                         if (routing != null)

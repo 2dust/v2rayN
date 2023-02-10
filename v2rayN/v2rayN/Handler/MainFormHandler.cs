@@ -86,7 +86,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (!config.enableRoutingAdvanced)
+                if (!config.routingBasicItem.enableRoutingAdvanced)
                 {
                     return null;
                 }

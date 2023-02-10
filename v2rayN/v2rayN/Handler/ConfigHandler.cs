@@ -45,7 +45,6 @@ namespace v2rayN.Handler
                 config = new Config
                 {
                    
-                    enableRoutingAdvanced = true
                 };
             }
             if (config.coreBasicItem == null)
@@ -88,10 +87,17 @@ namespace v2rayN.Handler
                     config.inbound[0].protocol = Global.InboundSocks;
                 }
             }
-            //路由规则
-            if (Utils.IsNullOrEmpty(config.domainStrategy))
+            if (config.routingBasicItem == null)
             {
-                config.domainStrategy = Global.domainStrategys[0];//"IPIfNonMatch";
+                config.routingBasicItem = new()
+                {
+                    enableRoutingAdvanced = true
+                };
+            }  
+            //路由规则
+            if (Utils.IsNullOrEmpty(config.routingBasicItem.domainStrategy))
+            {
+                config.routingBasicItem.domainStrategy = Global.domainStrategys[0];//"IPIfNonMatch";
             }
             //if (Utils.IsNullOrEmpty(config.domainMatcher))
             //{
@@ -153,7 +159,7 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.uiItem.currentLanguage))
             {
                 config.uiItem.currentLanguage = Global.Languages[0];
-            }
+            }          
 
             if (config.constItem == null)
             {
@@ -1455,7 +1461,7 @@ namespace v2rayN.Handler
         {
             if (SqliteHelper.Instance.Table<RoutingItem>().Where(t => t.id == routingItem.id).Count() > 0)
             {
-                config.routingIndexId = routingItem.id;
+                config.routingBasicItem.routingIndexId = routingItem.id;
             }
 
             Global.reloadCore = true;
@@ -1466,7 +1472,7 @@ namespace v2rayN.Handler
         }
         public static RoutingItem GetDefaultRouting(ref Config config)
         {
-            var item = LazyConfig.Instance.GetRoutingItem(config.routingIndexId);
+            var item = LazyConfig.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
             if (item is null)
             {
                 var item2 = SqliteHelper.Instance.Table<RoutingItem>().FirstOrDefault(t => t.locked == false);

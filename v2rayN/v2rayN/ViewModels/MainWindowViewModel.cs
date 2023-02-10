@@ -1434,7 +1434,7 @@ namespace v2rayN.ViewModels
         private void RefreshRoutingsMenu()
         {
             _routingItems.Clear();
-            if (!_config.enableRoutingAdvanced)
+            if (!_config.routingBasicItem.enableRoutingAdvanced)
             {
                 BlRouting = false;
                 return;
@@ -1445,7 +1445,7 @@ namespace v2rayN.ViewModels
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
-                if (item.id.Equals(_config.routingIndexId))
+                if (item.id.Equals(_config.routingBasicItem.routingIndexId))
                 {
                     SelectedRouting = item;
                 }
@@ -1469,7 +1469,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (_config.routingIndexId == item.id)
+            if (_config.routingBasicItem.routingIndexId == item.id)
             {
                 return;
             }

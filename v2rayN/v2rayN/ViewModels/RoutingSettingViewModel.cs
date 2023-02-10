@@ -71,9 +71,9 @@ namespace v2rayN.ViewModels
 
             ConfigHandler.InitBuiltinRouting(ref _config);
 
-            enableRoutingAdvanced = _config.enableRoutingAdvanced;
-            domainStrategy = _config.domainStrategy;
-            domainMatcher = _config.domainMatcher;
+            enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
+            domainStrategy = _config.routingBasicItem.domainStrategy;
+            domainMatcher = _config.routingBasicItem.domainMatcher;
 
             RefreshRoutingItems();
 
@@ -163,7 +163,7 @@ namespace v2rayN.ViewModels
             foreach (var item in routings)
             {
                 bool def = false;
-                if (item.id.Equals(_config.routingIndexId))
+                if (item.id.Equals(_config.routingBasicItem.routingIndexId))
                 {
                     def = true;
                 }
@@ -182,9 +182,9 @@ namespace v2rayN.ViewModels
         }
         private void SaveRouting()
         {
-            _config.domainStrategy = domainStrategy;
-            _config.enableRoutingAdvanced = enableRoutingAdvanced;
-            _config.domainMatcher = domainMatcher;
+            _config.routingBasicItem.domainStrategy = domainStrategy;
+            _config.routingBasicItem.enableRoutingAdvanced = enableRoutingAdvanced;
+            _config.routingBasicItem.domainMatcher = domainMatcher;
 
             EndBindingLockedData();
 
