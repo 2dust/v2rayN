@@ -786,6 +786,10 @@ namespace v2rayN
                 var task = taskService.NewTask();
                 task.RegistrationInfo.Description = taskDescription;
                 task.Settings.DisallowStartIfOnBatteries = false;
+                task.Settings.StopIfGoingOnBatteries = false;
+                task.Settings.RunOnlyIfIdle = false;
+                task.Settings.IdleSettings.StopOnIdleEnd = false;
+                task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
                 task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromMinutes(1) });
                 task.Principal.RunLevel = TaskRunLevel.Highest;
                 task.Actions.Add(new ExecAction(deamonFileName));
