@@ -116,12 +116,12 @@ namespace v2rayN.ViewModels
             newPort4LAN = inbound.newPort4LAN;
             user = inbound.user;
             pass = inbound.pass;
-            muxEnabled = _config.muxEnabled;
-            logEnabled = _config.logEnabled;
-            loglevel = _config.loglevel;
-            defAllowInsecure = _config.defAllowInsecure;
-            defFingerprint = _config.defFingerprint;
-            defUserAgent = _config.defUserAgent;
+            muxEnabled = _config.coreBasicItem.muxEnabled;
+            logEnabled = _config.coreBasicItem.logEnabled;
+            loglevel = _config.coreBasicItem.loglevel;
+            defAllowInsecure = _config.coreBasicItem.defAllowInsecure;
+            defFingerprint = _config.coreBasicItem.defFingerprint;
+            defUserAgent = _config.coreBasicItem.defUserAgent;
             #endregion
 
             #region Core DNS
@@ -287,12 +287,12 @@ namespace v2rayN.ViewModels
             {
                 _config.inbound.RemoveAt(1);
             }
-            _config.logEnabled = logEnabled;
-            _config.loglevel = loglevel;
-            _config.muxEnabled = muxEnabled;
-            _config.defAllowInsecure = defAllowInsecure;
-            _config.defFingerprint = defFingerprint;
-            _config.defUserAgent = defUserAgent;
+            _config.coreBasicItem.logEnabled = logEnabled;
+            _config.coreBasicItem.loglevel = loglevel;
+            _config.coreBasicItem.muxEnabled = muxEnabled;
+            _config.coreBasicItem.defAllowInsecure = defAllowInsecure;
+            _config.coreBasicItem.defFingerprint = defFingerprint;
+            _config.coreBasicItem.defUserAgent = defUserAgent;
 
 
             //DNS

@@ -8,34 +8,14 @@
     {
         #region property
 
-        /// <summary>
-        /// 允许日志
-        /// </summary>
-        public bool logEnabled
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// 日志等级
-        /// </summary>
-        public string loglevel
-        {
-            get; set;
-        }
+      
 
         public string indexId
         {
             get; set;
         }
 
-        /// <summary>
-        /// 允许Mux多路复用
-        /// </summary>
-        public bool muxEnabled
-        {
-            get; set;
-        }
+     
 
         /// <summary>
         /// 
@@ -87,17 +67,7 @@
             get; set;
         }
 
-        /// <summary>
-        /// 是否允许不安全连接
-        /// </summary>
-        public bool defAllowInsecure { get; set; }
-
-        public string defFingerprint { get; set; }
-
-        /// <summary>
-        /// 默认用户代理
-        /// </summary>
-        public string defUserAgent { get; set; }
+       
 
         /// <summary>
         /// 域名解析策略
@@ -144,6 +114,7 @@
 
         #region other entities
 
+        public CoreBasicItem coreBasicItem { get; set; }
         public TunModeItem tunModeItem { get; set; }
         public KcpItem kcpItem { get; set; }
         public GrpcItem grpcItem { get; set; }

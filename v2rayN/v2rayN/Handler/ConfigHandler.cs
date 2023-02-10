@@ -44,17 +44,21 @@ namespace v2rayN.Handler
             {
                 config = new Config
                 {
-                    logEnabled = false,
-                    loglevel = "warning",
-
-                    //Mux
-                    muxEnabled = false,
-
                     enableStatistics = false,
 
                     statisticsFreshRate = 1,
 
                     enableRoutingAdvanced = true
+                };
+            }
+            if (config.coreBasicItem == null)
+            {
+                config.coreBasicItem = new()
+                {
+                    logEnabled = false,
+                    loglevel = "warning",
+
+                    muxEnabled = false,
                 };
             }
 
@@ -647,7 +651,7 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
             {
-                profileItem.allowInsecure = config.defAllowInsecure.ToString().ToLower();
+                profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
             }
 
             AddServerCommon(ref config, profileItem);
@@ -781,7 +785,7 @@ namespace v2rayN.Handler
             profileItem.configVersion = 2;
             if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
             {
-                profileItem.allowInsecure = config.defAllowInsecure.ToString().ToLower();
+                profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
             }
             if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.networks.Contains(profileItem.network))
             {

@@ -2,6 +2,37 @@
 
 namespace v2rayN.Mode
 {
+    public class CoreBasicItem
+    {
+        /// <summary>
+        /// 允许日志
+        /// </summary>
+        public bool logEnabled { get; set; }
+
+        /// <summary>
+        /// 日志等级
+        /// </summary>
+        public string loglevel { get; set; }
+
+        /// <summary>
+        /// 允许Mux多路复用
+        /// </summary>
+        public bool muxEnabled { get; set; }
+
+        /// <summary>
+        /// 是否允许不安全连接
+        /// </summary>
+        public bool defAllowInsecure { get; set; }
+
+        public string defFingerprint { get; set; }
+
+        /// <summary>
+        /// 默认用户代理
+        /// </summary>
+        public string defUserAgent { get; set; }
+    }
+
+
     [Serializable]
     public class InItem
     {
