@@ -15,6 +15,7 @@ namespace v2rayN.Mode
         public bool locked { get; set; }
         public string customIcon { get; set; }
         public string domainStrategy { get; set; }
+        public int sort { get; set; }
 
     }
 }

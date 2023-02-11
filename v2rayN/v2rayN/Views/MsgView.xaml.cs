@@ -94,7 +94,7 @@ namespace v2rayN.Views
         private void menuMsgViewClear_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             ClearMsg();
-        } 
+        }
         private void cmbMsgFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             _config.uiItem.mainMsgFilter = cmbMsgFilter.Text.TrimEx();

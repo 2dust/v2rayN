@@ -139,7 +139,7 @@ namespace v2rayN.Handler
 
         public List<RoutingItem> RoutingItems()
         {
-            return SqliteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).ToList();
+            return SqliteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToList();
         }
         public RoutingItem GetRoutingItem(string id)
         {

@@ -7,9 +7,9 @@
     public class Config
     {
         #region property
-              
+
         public string indexId { get; set; }
-         
+
         public string remoteDNS { get; set; }
         /// <summary>
         /// Outbound Freedom domainStrategy

@@ -132,7 +132,7 @@ namespace v2rayN.Base
 
                 await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
             }
-           
+
             downloadOpt = null;
         }
 

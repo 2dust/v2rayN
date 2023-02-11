@@ -176,6 +176,7 @@ namespace v2rayN.ViewModels
                     remarks = item.remarks,
                     url = item.url,
                     customIcon = item.customIcon,
+                    sort = item.sort,
                 };
                 _routingItems.Add(it);
             }

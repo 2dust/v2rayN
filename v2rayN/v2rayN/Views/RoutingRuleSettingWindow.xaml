@@ -92,6 +92,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -176,6 +177,23 @@
                 Click="btnBrowse_Click"
                 Content="{x:Static resx:ResUI.TbBrowse}"
                 Style="{StaticResource DefButton}" />
+
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="4"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.LvSort}" />
+            <TextBox
+                x:Name="txtSort"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="200"
+                Margin="4"
+                HorizontalAlignment="Left"
+                AcceptsReturn="True"
+                Style="{StaticResource DefTextBox}" />
 
         </Grid>
 

@@ -197,15 +197,19 @@
                                 Binding="{Binding remarks}"
                                 Header="{x:Static resx:ResUI.LvAlias}" />
                             <DataGridTextColumn
-                                Width="70"
+                                Width="60"
                                 Binding="{Binding ruleNum}"
                                 Header="{x:Static resx:ResUI.LvCount}" />
                             <DataGridTextColumn
-                                Width="280"
+                                Width="60"
+                                Binding="{Binding sort}"
+                                Header="{x:Static resx:ResUI.LvSort}" />
+                            <DataGridTextColumn
+                                Width="260"
                                 Binding="{Binding url}"
                                 Header="{x:Static resx:ResUI.LvUrl}" />
                             <DataGridTextColumn
-                                Width="280"
+                                Width="260"
                                 Binding="{Binding customIcon}"
                                 Header="{x:Static resx:ResUI.LvCustomIcon}" />
                         </DataGrid.Columns>

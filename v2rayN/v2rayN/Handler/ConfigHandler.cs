@@ -43,7 +43,7 @@ namespace v2rayN.Handler
             if (config == null)
             {
                 config = new Config
-                {                   
+                {
                 };
             }
             if (config.coreBasicItem == null)
@@ -92,7 +92,7 @@ namespace v2rayN.Handler
                 {
                     enableRoutingAdvanced = true
                 };
-            }  
+            }
             //路由规则
             if (Utils.IsNullOrEmpty(config.routingBasicItem.domainStrategy))
             {
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.uiItem.currentLanguage))
             {
                 config.uiItem.currentLanguage = Global.Languages[0];
-            }          
+            }
 
             if (config.constItem == null)
             {
@@ -310,7 +310,7 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(routing);
             }
 
-            config = Utils.FromJson<Config>(Utils.ToJson(configOld));          
+            config = Utils.FromJson<Config>(Utils.ToJson(configOld));
 
             if (config.coreBasicItem == null)
             {
@@ -320,8 +320,8 @@ namespace v2rayN.Handler
                     loglevel = configOld.loglevel,
                     muxEnabled = configOld.muxEnabled,
                 };
-            }             
-        
+            }
+
             if (config.routingBasicItem == null)
             {
                 config.routingBasicItem = new()
@@ -1509,13 +1509,16 @@ namespace v2rayN.Handler
 
         public static int InitBuiltinRouting(ref Config config, bool blImportAdvancedRules = false)
         {
-            if (blImportAdvancedRules || LazyConfig.Instance.RoutingItems().Count <= 0)
+            var items = LazyConfig.Instance.RoutingItems();
+            if (blImportAdvancedRules || items.Count <= 0)
             {
+                var maxSort = items.Max(t => t.sort);
                 //Bypass the mainland
                 var item2 = new RoutingItem()
                 {
                     remarks = "绕过大陆(Whitelist)",
                     url = string.Empty,
+                    sort = maxSort + 1,
                 };
                 AddBatchRoutingRules(ref item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
 
@@ -1524,6 +1527,7 @@ namespace v2rayN.Handler
                 {
                     remarks = "黑名单(Blacklist)",
                     url = string.Empty,
+                    sort = maxSort + 2,
                 };
                 AddBatchRoutingRules(ref item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
 
@@ -1532,6 +1536,7 @@ namespace v2rayN.Handler
                 {
                     remarks = "全局(Global)",
                     url = string.Empty,
+                    sort = maxSort + 3,
                 };
                 AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
 
