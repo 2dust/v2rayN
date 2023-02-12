@@ -1512,7 +1512,7 @@ namespace v2rayN.Handler
             var items = LazyConfig.Instance.RoutingItems();
             if (blImportAdvancedRules || items.Count <= 0)
             {
-                var maxSort = items.Max(t => t.sort);
+                var maxSort = items.Count;
                 //Bypass the mainland
                 var item2 = new RoutingItem()
                 {
