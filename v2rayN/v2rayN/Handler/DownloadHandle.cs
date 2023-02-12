@@ -121,19 +121,15 @@ namespace v2rayN.Handler
             }
         }
 
-        /// <summary>
-        /// DownloadString
-        /// </summary> 
-        /// <param name="url"></param>
-        public async Task<string> DownloadStringAsync(string url, bool blProxy, string userAgent)
+        public async Task<string> TryDownloadString(string url, bool blProxy, string userAgent)
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
-
-                var webProxy = GetWebProxy(blProxy);
-                var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
-                return result;
+                var result1 = await DownloadStringAsync(url, blProxy, userAgent);
+                if (!Utils.IsNullOrEmpty(result1))
+                {
+                    return result1;
+                }
             }
             catch (Exception ex)
             {
@@ -144,6 +140,48 @@ namespace v2rayN.Handler
                     Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
                 }
             }
+
+            try
+            {
+                var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent);
+                if (!Utils.IsNullOrEmpty(result2))
+                {
+                    return result2;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+                if (ex.InnerException != null)
+                {
+                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+                }
+            }
+
+            try
+            {
+                using (var wc = new WebClient())
+                {
+                    wc.Proxy = GetWebProxy(blProxy);
+                    var result3 = await wc.DownloadStringTaskAsync(url);
+                    if (!Utils.IsNullOrEmpty(result3))
+                    {
+                        return result3;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+                if (ex.InnerException != null)
+                {
+                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+                }
+            }
+
+       
             return null;
         }
 
@@ -151,7 +189,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public async Task<string> DownloadStringAsyncOri(string url, bool blProxy, string userAgent)
+        public async Task<string> DownloadStringAsync(string url, bool blProxy, string userAgent)
         {
             try
             {
@@ -191,6 +229,38 @@ namespace v2rayN.Handler
             }
             return null;
         }
+
+        /// <summary>
+        /// DownloadString
+        /// </summary> 
+        /// <param name="url"></param>
+        public async Task<string> DownloadStringViaDownloader(string url, bool blProxy, string userAgent)
+        {
+            try
+            {
+                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+
+                var webProxy = GetWebProxy(blProxy);
+
+                if (Utils.IsNullOrEmpty(userAgent))
+                {
+                    userAgent = $"{Utils.GetVersion(false)}";
+                }
+                var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+                if (ex.InnerException != null)
+                {
+                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+                }
+            }
+            return null;
+        }
+
 
         public int RunAvailabilityCheck(WebProxy webProxy)
         {

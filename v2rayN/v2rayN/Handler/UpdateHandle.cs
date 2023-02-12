@@ -213,10 +213,10 @@ namespace v2rayN.Handler
                     url = Utils.GetPunycode(url);
 
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
-                    var result = await downloadHandle.DownloadStringAsync(url, blProxy, userAgent);
+                    var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
                     {
-                        result = await downloadHandle.DownloadStringAsync(url, false, userAgent);
+                        result = await downloadHandle.TryDownloadString(url, false, userAgent);
                     }
 
                     if (Utils.IsNullOrEmpty(result))
@@ -328,7 +328,7 @@ namespace v2rayN.Handler
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
                 string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandle()).DownloadStringAsyncOri(url, true, "");
+                var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
                 if (!Utils.IsNullOrEmpty(result))
                 {
                     responseHandler(type, result, preRelease);
