@@ -139,7 +139,7 @@
                 x:Key="MyChipListBoxItem"
                 BasedOn="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBoxItem}"
                 TargetType="{x:Type ListBoxItem}">
-                <Setter Property="Margin" Value="-4,0" />
+                <Setter Property="Margin" Value="-2,0" />
             </Style>
 
 
