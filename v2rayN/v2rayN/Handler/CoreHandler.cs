@@ -173,6 +173,7 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(_coreInfo);
                 if (fileName == "") return;
 
+                var displayLog = node.configType == EConfigType.Custom ? node.displayLog : true;
                 Process p = new Process
                 {
                     StartInfo = new ProcessStartInfo
@@ -181,14 +182,14 @@ namespace v2rayN.Handler
                         Arguments = _coreInfo.arguments,
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
-                        RedirectStandardOutput = node.displayLog,
-                        RedirectStandardError = node.displayLog,
+                        RedirectStandardOutput = displayLog,
+                        RedirectStandardError = displayLog,
                         CreateNoWindow = true,
-                        StandardOutputEncoding = node.displayLog ? Encoding.UTF8 : null,
-                        StandardErrorEncoding = node.displayLog ? Encoding.UTF8 : null,
+                        StandardOutputEncoding = displayLog ? Encoding.UTF8 : null,
+                        StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
                     }
                 };
-                if (node.displayLog)
+                if (displayLog)
                 {
                     p.OutputDataReceived += (sender, e) =>
                     {
@@ -200,7 +201,7 @@ namespace v2rayN.Handler
                     };
                 }
                 p.Start();
-                if (node.displayLog)
+                if (displayLog)
                 {
                     p.BeginOutputReadLine();
                 }
@@ -208,7 +209,7 @@ namespace v2rayN.Handler
 
                 if (p.WaitForExit(1000))
                 {
-                    throw new Exception(node.displayLog ? p.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
+                    throw new Exception(displayLog ? p.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
                 Global.processJob.AddProcess(p.Handle);
