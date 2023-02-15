@@ -801,7 +801,14 @@ namespace v2rayN.ViewModels
             {
                 _subItems.Add(item);
             }
-            SelectedSub = _subItems[0];
+            if (_subId != null && _subItems.FirstOrDefault(t => t.id == _subId) != null)
+            {
+                SelectedSub = _subItems.FirstOrDefault(t => t.id == _subId);
+            }
+            else
+            {
+                SelectedSub = _subItems[0];
+            }
         }
 
         #endregion
@@ -834,7 +841,6 @@ namespace v2rayN.ViewModels
                 {
                     subid = _subId,
                     configType = eConfigType,
-                    displayLog = false
                 };
             }
             else
@@ -876,6 +882,7 @@ namespace v2rayN.ViewModels
             int ret = ConfigHandler.AddBatchServers(ref _config, clipboardData, _subId, false);
             if (ret > 0)
             {
+                InitSubscriptionView();
                 RefreshServers();
                 _noticeHandler?.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
             }
@@ -900,6 +907,7 @@ namespace v2rayN.ViewModels
                 int ret = ConfigHandler.AddBatchServers(ref _config, result, _subId, false);
                 if (ret > 0)
                 {
+                    InitSubscriptionView();
                     RefreshServers();
                     _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
                 }

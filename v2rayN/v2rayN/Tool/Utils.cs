@@ -72,6 +72,10 @@ namespace v2rayN
 
             try
             {
+                if (!File.Exists(res))
+                {
+                    return result;
+                }
                 using (StreamReader reader = new StreamReader(res))
                 {
                     result = reader.ReadToEnd();
