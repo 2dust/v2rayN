@@ -333,41 +333,34 @@
                         </materialDesign:PopupBox>
                     </ToolBar>
                 </ToolBarTray>
-                <ToolBarTray DockPanel.Dock="Top">
-                    <ToolBar
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        ClipToBounds="True"
-                        Style="{StaticResource MaterialDesignToolBar}">
-                        <ListBox
-                            x:Name="lstGroup"
-                            FontSize="{DynamicResource StdFontSize}"
-                            ItemContainerStyle="{StaticResource MyChipListBoxItem}"
-                            Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding remarks}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Button
-                            x:Name="btnAddSub"
-                            Width="30"
-                            Height="30"
-                            Margin="4,0"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                            <materialDesign:PackIcon Kind="Plus" />
-                        </Button>
-                        <Separator />
-                        <TextBox
-                            x:Name="txtServerFilter"
-                            Width="100"
-                            Margin="4,0"
-                            materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
-                            materialDesign:TextFieldAssist.HasClearButton="True"
-                            Style="{StaticResource DefTextBox}" />
-                    </ToolBar>
-                </ToolBarTray>
+                <WrapPanel Margin="2" DockPanel.Dock="Top">
+                    <ListBox
+                        x:Name="lstGroup"
+                        FontSize="{DynamicResource StdFontSize}"
+                        ItemContainerStyle="{StaticResource MyChipListBoxItem}"
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding remarks}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button
+                        x:Name="btnAddSub"
+                        Width="30"
+                        Height="30"
+                        Margin="4,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="Plus" />
+                    </Button>
+                    <TextBox
+                        x:Name="txtServerFilter"
+                        Width="200"
+                        Margin="4,0"
+                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Style="{StaticResource DefTextBox}" />
+                </WrapPanel>
 
                 <materialDesign:ColorZone
                     Height="50"
