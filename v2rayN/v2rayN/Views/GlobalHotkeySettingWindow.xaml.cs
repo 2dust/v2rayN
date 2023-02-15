@@ -16,6 +16,7 @@ namespace v2rayN.Views
         public GlobalHotkeySettingWindow()
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
 
             if (_config.globalHotkeys == null)

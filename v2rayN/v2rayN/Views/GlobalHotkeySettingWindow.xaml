@@ -18,6 +18,7 @@
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     KeyDown="GlobalHotkeySettingWindow_KeyDown"
     ResizeMode="NoResize"
+    ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextOptions.TextFormattingMode="Display"

@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System.ComponentModel;
 using System.Reactive.Disposables;
+using System.Windows;
 using System.Windows.Input;
 using v2rayN.ViewModels;
 
@@ -11,6 +12,7 @@ namespace v2rayN.Views
         public SubSettingWindow()
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
 
             ViewModel = new SubSettingViewModel(this);
             this.Closing += SubSettingWindow_Closing;

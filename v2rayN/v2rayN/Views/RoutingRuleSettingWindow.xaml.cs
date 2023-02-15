@@ -12,6 +12,7 @@ namespace v2rayN.Views
         public RoutingRuleSettingWindow(RoutingItem routingItem)
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             this.PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
             lstRules.SelectionChanged += lstRules_SelectionChanged;

@@ -17,6 +17,7 @@ namespace v2rayN.Views
         public OptionSettingWindow()
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
 
             ViewModel = new OptionSettingViewModel(this);

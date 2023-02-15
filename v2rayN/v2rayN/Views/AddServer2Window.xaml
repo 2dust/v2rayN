@@ -18,6 +18,7 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     ResizeMode="NoResize"
+    ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextOptions.TextFormattingMode="Display"

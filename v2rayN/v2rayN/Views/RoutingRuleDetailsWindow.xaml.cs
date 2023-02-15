@@ -12,6 +12,7 @@ namespace v2rayN.Views
         public RoutingRuleDetailsWindow(RulesItem rulesItem)
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;
             clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;

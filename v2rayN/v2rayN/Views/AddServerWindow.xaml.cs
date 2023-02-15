@@ -16,6 +16,7 @@ namespace v2rayN.Views
         public AddServerWindow(ProfileItem profileItem)
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;
             cmbStreamSecurity.SelectionChanged += CmbStreamSecurity_SelectionChanged;

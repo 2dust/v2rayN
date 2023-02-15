@@ -11,6 +11,7 @@ namespace v2rayN.Views
         public SubEditWindow(SubItem subItem)
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
 
             ViewModel = new SubEditViewModel(subItem, this);

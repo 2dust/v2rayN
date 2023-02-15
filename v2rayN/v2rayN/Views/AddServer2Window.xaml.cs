@@ -11,6 +11,7 @@ namespace v2rayN.Views
         public AddServer2Window(ProfileItem profileItem)
         {
             InitializeComponent();
+            this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             ViewModel = new AddServer2ViewModel(profileItem, this);
 
