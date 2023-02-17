@@ -419,7 +419,7 @@
     <value>*h2 host Separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
-    <value>*QUIC securty</value>
+    <value>*QUIC security</value>
   </data>
   <data name="TransportHeaderTypeTip1" xml:space="preserve">
     <value>*tcp camouflage type</value>
