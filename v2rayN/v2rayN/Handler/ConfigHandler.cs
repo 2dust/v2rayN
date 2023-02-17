@@ -1021,7 +1021,17 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            ProfileItem profileItem = new ProfileItem();
+            //判断str是否包含s的任意一个字符串
+            static bool Containss(string str, params string[] s)
+            {
+                foreach (var item in s)
+                {
+                    if (str.Contains(item, StringComparison.OrdinalIgnoreCase)) return true;
+                }
+                return false;
+            }
+
+            ProfileItem profileItem = new();
             //Is v2ray configuration
             V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(clipboardData);
             if (v2rayConfig != null
@@ -1038,9 +1048,7 @@ namespace v2rayN.Handler
                 profileItem.remarks = "v2ray_custom";
             }
             //Is Clash configuration
-            else if (clipboardData.IndexOf("port") >= 0
-                && clipboardData.IndexOf("socks-port") >= 0
-                && clipboardData.IndexOf("proxies") >= 0)
+            else if (Containss(clipboardData, "port", "socks-port", "proxies"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.yaml");
                 File.WriteAllText(fileName, clipboardData);
@@ -1050,12 +1058,7 @@ namespace v2rayN.Handler
                 profileItem.remarks = "clash_custom";
             }
             //Is hysteria configuration
-            else if (clipboardData.IndexOf("server") >= 0
-                && clipboardData.IndexOf("up") >= 0
-                && clipboardData.IndexOf("down") >= 0
-                && clipboardData.IndexOf("listen") >= 0
-                && clipboardData.IndexOf("<html>") < 0
-                && clipboardData.IndexOf("<body>") < 0)
+            else if (Containss(clipboardData, "server", "up", "down", "listen", "<html>", "<body>"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                 File.WriteAllText(fileName, clipboardData);
@@ -1065,10 +1068,7 @@ namespace v2rayN.Handler
                 profileItem.remarks = "hysteria_custom";
             }
             //Is naiveproxy configuration
-            else if (clipboardData.IndexOf("listen") >= 0
-                && clipboardData.IndexOf("proxy") >= 0
-                && clipboardData.IndexOf("<html>") < 0
-                && clipboardData.IndexOf("<body>") < 0)
+            else if (Containss(clipboardData, "listen", "proxy", "<html>", "<body>"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                 File.WriteAllText(fileName, clipboardData);

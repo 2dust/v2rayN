@@ -33,7 +33,7 @@ namespace v2rayN.Base
                 return httpClientHelper;
             }
         }
-        public async Task<string> GetAsync(string url)
+        public async Task<string?> GetAsync(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -43,7 +43,7 @@ namespace v2rayN.Base
 
             return await response.Content.ReadAsStringAsync();
         }
-        public async Task<string> GetAsync(HttpClient client, string url, CancellationToken token)
+        public async Task<string?> GetAsync(HttpClient client, string url, CancellationToken token)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -54,7 +54,7 @@ namespace v2rayN.Base
             {
                 throw new Exception(string.Format("{0}", response.StatusCode));
             }
-            return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync(token);
         }
 
         public async Task PutAsync(string url, Dictionary<string, string> headers)
@@ -92,53 +92,48 @@ namespace v2rayN.Base
             var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
             var canReportProgress = total != -1 && progress != null;
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var file = File.Create(fileName);
+            var totalRead = 0L;
+            var buffer = new byte[1024 * 1024];
+            var isMoreToRead = true;
+            var progressPercentage = 0;
+
+            do
             {
-                using (var file = File.Create(fileName))
+                token.ThrowIfCancellationRequested();
+
+                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+
+                if (read == 0)
                 {
-                    var totalRead = 0L;
-                    var buffer = new byte[1024 * 1024];
-                    var isMoreToRead = true;
-                    var progressPercentage = 0;
+                    isMoreToRead = false;
+                }
+                else
+                {
+                    var data = new byte[read];
+                    buffer.ToList().CopyTo(0, data, 0, read);
 
-                    do
-                    {
-                        token.ThrowIfCancellationRequested();
+                    // TODO: put here the code to write the file to disk
+                    file.Write(data, 0, read);
 
-                        var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                    totalRead += read;
 
-                        if (read == 0)
-                        {
-                            isMoreToRead = false;
-                        }
-                        else
-                        {
-                            var data = new byte[read];
-                            buffer.ToList().CopyTo(0, data, 0, read);
-
-                            // TODO: put here the code to write the file to disk
-                            file.Write(data, 0, read);
-
-                            totalRead += read;
-
-                            if (canReportProgress)
-                            {
-                                var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                                if (progressPercentage != percent && percent % 10 == 0)
-                                {
-                                    progressPercentage = percent;
-                                    progress.Report(percent);
-                                }
-                            }
-                        }
-                    } while (isMoreToRead);
-                    file.Close();
                     if (canReportProgress)
                     {
-                        progress.Report(101);
-
+                        var percent = Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
+                        if (progressPercentage != percent && percent % 10 == 0)
+                        {
+                            progressPercentage = percent;
+                            progress.Report(percent);
+                        }
                     }
                 }
+            } while (isMoreToRead);
+            if (canReportProgress)
+            {
+                progress.Report(101);
+
             }
         }
 
@@ -146,7 +141,7 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
@@ -159,57 +154,55 @@ namespace v2rayN.Base
             //var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
             //var canReportProgress = total != -1 && progress != null;
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            using var stream = await response.Content.ReadAsStreamAsync(token);
+            var totalRead = 0L;
+            var buffer = new byte[1024 * 64];
+            var isMoreToRead = true;
+            string progressSpeed = string.Empty;
+            DateTime totalDatetime = DateTime.Now;
+            int totalSecond = 0;
+
+            do
             {
-                var totalRead = 0L;
-                var buffer = new byte[1024 * 64];
-                var isMoreToRead = true;
-                string progressSpeed = string.Empty;
-                DateTime totalDatetime = DateTime.Now;
-                int totalSecond = 0;
-
-                do
+                if (token.IsCancellationRequested)
                 {
-                    if (token.IsCancellationRequested)
+                    if (totalRead > 0)
                     {
-                        if (totalRead > 0)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            token.ThrowIfCancellationRequested();
-                        }
-                    }
-
-                    var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
-
-                    if (read == 0)
-                    {
-                        isMoreToRead = false;
+                        return;
                     }
                     else
                     {
-                        var data = new byte[read];
-                        buffer.ToList().CopyTo(0, data, 0, read);
+                        token.ThrowIfCancellationRequested();
+                    }
+                }
 
-                        // TODO:   
-                        totalRead += read;
+                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
 
-                        TimeSpan ts = (DateTime.Now - totalDatetime);
-                        if (progress != null && ts.Seconds > totalSecond)
+                if (read == 0)
+                {
+                    isMoreToRead = false;
+                }
+                else
+                {
+                    var data = new byte[read];
+                    buffer.ToList().CopyTo(0, data, 0, read);
+
+                    // TODO:   
+                    totalRead += read;
+
+                    TimeSpan ts = (DateTime.Now - totalDatetime);
+                    if (progress != null && ts.Seconds > totalSecond)
+                    {
+                        totalSecond = ts.Seconds;
+                        var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
+                        if (progressSpeed != speed)
                         {
-                            totalSecond = ts.Seconds;
-                            var speed = (totalRead * 1d / ts.TotalMilliseconds / 1000).ToString("#0.0");
-                            if (progressSpeed != speed)
-                            {
-                                progressSpeed = speed;
-                                progress.Report(speed);
-                            }
+                            progressSpeed = speed;
+                            progress.Report(speed);
                         }
                     }
-                } while (isMoreToRead);
-            }
+                }
+            } while (isMoreToRead);
         }
 
     }

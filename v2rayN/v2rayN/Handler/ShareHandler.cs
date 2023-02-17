@@ -21,28 +21,18 @@ namespace v2rayN.Handler
         {
             try
             {
-                string url = string.Empty;
+                string? url = string.Empty;
 
-                switch (item.configType)
+                url = item.configType switch
                 {
-                    case EConfigType.VMess:
-                        url = ShareVmess(item);
-                        break;
-                    case EConfigType.Shadowsocks:
-                        url = ShareShadowsocks(item);
-                        break;
-                    case EConfigType.Socks:
-                        url = ShareSocks(item);
-                        break;
-                    case EConfigType.Trojan:
-                        url = ShareTrojan(item);
-                        break;
-                    case EConfigType.VLESS:
-                        url = ShareVLESS(item);
-                        break;
-                    default:
-                        break;
-                }
+                    EConfigType.VMess => ShareVmess(item),
+                    EConfigType.Shadowsocks => ShareShadowsocks(item),
+                    EConfigType.Socks => ShareSocks(item),
+                    EConfigType.Trojan => ShareTrojan(item),
+                    EConfigType.VLESS => ShareVLESS(item),
+                    _ => null,
+                };
+                
                 return url;
             }
             catch (Exception ex)
@@ -285,7 +275,7 @@ namespace v2rayN.Handler
         {
             msg = string.Empty;
             ProfileItem profileItem = new ProfileItem();
-
+            
             try
             {
                 //载入配置文件 
