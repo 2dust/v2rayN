@@ -905,7 +905,7 @@
     <value>路由</value>
   </data>
   <data name="NotRunAsAdmin" xml:space="preserve">
-    <value>非以管理员身份运行</value>
+    <value>以非管理员身份运行</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
     <value>以管理员身份运行</value>
