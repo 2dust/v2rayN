@@ -204,7 +204,7 @@ namespace v2rayN
                 }
                 else
                 {
-                    return string.Join(",", lst);
+                    return string.Join(",", lst.ToArray());
                 }
             }
             catch (Exception ex)
