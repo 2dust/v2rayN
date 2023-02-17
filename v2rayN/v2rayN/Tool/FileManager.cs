@@ -10,8 +10,7 @@ namespace v2rayN.Tool
         {
             try
             {
-                using FileStream fs = new(fileName, FileMode.Create, FileAccess.Write);
-                fs.Write(content);
+                File.WriteAllBytes(fileName, content);
                 return true;
             }
             catch (Exception ex)
@@ -51,7 +50,7 @@ namespace v2rayN.Tool
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-                throw ex;
+                throw;
             }
         }
         public static bool ZipExtractToFile(string fileName, string toPath, string ignoredName)

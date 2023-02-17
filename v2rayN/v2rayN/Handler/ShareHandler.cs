@@ -268,7 +268,6 @@ namespace v2rayN.Handler
         /// <summary>
         /// 从剪贴板导入URL
         /// </summary>
-        /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
         public static ProfileItem ImportFromClipboardConfig(string clipboardData, out string msg)
@@ -626,7 +625,7 @@ namespace v2rayN.Handler
 
 
         private static readonly Regex StdVmessUserInfo = new Regex(
-            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$");
+            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$", RegexOptions.Compiled);
 
         private static ProfileItem ResolveSocks(string result)
         {

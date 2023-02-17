@@ -112,7 +112,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToJson(Object obj, bool indented = true)
+        public static string ToJson(object obj, bool indented = true)
         {
             string result = string.Empty;
             try
@@ -141,7 +141,7 @@ namespace v2rayN
         /// <param name="obj"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static int ToJsonFile(Object obj, string filePath, bool nullValue = true)
+        public static int ToJsonFile(object obj, string filePath, bool nullValue = true)
         {
             int result;
             try
@@ -200,11 +200,11 @@ namespace v2rayN
                 }
                 if (wrap)
                 {
-                    return string.Join("," + Environment.NewLine, lst.ToArray());
+                    return string.Join("," + Environment.NewLine, lst);
                 }
                 else
                 {
-                    return string.Join(",", lst.ToArray());
+                    return string.Join(",", lst);
                 }
             }
             catch (Exception ex)
@@ -223,7 +223,7 @@ namespace v2rayN
             try
             {
                 str = str.Replace(Environment.NewLine, "");
-                return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+                return new List<string>(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
             }
             catch (Exception ex)
             {
@@ -242,8 +242,9 @@ namespace v2rayN
             try
             {
                 str = str.Replace(Environment.NewLine, "");
-                List<string> list = new(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
-                return list.OrderBy(x => x).ToList();
+                List<string> list = new(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                list.Sort();
+                return list;
             }
             catch (Exception ex)
             {

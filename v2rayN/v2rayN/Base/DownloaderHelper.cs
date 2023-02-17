@@ -6,12 +6,8 @@ namespace v2rayN.Base
 {
     internal class DownloaderHelper
     {
-        private static readonly Lazy<DownloaderHelper> _instance = new Lazy<DownloaderHelper>(() => new());
+        private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
         public static DownloaderHelper Instance => _instance.Value;
-
-        public DownloaderHelper()
-        {
-        }
 
         public async Task<string?> DownloadStringAsync(IWebProxy webProxy, string url, string? userAgent, int timeout)
         {
@@ -44,7 +40,6 @@ namespace v2rayN.Base
                 }
             };
 
-            string text = string.Empty;
             using var downloader = new DownloadService(downloadOpt);
             downloader.DownloadFileCompleted += (sender, value) =>
             {
@@ -55,11 +50,10 @@ namespace v2rayN.Base
             };
             using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
             using StreamReader reader = new(stream);
-            text = reader.ReadToEnd();
 
             downloadOpt = null;
 
-            return text;
+            return reader.ReadToEnd();
         }
 
 
@@ -132,11 +126,11 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
             if (string.IsNullOrEmpty(fileName))
             {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
             if (File.Exists(fileName))
             {
