@@ -17,7 +17,7 @@ namespace v2rayN.Converters
                 return new SolidColorBrush(Colors.IndianRed);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return null;
         }

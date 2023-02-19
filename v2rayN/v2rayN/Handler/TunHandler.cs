@@ -8,7 +8,7 @@ namespace v2rayN.Base
 {
     public sealed class TunHandler
     {
-        private static readonly Lazy<TunHandler> _instance = new Lazy<TunHandler>(() => new());
+        private static readonly Lazy<TunHandler> _instance = new(() => new());
         public static TunHandler Instance => _instance.Value;
         private string _tunConfigName = "tunConfig.json";
         private static Config _config;
@@ -108,7 +108,7 @@ namespace v2rayN.Base
             else
             {
                 var dtNow = DateTime.Now;
-                var log_output = $"\"output\": \"{Utils.GetLogPath($"singbox_{dtNow.ToString("yyyy-MM-dd")}.txt")}\", ";
+                var log_output = $"\"output\": \"{Utils.GetLogPath($"singbox_{dtNow:yyyy-MM-dd}.txt")}\", ";
                 configStr = configStr.Replace("$log_output$", $"{log_output.Replace(@"\", @"\\")}");
             }
 
@@ -116,8 +116,8 @@ namespace v2rayN.Base
             configStr = configStr.Replace("$socksPort$", $"{_socksPort}");
 
             //exe
-            List<string> lstDnsExe = new List<string>();
-            List<string> lstDirectExe = new List<string>();
+            List<string> lstDnsExe = new();
+            List<string> lstDirectExe = new();
             var coreInfos = LazyConfig.Instance.GetCoreInfos();
             foreach (var it in coreInfos)
             {
@@ -240,7 +240,7 @@ namespace v2rayN.Base
                     return;
                 }
                 var showWindow = _config.tunModeItem.showWindow;
-                Process p = new Process
+                Process p = new()
                 {
                     StartInfo = new ProcessStartInfo
                     {

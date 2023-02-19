@@ -106,7 +106,7 @@ namespace v2rayN.ViewModels
         {
             UI.Show(ResUI.CustomServerTips);
 
-            OpenFileDialog fileDialog = new OpenFileDialog
+            OpenFileDialog fileDialog = new()
             {
                 Multiselect = false,
                 Filter = "Config|*.json|YAML|*.yaml;*.yml|All|*.*"
@@ -121,10 +121,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
-            if (item is null)
-            {
-                item = SelectedSource;
-            }
+            item ??= SelectedSource;
             item.address = fileName;
             if (ConfigHandler.AddCustomServer(ref _config, item, false) == 0)
             {

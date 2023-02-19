@@ -5,7 +5,7 @@ namespace v2rayN.Handler
 {
     public sealed class LazyConfig
     {
-        private static readonly Lazy<LazyConfig> _instance = new Lazy<LazyConfig>(() => new());
+        private static readonly Lazy<LazyConfig> _instance = new(() => new());
         private Config _config;
         private List<CoreInfo> coreInfos;
 
@@ -193,7 +193,7 @@ namespace v2rayN.Handler
 
         private void InitCoreInfo()
         {
-            coreInfos = new List<CoreInfo>();
+            coreInfos = new(16);
 
             coreInfos.Add(new CoreInfo
             {

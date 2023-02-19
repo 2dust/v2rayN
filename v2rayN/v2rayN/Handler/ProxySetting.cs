@@ -12,14 +12,14 @@ namespace v2rayN.Handler
 
         public static bool SetProxy(string? strProxy, string? exceptions, int type)
         {
-            InternetPerConnOptionList list = new InternetPerConnOptionList();
+            InternetPerConnOptionList list = new();
 
             int optionCount = 1;
             if (type == 1)
             {
                 optionCount = 1;
             }
-            else if (type == 2 || type == 4)
+            else if (type is 2 or 4)
             {
                 optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
@@ -71,12 +71,12 @@ namespace v2rayN.Handler
             {
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    IntPtr opt = new IntPtr(optionsPtr.ToInt64() + (i * optSize));
+                    IntPtr opt = new(optionsPtr.ToInt64() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
                 else
                 {
-                    IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
+                    IntPtr opt = new(optionsPtr.ToInt32() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
             }
@@ -84,7 +84,7 @@ namespace v2rayN.Handler
             list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
-            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
+            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem(list.dwSize);
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
@@ -200,7 +200,7 @@ namespace v2rayN.Handler
             }
         }
         //获得代理的IP和端口
-        public static string GetProxyProxyServer()
+        public static string? GetProxyProxyServer()
         {
             using RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
             string ProxyServer = rk.GetValue("ProxyServer").ToString();

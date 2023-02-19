@@ -173,8 +173,8 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(_coreInfo);
                 if (fileName == "") return;
 
-                var displayLog = node.configType == EConfigType.Custom ? node.displayLog : true;
-                Process p = new Process
+                var displayLog = node.configType != EConfigType.Custom || node.displayLog;
+                Process p = new()
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -232,7 +232,7 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(coreInfo);
                 if (fileName == "") return -1;
 
-                Process p = new Process
+                Process p = new()
                 {
                     StartInfo = new ProcessStartInfo
                     {

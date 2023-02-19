@@ -21,10 +21,7 @@ namespace v2rayN.Converters
             catch
             {
             }
-            if (MyFont is null)
-            {
-                MyFont = new FontFamily("Microsoft YaHei");
-            }
+            MyFont ??= new FontFamily("Microsoft YaHei");
         }
     }
 }

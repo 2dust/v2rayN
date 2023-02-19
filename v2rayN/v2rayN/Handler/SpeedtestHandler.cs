@@ -150,7 +150,7 @@ namespace v2rayN.Handler
 
                 DownloadHandle downloadHandle = new DownloadHandle();
                 //Thread.Sleep(5000);
-                List<Task> tasks = new List<Task>();
+                List<Task> tasks = new();
                 foreach (var it in _selecteds)
                 {
                     if (!it.allowTest)
@@ -166,7 +166,7 @@ namespace v2rayN.Handler
                         try
                         {
 
-                            WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
+                            WebProxy webProxy = new(Global.Loopback, it.port);
                             string output = GetRealPingTime(downloadHandle, webProxy);
 
                             await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
@@ -214,7 +214,7 @@ namespace v2rayN.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandle downloadHandle = new();
 
             foreach (var it in _selecteds)
             {
@@ -236,7 +236,7 @@ namespace v2rayN.Handler
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
+                WebProxy webProxy = new(Global.Loopback, it.port);
 
                 await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
                 {
@@ -270,7 +270,7 @@ namespace v2rayN.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandle downloadHandle = new();
 
             foreach (var it in _selecteds)
             {
@@ -287,7 +287,7 @@ namespace v2rayN.Handler
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
+                WebProxy webProxy = new(Global.Loopback, it.port);
                 _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
@@ -338,11 +338,11 @@ namespace v2rayN.Handler
                     ipAddress = ipHostInfo.AddressList[0];
                 }
 
-                Stopwatch timer = new Stopwatch();
+                Stopwatch timer = new();
                 timer.Start();
 
-                IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-                Socket clientSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new(ipAddress, port);
+                using Socket clientSocket = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 IAsyncResult result = clientSocket.BeginConnect(endPoint, null, null);
                 if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
@@ -351,7 +351,6 @@ namespace v2rayN.Handler
 
                 timer.Stop();
                 responseTime = timer.Elapsed.Milliseconds;
-                clientSocket.Close();
             }
             catch (Exception ex)
             {
@@ -373,7 +372,7 @@ namespace v2rayN.Handler
             {
                 int timeout = 30;
                 int echoNum = 2;
-                Ping pingSender = new Ping();
+                using Ping pingSender = new();
                 for (int i = 0; i < echoNum; i++)
                 {
                     PingReply reply = pingSender.Send(host, timeout);

@@ -35,7 +35,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandle downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -46,7 +46,7 @@ namespace v2rayN.Handler
                     {
                         string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         fileName = Utils.UrlEncode(fileName);
-                        Process process = new Process
+                        Process process = new()
                         {
                             StartInfo = new ProcessStartInfo
                             {
@@ -101,7 +101,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandle downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -253,7 +253,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Format(Global.geoUrl, geoName);
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandle downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -360,7 +360,7 @@ namespace v2rayN.Handler
                     return "";
                 }
 
-                Process p = new Process();
+                using Process p = new();
                 p.StartInfo.FileName = filePath;
                 p.StartInfo.Arguments = coreInfo.versionArg;
                 p.StartInfo.WorkingDirectory = Utils.StartupPath();

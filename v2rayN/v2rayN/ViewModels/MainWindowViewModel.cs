@@ -37,7 +37,7 @@ namespace v2rayN.ViewModels
         private string _serverFilter = string.Empty;
         private static Config _config;
         private NoticeHandler? _noticeHandler;
-        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
+        private readonly PaletteHelper _paletteHelper = new();
         private Dictionary<int, bool> _dicHeaderSort = new();
         private Action<string> _updateView;
 
@@ -254,7 +254,7 @@ namespace v2rayN.ViewModels
             SystemProxySelected = (int)_config.sysProxyType;
             this.WhenAnyValue(
               x => x.SystemProxySelected,
-              y => y != null && y >= 0)
+              y => y >= 0)
                   .Subscribe(c => DoSystemProxySelected(c));
 
             this.WhenAnyValue(
@@ -820,7 +820,7 @@ namespace v2rayN.ViewModels
         private int GetProfileItems(out List<ProfileItem> lstSelecteds)
         {
             lstSelecteds = new List<ProfileItem>();
-            if (SelectedProfiles == null || SelectedProfiles.Count() <= 0)
+            if (SelectedProfiles == null || SelectedProfiles.Count <= 0)
             {
                 return -1;
             }
@@ -1169,7 +1169,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (var it in lstSelecteds)
             {
                 string url = ShareHandler.GetShareUrl(it);
@@ -1194,10 +1194,10 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (var it in lstSelecteds)
             {
-                string url = ShareHandler.GetShareUrl(it);
+                string? url = ShareHandler.GetShareUrl(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -1268,7 +1268,7 @@ namespace v2rayN.ViewModels
 
         private void ImportOldGuiConfig()
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
+            OpenFileDialog fileDialog = new()
             {
                 Multiselect = false,
                 Filter = "guiNConfig|*.json|All|*.*"
@@ -1532,7 +1532,7 @@ namespace v2rayN.ViewModels
 
         public void ShowHideWindow(bool? blShow)
         {
-            var bl = blShow.HasValue ? blShow.Value : !Global.ShowInTaskbar;
+            var bl = blShow ?? !Global.ShowInTaskbar;
             if (bl)
             {
                 //Application.Current.MainWindow.ShowInTaskbar = true;
@@ -1651,7 +1651,7 @@ namespace v2rayN.ViewModels
 
         public void InboundDisplayStaus()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(Global.InboundSocks)}]");
             sb.Append(" | ");
             //if (_config.sysProxyType == ESysProxyType.ForcedChange)
@@ -1662,21 +1662,21 @@ namespace v2rayN.ViewModels
             //{
             sb.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(Global.InboundHttp)}]");
             //}
-            InboundDisplay = $"{ResUI.LabLocal}:{sb.ToString()}";
+            InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
             if (_config.inbound[0].allowLANConn)
             {
                 if (_config.inbound[0].newPort4LAN)
                 {
-                    StringBuilder sb2 = new StringBuilder();
+                    StringBuilder sb2 = new();
                     sb2.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(Global.InboundSocks2)}]");
                     sb2.Append(" | ");
                     sb2.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(Global.InboundHttp2)}]");
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb2.ToString()}";
+                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
                 }
                 else
                 {
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb.ToString()}";
+                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb}";
                 }
             }
             else
@@ -1713,10 +1713,10 @@ namespace v2rayN.ViewModels
                  .Delay(TimeSpan.FromSeconds(1))
                  .Subscribe(x =>
                  {
-                     Application.Current.Dispatcher.Invoke((Action)(() =>
+                     Application.Current.Dispatcher.Invoke(() =>
                      {
                          ShowHideWindow(false);
-                     }));
+                     });
                  });
             }
         }

@@ -80,26 +80,26 @@
         public const string SpeedUnit = "";
         public const int MinFontSize = 10;
 
-        public static readonly List<string> IEProxyProtocols = new List<string> {
+        public static readonly List<string> IEProxyProtocols = new() {
                         "{ip}:{http_port}",
                         "socks={ip}:{socks_port}",
                         "http={ip}:{http_port};https={ip}:{http_port};ftp={ip}:{http_port};socks={ip}:{socks_port}",
                         "http=http://{ip}:{http_port};https=http://{ip}:{http_port}",
                         ""
                     };
-        public static readonly List<string> vmessSecuritys = new List<string> { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
-        public static readonly List<string> ssSecuritys = new List<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
-        public static readonly List<string> ssSecuritysInSagerNet = new List<string> { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
-        public static readonly List<string> ssSecuritysInXray = new List<string> { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
-        public static readonly List<string> xtlsFlows = new List<string> { "", "xtls-rprx-origin", "xtls-rprx-origin-udp443", "xtls-rprx-direct", "xtls-rprx-direct-udp443", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
-        public static readonly List<string> networks = new List<string> { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
-        public static readonly List<string> kcpHeaderTypes = new List<string> { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new List<string> { "v2fly", "SagerNet", "Xray", "v2fly_v5" };
-        public static readonly List<string> domainStrategys = new List<string> { "AsIs", "IPIfNonMatch", "IPOnDemand" };
-        public static readonly List<string> domainMatchers = new List<string> { "linear", "mph", "" };
-        public static readonly List<string> fingerprints = new List<string> { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
-        public static readonly List<string> userAgent = new List<string> { "chrome", "firefox", "safari", "edge", "none" };
-        public static readonly Dictionary<string, string> userAgentTxt = new Dictionary<string, string>
+        public static readonly List<string> vmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
+        public static readonly List<string> ssSecuritys = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+        public static readonly List<string> ssSecuritysInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
+        public static readonly List<string> ssSecuritysInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
+        public static readonly List<string> xtlsFlows = new() { "", "xtls-rprx-origin", "xtls-rprx-origin-udp443", "xtls-rprx-direct", "xtls-rprx-direct-udp443", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
+        public static readonly List<string> networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
+        public static readonly List<string> kcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
+        public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "v2fly_v5" };
+        public static readonly List<string> domainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
+        public static readonly List<string> domainMatchers = new() { "linear", "mph", "" };
+        public static readonly List<string> fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
+        public static readonly List<string> userAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
+        public static readonly Dictionary<string, string> userAgentTxt = new()
         {
             {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
             {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
@@ -107,17 +107,17 @@
             {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
             {"none",""}
         };
-        public static readonly List<string> allowInsecures = new List<string> { "true", "false", "" };
-        public static readonly List<string> domainStrategy4Freedoms = new List<string> { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
-        public static readonly List<string> Languages = new List<string> { "zh-Hans", "en", "fa-Ir", "ru" };
-        public static readonly List<string> alpns = new List<string> { "h2", "http/1.1", "h2,http/1.1", "" };
-        public static readonly List<string> LogLevel = new List<string> { "debug", "info", "warning", "error", "none" };
-        public static readonly List<string> InboundTags = new List<string> { "socks", "http", "socks2", "http2" };
-        public static readonly List<string> Protocols = new List<string> { "http", "tls", "bittorrent" };
-        public static readonly List<string> TunMtus = new List<string> { "9000", "1500" };
-        public static readonly List<string> TunStacks = new List<string> { "gvisor", "system" };
-        public static readonly List<string> PresetMsgFilters = new List<string> { "proxy", "direct", "block", "" };
-        public static readonly List<string> SpeedTestUrls = new List<string> { @"http://cachefly.cachefly.net/100mb.test", @"http://cachefly.cachefly.net/10mb.test" };
+        public static readonly List<string> allowInsecures = new() { "true", "false", "" };
+        public static readonly List<string> domainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
+        public static readonly List<string> Languages = new() { "zh-Hans", "en", "fa-Ir", "ru" };
+        public static readonly List<string> alpns = new() { "h2", "http/1.1", "h2,http/1.1", "" };
+        public static readonly List<string> LogLevel = new() { "debug", "info", "warning", "error", "none" };
+        public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
+        public static readonly List<string> Protocols = new() { "http", "tls", "bittorrent" };
+        public static readonly List<string> TunMtus = new() { "9000", "1500" };
+        public static readonly List<string> TunStacks = new() { "gvisor", "system" };
+        public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
+        public static readonly List<string> SpeedTestUrls = new() { @"http://cachefly.cachefly.net/100mb.test", @"http://cachefly.cachefly.net/10mb.test" };
 
         #endregion
 

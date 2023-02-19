@@ -90,8 +90,8 @@ namespace v2rayN.Handler
                     {
                         var dtNow = DateTime.Now;
                         v2rayConfig.log.loglevel = config.coreBasicItem.loglevel;
-                        v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow.ToString("yyyy-MM-dd")}.txt");
-                        v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow.ToString("yyyy-MM-dd")}.txt");
+                        v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow:yyyy-MM-dd}.txt");
+                        v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow:yyyy-MM-dd}.txt");
                     }
                     else
                     {
@@ -405,7 +405,7 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(node.security)
                         && !Utils.IsNullOrEmpty(node.id))
                     {
-                        SocksUsersItem socksUsersItem = new SocksUsersItem
+                        SocksUsersItem socksUsersItem = new()
                         {
                             user = node.security,
                             pass = node.id,
@@ -565,7 +565,7 @@ namespace v2rayN.Handler
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings tlsSettings = new TlsSettings
+                    TlsSettings tlsSettings = new()
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
@@ -587,7 +587,7 @@ namespace v2rayN.Handler
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings xtlsSettings = new TlsSettings
+                    TlsSettings xtlsSettings = new()
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
@@ -608,7 +608,7 @@ namespace v2rayN.Handler
                 switch (node.GetNetwork())
                 {
                     case "kcp":
-                        KcpSettings kcpSettings = new KcpSettings
+                        KcpSettings kcpSettings = new()
                         {
                             mtu = config.kcpItem.mtu,
                             tti = config.kcpItem.tti
@@ -644,12 +644,8 @@ namespace v2rayN.Handler
                         break;
                     //ws
                     case "ws":
-                        WsSettings wsSettings = new WsSettings
-                        {
-                        };
-                        wsSettings.headers = new Headers
-                        {
-                        };
+                        WsSettings wsSettings = new();
+                        wsSettings.headers = new Headers();
                         string path = node.path;
                         if (!string.IsNullOrWhiteSpace(host))
                         {
@@ -675,7 +671,7 @@ namespace v2rayN.Handler
                         break;
                     //h2
                     case "h2":
-                        HttpSettings httpSettings = new HttpSettings();
+                        HttpSettings httpSettings = new();
 
                         if (!string.IsNullOrWhiteSpace(host))
                         {
@@ -691,7 +687,7 @@ namespace v2rayN.Handler
                         break;
                     //quic
                     case "quic":
-                        QuicSettings quicsettings = new QuicSettings
+                        QuicSettings quicsettings = new()
                         {
                             security = host,
                             key = node.path,
@@ -714,7 +710,7 @@ namespace v2rayN.Handler
                         }
                         break;
                     case "grpc":
-                        var grpcSettings = new GrpcSettings
+                        GrpcSettings grpcSettings = new()
                         {
                             serviceName = node.path,
                             multiMode = (node.headerType == Global.GrpcmultiMode),
@@ -730,7 +726,7 @@ namespace v2rayN.Handler
                         //tcp
                         if (node.headerType.Equals(Global.TcpHeaderHttp))
                         {
-                            TcpSettings tcpSettings = new TcpSettings
+                            TcpSettings tcpSettings = new()
                             {
                                 header = new Header
                                 {
@@ -799,7 +795,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    List<string> servers = new List<string>();
+                    List<string> servers = new();
 
                     string[] arrDNS = config.remoteDNS.Split(',');
                     foreach (string str in arrDNS)
@@ -828,9 +824,9 @@ namespace v2rayN.Handler
             if (config.guiItem.enableStatistics)
             {
                 string tag = Global.InboundAPITagName;
-                API apiObj = new API();
-                Policy policyObj = new Policy();
-                SystemPolicy policySystemSetting = new SystemPolicy();
+                API apiObj = new();
+                Policy policyObj = new();
+                SystemPolicy policySystemSetting = new();
 
                 string[] services = { "StatsService" };
 
@@ -847,8 +843,8 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
                 {
-                    Inbounds apiInbound = new Inbounds();
-                    Inboundsettings apiInboundSettings = new Inboundsettings();
+                    Inbounds apiInbound = new();
+                    Inboundsettings apiInboundSettings = new();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
                     apiInbound.port = Global.statePort;
@@ -860,7 +856,7 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
                 {
-                    RulesItem apiRoutingRule = new RulesItem
+                    RulesItem apiRoutingRule = new()
                     {
                         inboundTag = new List<string> { tag },
                         outboundTag = tag,
@@ -1126,7 +1122,7 @@ namespace v2rayN.Handler
         public static ProfileItem? ImportFromClientConfig(string fileName, out string msg)
         {
             msg = string.Empty;
-            ProfileItem profileItem = new ProfileItem();
+            ProfileItem profileItem = new();
 
             try
             {
@@ -1265,7 +1261,7 @@ namespace v2rayN.Handler
         public static ProfileItem? ImportFromServerConfig(string fileName, out string msg)
         {
             msg = string.Empty;
-            ProfileItem profileItem = new ProfileItem();
+            ProfileItem profileItem = new();
 
             try
             {
@@ -1446,8 +1442,8 @@ namespace v2rayN.Handler
                     msg = ResUI.FailedGenDefaultConfiguration;
                     return "";
                 }
-                List<IPEndPoint> lstIpEndPoints = new List<IPEndPoint>();
-                List<TcpConnectionInformation> lstTcpConns = new List<TcpConnectionInformation>();
+                List<IPEndPoint> lstIpEndPoints = new();
+                List<TcpConnectionInformation> lstTcpConns = new();
                 try
                 {
                     lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
@@ -1477,7 +1473,7 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    if (it.configType == EConfigType.VMess || it.configType == EConfigType.VLESS)
+                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
                         if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
@@ -1513,7 +1509,7 @@ namespace v2rayN.Handler
                     it.allowTest = true;
 
                     //inbound
-                    Inbounds inbound = new Inbounds
+                    Inbounds inbound = new()
                     {
                         listen = Global.Loopback,
                         port = port,
@@ -1540,7 +1536,7 @@ namespace v2rayN.Handler
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
                     //rule
-                    RulesItem rule = new RulesItem
+                    RulesItem rule = new()
                     {
                         inboundTag = new List<string> { inbound.tag },
                         outboundTag = v2rayConfigCopy.outbounds[0].tag,

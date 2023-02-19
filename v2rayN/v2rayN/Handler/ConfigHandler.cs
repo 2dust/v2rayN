@@ -13,7 +13,7 @@ namespace v2rayN.Handler
     class ConfigHandler
     {
         private static string configRes = Global.ConfigFileName;
-        private static readonly object objLock = new object();
+        private static readonly object objLock = new();
 
         #region ConfigHandler
 
@@ -61,7 +61,7 @@ namespace v2rayN.Handler
             if (config.inbound == null)
             {
                 config.inbound = new List<InItem>();
-                InItem inItem = new InItem
+                InItem inItem = new()
                 {
                     protocol = Global.InboundSocks,
                     localPort = 10808,
@@ -190,7 +190,7 @@ namespace v2rayN.Handler
                 config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
 
-            if (config.guiItem.statisticsFreshRate > 100 || config.guiItem.statisticsFreshRate < 1)
+            if (config.guiItem.statisticsFreshRate is > 100 or < 1)
             {
                 config.guiItem.statisticsFreshRate = 1;
             }
@@ -548,7 +548,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[lstProfile.Count - 1].indexId) + 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[^1].indexId) + 1;
 
                         break;
                     }
@@ -810,7 +810,7 @@ namespace v2rayN.Handler
             List<ProfileItem> source = lstProfile;
             bool keepOlder = config.guiItem.keepOlderDedupl;
 
-            List<ProfileItem> list = new List<ProfileItem>();
+            List<ProfileItem> list = new();
             if (!keepOlder) source.Reverse(); // Remove the early items first
 
             foreach (ProfileItem item in source)
@@ -1221,7 +1221,7 @@ namespace v2rayN.Handler
                 return 0;
             }
 
-            SubItem subItem = new SubItem
+            SubItem subItem = new()
             {
                 id = string.Empty,
                 remarks = "import_sub",

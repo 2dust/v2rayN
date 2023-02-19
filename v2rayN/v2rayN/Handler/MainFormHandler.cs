@@ -12,7 +12,7 @@ namespace v2rayN.Handler
 {
     public sealed class MainFormHandler
     {
-        private static readonly Lazy<MainFormHandler> instance = new Lazy<MainFormHandler>(() => new MainFormHandler());
+        private static readonly Lazy<MainFormHandler> instance = new(() => new());
         //Action<bool, string> _updateUI;
 
         //private DownloadHandle downloadHandle2;
@@ -42,19 +42,14 @@ namespace v2rayN.Handler
                 {
                     return new Icon(fileName);
                 }
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                        return Properties.Resources.NotifyIcon1;
-                    case 1:
-                        return Properties.Resources.NotifyIcon2;
-                    case 2:
-                        return Properties.Resources.NotifyIcon3;
-                    case 3:
-                        return Properties.Resources.NotifyIcon2;
-                }
-
-                return Properties.Resources.NotifyIcon1;
+                    0 => Properties.Resources.NotifyIcon1,
+                    1 => Properties.Resources.NotifyIcon2,
+                    2 => Properties.Resources.NotifyIcon3,
+                    3 => Properties.Resources.NotifyIcon2,
+                    _ => Properties.Resources.NotifyIcon1, // default
+                };
             }
             catch (Exception ex)
             {
@@ -107,9 +102,9 @@ namespace v2rayN.Handler
                 int width = 128;
                 int height = 128;
 
-                Bitmap bitmap = new Bitmap(width, height);
+                Bitmap bitmap = new(width, height);
                 Graphics graphics = Graphics.FromImage(bitmap);
-                SolidBrush drawBrush = new SolidBrush(color);
+                SolidBrush drawBrush = new(color);
 
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));                
@@ -143,7 +138,7 @@ namespace v2rayN.Handler
                 return;
             }
 
-            SaveFileDialog fileDialog = new SaveFileDialog
+            SaveFileDialog fileDialog = new()
             {
                 Filter = "Config|*.json",
                 FilterIndex = 2,
@@ -176,14 +171,13 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType != EConfigType.VMess
-                && item.configType != EConfigType.VLESS)
+            if (item.configType is not EConfigType.VMess and not EConfigType.VLESS)
             {
                 UI.Show(ResUI.NonVmessService);
                 return;
             }
 
-            SaveFileDialog fileDialog = new SaveFileDialog
+            SaveFileDialog fileDialog = new()
             {
                 Filter = "Config|*.json",
                 FilterIndex = 2,
@@ -212,14 +206,14 @@ namespace v2rayN.Handler
 
         public void BackupGuiNConfig(Config config, bool auto = false)
         {
-            string fileName = $"guiNConfig_{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_fff")}.json";
+            string fileName = $"guiNConfig_{DateTime.Now:yyyy_MM_dd_HH_mm_ss_fff}.json";
             if (auto)
             {
                 fileName = Utils.GetBackupPath(fileName);
             }
             else
             {
-                SaveFileDialog fileDialog = new SaveFileDialog
+                SaveFileDialog fileDialog = new()
                 {
                     FileName = fileName,
                     Filter = "guiNConfig|*.json",
@@ -254,7 +248,7 @@ namespace v2rayN.Handler
         public bool RestoreGuiNConfig(ref Config config)
         {
             var fileContent = string.Empty;
-            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            using (OpenFileDialog fileDialog = new())
             {
                 fileDialog.InitialDirectory = Utils.GetBackupPath("");
                 fileDialog.Filter = "guiNConfig|*.json|All|*.*";
@@ -381,12 +375,12 @@ namespace v2rayN.Handler
                 try
                 {
                     HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), gesture, handler);
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey.ToString()}");
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey}");
                     update(false, msg);
                 }
                 catch (Exception ex)
                 {
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey.ToString()}", ex.Message);
+                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey}", ex.Message);
                     update(false, msg);
                     Utils.SaveLog(msg);
                 }
