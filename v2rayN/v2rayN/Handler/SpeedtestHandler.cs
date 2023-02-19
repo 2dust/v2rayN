@@ -112,24 +112,24 @@ namespace v2rayN.Handler
 
         private void RunPing()
         {
-            RunPingSub((ServerTestItem it) =>
+            RunPingSub(async (ServerTestItem it) =>
             {
                 long time = Ping(it.address);
                 var output = FormatOut(time, Global.DelayUnit);
 
-                LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                 UpdateFunc(it.indexId, output);
             });
         }
 
         private void RunTcping()
         {
-            RunPingSub((ServerTestItem it) =>
+            RunPingSub(async (ServerTestItem it) =>
             {
                 int time = GetTcpingTime(it.address, it.port);
                 var output = FormatOut(time, Global.DelayUnit);
 
-                LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                 UpdateFunc(it.indexId, output);
             });
         }
@@ -161,16 +161,15 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    tasks.Add(Task.Run(() =>
+                    tasks.Add(Task.Run(async () =>
                     {
                         try
                         {
-                            LazyConfig.Instance.SetTestResult(it.indexId, "-1", "");
 
                             WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
                             string output = GetRealPingTime(downloadHandle, webProxy);
 
-                            LazyConfig.Instance.SetTestResult(it.indexId, output, "");
+                            await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                             UpdateFunc(it.indexId, output);
                             int.TryParse(output, out int delay);
                             it.delay = delay;
@@ -191,6 +190,7 @@ namespace v2rayN.Handler
             finally
             {
                 if (pid > 0) _coreHandler.CoreStopPid(pid);
+                ProfileExHandler.Instance.SaveTo();
             }
 
             return Task.CompletedTask;
@@ -231,19 +231,19 @@ namespace v2rayN.Handler
                 //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
                 //    continue;
                 //}
-                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
+                await ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
 
-                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        _ = LazyConfig.Instance.SetTestResult(it.indexId, "", msg);
+                        await ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
                     }
                     UpdateFunc(it.indexId, "", msg);
                 });
@@ -254,6 +254,7 @@ namespace v2rayN.Handler
                 _coreHandler.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
+            ProfileExHandler.Instance.SaveTo();
         }
 
         private async Task RunSpeedTestMulti()
@@ -281,18 +282,18 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                _ = LazyConfig.Instance.SetTestResult(it.indexId, "", "-1");
+                await ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new WebProxy(Global.Loopback, it.port);
-                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        _ = LazyConfig.Instance.SetTestResult(it.indexId, "", msg);
+                        await ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
                     }
                     UpdateFunc(it.indexId, "", msg);
                 });
@@ -306,6 +307,7 @@ namespace v2rayN.Handler
                 _coreHandler.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
+            ProfileExHandler.Instance.SaveTo();
         }
 
         private async Task RunMixedtestAsync()

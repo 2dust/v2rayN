@@ -11,7 +11,6 @@ namespace v2rayN.Mode
             indexId = string.Empty;
             configType = EConfigType.VMess;
             configVersion = 2;
-            sort = 0;
             address = string.Empty;
             port = 0;
             id = string.Empty;
@@ -107,11 +106,6 @@ namespace v2rayN.Mode
             get; set;
         }
 
-        public int sort
-        {
-            get; set;
-        }
-
         /// <summary>
         /// 远程服务器地址
         /// </summary>
@@ -201,9 +195,6 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-
-        public int delay { get; set; }
-        public decimal speed { get; set; }
 
         /// <summary>
         /// SubItem id

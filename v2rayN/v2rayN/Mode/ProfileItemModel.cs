@@ -5,6 +5,9 @@
     {
         public bool isActive { get; set; }
         public string subRemarks { get; set; }
+        public int delay { get; set; }
+        public decimal speed { get; set; }
+        public int sort { get; set; }
         public string delayVal { get; set; }
         public string speedVal { get; set; }
         public string todayUp { get; set; }

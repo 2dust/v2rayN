@@ -438,14 +438,14 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static int SetDefaultServer(ref Config config, ProfileItem item)
+        public static int SetDefaultServerIndex(ref Config config, string indexId)
         {
-            if (item == null)
+            if (Utils.IsNullOrEmpty(indexId))
             {
                 return -1;
             }
 
-            config.indexId = item.indexId;
+            config.indexId = indexId;
             Global.reloadCore = true;
 
             ToJsonFile(config);
@@ -453,24 +453,24 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int SetDefaultServer(Config config, List<ProfileItem> lstProfile)
+        public static int SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
         {
             if (lstProfile.Exists(t => t.indexId == config.indexId))
             {
                 return 0;
             }
-
-            if (SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.indexId == config.indexId).Count() > 0)
+            var allItems = LazyConfig.Instance.ProfileItemIndexs("");
+            if (allItems.Where(t => t == config.indexId).Count() > 0)
             {
                 return 0;
             }
             if (lstProfile.Count > 0)
             {
-                return SetDefaultServer(ref config, lstProfile[0]);
+                return SetDefaultServerIndex(ref config, lstProfile[0].indexId);
             }
-            if (SqliteHelper.Instance.Table<ProfileItem>().Count() > 0)
+            if (allItems.Count() > 0)
             {
-                return SetDefaultServer(ref config, SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault());
+                return SetDefaultServerIndex(ref config, allItems.FirstOrDefault());
             }
             return -1;
         }
@@ -480,7 +480,7 @@ namespace v2rayN.Handler
             if (item is null)
             {
                 var item2 = SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault();
-                SetDefaultServer(ref config, item2);
+                SetDefaultServerIndex(ref config, item2?.indexId);
                 return item2;
             }
 
@@ -505,9 +505,10 @@ namespace v2rayN.Handler
 
             for (int i = 0; i < lstProfile.Count; i++)
             {
-                lstProfile[i].sort = (i + 1) * 10;
+                ProfileExHandler.Instance.SetSort(lstProfile[i].indexId, (i + 1) * 10);
             }
 
+            var sort = 0;
             switch (eMove)
             {
                 case EMove.Top:
@@ -516,7 +517,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        lstProfile[index].sort = lstProfile[0].sort - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[0].indexId) - 1;
 
                         break;
                     }
@@ -526,7 +527,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        lstProfile[index].sort = lstProfile[index - 1].sort - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index - 1].indexId) - 1;
 
                         break;
                     }
@@ -537,7 +538,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        lstProfile[index].sort = lstProfile[index + 1].sort + 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index + 1].indexId) + 1;
 
                         break;
                     }
@@ -547,18 +548,16 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        lstProfile[index].sort = lstProfile[lstProfile.Count - 1].sort + 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[lstProfile.Count - 1].indexId) + 1;
 
                         break;
                     }
                 case EMove.Position:
-                    lstProfile[index].sort = pos * 10 + 1;
+                    sort = pos * 10 + 1;
                     break;
             }
 
-            SqliteHelper.Instance.UpdateAll(lstProfile);
-
-
+            ProfileExHandler.Instance.SetSort(lstProfile[index].indexId, sort);
             return 0;
         }
 
@@ -698,11 +697,29 @@ namespace v2rayN.Handler
         public static int SortServers(ref Config config, string subId, EServerColName name, bool asc)
         {
             var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
-            var lstProfile = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(lstModel));
-            if (lstProfile.Count <= 0)
+            if (lstModel.Count <= 0)
             {
                 return -1;
             }
+            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
+            var lstProfile = (from t in lstModel
+                              join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
+                              from t33 in t3b.DefaultIfEmpty()
+                              select new ProfileItemModel
+                              {
+                                  indexId = t.indexId,
+                                  configType = t.configType,
+                                  remarks = t.remarks,
+                                  address = t.address,
+                                  port = t.port,
+                                  security = t.security,
+                                  network = t.network,
+                                  streamSecurity = t.streamSecurity,
+                                  delay = t33 == null ? 0 : t33.delay,
+                                  speed = t33 == null ? 0 : t33.speed,
+                                  sort = t33 == null ? 0 : t33.sort
+                              }).ToList();
+
             var propertyName = string.Empty;
             switch (name)
             {
@@ -736,7 +753,7 @@ namespace v2rayN.Handler
             }
             for (int i = 0; i < lstProfile.Count; i++)
             {
-                lstProfile[i].sort = (i + 1) * 10;
+                ProfileExHandler.Instance.SetSort(lstProfile[i].indexId, (i + 1) * 10);
             }
             if (name == EServerColName.delay)
             {
@@ -745,7 +762,7 @@ namespace v2rayN.Handler
                 {
                     if (item.delay <= 0)
                     {
-                        item.sort = maxSort;
+                        ProfileExHandler.Instance.SetSort(item.indexId, maxSort);
                     }
                 }
             }
@@ -756,12 +773,10 @@ namespace v2rayN.Handler
                 {
                     if (item.speed <= 0)
                     {
-                        item.sort = maxSort;
+                        ProfileExHandler.Instance.SetSort(item.indexId, maxSort);
                     }
                 }
             }
-
-            SqliteHelper.Instance.UpdateAll(lstProfile);
 
             return 0;
         }
@@ -830,15 +845,8 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(profileItem.indexId))
             {
                 profileItem.indexId = Utils.GetGUID(false);
-                if (profileItem.sort <= 0)
-                {
-                    var maxSort = 0;
-                    if (SqliteHelper.Instance.Table<ProfileItem>().Count() > 0)
-                    {
-                        maxSort = SqliteHelper.Instance.Table<ProfileItem>().Max(t => t == null ? 0 : t.sort);
-                    }
-                    profileItem.sort = maxSort + 1;
-                }
+                var maxSort = ProfileExHandler.Instance.GetMaxSort();
+                ProfileExHandler.Instance.SetSort(profileItem.indexId, maxSort + 1);
             }
             else if (profileItem.indexId == config.indexId)
             {
@@ -929,11 +937,11 @@ namespace v2rayN.Handler
             }
 
             int countServers = 0;
-            var maxSort = 0;
-            if (SqliteHelper.Instance.Table<ProfileItem>().Count() > 0)
-            {
-                maxSort = SqliteHelper.Instance.Table<ProfileItem>().Max(t => t.sort);
-            }
+            //var maxSort = 0;
+            //if (SqliteHelper.Instance.Table<ProfileItem>().Count() > 0)
+            //{
+            //    maxSort = SqliteHelper.Instance.Table<ProfileItem>().Max(t => t.sort);
+            //}
             string[] arrData = clipboardData.Split(Environment.NewLine.ToCharArray());
             foreach (string str in arrData)
             {
@@ -971,7 +979,7 @@ namespace v2rayN.Handler
                 }
                 profileItem.subid = subid;
                 profileItem.isSub = isSub;
-                profileItem.sort = maxSort + countServers + 1;
+                //profileItem.sort = maxSort + countServers + 1;
 
                 if (profileItem.configType == EConfigType.VMess)
                 {

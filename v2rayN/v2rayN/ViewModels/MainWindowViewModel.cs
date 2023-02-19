@@ -664,6 +664,8 @@ namespace v2rayN.ViewModels
                     SysProxyHandle.UpdateSysProxy(_config, true);
                 }
 
+                ProfileExHandler.Instance.SaveTo();
+
                 _statistics?.SaveTo();
                 _statistics?.Close();
 
@@ -708,19 +710,19 @@ namespace v2rayN.ViewModels
         private void RefreshServers()
         {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
-            _lstProfile = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(lstModel));
-
-            ConfigHandler.SetDefaultServer(_config, _lstProfile);
+            ConfigHandler.SetDefaultServer(_config, lstModel);
 
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {
                 lstServerStat = _statistics.ServerStat;
             }
+            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
             lstModel = (from t in lstModel
-                        join t2 in lstServerStat
-                        on t.indexId equals t2.indexId into t2b
+                        join t2 in lstServerStat on t.indexId equals t2.indexId into t2b
                         from t22 in t2b.DefaultIfEmpty()
+                        join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
+                        from t33 in t3b.DefaultIfEmpty()
                         select new ProfileItemModel
                         {
                             indexId = t.indexId,
@@ -733,14 +735,15 @@ namespace v2rayN.ViewModels
                             streamSecurity = t.streamSecurity,
                             subRemarks = t.subRemarks,
                             isActive = t.indexId == _config.indexId,
-                            delay = t.delay,
-                            delayVal = t.delay != 0 ? $"{t.delay} {Global.DelayUnit}" : string.Empty,
-                            speedVal = t.speed != 0 ? $"{t.speed} {Global.SpeedUnit}" : string.Empty,
+                            sort = t33 == null ? 0 : t33.sort,
+                            delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
+                            speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
                             todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
                             todayUp = t22 == null ? "" : Utils.HumanFy(t22.todayUp),
                             totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
                             totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
-                        }).ToList();
+                        }).OrderBy(t => t.sort).ToList();
+            _lstProfile = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(lstModel));
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -982,7 +985,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultServer(ref _config, item) == 0)
+            if (ConfigHandler.SetDefaultServerIndex(ref _config, indexId) == 0)
             {
                 RefreshServers();
                 Reload();

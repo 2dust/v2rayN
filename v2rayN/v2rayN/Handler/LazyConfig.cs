@@ -17,6 +17,7 @@ namespace v2rayN.Handler
             SqliteHelper.Instance.CreateTable<ProfileItem>();
             SqliteHelper.Instance.CreateTable<ServerStatItem>();
             SqliteHelper.Instance.CreateTable<RoutingItem>();
+            SqliteHelper.Instance.CreateTable<ProfileExItem>();
         }
 
         #region Config
@@ -81,6 +82,18 @@ namespace v2rayN.Handler
                 return SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).ToList();
             }
         }
+        public List<string> ProfileItemIndexs(string subid)
+        {
+            if (Utils.IsNullOrEmpty(subid))
+            {
+                return SqliteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).ToList();
+
+            }
+            else
+            {
+                return SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).Select(t => t.indexId).ToList();
+            }
+        }
 
         public List<ProfileItemModel> ProfileItems(string subid, string filter)
         {
@@ -101,7 +114,6 @@ namespace v2rayN.Handler
                 }
                 sql += $" and a.remarks like '%{filter}%'";
             }
-            sql += " order by a.sort";
 
             return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
         }
@@ -113,28 +125,6 @@ namespace v2rayN.Handler
                 return null;
             }
             return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
-        }
-
-        public Task SetTestResult(string indexId, string delayVal, string speedVal)
-        {
-            string sql = string.Empty;
-            if (!Utils.IsNullOrEmpty(delayVal) && !Utils.IsNullOrEmpty(speedVal))
-            {
-                int.TryParse(delayVal, out int delay);
-                decimal.TryParse(speedVal, out decimal speed);
-                sql = $"update ProfileItem set delay={delay},speed={speed} where indexId = '{indexId}'";
-            }
-            else if (!Utils.IsNullOrEmpty(delayVal))
-            {
-                int.TryParse(delayVal, out int delay);
-                sql = $"update ProfileItem set delay={delay} where indexId = '{indexId}'";
-            }
-            else if (!Utils.IsNullOrEmpty(speedVal))
-            {
-                decimal.TryParse(speedVal, out decimal speed);
-                sql = $"update ProfileItem set speed={speed} where indexId = '{indexId}'";
-            }
-            return SqliteHelper.Instance.ExecuteAsync(sql);
         }
 
         public List<RoutingItem> RoutingItems()
