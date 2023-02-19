@@ -163,7 +163,7 @@ namespace v2rayN.ViewModels
             foreach (var item in routings)
             {
                 bool def = false;
-                if (item.id.Equals(_config.routingBasicItem.routingIndexId))
+                if (item.id == _config.routingBasicItem.routingIndexId)
                 {
                     def = true;
                 }

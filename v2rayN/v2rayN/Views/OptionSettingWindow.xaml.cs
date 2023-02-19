@@ -76,13 +76,12 @@ namespace v2rayN.Views
             //fill fonts
             try
             {
-                var dir = new DirectoryInfo(Utils.GetFontsPath());
-                var files = dir.GetFiles("*.ttf");
-                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
+                var files = Directory.GetFiles(Utils.GetFontsPath(), "*.ttf");
+                var culture = _config.uiItem.currentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
-                foreach (var it in files)
+                foreach (var ttf in files)
                 {
-                    var families = Fonts.GetFontFamilies(Utils.GetFontsPath(it.Name));
+                    var families = Fonts.GetFontFamilies(Utils.GetFontsPath(ttf));
                     foreach (FontFamily family in families)
                     {
                         var typefaces = family.GetTypefaces();

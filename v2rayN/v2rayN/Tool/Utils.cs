@@ -489,7 +489,7 @@ namespace v2rayN
             {
                 return true;
             }
-            if (text.Equals("null"))
+            if (text == "null")
             {
                 return true;
             }
@@ -636,7 +636,7 @@ namespace v2rayN
 
                 string value = RegReadValue(Global.AutoRunRegPath, Global.AutoRunName, "");
                 string exePath = GetExePath();
-                if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
+                if (value == exePath || value == $"\"{exePath}\"")
                 {
                     return true;
                 }

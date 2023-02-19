@@ -197,13 +197,13 @@ namespace v2rayN.Views
         {
             if (action == "AdjustMainLvColWidth")
             {
-                Application.Current.Dispatcher.Invoke((Action)(() =>
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (var it in lstProfiles.Columns)
                     {
                         it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
                     }
-                }));
+                });
             }
             else if (action == "ProfilesFocus")
             {
@@ -355,7 +355,7 @@ namespace v2rayN.Views
             }
             else
             {
-                if (e.Key == Key.Enter || e.Key == Key.Return)
+                if (e.Key is Key.Enter or Key.Return)
                 {
                     ViewModel?.SetDefaultServer();
                 }
@@ -471,9 +471,8 @@ namespace v2rayN.Views
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is MenuItem)
+            if (sender is MenuItem item)
             {
-                MenuItem item = (MenuItem)sender;
                 Utils.ProcessStart(item.Tag.ToString());
             }
         }
@@ -482,7 +481,7 @@ namespace v2rayN.Views
         #endregion
         #region Drag and Drop
 
-        private Point startPoint = new Point();
+        private Point startPoint = new();
         private int startIndex = -1;
         private string formatData = "ProfileItemModel";
 
@@ -523,8 +522,7 @@ namespace v2rayN.Views
                        Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 // Get the dragged Item
-                var listView = sender as DataGrid;
-                if (listView == null) return;
+                if (sender is not DataGrid listView) return;
                 var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null) return;           // Abort
                                                             // Find the data behind the ListViewItem
@@ -532,7 +530,7 @@ namespace v2rayN.Views
                 if (item == null) return;                   // Abort
                                                             // Initialize the drag & drop operation
                 startIndex = lstProfiles.SelectedIndex;
-                DataObject dragData = new DataObject(formatData, item);
+                DataObject dragData = new(formatData, item);
                 DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
             }
         }
@@ -550,8 +548,7 @@ namespace v2rayN.Views
             if (e.Data.GetDataPresent(formatData) && sender == e.Source)
             {
                 // Get the drop Item destination
-                var listView = sender as DataGrid;
-                if (listView == null) return;
+                if (sender is not DataGrid listView) return;
                 var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null)
                 {

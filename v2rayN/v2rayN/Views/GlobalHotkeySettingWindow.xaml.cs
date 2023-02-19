@@ -85,19 +85,19 @@ namespace v2rayN.Views
 
                 if (item.Control)
                 {
-                    keys += $"{Forms.Keys.Control.ToString()} + ";
+                    keys += $"{Forms.Keys.Control} + ";
                 }
                 if (item.Alt)
                 {
-                    keys += $"{Forms.Keys.Alt.ToString()} + ";
+                    keys += $"{Forms.Keys.Alt} + ";
                 }
                 if (item.Shift)
                 {
-                    keys += $"{Forms.Keys.Shift.ToString()} + ";
+                    keys += $"{Forms.Keys.Shift} + ";
                 }
                 if (item.KeyCode != null)
                 {
-                    keys += $"{item.KeyCode.ToString()}";
+                    keys += $"{item.KeyCode}";
                 }
 
                 SetText($"txtGlobalHotkey{k}", keys);
@@ -148,11 +148,11 @@ namespace v2rayN.Views
         {
             foreach (UIElement element in gridText.Children)
             {
-                if (element is TextBox)
+                if (element is TextBox box)
                 {
-                    if (((TextBox)element).Name == name)
+                    if (box.Name == name)
                     {
-                        ((TextBox)element).Text = txt;
+                        box.Text = txt;
                     }
                 }
             }

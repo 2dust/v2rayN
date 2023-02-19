@@ -613,12 +613,12 @@ namespace v2rayN.Handler
                             mtu = config.kcpItem.mtu,
                             tti = config.kcpItem.tti
                         };
-                        if (iobound.Equals("out"))
+                        if (iobound == "out")
                         {
                             kcpSettings.uplinkCapacity = config.kcpItem.uplinkCapacity;
                             kcpSettings.downlinkCapacity = config.kcpItem.downlinkCapacity;
                         }
-                        else if (iobound.Equals("in"))
+                        else if (iobound == "in")
                         {
                             kcpSettings.uplinkCapacity = config.kcpItem.downlinkCapacity; ;
                             kcpSettings.downlinkCapacity = config.kcpItem.downlinkCapacity;
@@ -724,7 +724,7 @@ namespace v2rayN.Handler
                         break;
                     default:
                         //tcp
-                        if (node.headerType.Equals(Global.TcpHeaderHttp))
+                        if (node.headerType == Global.TcpHeaderHttp)
                         {
                             TcpSettings tcpSettings = new()
                             {
@@ -734,7 +734,7 @@ namespace v2rayN.Handler
                                 }
                             };
 
-                            if (iobound.Equals("out"))
+                            if (iobound == "out")
                             {
                                 //request Host
                                 string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
@@ -753,7 +753,7 @@ namespace v2rayN.Handler
                                 request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
                                 tcpSettings.header.request = Utils.FromJson<object>(request);
                             }
-                            else if (iobound.Equals("in"))
+                            else if (iobound == "in")
                             {
                                 //string response = Utils.GetEmbedText(Global.v2raySampleHttpresponseFileName);
                                 //tcpSettings.header.response = Utils.FromJson<object>(response);
@@ -1184,7 +1184,7 @@ namespace v2rayN.Handler
                     && outbound.streamSettings.tcpSettings.header != null
                     && !Utils.IsNullOrEmpty(outbound.streamSettings.tcpSettings.header.type))
                 {
-                    if (outbound.streamSettings.tcpSettings.header.type.Equals(Global.TcpHeaderHttp))
+                    if (outbound.streamSettings.tcpSettings.header.type == Global.TcpHeaderHttp)
                     {
                         profileItem.headerType = outbound.streamSettings.tcpSettings.header.type;
                         string request = Convert.ToString(outbound.streamSettings.tcpSettings.header.request);
@@ -1322,7 +1322,7 @@ namespace v2rayN.Handler
                     && inbound.streamSettings.tcpSettings.header != null
                     && !Utils.IsNullOrEmpty(inbound.streamSettings.tcpSettings.header.type))
                 {
-                    if (inbound.streamSettings.tcpSettings.header.type.Equals(Global.TcpHeaderHttp))
+                    if (inbound.streamSettings.tcpSettings.header.type == Global.TcpHeaderHttp)
                     {
                         profileItem.headerType = inbound.streamSettings.tcpSettings.header.type;
                         string request = Convert.ToString(inbound.streamSettings.tcpSettings.header.request);

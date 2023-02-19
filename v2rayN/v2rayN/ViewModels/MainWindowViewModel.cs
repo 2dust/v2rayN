@@ -788,7 +788,7 @@ namespace v2rayN.ViewModels
 
                 var item = new ComboItem() { ID = it.indexId, Text = name };
                 _servers.Add(item);
-                if (_config.indexId.Equals(it.indexId))
+                if (_config.indexId == it.indexId)
                 {
                     SelectedServer = item;
                 }
@@ -1456,7 +1456,7 @@ namespace v2rayN.ViewModels
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
-                if (item.id.Equals(_config.routingBasicItem.routingIndexId))
+                if (item.id == _config.routingBasicItem.routingIndexId)
                 {
                     SelectedRouting = item;
                 }

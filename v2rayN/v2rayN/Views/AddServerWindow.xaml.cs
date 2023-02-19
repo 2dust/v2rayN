@@ -185,12 +185,12 @@ namespace v2rayN.Views
                 return;
             }
 
-            if (network.Equals(Global.DefaultNetwork))
+            if (network == Global.DefaultNetwork)
             {
                 cmbHeaderType.Items.Add(Global.None);
                 cmbHeaderType.Items.Add(Global.TcpHeaderHttp);
             }
-            else if (network.Equals("kcp") || network.Equals("quic"))
+            else if (network is "kcp" or "quic")
             {
                 cmbHeaderType.Items.Add(Global.None);
                 Global.kcpHeaderTypes.ForEach(it =>
@@ -198,7 +198,7 @@ namespace v2rayN.Views
                     cmbHeaderType.Items.Add(it);
                 });
             }
-            else if (network.Equals("grpc"))
+            else if (network == "grpc")
             {
                 cmbHeaderType.Items.Add(Global.GrpcgunMode);
                 cmbHeaderType.Items.Add(Global.GrpcmultiMode);
@@ -222,37 +222,34 @@ namespace v2rayN.Views
             tipPath.Text =
             tipHeaderType.Text = string.Empty;
 
-            if (network.Equals(Global.DefaultNetwork))
+            switch (network)
             {
-                tipRequestHost.Text = ResUI.TransportRequestHostTip1;
-                tipHeaderType.Text = ResUI.TransportHeaderTypeTip1;
-            }
-            else if (network.Equals("kcp"))
-            {
-                tipHeaderType.Text = ResUI.TransportHeaderTypeTip2;
-                tipPath.Text = ResUI.TransportPathTip5;
-            }
-            else if (network.Equals("ws"))
-            {
-                tipRequestHost.Text = ResUI.TransportRequestHostTip2;
-                tipPath.Text = ResUI.TransportPathTip1;
-            }
-            else if (network.Equals("h2"))
-            {
-                tipRequestHost.Text = ResUI.TransportRequestHostTip3;
-                tipPath.Text = ResUI.TransportPathTip2;
-            }
-            else if (network.Equals("quic"))
-            {
-                tipRequestHost.Text = ResUI.TransportRequestHostTip4;
-                tipPath.Text = ResUI.TransportPathTip3;
-                tipHeaderType.Text = ResUI.TransportHeaderTypeTip3;
-            }
-            else if (network.Equals("grpc"))
-            {
-                tipPath.Text = ResUI.TransportPathTip4;
-                tipHeaderType.Text = ResUI.TransportHeaderTypeTip4;
-                labHeaderType.Visibility = Visibility.Hidden;
+                case Global.DefaultNetwork:
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip1;
+                    tipHeaderType.Text = ResUI.TransportHeaderTypeTip1;
+                    break;
+                case "kcp":
+                    tipHeaderType.Text = ResUI.TransportHeaderTypeTip2;
+                    tipPath.Text = ResUI.TransportPathTip5;
+                    break;
+                case "ws":
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip2;
+                    tipPath.Text = ResUI.TransportPathTip1;
+                    break;
+                case "h2":
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip3;
+                    tipPath.Text = ResUI.TransportPathTip2;
+                    break;
+                case "quic":
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip4;
+                    tipPath.Text = ResUI.TransportPathTip3;
+                    tipHeaderType.Text = ResUI.TransportHeaderTypeTip3;
+                    break;
+                case "grpc":
+                    tipPath.Text = ResUI.TransportPathTip4;
+                    tipHeaderType.Text = ResUI.TransportHeaderTypeTip4;
+                    labHeaderType.Visibility = Visibility.Hidden;
+                    break;
             }
         }
 
