@@ -3,6 +3,7 @@ using System.IO;
 using System.Reactive.Linq;
 using v2rayN.Handler;
 using v2rayN.Mode;
+using v2rayN.Resx;
 
 namespace v2rayN.Base
 {
@@ -60,6 +61,7 @@ namespace v2rayN.Base
                 {
                     return;
                 }
+                CoreStartTest();
                 CoreStart();
             }
         }
@@ -101,6 +103,7 @@ namespace v2rayN.Base
             configStr = configStr.Replace("$stack$", $"{_config.tunModeItem.stack}");
 
             //logs
+            configStr = configStr.Replace("$log_disabled$", $"aaa{(!_config.tunModeItem.enabledLog).ToString().ToLower()}");
             if (_config.tunModeItem.showWindow)
             {
                 configStr = configStr.Replace("$log_output$", $"");
@@ -225,7 +228,8 @@ namespace v2rayN.Base
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                Utils.SaveLog(msg);
             }
             return fileName;
         }
@@ -235,7 +239,7 @@ namespace v2rayN.Base
             try
             {
                 string fileName = CoreFindexe();
-                if (fileName == "")
+                if (Utils.IsNullOrEmpty(fileName))
                 {
                     return;
                 }
@@ -291,6 +295,48 @@ namespace v2rayN.Base
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
+            }
+        }
+
+        private int CoreStartTest()
+        {
+            Utils.SaveLog("Tun mode configuration file test start");
+            try
+            {
+                string fileName = CoreFindexe();
+                if (fileName == "")
+                {
+                    return -1;
+                }
+                Process p = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = fileName,
+                        Arguments = $"run -c \"{Utils.GetConfigPath(_tunConfigName)}\"",
+                        WorkingDirectory = Utils.GetConfigPath(),
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardError = true,
+                        Verb = "runas",
+                    }
+                };
+                p.Start();
+                if (p.WaitForExit(2000))
+                {
+                    throw new Exception(p.StandardError.ReadToEnd());
+                }
+                KillProcess(p);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+                return -1;
+            }
+            finally
+            {
+                Utils.SaveLog("Tun mode configuration file test end");
             }
         }
     }

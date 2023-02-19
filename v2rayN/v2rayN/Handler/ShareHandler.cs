@@ -32,7 +32,7 @@ namespace v2rayN.Handler
                     EConfigType.VLESS => ShareVLESS(item),
                     _ => null,
                 };
-                
+
                 return url;
             }
             catch (Exception ex)
@@ -273,8 +273,9 @@ namespace v2rayN.Handler
         public static ProfileItem? ImportFromClipboardConfig(string clipboardData, out string msg)
         {
             msg = string.Empty;
-            ProfileItem profileItem = new();
-            
+
+            ProfileItem profileItem = new();  
+
             try
             {
                 //载入配置文件 

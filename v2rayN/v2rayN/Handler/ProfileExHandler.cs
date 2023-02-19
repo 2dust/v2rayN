@@ -32,7 +32,7 @@ namespace v2rayN.Handler
                 sort = 0
             };
             _lstProfileEx.Add(profileEx);
-            SqliteHelper.Instance.Replace(profileEx);
+            //SqliteHelper.Instance.Replace(profileEx);
         }
 
         public void ClearAll()
@@ -45,7 +45,11 @@ namespace v2rayN.Handler
         {
             try
             {
-                SqliteHelper.Instance.UpdateAll(_lstProfileEx);
+                foreach (var item in _lstProfileEx)
+                {
+                    SqliteHelper.Instance.Replace(item);
+                }
+                //SqliteHelper.Instance.UpdateAll(_lstProfileEx);
             }
             catch (Exception ex)
             {

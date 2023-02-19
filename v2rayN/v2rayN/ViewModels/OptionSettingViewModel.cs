@@ -75,6 +75,7 @@ namespace v2rayN.ViewModels
 
         #region Tun mode
         [Reactive] public bool TunShowWindow { get; set; }
+        [Reactive] public bool TunEnabledLog { get; set; }
         [Reactive] public bool TunStrictRoute { get; set; }
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
@@ -168,6 +169,7 @@ namespace v2rayN.ViewModels
             #region Tun mode
 
             TunShowWindow = _config.tunModeItem.showWindow;
+            TunEnabledLog = _config.tunModeItem.enabledLog;
             TunStrictRoute = _config.tunModeItem.strictRoute;
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
@@ -340,6 +342,7 @@ namespace v2rayN.ViewModels
 
             //tun mode
             _config.tunModeItem.showWindow = TunShowWindow;
+            _config.tunModeItem.enabledLog = TunEnabledLog;
             _config.tunModeItem.strictRoute = TunStrictRoute;
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
