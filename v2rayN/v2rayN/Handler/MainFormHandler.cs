@@ -82,7 +82,7 @@ namespace v2rayN.Handler
             return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
         }
 
-        private Icon GetNotifyIcon4Routing(Config config)
+        private Icon? GetNotifyIcon4Routing(Config config)
         {
             try
             {
@@ -286,7 +286,7 @@ namespace v2rayN.Handler
             BackupGuiNConfig(config, true);
 
             config = resConfig;
-            LazyConfig.Instance.SetConfig(ref config);
+            LazyConfig.Instance.SetConfig(config);
 
             return true;
         }

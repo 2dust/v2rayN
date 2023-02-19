@@ -16,7 +16,7 @@ namespace v2rayN.Handler
     {
         public event EventHandler<ResultEventArgs> UpdateCompleted;
 
-        public event ErrorEventHandler Error;
+        public event ErrorEventHandler? Error;
 
 
         public class ResultEventArgs : EventArgs
@@ -99,7 +99,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public async Task<string> UrlRedirectAsync(string url, bool blProxy)
+        public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
             Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
@@ -112,7 +112,7 @@ namespace v2rayN.Handler
             HttpResponseMessage response = await client.GetAsync(url);
             if (response.StatusCode.ToString() == "Redirect")
             {
-                return response.Headers.Location.ToString();
+                return response.Headers.Location?.ToString();
             }
             else
             {
@@ -121,7 +121,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public async Task<string> TryDownloadString(string url, bool blProxy, string userAgent)
+        public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent)
         {
             try
             {
@@ -161,14 +161,12 @@ namespace v2rayN.Handler
 
             try
             {
-                using (var wc = new WebClient())
+                using var wc = new WebClient();
+                wc.Proxy = GetWebProxy(blProxy);
+                var result3 = await wc.DownloadStringTaskAsync(url);
+                if (!Utils.IsNullOrEmpty(result3))
                 {
-                    wc.Proxy = GetWebProxy(blProxy);
-                    var result3 = await wc.DownloadStringTaskAsync(url);
-                    if (!Utils.IsNullOrEmpty(result3))
-                    {
-                        return result3;
-                    }
+                    return result3;
                 }
             }
             catch (Exception ex)
@@ -189,7 +187,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public async Task<string> DownloadStringAsync(string url, bool blProxy, string userAgent)
+        public async Task<string?> DownloadStringAsync(string url, bool blProxy, string userAgent)
         {
             try
             {
@@ -234,7 +232,7 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public async Task<string> DownloadStringViaDownloader(string url, bool blProxy, string userAgent)
+        public async Task<string?> DownloadStringViaDownloader(string url, bool blProxy, string userAgent)
         {
             try
             {
@@ -262,7 +260,7 @@ namespace v2rayN.Handler
         }
 
 
-        public int RunAvailabilityCheck(WebProxy webProxy)
+        public int RunAvailabilityCheck(WebProxy? webProxy)
         {
             try
             {
@@ -324,7 +322,7 @@ namespace v2rayN.Handler
             return msg;
         }
 
-        private WebProxy GetWebProxy(bool blProxy)
+        private WebProxy? GetWebProxy(bool blProxy)
         {
             if (!blProxy)
             {
@@ -341,7 +339,7 @@ namespace v2rayN.Handler
 
         private bool SocketCheck(string ip, int port)
         {
-            Socket sock = null;
+            Socket? sock = null;
             try
             {
                 IPAddress ipa = IPAddress.Parse(ip);

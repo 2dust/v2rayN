@@ -35,51 +35,46 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = null;
-            if (downloadHandle == null)
+            DownloadHandle downloadHandle = new DownloadHandle();
+            downloadHandle.UpdateCompleted += (sender2, args) =>
             {
-                downloadHandle = new DownloadHandle();
-
-                downloadHandle.UpdateCompleted += (sender2, args) =>
+                if (args.Success)
                 {
-                    if (args.Success)
-                    {
-                        _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
+                    _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
 
-                        try
+                    try
+                    {
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        fileName = Utils.UrlEncode(fileName);
+                        Process process = new Process
                         {
-                            string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
-                            fileName = Utils.UrlEncode(fileName);
-                            Process process = new Process
+                            StartInfo = new ProcessStartInfo
                             {
-                                StartInfo = new ProcessStartInfo
-                                {
-                                    FileName = "v2rayUpgrade.exe",
-                                    Arguments = $"\"{fileName}\"",
-                                    WorkingDirectory = Utils.StartupPath()
-                                }
-                            };
-                            process.Start();
-                            if (process.Id > 0)
-                            {
-                                _updateFunc(true, "");
+                                FileName = "v2rayUpgrade.exe",
+                                Arguments = $"\"{fileName}\"",
+                                WorkingDirectory = Utils.StartupPath()
                             }
-                        }
-                        catch (Exception ex)
+                        };
+                        process.Start();
+                        if (process.Id > 0)
                         {
-                            _updateFunc(false, ex.Message);
+                            _updateFunc(true, "");
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        _updateFunc(false, args.Msg);
+                        _updateFunc(false, ex.Message);
                     }
-                };
-                downloadHandle.Error += (sender2, args) =>
+                }
+                else
                 {
-                    _updateFunc(false, args.GetException().Message);
-                };
-            }
+                    _updateFunc(false, args.Msg);
+                }
+            };
+            downloadHandle.Error += (sender2, args) =>
+            {
+                _updateFunc(false, args.GetException().Message);
+            };
             AbsoluteCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -106,36 +101,32 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = null;
-            if (downloadHandle == null)
+            DownloadHandle downloadHandle = new DownloadHandle();
+            downloadHandle.UpdateCompleted += (sender2, args) =>
             {
-                downloadHandle = new DownloadHandle();
-                downloadHandle.UpdateCompleted += (sender2, args) =>
+                if (args.Success)
                 {
-                    if (args.Success)
-                    {
-                        _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
-                        _updateFunc(false, ResUI.MsgUnpacking);
+                    _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
+                    _updateFunc(false, ResUI.MsgUnpacking);
 
-                        try
-                        {
-                            _updateFunc(true, url);
-                        }
-                        catch (Exception ex)
-                        {
-                            _updateFunc(false, ex.Message);
-                        }
-                    }
-                    else
+                    try
                     {
-                        _updateFunc(false, args.Msg);
+                        _updateFunc(true, url);
                     }
-                };
-                downloadHandle.Error += (sender2, args) =>
+                    catch (Exception ex)
+                    {
+                        _updateFunc(false, ex.Message);
+                    }
+                }
+                else
                 {
-                    _updateFunc(true, args.GetException().Message);
-                };
-            }
+                    _updateFunc(false, args.Msg);
+                }
+            };
+            downloadHandle.Error += (sender2, args) =>
+            {
+                _updateFunc(true, args.GetException().Message);
+            };
 
             AbsoluteCompleted += (sender2, args) =>
             {
@@ -226,7 +217,7 @@ namespace v2rayN.Handler
                     else
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
-                        if (result.Length < 99)
+                        if (result!.Length < 99)
                         {
                             _updateFunc(false, $"{hashCode}{result}");
                         }
@@ -262,49 +253,44 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Format(Global.geoUrl, geoName);
 
-            DownloadHandle downloadHandle = null;
-            if (downloadHandle == null)
+            DownloadHandle downloadHandle = new DownloadHandle();
+            downloadHandle.UpdateCompleted += (sender2, args) =>
             {
-                downloadHandle = new DownloadHandle();
-
-                downloadHandle.UpdateCompleted += (sender2, args) =>
+                if (args.Success)
                 {
-                    if (args.Success)
+                    _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+
+                    try
                     {
-                        _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
-
-                        try
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        if (File.Exists(fileName))
                         {
-                            string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
-                            if (File.Exists(fileName))
-                            {
-                                //Global.coreTypes.ForEach(it =>
-                                //{
-                                //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
-                                //    File.Copy(fileName, targetPath, true);
-                                //});
-                                string targetPath = Utils.GetBinPath($"{geoName}.dat");
-                                File.Copy(fileName, targetPath, true);
+                            //Global.coreTypes.ForEach(it =>
+                            //{
+                            //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
+                            //    File.Copy(fileName, targetPath, true);
+                            //});
+                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
+                            File.Copy(fileName, targetPath, true);
 
-                                File.Delete(fileName);
-                                //_updateFunc(true, "");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _updateFunc(false, ex.Message);
+                            File.Delete(fileName);
+                            //_updateFunc(true, "");
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        _updateFunc(false, args.Msg);
+                        _updateFunc(false, ex.Message);
                     }
-                };
-                downloadHandle.Error += (sender2, args) =>
+                }
+                else
                 {
-                    _updateFunc(false, args.GetException().Message);
-                };
-            }
+                    _updateFunc(false, args.Msg);
+                }
+            };
+            downloadHandle.Error += (sender2, args) =>
+            {
+                _updateFunc(false, args.GetException().Message);
+            };
             askToDownload(downloadHandle, url, false);
 
         }

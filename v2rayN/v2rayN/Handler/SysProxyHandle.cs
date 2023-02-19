@@ -20,7 +20,7 @@ namespace v2rayN.Handler
         //  <proxy-server><CR-LF>
         //  <bypass-list><CR-LF>
         //  <pac-url>
-        private static SysproxyConfig _userSettings = null;
+        private static SysproxyConfig? _userSettings = null;
 
         enum RET_ERRORS : int
         {
@@ -174,8 +174,8 @@ namespace v2rayN.Handler
 
                     process.StartInfo.CreateNoWindow = true;
 
-                    StringBuilder output = new StringBuilder();
-                    StringBuilder error = new StringBuilder();
+                    StringBuilder output = new StringBuilder(1024);
+                    StringBuilder error = new StringBuilder(1024);
 
                     process.OutputDataReceived += (sender, e) =>
                     {

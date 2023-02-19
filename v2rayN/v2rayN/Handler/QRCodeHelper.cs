@@ -9,7 +9,7 @@ namespace v2rayN.Handler
     /// </summary>
     public class QRCodeHelper
     {
-        public static DrawingImage GetQRCode(string strContent)
+        public static DrawingImage? GetQRCode(string strContent)
         {
             try
             {

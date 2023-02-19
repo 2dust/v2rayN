@@ -532,7 +532,7 @@ namespace v2rayN.ViewModels
         {
             _noticeHandler?.SendMessage(msg);
         }
-        private async void UpdateTaskHandler(bool success, string msg)
+        private void UpdateTaskHandler(bool success, string msg)
         {
             _noticeHandler?.SendMessage(msg);
             if (success)

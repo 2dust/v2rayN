@@ -10,7 +10,7 @@ namespace v2rayN.Handler
             return SetProxy(null, null, 1);
         }
 
-        public static bool SetProxy(string strProxy, string exceptions, int type)
+        public static bool SetProxy(string? strProxy, string? exceptions, int type)
         {
             InternetPerConnOptionList list = new InternetPerConnOptionList();
 
@@ -189,8 +189,8 @@ namespace v2rayN.Handler
         //判断是否使用代理
         public static bool UsedProxy()
         {
-            using RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
-            if (rk.GetValue("ProxyEnable").ToString() == "1")
+            using RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            if (rk?.GetValue("ProxyEnable")?.ToString() == "1")
             {
                 return true;
             }
@@ -202,7 +202,7 @@ namespace v2rayN.Handler
         //获得代理的IP和端口
         public static string GetProxyProxyServer()
         {
-            using RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            using RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
             string ProxyServer = rk.GetValue("ProxyServer").ToString();
             return ProxyServer;
 

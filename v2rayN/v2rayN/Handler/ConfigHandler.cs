@@ -205,7 +205,7 @@ namespace v2rayN.Handler
 
             }
 
-            LazyConfig.Instance.SetConfig(ref config);
+            LazyConfig.Instance.SetConfig(config);
             return 0;
         }
         /// <summary>
@@ -438,7 +438,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static int SetDefaultServerIndex(ref Config config, string indexId)
+        public static int SetDefaultServerIndex(ref Config config, string? indexId)
         {
             if (Utils.IsNullOrEmpty(indexId))
             {
@@ -460,7 +460,7 @@ namespace v2rayN.Handler
                 return 0;
             }
             var allItems = LazyConfig.Instance.ProfileItemIndexs("");
-            if (allItems.Where(t => t == config.indexId).Count() > 0)
+            if (allItems.Where(t => t == config.indexId).Any())
             {
                 return 0;
             }
@@ -468,13 +468,13 @@ namespace v2rayN.Handler
             {
                 return SetDefaultServerIndex(ref config, lstProfile[0].indexId);
             }
-            if (allItems.Count() > 0)
+            if (allItems.Count > 0)
             {
                 return SetDefaultServerIndex(ref config, allItems.FirstOrDefault());
             }
             return -1;
         }
-        public static ProfileItem GetDefaultServer(ref Config config)
+        public static ProfileItem? GetDefaultServer(ref Config config)
         {
             var item = LazyConfig.Instance.GetProfileItem(config.indexId);
             if (item is null)
@@ -1041,7 +1041,7 @@ namespace v2rayN.Handler
 
             ProfileItem profileItem = new();
             //Is v2ray configuration
-            V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(clipboardData);
+            V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(clipboardData);
             if (v2rayConfig != null
                 && v2rayConfig.inbounds != null
                 && v2rayConfig.inbounds.Count > 0
@@ -1176,7 +1176,7 @@ namespace v2rayN.Handler
 
         public static int AddBatchServers(ref Config config, string clipboardData, string subid, bool isSub)
         {
-            List<ProfileItem> lstOriSub = null;
+            List<ProfileItem>? lstOriSub = null;
             if (isSub && !Utils.IsNullOrEmpty(subid))
             {
                 lstOriSub = LazyConfig.Instance.ProfileItems(subid);

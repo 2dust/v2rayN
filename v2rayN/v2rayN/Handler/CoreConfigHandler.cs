@@ -25,7 +25,7 @@ namespace v2rayN.Handler
         /// <param name="msg"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public static int GenerateClientConfig(ProfileItem node, string fileName, out string msg, out string content)
+        public static int GenerateClientConfig(ProfileItem node, string? fileName, out string msg, out string content)
         {
             content = string.Empty;
             try
@@ -43,7 +43,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    V2rayConfig v2rayConfig = null;
+                    V2rayConfig? v2rayConfig = null;
                     if (GenerateClientConfigContent(node, false, ref v2rayConfig, out msg) != 0)
                     {
                         return -1;
@@ -114,11 +114,11 @@ namespace v2rayN.Handler
             {
                 v2rayConfig.inbounds = new List<Inbounds>();
 
-                Inbounds inbound = GetInbound(config.inbound[0], Global.InboundSocks, 0, true);
+                Inbounds? inbound = GetInbound(config.inbound[0], Global.InboundSocks, 0, true);
                 v2rayConfig.inbounds.Add(inbound);
 
                 //http
-                Inbounds inbound2 = GetInbound(config.inbound[0], Global.InboundHttp, 1, false);
+                Inbounds? inbound2 = GetInbound(config.inbound[0], Global.InboundHttp, 1, false);
                 v2rayConfig.inbounds.Add(inbound2);
 
                 if (config.inbound[0].allowLANConn)
@@ -157,7 +157,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private static Inbounds GetInbound(InItem inItem, string tag, int offset, bool bSocks)
+        private static Inbounds? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
         {
             string result = Utils.GetEmbedText(Global.v2raySampleInbound);
             if (Utils.IsNullOrEmpty(result))
@@ -957,7 +957,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int GenerateClientConfigContent(ProfileItem node, bool blExport, ref V2rayConfig v2rayConfig, out string msg)
+        public static int GenerateClientConfigContent(ProfileItem node, bool blExport, ref V2rayConfig? v2rayConfig, out string msg)
         {
             try
             {
@@ -1034,7 +1034,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -1123,7 +1123,7 @@ namespace v2rayN.Handler
 
         #region Import (export) client/server configuration
 
-        public static ProfileItem ImportFromClientConfig(string fileName, out string msg)
+        public static ProfileItem? ImportFromClientConfig(string fileName, out string msg)
         {
             msg = string.Empty;
             ProfileItem profileItem = new ProfileItem();
@@ -1137,7 +1137,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedConversionConfiguration;
@@ -1262,7 +1262,7 @@ namespace v2rayN.Handler
             return profileItem;
         }
 
-        public static ProfileItem ImportFromServerConfig(string fileName, out string msg)
+        public static ProfileItem? ImportFromServerConfig(string fileName, out string msg)
         {
             msg = string.Empty;
             ProfileItem profileItem = new ProfileItem();
@@ -1276,7 +1276,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedConversionConfiguration;
@@ -1401,7 +1401,7 @@ namespace v2rayN.Handler
 
         public static int Export2ClientConfig(ProfileItem node, string fileName, out string msg)
         {
-            V2rayConfig v2rayConfig = null;
+            V2rayConfig? v2rayConfig = null;
             if (GenerateClientConfigContent(node, true, ref v2rayConfig, out msg) != 0)
             {
                 return -1;
@@ -1440,7 +1440,7 @@ namespace v2rayN.Handler
                     return "";
                 }
 
-                V2rayConfig v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -1523,7 +1523,7 @@ namespace v2rayN.Handler
                     v2rayConfig.inbounds.Add(inbound);
 
                     //outbound
-                    V2rayConfig v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
+                    V2rayConfig? v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
                     var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                     if (item is null)
                     {

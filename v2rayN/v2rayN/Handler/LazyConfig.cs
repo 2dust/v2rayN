@@ -22,7 +22,7 @@ namespace v2rayN.Handler
 
         #region Config
 
-        public void SetConfig(ref Config config)
+        public void SetConfig(Config config)
         {
             _config = config;
         }
@@ -118,7 +118,7 @@ namespace v2rayN.Handler
             return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
         }
 
-        public ProfileItem GetProfileItem(string indexId)
+        public ProfileItem? GetProfileItem(string indexId)
         {
             if (Utils.IsNullOrEmpty(indexId))
             {
@@ -173,7 +173,7 @@ namespace v2rayN.Handler
             return item.coreType;
         }
 
-        public CoreInfo GetCoreInfo(ECoreType coreType)
+        public CoreInfo? GetCoreInfo(ECoreType coreType)
         {
             if (coreInfos == null)
             {
@@ -182,7 +182,7 @@ namespace v2rayN.Handler
             return coreInfos.Where(t => t.coreType == coreType).FirstOrDefault();
         }
 
-        public List<CoreInfo> GetCoreInfos()
+        public List<CoreInfo>? GetCoreInfos()
         {
             if (coreInfos == null)
             {

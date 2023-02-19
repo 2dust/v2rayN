@@ -48,7 +48,8 @@ namespace v2rayN
             try
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                using Stream stream = assembly.GetManifestResourceStream(res);
+                using Stream? stream = assembly.GetManifestResourceStream(res);
+                ArgumentNullException.ThrowIfNull(stream);
                 using StreamReader reader = new(stream);
                 result = reader.ReadToEnd();
             }
@@ -90,7 +91,7 @@ namespace v2rayN
         /// <typeparam name="T"></typeparam>
         /// <param name="strJson"></param>
         /// <returns></returns>
-        public static T FromJson<T>(string strJson)
+        public static T? FromJson<T>(string strJson)
         {
             try
             {
@@ -98,8 +99,7 @@ namespace v2rayN
                 {
                     return default;
                 }
-                T obj = JsonConvert.DeserializeObject<T>(strJson);
-                return obj;
+                return JsonConvert.DeserializeObject<T>(strJson);
             }
             catch
             {
@@ -112,7 +112,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToJson(object obj, bool indented = true)
+        public static string ToJson(object? obj, bool indented = true)
         {
             string result = string.Empty;
             try
@@ -141,7 +141,7 @@ namespace v2rayN
         /// <param name="obj"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static int ToJsonFile(object obj, string filePath, bool nullValue = true)
+        public static int ToJsonFile(object? obj, string filePath, bool nullValue = true)
         {
             int result;
             try
@@ -168,7 +168,7 @@ namespace v2rayN
             return result;
         }
 
-        public static JObject ParseJson(string strJson)
+        public static JObject? ParseJson(string strJson)
         {
             try
             {
@@ -676,7 +676,7 @@ namespace v2rayN
             return Application.StartupPath;
         }
 
-        public static string RegReadValue(string path, string name, string def)
+        public static string? RegReadValue(string path, string name, string def)
         {
             RegistryKey? regKey = null;
             try
@@ -737,7 +737,7 @@ namespace v2rayN
         public static bool CheckForDotNetVersion(int release = 528040)
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
+            using RegistryKey? ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
             if (ndpKey != null && ndpKey.GetValue("Release") != null)
             {
                 return (int)ndpKey.GetValue("Release") >= release ? true : false;
@@ -908,7 +908,7 @@ namespace v2rayN
         /// 获取剪贴板数
         /// </summary>
         /// <returns></returns>
-        public static string GetClipboardData()
+        public static string? GetClipboardData()
         {
             string strData = string.Empty;
             try
@@ -995,7 +995,7 @@ namespace v2rayN
             return fileName;
         }
 
-        public static IPAddress GetDefaultGateway()
+        public static IPAddress? GetDefaultGateway()
         {
             return NetworkInterface
                 .GetAllNetworkInterfaces()

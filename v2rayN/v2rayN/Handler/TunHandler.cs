@@ -13,7 +13,7 @@ namespace v2rayN.Base
         private string _tunConfigName = "tunConfig.json";
         private static Config _config;
         private CoreInfo coreInfo;
-        private Process _process;
+        private Process? _process;
         private static int _socksPort;
         private static bool _needRestart = true;
         private static bool _isRunning = false;
