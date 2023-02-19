@@ -77,7 +77,7 @@ namespace v2rayN.Views
             try
             {
                 var files = Directory.GetFiles(Utils.GetFontsPath(), "*.ttf");
-                var culture = _config.uiItem.currentLanguage.Equals(Global.Languages[0]) ? "zh-cn" : "en-us";
+                var culture = _config.uiItem.currentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var ttf in files)
                 {

@@ -45,7 +45,7 @@ namespace v2rayN.Base
         {
             var socksPort = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
 
-            if (socksPort.Equals(_socksPort)
+            if (socksPort == _socksPort
                 && _process != null
                 && !_process.HasExited)
             {
