@@ -42,7 +42,7 @@ namespace v2rayN.Base
             }
         }
 
-        public static string TrimEx(this string value)
+        public static string TrimEx(this string? value)
         {
             return value == null ? string.Empty : value.Trim();
         }

@@ -359,6 +359,7 @@
                         Margin="4,0"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
+                        VerticalContentAlignment="Center"
                         Style="{StaticResource DefTextBox}" />
                 </WrapPanel>
 
