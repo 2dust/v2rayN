@@ -103,7 +103,7 @@ namespace v2rayN.Base
             configStr = configStr.Replace("$stack$", $"{_config.tunModeItem.stack}");
 
             //logs
-            configStr = configStr.Replace("$log_disabled$", $"aaa{(!_config.tunModeItem.enabledLog).ToString().ToLower()}");
+            configStr = configStr.Replace("$log_disabled$", $"{(!_config.tunModeItem.enabledLog).ToString().ToLower()}");
             if (_config.tunModeItem.showWindow)
             {
                 configStr = configStr.Replace("$log_output$", $"");
