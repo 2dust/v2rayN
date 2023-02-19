@@ -5,7 +5,7 @@ namespace v2rayN.Handler
 {
     class ProfileExHandler
     {
-        private static readonly Lazy<ProfileExHandler> _instance = new Lazy<ProfileExHandler>(() => new());
+        private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
         private List<ProfileExItem> _lstProfileEx;
         public List<ProfileExItem> ProfileExs => _lstProfileEx;
         public static ProfileExHandler Instance => _instance.Value;

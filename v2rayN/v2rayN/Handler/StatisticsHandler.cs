@@ -13,7 +13,7 @@ namespace v2rayN.Handler
         private Channel channel_;
         private StatsService.StatsServiceClient client_;
         private bool exitFlag_;
-        private ServerStatItem _serverStatItem;
+        private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
@@ -70,7 +70,7 @@ namespace v2rayN.Handler
                 {
                     if (Enable && channel_.State == ChannelState.Ready)
                     {
-                        QueryStatsResponse res = null;
+                        QueryStatsResponse? res = null;
                         try
                         {
                             res = client_.QueryStats(new QueryStatsRequest() { Pattern = "", Reset = true });
@@ -229,7 +229,7 @@ namespace v2rayN.Handler
             try
             {
                 // TCP stack please do me a favor
-                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+                TcpListener l = new(IPAddress.Loopback, 0);
                 l.Start();
                 int port = ((IPEndPoint)l.LocalEndpoint).Port;
                 l.Stop();

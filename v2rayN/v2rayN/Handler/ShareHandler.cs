@@ -17,7 +17,7 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static string GetShareUrl(ProfileItem item)
+        public static string? GetShareUrl(ProfileItem item)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace v2rayN.Handler
         {
             string url = string.Empty;
 
-            VmessQRCode vmessQRCode = new VmessQRCode
+            VmessQRCode vmessQRCode = new()
             {
                 v = item.configVersion.ToString(),
                 ps = item.remarks.TrimEx(), //备注也许很长 ;
@@ -167,7 +167,7 @@ namespace v2rayN.Handler
             return Utils.IsIpv6(address) ? $"[{address}]" : address;
         }
 
-        private static int GetStdTransport(ProfileItem item, string securityDef, ref Dictionary<string, string> dicQuery)
+        private static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
         {
             if (!Utils.IsNullOrEmpty(item.flow))
             {
@@ -250,7 +250,7 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(item.path))
                     {
                         dicQuery.Add("serviceName", Utils.UrlEncode(item.path));
-                        if (item.headerType == Global.GrpcgunMode || item.headerType == Global.GrpcmultiMode)
+                        if (item.headerType is Global.GrpcgunMode or Global.GrpcmultiMode)
                         {
                             dicQuery.Add("mode", Utils.UrlEncode(item.headerType));
                         }
@@ -270,10 +270,11 @@ namespace v2rayN.Handler
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static ProfileItem ImportFromClipboardConfig(string clipboardData, out string msg)
+        public static ProfileItem? ImportFromClipboardConfig(string clipboardData, out string msg)
         {
             msg = string.Empty;
-            ProfileItem profileItem = new ProfileItem();
+
+            ProfileItem profileItem = new();  
 
             try
             {
@@ -357,7 +358,7 @@ namespace v2rayN.Handler
             return profileItem;
         }
 
-        private static ProfileItem ResolveVmess(string result, out string msg)
+        private static ProfileItem? ResolveVmess(string result, out string msg)
         {
             msg = string.Empty;
             var profileItem = new ProfileItem
@@ -365,11 +366,11 @@ namespace v2rayN.Handler
                 configType = EConfigType.VMess
             };
 
-            result = result.Substring(Global.vmessProtocol.Length);
+            result = result[Global.vmessProtocol.Length..];
             result = Utils.Base64Decode(result);
 
             //转成Json
-            VmessQRCode vmessQRCode = Utils.FromJson<VmessQRCode>(result);
+            VmessQRCode? vmessQRCode = Utils.FromJson<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
                 msg = ResUI.FailedConversionConfiguration;
@@ -407,17 +408,17 @@ namespace v2rayN.Handler
             return profileItem;
         }
 
-        private static ProfileItem ResolveVmess4Kitsunebi(string result)
+        private static ProfileItem? ResolveVmess4Kitsunebi(string result)
         {
-            ProfileItem profileItem = new ProfileItem
+            ProfileItem profileItem = new()
             {
                 configType = EConfigType.VMess
             };
-            result = result.Substring(Global.vmessProtocol.Length);
+            result = result[Global.vmessProtocol.Length..];
             int indexSplit = result.IndexOf("?");
             if (indexSplit > 0)
             {
-                result = result.Substring(0, indexSplit);
+                result = result[..indexSplit];
             }
             result = Utils.Base64Decode(result);
 
@@ -428,7 +429,7 @@ namespace v2rayN.Handler
             }
             string[] arr21 = arr1[0].Split(':');
             string[] arr22 = arr1[1].Split(':');
-            if (arr21.Length != 2 || arr21.Length != 2)
+            if (arr21.Length != 2 || arr22.Length != 2)
             {
                 return null;
             }
@@ -445,15 +446,15 @@ namespace v2rayN.Handler
             return profileItem;
         }
 
-        private static ProfileItem ResolveStdVmess(string result)
+        private static ProfileItem? ResolveStdVmess(string result)
         {
-            ProfileItem i = new ProfileItem
+            ProfileItem i = new()
             {
                 configType = EConfigType.VMess,
                 security = "auto"
             };
 
-            Uri u = new Uri(result);
+            Uri u = new(result);
 
             i.address = u.IdnHost;
             i.port = u.Port;
@@ -526,7 +527,7 @@ namespace v2rayN.Handler
             return i;
         }
 
-        private static ProfileItem ResolveSip002(string result)
+        private static ProfileItem? ResolveSip002(string result)
         {
             Uri parsedUrl;
             try
@@ -537,7 +538,7 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            ProfileItem server = new ProfileItem
+            ProfileItem server = new()
             {
                 remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
@@ -545,7 +546,7 @@ namespace v2rayN.Handler
             };
             string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.UriEscaped);
             //2022-blake3
-            if (rawUserInfo.Contains(":"))
+            if (rawUserInfo.Contains(':'))
             {
                 string[] userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
                 if (userInfoParts.Length != 2)
@@ -589,16 +590,16 @@ namespace v2rayN.Handler
             return server;
         }
 
-        private static readonly Regex UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase);
-        private static readonly Regex DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
+        private static readonly Regex UrlFinder = new(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex DetailsParser = new(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static ProfileItem ResolveSSLegacy(string result)
+        private static ProfileItem? ResolveSSLegacy(string result)
         {
             var match = UrlFinder.Match(result);
             if (!match.Success)
                 return null;
 
-            ProfileItem server = new ProfileItem();
+            ProfileItem server = new();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
             if (!Utils.IsNullOrEmpty(tag))
@@ -624,16 +625,16 @@ namespace v2rayN.Handler
         }
 
 
-        private static readonly Regex StdVmessUserInfo = new Regex(
+        private static readonly Regex StdVmessUserInfo = new(
             @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$", RegexOptions.Compiled);
 
-        private static ProfileItem ResolveSocks(string result)
+        private static ProfileItem? ResolveSocks(string result)
         {
-            ProfileItem profileItem = new ProfileItem
+            ProfileItem profileItem = new()
             {
                 configType = EConfigType.Socks
             };
-            result = result.Substring(Global.socksProtocol.Length);
+            result = result[Global.socksProtocol.Length..];
             //remark
             int indexRemark = result.IndexOf("#");
             if (indexRemark > 0)
@@ -643,7 +644,7 @@ namespace v2rayN.Handler
                     profileItem.remarks = Utils.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
                 }
                 catch { }
-                result = result.Substring(0, indexRemark);
+                result = result[..indexRemark];
             }
             //part decode
             int indexS = result.IndexOf("@");
@@ -667,15 +668,15 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            profileItem.address = arr1[1].Substring(0, indexPort);
-            profileItem.port = Utils.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
+            profileItem.address = arr1[1][..indexPort];
+            profileItem.port = Utils.ToInt(arr1[1][(indexPort + 1)..]);
             profileItem.security = arr21[0];
             profileItem.id = arr21[1];
 
             return profileItem;
         }
 
-        private static ProfileItem ResolveSocksNew(string result)
+        private static ProfileItem? ResolveSocksNew(string result)
         {
             Uri parsedUrl;
             try
@@ -686,7 +687,7 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            ProfileItem server = new ProfileItem
+            ProfileItem server = new()
             {
                 remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
@@ -708,12 +709,12 @@ namespace v2rayN.Handler
 
         private static ProfileItem ResolveTrojan(string result)
         {
-            ProfileItem item = new ProfileItem
+            ProfileItem item = new()
             {
                 configType = EConfigType.Trojan
             };
 
-            Uri url = new Uri(result);
+            Uri url = new(result);
 
             item.address = url.IdnHost;
             item.port = url.Port;
@@ -727,13 +728,13 @@ namespace v2rayN.Handler
         }
         private static ProfileItem ResolveStdVLESS(string result)
         {
-            ProfileItem item = new ProfileItem
+            ProfileItem item = new()
             {
                 configType = EConfigType.VLESS,
                 security = "none"
             };
 
-            Uri url = new Uri(result);
+            Uri url = new(result);
 
             item.address = url.IdnHost;
             item.port = url.Port;

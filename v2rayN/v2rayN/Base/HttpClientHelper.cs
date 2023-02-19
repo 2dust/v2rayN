@@ -26,9 +26,9 @@ namespace v2rayN.Base
             }
             else
             {
-                HttpClientHelper httpClientHelper = new HttpClientHelper();
+                HttpClientHelper httpClientHelper = new();
 
-                HttpClientHandler handler = new HttpClientHandler() { UseCookies = false };
+                HttpClientHandler handler = new() { UseCookies = false };
                 httpClientHelper.httpClient = new HttpClient(handler);
                 return httpClientHelper;
             }
@@ -71,11 +71,11 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
             if (string.IsNullOrEmpty(fileName))
             {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
             if (File.Exists(fileName))
             {
@@ -89,10 +89,10 @@ namespace v2rayN.Base
                 throw new Exception(string.Format("{0}", response.StatusCode));
             }
 
-            var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+            var total = response.Content.Headers.ContentLength ?? -1L;
             var canReportProgress = total != -1 && progress != null;
 
-            using var stream = await response.Content.ReadAsStreamAsync();
+            using var stream = await response.Content.ReadAsStreamAsync(token);
             using var file = File.Create(fileName);
             var totalRead = 0L;
             var buffer = new byte[1024 * 1024];
@@ -103,7 +103,7 @@ namespace v2rayN.Base
             {
                 token.ThrowIfCancellationRequested();
 
-                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                var read = await stream.ReadAsync(buffer, token);
 
                 if (read == 0)
                 {
@@ -176,7 +176,7 @@ namespace v2rayN.Base
                     }
                 }
 
-                var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                var read = await stream.ReadAsync(buffer, token);
 
                 if (read == 0)
                 {

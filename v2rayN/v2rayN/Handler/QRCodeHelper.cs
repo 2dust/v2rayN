@@ -9,13 +9,13 @@ namespace v2rayN.Handler
     /// </summary>
     public class QRCodeHelper
     {
-        public static DrawingImage GetQRCode(string strContent)
+        public static DrawingImage? GetQRCode(string strContent)
         {
             try
             {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeGenerator qrGenerator = new();
                 QRCodeData qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
-                XamlQRCode qrCode = new XamlQRCode(qrCodeData);
+                XamlQRCode qrCode = new(qrCodeData);
                 DrawingImage qrCodeAsXaml = qrCode.GetGraphic(40);
                 return qrCodeAsXaml;
             }

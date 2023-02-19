@@ -6,7 +6,7 @@ namespace v2rayN.Base
 {
     public sealed class SqliteHelper
     {
-        private static readonly Lazy<SqliteHelper> _instance = new Lazy<SqliteHelper>(() => new());
+        private static readonly Lazy<SqliteHelper> _instance = new(() => new());
         public static SqliteHelper Instance => _instance.Value;
         private string _connstr;
         public SQLiteConnection _db;

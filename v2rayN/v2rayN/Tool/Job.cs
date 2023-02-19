@@ -16,12 +16,12 @@ namespace v2rayN
         {
             handle = CreateJobObject(IntPtr.Zero, null);
             IntPtr extendedInfoPtr = IntPtr.Zero;
-            JOBOBJECT_BASIC_LIMIT_INFORMATION info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
+            JOBOBJECT_BASIC_LIMIT_INFORMATION info = new()
             {
                 LimitFlags = 0x2000
             };
 
-            JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+            JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new()
             {
                 BasicLimitInformation = info
             };
@@ -100,7 +100,7 @@ namespace v2rayN
         #region Interop
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr CreateJobObject(IntPtr a, string lpName);
+        private static extern IntPtr CreateJobObject(IntPtr a, string? lpName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, UInt32 cbJobObjectInfoLength);

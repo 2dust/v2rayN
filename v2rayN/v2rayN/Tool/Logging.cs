@@ -9,8 +9,8 @@ namespace v2rayN.Tool
     {
         public static void Setup()
         {
-            LoggingConfiguration config = new LoggingConfiguration();
-            FileTarget fileTarget = new FileTarget();
+            LoggingConfiguration config = new();
+            FileTarget fileTarget = new();
             config.AddTarget("file", fileTarget);
             fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
             fileTarget.FileName = Utils.GetLogPath("${shortdate}.txt");

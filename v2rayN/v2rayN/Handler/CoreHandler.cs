@@ -12,9 +12,9 @@ namespace v2rayN.Handler
     class CoreHandler
     {
         private static string _coreCConfigRes = Global.coreConfigFileName;
-        private CoreInfo _coreInfo;
+        private CoreInfo? _coreInfo;
         private int _processId = 0;
-        private Process _process;
+        private Process? _process;
         Action<bool, string> _updateFunc;
 
         public CoreHandler(Action<bool, string> update)
@@ -108,7 +108,7 @@ namespace v2rayN.Handler
                         Process[] existing = Process.GetProcessesByName(vName);
                         foreach (Process p in existing)
                         {
-                            string path = p.MainModule.FileName;
+                            string? path = p.MainModule?.FileName;
                             if (path == $"{Utils.GetBinPath(vName, _coreInfo.coreType)}.exe")
                             {
                                 KillProcess(p);
@@ -173,8 +173,8 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(_coreInfo);
                 if (fileName == "") return;
 
-                var displayLog = node.configType == EConfigType.Custom ? node.displayLog : true;
-                Process p = new Process
+                var displayLog = node.configType != EConfigType.Custom || node.displayLog;
+                Process p = new()
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -193,7 +193,7 @@ namespace v2rayN.Handler
                 {
                     p.OutputDataReceived += (sender, e) =>
                     {
-                        if (!String.IsNullOrEmpty(e.Data))
+                        if (!string.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
@@ -232,7 +232,7 @@ namespace v2rayN.Handler
                 string fileName = CoreFindexe(coreInfo);
                 if (fileName == "") return -1;
 
-                Process p = new Process
+                Process p = new()
                 {
                     StartInfo = new ProcessStartInfo
                     {
