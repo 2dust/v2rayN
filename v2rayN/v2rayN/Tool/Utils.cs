@@ -48,11 +48,9 @@ namespace v2rayN
             try
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream(res))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    result = reader.ReadToEnd();
-                }
+                using Stream stream = assembly.GetManifestResourceStream(res);
+                using StreamReader reader = new(stream);
+                result = reader.ReadToEnd();
             }
             catch (Exception ex)
             {
@@ -76,10 +74,8 @@ namespace v2rayN
                 {
                     return result;
                 }
-                using (StreamReader reader = new StreamReader(res))
-                {
-                    result = reader.ReadToEnd();
-                }
+                using StreamReader reader = new(res);
+                result = reader.ReadToEnd();
             }
             catch (Exception ex)
             {
@@ -116,7 +112,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToJson(Object obj, bool indented = true)
+        public static string ToJson(object obj, bool indented = true)
         {
             string result = string.Empty;
             try
@@ -145,25 +141,23 @@ namespace v2rayN
         /// <param name="obj"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static int ToJsonFile(Object obj, string filePath, bool nullValue = true)
+        public static int ToJsonFile(object obj, string filePath, bool nullValue = true)
         {
             int result;
             try
             {
-                using (StreamWriter file = File.CreateText(filePath))
+                using StreamWriter file = File.CreateText(filePath);
+                JsonSerializer serializer;
+                if (nullValue)
                 {
-                    JsonSerializer serializer;
-                    if (nullValue)
-                    {
-                        serializer = new JsonSerializer() { Formatting = Formatting.Indented };
-                    }
-                    else
-                    {
-                        serializer = new JsonSerializer() { Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore };
-                    }
-
-                    serializer.Serialize(file, obj);
+                    serializer = new JsonSerializer() { Formatting = Formatting.Indented };
                 }
+                else
+                {
+                    serializer = new JsonSerializer() { Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore };
+                }
+
+                serializer.Serialize(file, obj);
                 result = 0;
             }
             catch (Exception ex)
@@ -206,7 +200,7 @@ namespace v2rayN
                 }
                 if (wrap)
                 {
-                    return string.Join("," + Environment.NewLine, lst.ToArray());
+                    return string.Join("," + Environment.NewLine, lst);
                 }
                 else
                 {
@@ -229,7 +223,7 @@ namespace v2rayN
             try
             {
                 str = str.Replace(Environment.NewLine, "");
-                return new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+                return new List<string>(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
             }
             catch (Exception ex)
             {
@@ -248,8 +242,9 @@ namespace v2rayN
             try
             {
                 str = str.Replace(Environment.NewLine, "");
-                List<string> list = new List<string>(str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
-                return list.OrderBy(x => x).ToList();
+                List<string> list = new(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                list.Sort();
+                return list;
             }
             catch (Exception ex)
             {
@@ -341,7 +336,7 @@ namespace v2rayN
         {
             try
             {
-                return (obj == null ? string.Empty : obj.ToString());
+                return obj?.ToString() ?? string.Empty;
             }
             catch (Exception ex)
             {
@@ -418,10 +413,9 @@ namespace v2rayN
 
         public static string GetMD5(string str)
         {
-            var md5 = MD5.Create();
             byte[] byteOld = Encoding.UTF8.GetBytes(str);
-            byte[] byteNew = md5.ComputeHash(byteOld);
-            StringBuilder sb = new StringBuilder();
+            byte[] byteNew = MD5.HashData(byteOld);
+            StringBuilder sb = new(32);
             foreach (byte b in byteNew)
             {
                 sb.Append(b.ToString("x2"));
@@ -444,7 +438,7 @@ namespace v2rayN
             }
             try
             {
-                Uri uri = new Uri(url);
+                Uri uri = new(url);
                 if (uri.Host == uri.IdnHost)
                 {
                     return url;
@@ -572,18 +566,14 @@ namespace v2rayN
 
         public static bool IsIpv6(string ip)
         {
-            IPAddress address;
-            if (IPAddress.TryParse(ip, out address))
+            if (IPAddress.TryParse(ip, out IPAddress? address))
             {
-                switch (address.AddressFamily)
+                return address.AddressFamily switch
                 {
-                    case AddressFamily.InterNetwork:
-                        return false;
-                    case AddressFamily.InterNetworkV6:
-                        return true;
-                    default:
-                        return false;
-                }
+                    AddressFamily.InterNetwork => false,
+                    AddressFamily.InterNetworkV6 => true,
+                    _ => false,
+                };
             }
             return false;
         }
@@ -688,11 +678,11 @@ namespace v2rayN
 
         public static string RegReadValue(string path, string name, string def)
         {
-            RegistryKey regKey = null;
+            RegistryKey? regKey = null;
             try
             {
                 regKey = Registry.CurrentUser.OpenSubKey(path, false);
-                string value = regKey?.GetValue(name) as string;
+                string? value = regKey?.GetValue(name) as string;
                 if (IsNullOrEmpty(value))
                 {
                     return def;
@@ -715,7 +705,7 @@ namespace v2rayN
 
         public static void RegWriteValue(string path, string name, object value)
         {
-            RegistryKey regKey = null;
+            RegistryKey? regKey = null;
             try
             {
                 regKey = Registry.CurrentUser.CreateSubKey(path);
@@ -747,14 +737,12 @@ namespace v2rayN
         public static bool CheckForDotNetVersion(int release = 528040)
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            using RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
+            if (ndpKey != null && ndpKey.GetValue("Release") != null)
             {
-                if (ndpKey != null && ndpKey.GetValue("Release") != null)
-                {
-                    return (int)ndpKey.GetValue("Release") >= release ? true : false;
-                }
-                return false;
+                return (int)ndpKey.GetValue("Release") >= release ? true : false;
             }
+            return false;
         }
 
         /// <summary>
@@ -775,31 +763,29 @@ namespace v2rayN
             string taskDescription = description;
             string deamonFileName = fileName;
 
-            using (var taskService = new TaskService())
+            using var taskService = new TaskService();
+            var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
+            foreach (var t in tasks)
             {
-                var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
-                foreach (var t in tasks)
-                {
-                    taskService.RootFolder.DeleteTask(t.Name);
-                }
-                if (string.IsNullOrEmpty(fileName))
-                {
-                    return;
-                }
-
-                var task = taskService.NewTask();
-                task.RegistrationInfo.Description = taskDescription;
-                task.Settings.DisallowStartIfOnBatteries = false;
-                task.Settings.StopIfGoingOnBatteries = false;
-                task.Settings.RunOnlyIfIdle = false;
-                task.Settings.IdleSettings.StopOnIdleEnd = false;
-                task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
-                task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromMinutes(1) });
-                task.Principal.RunLevel = TaskRunLevel.Highest;
-                task.Actions.Add(new ExecAction(deamonFileName));
-
-                taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
+                taskService.RootFolder.DeleteTask(t.Name);
             }
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            var task = taskService.NewTask();
+            task.RegistrationInfo.Description = taskDescription;
+            task.Settings.DisallowStartIfOnBatteries = false;
+            task.Settings.StopIfGoingOnBatteries = false;
+            task.Settings.RunOnlyIfIdle = false;
+            task.Settings.IdleSettings.StopOnIdleEnd = false;
+            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+            task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromMinutes(1) });
+            task.Principal.RunLevel = TaskRunLevel.Highest;
+            task.Actions.Add(new ExecAction(deamonFileName));
+
+            taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
         }
 
         #endregion
@@ -908,16 +894,13 @@ namespace v2rayN
         public static T DeepCopy<T>(T obj)
         {
             object retval;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                //序列化成流
-                bf.Serialize(ms, obj);
-                ms.Seek(0, SeekOrigin.Begin);
-                //反序列化成对象
-                retval = bf.Deserialize(ms);
-                ms.Close();
-            }
+            MemoryStream ms = new MemoryStream();
+            BinaryFormatter bf = new BinaryFormatter();
+            //序列化成流
+            bf.Serialize(ms, obj);
+            ms.Seek(0, SeekOrigin.Begin);
+            //反序列化成对象
+            retval = bf.Deserialize(ms);
             return (T)retval;
         }
 
@@ -1075,14 +1058,11 @@ namespace v2rayN
 
         public static string UnGzip(byte[] buf)
         {
-            MemoryStream sb = new MemoryStream();
-            using (GZipStream input = new GZipStream(new MemoryStream(buf),
-            CompressionMode.Decompress,
-            false))
-            {
-                input.CopyTo(sb);
-            }
-            return Encoding.UTF8.GetString(sb.ToArray());
+            using MemoryStream sb = new();
+            using GZipStream input = new(new MemoryStream(buf), CompressionMode.Decompress, false);
+            input.CopyTo(sb);
+            sb.Position = 0;
+            return new StreamReader(sb, Encoding.UTF8).ReadToEnd();
         }
 
         public static string GetBackupPath(string filename)
@@ -1198,42 +1178,40 @@ namespace v2rayN
             {
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    using (Bitmap fullImage = new Bitmap(screen.Bounds.Width,
-                                                    screen.Bounds.Height))
+                    using Bitmap fullImage = new Bitmap(screen.Bounds.Width,
+                                                    screen.Bounds.Height);
+                    using (Graphics g = Graphics.FromImage(fullImage))
                     {
-                        using (Graphics g = Graphics.FromImage(fullImage))
+                        g.CopyFromScreen(screen.Bounds.X,
+                                         screen.Bounds.Y,
+                                         0, 0,
+                                         fullImage.Size,
+                                         CopyPixelOperation.SourceCopy);
+                    }
+                    int maxTry = 10;
+                    for (int i = 0; i < maxTry; i++)
+                    {
+                        int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
+                        int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
+                        Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
+                        Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
+
+                        double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
+                        using (Graphics g = Graphics.FromImage(target))
                         {
-                            g.CopyFromScreen(screen.Bounds.X,
-                                             screen.Bounds.Y,
-                                             0, 0,
-                                             fullImage.Size,
-                                             CopyPixelOperation.SourceCopy);
+                            g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
+                                            cropRect,
+                                            GraphicsUnit.Pixel);
                         }
-                        int maxTry = 10;
-                        for (int i = 0; i < maxTry; i++)
+
+                        BitmapLuminanceSource source = new BitmapLuminanceSource(target);
+                        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                        QRCodeReader reader = new QRCodeReader();
+                        Result result = reader.decode(bitmap);
+                        if (result != null)
                         {
-                            int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
-                            int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                            Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                            Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
-
-                            double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
-                            using (Graphics g = Graphics.FromImage(target))
-                            {
-                                g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
-                                                cropRect,
-                                                GraphicsUnit.Pixel);
-                            }
-
-                            BitmapLuminanceSource source = new BitmapLuminanceSource(target);
-                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                            QRCodeReader reader = new QRCodeReader();
-                            Result result = reader.decode(bitmap);
-                            if (result != null)
-                            {
-                                string ret = result.Text;
-                                return ret;
-                            }
+                            string ret = result.Text;
+                            return ret;
                         }
                     }
                 }

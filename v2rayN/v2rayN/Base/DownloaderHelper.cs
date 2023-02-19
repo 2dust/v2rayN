@@ -6,14 +6,10 @@ namespace v2rayN.Base
 {
     internal class DownloaderHelper
     {
-        private static readonly Lazy<DownloaderHelper> _instance = new Lazy<DownloaderHelper>(() => new());
+        private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
         public static DownloaderHelper Instance => _instance.Value;
 
-        public DownloaderHelper()
-        {
-        }
-
-        public async Task<string> DownloadStringAsync(IWebProxy webProxy, string url, string? userAgent, int timeout)
+        public async Task<string?> DownloadStringAsync(IWebProxy webProxy, string url, string? userAgent, int timeout)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -23,7 +19,7 @@ namespace v2rayN.Base
             var cancellationToken = new CancellationTokenSource();
             cancellationToken.CancelAfter(timeout * 1000);
 
-            Uri uri = new Uri(url);
+            Uri uri = new(url);
             //Authorization Header
             var headers = new WebHeaderCollection();
             if (!Utils.IsNullOrEmpty(uri.UserInfo))
@@ -44,28 +40,20 @@ namespace v2rayN.Base
                 }
             };
 
-            string text = string.Empty;
-            using (var downloader = new DownloadService(downloadOpt))
+            using var downloader = new DownloadService(downloadOpt);
+            downloader.DownloadFileCompleted += (sender, value) =>
             {
-                downloader.DownloadFileCompleted += (sender, value) =>
+                if (value.Error != null)
                 {
-                    if (value.Error != null)
-                    {
-                        throw new Exception(string.Format("{0}", value.Error.Message));
-                    }
-                };
-                using (var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token))
-                {
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        text = reader.ReadToEnd();
-                    }
+                    throw new Exception(string.Format("{0}", value.Error.Message));
                 }
-            }
+            };
+            using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
+            using StreamReader reader = new(stream);
 
             downloadOpt = null;
 
-            return text;
+            return reader.ReadToEnd();
         }
 
 
@@ -73,7 +61,7 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var cancellationToken = new CancellationTokenSource();
@@ -94,44 +82,42 @@ namespace v2rayN.Base
             int totalSecond = 0;
             var hasValue = false;
             double maxSpeed = 0;
-            using (var downloader = new DownloadService(downloadOpt))
+            using var downloader = new DownloadService(downloadOpt);
+            //downloader.DownloadStarted += (sender, value) =>
+            //{
+            //    if (progress != null)
+            //    {
+            //        progress.Report("Start download data...");
+            //    }
+            //};
+            downloader.DownloadProgressChanged += (sender, value) =>
             {
-                //downloader.DownloadStarted += (sender, value) =>
-                //{
-                //    if (progress != null)
-                //    {
-                //        progress.Report("Start download data...");
-                //    }
-                //};
-                downloader.DownloadProgressChanged += (sender, value) =>
+                TimeSpan ts = (DateTime.Now - totalDatetime);
+                if (progress != null && ts.Seconds > totalSecond)
                 {
-                    TimeSpan ts = (DateTime.Now - totalDatetime);
-                    if (progress != null && ts.Seconds > totalSecond)
+                    hasValue = true;
+                    totalSecond = ts.Seconds;
+                    if (value.BytesPerSecondSpeed > maxSpeed)
                     {
-                        hasValue = true;
-                        totalSecond = ts.Seconds;
-                        if (value.BytesPerSecondSpeed > maxSpeed)
-                        {
-                            maxSpeed = value.BytesPerSecondSpeed;
-                            var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
-                            progress.Report(speed);
-                        }
+                        maxSpeed = value.BytesPerSecondSpeed;
+                        var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
+                        progress.Report(speed);
                     }
-                };
-                downloader.DownloadFileCompleted += (sender, value) =>
+                }
+            };
+            downloader.DownloadFileCompleted += (sender, value) =>
+            {
+                if (progress != null)
                 {
-                    if (progress != null)
+                    if (!hasValue && value.Error != null)
                     {
-                        if (!hasValue && value.Error != null)
-                        {
-                            progress.Report(value.Error?.Message);
-                        }
+                        progress.Report(value.Error?.Message);
                     }
-                };
-                progress.Report("......");
+                }
+            };
+            progress.Report("......");
 
-                await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
-            }
+            await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
 
             downloadOpt = null;
         }
@@ -140,11 +126,11 @@ namespace v2rayN.Base
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
             if (string.IsNullOrEmpty(fileName))
             {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
             if (File.Exists(fileName))
             {
@@ -167,38 +153,33 @@ namespace v2rayN.Base
 
             var progressPercentage = 0;
             var hasValue = false;
-            using (var downloader = new DownloadService(downloadOpt))
+            using var downloader = new DownloadService(downloadOpt);
+            downloader.DownloadStarted += (sender, value) =>
             {
-                downloader.DownloadStarted += (sender, value) =>
+                progress?.Report(0);
+            };
+            downloader.DownloadProgressChanged += (sender, value) =>
+            {
+                hasValue = true;
+                var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
+                if (progressPercentage != percent && percent % 10 == 0)
                 {
-                    if (progress != null)
-                    {
-                        progress.Report(0);
-                    }
-                };
-                downloader.DownloadProgressChanged += (sender, value) =>
+                    progressPercentage = percent;
+                    progress.Report(percent);
+                }
+            };
+            downloader.DownloadFileCompleted += (sender, value) =>
+            {
+                if (progress != null)
                 {
-                    hasValue = true;
-                    var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-                    if (progressPercentage != percent && percent % 10 == 0)
+                    if (hasValue && value.Error == null)
                     {
-                        progressPercentage = percent;
-                        progress.Report(percent);
+                        progress.Report(101);
                     }
-                };
-                downloader.DownloadFileCompleted += (sender, value) =>
-                {
-                    if (progress != null)
-                    {
-                        if (hasValue && value.Error == null)
-                        {
-                            progress.Report(101);
-                        }
-                    }
-                };
+                }
+            };
 
-                await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
-            }
+            await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
 
             downloadOpt = null;
         }

@@ -21,28 +21,18 @@ namespace v2rayN.Handler
         {
             try
             {
-                string url = string.Empty;
+                string? url = string.Empty;
 
-                switch (item.configType)
+                url = item.configType switch
                 {
-                    case EConfigType.VMess:
-                        url = ShareVmess(item);
-                        break;
-                    case EConfigType.Shadowsocks:
-                        url = ShareShadowsocks(item);
-                        break;
-                    case EConfigType.Socks:
-                        url = ShareSocks(item);
-                        break;
-                    case EConfigType.Trojan:
-                        url = ShareTrojan(item);
-                        break;
-                    case EConfigType.VLESS:
-                        url = ShareVLESS(item);
-                        break;
-                    default:
-                        break;
-                }
+                    EConfigType.VMess => ShareVmess(item),
+                    EConfigType.Shadowsocks => ShareShadowsocks(item),
+                    EConfigType.Socks => ShareSocks(item),
+                    EConfigType.Trojan => ShareTrojan(item),
+                    EConfigType.VLESS => ShareVLESS(item),
+                    _ => null,
+                };
+                
                 return url;
             }
             catch (Exception ex)
@@ -278,14 +268,13 @@ namespace v2rayN.Handler
         /// <summary>
         /// 从剪贴板导入URL
         /// </summary>
-        /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
         public static ProfileItem ImportFromClipboardConfig(string clipboardData, out string msg)
         {
             msg = string.Empty;
             ProfileItem profileItem = new ProfileItem();
-
+            
             try
             {
                 //载入配置文件 
@@ -636,7 +625,7 @@ namespace v2rayN.Handler
 
 
         private static readonly Regex StdVmessUserInfo = new Regex(
-            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$");
+            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$", RegexOptions.Compiled);
 
         private static ProfileItem ResolveSocks(string result)
         {
