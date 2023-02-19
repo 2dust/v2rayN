@@ -2564,7 +2564,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Record local logs 的本地化字符串。
+        ///   查找类似 Enable Log 的本地化字符串。
         /// </summary>
         public static string TbSettingsLogEnabled {
             get {
@@ -3068,7 +3068,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *QUIC securty 的本地化字符串。
+        ///   查找类似 *QUIC security 的本地化字符串。
         /// </summary>
         public static string TransportRequestHostTip4 {
             get {

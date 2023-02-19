@@ -1,6 +1,6 @@
 {
   "log": {
-    "disabled": false,
+    "disabled": $log_disabled$,
     "level": "debug",
     $log_output$
     "timestamp": true

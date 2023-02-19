@@ -172,6 +172,7 @@ namespace v2rayN.Views
 
 
                 this.Bind(ViewModel, vm => vm.TunShowWindow, v => v.togShowWindow.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TunEnabledLog, v => v.togEnabledLog.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.Text).DisposeWith(disposables);

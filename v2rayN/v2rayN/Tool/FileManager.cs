@@ -19,7 +19,7 @@ namespace v2rayN.Tool
             }
             return false;
         }
-        
+
         public static void UncompressFile(string fileName, byte[] content)
         {
             try

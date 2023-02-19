@@ -32,7 +32,7 @@ namespace v2rayN.Handler
                     EConfigType.VLESS => ShareVLESS(item),
                     _ => null,
                 };
-                
+
                 return url;
             }
             catch (Exception ex)
@@ -274,7 +274,7 @@ namespace v2rayN.Handler
         {
             msg = string.Empty;
             ProfileItem profileItem = new ProfileItem();
-            
+
             try
             {
                 //载入配置文件 

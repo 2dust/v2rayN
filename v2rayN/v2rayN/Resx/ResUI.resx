@@ -815,7 +815,7 @@
     <value>Keep older when deduplication</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
-    <value>Record local logs</value>
+    <value>Enable Log</value>
   </data>
   <data name="TbSettingsLogLevel" xml:space="preserve">
     <value>Log Level</value>

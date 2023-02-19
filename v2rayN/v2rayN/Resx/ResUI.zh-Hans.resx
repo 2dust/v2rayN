@@ -815,7 +815,7 @@
     <value>去重时保留序号较小的项</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
-    <value>记录本地日志(默认关闭)</value>
+    <value>启用日志(默认关闭)</value>
   </data>
   <data name="TbSettingsLogLevel" xml:space="preserve">
     <value>日志等级</value>

@@ -816,7 +816,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                            Grid.Row="1"
+                            Grid.Row="0"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -824,6 +824,20 @@
                             Text="{x:Static resx:ResUI.TbSettingsTunModeShowWindow}" />
                         <ToggleButton
                             x:Name="togShowWindow"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
+                        <ToggleButton
+                            x:Name="togEnabledLog"
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"

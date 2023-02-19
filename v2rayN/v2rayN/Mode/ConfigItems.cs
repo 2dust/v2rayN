@@ -160,6 +160,7 @@ namespace v2rayN.Mode
     {
         public bool enableTun { get; set; }
         public bool showWindow { get; set; }
+        public bool enabledLog { get; set; }
         public bool strictRoute { get; set; }
         public string stack { get; set; }
         public int mtu { get; set; }
