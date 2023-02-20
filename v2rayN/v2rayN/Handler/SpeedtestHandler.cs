@@ -55,12 +55,16 @@ namespace v2rayN.Handler
                     case ESpeedActionType.Tcping:
                     case ESpeedActionType.Realping:
                         UpdateFunc(it.indexId, ResUI.Speedtesting, "");
+                        ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         break;
                     case ESpeedActionType.Speedtest:
-                        UpdateFunc(it.indexId, "", ResUI.Speedtesting);
+                        UpdateFunc(it.indexId, "", ResUI.Speedtesting); 
+                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
                     case ESpeedActionType.Mixedtest:
                         UpdateFunc(it.indexId, ResUI.Speedtesting, ResUI.Speedtesting);
+                        ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
+                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
                 }
             }
@@ -112,24 +116,24 @@ namespace v2rayN.Handler
 
         private void RunPing()
         {
-            RunPingSub(async (ServerTestItem it) =>
+            RunPingSub((ServerTestItem it) =>
             {
                 long time = Ping(it.address);
                 var output = FormatOut(time, Global.DelayUnit);
 
-                await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
+                ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                 UpdateFunc(it.indexId, output);
             });
         }
 
         private void RunTcping()
         {
-            RunPingSub(async (ServerTestItem it) =>
+            RunPingSub((ServerTestItem it) =>
             {
                 int time = GetTcpingTime(it.address, it.port);
                 var output = FormatOut(time, Global.DelayUnit);
 
-                await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
+                ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                 UpdateFunc(it.indexId, output);
             });
         }
@@ -161,7 +165,7 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    tasks.Add(Task.Run(async () =>
+                    tasks.Add(Task.Run(() =>
                     {
                         try
                         {
@@ -169,7 +173,7 @@ namespace v2rayN.Handler
                             WebProxy webProxy = new(Global.Loopback, it.port);
                             string output = GetRealPingTime(downloadHandle, webProxy);
 
-                            await ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
+                            ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                             UpdateFunc(it.indexId, output);
                             int.TryParse(output, out int delay);
                             it.delay = delay;
@@ -231,7 +235,7 @@ namespace v2rayN.Handler
                 //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
                 //    continue;
                 //}
-                await ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
+                ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
@@ -243,7 +247,7 @@ namespace v2rayN.Handler
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        await ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
+                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
                     }
                     UpdateFunc(it.indexId, "", msg);
                 });
@@ -282,7 +286,7 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                await ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
+                ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
@@ -293,7 +297,7 @@ namespace v2rayN.Handler
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        await ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
+                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
                     }
                     UpdateFunc(it.indexId, "", msg);
                 });

@@ -1,4 +1,6 @@
-﻿using v2rayN.Base;
+﻿using System.Collections.Concurrent;
+using System.Reactive.Linq;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -6,8 +8,9 @@ namespace v2rayN.Handler
     class ProfileExHandler
     {
         private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
-        private List<ProfileExItem> _lstProfileEx;
-        public List<ProfileExItem> ProfileExs => _lstProfileEx;
+        private ConcurrentBag<ProfileExItem> _lstProfileEx;
+        private Queue<string> _queIndexIds = new();
+        public ConcurrentBag<ProfileExItem> ProfileExs => _lstProfileEx;
         public static ProfileExHandler Instance => _instance.Value;
 
         public ProfileExHandler()
@@ -19,7 +22,33 @@ namespace v2rayN.Handler
         {
             SqliteHelper.Instance.Execute($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
-            _lstProfileEx = SqliteHelper.Instance.Table<ProfileExItem>().ToList();
+            _lstProfileEx = new(SqliteHelper.Instance.Table<ProfileExItem>());
+
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var cnt = _queIndexIds.Count;
+                    for (int i = 0; i < cnt; i++)
+                    {
+                        var id = _queIndexIds.Dequeue();
+                        var item = _lstProfileEx.FirstOrDefault(t => t.indexId == id);
+                        if (item is not null)
+                        {
+                            await SqliteHelper.Instance.Replacesync(item);
+                        }
+                    }
+                    Thread.Sleep(1000 * 60);
+                }
+            });
+        }
+
+        private void IndexIdEnqueue(string indexId)
+        {
+            if (!Utils.IsNullOrEmpty(indexId) && !_queIndexIds.Contains(indexId))
+            {
+                _queIndexIds.Enqueue(indexId);
+            }
         }
 
         private void AddProfileEx(string indexId, ref ProfileExItem profileEx)
@@ -32,7 +61,7 @@ namespace v2rayN.Handler
                 sort = 0
             };
             _lstProfileEx.Add(profileEx);
-            //SqliteHelper.Instance.Replace(profileEx);
+            IndexIdEnqueue(indexId);
         }
 
         public void ClearAll()
@@ -45,11 +74,11 @@ namespace v2rayN.Handler
         {
             try
             {
-                foreach (var item in _lstProfileEx)
-                {
-                    SqliteHelper.Instance.Replace(item);
-                }
-                //SqliteHelper.Instance.UpdateAll(_lstProfileEx);
+                //foreach (var item in _lstProfileEx)
+                //{
+                //    SqliteHelper.Instance.Replace(item);
+                //}
+                SqliteHelper.Instance.UpdateAll(_lstProfileEx);
             }
             catch (Exception ex)
             {
@@ -57,7 +86,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public Task SetTestDelay(string indexId, string delayVal)
+        public void SetTestDelay(string indexId, string delayVal)
         {
             var profileEx = _lstProfileEx.FirstOrDefault(t => t.indexId == indexId);
             if (profileEx == null)
@@ -67,10 +96,10 @@ namespace v2rayN.Handler
 
             int.TryParse(delayVal, out int delay);
             profileEx.delay = delay;
-            return Task.CompletedTask;
+            IndexIdEnqueue(indexId);
         }
 
-        public Task SetTestSpeed(string indexId, string speedVal)
+        public void SetTestSpeed(string indexId, string speedVal)
         {
             var profileEx = _lstProfileEx.FirstOrDefault(t => t.indexId == indexId);
             if (profileEx == null)
@@ -80,7 +109,7 @@ namespace v2rayN.Handler
 
             decimal.TryParse(speedVal, out decimal speed);
             profileEx.speed = speed;
-            return Task.CompletedTask;
+            IndexIdEnqueue(indexId);
         }
 
         public void SetSort(string indexId, int sort)
@@ -91,6 +120,7 @@ namespace v2rayN.Handler
                 AddProfileEx(indexId, ref profileEx);
             }
             profileEx.sort = sort;
+            IndexIdEnqueue(indexId);
         }
 
         public int GetSort(string indexId)
