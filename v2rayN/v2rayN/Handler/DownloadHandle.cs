@@ -14,7 +14,7 @@ namespace v2rayN.Handler
     /// </summary>
     class DownloadHandle
     {
-        public event EventHandler<ResultEventArgs> UpdateCompleted;
+        public event EventHandler<ResultEventArgs>? UpdateCompleted;
 
         public event ErrorEventHandler? Error;
 
@@ -73,11 +73,7 @@ namespace v2rayN.Handler
                 var progress = new Progress<double>();
                 progress.ProgressChanged += (sender, value) =>
                 {
-                    if (UpdateCompleted != null)
-                    {
-                        string msg = $"...{value}%";
-                        UpdateCompleted(this, new ResultEventArgs(value > 100, msg));
-                    }
+                    UpdateCompleted?.Invoke(this, new ResultEventArgs(value > 100, $"...{value}%"));
                 };
 
                 var webProxy = GetWebProxy(blProxy);
@@ -110,9 +106,9 @@ namespace v2rayN.Handler
             HttpClient client = new(webRequestHandler);
 
             HttpResponseMessage response = await client.GetAsync(url);
-            if (response.StatusCode.ToString() == "Redirect")
+            if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
             {
-                return response.Headers.Location?.ToString();
+                return response.Headers.Location.ToString();
             }
             else
             {
@@ -199,7 +195,7 @@ namespace v2rayN.Handler
 
                 if (Utils.IsNullOrEmpty(userAgent))
                 {
-                    userAgent = $"{Utils.GetVersion(false)}";
+                    userAgent = Utils.GetVersion(false);
                 }
                 client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
 
@@ -213,7 +209,7 @@ namespace v2rayN.Handler
                 var cts = new CancellationTokenSource();
                 cts.CancelAfter(1000 * 30);
 
-                var result = await HttpClientHelper.GetInstance().GetAsync(client, url, cts.Token);
+                var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token);
                 return result;
             }
             catch (Exception ex)
@@ -242,7 +238,7 @@ namespace v2rayN.Handler
 
                 if (Utils.IsNullOrEmpty(userAgent))
                 {
-                    userAgent = $"{Utils.GetVersion(false)}";
+                    userAgent = Utils.GetVersion(false);
                 }
                 var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
                 return result;
@@ -260,7 +256,7 @@ namespace v2rayN.Handler
         }
 
 
-        public int RunAvailabilityCheck(WebProxy? webProxy)
+        public int RunAvailabilityCheck(IWebProxy? webProxy)
         {
             try
             {
@@ -290,7 +286,7 @@ namespace v2rayN.Handler
             }
         }
 
-        public string GetRealPingTime(string url, WebProxy webProxy, int downloadTimeout, out int responseTime)
+        public string GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout, out int responseTime)
         {
             string msg = string.Empty;
             responseTime = -1;
@@ -300,18 +296,14 @@ namespace v2rayN.Handler
                 myHttpWebRequest.Timeout = downloadTimeout * 1000;
                 myHttpWebRequest.Proxy = webProxy;
 
-                Stopwatch timer = new();
-                timer.Start();
+                Stopwatch timer = Stopwatch.StartNew();
 
-                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+                using HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                 if (myHttpWebResponse.StatusCode is not HttpStatusCode.OK and not HttpStatusCode.NoContent)
                 {
                     msg = myHttpWebResponse.StatusDescription;
                 }
-                timer.Stop();
                 responseTime = timer.Elapsed.Milliseconds;
-
-                myHttpWebResponse.Close();
             }
             catch (Exception ex)
             {
@@ -338,25 +330,17 @@ namespace v2rayN.Handler
 
         private bool SocketCheck(string ip, int port)
         {
-            Socket? sock = null;
             try
             {
-                IPAddress ipa = IPAddress.Parse(ip);
-                IPEndPoint point = new(ipa, port);
-                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint point = new(IPAddress.Parse(ip), port);
+                using Socket? sock = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 sock.Connect(point);
                 return true;
             }
-            catch { }
-            finally
+            catch (Exception)
             {
-                if (sock != null)
-                {
-                    sock.Close();
-                    sock.Dispose();
-                }
+                return false;
             }
-            return false;
         }
     }
 }

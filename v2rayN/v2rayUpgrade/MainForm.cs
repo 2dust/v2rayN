@@ -93,7 +93,7 @@ namespace v2rayUpgrade
                         }
 
                         string entryOuputPath = GetPath(fullName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(entryOuputPath) ?? "");
+                        Directory.CreateDirectory(Path.GetDirectoryName(entryOuputPath)!);
                         entry.ExtractToFile(entryOuputPath, true);
                     }
                     catch (Exception ex)

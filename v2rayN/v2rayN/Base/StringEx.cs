@@ -1,15 +1,16 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace v2rayN.Base
 {
     static class StringEx
     {
-        public static bool IsNullOrEmpty(this string value)
+        public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
         {
             return string.IsNullOrEmpty(value);
         }
 
-        public static bool IsNullOrWhiteSpace(this string value)
+        public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? value)
         {
             return string.IsNullOrWhiteSpace(value);
         }

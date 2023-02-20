@@ -319,7 +319,7 @@ namespace v2rayN.Handler
             await RunSpeedTestMulti();
         }
 
-        public string GetRealPingTime(DownloadHandle downloadHandle, WebProxy webProxy)
+        public string GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
         {
             string status = downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10, out int responseTime);
             //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
