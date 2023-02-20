@@ -108,7 +108,7 @@ namespace v2rayN.Handler
             }
             if (!Utils.IsNullOrEmpty(filter))
             {
-                if (filter.Contains("'"))
+                if (filter.Contains('\''))
                 {
                     filter = filter.Replace("'", "");
                 }
@@ -156,7 +156,7 @@ namespace v2rayN.Handler
 
         public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
         {
-            if (profileItem != null && profileItem.coreType != null)
+            if (profileItem?.coreType != null)
             {
                 return (ECoreType)profileItem.coreType;
             }
@@ -179,7 +179,7 @@ namespace v2rayN.Handler
             {
                 InitCoreInfo();
             }
-            return coreInfos.Where(t => t.coreType == coreType).FirstOrDefault();
+            return coreInfos!.FirstOrDefault(t => t.coreType == coreType);
         }
 
         public List<CoreInfo>? GetCoreInfos()

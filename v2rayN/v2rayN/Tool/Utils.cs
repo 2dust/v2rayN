@@ -65,24 +65,18 @@ namespace v2rayN
         /// 取得存储资源
         /// </summary>
         /// <returns></returns>
-        public static string LoadResource(string res)
+        public static string? LoadResource(string res)
         {
-            string result = string.Empty;
-
             try
             {
-                if (!File.Exists(res))
-                {
-                    return result;
-                }
-                using StreamReader reader = new(res);
-                result = reader.ReadToEnd();
+                if (!File.Exists(res)) return null;
+                return File.ReadAllText(res);
             }
             catch (Exception ex)
             {
                 SaveLog(ex.Message, ex);
             }
-            return result;
+            return null;
         }
 
         /// <summary>
@@ -91,7 +85,7 @@ namespace v2rayN
         /// <typeparam name="T"></typeparam>
         /// <param name="strJson"></param>
         /// <returns></returns>
-        public static T? FromJson<T>(string strJson)
+        public static T? FromJson<T>(string? strJson)
         {
             try
             {
@@ -172,8 +166,7 @@ namespace v2rayN
         {
             try
             {
-                JObject obj = JObject.Parse(strJson);
-                return obj;
+                return JObject.Parse(strJson);
             }
             catch (Exception ex)
             {
@@ -204,7 +197,7 @@ namespace v2rayN
                 }
                 else
                 {
-                    return string.Join(",", lst.ToArray());
+                    return string.Join(",", lst);
                 }
             }
             catch (Exception ex)
@@ -738,9 +731,9 @@ namespace v2rayN
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
             using RegistryKey? ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
-            if (ndpKey != null && ndpKey.GetValue("Release") != null)
+            if (ndpKey?.GetValue("Release") != null)
             {
-                return (int)ndpKey.GetValue("Release") >= release ? true : false;
+                return (int)ndpKey.GetValue("Release") >= release;
             }
             return false;
         }
@@ -1161,7 +1154,7 @@ namespace v2rayN
             var logger = LogManager.GetLogger("Log2");
             logger.Debug($"{strTitle},{ex.Message}");
             logger.Debug(ex.StackTrace);
-            if (ex != null && ex.InnerException != null)
+            if (ex?.InnerException != null)
             {
                 logger.Error(ex.InnerException);
             }
@@ -1193,8 +1186,8 @@ namespace v2rayN
                     {
                         int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
                         int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                        Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                        Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
+                        Rectangle cropRect = new(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
+                        Bitmap target = new(screen.Bounds.Width, screen.Bounds.Height);
 
                         double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
                         using (Graphics g = Graphics.FromImage(target))
@@ -1204,9 +1197,9 @@ namespace v2rayN
                                             GraphicsUnit.Pixel);
                         }
 
-                        BitmapLuminanceSource source = new BitmapLuminanceSource(target);
-                        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                        QRCodeReader reader = new QRCodeReader();
+                        BitmapLuminanceSource source = new(target);
+                        BinaryBitmap bitmap = new(new HybridBinarizer(source));
+                        QRCodeReader reader = new();
                         Result result = reader.decode(bitmap);
                         if (result != null)
                         {

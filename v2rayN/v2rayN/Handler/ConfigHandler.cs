@@ -1042,11 +1042,8 @@ namespace v2rayN.Handler
             ProfileItem profileItem = new();
             //Is v2ray configuration
             V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(clipboardData);
-            if (v2rayConfig != null
-                && v2rayConfig.inbounds != null
-                && v2rayConfig.inbounds.Count > 0
-                && v2rayConfig.outbounds != null
-                && v2rayConfig.outbounds.Count > 0)
+            if (v2rayConfig?.inbounds?.Count > 0
+                && v2rayConfig.outbounds?.Count > 0)
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                 File.WriteAllText(fileName, clipboardData);
@@ -1100,7 +1097,7 @@ namespace v2rayN.Handler
             {
                 RemoveServerViaSubid(ref config, subid, isSub);
             }
-            if (isSub && lstOriSub != null && lstOriSub.Count == 1)
+            if (isSub && lstOriSub?.Count == 1)
             {
                 profileItem.indexId = lstOriSub[0].indexId;
             }
@@ -1137,16 +1134,16 @@ namespace v2rayN.Handler
 
             //SsSIP008
             var lstSsServer = Utils.FromJson<List<SsServer>>(clipboardData);
-            if (lstSsServer == null || lstSsServer.Count <= 0)
+            if (lstSsServer?.Count <= 0)
             {
                 var ssSIP008 = Utils.FromJson<SsSIP008>(clipboardData);
-                if (ssSIP008?.servers != null && ssSIP008.servers.Count > 0)
+                if (ssSIP008?.servers?.Count > 0)
                 {
                     lstSsServer = ssSIP008.servers;
                 }
             }
 
-            if (lstSsServer != null && lstSsServer.Count > 0)
+            if (lstSsServer?.Count > 0)
             {
                 int counter = 0;
                 foreach (var it in lstSsServer)

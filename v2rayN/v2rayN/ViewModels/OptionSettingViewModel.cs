@@ -253,7 +253,7 @@ namespace v2rayN.ViewModels
             }
 
             var obj = Utils.ParseJson(remoteDNS);
-            if (obj != null && obj.ContainsKey("servers"))
+            if (obj?.ContainsKey("servers") == true)
             {
             }
             else
@@ -277,7 +277,7 @@ namespace v2rayN.ViewModels
             //}
 
             //Core
-            _config.inbound[0].localPort = Utils.ToInt(localPort);
+            _config.inbound[0].localPort = localPort;
             _config.inbound[0].udpEnabled = udpEnabled;
             _config.inbound[0].sniffingEnabled = sniffingEnabled;
             _config.inbound[0].routeOnly = routeOnly;

@@ -184,8 +184,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (v2rayConfig.routing != null
-                  && v2rayConfig.routing.rules != null)
+                if (v2rayConfig.routing?.rules != null)
                 {
                     v2rayConfig.routing.domainStrategy = config.routingBasicItem.domainStrategy;
                     v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(config.routingBasicItem.domainMatcher) ? null : config.routingBasicItem.domainMatcher;
@@ -241,25 +240,25 @@ namespace v2rayN.Handler
                 {
                     rules.port = null;
                 }
-                if (rules.domain != null && rules.domain.Count == 0)
+                if (rules.domain?.Count == 0)
                 {
                     rules.domain = null;
                 }
-                if (rules.ip != null && rules.ip.Count == 0)
+                if (rules.ip?.Count == 0)
                 {
                     rules.ip = null;
                 }
-                if (rules.protocol != null && rules.protocol.Count == 0)
+                if (rules.protocol?.Count == 0)
                 {
                     rules.protocol = null;
                 }
-                if (rules.inboundTag != null && rules.inboundTag.Count == 0)
+                if (rules.inboundTag?.Count == 0)
                 {
                     rules.inboundTag = null;
                 }
 
                 var hasDomainIp = false;
-                if (rules.domain != null && rules.domain.Count > 0)
+                if (rules.domain?.Count > 0)
                 {
                     var it = Utils.DeepCopy(rules);
                     it.ip = null;
@@ -275,7 +274,7 @@ namespace v2rayN.Handler
                     v2rayConfig.routing.rules.Add(it);
                     hasDomainIp = true;
                 }
-                if (rules.ip != null && rules.ip.Count > 0)
+                if (rules.ip?.Count > 0)
                 {
                     var it = Utils.DeepCopy(rules);
                     it.domain = null;
@@ -286,8 +285,8 @@ namespace v2rayN.Handler
                 if (!hasDomainIp)
                 {
                     if (!Utils.IsNullOrEmpty(rules.port)
-                        || (rules.protocol != null && rules.protocol.Count > 0)
-                        || (rules.inboundTag != null && rules.inboundTag.Count > 0)
+                        || (rules.protocol?.Count > 0)
+                        || (rules.inboundTag?.Count > 0)
                         )
                     {
                         var it = Utils.DeepCopy(rules);
@@ -789,7 +788,7 @@ namespace v2rayN.Handler
                 }
 
                 var obj = Utils.ParseJson(config.remoteDNS);
-                if (obj != null && obj.ContainsKey("servers"))
+                if (obj?.ContainsKey("servers") == true)
                 {
                     v2rayConfig.dns = obj;
                 }
@@ -1171,30 +1170,24 @@ namespace v2rayN.Handler
                 profileItem.remarks = $"import@{DateTime.Now.ToShortDateString()}";
 
                 //tcp or kcp
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.network != null
+                if (outbound.streamSettings?.network != null
                     && !Utils.IsNullOrEmpty(outbound.streamSettings.network))
                 {
                     profileItem.network = outbound.streamSettings.network;
                 }
 
                 //tcp http
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.tcpSettings != null
-                    && outbound.streamSettings.tcpSettings.header != null
+                if (outbound.streamSettings?.tcpSettings?.header != null
                     && !Utils.IsNullOrEmpty(outbound.streamSettings.tcpSettings.header.type))
                 {
                     if (outbound.streamSettings.tcpSettings.header.type == Global.TcpHeaderHttp)
                     {
                         profileItem.headerType = outbound.streamSettings.tcpSettings.header.type;
-                        string request = Convert.ToString(outbound.streamSettings.tcpSettings.header.request);
+                        string? request = Convert.ToString(outbound.streamSettings.tcpSettings.header.request);
                         if (!Utils.IsNullOrEmpty(request))
                         {
-                            V2rayTcpRequest v2rayTcpRequest = Utils.FromJson<V2rayTcpRequest>(request);
-                            if (v2rayTcpRequest != null
-                                && v2rayTcpRequest.headers != null
-                                && v2rayTcpRequest.headers.Host != null
-                                && v2rayTcpRequest.headers.Host.Count > 0)
+                            V2rayTcpRequest? v2rayTcpRequest = Utils.FromJson<V2rayTcpRequest>(request);
+                            if (v2rayTcpRequest?.headers?.Host?.Count > 0)
                             {
                                 profileItem.requestHost = v2rayTcpRequest.headers.Host[0];
                             }
@@ -1202,17 +1195,14 @@ namespace v2rayN.Handler
                     }
                 }
                 //kcp
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.kcpSettings != null
-                    && outbound.streamSettings.kcpSettings.header != null
+                if (outbound?.streamSettings?.kcpSettings?.header != null
                     && !Utils.IsNullOrEmpty(outbound.streamSettings.kcpSettings.header.type))
                 {
                     profileItem.headerType = outbound.streamSettings.kcpSettings.header.type;
                 }
 
                 //ws
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.wsSettings != null)
+                if (outbound?.streamSettings?.wsSettings != null)
                 {
                     if (!Utils.IsNullOrEmpty(outbound.streamSettings.wsSettings.path))
                     {
@@ -1226,24 +1216,20 @@ namespace v2rayN.Handler
                 }
 
                 //h2
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.httpSettings != null)
+                if (outbound?.streamSettings?.httpSettings != null)
                 {
                     if (!Utils.IsNullOrEmpty(outbound.streamSettings.httpSettings.path))
                     {
                         profileItem.path = outbound.streamSettings.httpSettings.path;
                     }
-                    if (outbound.streamSettings.httpSettings.host != null
-                        && outbound.streamSettings.httpSettings.host.Count > 0)
+                    if (outbound.streamSettings.httpSettings.host?.Count > 0)
                     {
                         profileItem.requestHost = Utils.List2String(outbound.streamSettings.httpSettings.host);
                     }
                 }
 
                 //tls
-                if (outbound.streamSettings != null
-                    && outbound.streamSettings.security != null
-                    && outbound.streamSettings.security == Global.StreamSecurity)
+                if (outbound?.streamSettings?.security == Global.StreamSecurity)
                 {
                     profileItem.streamSecurity = Global.StreamSecurity;
                 }
@@ -1265,7 +1251,7 @@ namespace v2rayN.Handler
 
             try
             {
-                string result = Utils.LoadResource(fileName);
+                string? result = Utils.LoadResource(fileName);
                 if (Utils.IsNullOrEmpty(result))
                 {
                     msg = ResUI.FailedReadConfiguration;
@@ -1309,30 +1295,24 @@ namespace v2rayN.Handler
                 profileItem.remarks = $"import@{DateTime.Now.ToShortDateString()}";
 
                 //tcp or kcp
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.network != null
+                if (inbound.streamSettings?.network != null
                     && !Utils.IsNullOrEmpty(inbound.streamSettings.network))
                 {
                     profileItem.network = inbound.streamSettings.network;
                 }
 
                 //tcp http
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.tcpSettings != null
-                    && inbound.streamSettings.tcpSettings.header != null
+                if (inbound.streamSettings?.tcpSettings?.header != null
                     && !Utils.IsNullOrEmpty(inbound.streamSettings.tcpSettings.header.type))
                 {
                     if (inbound.streamSettings.tcpSettings.header.type == Global.TcpHeaderHttp)
                     {
                         profileItem.headerType = inbound.streamSettings.tcpSettings.header.type;
-                        string request = Convert.ToString(inbound.streamSettings.tcpSettings.header.request);
+                        string? request = Convert.ToString(inbound.streamSettings.tcpSettings.header.request);
                         if (!Utils.IsNullOrEmpty(request))
                         {
-                            V2rayTcpRequest v2rayTcpRequest = Utils.FromJson<V2rayTcpRequest>(request);
-                            if (v2rayTcpRequest != null
-                                && v2rayTcpRequest.headers != null
-                                && v2rayTcpRequest.headers.Host != null
-                                && v2rayTcpRequest.headers.Host.Count > 0)
+                            V2rayTcpRequest? v2rayTcpRequest = Utils.FromJson<V2rayTcpRequest>(request);
+                            if (v2rayTcpRequest?.headers?.Host?.Count > 0)
                             {
                                 profileItem.requestHost = v2rayTcpRequest.headers.Host[0];
                             }
@@ -1349,8 +1329,7 @@ namespace v2rayN.Handler
                 //}
 
                 //ws
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.wsSettings != null)
+                if (inbound.streamSettings?.wsSettings != null)
                 {
                     if (!Utils.IsNullOrEmpty(inbound.streamSettings.wsSettings.path))
                     {
@@ -1364,24 +1343,20 @@ namespace v2rayN.Handler
                 }
 
                 //h2
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.httpSettings != null)
+                if (inbound.streamSettings?.httpSettings != null)
                 {
                     if (!Utils.IsNullOrEmpty(inbound.streamSettings.httpSettings.path))
                     {
                         profileItem.path = inbound.streamSettings.httpSettings.path;
                     }
-                    if (inbound.streamSettings.httpSettings.host != null
-                        && inbound.streamSettings.httpSettings.host.Count > 0)
+                    if (inbound.streamSettings.httpSettings.host?.Count > 0)
                     {
                         profileItem.requestHost = Utils.List2String(inbound.streamSettings.httpSettings.host);
                     }
                 }
 
                 //tls
-                if (inbound.streamSettings != null
-                    && inbound.streamSettings.security != null
-                    && inbound.streamSettings.security == Global.StreamSecurity)
+                if (inbound.streamSettings?.security == Global.StreamSecurity)
                 {
                     profileItem.streamSecurity = Global.StreamSecurity;
                 }
@@ -1486,11 +1461,11 @@ namespace v2rayN.Handler
                     var port = httpPort;
                     for (int k = httpPort; k < Global.MaxPort; k++)
                     {
-                        if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == k) >= 0)
+                        if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                         {
                             continue;
                         }
-                        if (lstTcpConns != null && lstTcpConns.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
+                        if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
                         {
                             continue;
                         }
@@ -1501,7 +1476,7 @@ namespace v2rayN.Handler
                     }
 
                     //Port In Used
-                    if (lstIpEndPoints != null && lstIpEndPoints.FindIndex(_it => _it.Port == port) >= 0)
+                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
                     {
                         continue;
                     }
