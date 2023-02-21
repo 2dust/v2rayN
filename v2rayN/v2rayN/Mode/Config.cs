@@ -9,6 +9,7 @@
         #region property
 
         public string indexId { get; set; }
+        public string subIndexId { get; set; }
 
         public string remoteDNS { get; set; }
         /// <summary>

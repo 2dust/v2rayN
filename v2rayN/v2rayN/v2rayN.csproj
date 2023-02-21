@@ -13,7 +13,7 @@
 		<FileVersion>6.13</FileVersion>
 	</PropertyGroup>
 
-	<ItemGroup>		
+	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.3" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />		 
@@ -34,6 +34,9 @@
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
         <EmbeddedResource Include="Sample\tun_singbox">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Sample\tun_singbox_dns">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Sample\custom_routing_black">
@@ -65,7 +68,7 @@
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\SampleServerConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
+        </EmbeddedResource>  
         <EmbeddedResource Include="v2rayN.ico">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>

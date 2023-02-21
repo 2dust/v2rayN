@@ -84,8 +84,10 @@ namespace v2rayN.ViewModels
         [Reactive] public bool TunBypassMode2 { get; set; }
         [Reactive] public string TunDirectIP { get; set; }
         [Reactive] public string TunDirectProcess { get; set; }
+        [Reactive] public string TunDirectDNS { get; set; }        
         [Reactive] public string TunProxyIP { get; set; }
         [Reactive] public string TunProxyProcess { get; set; }
+        [Reactive] public string TunProxyDNS { get; set; }
         #endregion
 
         #region CoreType
@@ -177,8 +179,10 @@ namespace v2rayN.ViewModels
             TunBypassMode = _config.tunModeItem.bypassMode;
             TunDirectIP = Utils.List2String(_config.tunModeItem.directIP, true);
             TunDirectProcess = Utils.List2String(_config.tunModeItem.directProcess, true);
+            TunDirectDNS = _config.tunModeItem.directDNS;
             TunProxyIP = Utils.List2String(_config.tunModeItem.proxyIP, true);
             TunProxyProcess = Utils.List2String(_config.tunModeItem.proxyProcess, true);
+            TunProxyDNS = _config.tunModeItem.proxyDNS;
             this.WhenAnyValue(
               x => x.TunBypassMode)
               .Subscribe(c => TunBypassMode2 = !TunBypassMode);
@@ -350,8 +354,10 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.bypassMode = TunBypassMode;
             _config.tunModeItem.directIP = Utils.String2List(TunDirectIP);
             _config.tunModeItem.directProcess = Utils.String2List(TunDirectProcess);
+            _config.tunModeItem.directDNS = Utils.ToJson(Utils.ParseJson(TunDirectDNS));
             _config.tunModeItem.proxyIP = Utils.String2List(TunProxyIP);
             _config.tunModeItem.proxyProcess = Utils.String2List(TunProxyProcess);
+            _config.tunModeItem.proxyDNS = Utils.ToJson(Utils.ParseJson(TunProxyDNS));
 
             //coreType 
             SaveCoreType();

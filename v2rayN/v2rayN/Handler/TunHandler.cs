@@ -118,6 +118,22 @@ namespace v2rayN.Base
             //port
             configStr = configStr.Replace("$socksPort$", $"{_socksPort}");
 
+            //dns
+            string dnsObject = String.Empty;
+            if (_config.tunModeItem.bypassMode)
+            {
+                dnsObject = _config.tunModeItem.directDNS;
+            }
+            else
+            {
+                dnsObject = _config.tunModeItem.proxyDNS;
+            }
+            if (dnsObject.IsNullOrEmpty() || Utils.ParseJson(dnsObject)?.ContainsKey("servers") == false)
+            {
+                dnsObject = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
+            }
+            configStr = configStr.Replace("$dns_object$", dnsObject);
+
             //exe
             List<string> lstDnsExe = new();
             List<string> lstDirectExe = new();

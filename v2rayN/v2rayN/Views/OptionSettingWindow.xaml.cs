@@ -181,8 +181,10 @@ namespace v2rayN.Views
                 this.OneWayBind(ViewModel, vm => vm.TunBypassMode2, v => v.gridTunModeProxy.Visibility, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunDirectIP, v => v.txtDirectIP.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunDirectProcess, v => v.txtDirectProcess.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TunDirectDNS, v => v.txtDirectDNS.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunProxyIP, v => v.txtProxyIP.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunProxyProcess, v => v.txtProxyProcess.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TunProxyDNS, v => v.txtProxyDNS.Text).DisposeWith(disposables);
 
 
                 this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.Text).DisposeWith(disposables);

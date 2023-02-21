@@ -1126,4 +1126,7 @@
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>测速文件地址</value>
   </data>
+  <data name="TbSettingsTunModeDNS" xml:space="preserve">
+    <value>DNS对象，例如 {"servers":[]}</value>
+  </data>
 </root>

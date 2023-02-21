@@ -1126,4 +1126,7 @@
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>SpeedTest Url</value>
   </data>
+  <data name="TbSettingsTunModeDNS" xml:space="preserve">
+    <value>DNS object, e.g. {"servers":[]}</value>
+  </data>
 </root>

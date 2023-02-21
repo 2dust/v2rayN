@@ -168,8 +168,10 @@ namespace v2rayN.Mode
         public bool bypassMode { get; set; } = true;
         public List<string> directIP { get; set; }
         public List<string> directProcess { get; set; }
+        public string directDNS { get; set; }
         public List<string> proxyIP { get; set; }
         public List<string> proxyProcess { get; set; }
+        public string proxyDNS { get; set; }
 
     }
 

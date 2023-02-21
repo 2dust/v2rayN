@@ -5,27 +5,7 @@
     $log_output$
     "timestamp": true
   },
-  "dns": {
-    "servers": [    
-      {
-        "tag": "local",
-        "address": "223.5.5.5",
-        "detour": "direct"
-      },
-      {
-        "tag": "block",
-        "address": "rcode://success"
-      }
-    ],
-    "rules": [
-      {
-        "geosite": "category-ads-all",
-        "server": "block",
-        "disable_cache": true
-      }
-    ],
-    "strategy": "ipv4_only"
-  },
+  "dns": $dns_object$ ,
   "inbounds": [
     {
       "type": "tun",

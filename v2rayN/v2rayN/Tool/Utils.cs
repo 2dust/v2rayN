@@ -111,6 +111,10 @@ namespace v2rayN
             string result = string.Empty;
             try
             {
+                if (obj == null)
+                {
+                    return result;
+                }
                 if (indented)
                 {
                     result = JsonConvert.SerializeObject(obj,

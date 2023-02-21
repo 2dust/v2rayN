@@ -33,6 +33,7 @@
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
         public const string v2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string TunSingboxFileName = "v2rayN.Sample.tun_singbox";
+        public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";
