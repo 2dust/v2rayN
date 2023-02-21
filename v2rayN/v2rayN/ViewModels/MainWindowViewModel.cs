@@ -218,10 +218,11 @@ namespace v2rayN.ViewModels
             {
                 EnableTun = true;
             }
+            _subId = _config.subIndexId;
 
-            //RefreshServers();
             InitSubscriptionView();
             RefreshRoutingsMenu();
+            RefreshServers();
 
             var canEditRemove = this.WhenAnyValue(
                x => x.SelectedProfile,
@@ -691,6 +692,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             _subId = SelectedSub?.id;
+            _config.subIndexId = _subId;
 
             RefreshServers();
 
