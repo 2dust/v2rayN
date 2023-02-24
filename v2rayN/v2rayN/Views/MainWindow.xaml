@@ -259,6 +259,7 @@
                         <materialDesign:PopupBox
                             Padding="8,0"
                             HorizontalAlignment="Right"
+                            StaysOpen="True"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                             <StackPanel Margin="8">
                                 <Grid>
