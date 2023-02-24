@@ -540,22 +540,24 @@
                                         </MenuItem.Header>
                                     </MenuItem>
                                 </MenuItem>
-                                <MenuItem
-                                    x:Name="menuMoveTop"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMoveTop}" />
-                                <MenuItem
-                                    x:Name="menuMoveUp"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMoveUp}" />
-                                <MenuItem
-                                    x:Name="menuMoveDown"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMoveDown}" />
-                                <MenuItem
-                                    x:Name="menuMoveBottom"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                                <MenuItem Header="{x:Static resx:ResUI.menuMoveTo}">
+                                    <MenuItem
+                                        x:Name="menuMoveTop"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMoveTop}" />
+                                    <MenuItem
+                                        x:Name="menuMoveUp"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMoveUp}" />
+                                    <MenuItem
+                                        x:Name="menuMoveDown"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMoveDown}" />
+                                    <MenuItem
+                                        x:Name="menuMoveBottom"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                                </MenuItem>
                                 <MenuItem
                                     x:Name="menuSelectAll"
                                     Height="{StaticResource MenuItemHeight}"

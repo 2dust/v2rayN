@@ -1129,4 +1129,7 @@
   <data name="TbSettingsTunModeDNS" xml:space="preserve">
     <value>DNS对象，例如 {"servers":[]}</value>
   </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>移至上下</value>
+  </data>
 </root>
