@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSetting}"
-    Width="900"
+    Width="1100"
     Height="700"
     x:TypeArguments="vms:OptionSettingViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -485,7 +485,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
@@ -507,7 +507,8 @@
                             Margin="{StaticResource ServerItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsStartBootTip}" />
+                            Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -719,7 +720,8 @@
                             Margin="{StaticResource ServerItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}" />
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="16"
