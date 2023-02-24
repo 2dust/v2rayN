@@ -20,14 +20,8 @@ public class PacHandler
 
     public static void Start(string configPath, int httpPort, int pacPort)
     {
-        if (configPath == _configPath
-            && httpPort == _httpPort
-            && pacPort == _pacPort
-            && _isRunning)
-        {
-            _needRestart = false;
-        }
-
+        _needRestart = (configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning);
+      
         _configPath = configPath;
         _httpPort = httpPort;
         _pacPort = pacPort;
