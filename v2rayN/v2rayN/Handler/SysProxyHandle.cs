@@ -50,7 +50,7 @@ namespace v2rayN.Handler
         {
             var type = config.sysProxyType;
 
-            if (forceDisable && type == ESysProxyType.ForcedChange)
+            if (forceDisable && type != ESysProxyType.Unchanged)
             {
                 type = ESysProxyType.ForcedClear;
             }
