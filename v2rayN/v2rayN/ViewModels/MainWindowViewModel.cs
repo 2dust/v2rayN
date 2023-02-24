@@ -38,7 +38,7 @@ namespace v2rayN.ViewModels
         private static Config _config;
         private NoticeHandler? _noticeHandler;
         private readonly PaletteHelper _paletteHelper = new();
-        private Dictionary<int, bool> _dicHeaderSort = new();
+        private Dictionary<string, bool> _dicHeaderSort = new();
         private Action<string> _updateView;
 
         #endregion
@@ -366,7 +366,7 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
             SortServerResultCmd = ReactiveCommand.Create(() =>
             {
-                SortServer((int)EServerColName.delay);
+                SortServer(EServerColName.delayVal.ToString());
             });
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
@@ -1034,23 +1034,23 @@ namespace v2rayN.ViewModels
             await DialogHost.Show(dialog, "RootDialog");
         }
 
-        public void SortServer(int colIndex)
+        public void SortServer(string colName)
         {
-            if (colIndex < 0)
+            if (Utils.IsNullOrEmpty(colName))
             {
                 return;
             }
 
-            if (!_dicHeaderSort.ContainsKey(colIndex))
+            if (!_dicHeaderSort.ContainsKey(colName))
             {
-                _dicHeaderSort.Add(colIndex, true);
+                _dicHeaderSort.Add(colName, true);
             }
-            _dicHeaderSort.TryGetValue(colIndex, out bool asc);
-            if (ConfigHandler.SortServers(ref _config, _subId, (EServerColName)colIndex, asc) != 0)
+            _dicHeaderSort.TryGetValue(colName, out bool asc);
+            if (ConfigHandler.SortServers(ref _config, _subId, colName, asc) != 0)
             {
                 return;
             }
-            _dicHeaderSort[colIndex] = !asc;
+            _dicHeaderSort[colName] = !asc;
             RefreshServers();
         }
 

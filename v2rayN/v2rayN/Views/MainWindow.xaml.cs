@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -265,14 +266,7 @@ namespace v2rayN.Views
                 return;
             }
 
-            //find index
-            var index = lstProfiles.Columns.IndexOf(colHeader.Column);
-            if (index < 0)
-            {
-                index = colHeader.TabIndex;
-            }
-
-            if (index == 0)
+            if (colHeader.Column.GetType().Name != typeof(MyDGTextColumn).Name)
             {
                 foreach (var it in lstProfiles.Columns)
                 {
@@ -282,7 +276,8 @@ namespace v2rayN.Views
                 return;
             }
 
-            ViewModel?.SortServer(index);
+            var colName = ((MyDGTextColumn)colHeader.Column).ExName;
+            ViewModel?.SortServer(colName);
         }
 
         private void menuSelectAll_Click(object sender, RoutedEventArgs e)
@@ -403,7 +398,7 @@ namespace v2rayN.Views
         }
         #endregion
 
-        #region UI
+        #region UI          
 
         private void RestoreUI()
         {
@@ -429,11 +424,21 @@ namespace v2rayN.Views
                 gridMain.RowDefinitions[2].Height = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
             }
 
-            for (int k = 0; k < lstProfiles.Columns.Count; k++)
+            var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
+            for (int i = 0; i < lvColumnItem.Count; i++)
             {
-                var width = ConfigHandler.GetformMainLvColWidth(ref _config, ((EServerColName)k).ToString(), Convert.ToInt32(lstProfiles.Columns[k].Width.Value));
-                lstProfiles.Columns[k].Width = width;
+                var item = lvColumnItem[i];
+                for (int k = 1; k < lstProfiles.Columns.Count; k++)
+                {
+                    var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
+                    if (item2.ExName == item.Name)
+                    {
+                        item2.Width = item.Width;
+                        item2.DisplayIndex = i + 1;
+                    }
+                }
             }
+
             if (!_config.guiItem.enableStatistics)
             {
                 colTodayUp.Visibility = Visibility.Hidden;
@@ -447,10 +452,19 @@ namespace v2rayN.Views
             _config.uiItem.mainWidth = this.Width;
             _config.uiItem.mainHeight = this.Height;
 
-            for (int k = 0; k < lstProfiles.Columns.Count; k++)
+            List<ColumnItem> lvColumnItem = new();
+            for (int k = 1; k < lstProfiles.Columns.Count; k++)
             {
-                ConfigHandler.AddformMainLvColWidth(ref _config, ((EServerColName)k).ToString(), Convert.ToInt32(lstProfiles.Columns[k].ActualWidth));
+                var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
+                lvColumnItem.Add(new()
+                {
+                    Name = item2.ExName,
+                    Width = Convert.ToInt32(item2.ActualWidth),
+                    Index = item2.DisplayIndex
+                });
             }
+            _config.uiItem.mainColumnItem = lvColumnItem;
+
             _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain.RowDefinitions[0].ActualHeight + 0.1);
             _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain.RowDefinitions[2].ActualHeight + 0.1);
         }

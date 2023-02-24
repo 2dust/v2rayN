@@ -58,7 +58,7 @@ namespace v2rayN.Handler
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         break;
                     case ESpeedActionType.Speedtest:
-                        UpdateFunc(it.indexId, "", ResUI.Speedtesting); 
+                        UpdateFunc(it.indexId, "", ResUI.Speedtesting);
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
                     case ESpeedActionType.Mixedtest:

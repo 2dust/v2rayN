@@ -46,7 +46,7 @@ namespace v2rayN.Views
             {
                 return;
             }
-            
+
             var MsgFilter = cmbMsgFilter.Text.TrimEx();
             if (MsgFilter != lastMsgFilter) lastMsgFilterNotAvailable = false;
             if (!string.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
@@ -64,7 +64,7 @@ namespace v2rayN.Views
                 }
             }
             lastMsgFilter = MsgFilter;
-            
+
             ShowMsg(msg);
         }
 

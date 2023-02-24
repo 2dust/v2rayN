@@ -274,7 +274,7 @@ namespace v2rayN.Handler
         {
             msg = string.Empty;
 
-            ProfileItem profileItem = new();  
+            ProfileItem profileItem = new();
 
             try
             {

@@ -357,9 +357,9 @@
                         x:Name="txtServerFilter"
                         Width="200"
                         Margin="4,0"
+                        VerticalContentAlignment="Center"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        VerticalContentAlignment="Center"
                         Style="{StaticResource DefTextBox}" />
                 </WrapPanel>
 
@@ -459,6 +459,7 @@
                         CanUserSortColumns="False"
                         EnableRowVirtualization="True"
                         Focusable="True"
+                        FrozenColumnCount="1"
                         GridLinesVisibility="All"
                         HeadersVisibility="All"
                         IsReadOnly="True"
@@ -601,41 +602,50 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <materialDesign:DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="80"
                                 Binding="{Binding configType}"
+                                ExName="configType"
                                 Header="{x:Static resx:ResUI.LvServiceType}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="150"
                                 Binding="{Binding remarks}"
+                                ExName="remarks"
                                 Header="{x:Static resx:ResUI.LvAlias}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="120"
                                 Binding="{Binding address}"
+                                ExName="address"
                                 Header="{x:Static resx:ResUI.LvAddress}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="60"
                                 Binding="{Binding port}"
+                                ExName="port"
                                 Header="{x:Static resx:ResUI.LvPort}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding security}"
+                                ExName="security"
                                 Header="{x:Static resx:ResUI.LvEncryptionMethod}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding network}"
+                                ExName="network"
                                 Header="{x:Static resx:ResUI.LvTransportProtocol}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding streamSecurity}"
+                                ExName="streamSecurity"
                                 Header="{x:Static resx:ResUI.LvTLS}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding subRemarks}"
+                                ExName="subRemarks"
                                 Header="{x:Static resx:ResUI.LvSubscription}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding delayVal}"
+                                ExName="delayVal"
                                 Header="{x:Static resx:ResUI.LvTestDelay}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -643,37 +653,42 @@
                                         <Setter Property="Foreground" Value="{Binding delay, Converter={StaticResource DelayColorConverter}}" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn
+                            </base:MyDGTextColumn>
+                            <base:MyDGTextColumn
                                 Width="100"
                                 Binding="{Binding speedVal}"
+                                ExName="speedVal"
                                 Header="{x:Static resx:ResUI.LvTestSpeed}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                            </base:MyDGTextColumn>
 
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 x:Name="colTodayUp"
                                 Width="100"
                                 Binding="{Binding todayUp}"
+                                ExName="todayUp"
                                 Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 x:Name="colTodayDown"
                                 Width="100"
                                 Binding="{Binding todayDown}"
+                                ExName="todayDown"
                                 Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 x:Name="colTotalUp"
                                 Width="100"
                                 Binding="{Binding totalUp}"
+                                ExName="totalUp"
                                 Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
-                            <DataGridTextColumn
+                            <base:MyDGTextColumn
                                 x:Name="colTotalDown"
                                 Width="100"
                                 Binding="{Binding totalDown}"
+                                ExName="totalDown"
                                 Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
 
                         </DataGrid.Columns>

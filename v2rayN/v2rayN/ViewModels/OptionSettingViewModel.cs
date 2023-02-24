@@ -84,7 +84,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool TunBypassMode2 { get; set; }
         [Reactive] public string TunDirectIP { get; set; }
         [Reactive] public string TunDirectProcess { get; set; }
-        [Reactive] public string TunDirectDNS { get; set; }        
+        [Reactive] public string TunDirectDNS { get; set; }
         [Reactive] public string TunProxyIP { get; set; }
         [Reactive] public string TunProxyProcess { get; set; }
         [Reactive] public string TunProxyDNS { get; set; }

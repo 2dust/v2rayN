@@ -151,9 +151,9 @@ namespace v2rayN.Handler
                     enableAutoAdjustMainLvColWidth = true
                 };
             }
-            if (config.uiItem.mainLvColWidth == null)
+            if (config.uiItem.mainColumnItem == null)
             {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
+                config.uiItem.mainColumnItem = new();
             }
             if (Utils.IsNullOrEmpty(config.uiItem.currentLanguage))
             {
@@ -694,7 +694,7 @@ namespace v2rayN.Handler
         }
 
 
-        public static int SortServers(ref Config config, string subId, EServerColName name, bool asc)
+        public static int SortServers(ref Config config, string subId, string colName, bool asc)
         {
             var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
             if (lstModel.Count <= 0)
@@ -720,6 +720,8 @@ namespace v2rayN.Handler
                                   sort = t33 == null ? 0 : t33.sort
                               }).ToList();
 
+
+            Enum.TryParse(colName, true, out EServerColName name);
             var propertyName = string.Empty;
             switch (name)
             {
@@ -730,9 +732,13 @@ namespace v2rayN.Handler
                 case EServerColName.security:
                 case EServerColName.network:
                 case EServerColName.streamSecurity:
-                case EServerColName.delay:
-                case EServerColName.speed:
                     propertyName = name.ToString();
+                    break;
+                case EServerColName.delayVal:
+                    propertyName = "delay";
+                    break;
+                case EServerColName.speedVal:
+                    propertyName = "speed";
                     break;
                 case EServerColName.subRemarks:
                     propertyName = "subid";
@@ -755,7 +761,7 @@ namespace v2rayN.Handler
             {
                 ProfileExHandler.Instance.SetSort(lstProfile[i].indexId, (i + 1) * 10);
             }
-            if (name == EServerColName.delay)
+            if (name == EServerColName.delayVal)
             {
                 var maxSort = lstProfile.Max(t => t.sort) + 10;
                 foreach (var item in lstProfile)
@@ -766,7 +772,7 @@ namespace v2rayN.Handler
                     }
                 }
             }
-            if (name == EServerColName.speed)
+            if (name == EServerColName.speedVal)
             {
                 var maxSort = lstProfile.Max(t => t.sort) + 10;
                 foreach (var item in lstProfile)
@@ -1308,44 +1314,6 @@ namespace v2rayN.Handler
 
             return 0;
         }
-        #endregion
-
-        #region UI
-
-        public static int AddformMainLvColWidth(ref Config config, string name, int width)
-        {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-            if (config.uiItem.mainLvColWidth.ContainsKey(name))
-            {
-                config.uiItem.mainLvColWidth[name] = width;
-            }
-            else
-            {
-                config.uiItem.mainLvColWidth.Add(name, width);
-            }
-
-            ToJsonFile(config);
-            return 0;
-        }
-        public static int GetformMainLvColWidth(ref Config config, string name, int width)
-        {
-            if (config.uiItem.mainLvColWidth == null)
-            {
-                config.uiItem.mainLvColWidth = new Dictionary<string, int>();
-            }
-            if (config.uiItem.mainLvColWidth.ContainsKey(name))
-            {
-                return config.uiItem.mainLvColWidth[name];
-            }
-            else
-            {
-                return width;
-            }
-        }
-
         #endregion
 
         #region Routing        

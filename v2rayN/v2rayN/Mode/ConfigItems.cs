@@ -123,7 +123,8 @@ namespace v2rayN.Mode
         public bool doubleClick2Activate { get; set; }
         public bool autoHideStartup { get; set; } = true;
         public string mainMsgFilter { get; set; }
-        public Dictionary<string, int> mainLvColWidth { get; set; }
+        public List<ColumnItem> mainColumnItem { get; set; }
+
     }
 
     [Serializable]
@@ -194,5 +195,13 @@ namespace v2rayN.Mode
         public string domainMatcher { get; set; }
         public string routingIndexId { get; set; }
         public bool enableRoutingAdvanced { get; set; }
+    }
+
+    [Serializable]
+    public class ColumnItem
+    {
+        public string Name { get; set; }
+        public int Width { get; set; }
+        public int Index { get; set; }
     }
 }
