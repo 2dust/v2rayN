@@ -556,8 +556,8 @@ namespace v2rayN.ViewModels
                     {
                         return;
                     }
-                    SpeedProxyDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+                    SpeedProxyDisplay = string.Format("{0}:{1}/sÂ¡Ã¼ | {2}/sÂ¡Ã½", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format("{0}:{1}/sÂ¡Ã¼ | {2}/sÂ¡Ã½", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {
@@ -621,6 +621,7 @@ namespace v2rayN.ViewModels
                     item.speedVal = $"{speed} {Global.SpeedUnit}";
                 }
                 _profileItems.Replace(item, Utils.DeepCopy(item));
+                SelectedProfile = item;
             }
         }
 
