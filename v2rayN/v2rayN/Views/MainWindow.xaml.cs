@@ -27,6 +27,9 @@ namespace v2rayN.Views
         {
             InitializeComponent();
             _config = LazyConfig.Instance.GetConfig();
+            
+            WindowState = WindowState.Minimized;
+            Activated += MainWindow_Activated;
 
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;
@@ -216,6 +219,14 @@ namespace v2rayN.Views
         {
             e.Cancel = true;
             ViewModel?.ShowHideWindow(false);
+        }
+        
+        private void MainWindow_Activated(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
         }
 
         private void menuExit_Click(object sender, RoutedEventArgs e)
