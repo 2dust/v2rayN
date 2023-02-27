@@ -188,9 +188,11 @@ namespace v2rayN.Handler
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                var webProxy = GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
-                    Proxy = GetWebProxy(blProxy)
+                    Proxy = webProxy,
+                    UseProxy = webProxy != null
                 });
 
                 if (Utils.IsNullOrEmpty(userAgent))

@@ -164,14 +164,14 @@ namespace v2rayN.Handler
             Task.Run(async () =>
             {
                 //Turn off system proxy
-                bool bSysProxyType = false;
-                if (!blProxy && config.sysProxyType == ESysProxyType.ForcedChange)
-                {
-                    bSysProxyType = true;
-                    config.sysProxyType = ESysProxyType.ForcedClear;
-                    SysProxyHandle.UpdateSysProxy(config, false);
-                    Thread.Sleep(3000);
-                }
+                //bool bSysProxyType = false;
+                //if (!blProxy && config.sysProxyType == ESysProxyType.ForcedChange)
+                //{
+                //    bSysProxyType = true;
+                //    config.sysProxyType = ESysProxyType.ForcedClear;
+                //    SysProxyHandle.UpdateSysProxy(config, false);
+                //    Thread.Sleep(3000);
+                //}
 
                 foreach (var item in subItem)
                 {
@@ -235,12 +235,12 @@ namespace v2rayN.Handler
                     }
                     _updateFunc(false, "-------------------------------------------------------");
                 }
-                //restore system proxy
-                if (bSysProxyType)
-                {
-                    config.sysProxyType = ESysProxyType.ForcedChange;
-                    SysProxyHandle.UpdateSysProxy(config, false);
-                }
+                ////restore system proxy
+                //if (bSysProxyType)
+                //{
+                //    config.sysProxyType = ESysProxyType.ForcedChange;
+                //    SysProxyHandle.UpdateSysProxy(config, false);
+                //}
                 _updateFunc(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
 
             });
