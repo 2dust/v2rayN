@@ -558,8 +558,8 @@ namespace v2rayN.ViewModels
                     {
                         return;
                     }
-                    SpeedProxyDisplay = string.Format("{0}:{1}/s? | {2}/s?", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format("{0}:{1}/s? | {2}/s?", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+                    SpeedProxyDisplay = string.Format("{0}:{1}/s↑ | {2}/s↓", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format("{0}:{1}/s↑ | {2}/s↓", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {
