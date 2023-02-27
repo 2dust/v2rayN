@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSetting}"
-    Width="1100"
+    Width="1000"
     Height="700"
     x:TypeArguments="vms:OptionSettingViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -47,7 +47,7 @@
                 Style="{StaticResource DefButton}" />
         </Grid>
 
-        <TabControl>
+        <TabControl HorizontalContentAlignment="Left">
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCore}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid Margin="{StaticResource SettingItemMargin}">
