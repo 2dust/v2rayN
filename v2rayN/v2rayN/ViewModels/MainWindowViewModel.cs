@@ -175,6 +175,8 @@ namespace v2rayN.ViewModels
         [Reactive]
         public string RunningServerDisplay { get; set; }
         [Reactive]
+        public string RunningServerToolTipText { get; set; }
+        [Reactive]
         public string RunningInfoDisplay { get; set; }
         [Reactive]
         public string SpeedProxyDisplay { get; set; }
@@ -770,7 +772,10 @@ namespace v2rayN.ViewModels
                 var running = ConfigHandler.GetDefaultServer(ref _config);
                 if (running != null)
                 {
-                    RunningServerDisplay = string.Format("{0}:{1}", ResUI.menuServers, running.GetSummary());
+                    var runningSummary = running.GetSummary();
+                    var runningProfileItemModel = _profileItems.FirstOrDefault(t => t.indexId == running.indexId);
+                    RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
+                    RunningServerToolTipText = runningProfileItemModel is null ? runningSummary : $"[{runningProfileItemModel.subRemarks}] {runningSummary}";
                 }
             }));
         }
