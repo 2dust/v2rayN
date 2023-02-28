@@ -195,16 +195,6 @@ namespace v2rayN.Handler
                 config.guiItem.statisticsFreshRate = 1;
             }
 
-            if (config == null)
-            {
-                Global.reloadCore = false;
-            }
-            else
-            {
-                Global.reloadCore = true;
-
-            }
-
             LazyConfig.Instance.SetConfig(config);
             return 0;
         }
@@ -215,7 +205,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int SaveConfig(ref Config config, bool reload = true)
         {
-            Global.reloadCore = reload;
 
             ToJsonFile(config);
 
@@ -446,7 +435,6 @@ namespace v2rayN.Handler
             }
 
             config.indexId = indexId;
-            Global.reloadCore = true;
 
             ToJsonFile(config);
 
@@ -856,7 +844,6 @@ namespace v2rayN.Handler
             }
             else if (profileItem.indexId == config.indexId)
             {
-                Global.reloadCore = true;
             }
 
             if (SqliteHelper.Instance.Replace(profileItem) > 0)
@@ -1460,8 +1447,6 @@ namespace v2rayN.Handler
             {
                 config.routingBasicItem.routingIndexId = routingItem.id;
             }
-
-            Global.reloadCore = true;
 
             ToJsonFile(config);
 
