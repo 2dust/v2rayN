@@ -778,9 +778,8 @@ namespace v2rayN.ViewModels
                 if (running != null)
                 {
                     var runningSummary = running.GetSummary();
-                    var runningProfileItemModel = _profileItems.FirstOrDefault(t => t.indexId == running.indexId);
                     RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
-                    RunningServerToolTipText = runningProfileItemModel is null ? runningSummary : $"[{runningProfileItemModel.subRemarks}] {runningSummary}";
+                    RunningServerToolTipText = runningSummary;
                 }
             }));
         }
