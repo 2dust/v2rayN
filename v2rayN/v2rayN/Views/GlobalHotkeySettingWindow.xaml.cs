@@ -57,19 +57,21 @@ namespace v2rayN.Views
 
         private void TxtGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
         {
-            var txt = ((TextBox)sender);
-            var index = Utils.ToInt(txt.Name.Substring(txt.Name.Length - 1, 1));
+            e.Handled = true;
+            var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
+            if (!_ModifierKeys.Contains(e.Key) && !_ModifierKeys.Contains(e.SystemKey))
+            {
+                var txt = ((TextBox)sender);
+                var index = Utils.ToInt(txt.Name.Substring(txt.Name.Length - 1, 1));
+                var formsKey = (Forms.Keys)KeyInterop.VirtualKeyFromKey(e.Key == Key.System ? e.SystemKey : e.Key);
 
-            if (e.Key == Key.System)
-                return;
-            var formsKey = (Forms.Keys)KeyInterop.VirtualKeyFromKey(e.Key);
+                lstKey[index].KeyCode = formsKey;
+                lstKey[index].Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
+                lstKey[index].Control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+                lstKey[index].Shift = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
-            lstKey[index].KeyCode = formsKey;
-            lstKey[index].Alt = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
-            lstKey[index].Control = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            lstKey[index].Shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-
-            BindingData(index);
+                BindingData(index);
+            }
         }
 
         private void BindingData(int index)
