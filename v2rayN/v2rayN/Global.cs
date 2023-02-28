@@ -124,7 +124,6 @@
 
         #region global variable
 
-        public static bool reloadCore { get; set; }
         public static int statePort { get; set; }
         public static Job processJob { get; set; }
         public static bool ShowInTaskbar { get; set; }

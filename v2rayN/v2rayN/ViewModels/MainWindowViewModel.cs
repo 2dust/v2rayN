@@ -540,8 +540,12 @@ namespace v2rayN.ViewModels
             _noticeHandler?.SendMessage(msg);
             if (success)
             {
+                var indexIdOld = _config.indexId;
                 RefreshServers();
-                Reload();
+                if (indexIdOld != _config.indexId)
+                {
+                    Reload();
+                }
                 if (_config.uiItem.enableAutoAdjustMainLvColWidth)
                 {
                     _updateView("AdjustMainLvColWidth");
@@ -740,6 +744,7 @@ namespace v2rayN.ViewModels
                             subRemarks = t.subRemarks,
                             isActive = t.indexId == _config.indexId,
                             sort = t33 == null ? 0 : t33.sort,
+                            delay = t33 == null ? 0 : t33.delay,
                             delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
                             speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
                             todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
@@ -773,9 +778,8 @@ namespace v2rayN.ViewModels
                 if (running != null)
                 {
                     var runningSummary = running.GetSummary();
-                    var runningProfileItemModel = _profileItems.FirstOrDefault(t => t.indexId == running.indexId);
                     RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
-                    RunningServerToolTipText = runningProfileItemModel is null ? runningSummary : $"[{runningProfileItemModel.subRemarks}] {runningSummary}";
+                    RunningServerToolTipText = runningSummary;
                 }
             }));
         }
@@ -1367,7 +1371,6 @@ namespace v2rayN.ViewModels
 
         public void Reload()
         {
-            Global.reloadCore = true;
             _ = LoadV2ray();
         }
 
@@ -1387,7 +1390,6 @@ namespace v2rayN.ViewModels
             {
                 _coreHandler.LoadCore(_config);
 
-                Global.reloadCore = false;
                 //ConfigHandler.SaveConfig(ref _config, false);
 
                 ChangeSystemProxyStatus(_config.sysProxyType, false);

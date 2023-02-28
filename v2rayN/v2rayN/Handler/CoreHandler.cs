@@ -27,46 +27,43 @@ namespace v2rayN.Handler
 
         public void LoadCore(Config config)
         {
-            if (Global.reloadCore)
+            var node = ConfigHandler.GetDefaultServer(ref config);
+            if (node == null)
             {
-                var node = ConfigHandler.GetDefaultServer(ref config);
-                if (node == null)
-                {
-                    ShowMsg(false, ResUI.CheckServerSettings);
-                    return;
-                }
+                ShowMsg(false, ResUI.CheckServerSettings);
+                return;
+            }
 
-                if (SetCore(config, node) != 0)
-                {
-                    ShowMsg(false, ResUI.CheckServerSettings);
-                    return;
-                }
-                string fileName = Utils.GetConfigPath(_coreCConfigRes);
-                if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
-                {
-                    ShowMsg(false, msg);
-                }
-                else
-                {
-                    ShowMsg(false, msg);
-                    ShowMsg(true, $"{node.GetSummary()}");
-                    CoreStop();
-                    CoreStart(node);
-                }
+            if (SetCore(config, node) != 0)
+            {
+                ShowMsg(false, ResUI.CheckServerSettings);
+                return;
+            }
+            string fileName = Utils.GetConfigPath(_coreCConfigRes);
+            if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
+            {
+                ShowMsg(false, msg);
+            }
+            else
+            {
+                ShowMsg(false, msg);
+                ShowMsg(true, $"{node.GetSummary()}");
+                CoreStop();
+                CoreStart(node);
+            }
 
-                //start a socks service
-                if (_process != null && !_process.HasExited && node.configType == EConfigType.Custom && node.preSocksPort > 0)
+            //start a socks service
+            if (_process != null && !_process.HasExited && node.configType == EConfigType.Custom && node.preSocksPort > 0)
+            {
+                var itemSocks = new ProfileItem()
                 {
-                    var itemSocks = new ProfileItem()
-                    {
-                        configType = EConfigType.Socks,
-                        address = Global.Loopback,
-                        port = node.preSocksPort
-                    };
-                    if (CoreConfigHandler.GenerateClientConfig(itemSocks, null, out string msg2, out string configStr) == 0)
-                    {
-                        _processId = CoreStartViaString(configStr);
-                    }
+                    configType = EConfigType.Socks,
+                    address = Global.Loopback,
+                    port = node.preSocksPort
+                };
+                if (CoreConfigHandler.GenerateClientConfig(itemSocks, null, out string msg2, out string configStr) == 0)
+                {
+                    _processId = CoreStartViaString(configStr);
                 }
             }
         }
