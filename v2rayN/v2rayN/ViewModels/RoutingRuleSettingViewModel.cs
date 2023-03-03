@@ -299,7 +299,7 @@ namespace v2rayN.ViewModels
                 UI.Show(ResUI.OperationSuccess);
             }
         }
-        private void ImportRulesFromUrl()
+        private async Task ImportRulesFromUrl()
         {
             var url = SelectedRouting.url;
             if (Utils.IsNullOrEmpty(url))
@@ -308,19 +308,16 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            Task.Run(async () =>
+            DownloadHandle downloadHandle = new DownloadHandle();
+            string result = await downloadHandle.TryDownloadString(url, true, "");
+            if (AddBatchRoutingRules(SelectedRouting, result) == 0)
             {
-                DownloadHandle downloadHandle = new DownloadHandle();
-                string result = await downloadHandle.DownloadStringAsync(url, false, "");
-                if (AddBatchRoutingRules(SelectedRouting, result) == 0)
+                Application.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    Application.Current.Dispatcher.Invoke((Action)(() =>
-                    {
-                        RefreshRulesItems();
-                    }));
-                    UI.Show(ResUI.OperationSuccess);
-                }
-            });
+                    RefreshRulesItems();
+                }));
+                UI.Show(ResUI.OperationSuccess);
+            }
         }
         private int AddBatchRoutingRules(RoutingItem routingItem, string clipboardData)
         {
