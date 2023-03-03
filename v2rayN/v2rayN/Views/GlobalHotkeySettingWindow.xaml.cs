@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32.TaskScheduler;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using v2rayN.Handler;
@@ -12,37 +13,23 @@ namespace v2rayN.Views
     {
         private static Config _config;
         List<KeyEventItem> lstKey;
+        private Dictionary<object, KeyEventItem> _TextBoxKeyEventItem;
 
         public GlobalHotkeySettingWindow()
         {
             InitializeComponent();
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
+            _config.globalHotkeys ??= new List<KeyEventItem>();
 
-            if (_config.globalHotkeys == null)
+            _TextBoxKeyEventItem = new()
             {
-                _config.globalHotkeys = new List<KeyEventItem>();
-            }
-
-            foreach (EGlobalHotkey it in Enum.GetValues(typeof(EGlobalHotkey)))
-            {
-                if (_config.globalHotkeys.FindIndex(t => t.eGlobalHotkey == it) >= 0)
-                {
-                    continue;
-                }
-
-                _config.globalHotkeys.Add(new KeyEventItem()
-                {
-                    eGlobalHotkey = it,
-                    Alt = false,
-                    Control = false,
-                    Shift = false,
-                    KeyCode = null
-                });
-            }
-
-            lstKey = Utils.DeepCopy(_config.globalHotkeys);
-
+                { txtGlobalHotkey0,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.ShowForm) },
+                { txtGlobalHotkey1,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyClear) },
+                { txtGlobalHotkey2,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxySet) },
+                { txtGlobalHotkey3,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyUnchanged)},
+                { txtGlobalHotkey4,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyPac)}
+            };
             txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_KeyDown;
@@ -63,7 +50,7 @@ namespace v2rayN.Views
             {
                 var txt = ((TextBox)sender);
                 var index = Utils.ToInt(txt.Name.Substring(txt.Name.Length - 1, 1));
-                var formsKey = (Forms.Keys)KeyInterop.VirtualKeyFromKey(e.Key == Key.System ? e.SystemKey : e.Key);
+                var formsKey = e.Key == Key.System ? e.SystemKey : e.Key;
 
                 lstKey[index].KeyCode = formsKey;
                 lstKey[index].Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
@@ -74,6 +61,18 @@ namespace v2rayN.Views
             }
         }
 
+        private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit,EGlobalHotkey eg)
+        {
+            return Utils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
+            {
+                eGlobalHotkey = eg,
+                Control = false,
+                Alt = false,
+                Shift = false,
+                KeyCode = null
+            });
+
+        }
         private void BindingData(int index)
         {
             for (int k = 0; k < lstKey.Count; k++)

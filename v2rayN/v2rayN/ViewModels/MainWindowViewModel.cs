@@ -630,27 +630,26 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void OnHotkeyHandler(object sender, HotkeyEventArgs e)
+        private void OnHotkeyHandler(EGlobalHotkey e)
         {
-            switch (Utils.ToInt(e.Name))
+            switch (e)
             {
-                case (int)EGlobalHotkey.ShowForm:
+                case EGlobalHotkey.ShowForm:
                     ShowHideWindow(null);
                     break;
-                case (int)EGlobalHotkey.SystemProxyClear:
+                case EGlobalHotkey.SystemProxyClear:
                     SetListenerType(ESysProxyType.ForcedClear);
                     break;
-                case (int)EGlobalHotkey.SystemProxySet:
+                case EGlobalHotkey.SystemProxySet:
                     SetListenerType(ESysProxyType.ForcedChange);
                     break;
-                case (int)EGlobalHotkey.SystemProxyUnchanged:
+                case EGlobalHotkey.SystemProxyUnchanged:
                     SetListenerType(ESysProxyType.Unchanged);
                     break;
-                case (int)EGlobalHotkey.SystemProxyPac:
+                case EGlobalHotkey.SystemProxyPac:
                     SetListenerType(ESysProxyType.Pac);
                     break;
             }
-            e.Handled = true;
         }
         public void MyAppExit(bool blWindowsShutDown)
         {
