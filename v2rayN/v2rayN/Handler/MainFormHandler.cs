@@ -1,5 +1,4 @@
-﻿using NHotkey;
-using NHotkey.Wpf;
+﻿
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;

@@ -18,8 +18,6 @@
 		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />		 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-		<PackageReference Include="NHotkey" Version="2.1.0" />
-		<PackageReference Include="NHotkey.Wpf" Version="2.1.0" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="TaskScheduler" Version="2.10.1" /> 

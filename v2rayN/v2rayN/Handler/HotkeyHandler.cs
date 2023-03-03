@@ -21,7 +21,7 @@ namespace v2rayN.Handler
         }
         private Dictionary<int, List<EGlobalHotkey>> _hotkeyTriggerDic;
 
-        public bool IsPause { get; private set; } = false;
+        public bool IsPause { get; set; } = false;
         public event Action<bool, string>? UpdateViewEvent;
         public event Action<EGlobalHotkey>? HotkeyTriggerEvent;
         public HotkeyHandler()
@@ -61,26 +61,28 @@ namespace v2rayN.Handler
         {
             foreach(var hotkey in _hotkeyTriggerDic.Keys)
             {
-                var _fsModifiers = hotkey & 0xffff;
-                var _vkey = (hotkey >> 16) & 0xffff;
-                var hotkeyStr = HotkeyToString(_fsModifiers, _vkey);
+                var hotkeyInfo = GetHotkeyInfo(hotkey);
                 bool isSuccess = false;
                 string msg;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    isSuccess = RegisterHotKey(IntPtr.Zero, hotkey, _fsModifiers, _vkey); 
-                });                                
-                if (isSuccess)
+                    isSuccess = RegisterHotKey(IntPtr.Zero, hotkey, hotkeyInfo.fsModifiers, hotkeyInfo.vKey); 
+                });
+                foreach (var name in hotkeyInfo.Names)
                 {
-                    msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{hotkeyStr}");
+                    if (isSuccess)
+                    {
+                        msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{name}({hotkeyInfo.HotkeyStr})");
+                    }
+                    else
+                    {
+                        var errInfo = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+                        msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{name}({hotkeyInfo.HotkeyStr})", errInfo);
+                    }
+                    UpdateViewEvent?.Invoke(false, msg);
                 }
-                else
-                {
-                    var errInfo = new Win32Exception(Marshal.GetLastWin32Error()).Message;
-                    msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{hotkeyStr}", errInfo);
-                }
-                UpdateViewEvent?.Invoke(false, msg);
+                
             }
         }
 
@@ -96,14 +98,38 @@ namespace v2rayN.Handler
             Init();
             Load();
         }
-        
+        private (int fsModifiers, int vKey, string HotkeyStr, List<string> Names) GetHotkeyInfo(int hotkey)
+        {
+            var _fsModifiers = hotkey & 0xffff;
+            var _vkey = (hotkey >> 16) & 0xffff;
+            var _hotkeyStr = new StringBuilder();
+            var _names = new List<string>();
+
+            var mdif = (KeyModifiers)_fsModifiers;
+            var key = KeyInterop.KeyFromVirtualKey(_vkey);
+            if ((mdif | KeyModifiers.Ctrl) == KeyModifiers.Ctrl) _hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
+            if ((mdif | KeyModifiers.Alt) == KeyModifiers.Alt) _hotkeyStr.Append($"{KeyModifiers.Alt}+");
+            if ((mdif | KeyModifiers.Shift) == KeyModifiers.Shift) _hotkeyStr.Append($"{KeyModifiers.Shift}+");
+            _hotkeyStr.Append(key.ToString());
+
+            foreach (var name in _hotkeyTriggerDic.Values)
+            {
+                _names.Add(name.ToString()!);
+            }
+
+
+            return (_fsModifiers, _vkey, _hotkeyStr.ToString(), _names);
+        }
         private void OnThreadPreProcessMessage(ref MSG msg, ref bool handled)
         {
-            if (msg.message != WmHotkey || IsPause || !_hotkeyTriggerDic.Keys.Contains((int)msg.lParam))
+            if (msg.message != WmHotkey|| !_hotkeyTriggerDic.ContainsKey((int)msg.lParam))
+            {               
                 return;
+            }
             handled = true;
             foreach (var keyEvent in _hotkeyTriggerDic[(int)msg.lParam])
             {
+                if (IsPause) return;
                 HotkeyTriggerEvent?.Invoke(keyEvent);
             }
         }
@@ -112,17 +138,6 @@ namespace v2rayN.Handler
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-        private static string HotkeyToString(int fsModifiers,int vk)
-        {
-            var sb = new StringBuilder();
-            var mdif = (KeyModifiers)fsModifiers;
-            var key = KeyInterop.KeyFromVirtualKey(vk);
-            if ((mdif | KeyModifiers.Ctrl) == KeyModifiers.Ctrl) sb.Append($"{KeyModifiers.Ctrl}+");
-            if ((mdif | KeyModifiers.Alt) == KeyModifiers.Alt) sb.Append($"{KeyModifiers.Alt}+");
-            if ((mdif | KeyModifiers.Shift) == KeyModifiers.Shift) sb.Append($"{KeyModifiers.Shift}+");
-            sb.Append(key.ToString());
-            return sb.ToString();
-        }
         [Flags]
         private enum KeyModifiers
         {

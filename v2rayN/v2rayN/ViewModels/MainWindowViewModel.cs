@@ -3,7 +3,6 @@ using DynamicData.Binding;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
-using NHotkey;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
