@@ -9,8 +9,9 @@ namespace v2rayN.Base
         private static readonly Lazy<SqliteHelper> _instance = new(() => new());
         public static SqliteHelper Instance => _instance.Value;
         private string _connstr;
-        public SQLiteConnection _db;
-        public SQLiteAsyncConnection _dbAsync;
+        private SQLiteConnection _db;
+        private SQLiteAsyncConnection _dbAsync;
+        private static readonly object objLock = new();
 
         public SqliteHelper()
         {
@@ -34,7 +35,10 @@ namespace v2rayN.Base
         }
         public int Replace(object model)
         {
-            return _db.InsertOrReplace(model);
+            lock (objLock)
+            {
+                return _db.InsertOrReplace(model);
+            }
         }
         public async Task<int> Replacesync(object model)
         {
@@ -43,7 +47,10 @@ namespace v2rayN.Base
 
         public int Update(object model)
         {
-            return _db.Update(model);
+            lock (objLock)
+            {
+                return _db.Update(model);
+            }
         }
         public async Task<int> UpdateAsync(object model)
         {
@@ -51,12 +58,18 @@ namespace v2rayN.Base
         }
         public int UpdateAll(IEnumerable models)
         {
-            return _db.UpdateAll(models);
+            lock (objLock)
+            {
+                return _db.UpdateAll(models);
+            }
         }
 
         public int Delete(object model)
         {
-            return _db.Delete(model);
+            lock (objLock)
+            {
+                return _db.Delete(model);
+            }
         }
         public async Task<int> DeleteAsync(object model)
         {

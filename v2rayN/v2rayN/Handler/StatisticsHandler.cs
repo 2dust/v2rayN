@@ -162,7 +162,7 @@ namespace v2rayN.Handler
                         todayDown = 0,
                         dateNow = ticks
                     };
-                    _ = SqliteHelper.Instance.Replacesync(_serverStatItem);
+                    SqliteHelper.Instance.Replace(_serverStatItem);
                     _lstServerStat.Add(_serverStatItem);
                 }
             }
