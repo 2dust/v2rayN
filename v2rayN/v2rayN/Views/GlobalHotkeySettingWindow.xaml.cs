@@ -7,7 +7,6 @@ using System.Windows.Input;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
-using Forms = System.Windows.Forms;
 
 namespace v2rayN.Views
 {
@@ -29,8 +28,8 @@ namespace v2rayN.Views
             txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_KeyDown;
 
-            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
             HotkeyHandler.Instance.IsPause = true;
+            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;            
             Utils.SetDarkBorder(this, _config.uiItem.colorModeDark);
             InitData();
         }
@@ -51,7 +50,6 @@ namespace v2rayN.Views
 
         private void TxtGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine($"{e.Key}{e.SystemKey}");
             e.Handled = true;
             var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift,
                 Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin};
