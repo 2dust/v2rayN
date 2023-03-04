@@ -53,7 +53,10 @@
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Server" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="Server" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -99,7 +102,10 @@
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="BookClockOutline" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="BookClockOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -131,7 +137,10 @@
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="SettingsOutline" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="SettingsOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -169,7 +178,10 @@
                             <MenuItem x:Name="menuReload" Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Reload" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="Reload" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -180,7 +192,10 @@
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Update" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="Update" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -221,7 +236,10 @@
                             <MenuItem x:Name="menuHelp" Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="HelpCircleOutline" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="HelpCircleOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuHelp}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -235,7 +253,10 @@
                                 Click="menuPromotion_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="VolumeHigh" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="VolumeHigh" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuPromotion}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -249,7 +270,10 @@
                                 Click="menuClose_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Minimize" />
+                                        <materialDesign:PackIcon
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Kind="Minimize" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuClose}" />
                                     </StackPanel>
                                 </MenuItem.Header>
@@ -352,7 +376,7 @@
                         Height="30"
                         Margin="4,0"
                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="Plus" />
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                     </Button>
                     <TextBox
                         x:Name="txtServerFilter"
@@ -713,6 +737,7 @@
                                     <materialDesign:PackIcon
                                         x:Name="menuSystemProxyClear2"
                                         Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
                                         Kind="Check" />
                                     <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyClear}" />
                                 </StackPanel>
@@ -724,6 +749,7 @@
                                     <materialDesign:PackIcon
                                         x:Name="menuSystemProxySet2"
                                         Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
                                         Kind="Check" />
                                     <TextBlock Text="{x:Static resx:ResUI.menuSystemProxySet}" />
                                 </StackPanel>
@@ -735,6 +761,7 @@
                                     <materialDesign:PackIcon
                                         x:Name="menuSystemProxyNothing2"
                                         Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
                                         Kind="Check" />
                                     <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyNothing}" />
                                 </StackPanel>
@@ -746,6 +773,7 @@
                                     <materialDesign:PackIcon
                                         x:Name="menuSystemProxyPac2"
                                         Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
                                         Kind="Check" />
                                     <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyPac}" />
                                 </StackPanel>

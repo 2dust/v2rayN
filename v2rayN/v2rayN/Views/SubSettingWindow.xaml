@@ -33,28 +33,40 @@
                     Style="{StaticResource MaterialDesignToolBar}">
                     <Button x:Name="menuSubAdd">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Margin="0,0,8,0" Kind="Plus" />
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Plus" />
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubAdd}" />
                         </StackPanel>
                     </Button>
                     <Separator />
                     <Button x:Name="menuSubDelete">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Margin="0,0,8,0" Kind="Delete" />
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Delete" />
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubDelete}" />
                         </StackPanel>
                     </Button>
                     <Separator />
                     <Button x:Name="menuSubEdit">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Margin="0,0,8,0" Kind="Edit" />
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Edit" />
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubEdit}" />
                         </StackPanel>
                     </Button>
                     <Separator />
                     <Button x:Name="menuSubShare">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Margin="0,0,8,0" Kind="QrcodePlus" />
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="QrcodePlus" />
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubShare}" />
                         </StackPanel>
                     </Button>
@@ -63,7 +75,10 @@
                         Click="menuClose_Click"
                         IsCancel="True">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Margin="0,0,8,0" Kind="Close" />
+                            <materialDesign:PackIcon
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Kind="Close" />
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuClose}" />
                         </StackPanel>
                     </Button>
