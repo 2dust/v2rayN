@@ -23,11 +23,11 @@ namespace v2rayN.Views
             _config = LazyConfig.Instance.GetConfig();
             _config.globalHotkeys ??= new List<KeyEventItem>();
            
-            txtGlobalHotkey0.PreviewKeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey1.PreviewKeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey2.PreviewKeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey3.PreviewKeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey4.PreviewKeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_KeyDown;
 
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
             HotkeyHandler.Instance.IsPause = true;
@@ -53,7 +53,8 @@ namespace v2rayN.Views
         {
             Debug.WriteLine($"{e.Key}{e.SystemKey}");
             e.Handled = true;
-            var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
+            var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift,
+                Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin};
             _TextBoxKeyEventItem[sender].KeyCode = e.Key == Key.System ? (_ModifierKeys.Contains(e.SystemKey) ? Key.None : e.SystemKey) : (_ModifierKeys.Contains(e.Key) ? Key.None : e.Key);
             _TextBoxKeyEventItem[sender].Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
             _TextBoxKeyEventItem[sender].Control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;

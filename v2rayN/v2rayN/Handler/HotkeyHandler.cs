@@ -59,26 +59,26 @@ namespace v2rayN.Handler
         }
         public void Load()
         {
-            foreach(var hotkey in _hotkeyTriggerDic.Keys)
+            foreach(var _hotkeyCode in _hotkeyTriggerDic.Keys)
             {
-                var hotkeyInfo = GetHotkeyInfo(hotkey);
+                var hotkeyInfo = GetHotkeyInfo(_hotkeyCode);
                 bool isSuccess = false;
                 string msg;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    isSuccess = RegisterHotKey(IntPtr.Zero, hotkey, hotkeyInfo.fsModifiers, hotkeyInfo.vKey); 
+                    isSuccess = RegisterHotKey(IntPtr.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey); 
                 });
                 foreach (var name in hotkeyInfo.Names)
                 {
                     if (isSuccess)
                     {
-                        msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{name}({hotkeyInfo.HotkeyStr})");
+                        msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{name}({hotkeyInfo.hotkeyStr})");
                     }
                     else
                     {
                         var errInfo = new Win32Exception(Marshal.GetLastWin32Error()).Message;
-                        msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{name}({hotkeyInfo.HotkeyStr})", errInfo);
+                        msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{name}({hotkeyInfo.hotkeyStr})", errInfo);
                     }
                     UpdateViewEvent?.Invoke(false, msg);
                 }
@@ -98,10 +98,10 @@ namespace v2rayN.Handler
             Init();
             Load();
         }
-        private (int fsModifiers, int vKey, string HotkeyStr, List<string> Names) GetHotkeyInfo(int hotkey)
+        private (int fsModifiers, int vKey, string hotkeyStr, List<string> Names) GetHotkeyInfo(int hotkeycode)
         {
-            var _fsModifiers = hotkey & 0xffff;
-            var _vkey = (hotkey >> 16) & 0xffff;
+            var _fsModifiers = hotkeycode & 0xffff;
+            var _vkey = (hotkeycode >> 16) & 0xffff;
             var _hotkeyStr = new StringBuilder();
             var _names = new List<string>();
 
@@ -112,9 +112,9 @@ namespace v2rayN.Handler
             if ((mdif | KeyModifiers.Shift) == KeyModifiers.Shift) _hotkeyStr.Append($"{KeyModifiers.Shift}+");
             _hotkeyStr.Append(key.ToString());
 
-            foreach (var name in _hotkeyTriggerDic.Values)
+            foreach (var name in _hotkeyTriggerDic[hotkeycode])
             {
-                _names.Add(name.ToString()!);
+                _names.Add(name.ToString());
             }
 
 
@@ -127,10 +127,30 @@ namespace v2rayN.Handler
                 return;
             }
             handled = true;
-            foreach (var keyEvent in _hotkeyTriggerDic[(int)msg.lParam])
+            var _hotKeyCode = (int)msg.lParam;
+            if (IsPause)
             {
-                if (IsPause) return;
-                HotkeyTriggerEvent?.Invoke(keyEvent);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UIElement? element = Keyboard.FocusedElement as UIElement;
+                    if (element != null)
+                    {
+                        var _keyEventArgs = new KeyEventArgs(Keyboard.PrimaryDevice,
+                            PresentationSource.FromVisual(element), 0,
+                            KeyInterop.KeyFromVirtualKey(GetHotkeyInfo(_hotKeyCode).vKey))
+                        {
+                            RoutedEvent = UIElement.KeyDownEvent
+                        };
+                        element.RaiseEvent(_keyEventArgs);
+                    }
+                });
+            }
+            else
+            {
+                foreach (var keyEvent in _hotkeyTriggerDic[(int)msg.lParam])
+                {
+                    HotkeyTriggerEvent?.Invoke(keyEvent);
+                }
             }
         }
         [DllImport("user32.dll", SetLastError = true)]
