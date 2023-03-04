@@ -32,28 +32,40 @@
                 Style="{StaticResource MaterialDesignToolBar}">
                 <Button x:Name="menuRuleAdd">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Plus" />
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="Plus" />
                         <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuRuleAdd}" />
                     </StackPanel>
                 </Button>
                 <Separator />
                 <Button x:Name="menuImportRulesFromFile">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Import" />
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="Import" />
                         <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuImportRulesFromFile}" />
                     </StackPanel>
                 </Button>
                 <Separator />
                 <Button x:Name="menuImportRulesFromClipboard">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Import" />
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="Import" />
                         <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuImportRulesFromClipboard}" />
                     </StackPanel>
                 </Button>
                 <Separator />
                 <Button x:Name="menuImportRulesFromUrl">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Margin="0,0,8,0" Kind="Import" />
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="Import" />
                         <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuImportRulesFromUrl}" />
                     </StackPanel>
                 </Button>

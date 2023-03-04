@@ -959,7 +959,7 @@ namespace v2rayN.Handler
                     var existItem = lstOriSub?.FirstOrDefault(t => CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
-                        profileItem = existItem;
+                        profileItem.indexId = existItem.indexId;
                     }
                     //filter
                     if (!Utils.IsNullOrEmpty(subFilter))

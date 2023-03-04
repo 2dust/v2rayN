@@ -39,7 +39,10 @@
                     <MenuItem x:Name="menuRoutingBasic" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Margin="0,0,8,0" Kind="Server" />
+                                <materialDesign:PackIcon
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Kind="Server" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuRoutingBasic}" />
                             </StackPanel>
                         </MenuItem.Header>
@@ -54,7 +57,10 @@
                     <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Margin="0,0,8,0" Kind="Routes" />
+                                <materialDesign:PackIcon
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Kind="Routes" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuRoutingAdvanced}" />
                             </StackPanel>
                         </MenuItem.Header>

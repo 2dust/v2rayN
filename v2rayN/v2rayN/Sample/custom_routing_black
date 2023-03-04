@@ -14,7 +14,14 @@
   {
     "outboundTag": "proxy",
     "ip": [
-      "geoip:telegram"
+      "geoip:cloudflare",
+      "geoip:cloudfront",
+      "geoip:facebook",
+      "geoip:fastly",
+      "geoip:google",
+      "geoip:netflix",
+      "geoip:telegram",
+      "geoip:twitter"
     ],
     "domain": [
       "geosite:gfw",
