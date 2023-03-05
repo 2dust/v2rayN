@@ -671,10 +671,6 @@ namespace v2rayN.Handler
             {
                 profileItem.streamSecurity = Global.StreamSecurity;
             }
-            if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
-            {
-                profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
-            }
 
             AddServerCommon(ref config, profileItem);
 
@@ -827,10 +823,19 @@ namespace v2rayN.Handler
         public static int AddServerCommon(ref Config config, ProfileItem profileItem)
         {
             profileItem.configVersion = 2;
-            if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
+
+            if (!Utils.IsNullOrEmpty(profileItem.streamSecurity))
             {
-                profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
+                if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
+                {
+                    profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
+                }
+                if (Utils.IsNullOrEmpty(profileItem.fingerprint))
+                {
+                    profileItem.fingerprint = config.coreBasicItem.defFingerprint.ToString().ToLower();
+                }
             }
+
             if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.networks.Contains(profileItem.network))
             {
                 profileItem.network = Global.DefaultNetwork;
