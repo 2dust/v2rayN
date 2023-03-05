@@ -837,8 +837,8 @@
                         BorderBrush="Black"
                         BorderThickness="2"
                         CornerRadius="2"
-                        Width="auto"
-                        Height="auto">
+                        Width="Auto"
+                        Height="Auto">
                         <TextBlock
                             Margin="2"
                             Text="{Binding Mode=OneWay, Path=ToolTipText}"
