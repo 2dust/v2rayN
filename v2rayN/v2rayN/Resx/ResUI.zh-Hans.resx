@@ -304,7 +304,7 @@
     <value>操作失败，请检查重试</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>请填写备注</value>
+    <value>请填写别名</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
     <value>请选择加密方式</value>
@@ -380,7 +380,7 @@
     <value>数量</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>请填写地址(Url)</value>
+    <value>请填写Url</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>是否追加规则?选择是则追加,选择否则替换</value>

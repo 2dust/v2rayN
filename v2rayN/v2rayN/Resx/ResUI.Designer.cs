@@ -1384,7 +1384,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please fill in the address (Url) 的本地化字符串。
+        ///   查找类似 Please fill in the Url 的本地化字符串。
         /// </summary>
         public static string MsgNeedUrl {
             get {
