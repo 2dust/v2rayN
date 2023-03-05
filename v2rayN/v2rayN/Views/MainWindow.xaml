@@ -831,6 +831,21 @@
                             Header="{x:Static resx:ResUI.menuExit}" />
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>
+                <tb:TaskbarIcon.TrayToolTip>
+                    <Border
+                        Background="White"
+                        BorderBrush="Black"
+                        BorderThickness="2"
+                        CornerRadius="2"
+                        Width="auto"
+                        Height="auto">
+                        <TextBlock
+                            Margin="2"
+                            Text="{Binding Mode=OneWay, Path=ToolTipText}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                    </Border>
+                </tb:TaskbarIcon.TrayToolTip>
             </tb:TaskbarIcon>
             <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
