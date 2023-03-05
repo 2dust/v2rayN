@@ -833,17 +833,17 @@
                 </tb:TaskbarIcon.ContextMenu>
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border
-                        Background="White"
-                        BorderBrush="Black"
-                        BorderThickness="2"
-                        CornerRadius="2"
                         Width="Auto"
-                        Height="Auto">
+                        Height="Auto"
+                        Background="{DynamicResource MaterialDesignLightBackground}"
+                        BorderBrush="{DynamicResource MaterialDesignDarkBackground}"
+                        BorderThickness="1">
                         <TextBlock
                             Margin="2"
-                            Text="{Binding Mode=OneWay, Path=ToolTipText}"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesignDarkBackground}"
+                            Text="{Binding Mode=OneWay, Path=ToolTipText}" />
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
             </tb:TaskbarIcon>

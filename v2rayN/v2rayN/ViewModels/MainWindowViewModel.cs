@@ -69,6 +69,8 @@ namespace v2rayN.ViewModels
         public ComboItem SelectedServer { get; set; }
         [Reactive]
         public string ServerFilter { get; set; }
+        [Reactive]
+        public bool BlServers { get; set; }
         #endregion
 
         #region Menu
@@ -787,9 +789,11 @@ namespace v2rayN.ViewModels
             _servers.Clear();
             if (_lstProfile.Count > _config.guiItem.trayMenuServersLimit)
             {
+                BlServers = false;
                 return;
             }
 
+            BlServers = true;
             for (int k = 0; k < _lstProfile.Count; k++)
             {
                 ProfileItem it = _lstProfile[k];
