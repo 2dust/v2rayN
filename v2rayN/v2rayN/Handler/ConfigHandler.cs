@@ -832,7 +832,7 @@ namespace v2rayN.Handler
                 }
                 if (Utils.IsNullOrEmpty(profileItem.fingerprint))
                 {
-                    profileItem.fingerprint = config.coreBasicItem.defFingerprint.ToString().ToLower();
+                    profileItem.fingerprint = config.coreBasicItem.defFingerprint;
                 }
             }
 
