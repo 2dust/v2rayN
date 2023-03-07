@@ -352,7 +352,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddServer(ref Config config, ProfileItem profileItem)
+        public static int AddServer(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.VMess;
 
@@ -370,7 +370,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
         }
@@ -383,10 +383,14 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServer(Config config, List<ProfileItem> indexs)
         {
+            var subid = "TempRemoveSubId";
             foreach (var item in indexs)
             {
-                RemoveProfileItem(config, item.indexId);
+                item.subid = subid;
             }
+
+            SqliteHelper.Instance.UpdateAll(indexs);
+            RemoveServerViaSubid(ref config, subid, false);
 
             return 0;
         }
@@ -414,7 +418,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    AddServerCommon(ref config, profileItem);
+                    AddServerCommon(ref config, profileItem, true);
                 }
             }
 
@@ -447,8 +451,7 @@ namespace v2rayN.Handler
             {
                 return 0;
             }
-            var allItems = LazyConfig.Instance.ProfileItemIndexs("");
-            if (allItems.Where(t => t == config.indexId).Any())
+            if (SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.indexId == config.indexId).Any())
             {
                 return 0;
             }
@@ -456,11 +459,7 @@ namespace v2rayN.Handler
             {
                 return SetDefaultServerIndex(ref config, lstProfile[0].indexId);
             }
-            if (allItems.Count > 0)
-            {
-                return SetDefaultServerIndex(ref config, allItems.FirstOrDefault());
-            }
-            return -1;
+            return SetDefaultServerIndex(ref config, SqliteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).FirstOrDefault());
         }
         public static ProfileItem? GetDefaultServer(ref Config config)
         {
@@ -588,7 +587,7 @@ namespace v2rayN.Handler
             }
 
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, true);
 
 
             return 0;
@@ -620,7 +619,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddShadowsocksServer(ref Config config, ProfileItem profileItem)
+        public static int AddShadowsocksServer(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.Shadowsocks;
 
@@ -633,7 +632,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
         }
@@ -644,13 +643,13 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddSocksServer(ref Config config, ProfileItem profileItem)
+        public static int AddSocksServer(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.Socks;
 
             profileItem.address = profileItem.address.TrimEx();
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
         }
@@ -661,7 +660,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddTrojanServer(ref Config config, ProfileItem profileItem)
+        public static int AddTrojanServer(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.Trojan;
 
@@ -672,7 +671,7 @@ namespace v2rayN.Handler
                 profileItem.streamSecurity = Global.StreamSecurity;
             }
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
         }
@@ -777,7 +776,7 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddVlessServer(ref Config config, ProfileItem profileItem)
+        public static int AddVlessServer(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.VLESS;
 
@@ -790,7 +789,7 @@ namespace v2rayN.Handler
             profileItem.path = profileItem.path.TrimEx();
             profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
 
-            AddServerCommon(ref config, profileItem);
+            AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
         }
@@ -800,27 +799,27 @@ namespace v2rayN.Handler
             List<ProfileItem> source = lstProfile;
             bool keepOlder = config.guiItem.keepOlderDedupl;
 
-            List<ProfileItem> list = new();
+            List<ProfileItem> lstKeep = new();
+            List<ProfileItem> lstRemove = new();
             if (!keepOlder) source.Reverse(); // Remove the early items first
 
             foreach (ProfileItem item in source)
             {
-                if (!list.Exists(i => CompareProfileItem(i, item, false)))
+                if (!lstKeep.Exists(i => CompareProfileItem(i, item, false)))
                 {
-                    list.Add(item);
+                    lstKeep.Add(item);
                 }
                 else
                 {
-                    RemoveProfileItem(config, item.indexId);
+                    lstRemove.Add(item);
                 }
             }
-            //if (!keepOlder) list.Reverse();
-            //config.vmess = list;
+            RemoveServer(config, lstRemove);
 
-            return list.Count;
+            return lstKeep.Count;
         }
 
-        public static int AddServerCommon(ref Config config, ProfileItem profileItem)
+        public static int AddServerCommon(ref Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configVersion = 2;
 
@@ -847,18 +846,12 @@ namespace v2rayN.Handler
                 var maxSort = ProfileExHandler.Instance.GetMaxSort();
                 ProfileExHandler.Instance.SetSort(profileItem.indexId, maxSort + 1);
             }
-            else if (profileItem.indexId == config.indexId)
-            {
-            }
 
-            if (SqliteHelper.Instance.Replace(profileItem) > 0)
+            if (toFile)
             {
-                return 0;
+                SqliteHelper.Instance.Replace(profileItem);
             }
-            else
-            {
-                return -1;
-            }
+            return 0;
         }
 
         private static bool CompareProfileItem(ProfileItem o, ProfileItem n, bool remarks)
@@ -935,11 +928,7 @@ namespace v2rayN.Handler
             }
 
             int countServers = 0;
-            //var maxSort = 0;
-            //if (SqliteHelper.Instance.Table<ProfileItem>().Count() > 0)
-            //{
-            //    maxSort = SqliteHelper.Instance.Table<ProfileItem>().Max(t => t.sort);
-            //}
+            List<ProfileItem> lstAdd = new();
             string[] arrData = clipboardData.Split(Environment.NewLine.ToCharArray());
             foreach (string str in arrData)
             {
@@ -977,44 +966,46 @@ namespace v2rayN.Handler
                 }
                 profileItem.subid = subid;
                 profileItem.isSub = isSub;
-                //profileItem.sort = maxSort + countServers + 1;
 
                 if (profileItem.configType == EConfigType.VMess)
                 {
-                    if (AddServer(ref config, profileItem) == 0)
+                    if (AddServer(ref config, profileItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (profileItem.configType == EConfigType.Shadowsocks)
                 {
-                    if (AddShadowsocksServer(ref config, profileItem) == 0)
+                    if (AddShadowsocksServer(ref config, profileItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (profileItem.configType == EConfigType.Socks)
                 {
-                    if (AddSocksServer(ref config, profileItem) == 0)
+                    if (AddSocksServer(ref config, profileItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (profileItem.configType == EConfigType.Trojan)
                 {
-                    if (AddTrojanServer(ref config, profileItem) == 0)
+                    if (AddTrojanServer(ref config, profileItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
                 else if (profileItem.configType == EConfigType.VLESS)
                 {
-                    if (AddVlessServer(ref config, profileItem) == 0)
+                    if (AddVlessServer(ref config, profileItem, false) == 0)
                     {
                         countServers++;
                     }
                 }
+                lstAdd.Add(profileItem);
             }
+
+            SqliteHelper.Instance.InsertAll(lstAdd);
 
             ToJsonFile(config);
             return countServers;
@@ -1265,6 +1256,7 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            var customProfile = SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid && t.configType == EConfigType.Custom).ToList();
             if (isSub)
             {
                 SqliteHelper.Instance.Execute($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");
@@ -1272,6 +1264,10 @@ namespace v2rayN.Handler
             else
             {
                 SqliteHelper.Instance.Execute($"delete from ProfileItem where subid = '{subid}'");
+            }
+            foreach (var item in customProfile)
+            {
+                File.Delete(Utils.GetConfigPath(item.address));
             }
 
             return 0;

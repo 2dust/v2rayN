@@ -741,6 +741,7 @@ namespace v2rayN.ViewModels
                             security = t.security,
                             network = t.network,
                             streamSecurity = t.streamSecurity,
+                            subid = t.subid,
                             subRemarks = t.subRemarks,
                             isActive = t.indexId == _config.indexId,
                             sort = t33 == null ? 0 : t33.sort,
@@ -830,21 +831,29 @@ namespace v2rayN.ViewModels
         #endregion
 
         #region Add Servers
-        private int GetProfileItems(out List<ProfileItem> lstSelecteds)
+        private int GetProfileItems(out List<ProfileItem> lstSelecteds, bool latest)
         {
             lstSelecteds = new List<ProfileItem>();
             if (SelectedProfiles == null || SelectedProfiles.Count <= 0)
             {
                 return -1;
             }
-            foreach (var profile in SelectedProfiles)
+            if (latest)
             {
-                var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
-                if (item is not null)
+                foreach (var profile in SelectedProfiles)
                 {
-                    lstSelecteds.Add(item);
+                    var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
+                    if (item is not null)
+                    {
+                        lstSelecteds.Add(item);
+                    }
                 }
             }
+            else
+            {
+                lstSelecteds = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(SelectedProfiles));
+            }
+
             return 0;
         }
 
@@ -931,7 +940,7 @@ namespace v2rayN.ViewModels
         }
         public void RemoveServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -962,7 +971,7 @@ namespace v2rayN.ViewModels
         }
         private void CopyServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
@@ -1094,7 +1103,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -1145,7 +1154,7 @@ namespace v2rayN.ViewModels
             {
                 SelectedProfiles = _profileItems;
             }
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -1177,7 +1186,7 @@ namespace v2rayN.ViewModels
 
         public void Export2ShareUrl()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
@@ -1202,7 +1211,7 @@ namespace v2rayN.ViewModels
 
         private void Export2SubContent()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
