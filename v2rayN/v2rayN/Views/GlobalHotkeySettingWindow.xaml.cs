@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32.TaskScheduler;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +19,7 @@ namespace v2rayN.Views
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
             _config.globalHotkeys ??= new List<KeyEventItem>();
-           
+
             txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_KeyDown;
@@ -29,7 +27,7 @@ namespace v2rayN.Views
             txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_KeyDown;
 
             HotkeyHandler.Instance.IsPause = true;
-            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;            
+            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
             Utils.SetDarkBorder(this, _config.uiItem.colorModeDark);
             InitData();
         }
@@ -60,7 +58,7 @@ namespace v2rayN.Views
             (sender as TextBox)!.Text = KeyEventItemToString(_TextBoxKeyEventItem[sender]);
         }
 
-        private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit,EGlobalHotkey eg)
+        private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit, EGlobalHotkey eg)
         {
             return Utils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
             {
@@ -79,14 +77,14 @@ namespace v2rayN.Views
             if (item.Control) res.Append($"{ModifierKeys.Control}+");
             if (item.Shift) res.Append($"{ModifierKeys.Shift}+");
             if (item.Alt) res.Append($"{ModifierKeys.Alt}+");
-            if(item.KeyCode != null && item.KeyCode != Key.None)
+            if (item.KeyCode != null && item.KeyCode != Key.None)
                 res.Append($"{item.KeyCode}");
 
             return res.ToString();
         }
         private void BindingData()
         {
-            foreach(var item in _TextBoxKeyEventItem)
+            foreach (var item in _TextBoxKeyEventItem)
             {
                 if (item.Value.KeyCode != null && item.Value.KeyCode != Key.None)
                 {
@@ -121,10 +119,10 @@ namespace v2rayN.Views
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            foreach(var k in _TextBoxKeyEventItem.Keys)
+            foreach (var k in _TextBoxKeyEventItem.Keys)
             {
                 _TextBoxKeyEventItem[k].Alt = false;
-                _TextBoxKeyEventItem[k].Control= false;
+                _TextBoxKeyEventItem[k].Control = false;
                 _TextBoxKeyEventItem[k].Shift = false;
                 _TextBoxKeyEventItem[k].KeyCode = Key.None;
             }

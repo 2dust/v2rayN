@@ -26,7 +26,7 @@ namespace v2rayN.Handler
         public event Action<EGlobalHotkey>? HotkeyTriggerEvent;
         public HotkeyHandler()
         {
-            _hotkeyTriggerDic = new();            
+            _hotkeyTriggerDic = new();
             ComponentDispatcher.ThreadPreprocessMessage += OnThreadPreProcessMessage;
             Init();
         }
@@ -35,7 +35,7 @@ namespace v2rayN.Handler
         {
             _hotkeyTriggerDic.Clear();
             if (_config.globalHotkeys == null) return;
-            foreach(var item in _config.globalHotkeys)
+            foreach (var item in _config.globalHotkeys)
             {
                 if (item.KeyCode != null && item.KeyCode != Key.None)
                 {
@@ -47,7 +47,7 @@ namespace v2rayN.Handler
                     key = (key << 16) | (int)modifiers;
                     if (!_hotkeyTriggerDic.ContainsKey(key))
                     {
-                        _hotkeyTriggerDic.Add(key,  new() { item.eGlobalHotkey });
+                        _hotkeyTriggerDic.Add(key, new() { item.eGlobalHotkey });
                     }
                     else
                     {
@@ -59,7 +59,7 @@ namespace v2rayN.Handler
         }
         public void Load()
         {
-            foreach(var _hotkeyCode in _hotkeyTriggerDic.Keys)
+            foreach (var _hotkeyCode in _hotkeyTriggerDic.Keys)
             {
                 var hotkeyInfo = GetHotkeyInfo(_hotkeyCode);
                 bool isSuccess = false;
@@ -67,7 +67,7 @@ namespace v2rayN.Handler
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    isSuccess = RegisterHotKey(IntPtr.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey); 
+                    isSuccess = RegisterHotKey(IntPtr.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey);
                 });
                 foreach (var name in hotkeyInfo.Names)
                 {
@@ -82,13 +82,13 @@ namespace v2rayN.Handler
                     }
                     UpdateViewEvent?.Invoke(false, msg);
                 }
-                
+
             }
         }
 
         public void ReLoad()
         {
-            foreach(var hotkey in _hotkeyTriggerDic.Keys)
+            foreach (var hotkey in _hotkeyTriggerDic.Keys)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -122,8 +122,8 @@ namespace v2rayN.Handler
         }
         private void OnThreadPreProcessMessage(ref MSG msg, ref bool handled)
         {
-            if (msg.message != WmHotkey|| !_hotkeyTriggerDic.ContainsKey((int)msg.lParam))
-            {               
+            if (msg.message != WmHotkey || !_hotkeyTriggerDic.ContainsKey((int)msg.lParam))
+            {
                 return;
             }
             handled = true;
