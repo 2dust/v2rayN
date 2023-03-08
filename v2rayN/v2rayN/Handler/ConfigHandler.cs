@@ -403,8 +403,14 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int CopyServer(ref Config config, List<ProfileItem> indexs)
         {
-            foreach (var item in indexs)
+            foreach (var it in indexs)
             {
+                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                if (item is null)
+                {
+                    continue;
+                }
+
                 ProfileItem profileItem = Utils.DeepCopy(item);
                 profileItem.indexId = string.Empty;
                 profileItem.remarks = $"{item.remarks}-clone";

@@ -700,7 +700,7 @@ namespace v2rayN.ViewModels
             _subId = SelectedSub?.id;
             _config.subIndexId = _subId;
 
-            RefreshServers();
+            RefreshServers(false);
 
             _updateView("ProfilesFocus");
         }
@@ -715,11 +715,13 @@ namespace v2rayN.ViewModels
             RefreshServers();
         }
 
-        private void RefreshServers()
+        private void RefreshServers(bool blCheckDefault = true)
         {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
-            ConfigHandler.SetDefaultServer(_config, lstModel);
-
+            if (blCheckDefault)
+            {
+                ConfigHandler.SetDefaultServer(_config, lstModel);
+            }
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {
@@ -782,6 +784,11 @@ namespace v2rayN.ViewModels
                     RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
                     RunningServerToolTipText = runningSummary;
                 }
+                else
+                {
+                    RunningServerDisplay =
+                    RunningServerToolTipText = ResUI.CheckServerSettings;
+                }
             }));
         }
 
@@ -838,9 +845,11 @@ namespace v2rayN.ViewModels
             {
                 return -1;
             }
+
+            var orderProfiles = SelectedProfiles?.OrderBy(t => t.sort);
             if (latest)
             {
-                foreach (var profile in SelectedProfiles)
+                foreach (var profile in orderProfiles)
                 {
                     var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
                     if (item is not null)
@@ -851,7 +860,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                lstSelecteds = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(SelectedProfiles));
+                lstSelecteds = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(orderProfiles));
             }
 
             return 0;
@@ -971,7 +980,7 @@ namespace v2rayN.ViewModels
         }
         private void CopyServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }

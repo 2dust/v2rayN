@@ -112,7 +112,7 @@ namespace v2rayN.Handler
                 {
                     filter = filter.Replace("'", "");
                 }
-                sql += $" and a.remarks like '%{filter}%'";
+                sql += String.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
             }
 
             return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
