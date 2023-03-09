@@ -118,6 +118,10 @@ namespace v2rayN.ViewModels
                 item.allowInsecure = SelectedSource.allowInsecure;
                 item.fingerprint = SelectedSource.fingerprint;
                 item.alpn = SelectedSource.alpn;
+
+                item.publicKey = SelectedSource.publicKey;
+                item.shortId = SelectedSource.shortId;
+                item.spiderX = SelectedSource.spiderX;
             }
 
             int ret = -1;

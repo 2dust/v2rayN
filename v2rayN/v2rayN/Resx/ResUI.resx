@@ -1132,4 +1132,13 @@
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>
   </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
+  </data>
 </root>

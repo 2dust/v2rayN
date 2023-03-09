@@ -710,7 +710,7 @@
     <value>SNI</value>
   </data>
   <data name="TbStreamSecurity" xml:space="preserve">
-    <value>TLS</value>
+    <value>传输层安全(TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
     <value>*默认tcp,选错会无法连接</value>
@@ -1131,5 +1131,14 @@
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>移至上下</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
   </data>
 </root>

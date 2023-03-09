@@ -85,158 +85,100 @@ namespace v2rayN.Mode
         #endregion
 
         [PrimaryKey]
-        public string indexId
-        {
-            get; set;
-        }
+        public string indexId { get; set; }
 
         /// <summary>
         /// config type(1=normal,2=custom)
         /// </summary>
-        public EConfigType configType
-        {
-            get; set;
-        }
-
+        public EConfigType configType { get; set; }
         /// <summary>
         /// 版本(现在=2)
         /// </summary>
-        public int configVersion
-        {
-            get; set;
-        }
+        public int configVersion { get; set; }
 
         /// <summary>
         /// 远程服务器地址
         /// </summary>
-        public string address
-        {
-            get; set;
-        }
+        public string address { get; set; }
         /// <summary>
         /// 远程服务器端口
         /// </summary>
-        public int port
-        {
-            get; set;
-        }
+        public int port { get; set; }
         /// <summary>
         /// 远程服务器ID
         /// </summary>
-        public string id
-        {
-            get; set;
-        }
+        public string id { get; set; }
         /// <summary>
         /// 远程服务器额外ID
         /// </summary>
-        public int alterId
-        {
-            get; set;
-        }
+        public int alterId { get; set; }
         /// <summary>
         /// 本地安全策略
         /// </summary>
-        public string security
-        {
-            get; set;
-        }
+        public string security { get; set; }
         /// <summary>
         /// tcp,kcp,ws,h2,quic
         /// </summary>
-        public string network
-        {
-            get; set;
-        }
+        public string network { get; set; }
         /// <summary>
         /// 备注或别名
         /// </summary>
-        public string remarks
-        {
-            get; set;
-        }
+        public string remarks { get; set; }
 
         /// <summary>
         /// 伪装类型
         /// </summary>
-        public string headerType
-        {
-            get; set;
-        }
+        public string headerType { get; set; }
 
         /// <summary>
         /// 伪装的域名
         /// </summary>
-        public string requestHost
-        {
-            get; set;
-        }
+        public string requestHost { get; set; }
 
         /// <summary>
         /// ws h2 path
         /// </summary>
-        public string path
-        {
-            get; set;
-        }
+        public string path { get; set; }
 
         /// <summary>
         /// 传输层安全
         /// </summary>
-        public string streamSecurity
-        {
-            get; set;
-        }
+        public string streamSecurity { get; set; }
 
         /// <summary>
         /// 是否允许不安全连接（用于客户端）
         /// </summary>
-        public string allowInsecure
-        {
-            get; set;
-        }
+        public string allowInsecure { get; set; }
 
         /// <summary>
         /// SubItem id
         /// </summary>
-        public string subid
-        {
-            get; set;
-        }
+        public string subid { get; set; }
         public bool isSub { get; set; } = true;
 
         /// <summary>
         /// VLESS flow
         /// </summary>
-        public string flow
-        {
-            get; set;
-        }
+        public string flow { get; set; }
         /// <summary>
         /// tls sni
         /// </summary>
-        public string sni
-        {
-            get; set;
-        }
+        public string sni { get; set; }
         /// <summary>
         /// tls alpn
         /// </summary>
         public string alpn { get; set; } = string.Empty;
 
 
-        public ECoreType? coreType
-        {
-            get; set;
-        }
+        public ECoreType? coreType { get; set; }
 
-        public int preSocksPort
-        {
-            get; set;
-        }
+        public int preSocksPort { get; set; }
 
         public string fingerprint { get; set; }
 
         public bool displayLog { get; set; } = true;
+        public string publicKey { get; set; }
+        public string shortId { get; set; }
+        public string spiderX { get; set; }
     }
 }

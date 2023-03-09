@@ -11,7 +11,7 @@
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuServers}"
     Width="800"
-    Height="800"
+    Height="830"
     x:TypeArguments="vms:AddServerViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
@@ -559,8 +559,10 @@
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefComboBox}" />
             </Grid>
-
-            <Grid x:Name="gridTlsMore" Grid.Row="7">
+            <Grid
+                x:Name="gridTlsMore"
+                Grid.Row="7"
+                Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -595,25 +597,10 @@
                     Margin="{StaticResource ServerItemMargin}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.TbAllowInsecure}" />
-                <ComboBox
-                    x:Name="cmbAllowInsecure"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Width="100"
-                    Margin="{StaticResource ServerItemMargin}"
-                    Style="{StaticResource DefComboBox}" />
-
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Margin="{StaticResource ServerItemMargin}"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbFingerprint}" />
                 <ComboBox
                     x:Name="cmbFingerprint"
-                    Grid.Row="3"
+                    Grid.Row="2"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource ServerItemMargin}"
@@ -621,7 +608,7 @@
                     Style="{StaticResource DefComboBox}" />
 
                 <TextBlock
-                    Grid.Row="4"
+                    Grid.Row="3"
                     Grid.Column="0"
                     Margin="{StaticResource ServerItemMargin}"
                     VerticalAlignment="Center"
@@ -629,13 +616,125 @@
                     Text="{x:Static resx:ResUI.TbAlpn}" />
                 <ComboBox
                     x:Name="cmbAlpn"
-                    Grid.Row="4"
+                    Grid.Row="3"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefComboBox}" />
-            </Grid>
 
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbAllowInsecure}" />
+                <ComboBox
+                    x:Name="cmbAllowInsecure"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefComboBox}" />
+            </Grid>
+            <Grid
+                x:Name="gridRealityMore"
+                Grid.Row="7"
+                Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbSNI}" />
+                <TextBox
+                    x:Name="txtSNI2"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource ServerItemMargin}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbFingerprint}" />
+                <ComboBox
+                    x:Name="cmbFingerprint2"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource ServerItemMargin}"
+                    IsEditable="True"
+                    Style="{StaticResource DefComboBox}" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbPublicKey}" />
+                <TextBox
+                    x:Name="txtPublicKey"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource ServerItemMargin}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbShortId}" />
+                <TextBox
+                    x:Name="txtShortId"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource ServerItemMargin}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbSpiderX}" />
+                <TextBox
+                    x:Name="txtSpiderX"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource ServerItemMargin}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefTextBox}" />
+
+
+            </Grid>
             <Separator
                 Grid.Row="8"
                 Margin="0,2"

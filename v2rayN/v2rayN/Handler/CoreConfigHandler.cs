@@ -456,16 +456,15 @@ namespace v2rayN.Handler
 
                     boundStreamSettings(node, "out", outbound.streamSettings);
 
-                    //if xtls
-                    if (node.streamSecurity == Global.StreamSecurityX)
+                    if (node.streamSecurity == Global.StreamSecurityReality)
                     {
                         if (Utils.IsNullOrEmpty(node.flow))
                         {
-                            usersItem.flow = Global.xtlsFlows[1];
+                            usersItem.flow = Global.flows[1];
                         }
                         else
                         {
-                            usersItem.flow = node.flow.Replace("splice", "direct");
+                            usersItem.flow = node.flow;
                         }
 
                         outbound.mux.enabled = false;
@@ -503,23 +502,7 @@ namespace v2rayN.Handler
                     serversItem.flow = string.Empty;
 
                     serversItem.ota = false;
-                    serversItem.level = 1;
-
-                    //if xtls
-                    if (node.streamSecurity == Global.StreamSecurityX)
-                    {
-                        if (Utils.IsNullOrEmpty(node.flow))
-                        {
-                            serversItem.flow = Global.xtlsFlows[1];
-                        }
-                        else
-                        {
-                            serversItem.flow = node.flow.Replace("splice", "direct");
-                        }
-
-                        outbound.mux.enabled = false;
-                        outbound.mux.concurrency = -1;
-                    }
+                    serversItem.level = 1;                                   
 
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
@@ -581,26 +564,21 @@ namespace v2rayN.Handler
                     streamSettings.tlsSettings = tlsSettings;
                 }
 
-                //if xtls
-                if (node.streamSecurity == Global.StreamSecurityX)
+                //if Reality
+                if (node.streamSecurity == Global.StreamSecurityReality)
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings xtlsSettings = new()
+                    RealitySettings realitySettings = new()
                     {
-                        allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
-                        alpn = node.GetAlpn(),
-                        fingerprint = node.fingerprint.IsNullOrEmpty() ? config.coreBasicItem.defFingerprint : node.fingerprint
+                        fingerprint = node.fingerprint.IsNullOrEmpty() ? config.coreBasicItem.defFingerprint : node.fingerprint,
+                        serverName = sni,
+                        publicKey = node.publicKey,
+                        shortId = node.shortId,
+                        spiderX = node.spiderX,
                     };
-                    if (!string.IsNullOrWhiteSpace(sni))
-                    {
-                        xtlsSettings.serverName = sni;
-                    }
-                    else if (!string.IsNullOrWhiteSpace(host))
-                    {
-                        xtlsSettings.serverName = Utils.String2List(host)[0];
-                    }
-                    streamSettings.xtlsSettings = xtlsSettings;
+
+                    streamSettings.realitySettings = realitySettings;
                 }
 
                 //streamSettings

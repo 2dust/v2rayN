@@ -389,9 +389,9 @@ namespace v2rayN.Mode
         public QuicSettings quicSettings { get; set; }
 
         /// <summary>
-        /// VLESS xtls
+        /// VLESS only
         /// </summary>
-        public TlsSettings xtlsSettings { get; set; }
+        public RealitySettings realitySettings { get; set; }        
         /// <summary>
         /// grpc
         /// </summary>
@@ -423,6 +423,15 @@ namespace v2rayN.Mode
         /// </summary>
         public string fingerprint { get; set; }
 
+    }
+    public class RealitySettings
+    {
+        public bool show { get; set; } = false;
+        public string fingerprint { get; set; }
+        public string serverName { get; set; }
+        public string publicKey { get; set; }
+        public string shortId { get; set; }
+        public string spiderX { get; set; }
     }
 
     public class TcpSettings
