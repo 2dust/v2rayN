@@ -458,14 +458,7 @@ namespace v2rayN.Handler
 
                     if (node.streamSecurity == Global.StreamSecurityReality)
                     {
-                        if (Utils.IsNullOrEmpty(node.flow))
-                        {
-                            usersItem.flow = Global.flows[1];
-                        }
-                        else
-                        {
-                            usersItem.flow = node.flow;
-                        }
+                        usersItem.flow = node.flow;
 
                         outbound.mux.enabled = false;
                         outbound.mux.concurrency = -1;
@@ -502,7 +495,7 @@ namespace v2rayN.Handler
                     serversItem.flow = string.Empty;
 
                     serversItem.ota = false;
-                    serversItem.level = 1;                                   
+                    serversItem.level = 1;
 
                     outbound.mux.enabled = false;
                     outbound.mux.concurrency = -1;
@@ -569,7 +562,7 @@ namespace v2rayN.Handler
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    RealitySettings realitySettings = new()
+                    TlsSettings realitySettings = new()
                     {
                         fingerprint = node.fingerprint.IsNullOrEmpty() ? config.coreBasicItem.defFingerprint : node.fingerprint,
                         serverName = sni,
@@ -638,13 +631,6 @@ namespace v2rayN.Handler
                         }
                         streamSettings.wsSettings = wsSettings;
 
-                        //TlsSettings tlsSettings = new TlsSettings();
-                        //tlsSettings.allowInsecure = config.allowInsecure();
-                        //if (!string.IsNullOrWhiteSpace(host))
-                        //{
-                        //    tlsSettings.serverName = host;
-                        //}
-                        //streamSettings.tlsSettings = tlsSettings;
                         break;
                     //h2
                     case "h2":
@@ -658,9 +644,6 @@ namespace v2rayN.Handler
 
                         streamSettings.httpSettings = httpSettings;
 
-                        //TlsSettings tlsSettings2 = new TlsSettings();
-                        //tlsSettings2.allowInsecure = config.allowInsecure();
-                        //streamSettings.tlsSettings = tlsSettings2;
                         break;
                     //quic
                     case "quic":
@@ -696,7 +679,6 @@ namespace v2rayN.Handler
                             permit_without_stream = config.grpcItem.permit_without_stream,
                             initial_windows_size = config.grpcItem.initial_windows_size,
                         };
-
                         streamSettings.grpcSettings = grpcSettings;
                         break;
                     default:

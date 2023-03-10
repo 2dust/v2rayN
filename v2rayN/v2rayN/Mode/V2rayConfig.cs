@@ -391,7 +391,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// VLESS only
         /// </summary>
-        public RealitySettings realitySettings { get; set; }        
+        public TlsSettings realitySettings { get; set; }
         /// <summary>
         /// grpc
         /// </summary>
@@ -404,34 +404,24 @@ namespace v2rayN.Mode
         /// <summary>
         /// 是否允许不安全连接（用于客户端）
         /// </summary>
-        public bool allowInsecure { get; set; }
+        public bool? allowInsecure { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string serverName { get; set; }
+        public string? serverName { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public List<string> alpn
-        {
-            get; set;
-        }
+        public List<string>? alpn { get; set; }
 
-        /// <summary>
-        /// "chrome" | "firefox" | "safari" | "randomized"
-        /// </summary>
-        public string fingerprint { get; set; }
+        public string? fingerprint { get; set; }
 
-    }
-    public class RealitySettings
-    {
-        public bool show { get; set; } = false;
-        public string fingerprint { get; set; }
-        public string serverName { get; set; }
-        public string publicKey { get; set; }
-        public string shortId { get; set; }
-        public string spiderX { get; set; }
+        public bool? show { get; set; } = false;
+        public string? publicKey { get; set; }
+        public string? shortId { get; set; }
+        public string? spiderX { get; set; }
+
     }
 
     public class TcpSettings
