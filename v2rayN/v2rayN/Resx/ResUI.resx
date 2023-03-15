@@ -1141,4 +1141,7 @@
   <data name="TbSpiderX" xml:space="preserve">
     <value>SpiderX</value>
   </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Enable hardware acceleration(Require restart)</value>
+  </data>
 </root>

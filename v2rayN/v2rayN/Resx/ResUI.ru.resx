@@ -1108,4 +1108,7 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>Размер шрифта</value>
   </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
+  </data>
 </root>
