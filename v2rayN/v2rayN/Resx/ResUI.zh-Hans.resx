@@ -1132,4 +1132,7 @@
   <data name="menuMoveTo" xml:space="preserve">
     <value>移至上下</value>
   </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>启用硬件加速(需重启)</value>
+  </data>
 </root>

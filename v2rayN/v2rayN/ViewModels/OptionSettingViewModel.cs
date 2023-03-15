@@ -65,6 +65,7 @@ namespace v2rayN.ViewModels
         [Reactive] public string currentFontFamily { get; set; }
         [Reactive] public int SpeedTestTimeout { get; set; }
         [Reactive] public string SpeedTestUrl { get; set; }
+        [Reactive] public bool EnableHWA { get; set; }
 
         #endregion
 
@@ -160,6 +161,7 @@ namespace v2rayN.ViewModels
             currentFontFamily = _config.uiItem.currentFontFamily;
             SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
             SpeedTestUrl = _config.speedTestItem.speedTestUrl;
+            EnableHWA = _config.guiItem.enableHWA;
 
             #endregion
 
@@ -339,6 +341,7 @@ namespace v2rayN.ViewModels
             _config.uiItem.currentFontFamily = currentFontFamily;
             _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
             _config.speedTestItem.speedTestUrl = SpeedTestUrl;
+            _config.guiItem.enableHWA = EnableHWA;
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;
