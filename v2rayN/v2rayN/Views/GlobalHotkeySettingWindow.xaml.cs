@@ -1,47 +1,24 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
-using Forms = System.Windows.Forms;
 
 namespace v2rayN.Views
 {
     public partial class GlobalHotkeySettingWindow
     {
-        private static Config _config;
-        List<KeyEventItem> lstKey;
+        private static Config _config = default!;
+        private Dictionary<object, KeyEventItem> _TextBoxKeyEventItem = default!;
 
         public GlobalHotkeySettingWindow()
         {
             InitializeComponent();
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
-
-            if (_config.globalHotkeys == null)
-            {
-                _config.globalHotkeys = new List<KeyEventItem>();
-            }
-
-            foreach (EGlobalHotkey it in Enum.GetValues(typeof(EGlobalHotkey)))
-            {
-                if (_config.globalHotkeys.FindIndex(t => t.eGlobalHotkey == it) >= 0)
-                {
-                    continue;
-                }
-
-                _config.globalHotkeys.Add(new KeyEventItem()
-                {
-                    eGlobalHotkey = it,
-                    Alt = false,
-                    Control = false,
-                    Shift = false,
-                    KeyCode = null
-                });
-            }
-
-            lstKey = Utils.DeepCopy(_config.globalHotkeys);
+            _config.globalHotkeys ??= new List<KeyEventItem>();
 
             txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_KeyDown;
@@ -49,69 +26,84 @@ namespace v2rayN.Views
             txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_KeyDown;
             txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_KeyDown;
 
-            BindingData(-1);
-
+            HotkeyHandler.Instance.IsPause = true;
+            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
             Utils.SetDarkBorder(this, _config.uiItem.colorModeDark);
+            InitData();
+        }
+
+        private void InitData()
+        {
+            _TextBoxKeyEventItem = new()
+            {
+                { txtGlobalHotkey0,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.ShowForm) },
+                { txtGlobalHotkey1,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyClear) },
+                { txtGlobalHotkey2,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxySet) },
+                { txtGlobalHotkey3,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyUnchanged)},
+                { txtGlobalHotkey4,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyPac)}
+            };
+            BindingData();
         }
 
 
         private void TxtGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
-            if (!_ModifierKeys.Contains(e.Key) && !_ModifierKeys.Contains(e.SystemKey))
-            {
-                var txt = ((TextBox)sender);
-                var index = Utils.ToInt(txt.Name.Substring(txt.Name.Length - 1, 1));
-                var formsKey = (Forms.Keys)KeyInterop.VirtualKeyFromKey(e.Key == Key.System ? e.SystemKey : e.Key);
-
-                lstKey[index].KeyCode = formsKey;
-                lstKey[index].Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
-                lstKey[index].Control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
-                lstKey[index].Shift = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
-
-                BindingData(index);
-            }
+            var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift,
+                Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin};
+            _TextBoxKeyEventItem[sender].KeyCode = e.Key == Key.System ? (_ModifierKeys.Contains(e.SystemKey) ? Key.None : e.SystemKey) : (_ModifierKeys.Contains(e.Key) ? Key.None : e.Key);
+            _TextBoxKeyEventItem[sender].Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
+            _TextBoxKeyEventItem[sender].Control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+            _TextBoxKeyEventItem[sender].Shift = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
+            (sender as TextBox)!.Text = KeyEventItemToString(_TextBoxKeyEventItem[sender]);
         }
 
-        private void BindingData(int index)
+        private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit, EGlobalHotkey eg)
         {
-            for (int k = 0; k < lstKey.Count; k++)
+            return Utils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
             {
-                if (index >= 0 && index != k)
-                {
-                    continue;
-                }
-                var item = lstKey[k];
-                var keys = string.Empty;
+                eGlobalHotkey = eg,
+                Control = false,
+                Alt = false,
+                Shift = false,
+                KeyCode = null
+            });
 
-                if (item.Control)
-                {
-                    keys += $"{Forms.Keys.Control} + ";
-                }
-                if (item.Alt)
-                {
-                    keys += $"{Forms.Keys.Alt} + ";
-                }
-                if (item.Shift)
-                {
-                    keys += $"{Forms.Keys.Shift} + ";
-                }
-                if (item.KeyCode != null)
-                {
-                    keys += $"{item.KeyCode}";
-                }
+        }
+        private string KeyEventItemToString(KeyEventItem item)
+        {
+            var res = new StringBuilder();
 
-                SetText($"txtGlobalHotkey{k}", keys);
+            if (item.Control) res.Append($"{ModifierKeys.Control}+");
+            if (item.Shift) res.Append($"{ModifierKeys.Shift}+");
+            if (item.Alt) res.Append($"{ModifierKeys.Alt}+");
+            if (item.KeyCode != null && item.KeyCode != Key.None)
+                res.Append($"{item.KeyCode}");
+
+            return res.ToString();
+        }
+        private void BindingData()
+        {
+            foreach (var item in _TextBoxKeyEventItem)
+            {
+                if (item.Value.KeyCode != null && item.Value.KeyCode != Key.None)
+                {
+                    (item.Key as TextBox)!.Text = KeyEventItemToString(item.Value);
+                }
+                else
+                {
+                    (item.Key as TextBox)!.Text = string.Empty;
+                }
             }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            _config.globalHotkeys = lstKey;
+            _config.globalHotkeys = _TextBoxKeyEventItem.Values.ToList();
 
             if (ConfigHandler.SaveConfig(ref _config, false) == 0)
             {
+                HotkeyHandler.Instance.ReLoad();
                 this.DialogResult = true;
             }
             else
@@ -127,37 +119,14 @@ namespace v2rayN.Views
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            lstKey.Clear();
-            foreach (EGlobalHotkey it in Enum.GetValues(typeof(EGlobalHotkey)))
+            foreach (var k in _TextBoxKeyEventItem.Keys)
             {
-                if (lstKey.FindIndex(t => t.eGlobalHotkey == it) >= 0)
-                {
-                    continue;
-                }
-
-                lstKey.Add(new KeyEventItem()
-                {
-                    eGlobalHotkey = it,
-                    Alt = false,
-                    Control = false,
-                    Shift = false,
-                    KeyCode = null
-                });
+                _TextBoxKeyEventItem[k].Alt = false;
+                _TextBoxKeyEventItem[k].Control = false;
+                _TextBoxKeyEventItem[k].Shift = false;
+                _TextBoxKeyEventItem[k].KeyCode = Key.None;
             }
-            BindingData(-1);
-        }
-        private void SetText(string name, string txt)
-        {
-            foreach (UIElement element in gridText.Children)
-            {
-                if (element is TextBox box)
-                {
-                    if (box.Name == name)
-                    {
-                        box.Text = txt;
-                    }
-                }
-            }
+            BindingData();
         }
 
         private void GlobalHotkeySettingWindow_KeyDown(object sender, KeyEventArgs e)

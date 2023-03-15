@@ -48,6 +48,7 @@
             FontSize="{DynamicResource StdFontSizeMsg}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
+            IsReadOnlyCaretVisible="True"
             TextAlignment="Left"
             TextWrapping="Wrap"
             VerticalScrollBarVisibility="Visible">

@@ -150,6 +150,7 @@ namespace v2rayN.Views
 
                 this.OneWayBind(ViewModel, vm => vm.Servers, v => v.cmbServers.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedServer, v => v.cmbServers.SelectedItem).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.BlServers, v => v.cmbServers.Visibility).DisposeWith(disposables);
 
                 //tray menu
                 this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard2).DisposeWith(disposables);
@@ -191,7 +192,7 @@ namespace v2rayN.Views
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
-         
+
             if (_config.uiItem.autoHideStartup)
             {
                 WindowState = WindowState.Minimized;

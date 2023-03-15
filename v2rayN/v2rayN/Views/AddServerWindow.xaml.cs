@@ -39,6 +39,7 @@ namespace v2rayN.Views
             Global.fingerprints.ForEach(it =>
             {
                 cmbFingerprint.Items.Add(it);
+                cmbFingerprint2.Items.Add(it);
             });
             Global.allowInsecures.ForEach(it =>
             {
@@ -74,8 +75,8 @@ namespace v2rayN.Views
                     break;
                 case EConfigType.VLESS:
                     gridVLESS.Visibility = Visibility.Visible;
-                    cmbStreamSecurity.Items.Add(Global.StreamSecurityX);
-                    Global.xtlsFlows.ForEach(it =>
+                    cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
+                    Global.flows.ForEach(it =>
                     {
                         cmbFlow5.Items.Add(it);
                     });
@@ -86,8 +87,7 @@ namespace v2rayN.Views
                     break;
                 case EConfigType.Trojan:
                     gridTrojan.Visibility = Visibility.Visible;
-                    cmbStreamSecurity.Items.Add(Global.StreamSecurityX);
-                    Global.xtlsFlows.ForEach(it =>
+                    Global.flows.ForEach(it =>
                     {
                         cmbFlow6.Items.Add(it);
                     });
@@ -138,6 +138,13 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSource.allowInsecure, v => v.cmbAllowInsecure.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.fingerprint, v => v.cmbFingerprint.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.alpn, v => v.cmbAlpn.Text).DisposeWith(disposables);
+                //reality
+                this.Bind(ViewModel, vm => vm.SelectedSource.sni, v => v.txtSNI2.Text).DisposeWith(disposables); 
+                this.Bind(ViewModel, vm => vm.SelectedSource.fingerprint, v => v.cmbFingerprint2.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.publicKey, v => v.txtPublicKey.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.shortId, v => v.txtShortId.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.spiderX, v => v.txtSpiderX.Text).DisposeWith(disposables);
+
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
@@ -159,13 +166,20 @@ namespace v2rayN.Views
         private void CmbStreamSecurity_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var security = cmbStreamSecurity.SelectedItem.ToString();
-            if (Utils.IsNullOrEmpty(security))
+            if (security == Global.StreamSecurityReality)
             {
+                gridRealityMore.Visibility = Visibility.Visible;
                 gridTlsMore.Visibility = Visibility.Hidden;
+            }
+            else if (security == Global.StreamSecurity)
+            {
+                gridRealityMore.Visibility = Visibility.Hidden;
+                gridTlsMore.Visibility = Visibility.Visible;
             }
             else
             {
-                gridTlsMore.Visibility = Visibility.Visible;
+                gridRealityMore.Visibility = Visibility.Hidden;
+                gridTlsMore.Visibility = Visibility.Hidden;
             }
         }
         private void btnGUID_Click(object sender, RoutedEventArgs e)

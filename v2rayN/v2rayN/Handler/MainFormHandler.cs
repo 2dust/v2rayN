@@ -1,9 +1,7 @@
-﻿using NHotkey;
-using NHotkey.Wpf;
+﻿
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -343,48 +341,11 @@ namespace v2rayN.Handler
             }
         }
 
-        public void RegisterGlobalHotkey(Config config, EventHandler<HotkeyEventArgs> handler, Action<bool, string> update)
+        public void RegisterGlobalHotkey(Config config, Action<EGlobalHotkey> handler, Action<bool, string> update)
         {
-            if (config.globalHotkeys == null)
-            {
-                return;
-            }
-
-            foreach (var item in config.globalHotkeys)
-            {
-                if (item.KeyCode == null)
-                {
-                    continue;
-                }
-
-                var modifiers = ModifierKeys.None;
-                if (item.Control)
-                {
-                    modifiers |= ModifierKeys.Control;
-                }
-                if (item.Alt)
-                {
-                    modifiers |= ModifierKeys.Alt;
-                }
-                if (item.Shift)
-                {
-                    modifiers |= ModifierKeys.Shift;
-                }
-
-                var gesture = new KeyGesture(KeyInterop.KeyFromVirtualKey((int)item.KeyCode), modifiers);
-                try
-                {
-                    HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), gesture, handler);
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{item.eGlobalHotkey}");
-                    update(false, msg);
-                }
-                catch (Exception ex)
-                {
-                    var msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{item.eGlobalHotkey}", ex.Message);
-                    update(false, msg);
-                    Utils.SaveLog(msg);
-                }
-            }
+            HotkeyHandler.Instance.UpdateViewEvent += update;
+            HotkeyHandler.Instance.HotkeyTriggerEvent += handler;
+            HotkeyHandler.Instance.Load();
         }
 
     }

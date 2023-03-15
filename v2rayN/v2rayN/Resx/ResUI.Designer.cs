@@ -1384,7 +1384,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please fill in the address (Url) 的本地化字符串。
+        ///   查找类似 Please fill in the Url 的本地化字符串。
         /// </summary>
         public static string MsgNeedUrl {
             get {
@@ -2168,6 +2168,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 PublicKey 的本地化字符串。
+        /// </summary>
+        public static string TbPublicKey {
+            get {
+                return ResourceManager.GetString("TbPublicKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Alias (remarks) 的本地化字符串。
         /// </summary>
         public static string TbRemarks {
@@ -2906,11 +2915,29 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 ShortId 的本地化字符串。
+        /// </summary>
+        public static string TbShortId {
+            get {
+                return ResourceManager.GetString("TbShortId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 SNI 的本地化字符串。
         /// </summary>
         public static string TbSNI {
             get {
                 return ResourceManager.GetString("TbSNI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SpiderX 的本地化字符串。
+        /// </summary>
+        public static string TbSpiderX {
+            get {
+                return ResourceManager.GetString("TbSpiderX", resourceCulture);
             }
         }
         

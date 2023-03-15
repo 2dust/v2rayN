@@ -617,7 +617,7 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="50">
+                            <DataGridTemplateColumn Width="40">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border
@@ -831,6 +831,21 @@
                             Header="{x:Static resx:ResUI.menuExit}" />
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>
+                <tb:TaskbarIcon.TrayToolTip>
+                    <Border
+                        Width="Auto"
+                        Height="Auto"
+                        Background="{DynamicResource MaterialDesignLightBackground}"
+                        BorderBrush="{DynamicResource MaterialDesignDarkBackground}"
+                        BorderThickness="1">
+                        <TextBlock
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesignDarkBackground}"
+                            Text="{Binding Mode=OneWay, Path=ToolTipText}" />
+                    </Border>
+                </tb:TaskbarIcon.TrayToolTip>
             </tb:TaskbarIcon>
             <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>

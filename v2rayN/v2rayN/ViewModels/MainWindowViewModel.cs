@@ -3,7 +3,6 @@ using DynamicData.Binding;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
-using NHotkey;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -70,6 +69,8 @@ namespace v2rayN.ViewModels
         public ComboItem SelectedServer { get; set; }
         [Reactive]
         public string ServerFilter { get; set; }
+        [Reactive]
+        public bool BlServers { get; set; }
         #endregion
 
         #region Menu
@@ -630,27 +631,26 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void OnHotkeyHandler(object sender, HotkeyEventArgs e)
+        private void OnHotkeyHandler(EGlobalHotkey e)
         {
-            switch (Utils.ToInt(e.Name))
+            switch (e)
             {
-                case (int)EGlobalHotkey.ShowForm:
+                case EGlobalHotkey.ShowForm:
                     ShowHideWindow(null);
                     break;
-                case (int)EGlobalHotkey.SystemProxyClear:
+                case EGlobalHotkey.SystemProxyClear:
                     SetListenerType(ESysProxyType.ForcedClear);
                     break;
-                case (int)EGlobalHotkey.SystemProxySet:
+                case EGlobalHotkey.SystemProxySet:
                     SetListenerType(ESysProxyType.ForcedChange);
                     break;
-                case (int)EGlobalHotkey.SystemProxyUnchanged:
+                case EGlobalHotkey.SystemProxyUnchanged:
                     SetListenerType(ESysProxyType.Unchanged);
                     break;
-                case (int)EGlobalHotkey.SystemProxyPac:
+                case EGlobalHotkey.SystemProxyPac:
                     SetListenerType(ESysProxyType.Pac);
                     break;
             }
-            e.Handled = true;
         }
         public void MyAppExit(bool blWindowsShutDown)
         {
@@ -700,7 +700,7 @@ namespace v2rayN.ViewModels
             _subId = SelectedSub?.id;
             _config.subIndexId = _subId;
 
-            RefreshServers();
+            RefreshServers(false);
 
             _updateView("ProfilesFocus");
         }
@@ -715,11 +715,13 @@ namespace v2rayN.ViewModels
             RefreshServers();
         }
 
-        private void RefreshServers()
+        private void RefreshServers(bool blCheckDefault = true)
         {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
-            ConfigHandler.SetDefaultServer(_config, lstModel);
-
+            if (blCheckDefault)
+            {
+                ConfigHandler.SetDefaultServer(_config, lstModel);
+            }
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {
@@ -741,6 +743,7 @@ namespace v2rayN.ViewModels
                             security = t.security,
                             network = t.network,
                             streamSecurity = t.streamSecurity,
+                            subid = t.subid,
                             subRemarks = t.subRemarks,
                             isActive = t.indexId == _config.indexId,
                             sort = t33 == null ? 0 : t33.sort,
@@ -781,6 +784,11 @@ namespace v2rayN.ViewModels
                     RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
                     RunningServerToolTipText = runningSummary;
                 }
+                else
+                {
+                    RunningServerDisplay =
+                    RunningServerToolTipText = ResUI.CheckServerSettings;
+                }
             }));
         }
 
@@ -789,9 +797,11 @@ namespace v2rayN.ViewModels
             _servers.Clear();
             if (_lstProfile.Count > _config.guiItem.trayMenuServersLimit)
             {
+                BlServers = false;
                 return;
             }
 
+            BlServers = true;
             for (int k = 0; k < _lstProfile.Count; k++)
             {
                 ProfileItem it = _lstProfile[k];
@@ -828,21 +838,31 @@ namespace v2rayN.ViewModels
         #endregion
 
         #region Add Servers
-        private int GetProfileItems(out List<ProfileItem> lstSelecteds)
+        private int GetProfileItems(out List<ProfileItem> lstSelecteds, bool latest)
         {
             lstSelecteds = new List<ProfileItem>();
             if (SelectedProfiles == null || SelectedProfiles.Count <= 0)
             {
                 return -1;
             }
-            foreach (var profile in SelectedProfiles)
+
+            var orderProfiles = SelectedProfiles?.OrderBy(t => t.sort);
+            if (latest)
             {
-                var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
-                if (item is not null)
+                foreach (var profile in orderProfiles)
                 {
-                    lstSelecteds.Add(item);
+                    var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
+                    if (item is not null)
+                    {
+                        lstSelecteds.Add(item);
+                    }
                 }
             }
+            else
+            {
+                lstSelecteds = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(orderProfiles));
+            }
+
             return 0;
         }
 
@@ -929,7 +949,7 @@ namespace v2rayN.ViewModels
         }
         public void RemoveServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -960,7 +980,7 @@ namespace v2rayN.ViewModels
         }
         private void CopyServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -1092,7 +1112,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -1143,7 +1163,7 @@ namespace v2rayN.ViewModels
             {
                 SelectedProfiles = _profileItems;
             }
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
                 return;
             }
@@ -1175,7 +1195,7 @@ namespace v2rayN.ViewModels
 
         public void Export2ShareUrl()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
@@ -1200,7 +1220,7 @@ namespace v2rayN.ViewModels
 
         private void Export2SubContent()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }

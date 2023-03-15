@@ -380,7 +380,7 @@
     <value>Count</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Please fill in the address (Url)</value>
+    <value>Please fill in the Url</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
@@ -1132,7 +1132,13 @@
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>
   </data>
-  <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Enable hardware acceleration(Require restart)</value>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
   </data>
 </root>

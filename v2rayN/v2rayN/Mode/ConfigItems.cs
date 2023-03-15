@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-
+﻿using System.Windows.Input;
 namespace v2rayN.Mode
 {
     [Serializable]
@@ -146,7 +145,7 @@ namespace v2rayN.Mode
 
         public bool Shift { get; set; }
 
-        public Keys? KeyCode { get; set; }
+        public Key? KeyCode { get; set; }
 
     }
 

@@ -25,11 +25,18 @@ namespace v2rayN.Base
             return _db.CreateTable<T>();
         }
 
-        public int Add(object model)
+        public int Insert(object model)
         {
             return _db.Insert(model);
         }
-        public async Task<int> AddAsync(object model)
+        public int InsertAll(IEnumerable models)
+        {
+            lock (objLock)
+            {
+                return _db.InsertAll(models);
+            }
+        }
+        public async Task<int> InsertAsync(object model)
         {
             return await _dbAsync.InsertAsync(model);
         }
