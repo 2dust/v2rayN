@@ -700,7 +700,7 @@ namespace v2rayN.ViewModels
             _subId = SelectedSub?.id;
             _config.subIndexId = _subId;
 
-            RefreshServers(false);
+            RefreshServers();
 
             _updateView("ProfilesFocus");
         }
@@ -715,13 +715,12 @@ namespace v2rayN.ViewModels
             RefreshServers();
         }
 
-        private void RefreshServers(bool blCheckDefault = true)
+        private void RefreshServers()
         {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
-            if (blCheckDefault)
-            {
-                ConfigHandler.SetDefaultServer(_config, lstModel);
-            }
+
+            ConfigHandler.SetDefaultServer(_config, lstModel);
+
             List<ServerStatItem> lstServerStat = new();
             if (_statistics != null && _statistics.Enable)
             {

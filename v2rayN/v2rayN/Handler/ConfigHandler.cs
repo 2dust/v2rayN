@@ -972,46 +972,40 @@ namespace v2rayN.Handler
                 }
                 profileItem.subid = subid;
                 profileItem.isSub = isSub;
+                var addStatus = -1;
 
                 if (profileItem.configType == EConfigType.VMess)
                 {
-                    if (AddServer(ref config, profileItem, false) == 0)
-                    {
-                        countServers++;
-                    }
+                    addStatus = AddServer(ref config, profileItem, false);
                 }
                 else if (profileItem.configType == EConfigType.Shadowsocks)
                 {
-                    if (AddShadowsocksServer(ref config, profileItem, false) == 0)
-                    {
-                        countServers++;
-                    }
+                    addStatus = AddShadowsocksServer(ref config, profileItem, false);
                 }
                 else if (profileItem.configType == EConfigType.Socks)
                 {
-                    if (AddSocksServer(ref config, profileItem, false) == 0)
-                    {
-                        countServers++;
-                    }
+                    addStatus = AddSocksServer(ref config, profileItem, false);
                 }
                 else if (profileItem.configType == EConfigType.Trojan)
                 {
-                    if (AddTrojanServer(ref config, profileItem, false) == 0)
-                    {
-                        countServers++;
-                    }
+                    addStatus = AddTrojanServer(ref config, profileItem, false);
                 }
                 else if (profileItem.configType == EConfigType.VLESS)
                 {
-                    if (AddVlessServer(ref config, profileItem, false) == 0)
-                    {
-                        countServers++;
-                    }
+                    addStatus = AddVlessServer(ref config, profileItem, false);
                 }
-                lstAdd.Add(profileItem);
+
+                if (addStatus == 0)
+                {
+                    countServers++;
+                    lstAdd.Add(profileItem);
+                }
             }
 
-            SqliteHelper.Instance.InsertAll(lstAdd);
+            if (lstAdd.Count > 0)
+            {
+                SqliteHelper.Instance.InsertAll(lstAdd);
+            }
 
             ToJsonFile(config);
             return countServers;
