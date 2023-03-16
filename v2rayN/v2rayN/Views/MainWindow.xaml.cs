@@ -197,6 +197,11 @@ namespace v2rayN.Views
             {
                 WindowState = WindowState.Minimized;
             }
+            
+            if (!_config.guiItem.enableHWA)
+            {
+                RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+            }
         }
 
         #region Event 

@@ -2510,6 +2510,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable hardware acceleration(Require restart) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableHWA {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableHWA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Exception 的本地化字符串。
         /// </summary>
         public static string TbSettingsException {

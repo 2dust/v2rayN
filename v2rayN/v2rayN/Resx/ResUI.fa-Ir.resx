@@ -1066,4 +1066,7 @@
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
     <value>This parameter is valid only for tcp/http and ws</value>
   </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
+  </data>
 </root>
