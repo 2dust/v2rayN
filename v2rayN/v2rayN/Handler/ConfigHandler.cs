@@ -956,7 +956,7 @@ namespace v2rayN.Handler
                 //exist sub items
                 if (isSub && !Utils.IsNullOrEmpty(subid))
                 {
-                    var existItem = lstOriSub?.FirstOrDefault(t => CompareProfileItem(t, profileItem, true));
+                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub && CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
                         profileItem.indexId = existItem.indexId;
