@@ -58,11 +58,11 @@ namespace v2rayN.Handler
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         break;
                     case ESpeedActionType.Speedtest:
-                        UpdateFunc(it.indexId, "", ResUI.Speedtesting);
+                        UpdateFunc(it.indexId, "", ResUI.SpeedtestingWait);
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
                     case ESpeedActionType.Mixedtest:
-                        UpdateFunc(it.indexId, ResUI.Speedtesting, ResUI.Speedtesting);
+                        UpdateFunc(it.indexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
@@ -236,6 +236,7 @@ namespace v2rayN.Handler
                 //    continue;
                 //}
                 ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
+                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
@@ -287,6 +288,7 @@ namespace v2rayN.Handler
                     continue;
                 }
                 ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
+                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
                 var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;

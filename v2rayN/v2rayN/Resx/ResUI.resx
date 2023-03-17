@@ -1144,4 +1144,7 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Enable hardware acceleration(Require restart)</value>
   </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Waiting for testing</value>
+  </data>
 </root>

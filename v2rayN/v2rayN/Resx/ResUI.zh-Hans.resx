@@ -1144,4 +1144,7 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>启用硬件加速(需重启)</value>
   </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>等待测试中...</value>
+  </data>
 </root>

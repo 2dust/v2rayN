@@ -1789,6 +1789,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Waiting for testing 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingWait {
+            get {
+                return ResourceManager.GetString("SpeedtestingWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 PAC failed to start. Please run this program as Administrator. 的本地化字符串。
         /// </summary>
         public static string StartPacFailed {

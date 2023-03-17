@@ -115,7 +115,7 @@ namespace v2rayN.Base
                     }
                 }
             };
-            progress.Report("......");
+            //progress.Report("......");
 
             using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
 
