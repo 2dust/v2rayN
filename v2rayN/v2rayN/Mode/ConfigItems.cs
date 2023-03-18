@@ -104,7 +104,7 @@ namespace v2rayN.Mode
 
         public int trayMenuServersLimit { get; set; } = 20;
         
-        public bool enableHWA { get; set; } = true;
+        public bool enableHWA { get; set; } = false;
     }
 
     [Serializable]
