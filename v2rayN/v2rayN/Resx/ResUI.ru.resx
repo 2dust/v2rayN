@@ -1111,4 +1111,7 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
+  <data name="TbConfigContent" xml:space="preserve">
+    <value>Настроить содержимое</value>
+  </data>
 </root>

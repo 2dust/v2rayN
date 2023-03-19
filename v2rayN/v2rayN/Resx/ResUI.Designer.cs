@@ -1952,6 +1952,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Configuration Content 的本地化字符串。
+        /// </summary>
+        public static string TbConfigContent {
+            get {
+                return ResourceManager.GetString("TbConfigContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Confirm 的本地化字符串。
         /// </summary>
         public static string TbConfirm {

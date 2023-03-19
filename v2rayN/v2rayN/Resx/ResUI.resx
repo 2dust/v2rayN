@@ -1147,4 +1147,7 @@
   <data name="SpeedtestingWait" xml:space="preserve">
     <value>Waiting for testing</value>
   </data>
+  <data name="TbConfigContent" xml:space="preserve">
+    <value>Configuration Content</value>
+  </data>
 </root>

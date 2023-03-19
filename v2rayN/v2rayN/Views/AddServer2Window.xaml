@@ -13,7 +13,7 @@
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="v2rayN"
     Width="700"
-    Height="500"
+    Height="600"
     x:TypeArguments="vms:AddServer2ViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
@@ -36,6 +36,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -104,12 +105,12 @@
                         Margin="2,0,8,0"
                         Content="{x:Static resx:ResUI.TbBrowse}"
                         Style="{StaticResource DefButton}" />
-                    <Button
+                    <!--<Button
                         x:Name="btnEdit"
                         Width="100"
                         Margin="2,2,8,0"
                         Content="{x:Static resx:ResUI.TbEdit}"
-                        Style="{StaticResource DefButton}" />
+                        Style="{StaticResource DefButton}" />-->
                 </StackPanel>
 
                 <TextBlock
@@ -118,10 +119,29 @@
                     Margin="4"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbConfigContent}" />
+                <TextBox
+                    x:Name="txtContent"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="400"
+                    MaxHeight="200"
+                    Margin="4"
+                    VerticalAlignment="Top"
+                    AcceptsReturn="True"
+                    VerticalScrollBarVisibility="Auto"
+                    Style="{StaticResource MyOutlinedTextBox}" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbCoreType}" />
                 <ComboBox
                     x:Name="cmbCoreType"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="1"
                     Width="200"
                     Margin="4"
@@ -131,7 +151,7 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}" />
 
                 <TextBlock
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="0"
                     Margin="4"
                     VerticalAlignment="Center"
@@ -139,13 +159,13 @@
                     Text="{x:Static resx:ResUI.TbDisplayLog}" />
                 <ToggleButton
                     x:Name="togDisplayLog"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="1"
                     Margin="4"
                     HorizontalAlignment="Left" />
 
                 <TextBlock
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="4"
                     VerticalAlignment="Center"
@@ -153,7 +173,7 @@
                     Text="{x:Static resx:ResUI.TbPreSocksPort}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Width="200"
                     Margin="4"
@@ -161,7 +181,7 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <StackPanel
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="1"
                     Grid.ColumnSpan="2">
                     <TextBlock

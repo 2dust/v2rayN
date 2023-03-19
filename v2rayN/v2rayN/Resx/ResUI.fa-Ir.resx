@@ -1069,4 +1069,7 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
+  <data name="TbConfigContent" xml:space="preserve">
+    <value>تكوين المحتوى</value>
+  </data>
 </root>

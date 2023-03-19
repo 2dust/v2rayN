@@ -180,5 +180,10 @@ namespace v2rayN.Mode
         public string publicKey { get; set; }
         public string shortId { get; set; }
         public string spiderX { get; set; }
+
+        /// <summary>
+        /// 自定义配置的配置文件内容
+        /// </summary>
+        public string configContent { get; set; }
     }
 }

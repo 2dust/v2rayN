@@ -40,6 +40,7 @@ namespace v2rayN.ViewModels
             else
             {
                 SelectedSource = Utils.DeepCopy(profileItem);
+                SelectedSource.configContent = GetContent(SelectedSource.address);
             }
 
             _view = view;
@@ -86,12 +87,13 @@ namespace v2rayN.ViewModels
             {
                 item.remarks = SelectedSource.remarks;
                 item.address = SelectedSource.address;
+                item.configContent = SelectedSource.configContent;
                 item.coreType = SelectedSource.coreType;
                 item.displayLog = SelectedSource.displayLog;
                 item.preSocksPort = SelectedSource.preSocksPort;
             }
 
-            if (ConfigHandler.EditCustomServer(ref _config, item) == 0)
+            if (ConfigHandler.EditCustomServer(ref _config, item) == 0 && SaveContent(item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _view.DialogResult = true;
@@ -129,6 +131,7 @@ namespace v2rayN.ViewModels
                 if (!Utils.IsNullOrEmpty(item.indexId))
                 {
                     SelectedSource = Utils.DeepCopy(item);
+                    SelectedSource.configContent = GetContent(item.address);
                 }
                 IsModified = true;
             }
@@ -155,6 +158,36 @@ namespace v2rayN.ViewModels
             else
             {
                 _noticeHandler?.Enqueue(ResUI.FailedReadConfiguration);
+            }
+        }
+
+        private string GetContent(string configFileName)
+        {
+            var content = "";
+            try
+            {
+                var configPath = Utils.GetConfigPath(configFileName);
+                content = File.ReadAllText(configPath);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("GetContent", ex);
+            }
+            return content;
+        }
+
+        private int SaveContent(ProfileItem profileItem)
+        {
+            try
+            {
+                var configPath = Utils.GetConfigPath(profileItem.address);
+                File.WriteAllText(configPath, profileItem.configContent);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog("SaveContent", ex);
+                return -1;
             }
         }
     }
