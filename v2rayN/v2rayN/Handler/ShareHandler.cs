@@ -197,6 +197,18 @@ namespace v2rayN.Handler
             {
                 dicQuery.Add("fp", Utils.UrlEncode(item.fingerprint));
             }
+            if (!Utils.IsNullOrEmpty(item.publicKey))
+            {
+                dicQuery.Add("pbk", Utils.UrlEncode(item.publicKey));
+            }
+            if (!Utils.IsNullOrEmpty(item.shortId))
+            {
+                dicQuery.Add("sid", Utils.UrlEncode(item.shortId));
+            }
+            if (!Utils.IsNullOrEmpty(item.spiderX))
+            {
+                dicQuery.Add("spx", Utils.UrlEncode(item.spiderX));
+            }
 
             dicQuery.Add("type", !Utils.IsNullOrEmpty(item.network) ? item.network : "tcp");
 
@@ -756,6 +768,10 @@ namespace v2rayN.Handler
             item.sni = query["sni"] ?? "";
             item.alpn = Utils.UrlDecode(query["alpn"] ?? "");
             item.fingerprint = Utils.UrlDecode(query["fp"] ?? "");
+            item.publicKey = Utils.UrlDecode(query["pbk"] ?? "");
+            item.shortId = Utils.UrlDecode(query["sid"] ?? "");
+            item.spiderX = Utils.UrlDecode(query["spx"] ?? "");
+
             item.network = query["type"] ?? "tcp";
             switch (item.network)
             {
