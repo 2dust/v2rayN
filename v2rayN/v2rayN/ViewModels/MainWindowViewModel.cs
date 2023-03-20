@@ -14,6 +14,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Threading;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -39,7 +40,7 @@ namespace v2rayN.ViewModels
         private readonly PaletteHelper _paletteHelper = new();
         private Dictionary<string, bool> _dicHeaderSort = new();
         private Action<string> _updateView;
-
+        private DispatcherTimer _clickTimer;
         #endregion
 
         #region ObservableCollection
@@ -141,6 +142,7 @@ namespace v2rayN.ViewModels
         public bool BlReloadEnabled { get; set; }
 
         public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
+        public ReactiveCommand<Unit, Unit> NotifyDoubleClickCmd { get; }
         [Reactive]
         public Icon NotifyIcon { get; set; }
         [Reactive]
@@ -479,7 +481,12 @@ namespace v2rayN.ViewModels
 
             NotifyLeftClickCmd = ReactiveCommand.Create(() =>
             {
-                ShowHideWindow(null);
+                SwitchProxyEnable();
+            });
+
+            NotifyDoubleClickCmd = ReactiveCommand.Create(() => 
+            { 
+                ShowHideWindow(null); 
             });
 
             //System proxy
@@ -1435,6 +1442,23 @@ namespace v2rayN.ViewModels
 
         #region System proxy and Routings
 
+        public void SwitchProxyEnable()
+        {
+            _clickTimer?.Stop();
+            _clickTimer = new DispatcherTimer(new TimeSpan(0, 0, 0,0,300), DispatcherPriority.Normal, delegate
+            {
+                if (_config.sysProxyType == ESysProxyType.ForcedClear)
+                {
+                    SetListenerType(ESysProxyType.ForcedChange);
+                }
+                else
+                {
+                    SetListenerType(ESysProxyType.ForcedClear);
+                }
+                _clickTimer.Stop();
+            }, Application.Current.Dispatcher);
+        }
+
         public void SetListenerType(ESysProxyType type)
         {
             if (_config.sysProxyType == type)
@@ -1560,6 +1584,7 @@ namespace v2rayN.ViewModels
 
         public void ShowHideWindow(bool? blShow)
         {
+            _clickTimer?.Stop();
             var bl = blShow ?? !Global.ShowInTaskbar;
             if (bl)
             {
