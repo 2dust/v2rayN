@@ -42,10 +42,11 @@ namespace v2rayN
             Global.processJob = new Job();
 
             Logging.Setup();
+            Init();
+            Logging.LoggingEnabled(_config.guiItem.enableLog);
             Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.ClearLogs();
 
-            Init();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
 

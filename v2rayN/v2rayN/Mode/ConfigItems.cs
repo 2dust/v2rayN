@@ -103,8 +103,10 @@ namespace v2rayN.Mode
         public bool enableSecurityProtocolTls13 { get; set; }
 
         public int trayMenuServersLimit { get; set; } = 20;
-        
+
         public bool enableHWA { get; set; } = false;
+
+        public bool enableLog { get; set; } = true;
     }
 
     [Serializable]
