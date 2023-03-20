@@ -392,6 +392,7 @@ namespace v2rayN.Mode
         /// VLESS only
         /// </summary>
         public TlsSettings realitySettings { get; set; }
+        public TlsSettings xtlsSettings { get; set; }
         /// <summary>
         /// grpc
         /// </summary>

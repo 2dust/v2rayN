@@ -473,7 +473,16 @@ namespace v2rayN.Handler
                             outbound.mux.concurrency = -1;
                         }
                     }
+                    else if (node.streamSecurity == Global.StreamSecurityXtls)
+                    {
+                        if (!Utils.IsNullOrEmpty(node.flow))
+                        {
+                            usersItem.flow = node.flow;
 
+                            outbound.mux.enabled = false;
+                            outbound.mux.concurrency = -1;
+                        }
+                    }
                     outbound.protocol = Global.vlessProtocolLite;
                     outbound.settings.servers = null;
                 }
@@ -572,6 +581,23 @@ namespace v2rayN.Handler
                     };
 
                     streamSettings.realitySettings = realitySettings;
+                }
+
+                //if Xtls
+                if (node.streamSecurity == Global.StreamSecurityXtls)
+                {
+                    streamSettings.security = node.streamSecurity;
+
+                    TlsSettings xtlsSettings = new()
+                    {
+                        fingerprint = node.fingerprint.IsNullOrEmpty() ? config.coreBasicItem.defFingerprint : node.fingerprint,
+                        serverName = sni,
+                        publicKey = node.publicKey,
+                        shortId = node.shortId,
+                        spiderX = node.spiderX,
+                    };
+
+                    streamSettings.xtlsSettings = xtlsSettings;
                 }
 
                 //streamSettings
@@ -1193,6 +1219,12 @@ namespace v2rayN.Handler
                 {
                     profileItem.streamSecurity = Global.StreamSecurity;
                 }
+
+                //xtls
+                if (outbound?.streamSettings?.security == Global.StreamSecurityXtls)
+                {
+                    profileItem.streamSecurity = Global.StreamSecurityXtls;
+                }
             }
             catch (Exception ex)
             {
@@ -1319,6 +1351,11 @@ namespace v2rayN.Handler
                 if (inbound.streamSettings?.security == Global.StreamSecurity)
                 {
                     profileItem.streamSecurity = Global.StreamSecurity;
+                }
+                //xtls
+                if (inbound.streamSettings?.security == Global.StreamSecurityXtls)
+                {
+                    profileItem.streamSecurity = Global.StreamSecurityXtls;
                 }
             }
             catch (Exception ex)

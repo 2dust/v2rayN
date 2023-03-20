@@ -76,6 +76,7 @@ namespace v2rayN.Views
                 case EConfigType.VLESS:
                     gridVLESS.Visibility = Visibility.Visible;
                     cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
+                    cmbStreamSecurity.Items.Add(Global.StreamSecurityXtls);
                     Global.flows.ForEach(it =>
                     {
                         cmbFlow5.Items.Add(it);
@@ -172,6 +173,10 @@ namespace v2rayN.Views
                 gridTlsMore.Visibility = Visibility.Hidden;
             }
             else if (security == Global.StreamSecurity)
+            {
+                gridRealityMore.Visibility = Visibility.Hidden;
+                gridTlsMore.Visibility = Visibility.Visible;
+            } else if (security == Global.StreamSecurityXtls)
             {
                 gridRealityMore.Visibility = Visibility.Hidden;
                 gridTlsMore.Visibility = Visibility.Visible;
