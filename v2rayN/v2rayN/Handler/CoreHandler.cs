@@ -156,6 +156,7 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(fileName))
             {
                 string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                Utils.SaveLog(msg);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -213,6 +214,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
+                Utils.SaveLog(Utils.ToJson(node));
                 Utils.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 ShowMsg(true, msg);
