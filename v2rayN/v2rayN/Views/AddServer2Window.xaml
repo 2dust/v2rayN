@@ -176,7 +176,7 @@
 
             <Grid
                 Grid.Row="1"
-                Margin="16"
+                Margin="8"
                 HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" />

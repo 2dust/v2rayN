@@ -114,7 +114,7 @@
         </ToolBarTray>
 
         <Grid
-            Margin="16"
+            Margin="8"
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>

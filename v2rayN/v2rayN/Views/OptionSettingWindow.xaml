@@ -23,7 +23,7 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Margin="16">
+    <DockPanel Margin="8">
         <Grid HorizontalAlignment="Center" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
@@ -753,14 +753,14 @@
                             Width="300"
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource DefComboBox}" />
-                        
+
                         <TextBlock
                             Grid.Row="18"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableHWA}"/>
+                            Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
                         <ToggleButton
                             x:Name="togEnableHWA"
                             Grid.Row="18"

@@ -15,8 +15,8 @@
     Title="v2rayN"
     Width="900"
     Height="700"
-    MinWidth="800"
-    MinHeight="600"
+    MinWidth="900"
+    MinHeight="700"
     x:TypeArguments="vms:MainWindowViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
@@ -837,9 +837,10 @@
                         Height="Auto"
                         Background="{DynamicResource MaterialDesignLightBackground}"
                         BorderBrush="{DynamicResource MaterialDesignDarkBackground}"
-                        BorderThickness="1">
+                        BorderThickness="0"
+                        CornerRadius="4">
                         <TextBlock
-                            Margin="2"
+                            Margin="8"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Foreground="{DynamicResource MaterialDesignDarkBackground}"
