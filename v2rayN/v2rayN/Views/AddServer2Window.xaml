@@ -137,12 +137,19 @@
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbDisplayLog}" />
-                <ToggleButton
-                    x:Name="togDisplayLog"
+                <StackPanel
                     Grid.Row="4"
                     Grid.Column="1"
                     Margin="4"
-                    HorizontalAlignment="Left" />
+                    Orientation="Horizontal">
+                    <ToggleButton x:Name="togDisplayLog" HorizontalAlignment="Left" />
+                    <TextBlock
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TipDisplayLog}" />
+                </StackPanel>
+
 
                 <TextBlock
                     Grid.Row="5"

@@ -1147,4 +1147,7 @@
   <data name="SpeedtestingWait" xml:space="preserve">
     <value>Waiting for testing</value>
   </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Please turn off when there is an abnormal disconnection</value>
+  </data>
 </root>

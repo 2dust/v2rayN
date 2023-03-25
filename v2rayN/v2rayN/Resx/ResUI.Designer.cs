@@ -2996,6 +2996,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please turn off when there is an abnormal disconnection 的本地化字符串。
+        /// </summary>
+        public static string TipDisplayLog {
+            get {
+                return ResourceManager.GetString("TipDisplayLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 *Default value tcp 的本地化字符串。
         /// </summary>
         public static string TipNetwork {
