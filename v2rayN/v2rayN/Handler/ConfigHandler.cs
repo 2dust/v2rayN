@@ -800,16 +800,15 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int DedupServerList(ref Config config, ref List<ProfileItem> lstProfile)
+        public static Tuple<int, int> DedupServerList(Config config, string subId)
         {
-            List<ProfileItem> source = lstProfile;
-            bool keepOlder = config.guiItem.keepOlderDedupl;
+            var lstProfile = LazyConfig.Instance.ProfileItems(subId);
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
-            if (!keepOlder) source.Reverse(); // Remove the early items first
+            if (config.guiItem.keepOlderDedupl) lstProfile.Reverse();
 
-            foreach (ProfileItem item in source)
+            foreach (ProfileItem item in lstProfile)
             {
                 if (!lstKeep.Exists(i => CompareProfileItem(i, item, false)))
                 {
@@ -822,7 +821,7 @@ namespace v2rayN.Handler
             }
             RemoveServer(config, lstRemove);
 
-            return lstKeep.Count;
+            return new Tuple<int, int>(lstProfile.Count, lstKeep.Count);
         }
 
         public static int AddServerCommon(ref Config config, ProfileItem profileItem, bool toFile = true)

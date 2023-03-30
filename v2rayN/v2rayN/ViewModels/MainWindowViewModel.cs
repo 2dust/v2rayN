@@ -971,11 +971,10 @@ namespace v2rayN.ViewModels
 
         private void RemoveDuplicateServer()
         {
-            int oldCount = _lstProfile.Count;
-            int newCount = ConfigHandler.DedupServerList(ref _config, ref _lstProfile);
+            var tuple = ConfigHandler.DedupServerList(_config, _subId);
             RefreshServers();
             Reload();
-            _noticeHandler?.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, oldCount, newCount));
+            _noticeHandler?.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
         }
         private void CopyServer()
         {
