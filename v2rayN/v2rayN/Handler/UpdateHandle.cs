@@ -175,22 +175,18 @@ namespace v2rayN.Handler
 
                 foreach (var item in subItem)
                 {
-                    if (item.enabled == false)
-                    {
-                        continue;
-                    }
-                    if (!Utils.IsNullOrEmpty(subId) && item.id != subId)
-                    {
-                        continue;
-                    }
-
                     string id = item.id.TrimEx();
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
                     string hashCode = $"{item.remarks}->";
-                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url))
+                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (!Utils.IsNullOrEmpty(subId) && item.id != subId))
                     {
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
+                        continue;
+                    }
+                    if (item.enabled == false)
+                    {
+                        _updateFunc(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
                         continue;
                     }
 

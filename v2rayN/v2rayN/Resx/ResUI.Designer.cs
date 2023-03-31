@@ -1447,6 +1447,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Updates are not enabled, skip this subscription 的本地化字符串。
+        /// </summary>
+        public static string MsgSkipSubscriptionUpdate {
+            get {
+                return ResourceManager.GetString("MsgSkipSubscriptionUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Start getting subscriptions 的本地化字符串。
         /// </summary>
         public static string MsgStartGettingSubscriptions {

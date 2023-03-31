@@ -1150,4 +1150,7 @@
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
   </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>未启用更新，跳过此订阅</value>
+  </data>
 </root>

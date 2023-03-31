@@ -1150,4 +1150,7 @@
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
   </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Updates are not enabled, skip this subscription</value>
+  </data>
 </root>
