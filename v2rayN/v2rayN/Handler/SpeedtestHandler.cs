@@ -137,7 +137,8 @@ namespace v2rayN.Handler
                 UpdateFunc(it.indexId, output);
             });
         }
-
+        
+        private readonly object _lock = new object();
         private Task RunRealPing()
         {
             int pid = -1;
@@ -174,13 +175,20 @@ namespace v2rayN.Handler
                             string output = GetRealPingTime(downloadHandle, webProxy);
 
                             ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                            UpdateFunc(it.indexId, output);
-                            int.TryParse(output, out int delay);
-                            it.delay = delay;
+                            // add a lock to synchronize access to _selecteds list
+                            lock (_lock){ 
+                              UpdateFunc(it.indexId, output);
+                              int.TryParse(output, out int delay);
+                              it.delay = delay;
+                            }
                         }
                         catch (Exception ex)
                         {
                             Utils.SaveLog(ex.Message, ex);
+                            // remove the failed item from the list
+                            lock (_lock){
+                              _selecteds.Remove(it);
+                            }
                         }
                     }));
                     //Thread.Sleep(100);
@@ -219,17 +227,22 @@ namespace v2rayN.Handler
             var timeout = _config.speedTestItem.speedTestTimeout;
 
             DownloadHandle downloadHandle = new();
+            
+            // add a lock to synchronize access to _selecteds list
+            lock (_lock){
+               _selecteds = _selecteds.Where(it => it.allowTest && it.configType != EConfigType.Custom).ToList();
+            }
 
             foreach (var it in _selecteds)
             {
-                if (!it.allowTest)
-                {
-                    continue;
-                }
-                if (it.configType == EConfigType.Custom)
-                {
-                    continue;
-                }
+                // if (!it.allowTest)
+                // {
+                //     continue;
+                // }
+                // if (it.configType == EConfigType.Custom)
+                // {
+                //     continue;
+                // }
                 //if (it.delay < 0)
                 //{
                 //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
@@ -243,15 +256,21 @@ namespace v2rayN.Handler
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
 
-                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
-                {
+                try{
+                    var msg = await downloadHandle.DownloadDataAsync(url, webProxy, timeout);
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
                     }
                     UpdateFunc(it.indexId, "", msg);
-                });
+                }
+                catch (Exception ex){
+                   Utils.SaveLog(ex.Message, ex);
+                   lock (_lock){
+                     _selecteds.RemoveAll(s => s.indexId == it.indexId);
+                   }
+                }
             }
 
             if (pid > 0)
@@ -276,7 +295,9 @@ namespace v2rayN.Handler
             var timeout = _config.speedTestItem.speedTestTimeout;
 
             DownloadHandle downloadHandle = new();
-
+            
+            // add a lock to synchronize access to _selecteds list
+            var _lock = new object();
             foreach (var it in _selecteds)
             {
                 if (!it.allowTest)
@@ -294,16 +315,23 @@ namespace v2rayN.Handler
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
-                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
-                {
-                    decimal.TryParse(msg, out decimal dec);
-                    if (dec > 0)
-                    {
-                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
-                    }
-                    UpdateFunc(it.indexId, "", msg);
-                });
-                Thread.Sleep(2000);
+                try{
+                  await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>{
+                   decimal.TryParse(msg, out decimal dec);
+                   if (dec > 0)
+                   {
+                      ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
+                   }
+                   UpdateFunc(it.indexId, "", msg);
+                  });
+                }
+                catch (Exception ex){
+                  // remove the failed item from the list
+                  lock (_lock){
+                    _selecteds.Remove(it);
+                  }
+                  UpdateFunc(it.indexId, "", ResUI.SpeedtestingFailed + ": " + ex.Message);
+                }
             }
 
             Thread.Sleep((timeout + 2) * 1000);
