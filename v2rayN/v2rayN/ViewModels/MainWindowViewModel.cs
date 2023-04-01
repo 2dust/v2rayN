@@ -1714,8 +1714,11 @@ namespace v2rayN.ViewModels
 
        public void ModifyTheme(out bool isDarkTheme)
        {
-         var currentTheme = SystemParameters.HighContrast ? Theme.Dark : Theme.Light;
-         isDarkTheme = currentTheme == Theme.Dark;
+         var currentTheme = Application.Current.Resources.MergedDictionaries
+                                        .OfType<Theme>()
+                                        .FirstOrDefault()?
+                                        .BaseColorScheme == ThemeManager.BaseColorScheme.Dark;
+         isDarkTheme = currentTheme.HasValue && currentTheme.Value;
 
          var window = Application.Current.MainWindow;
          var windowChrome = WindowChrome.GetWindowChrome(window);
