@@ -1712,20 +1712,28 @@ namespace v2rayN.ViewModels
             }
         }
 
+       public void ModifyTheme(out bool isDarkTheme)
+       {
+         var currentTheme = SystemParameters.HighContrast ? Theme.Dark : Theme.Light;
+         isDarkTheme = currentTheme == Theme.Dark;
+
+         var window = Application.Current.MainWindow;
+         var windowChrome = WindowChrome.GetWindowChrome(window);
+
+         ThemeManager.Current.ChangeTheme(window, new Theme(isDarkTheme ? Theme.Dark : Theme.Light));
+         windowChrome.CaptionHeight = isDarkTheme ? 0 : 32;
+         windowChrome.CornerRadius = new CornerRadius(isDarkTheme ? 0 : 8);
+
+         var theme = _paletteHelper.GetTheme();
+         theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
+         _paletteHelper.SetTheme(theme);
+
+         Utils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+        }
+
         public void ModifyTheme(bool isDarkTheme)
         {
             var theme = _paletteHelper.GetTheme();
-            //add follow systemTheme
-            var systemTheme = Windows.UI.Xaml.Application.Current.RequestedTheme;
-            if (systemTheme == ApplicationTheme.Dark)
-            {
-              isDarkTheme = true;
-            }
-            else if (systemTheme == ApplicationTheme.Light)
-            {
-              isDarkTheme = false;
-            }
-
             theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
             _paletteHelper.SetTheme(theme);
 
