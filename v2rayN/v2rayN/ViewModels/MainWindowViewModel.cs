@@ -1716,11 +1716,18 @@ namespace v2rayN.ViewModels
         {
             var theme = _paletteHelper.GetTheme();
             //add follow systemTheme
-            var systemTheme = App.Current.RequestedTheme;
-            if (systemTheme == AppTheme.Dark){
+            var systemTheme = OSAppTheme.Light;
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile"){
+              systemTheme = Application.Current.RequestedTheme;
+            }
+            else{
+              systemTheme = Windows.UI.Xaml.Application.Current.RequestedTheme;
+            }
+
+            if (systemTheme == OSAppTheme.Dark){
               isDarkTheme = true;
             }
-            else if (systemTheme == AppTheme.Light){
+            else if (systemTheme == OSAppTheme.Light){
               isDarkTheme = false;
             }
 
