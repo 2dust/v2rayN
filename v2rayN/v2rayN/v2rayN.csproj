@@ -10,11 +10,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.19</FileVersion>
+		<FileVersion>6.20</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Downloader" Version="3.0.3" />		
+		<PackageReference Include="Downloader" Version="3.0.4" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />		 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
