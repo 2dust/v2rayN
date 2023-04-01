@@ -3,6 +3,7 @@ using DynamicData.Binding;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
+using MahApps.Metro;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
