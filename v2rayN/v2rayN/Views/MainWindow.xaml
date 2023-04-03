@@ -616,13 +616,15 @@
                                 <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
                             </Style>
                             
-                            <Style TargetType="DataGridCell">
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding isActive}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}"/>
+                                        <Setter Property="Foreground" Value="Black"></Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
+                            
                         </DataGrid.Resources>
                         <DataGrid.Columns>
 
