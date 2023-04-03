@@ -563,8 +563,8 @@ namespace v2rayN.ViewModels
                     {
                         return;
                     }
-                    SpeedProxyDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format("{0}:{1}/s¡ü | {2}/s¡ý", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+                    SpeedProxyDisplay = string.Format("{0}:{1}/sï¿½ï¿½ | {2}/sï¿½ï¿½", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format("{0}:{1}/sï¿½ï¿½ | {2}/sï¿½ï¿½", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {
@@ -1068,10 +1068,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (!_dicHeaderSort.ContainsKey(colName))
-            {
-                _dicHeaderSort.Add(colName, true);
-            }
+            _dicHeaderSort.TryAdd(colName, true);
             _dicHeaderSort.TryGetValue(colName, out bool asc);
             if (ConfigHandler.SortServers(ref _config, _subId, colName, asc) != 0)
             {
