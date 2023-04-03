@@ -618,7 +618,7 @@
                             
                             <Style TargetType="DataGridCell">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="isActive" Value="True">
+                                    <DataTrigger Binding="{Binding isActive}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
