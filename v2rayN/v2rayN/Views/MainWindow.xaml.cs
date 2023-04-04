@@ -15,7 +15,6 @@ using v2rayN.Mode;
 using v2rayN.Resx;
 using v2rayN.ViewModels;
 using Point = System.Windows.Point;
-using SystemInformation = System.Windows.Forms.SystemInformation;
 
 namespace v2rayN.Views
 {
@@ -203,7 +202,7 @@ namespace v2rayN.Views
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
-        }    
+        }
 
         #region Event 
 
@@ -253,7 +252,7 @@ namespace v2rayN.Views
             //    lstProfiles.Focus();
             //}
 
-            e.Row.Header = e.Row.GetIndex() + 1;      
+            e.Row.Header = e.Row.GetIndex() + 1;
         }
 
         private void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -275,7 +274,7 @@ namespace v2rayN.Views
             {
                 return;
             }
-           
+
             var colName = ((MyDGTextColumn)colHeader.Column).ExName;
             ViewModel?.SortServer(colName);
         }
@@ -422,14 +421,11 @@ namespace v2rayN.Views
 
             IntPtr hWnd = new WindowInteropHelper(this).EnsureHandle();
             Graphics g = Graphics.FromHwnd(hWnd);
-            if (Width > SystemInformation.WorkingArea.Width * 96 / g.DpiX)
-            {
-                Width = SystemInformation.WorkingArea.Width * 96 / g.DpiX;
-            }
-            if (Height > SystemInformation.WorkingArea.Height * 96 / g.DpiY)
-            {
-                Height = SystemInformation.WorkingArea.Height * 96 / g.DpiY;
-            }
+            var dip = 96;
+            var maxWidth = SystemParameters.WorkArea.Width * dip / g.DpiX;
+            var maxHeight = SystemParameters.WorkArea.Height * dip / g.DpiY;
+            if (Width > maxWidth) Width = maxWidth;
+            if (Height > maxHeight) Height = maxHeight;
             if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)
             {
                 gridMain.RowDefinitions[0].Height = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
@@ -452,7 +448,7 @@ namespace v2rayN.Views
                         else
                         {
                             item2.Width = item.Width;
-                            item2.DisplayIndex = i ;
+                            item2.DisplayIndex = i;
                         }
                     }
                 }
