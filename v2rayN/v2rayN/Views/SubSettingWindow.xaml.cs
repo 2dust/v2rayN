@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using v2rayN.Mode;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -17,6 +18,7 @@ namespace v2rayN.Views
             ViewModel = new SubSettingViewModel(this);
             this.Closing += SubSettingWindow_Closing;
             lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
+            lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
 
             this.WhenActivated(disposables =>
             {
@@ -42,6 +44,10 @@ namespace v2rayN.Views
         private void LstSubscription_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ViewModel?.EditSub(false);
+        }
+        private void LstSubscription_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
         }
 
         private void menuClose_Click(object sender, System.Windows.RoutedEventArgs e)

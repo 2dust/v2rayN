@@ -6,7 +6,6 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
 using System.Windows;
-using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -24,6 +23,7 @@ namespace v2rayN.ViewModels
         public IObservableCollection<SubItem> SubItems => _subItems;
         [Reactive]
         public SubItem SelectedSource { get; set; }
+        public IList<SubItem> SelectedSources { get; set; }
 
         public ReactiveCommand<Unit, Unit> SubAddCmd { get; }
         public ReactiveCommand<Unit, Unit> SubDeleteCmd { get; }
@@ -96,12 +96,15 @@ namespace v2rayN.ViewModels
 
         private void DeleteSub()
         {
-            if (UI.ShowYesNo(ResUI.RemoveServer) == DialogResult.No)
+            if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
             {
                 return;
             }
 
-            ConfigHandler.DeleteSubItem(ref _config, SelectedSource?.id);
+            foreach (var it in SelectedSources)
+            {
+                ConfigHandler.DeleteSubItem(ref _config, it?.id);
+            }
             RefreshSubItems();
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
             IsModified = true;
