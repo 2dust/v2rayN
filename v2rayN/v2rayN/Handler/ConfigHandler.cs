@@ -933,6 +933,8 @@ namespace v2rayN.Handler
             }
 
             int countServers = 0;
+            //Check for duplicate indexId
+            List<string>? lstDbIndexId = null;
             List<ProfileItem> lstAdd = new();
             string[] arrData = clipboardData.Split(Environment.NewLine.ToCharArray());
             foreach (string str in arrData)
@@ -958,7 +960,20 @@ namespace v2rayN.Handler
                     var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub && CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
-                        profileItem.indexId = existItem.indexId;
+                        //Check for duplicate indexId
+                        if (lstDbIndexId is null)
+                        {
+                            lstDbIndexId = LazyConfig.Instance.ProfileItemIndexs("");
+                        }
+                        if (lstAdd.Any(t => t.indexId == existItem.indexId)
+                            || lstDbIndexId.Any(t => t == existItem.indexId))
+                        {
+                            profileItem.indexId = string.Empty;
+                        }
+                        else
+                        {
+                            profileItem.indexId = existItem.indexId;
+                        }
                     }
                     //filter
                     if (!Utils.IsNullOrEmpty(subFilter))
