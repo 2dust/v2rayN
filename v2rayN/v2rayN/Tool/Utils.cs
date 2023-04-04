@@ -18,7 +18,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Windows.Forms;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -667,12 +667,12 @@ namespace v2rayN
         /// <returns></returns>
         public static string GetExePath()
         {
-            return Application.ExecutablePath;
+            return Environment.ProcessPath;
         }
 
         public static string StartupPath()
         {
-            return Application.StartupPath;
+            return AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public static string? RegReadValue(string path, string name, string def)
@@ -1181,17 +1181,17 @@ namespace v2rayN
         {
             try
             {
-                foreach (Screen screen in Screen.AllScreens)
+                foreach (var screen in System.Windows.Forms.Screen.AllScreens)
                 {
-                    using Bitmap fullImage = new Bitmap(screen.Bounds.Width,
-                                                    screen.Bounds.Height);
+                    var left = screen.Bounds.X;
+                    var top = screen.Bounds.Y;
+                    var width = screen.Bounds.Width;
+                    var height = screen.Bounds.Height;
+
+                    using Bitmap fullImage = new Bitmap(width, height);
                     using (Graphics g = Graphics.FromImage(fullImage))
                     {
-                        g.CopyFromScreen(screen.Bounds.X,
-                                         screen.Bounds.Y,
-                                         0, 0,
-                                         fullImage.Size,
-                                         CopyPixelOperation.SourceCopy);
+                        g.CopyFromScreen(left, top, 0, 0, fullImage.Size, CopyPixelOperation.SourceCopy);
                     }
                     int maxTry = 10;
                     for (int i = 0; i < maxTry; i++)
@@ -1199,9 +1199,9 @@ namespace v2rayN
                         int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
                         int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
                         Rectangle cropRect = new(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                        Bitmap target = new(screen.Bounds.Width, screen.Bounds.Height);
+                        Bitmap target = new(width, height);
 
-                        double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
+                        double imageScale = (double)width / (double)cropRect.Width;
                         using (Graphics g = Graphics.FromImage(target))
                         {
                             g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
