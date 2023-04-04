@@ -378,6 +378,14 @@
                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                         <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                     </Button>
+                    <Button
+                        x:Name="btnAutofitColumnWidth"
+                        Width="30"
+                        Height="30"
+                        Margin="4,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
+                    </Button>
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"
@@ -484,7 +492,6 @@
                         CanUserSortColumns="False"
                         EnableRowVirtualization="True"
                         Focusable="True"
-                        FrozenColumnCount="1"
                         GridLinesVisibility="All"
                         HeadersVisibility="All"
                         IsReadOnly="True"
@@ -615,16 +622,16 @@
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                                 <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
                             </Style>
-                            
-                            <Style TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding isActive}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}"/>
-                                        <Setter Property="Foreground" Value="Black"></Setter>
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                        <Setter Property="Foreground" Value="Black" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                            
+
                         </DataGrid.Resources>
                         <DataGrid.Columns>
 

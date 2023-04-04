@@ -31,6 +31,7 @@ namespace v2rayN.Views
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+            btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
@@ -202,23 +203,20 @@ namespace v2rayN.Views
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
-        }
+        }    
 
         #region Event 
 
-        private void UpdateViewHandler(string action)
+        private void UpdateViewHandler(EViewAction action)
         {
-            if (action == "AdjustMainLvColWidth")
+            if (action == EViewAction.AdjustMainLvColWidth)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    foreach (var it in lstProfiles.Columns)
-                    {
-                        it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
-                    }
+                    AutofitColumnWidth();
                 });
             }
-            else if (action == "ProfilesFocus")
+            else if (action == EViewAction.ProfilesFocus)
             {
                 lstProfiles.Focus();
             }
@@ -255,7 +253,7 @@ namespace v2rayN.Views
             //    lstProfiles.Focus();
             //}
 
-            e.Row.Header = e.Row.GetIndex() + 1;
+            e.Row.Header = e.Row.GetIndex() + 1;      
         }
 
         private void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -277,17 +275,7 @@ namespace v2rayN.Views
             {
                 return;
             }
-
-            if (colHeader.Column.GetType().Name != typeof(MyDGTextColumn).Name)
-            {
-                foreach (var it in lstProfiles.Columns)
-                {
-                    //it.MinWidth = it.ActualWidth;
-                    it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
-                }
-                return;
-            }
-
+           
             var colName = ((MyDGTextColumn)colHeader.Column).ExName;
             ViewModel?.SortServer(colName);
         }
@@ -408,6 +396,18 @@ namespace v2rayN.Views
         {
             Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
         }
+
+        private void BtnAutofitColumnWidth_Click(object sender, RoutedEventArgs e)
+        {
+            AutofitColumnWidth();
+        }
+        private void AutofitColumnWidth()
+        {
+            foreach (var it in lstProfiles.Columns)
+            {
+                it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
+        }
         #endregion
 
         #region UI          
@@ -452,7 +452,7 @@ namespace v2rayN.Views
                         else
                         {
                             item2.Width = item.Width;
-                            item2.DisplayIndex = i + 1;
+                            item2.DisplayIndex = i ;
                         }
                     }
                 }

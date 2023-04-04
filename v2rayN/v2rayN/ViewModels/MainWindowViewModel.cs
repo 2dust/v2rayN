@@ -38,7 +38,7 @@ namespace v2rayN.ViewModels
         private NoticeHandler? _noticeHandler;
         private readonly PaletteHelper _paletteHelper = new();
         private Dictionary<string, bool> _dicHeaderSort = new();
-        private Action<string> _updateView;
+        private Action<EViewAction> _updateView;
 
         #endregion
 
@@ -201,7 +201,7 @@ namespace v2rayN.ViewModels
 
         #region Init
 
-        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Action<string> updateView)
+        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Action<EViewAction> updateView)
         {
             _updateView = updateView;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
@@ -549,7 +549,7 @@ namespace v2rayN.ViewModels
                 }
                 if (_config.uiItem.enableAutoAdjustMainLvColWidth)
                 {
-                    _updateView("AdjustMainLvColWidth");
+                    _updateView(EViewAction.AdjustMainLvColWidth);
                 }
             }
         }
@@ -702,7 +702,7 @@ namespace v2rayN.ViewModels
 
             RefreshServers();
 
-            _updateView("ProfilesFocus");
+            _updateView(EViewAction.ProfilesFocus);
         }
 
         private void ServerFilterChanged(bool c)
