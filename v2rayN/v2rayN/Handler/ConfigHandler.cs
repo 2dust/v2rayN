@@ -1287,17 +1287,11 @@ namespace v2rayN.Handler
 
         public static int MoveToGroup(Config config, List<ProfileItem> lstProfile, string subid)
         {
-            foreach (var it in lstProfile)
+            foreach (var item in lstProfile)
             {
-                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
-                if (item is null)
-                {
-                    continue;
-                }
-
                 item.subid = subid;
-                SqliteHelper.Instance.Update(item);
             }
+            SqliteHelper.Instance.UpdateAll(lstProfile);
 
             return 0;
         }
