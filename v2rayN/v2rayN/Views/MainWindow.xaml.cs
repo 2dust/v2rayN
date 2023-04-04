@@ -34,6 +34,7 @@ namespace v2rayN.Views
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
+            lstProfiles.RowHeaderWidth = 30;
             if (_config.uiItem.enableDragDropSort)
             {
                 lstProfiles.AllowDrop = true;
