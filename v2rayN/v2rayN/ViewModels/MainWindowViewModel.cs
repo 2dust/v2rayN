@@ -3,6 +3,7 @@ using DynamicData.Binding;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -12,7 +13,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -953,7 +953,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (UI.ShowYesNo(ResUI.RemoveServer) == DialogResult.No)
+            if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
             {
                 return;
             }
@@ -1110,7 +1110,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
@@ -1302,7 +1302,7 @@ namespace v2rayN.ViewModels
                 Multiselect = false,
                 Filter = "guiNConfig|*.json|All|*.*"
             };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
+            if (fileDialog.ShowDialog() != true)
             {
                 return;
             }

@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Microsoft.Win32;
+using ReactiveUI;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
@@ -210,7 +211,7 @@ namespace v2rayN.Views
         }
         private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            var openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "tunConfig|*.json|All|*.*";
             openFileDialog1.ShowDialog();
 

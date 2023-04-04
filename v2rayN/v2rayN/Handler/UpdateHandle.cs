@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using System.Windows;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -479,7 +479,7 @@ namespace v2rayN.Handler
             bool blDownload = false;
             if (blAsk)
             {
-                if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == DialogResult.Yes)
+                if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == MessageBoxResult.Yes)
                 {
                     blDownload = true;
                 }

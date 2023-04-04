@@ -1,7 +1,7 @@
 ﻿
+using Microsoft.Win32;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -142,7 +142,7 @@ namespace v2rayN.Handler
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
+            if (fileDialog.ShowDialog() != true)
             {
                 return;
             }
@@ -181,7 +181,7 @@ namespace v2rayN.Handler
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
+            if (fileDialog.ShowDialog() != true)
             {
                 return;
             }
@@ -218,7 +218,7 @@ namespace v2rayN.Handler
                     FilterIndex = 2,
                     RestoreDirectory = true
                 };
-                if (fileDialog.ShowDialog() != DialogResult.OK)
+                if (fileDialog.ShowDialog() != true)
                 {
                     return;
                 }
@@ -246,22 +246,22 @@ namespace v2rayN.Handler
         public bool RestoreGuiNConfig(ref Config config)
         {
             var fileContent = string.Empty;
-            using (OpenFileDialog fileDialog = new())
-            {
-                fileDialog.InitialDirectory = Utils.GetBackupPath("");
-                fileDialog.Filter = "guiNConfig|*.json|All|*.*";
-                fileDialog.FilterIndex = 2;
-                fileDialog.RestoreDirectory = true;
+            OpenFileDialog fileDialog = new();
 
-                if (fileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    fileContent = Utils.LoadResource(fileDialog.FileName);
-                }
-                else
-                {
-                    return false;
-                }
+            fileDialog.InitialDirectory = Utils.GetBackupPath("");
+            fileDialog.Filter = "guiNConfig|*.json|All|*.*";
+            fileDialog.FilterIndex = 2;
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                fileContent = Utils.LoadResource(fileDialog.FileName);
             }
+            else
+            {
+                return false;
+            }
+
             if (Utils.IsNullOrEmpty(fileContent))
             {
                 UI.ShowWarning(ResUI.OperationFailed);

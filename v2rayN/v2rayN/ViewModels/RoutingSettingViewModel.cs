@@ -4,7 +4,6 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
 using System.Windows;
-using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -244,7 +243,7 @@ namespace v2rayN.ViewModels
                 UI.Show(ResUI.PleaseSelectRules);
                 return;
             }
-            if (UI.ShowYesNo(ResUI.RemoveRules) == DialogResult.No)
+            if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
             {
                 return;
             }

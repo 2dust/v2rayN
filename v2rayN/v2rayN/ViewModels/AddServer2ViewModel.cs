@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
@@ -5,7 +6,6 @@ using Splat;
 using System.IO;
 using System.Reactive;
 using System.Windows;
-using System.Windows.Forms;
 using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -111,7 +111,7 @@ namespace v2rayN.ViewModels
                 Multiselect = false,
                 Filter = "Config|*.json|YAML|*.yaml;*.yml|All|*.*"
             };
-            if (fileDialog.ShowDialog() != DialogResult.OK)
+            if (fileDialog.ShowDialog() != true)
             {
                 return;
             }

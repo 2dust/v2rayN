@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Microsoft.Win32;
+using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
@@ -108,7 +109,7 @@ namespace v2rayN.Views
 
         private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            var openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "PNG|*.png";
             openFileDialog1.ShowDialog();
 
