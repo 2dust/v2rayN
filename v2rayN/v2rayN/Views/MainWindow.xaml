@@ -628,6 +628,7 @@
                                     <DataTrigger Binding="{Binding isActive}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
                                         <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
