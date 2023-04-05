@@ -194,10 +194,10 @@ namespace v2rayN.Views
 
             spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
 
-            if (_config.uiItem.autoHideStartup)
-            {
-                WindowState = WindowState.Minimized;
-            }
+            //if (_config.uiItem.autoHideStartup)
+            //{
+            //    WindowState = WindowState.Minimized;
+            //}
 
             if (!_config.guiItem.enableHWA)
             {
@@ -420,11 +420,11 @@ namespace v2rayN.Views
                 Height = _config.uiItem.mainHeight;
             }
 
-            IntPtr hWnd = new WindowInteropHelper(this).EnsureHandle();
-            Graphics g = Graphics.FromHwnd(hWnd);
-            var dip = 96;
-            var maxWidth = SystemParameters.WorkArea.Width * dip / g.DpiX;
-            var maxHeight = SystemParameters.WorkArea.Height * dip / g.DpiY;
+            //IntPtr hWnd = new WindowInteropHelper(this).EnsureHandle();
+            //Graphics g = Graphics.FromHwnd(hWnd);
+            //var dip = 96;
+            var maxWidth = SystemParameters.WorkArea.Width;// * dip / g.DpiX;
+            var maxHeight = SystemParameters.WorkArea.Height;// * dip / g.DpiY;
             if (Width > maxWidth) Width = maxWidth;
             if (Height > maxHeight) Height = maxHeight;
             if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)
