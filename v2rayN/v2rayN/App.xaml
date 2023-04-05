@@ -16,6 +16,7 @@
                     SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <system:Double x:Key="TopMenuItemHeight">32</system:Double>
             <system:Double x:Key="MenuItemHeight">26</system:Double>
             <system:Double x:Key="StdFontSize">12</system:Double>
             <system:Double x:Key="StdFontSize1">13</system:Double>
@@ -141,7 +142,33 @@
                 TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Margin" Value="-2,0" />
             </Style>
-
+            <Style x:Key="VerticalSeparatorStyle"
+                   BasedOn="{StaticResource {x:Type Separator}}"
+                   TargetType="{x:Type Separator}">
+                <Setter Property="Margin"
+                        Value="2,2" />
+                <Setter Property="Background"
+                        Value="LightGray" />
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <TransformGroup.Children>
+                                <TransformCollection>
+                                    <RotateTransform Angle="90" />
+                                </TransformCollection>
+                            </TransformGroup.Children>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="HorizontalSeparatorStyle"
+                   BasedOn="{StaticResource {x:Type Separator}}"
+                   TargetType="{x:Type Separator}">
+                <Setter Property="Margin"
+                        Value="2,2" />
+                <Setter Property="Background"
+                        Value="LightGray" />
+            </Style>
 
         </ResourceDictionary>
 

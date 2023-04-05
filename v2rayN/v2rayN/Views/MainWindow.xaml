@@ -43,321 +43,253 @@
         Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
         <Grid>
             <DockPanel>
-                <ToolBarTray DockPanel.Dock="Top">
-                    <ToolBar
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        ClipToBounds="True"
-                        Style="{StaticResource MaterialDesignToolBar}">
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="Server" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuAddCustomServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddCustomServer}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuAddVmessServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddVmessServer}" />
-                                <MenuItem
-                                    x:Name="menuAddVlessServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddVlessServer}" />
-                                <MenuItem
-                                    x:Name="menuAddShadowsocksServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
-                                <MenuItem
-                                    x:Name="menuAddSocksServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddSocksServer}" />
-                                <MenuItem
-                                    x:Name="menuAddTrojanServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuAddServerViaClipboard"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                                <MenuItem
-                                    x:Name="menuAddServerViaScan"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
+                <Grid DockPanel.Dock="Top">
+                    <Menu Margin="0,1"
+                          Style="{StaticResource ToolbarMenu}">
+                        <MenuItem Padding="8,0"
+                                  Height="{StaticResource TopMenuItemHeight}">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="Server" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                            <MenuItem x:Name="menuAddCustomServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddCustomServer}" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuAddVmessServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddVmessServer}" />
+                            <MenuItem x:Name="menuAddVlessServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddVlessServer}" />
+                            <MenuItem x:Name="menuAddShadowsocksServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
+                            <MenuItem x:Name="menuAddSocksServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddSocksServer}" />
+                            <MenuItem x:Name="menuAddTrojanServer"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuAddServerViaClipboard"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                            <MenuItem x:Name="menuAddServerViaScan"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
 
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="BookClockOutline" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuSubSetting"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSubSetting}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuSubUpdate"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSubUpdate}" />
-                                <MenuItem
-                                    x:Name="menuSubUpdateViaProxy"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
-                                <MenuItem
-                                    x:Name="menuSubGroupUpdate"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSubGroupUpdate}" />
-                                <MenuItem
-                                    x:Name="menuSubGroupUpdateViaProxy"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="SettingsOutline" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuOptionSetting"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuOptionSetting}" />
-                                <MenuItem
-                                    x:Name="menuRoutingSetting"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRoutingSetting}" />
-                                <MenuItem
-                                    x:Name="menuGlobalHotkeySetting"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuSettingsSetUWP"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Click="menuSettingsSetUWP_Click"
-                                    Header="{x:Static resx:ResUI.TbSettingsSetUWP}" />
-                                <MenuItem
-                                    x:Name="menuClearServerStatistics"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuImportOldGuiConfig"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuImportOldGuiConfig}" />
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuReload" Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="Reload" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="Update" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuCheckUpdateN"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="v2rayN" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateV2flyCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="V2fly v5 Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateSagerNetCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="SagerNet Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateXrayCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Xray Core" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateClashCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Clash Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateClashMetaCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Clash.Meta Core" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateGeo"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Geo files" />
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuHelp" Padding="8,0">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="HelpCircleOutline" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuHelp}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem
-                                x:Name="menuPromotion"
-                                Padding="8,0"
-                                Click="menuPromotion_Click">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="VolumeHigh" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuPromotion}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem
-                                x:Name="menuClose"
-                                Padding="8,0"
-                                Click="menuClose_Click">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="Minimize" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuClose}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem Padding="8,0"
+                                  Height="{StaticResource TopMenuItemHeight}">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="BookClockOutline" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                            <MenuItem x:Name="menuSubSetting"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuSubSetting}" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuSubUpdate"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuSubUpdate}" />
+                            <MenuItem x:Name="menuSubUpdateViaProxy"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                            <MenuItem x:Name="menuSubGroupUpdate"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuSubGroupUpdate}" />
+                            <MenuItem x:Name="menuSubGroupUpdateViaProxy"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem Padding="8,0"
+                                  Height="{StaticResource TopMenuItemHeight}">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="SettingsOutline" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                            <MenuItem x:Name="menuOptionSetting"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuOptionSetting}" />
+                            <MenuItem x:Name="menuRoutingSetting"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuRoutingSetting}" />
+                            <MenuItem x:Name="menuGlobalHotkeySetting"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuSettingsSetUWP"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Click="menuSettingsSetUWP_Click"
+                                      Header="{x:Static resx:ResUI.TbSettingsSetUWP}" />
+                            <MenuItem x:Name="menuClearServerStatistics"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuImportOldGuiConfig"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="{x:Static resx:ResUI.menuImportOldGuiConfig}" />
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem x:Name="menuReload"
+                                  Height="{StaticResource TopMenuItemHeight}"
+                                  Padding="8,0">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="Reload" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem Padding="8,0"
+                                  Height="{StaticResource TopMenuItemHeight}">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="Update" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                            <MenuItem x:Name="menuCheckUpdateN"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="v2rayN" />
+                            <MenuItem x:Name="menuCheckUpdateV2flyCore"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="V2fly v5 Core" />
+                            <MenuItem x:Name="menuCheckUpdateSagerNetCore"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="SagerNet Core" />
+                            <MenuItem x:Name="menuCheckUpdateXrayCore"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="Xray Core" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuCheckUpdateClashCore"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="Clash Core" />
+                            <MenuItem x:Name="menuCheckUpdateClashMetaCore"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="Clash.Meta Core" />
+                            <Separator Style="{StaticResource HorizontalSeparatorStyle}" />
+                            <MenuItem x:Name="menuCheckUpdateGeo"
+                                      Height="{StaticResource MenuItemHeight}"
+                                      Header="Geo files" />
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem x:Name="menuHelp"
+                                  Height="{StaticResource TopMenuItemHeight}"
+                                  Padding="8,0">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="HelpCircleOutline" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuHelp}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Separator Style="{StaticResource VerticalSeparatorStyle}" />
+                        <MenuItem x:Name="menuPromotion"
+                                  Padding="8,0"
+                                  Height="{StaticResource TopMenuItemHeight}"
+                                  Click="menuPromotion_Click">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"
+                                                             Kind="VolumeHigh" />
+                                    <TextBlock Text="{x:Static resx:ResUI.menuPromotion}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </Menu>
 
-                        <materialDesign:PopupBox
-                            Padding="8,0"
-                            HorizontalAlignment="Right"
-                            StaysOpen="True"
-                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource ToolbarTextBlock}"
-                                        Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-                                    <ToggleButton
-                                        x:Name="togDarkMode"
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Margin="8" />
+                    <materialDesign:PopupBox Padding="8,0"
+                                             HorizontalAlignment="Right"
+                                             StaysOpen="True"
+                                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                        <StackPanel Margin="8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource ToolbarTextBlock}"
+                                           Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
+                                <ToggleButton x:Name="togDarkMode"
+                                              Grid.Row="0"
+                                              Grid.Column="1"
+                                              Margin="8" />
 
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource ToolbarTextBlock}"
-                                        Text="{x:Static resx:ResUI.TbSettingsColor}" />
-                                    <ComboBox
-                                        x:Name="cmbSwatches"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Width="100"
-                                        Margin="8"
-                                        DisplayMemberPath="Name"
-                                        Style="{StaticResource DefComboBox}" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource ToolbarTextBlock}"
+                                           Text="{x:Static resx:ResUI.TbSettingsColor}" />
+                                <ComboBox x:Name="cmbSwatches"
+                                          Grid.Row="1"
+                                          Grid.Column="1"
+                                          Width="100"
+                                          Margin="8"
+                                          DisplayMemberPath="Name"
+                                          Style="{StaticResource DefComboBox}" />
 
-                                    <TextBlock
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource ToolbarTextBlock}"
-                                        Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
-                                    <ComboBox
-                                        x:Name="cmbCurrentFontSize"
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Width="100"
-                                        Margin="8"
-                                        Style="{StaticResource DefComboBox}" />
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource ToolbarTextBlock}"
+                                           Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
+                                <ComboBox x:Name="cmbCurrentFontSize"
+                                          Grid.Row="2"
+                                          Grid.Column="1"
+                                          Width="100"
+                                          Margin="8"
+                                          Style="{StaticResource DefComboBox}" />
 
-                                    <TextBlock
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource ToolbarTextBlock}"
-                                        Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
-                                    <ComboBox
-                                        x:Name="cmbCurrentLanguage"
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        Width="100"
-                                        Margin="8"
-                                        materialDesign:HintAssist.Hint="Language"
-                                        Style="{StaticResource DefComboBox}" />
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource ToolbarTextBlock}"
+                                           Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
+                                <ComboBox x:Name="cmbCurrentLanguage"
+                                          Grid.Row="3"
+                                          Grid.Column="1"
+                                          Width="100"
+                                          Margin="8"
+                                          materialDesign:HintAssist.Hint="Language"
+                                          Style="{StaticResource DefComboBox}" />
 
-                                </Grid>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                    </ToolBar>
-                </ToolBarTray>
+                            </Grid>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </Grid>
                 <WrapPanel Margin="2" DockPanel.Dock="Top">
                     <ListBox
                         x:Name="lstGroup"
