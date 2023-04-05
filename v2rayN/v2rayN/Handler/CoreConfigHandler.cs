@@ -1465,6 +1465,11 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
+                    if (item.configType == EConfigType.VLESS
+                     && !Global.flows.Contains(item.flow))
+                    {
+                        continue;
+                    }
 
                     outbound(item, ref v2rayConfigCopy);
                     v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();

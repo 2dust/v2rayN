@@ -795,6 +795,11 @@ namespace v2rayN.Handler
             profileItem.path = profileItem.path.TrimEx();
             profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
 
+            if (!Global.flows.Contains(profileItem.flow))
+            {
+                return -1;
+            }
+
             AddServerCommon(ref config, profileItem, toFile);
 
             return 0;
