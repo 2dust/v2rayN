@@ -1177,47 +1177,44 @@ namespace v2rayN
 
         #region scan screen
 
-        public static string ScanScreen()
+        public static string ScanScreen(float dpiX, float dpiY)
         {
             try
             {
-                foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+                var left = (int)(SystemParameters.WorkArea.Left);
+                var top = (int)(SystemParameters.WorkArea.Top);
+                var width = (int)(SystemParameters.WorkArea.Width / dpiX);
+                var height = (int)(SystemParameters.WorkArea.Height / dpiY);
+
+                using Bitmap fullImage = new Bitmap(width, height);
+                using (Graphics g = Graphics.FromImage(fullImage))
                 {
-                    var left = screen.Bounds.X;
-                    var top = screen.Bounds.Y;
-                    var width = screen.Bounds.Width;
-                    var height = screen.Bounds.Height;
+                    g.CopyFromScreen(left, top, 0, 0, fullImage.Size, CopyPixelOperation.SourceCopy);
+                }
+                int maxTry = 10;
+                for (int i = 0; i < maxTry; i++)
+                {
+                    int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
+                    int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
+                    Rectangle cropRect = new(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
+                    Bitmap target = new(width, height);
 
-                    using Bitmap fullImage = new Bitmap(width, height);
-                    using (Graphics g = Graphics.FromImage(fullImage))
+                    double imageScale = (double)width / (double)cropRect.Width;
+                    using (Graphics g = Graphics.FromImage(target))
                     {
-                        g.CopyFromScreen(left, top, 0, 0, fullImage.Size, CopyPixelOperation.SourceCopy);
+                        g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
+                                        cropRect,
+                                        GraphicsUnit.Pixel);
                     }
-                    int maxTry = 10;
-                    for (int i = 0; i < maxTry; i++)
+
+                    BitmapLuminanceSource source = new(target);
+                    BinaryBitmap bitmap = new(new HybridBinarizer(source));
+                    QRCodeReader reader = new();
+                    Result result = reader.decode(bitmap);
+                    if (result != null)
                     {
-                        int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
-                        int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                        Rectangle cropRect = new(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                        Bitmap target = new(width, height);
-
-                        double imageScale = (double)width / (double)cropRect.Width;
-                        using (Graphics g = Graphics.FromImage(target))
-                        {
-                            g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
-                                            cropRect,
-                                            GraphicsUnit.Pixel);
-                        }
-
-                        BitmapLuminanceSource source = new(target);
-                        BinaryBitmap bitmap = new(new HybridBinarizer(source));
-                        QRCodeReader reader = new();
-                        Result result = reader.decode(bitmap);
-                        if (result != null)
-                        {
-                            string ret = result.Text;
-                            return ret;
-                        }
+                        string ret = result.Text;
+                        return ret;
                     }
                 }
             }
@@ -1226,6 +1223,14 @@ namespace v2rayN
                 SaveLog(ex.Message, ex);
             }
             return string.Empty;
+        }
+
+        public static Tuple<float, float> GetDpiXY(Window window)
+        {
+            IntPtr hWnd = new WindowInteropHelper(window).EnsureHandle();
+            Graphics g = Graphics.FromHwnd(hWnd);
+
+            return new(96 / g.DpiX, 96 / g.DpiY);
         }
 
         #endregion

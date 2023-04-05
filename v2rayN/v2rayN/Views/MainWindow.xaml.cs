@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
-using System.Drawing;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -420,11 +419,8 @@ namespace v2rayN.Views
                 Height = _config.uiItem.mainHeight;
             }
 
-            //IntPtr hWnd = new WindowInteropHelper(this).EnsureHandle();
-            //Graphics g = Graphics.FromHwnd(hWnd);
-            //var dip = 96;
-            var maxWidth = SystemParameters.WorkArea.Width;// * dip / g.DpiX;
-            var maxHeight = SystemParameters.WorkArea.Height;// * dip / g.DpiY;
+            var maxWidth = SystemParameters.WorkArea.Width;
+            var maxHeight = SystemParameters.WorkArea.Height;
             if (Width > maxWidth) Width = maxWidth;
             if (Height > maxHeight) Height = maxHeight;
             if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)

@@ -20,7 +20,6 @@ using v2rayN.Mode;
 using v2rayN.Resx;
 using v2rayN.Tool;
 using v2rayN.Views;
-using Application = System.Windows.Application;
 
 
 namespace v2rayN.ViewModels
@@ -924,9 +923,10 @@ namespace v2rayN.ViewModels
         {
             ShowHideWindow(false);
 
+            var dpiXY = Utils.GetDpiXY(Application.Current.MainWindow);
             string result = await Task.Run(() =>
             {
-                return Utils.ScanScreen();
+                return Utils.ScanScreen(dpiXY.Item1, dpiXY.Item2);
             });
 
             ShowHideWindow(true);
