@@ -453,6 +453,12 @@ namespace v2rayN
             }
         }
 
+        public static bool IsBase64String(string plainText)
+        {
+            var buffer = new Span<byte>(new byte[plainText.Length]);
+            return Convert.TryFromBase64String(plainText, buffer, out int _);
+        }
+
         #endregion
 
 

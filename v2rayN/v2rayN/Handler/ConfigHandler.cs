@@ -945,7 +945,7 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 //maybe sub
-                if (Utils.IsNullOrEmpty(subid) && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
+                if (!isSub && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
                 {
                     if (AddSubItem(ref config, str) == 0)
                     {
@@ -1187,7 +1187,15 @@ namespace v2rayN.Handler
                 lstOriSub = LazyConfig.Instance.ProfileItems(subid);
             }
 
-            int counter = AddBatchServers(ref config, clipboardData, subid, isSub, lstOriSub);
+            var counter = 0;
+            if (Utils.IsBase64String(clipboardData))
+            {
+                counter = AddBatchServers(ref config, Utils.Base64Decode(clipboardData), subid, isSub, lstOriSub);
+            }
+            if (counter < 1)
+            {
+                counter = AddBatchServers(ref config, clipboardData, subid, isSub, lstOriSub);
+            }
             if (counter < 1)
             {
                 counter = AddBatchServers(ref config, Utils.Base64Decode(clipboardData), subid, isSub, lstOriSub);
