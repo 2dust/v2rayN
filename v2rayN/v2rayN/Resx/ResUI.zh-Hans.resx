@@ -1147,4 +1147,10 @@
   <data name="LvMoreUrl" xml:space="preserve">
     <value>更多地址(url)，用逗号(,)分隔</value>
   </data>
+  <data name="MsgChangeLanguage" xml:space="preserve">
+    <value>您要重新启动以使更改生效吗？</value>
+  </data>
+  <data name="TbChangeLanguage" xml:space="preserve">
+    <value>重新开始</value>
+  </data>
 </root>

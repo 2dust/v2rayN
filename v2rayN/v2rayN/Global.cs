@@ -81,6 +81,7 @@
         public const string SpeedUnit = "";
         public const int MinFontSize = 10;
         public const string RebootAs = "rebootas";
+        public const string Restarted = "restarted";
 
         public static readonly List<string> IEProxyProtocols = new() {
                         "{ip}:{http_port}",
@@ -129,7 +130,7 @@
         public static Job processJob { get; set; }
         public static bool ShowInTaskbar { get; set; }
         public static string ExePathKey { get; set; }
-
+        public static bool IsRestarted { get; set; }=false;
         #endregion
 
     }

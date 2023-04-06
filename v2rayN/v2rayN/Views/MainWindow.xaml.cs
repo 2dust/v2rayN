@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -203,8 +204,9 @@ namespace v2rayN.Views
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
-        }
 
+        }
+        bool Isloaded = false;
         #region Event 
 
         private void UpdateViewHandler(EViewAction action)
@@ -596,8 +598,21 @@ namespace v2rayN.Views
             }
         }
 
+
         #endregion
 
-
+        private void cmbCurrentLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Isloaded)
+            {
+                if (MessageBox.Show(ResUI.MsgChangeLanguage, ResUI.TbChangeLanguage, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    Process.Start(Process.GetCurrentProcess().MainModule.FileName,Global.Restarted);
+                    Application.Current.Shutdown();
+                }
+            }
+            else
+                Isloaded = true;
+        }
     }
 }

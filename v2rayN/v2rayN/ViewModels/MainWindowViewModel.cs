@@ -1756,7 +1756,7 @@ namespace v2rayN.ViewModels
 
         private void AutoHideStartup()
         {
-            if (_config.uiItem.autoHideStartup)
+            if (!Global.IsRestarted && _config.uiItem.autoHideStartup)
             {
                 Observable.Range(1, 1)
                  .Delay(TimeSpan.FromSeconds(1))

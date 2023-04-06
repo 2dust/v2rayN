@@ -1099,4 +1099,10 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
+  <data name="MsgChangeLanguage" xml:space="preserve">
+    <value>Вы хотите перезапустить, чтобы изменения вступили в силу?</value>
+  </data>
+  <data name="TbChangeLanguage" xml:space="preserve">
+    <value>перезапуск</value>
+  </data>
 </root>

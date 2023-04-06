@@ -39,7 +39,7 @@ namespace v2rayN
                 Environment.Exit(0);
                 return;
             }
-
+            Global.IsRestarted = (e.Args ?? new string[] { }).Any(t => t == Global.Restarted);
             Global.processJob = new Job();
 
             Logging.Setup();

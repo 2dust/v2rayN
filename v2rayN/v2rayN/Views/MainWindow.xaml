@@ -354,6 +354,7 @@
                                         Grid.Column="1"
                                         Width="100"
                                         Margin="8"
+                                        SelectionChanged="cmbCurrentLanguage_SelectionChanged"
                                         materialDesign:HintAssist.Hint="Language"
                                         Style="{StaticResource DefComboBox}" />
 

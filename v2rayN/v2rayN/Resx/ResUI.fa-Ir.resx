@@ -1057,4 +1057,10 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
+  <data name="MsgChangeLanguage" xml:space="preserve">
+    <value>برای ایجاد تغییر آیا مایل به راه اندازی مجداد هستید؟</value>
+  </data>
+  <data name="TbChangeLanguage" xml:space="preserve">
+    <value>راه اندازی مجداد</value>
+  </data>
 </root>
