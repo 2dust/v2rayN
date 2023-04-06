@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reactive;
@@ -121,6 +122,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> OptionSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
+        public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }        
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportOldGuiConfigCmd { get; }
 
@@ -430,6 +432,10 @@ namespace v2rayN.ViewModels
                 {
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
+            });
+            RebootAsAdminCmd = ReactiveCommand.Create(() =>
+            {
+                RebootAsAdmin();
             });
             ClearServerStatisticsCmd = ReactiveCommand.Create(() =>
             {
@@ -1290,6 +1296,24 @@ namespace v2rayN.ViewModels
                 //RefreshServers();
                 Reload();
             }
+        }
+
+        private void RebootAsAdmin()
+        {
+            ProcessStartInfo startInfo = new()
+            {
+                UseShellExecute = true,
+                Arguments = Global.RebootAs,
+                WorkingDirectory = Utils.StartupPath(),
+                FileName = Utils.GetExePath(),
+                Verb = "runas",
+            };
+            try
+            {
+                Process.Start(startInfo);
+                MyAppExit(false);
+            }
+            catch { }
         }
 
         private void ImportOldGuiConfig()

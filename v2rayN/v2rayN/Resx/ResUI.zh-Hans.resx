@@ -1153,4 +1153,7 @@
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
     <value>未启用更新，跳过此订阅</value>
   </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>以管理员身份重启</value>
+  </data>
 </root>

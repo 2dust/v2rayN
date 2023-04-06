@@ -1153,4 +1153,7 @@
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
     <value>Updates are not enabled, skip this subscription</value>
   </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Reboot as administrator</value>
+  </data>
 </root>

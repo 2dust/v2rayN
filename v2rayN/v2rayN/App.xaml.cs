@@ -30,14 +30,15 @@ namespace v2rayN
         {
             Global.ExePathKey = Utils.GetMD5(Utils.GetExePath());
 
+            var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, Global.ExePathKey, out bool bCreatedNew);
-            if (!bCreatedNew)
+            if (!rebootas && !bCreatedNew)
             {
                 ProgramStarted.Set();
                 Current.Shutdown();
                 Environment.Exit(0);
                 return;
-            }
+            }          
 
             Global.processJob = new Job();
 

@@ -80,6 +80,7 @@
         public const string DelayUnit = "";
         public const string SpeedUnit = "";
         public const int MinFontSize = 10;
+        public const string RebootAs = "rebootas";
 
         public static readonly List<string> IEProxyProtocols = new() {
                         "{ip}:{http_port}",

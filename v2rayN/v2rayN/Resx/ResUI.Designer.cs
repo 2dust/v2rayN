@@ -934,6 +934,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Reboot as administrator 的本地化字符串。
+        /// </summary>
+        public static string menuRebootAsAdmin {
+            get {
+                return ResourceManager.GetString("menuRebootAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Reload 的本地化字符串。
         /// </summary>
         public static string menuReload {
