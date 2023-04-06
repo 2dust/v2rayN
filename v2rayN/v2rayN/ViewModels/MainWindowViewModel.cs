@@ -122,7 +122,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> OptionSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
-        public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }        
+        public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportOldGuiConfigCmd { get; }
 
@@ -568,8 +568,9 @@ namespace v2rayN.ViewModels
                     {
                         return;
                     }
-                    SpeedProxyDisplay = string.Format("{0}:{1}/s�� | {2}/s��", Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format("{0}:{1}/s�� | {2}/s��", Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+
+                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {

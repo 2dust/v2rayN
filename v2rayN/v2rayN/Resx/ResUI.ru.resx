@@ -228,9 +228,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Протокол</value>
   </data>
-  <data name="MediumFresh" xml:space="preserve">
-    <value>Medium</value>
-  </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>Очистить контент оригинальной подписки</value>
   </data>
@@ -315,9 +312,6 @@
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>Сначала выберите сервер</value>
   </data>
-  <data name="QuickFresh" xml:space="preserve">
-    <value>Быстрый</value>
-  </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>Удаление дублей завершено. Старая: {0}, Новая: {1}.</value>
   </data>
@@ -329,12 +323,6 @@
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>Файл конфигурации сервера сохранен по адресу: {0}</value>
-  </data>
-  <data name="SlowFresh" xml:space="preserve">
-    <value>Медленный</value>
-  </data>
-  <data name="SpeedServerTips" xml:space="preserve">
-    <value>Примечание. Эта функция зависит от глобального прокси-сервера HTTP. После тестирования вручную настройте глобальный прокси-сервер HTTP и активный узел.</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC не удалось запустить. Пожалуйста, запустите эту программу от имени администратора.</value>

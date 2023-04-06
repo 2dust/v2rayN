@@ -421,6 +421,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 More urls, separated by commas 的本地化字符串。
+        /// </summary>
+        public static string LvMoreUrl {
+            get {
+                return ResourceManager.GetString("LvMoreUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
         public static string LvPort {
@@ -561,15 +570,6 @@ namespace v2rayN.Resx {
         public static string LvUserAgent {
             get {
                 return ResourceManager.GetString("LvUserAgent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Medium 的本地化字符串。
-        /// </summary>
-        public static string MediumFresh {
-            get {
-                return ResourceManager.GetString("MediumFresh", resourceCulture);
             }
         }
         
@@ -1672,15 +1672,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Fast 的本地化字符串。
-        /// </summary>
-        public static string QuickFresh {
-            get {
-                return ResourceManager.GetString("QuickFresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Global hotkey {0} registered failed, reason {1} 的本地化字符串。
         /// </summary>
         public static string RegisterGlobalHotkeyFailed {
@@ -1762,20 +1753,11 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Slow 的本地化字符串。
+        ///   查找类似 {0}:{1}/s↑ | {2}/s↓ 的本地化字符串。
         /// </summary>
-        public static string SlowFresh {
+        public static string SpeedDisplayText {
             get {
-                return ResourceManager.GetString("SlowFresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Note: This feature relies on the Http global proxy. Please manually adjust the Http global proxy and active node after testing. 的本地化字符串。
-        /// </summary>
-        public static string SpeedServerTips {
-            get {
-                return ResourceManager.GetString("SpeedServerTips", resourceCulture);
+                return ResourceManager.GetString("SpeedDisplayText", resourceCulture);
             }
         }
         

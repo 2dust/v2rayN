@@ -228,9 +228,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>جابجایی</value>
   </data>
-  <data name="MediumFresh" xml:space="preserve">
-    <value>متوسط</value>
-  </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>محتوای اشتراک اصلی را پاک کنید</value>
   </data>
@@ -315,9 +312,6 @@
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>لطفا ابتدا سرور را انتخاب کنید</value>
   </data>
-  <data name="QuickFresh" xml:space="preserve">
-    <value>سریع</value>
-  </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
   </data>
@@ -329,12 +323,6 @@
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>The server configuration file is saved at: {0}</value>
-  </data>
-  <data name="SlowFresh" xml:space="preserve">
-    <value>آهسته. تدریجی</value>
-  </data>
-  <data name="SpeedServerTips" xml:space="preserve">
-    <value>توجه: این ویژگی به پروکسی جهانی Http متکی است. لطفاً پس از آزمایش، پراکسی جهانی Http و گره فعال را به صورت دستی تنظیم کنید.</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC شروع نشد. لطفا این برنامه را به عنوان Administrator اجرا کنید.</value>

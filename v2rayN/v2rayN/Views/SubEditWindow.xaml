@@ -23,6 +23,14 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <ScrollViewer
         materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True"
         HorizontalScrollBarVisibility="Auto"
@@ -43,6 +51,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -91,6 +100,31 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}"
                     TextWrapping="Wrap" />
+
+                <materialDesign:PopupBox
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    StaysOpen="True"
+                    Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                    <StackPanel>
+                        <TextBlock
+                            Margin="4"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.LvMoreUrl}" />
+                        <TextBox
+                            x:Name="txtMoreUrl"
+                            Width="400"
+                            Margin="4"
+                            VerticalAlignment="Top"
+                            materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
+                            AcceptsReturn="True"
+                            MinLines="4"
+                            Style="{StaticResource MyOutlinedTextBox}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </materialDesign:PopupBox>
 
                 <TextBlock
                     Grid.Row="3"

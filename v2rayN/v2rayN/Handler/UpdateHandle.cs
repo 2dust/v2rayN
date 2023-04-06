@@ -1,4 +1,5 @@
-﻿using Splat;
+﻿using DynamicData;
+using Splat;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -163,16 +164,6 @@ namespace v2rayN.Handler
 
             Task.Run(async () =>
             {
-                //Turn off system proxy
-                //bool bSysProxyType = false;
-                //if (!blProxy && config.sysProxyType == ESysProxyType.ForcedChange)
-                //{
-                //    bSysProxyType = true;
-                //    config.sysProxyType = ESysProxyType.ForcedClear;
-                //    SysProxyHandle.UpdateSysProxy(config, false);
-                //    Thread.Sleep(3000);
-                //}
-
                 foreach (var item in subItem)
                 {
                     string id = item.id.TrimEx();
@@ -196,14 +187,53 @@ namespace v2rayN.Handler
                         _updateFunc(false, $"{hashCode}{args.GetException().Message}");
                     };
 
-                    //idn to idc
-                    url = Utils.GetPunycode(url);
-
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
+
+                    //one url
+                    url = Utils.GetPunycode(url);
                     var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
                     {
                         result = await downloadHandle.TryDownloadString(url, false, userAgent);
+                    }
+
+                    //more url
+                    if (!Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
+                    {
+                        if (!Utils.IsNullOrEmpty(result) && Utils.IsBase64String(result))
+                        {
+                            result = Utils.Base64Decode(result);
+                        }
+
+                        var lstUrl = new List<string>
+                        {
+                            item.moreUrl.TrimEx().Split(",")
+                        };
+                        foreach (var it in lstUrl)
+                        {
+                            var url2 = Utils.GetPunycode(it);
+                            if (Utils.IsNullOrEmpty(url2))
+                            {
+                                continue;
+                            }
+
+                            var result2 = await downloadHandle.TryDownloadString(url2, blProxy, userAgent);
+                            if (blProxy && Utils.IsNullOrEmpty(result2))
+                            {
+                                result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
+                            }
+                            if (!Utils.IsNullOrEmpty(result2))
+                            {
+                                if (Utils.IsBase64String(result2))
+                                {
+                                    result += Utils.Base64Decode(result2);
+                                }
+                                else
+                                {
+                                    result += result2;
+                                }
+                            }
+                        }
                     }
 
                     if (Utils.IsNullOrEmpty(result))
@@ -231,17 +261,11 @@ namespace v2rayN.Handler
                     }
                     _updateFunc(false, "-------------------------------------------------------");
                 }
-                ////restore system proxy
-                //if (bSysProxyType)
-                //{
-                //    config.sysProxyType = ESysProxyType.ForcedChange;
-                //    SysProxyHandle.UpdateSysProxy(config, false);
-                //}
+
                 _updateFunc(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
 
             });
         }
-
 
         public void UpdateGeoFile(string geoName, Config config, Action<bool, string> update)
         {

@@ -38,7 +38,7 @@ namespace v2rayN
                 Current.Shutdown();
                 Environment.Exit(0);
                 return;
-            }          
+            }
 
             Global.processJob = new Job();
 

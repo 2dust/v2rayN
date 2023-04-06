@@ -6,45 +6,20 @@ namespace v2rayN.Mode
     public class SubItem
     {
         [PrimaryKey]
-        public string id
-        {
-            get; set;
-        }
+        public string id { get; set; }
 
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string remarks
-        {
-            get; set;
-        }
+        public string remarks { get; set; }
 
-        /// <summary>
-        /// url
-        /// </summary>
-        public string url
-        {
-            get; set;
-        }
+        public string url { get; set; }
 
-        /// <summary>
-        /// enable
-        /// </summary>
+        public string moreUrl { get; set; }
+
         public bool enabled { get; set; } = true;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string userAgent
-        {
-            get; set;
-        } = string.Empty;
+        public string userAgent { get; set; } = string.Empty;
 
+        public int sort { get; set; }
 
-        public int sort
-        {
-            get; set;
-        }
         public string filter { get; set; }
 
     }

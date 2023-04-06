@@ -228,9 +228,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Transport</value>
   </data>
-  <data name="MediumFresh" xml:space="preserve">
-    <value>Medium</value>
-  </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>Clear original subscription content</value>
   </data>
@@ -315,9 +312,6 @@
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>Please select the server first</value>
   </data>
-  <data name="QuickFresh" xml:space="preserve">
-    <value>Fast</value>
-  </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
   </data>
@@ -329,12 +323,6 @@
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>The server configuration file is saved at: {0}</value>
-  </data>
-  <data name="SlowFresh" xml:space="preserve">
-    <value>Slow</value>
-  </data>
-  <data name="SpeedServerTips" xml:space="preserve">
-    <value>Note: This feature relies on the Http global proxy. Please manually adjust the Http global proxy and active node after testing.</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC failed to start. Please run this program as Administrator.</value>
@@ -1155,5 +1143,11 @@
   </data>
   <data name="menuRebootAsAdmin" xml:space="preserve">
     <value>Reboot as administrator</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>More urls, separated by commas</value>
+  </data>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0}:{1}/s↑ | {2}/s↓</value>
   </data>
 </root>

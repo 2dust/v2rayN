@@ -62,6 +62,7 @@ namespace v2rayN.ViewModels
             {
                 item.remarks = SelectedSource.remarks;
                 item.url = SelectedSource.url;
+                item.moreUrl = SelectedSource.moreUrl;
                 item.enabled = SelectedSource.enabled;
                 item.userAgent = SelectedSource.userAgent;
                 item.sort = SelectedSource.sort;

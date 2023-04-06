@@ -429,6 +429,11 @@ namespace v2rayN
                 BitmapSizeOptions.FromEmptyOptions());
         }
 
+        /// <summary>
+        /// idn to idc
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string GetPunycode(string url)
         {
             if (string.IsNullOrWhiteSpace(url))

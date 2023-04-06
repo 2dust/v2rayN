@@ -228,9 +228,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>传输协议</value>
   </data>
-  <data name="MediumFresh" xml:space="preserve">
-    <value>中等</value>
-  </data>
   <data name="MsgClearSubscription" xml:space="preserve">
     <value>清除原订阅内容</value>
   </data>
@@ -315,9 +312,6 @@
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>请先选择服务器</value>
   </data>
-  <data name="QuickFresh" xml:space="preserve">
-    <value>快</value>
-  </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>服务器去重完成。原数量: {0}，现数量: {1}</value>
   </data>
@@ -329,12 +323,6 @@
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>服务端配置文件保存在:{0}</value>
-  </data>
-  <data name="SlowFresh" xml:space="preserve">
-    <value>慢</value>
-  </data>
-  <data name="SpeedServerTips" xml:space="preserve">
-    <value>注意：此功能依赖Http全局代理!测试完成后,请手工调整Http全局代理和活动节点。</value>
   </data>
   <data name="StartPacFailed" xml:space="preserve">
     <value>PAC服务启动失败,请用管理员启动</value>
@@ -1155,5 +1143,8 @@
   </data>
   <data name="menuRebootAsAdmin" xml:space="preserve">
     <value>以管理员身份重启</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>更多地址(url)，用逗号隔开</value>
   </data>
 </root>
