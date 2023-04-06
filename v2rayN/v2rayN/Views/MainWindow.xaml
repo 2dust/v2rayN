@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
-    xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="v2rayN"
     Width="900"
@@ -157,6 +157,10 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
                                 <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuRebootAsAdmin"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuRebootAsAdmin}" />
                                 <MenuItem
                                     x:Name="menuSettingsSetUWP"
                                     Height="{StaticResource MenuItemHeight}"
