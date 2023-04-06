@@ -1145,6 +1145,6 @@
     <value>以管理员身份重启</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>更多地址(url)，用逗号隔开</value>
+    <value>更多地址(url)，以小写逗号分隔</value>
   </data>
 </root>
