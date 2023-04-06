@@ -398,13 +398,13 @@
     <value>*grpc serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host中间逗号(,)隔开</value>
+    <value>*http host中间逗号(,)分隔</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
     <value>*ws host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host中间逗号(,)隔开</value>
+    <value>*h2 host中间逗号(,)分隔</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC 加密方式</value>
@@ -821,7 +821,7 @@
     <value>认证密码</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自定义DNS(可多个,用逗号(,)隔开)</value>
+    <value>自定义DNS(可多个,用逗号(,)分隔)</value>
   </data>
   <data name="TbSettingsSaveTip" xml:space="preserve">
     <value>修改以下参数后，点击保存才生效</value>
@@ -1145,6 +1145,6 @@
     <value>以管理员身份重启</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>更多地址(url)，用逗号隔开</value>
+    <value>更多地址(url)，用逗号(,)分隔</value>
   </data>
 </root>
