@@ -1145,7 +1145,7 @@
     <value>Reboot as administrator</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>More urls, separated by commas</value>
+    <value>More urls, separated by lowercase commas</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0}:{1}/s↑ | {2}/s↓</value>
