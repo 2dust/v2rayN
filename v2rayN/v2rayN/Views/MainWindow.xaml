@@ -649,7 +649,7 @@
                                 Width="150"
                                 Binding="{Binding remarks}"
                                 ExName="remarks"
-                                Header="{x:Static resx:ResUI.LvAlias}" />
+                                Header="{x:Static resx:ResUI.LvRemarks}" />
                             <base:MyDGTextColumn
                                 Width="120"
                                 Binding="{Binding address}"

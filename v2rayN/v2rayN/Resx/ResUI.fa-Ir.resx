@@ -195,9 +195,6 @@
   <data name="LvAddress" xml:space="preserve">
     <value>آدرس</value>
   </data>
-  <data name="LvAlias" xml:space="preserve">
-    <value>Alias</value>
-  </data>
   <data name="LvEncryptionMethod" xml:space="preserve">
     <value>امنیت</value>
   </data>
@@ -209,9 +206,6 @@
   </data>
   <data name="LvSubscription" xml:space="preserve">
     <value>گروه فرعی</value>
-  </data>
-  <data name="LvTestResults" xml:space="preserve">
-    <value>نتایج تست</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
     <value> ترافیک دانلود امروز</value>
@@ -243,26 +237,14 @@
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>هیچ اشتراک معتبری تنظیم نشده است</value>
   </data>
-  <data name="MsgPACUpdateFailed" xml:space="preserve">
-    <value>به روز رسانی PAC ناموفق بود</value>
-  </data>
-  <data name="MsgPACUpdateSuccessfully" xml:space="preserve">
-    <value>به روز رسانی PAC با موفقیت انجام شد</value>
-  </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
     <value>Resolve {0} successfully</value>
-  </data>
-  <data name="MsgSimplifyPAC" xml:space="preserve">
-    <value>Simplify PAC Success</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>شروع به دریافت اشتراک شد</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
     <value>شروع بروزرسانی {0}...</value>
-  </data>
-  <data name="MsgStartUpdatingPAC" xml:space="preserve">
-    <value>شروع بروزرسانی PAC...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>محتوای اشتراک نامعتبر است</value>
@@ -281,9 +263,6 @@
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
     <value>هسته با موفقیت بروزرسانی شد! راه اندازی مجدد سرویس...</value>
-  </data>
-  <data name="NeedHttpGlobalProxy" xml:space="preserve">
-    <value> This feature relies on the Http global proxy, please set it correctly first.</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
     <value>Non-VMess or ss protocol</value>
@@ -323,9 +302,6 @@
   </data>
   <data name="SaveServerConfigurationIn" xml:space="preserve">
     <value>The server configuration file is saved at: {0}</value>
-  </data>
-  <data name="StartPacFailed" xml:space="preserve">
-    <value>PAC شروع نشد. لطفا این برنامه را به عنوان Administrator اجرا کنید.</value>
   </data>
   <data name="StartService" xml:space="preserve">
     <value>Start service ({0})...</value>
@@ -459,9 +435,6 @@
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
     <value>فیلتر سرورها</value>
-  </data>
-  <data name="NetFrameworkRequirementsTip" xml:space="preserve">
-    <value>استفاده معمولی از این نسخه به .NET Framework 4.8 نیاز دارد</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>بررسی بروزرسانی</value>
@@ -751,9 +724,6 @@
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
     <value>Auto hide startup</value>
   </data>
-  <data name="TbSettingsAutoTest" xml:space="preserve">
-    <value>فاصله تست تأخیر خودکار (دقیقه)</value>
-  </data>
   <data name="TbSettingsAutoUpdate" xml:space="preserve">
     <value>فاصله به روز رسانی خودکار اشتراک ها (ساعت)</value>
   </data>
@@ -796,9 +766,6 @@
   <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
     <value>هنگام به‌روزرسانی هسته، فایل‌های Geo را نادیده بگیرید</value>
   </data>
-  <data name="TbSettingsIpv6" xml:space="preserve">
-    <value>IPv6 را فعال کنید</value>
-  </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>Keep older when deduplication</value>
   </data>
@@ -814,17 +781,11 @@
   <data name="TbSettingsN" xml:space="preserve">
     <value>تنظیمات v2rayN</value>
   </data>
-  <data name="TbSettingsPacListenPort" xml:space="preserve">
-    <value>Pac پورت درحال شنود</value>
-  </data>
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Auth pass</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
     <value>سفارشی DNS (multiple, separated by commas (,))</value>
-  </data>
-  <data name="TbSettingsSaveTip" xml:space="preserve">
-    <value>After modifying the following parameters, click Save to take effect</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Set Win10 UWP Loopback</value>

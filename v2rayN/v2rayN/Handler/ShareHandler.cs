@@ -49,7 +49,7 @@ namespace v2rayN.Handler
             VmessQRCode vmessQRCode = new()
             {
                 v = item.configVersion.ToString(),
-                ps = item.remarks.TrimEx(), //备注也许很长 ;
+                ps = item.remarks.TrimEx(),
                 add = item.address,
                 port = item.port.ToString(),
                 id = item.id,

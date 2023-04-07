@@ -301,7 +301,7 @@
             get; set;
         }
         /// <summary>
-        /// 备注或别名
+        /// 
         /// </summary>
         public string remarks
         {

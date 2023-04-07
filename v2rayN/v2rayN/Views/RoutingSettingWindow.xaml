@@ -202,7 +202,7 @@
                             <DataGridTextColumn
                                 Width="200"
                                 Binding="{Binding remarks}"
-                                Header="{x:Static resx:ResUI.LvAlias}" />
+                                Header="{x:Static resx:ResUI.LvRemarks}" />
                             <DataGridTextColumn
                                 Width="60"
                                 Binding="{Binding ruleNum}"
