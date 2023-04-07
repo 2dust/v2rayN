@@ -202,6 +202,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.NUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.NUrl + "/download/{0}/v2rayN.zip",
                 coreDownloadUrl64 = Global.NUrl + "/download/{0}/v2rayN.zip",
+                coreDownloadUrlArm64= Global.NUrl + "/download/{0}/v2rayN.zip"
             });
 
             coreInfos.Add(new CoreInfo
@@ -213,6 +214,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrlArm64= Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
                 versionArg = "-version",
                 redirectInfo = true,
@@ -227,6 +229,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.SagerNetCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrlArm64 = Global.SagerNetCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
                 versionArg = "version",
                 redirectInfo = true,
@@ -241,6 +244,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrlArm64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
                 versionArg = "version",
                 redirectInfo = true,
@@ -255,6 +259,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.xrayCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
+                coreDownloadUrlArm64 = Global.xrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
                 match = "Xray",
                 versionArg = "-version",
                 redirectInfo = true,
@@ -269,6 +274,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.clashCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.clashCoreUrl + "/download/{0}/clash-windows-386-{0}.zip",
                 coreDownloadUrl64 = Global.clashCoreUrl + "/download/{0}/clash-windows-amd64-{0}.zip",
+                coreDownloadUrlArm64 = Global.clashCoreUrl + "/download/{0}/clash-windows-arm64-{0}.zip",
                 match = "v",
                 versionArg = "-v",
                 redirectInfo = true,
@@ -283,6 +289,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.clashMetaCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-386-{0}.zip",
                 coreDownloadUrl64 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-amd64-compatible-{0}.zip",
+                coreDownloadUrlArm64 = Global.clashMetaCoreUrl + "/download/{0}/Clash.Meta-windows-arm64-{0}.zip",
                 match = "v",
                 versionArg = "-v",
                 redirectInfo = true,
@@ -297,6 +304,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.hysteriaCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-386.exe",
                 coreDownloadUrl64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-amd64.exe",
+                coreDownloadUrlArm64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-arm64.exe",
                 redirectInfo = true,
             });
 
