@@ -466,7 +466,7 @@ namespace v2rayN.Views
             _config.uiItem.mainHeight = this.Height;
 
             List<ColumnItem> lvColumnItem = new();
-            for (int k = 1; k < lstProfiles.Columns.Count; k++)
+            for (int k = 0; k < lstProfiles.Columns.Count; k++)
             {
                 var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
                 lvColumnItem.Add(new()
