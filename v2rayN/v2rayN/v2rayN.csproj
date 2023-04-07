@@ -14,7 +14,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Downloader" Version="3.0.4" />		
+		<PackageReference Include="Downloader" Version="3.0.4" />
+		<PackageReference Include="Lierda.WPFHelper" Version="1.0.3" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
 		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.108" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

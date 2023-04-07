@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Lierda.WPFHelper;
+using System.Windows;
 using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -13,6 +14,7 @@ namespace v2rayN
     {
         public static EventWaitHandle ProgramStarted;
         private static Config _config;
+        LierdaCracker lierdaCracker=new LierdaCracker();
 
         public App()
         {
@@ -28,6 +30,7 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            lierdaCracker.Cracker(30); //内存回收，每30秒回收一次
             Global.ExePathKey = Utils.GetMD5(Utils.GetExePath());
 
             var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
