@@ -439,7 +439,7 @@ namespace v2rayN.Views
                     var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
                     if (item2.ExName == item.Name)
                     {
-                        if (item.Width <= 0)
+                        if (item.Width < 0)
                         {
                             item2.Visibility = Visibility.Hidden;
                         }
