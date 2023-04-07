@@ -466,6 +466,12 @@ namespace v2rayN.Handler
                             {
                                 url = string.Format(coreInfo.coreDownloadUrl32, version);
                             }
+
+                            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                            {
+                                url = string.Format(coreInfo.coreDownloadUrlArm64, version);
+                            }
+
                             break;
                         }
                     case ECoreType.v2rayN:
