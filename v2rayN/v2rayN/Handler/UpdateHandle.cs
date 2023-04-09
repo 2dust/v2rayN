@@ -2,6 +2,7 @@
 using Splat;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -443,6 +444,12 @@ namespace v2rayN.Handler
                             curVersion = "v" + getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);
                             string osBit = Environment.Is64BitProcess ? "64" : "32";
+
+                            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                            {
+                                osBit = "arm64-v8a";
+                            }
+
                             url = string.Format(coreInfo.coreDownloadUrl64, version, osBit);
                             break;
                         }
@@ -459,6 +466,12 @@ namespace v2rayN.Handler
                             {
                                 url = string.Format(coreInfo.coreDownloadUrl32, version);
                             }
+
+                            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                            {
+                                url = string.Format(coreInfo.coreDownloadUrlArm64, version);
+                            }
+
                             break;
                         }
                     case ECoreType.v2rayN:
