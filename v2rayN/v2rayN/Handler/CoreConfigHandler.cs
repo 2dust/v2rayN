@@ -456,14 +456,8 @@ namespace v2rayN.Handler
 
                     boundStreamSettings(node, "out", outbound.streamSettings);
 
-                    if (node.streamSecurity == Global.StreamSecurityReality)
-                    {
-                        usersItem.flow = node.flow;
-
-                        outbound.mux.enabled = false;
-                        outbound.mux.concurrency = -1;
-                    }
-                    else if (node.streamSecurity == Global.StreamSecurity)
+                    if (node.streamSecurity == Global.StreamSecurityReality
+                        || node.streamSecurity == Global.StreamSecurity)
                     {
                         if (!Utils.IsNullOrEmpty(node.flow))
                         {

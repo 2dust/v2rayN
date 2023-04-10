@@ -797,7 +797,7 @@ namespace v2rayN.Handler
 
             if (!Global.flows.Contains(profileItem.flow))
             {
-                return -1;
+                profileItem.flow = Global.flows.First();
             }
 
             AddServerCommon(ref config, profileItem, toFile);
