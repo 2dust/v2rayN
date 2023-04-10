@@ -724,9 +724,6 @@
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
     <value>启动后隐藏窗口</value>
   </data>
-  <data name="TbSettingsAutoUpdate" xml:space="preserve">
-    <value>自动更新订阅的间隔(单位小时)</value>
-  </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>自动更新Geo文件的间隔(单位小时)</value>
   </data>
@@ -1107,5 +1104,8 @@
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
     <value>更多地址(url)，用逗号(,)分隔</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>自动更新间隔(分钟)</value>
   </data>
 </root>

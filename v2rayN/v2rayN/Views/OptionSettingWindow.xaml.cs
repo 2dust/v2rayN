@@ -160,7 +160,6 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.EnableDragDropSort, v => v.togEnableDragDropSort.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.autoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.autoUpdateSubInterval, v => v.txtautoUpdateSubInterval.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.trayMenuServersLimit, v => v.txttrayMenuServersLimit.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.currentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.Text).DisposeWith(disposables);

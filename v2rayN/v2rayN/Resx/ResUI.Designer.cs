@@ -367,6 +367,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Automatic update interval(minutes) 的本地化字符串。
+        /// </summary>
+        public static string LvAutoUpdateInterval {
+            get {
+                return ResourceManager.GetString("LvAutoUpdateInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Count 的本地化字符串。
         /// </summary>
         public static string LvCount {
@@ -2254,15 +2263,6 @@ namespace v2rayN.Resx {
         public static string TbSettingsAutoHideStartup {
             get {
                 return ResourceManager.GetString("TbSettingsAutoHideStartup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Automatic update interval of subscriptions (hours) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsAutoUpdate {
-            get {
-                return ResourceManager.GetString("TbSettingsAutoUpdate", resourceCulture);
             }
         }
         

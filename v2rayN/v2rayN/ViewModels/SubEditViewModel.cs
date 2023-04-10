@@ -64,6 +64,7 @@ namespace v2rayN.ViewModels
                 item.url = SelectedSource.url;
                 item.moreUrl = SelectedSource.moreUrl;
                 item.enabled = SelectedSource.enabled;
+                item.autoUpdateInterval = SelectedSource.autoUpdateInterval;
                 item.userAgent = SelectedSource.userAgent;
                 item.sort = SelectedSource.sort;
                 item.filter = SelectedSource.filter;

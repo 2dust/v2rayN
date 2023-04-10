@@ -941,7 +941,11 @@ namespace v2rayN.Handler
             //Check for duplicate indexId
             List<string>? lstDbIndexId = null;
             List<ProfileItem> lstAdd = new();
-            string[] arrData = clipboardData.Split(Environment.NewLine.ToCharArray());
+            var arrData = clipboardData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty());
+            if (isSub)
+            {
+                arrData = arrData.Distinct();
+            }
             foreach (string str in arrData)
             {
                 //maybe sub

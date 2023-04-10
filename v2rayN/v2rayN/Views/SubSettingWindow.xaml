@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSubSetting}"
-    Width="700"
+    Width="800"
     Height="600"
     x:TypeArguments="vms:SubSettingViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -104,7 +104,7 @@
                         Binding="{Binding remarks}"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <DataGridTextColumn
-                        Width="200"
+                        Width="150"
                         Binding="{Binding url}"
                         Header="{x:Static resx:ResUI.LvUrl}" />
                     <DataGridTextColumn
@@ -112,7 +112,11 @@
                         Binding="{Binding enabled}"
                         Header="{x:Static resx:ResUI.LvEnabled}" />
                     <DataGridTextColumn
-                        Width="200"
+                        Width="150"
+                        Binding="{Binding autoUpdateInterval}"
+                        Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                    <DataGridTextColumn
+                        Width="150"
                         Binding="{Binding userAgent}"
                         Header="{x:Static resx:ResUI.LvUserAgent}" />
                     <DataGridTextColumn

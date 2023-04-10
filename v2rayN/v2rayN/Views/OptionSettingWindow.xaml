@@ -669,22 +669,6 @@
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
-                            Grid.Row="13"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsAutoUpdate}" />
-                        <TextBox
-                            x:Name="txtautoUpdateSubInterval"
-                            Grid.Row="13"
-                            Grid.Column="1"
-                            Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource DefTextBox}" />
-
-                        <TextBlock
                             Grid.Row="14"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"

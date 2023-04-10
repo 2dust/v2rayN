@@ -60,7 +60,6 @@ namespace v2rayN.ViewModels
         [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public bool DoubleClick2Activate { get; set; }
         [Reactive] public int autoUpdateInterval { get; set; }
-        [Reactive] public int autoUpdateSubInterval { get; set; }
         [Reactive] public int trayMenuServersLimit { get; set; }
         [Reactive] public string currentFontFamily { get; set; }
         [Reactive] public int SpeedTestTimeout { get; set; }
@@ -156,7 +155,6 @@ namespace v2rayN.ViewModels
             EnableDragDropSort = _config.uiItem.enableDragDropSort;
             DoubleClick2Activate = _config.uiItem.doubleClick2Activate;
             autoUpdateInterval = _config.guiItem.autoUpdateInterval;
-            autoUpdateSubInterval = _config.guiItem.autoUpdateSubInterval;
             trayMenuServersLimit = _config.guiItem.trayMenuServersLimit;
             currentFontFamily = _config.uiItem.currentFontFamily;
             SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
@@ -333,7 +331,6 @@ namespace v2rayN.ViewModels
             _config.guiItem.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.uiItem.autoHideStartup = AutoHideStartup;
             _config.guiItem.autoUpdateInterval = autoUpdateInterval;
-            _config.guiItem.autoUpdateSubInterval = autoUpdateSubInterval;
             _config.guiItem.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
             _config.uiItem.enableDragDropSort = EnableDragDropSort;
             _config.uiItem.doubleClick2Activate = DoubleClick2Activate;

@@ -724,9 +724,6 @@
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
     <value>Auto hide startup</value>
   </data>
-  <data name="TbSettingsAutoUpdate" xml:space="preserve">
-    <value>Automatic update interval of subscriptions (hours)</value>
-  </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval of and Geo (hours)</value>
   </data>
@@ -1110,5 +1107,8 @@
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0}:{1}/s↑ | {2}/s↓</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Automatic update interval(minutes)</value>
   </data>
 </root>

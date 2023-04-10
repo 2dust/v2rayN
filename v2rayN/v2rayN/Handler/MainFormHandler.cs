@@ -10,15 +10,7 @@ namespace v2rayN.Handler
 {
     public sealed class MainFormHandler
     {
-        private static readonly Lazy<MainFormHandler> instance = new(() => new());
-        //Action<bool, string> _updateUI;
-
-        //private DownloadHandle downloadHandle2;
-        //private Config _config;
-        //private V2rayHandler _v2rayHandler;
-        //private List<int> _selecteds;
-        //private Thread _workThread;
-        //Action<int, string> _updateFunc;
+        private static readonly Lazy<MainFormHandler> instance = new(() => new());        
         public static MainFormHandler Instance => instance.Value;
 
         public Icon GetNotifyIcon(Config config)
@@ -285,37 +277,52 @@ namespace v2rayN.Handler
 
         public void UpdateTask(Config config, Action<bool, string> update)
         {
-            Task.Run(() => UpdateTaskRun(config, update));
+            Task.Run(() => UpdateTaskRunSubscription(config, update));
+            Task.Run(() => UpdateTaskRunGeo(config, update));
         }
 
-        private void UpdateTaskRun(Config config, Action<bool, string> update)
+        private void UpdateTaskRunSubscription(Config config, Action<bool, string> update)
         {
-            var autoUpdateSubTime = DateTime.Now;
+            Thread.Sleep(60000);
+            Utils.SaveLog("UpdateTaskRunSubscription");
+
+            var updateHandle = new UpdateHandle();
+            while (true)
+            {
+                var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+                var lstSubs = LazyConfig.Instance.SubItems()
+                            .Where(t => t.autoUpdateInterval > 0)
+                            .Where(t => updateTime - t.updateTime >= t.autoUpdateInterval * 60)
+                            .ToList();
+
+                foreach (var item in lstSubs)
+                {
+                    updateHandle.UpdateSubscriptionProcess(config, item.id, true, (bool success, string msg) =>
+                    {
+                        update(success, msg);
+                        if (success)
+                            Utils.SaveLog("subscription" + msg);
+                    });
+                    item.updateTime = updateTime;
+                    ConfigHandler.AddSubItem(ref config, item);
+
+                    Thread.Sleep(5000);
+                }
+                Thread.Sleep(60000);
+            }
+        }
+
+        private void UpdateTaskRunGeo(Config config, Action<bool, string> update)
+        {
             var autoUpdateGeoTime = DateTime.Now;
 
-            Thread.Sleep(60000);
-            Utils.SaveLog("UpdateTaskRun");
+            Thread.Sleep(1000 * 120);
+            Utils.SaveLog("UpdateTaskRunGeo");
 
             var updateHandle = new UpdateHandle();
             while (true)
             {
                 var dtNow = DateTime.Now;
-
-                if (config.guiItem.autoUpdateSubInterval > 0)
-                {
-                    if ((dtNow - autoUpdateSubTime).Hours % config.guiItem.autoUpdateSubInterval == 0)
-                    {
-                        updateHandle.UpdateSubscriptionProcess(config, "", true, (bool success, string msg) =>
-                        {
-                            update(success, msg);
-                            if (success)
-                                Utils.SaveLog("subscription" + msg);
-                        });
-                        autoUpdateSubTime = dtNow;
-                    }
-                    Thread.Sleep(60000);
-                }
-
                 if (config.guiItem.autoUpdateInterval > 0)
                 {
                     if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)

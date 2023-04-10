@@ -724,9 +724,6 @@
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
     <value>Auto hide startup</value>
   </data>
-  <data name="TbSettingsAutoUpdate" xml:space="preserve">
-    <value>فاصله به روز رسانی خودکار اشتراک ها (ساعت)</value>
-  </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>فاصله به روز رسانی خودکار و Geo (ساعت)</value>
   </data>

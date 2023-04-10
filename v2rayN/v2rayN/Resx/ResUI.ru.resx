@@ -724,9 +724,6 @@
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
     <value>Auto hide startup</value>
   </data>
-  <data name="TbSettingsAutoUpdate" xml:space="preserve">
-    <value>Интервал автоматического обновления подписок в часах</value>
-  </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Интервал автоматического обновления Geo в часах</value>
   </data>
