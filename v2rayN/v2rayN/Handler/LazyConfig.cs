@@ -200,9 +200,9 @@ namespace v2rayN.Handler
                 coreType = ECoreType.v2rayN,
                 coreUrl = Global.NUrl,
                 coreReleaseApiUrl = Global.NUrl.Replace(Global.githubUrl, Global.githubApiUrl),
-                coreDownloadUrl32 = Global.NUrl + "/download/{0}/v2rayN.zip",
+                coreDownloadUrl32 = Global.NUrl + "/download/{0}/v2rayN-32.zip",
                 coreDownloadUrl64 = Global.NUrl + "/download/{0}/v2rayN.zip",
-                coreDownloadUrlArm64= Global.NUrl + "/download/{0}/v2rayN.zip"
+                coreDownloadUrlArm64 = Global.NUrl + "/download/{0}/v2rayN-arm64.zip"
             });
 
             coreInfos.Add(new CoreInfo
@@ -214,7 +214,7 @@ namespace v2rayN.Handler
                 coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 coreDownloadUrl64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
-                coreDownloadUrlArm64= Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
+                coreDownloadUrlArm64 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",
                 match = "V2Ray",
                 versionArg = "-version",
                 redirectInfo = true,

@@ -443,11 +443,18 @@ namespace v2rayN.Handler
                         {
                             curVersion = "v" + getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);
-                            string osBit = Environment.Is64BitProcess ? "64" : "32";
-
-                            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                            string osBit = "64";
+                            switch (RuntimeInformation.ProcessArchitecture)
                             {
-                                osBit = "arm64-v8a";
+                                case Architecture.Arm64:
+                                    osBit = "arm64-v8a";
+                                    break;
+                                case Architecture.X86:
+                                    osBit = "32";
+                                    break;
+                                default:
+                                    osBit = "64";
+                                    break;
                             }
 
                             url = string.Format(coreInfo.coreDownloadUrl64, version, osBit);
@@ -458,27 +465,36 @@ namespace v2rayN.Handler
                         {
                             curVersion = getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, curVersion);
-                            if (Environment.Is64BitProcess)
+                            switch (RuntimeInformation.ProcessArchitecture)
                             {
-                                url = string.Format(coreInfo.coreDownloadUrl64, version);
+                                case Architecture.Arm64:
+                                    url = string.Format(coreInfo.coreDownloadUrlArm64, version);
+                                    break;
+                                case Architecture.X86:
+                                    url = string.Format(coreInfo.coreDownloadUrl32, version);
+                                    break;
+                                default:
+                                    url = string.Format(coreInfo.coreDownloadUrl64, version);
+                                    break;
                             }
-                            else
-                            {
-                                url = string.Format(coreInfo.coreDownloadUrl32, version);
-                            }
-
-                            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
-                            {
-                                url = string.Format(coreInfo.coreDownloadUrlArm64, version);
-                            }
-
                             break;
                         }
                     case ECoreType.v2rayN:
                         {
                             curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
                             message = string.Format(ResUI.IsLatestN, curVersion);
-                            url = string.Format(coreInfo.coreDownloadUrl64, version);
+                            switch (RuntimeInformation.ProcessArchitecture)
+                            {
+                                case Architecture.Arm64:
+                                    url = string.Format(coreInfo.coreDownloadUrlArm64, version);
+                                    break;
+                                case Architecture.X86:
+                                    url = string.Format(coreInfo.coreDownloadUrl32, version);
+                                    break;
+                                default:
+                                    url = string.Format(coreInfo.coreDownloadUrl64, version);
+                                    break;
+                            }
                             break;
                         }
                     default:

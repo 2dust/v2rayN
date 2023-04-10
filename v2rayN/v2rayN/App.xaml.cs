@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -63,6 +64,10 @@ namespace v2rayN
                 Application.Current.Shutdown();
                 Environment.Exit(0);
                 return;
+            }
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X86 && RuntimeInformation.ProcessArchitecture != Architecture.X64)
+            {
+                _config.guiItem.enableStatistics = false;
             }
         }
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
