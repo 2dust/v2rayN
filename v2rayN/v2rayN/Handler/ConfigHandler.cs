@@ -871,8 +871,7 @@ namespace v2rayN.Handler
                 return false;
             }
 
-            return o.configVersion == n.configVersion
-                && o.configType == n.configType
+            return o.configType == n.configType
                 && o.address == n.address
                 && o.port == n.port
                 && o.id == n.id

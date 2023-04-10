@@ -367,23 +367,22 @@ namespace v2rayN
                     if (GBs > 0)
                     {
                         // multi GB
-                        /*ulong TBs = GBs / factor;
+                        long TBs = GBs / factor;
                         if (TBs > 0)
                         {
-                            // 你是魔鬼吗？ 用这么多流量
-                            result = TBs + GBs % factor / (factor + 0.0);
+                            result = TBs + (GBs % factor / (factor + 0.0));
                             unit = "TB";
                             return;
-                        }*/
-                        result = GBs + MBs % factor / (factor + 0.0);
+                        }
+                        result = GBs + (MBs % factor / (factor + 0.0));
                         unit = "GB";
                         return;
                     }
-                    result = MBs + KBs % factor / (factor + 0.0);
+                    result = MBs + (KBs % factor / (factor + 0.0));
                     unit = "MB";
                     return;
                 }
-                result = KBs + amount % factor / (factor + 0.0);
+                result = KBs + (amount % factor / (factor + 0.0));
                 unit = "KB";
                 return;
             }
