@@ -243,7 +243,7 @@ namespace v2rayN.Handler
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
 
-                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
+                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
@@ -294,7 +294,7 @@ namespace v2rayN.Handler
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
-                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (bool success, string msg) =>
+                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)

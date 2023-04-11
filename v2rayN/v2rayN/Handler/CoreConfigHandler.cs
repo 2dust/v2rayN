@@ -828,11 +828,11 @@ namespace v2rayN.Handler
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        private static int GenerateClientCustomConfig(ProfileItem node, string fileName, out string msg)
+        private static int GenerateClientCustomConfig(ProfileItem node, string? fileName, out string msg)
         {
             try
             {
-                if (node == null)
+                if (node == null || fileName is null)
                 {
                     msg = ResUI.CheckServerSettings;
                     return -1;

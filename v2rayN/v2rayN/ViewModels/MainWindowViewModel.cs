@@ -917,8 +917,8 @@ namespace v2rayN.ViewModels
 
         public void AddServerViaClipboard()
         {
-            string clipboardData = Utils.GetClipboardData();
-            int ret = ConfigHandler.AddBatchServers(ref _config, clipboardData, _subId, false);
+            var clipboardData = Utils.GetClipboardData();
+            int ret = ConfigHandler.AddBatchServers(ref _config, clipboardData!, _subId, false);
             if (ret > 0)
             {
                 InitSubscriptionView();

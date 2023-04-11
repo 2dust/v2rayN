@@ -84,7 +84,7 @@ namespace v2rayN
             }
         }
 
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             Utils.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
         }
