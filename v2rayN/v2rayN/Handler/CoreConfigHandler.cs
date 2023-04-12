@@ -910,7 +910,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (node == null)
+                if (node == null
+                    || node.port <= 0)
                 {
                     msg = ResUI.CheckServerSettings;
                     return -1;

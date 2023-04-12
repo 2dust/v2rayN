@@ -463,9 +463,9 @@ namespace v2rayN.Handler
             }
             if (lstProfile.Count > 0)
             {
-                return SetDefaultServerIndex(ref config, lstProfile[0].indexId);
+                return SetDefaultServerIndex(ref config, lstProfile.Where(t => t.port > 0).FirstOrDefault()?.indexId);
             }
-            return SetDefaultServerIndex(ref config, SqliteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).FirstOrDefault());
+            return SetDefaultServerIndex(ref config, SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.port > 0).Select(t => t.indexId).FirstOrDefault());
         }
         public static ProfileItem? GetDefaultServer(ref Config config)
         {
@@ -1017,7 +1017,7 @@ namespace v2rayN.Handler
                     addStatus = AddVlessServer(ref config, profileItem, false);
                 }
 
-                if (addStatus == 0)
+                if (addStatus == 0 && profileItem.port > 0)
                 {
                     countServers++;
                     lstAdd.Add(profileItem);

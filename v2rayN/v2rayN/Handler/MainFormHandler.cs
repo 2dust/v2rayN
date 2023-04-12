@@ -10,7 +10,7 @@ namespace v2rayN.Handler
 {
     public sealed class MainFormHandler
     {
-        private static readonly Lazy<MainFormHandler> instance = new(() => new());        
+        private static readonly Lazy<MainFormHandler> instance = new(() => new());
         public static MainFormHandler Instance => instance.Value;
 
         public Icon GetNotifyIcon(Config config)
