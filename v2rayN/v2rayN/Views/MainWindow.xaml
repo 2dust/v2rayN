@@ -499,6 +499,7 @@
                         GridLinesVisibility="All"
                         HeadersVisibility="All"
                         IsReadOnly="True"
+                        RowHeaderWidth="40"
                         Style="{StaticResource DefDataGrid}">
                         <DataGrid.InputBindings>
                             <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />

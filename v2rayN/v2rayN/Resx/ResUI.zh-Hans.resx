@@ -434,7 +434,7 @@
     <value>本地</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>服务器过滤器</value>
+    <value>服务器过滤器，按回车执行</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>检查更新</value>

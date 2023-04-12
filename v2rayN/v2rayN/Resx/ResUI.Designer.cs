@@ -1411,7 +1411,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Servers Filter 的本地化字符串。
+        ///   查找类似 Servers Filter, press Enter to execute 的本地化字符串。
         /// </summary>
         public static string MsgServerTitle {
             get {

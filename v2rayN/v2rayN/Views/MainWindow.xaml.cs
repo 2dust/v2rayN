@@ -30,10 +30,10 @@ namespace v2rayN.Views
             this.Closing += MainWindow_Closing;
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
             btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
+            txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
-            lstProfiles.RowHeaderWidth = 30;
             if (_config.uiItem.enableDragDropSort)
             {
                 lstProfiles.AllowDrop = true;
@@ -406,6 +406,14 @@ namespace v2rayN.Views
             foreach (var it in lstProfiles.Columns)
             {
                 it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
+        }
+
+        private void TxtServerFilter_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Enter or Key.Return)
+            {
+                ViewModel?.RefreshServers();
             }
         }
         #endregion

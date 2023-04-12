@@ -718,10 +718,13 @@ namespace v2rayN.ViewModels
                 return;
             }
             _serverFilter = ServerFilter;
-            RefreshServers();
+            if (Utils.IsNullOrEmpty(_serverFilter))
+            {
+                RefreshServers();
+            }
         }
 
-        private void RefreshServers()
+        public void RefreshServers()
         {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
 
