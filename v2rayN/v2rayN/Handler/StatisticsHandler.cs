@@ -134,6 +134,8 @@ namespace v2rayN.Handler
 
         private void Init()
         {
+            SqliteHelper.Instance.Execute($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
+
             long ticks = DateTime.Now.Date.Ticks;
             SqliteHelper.Instance.Execute($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
