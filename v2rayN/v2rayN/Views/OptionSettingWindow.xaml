@@ -216,7 +216,7 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
+                            Text="{x:Static resx:ResUI.TbSettingsLogEnabledToFile}" />
                         <ToggleButton
                             x:Name="toglogEnabled"
                             Grid.Row="9"

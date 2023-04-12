@@ -1111,4 +1111,7 @@
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval(minutes)</value>
   </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Enable logging to file</value>
+  </data>
 </root>

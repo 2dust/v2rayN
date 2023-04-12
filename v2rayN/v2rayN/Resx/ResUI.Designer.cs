@@ -2510,6 +2510,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable logging to file 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLogEnabledToFile {
+            get {
+                return ResourceManager.GetString("TbSettingsLogEnabledToFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Log Level 的本地化字符串。
         /// </summary>
         public static string TbSettingsLogLevel {
