@@ -187,18 +187,18 @@
                                     Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding isActive}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                            Width="auto"
-                                            Height="auto"
-                                            Background="{DynamicResource PrimaryHueLightBrush}"
-                                            Visibility="{Binding Path=isActive, Converter={StaticResource BoolToVisConverter}}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
                             <DataGridTextColumn
                                 Width="200"
                                 Binding="{Binding remarks}"

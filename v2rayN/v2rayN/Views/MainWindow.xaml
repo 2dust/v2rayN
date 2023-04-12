@@ -791,7 +791,7 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <Separator />
+                        <Separator x:Name="sepRoutings" />
                         <MenuItem x:Name="menuRoutings" Height="Auto">
                             <MenuItem.Header>
                                 <DockPanel>
