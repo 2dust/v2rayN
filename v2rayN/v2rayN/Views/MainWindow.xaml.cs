@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -225,8 +226,11 @@ namespace v2rayN.Views
 
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
         {
-            e.Cancel = true;
-            ViewModel?.ShowHideWindow(false);
+            if (App.ignoreClosing)
+            {
+                e.Cancel = true;
+                ViewModel?.ShowHideWindow(false);
+            }
         }
 
         private void menuExit_Click(object sender, RoutedEventArgs e)
@@ -605,8 +609,13 @@ namespace v2rayN.Views
             }
         }
 
+
         #endregion
+        private void cmbCurrentLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count != 0 && e.RemovedItems.Count != 0)
+                App.ChangeCulture(new CultureInfo(e.AddedItems[0].ToString()));
 
-
+        }
     }
 }

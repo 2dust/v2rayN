@@ -111,7 +111,7 @@
         };
         public static readonly List<string> allowInsecures = new() { "true", "false", "" };
         public static readonly List<string> domainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
-        public static readonly List<string> Languages = new() { "zh-Hans", "en", "fa-Ir", "ru" };
+        public static readonly List<string> Languages = new() { "zh-Hans", "en", "fa-IR", "ru" };
         public static readonly List<string> alpns = new() { "h2", "http/1.1", "h2,http/1.1", "" };
         public static readonly List<string> LogLevel = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
@@ -129,7 +129,7 @@
         public static Job processJob { get; set; }
         public static bool ShowInTaskbar { get; set; }
         public static string ExePathKey { get; set; }
-
+       
         #endregion
 
     }

@@ -1,9 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using ProtosLib.Statistics;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
 using v2rayN.Handler;
-using v2rayN.Mode;
 using v2rayN.Tool;
+using v2rayN.Views;
 
 namespace v2rayN
 {
@@ -13,8 +15,8 @@ namespace v2rayN
     public partial class App : Application
     {
         public static EventWaitHandle ProgramStarted;
-        private static Config _config;
-
+        private static v2rayN.Mode.Config _config;
+        public static bool ignoreClosing { get; set; } = true;
         public App()
         {
             // Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
@@ -53,6 +55,8 @@ namespace v2rayN
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
 
             base.OnStartup(e);
+            Current.MainWindow = new MainWindow();
+            Current.MainWindow.Show();
         }
 
 
@@ -87,6 +91,23 @@ namespace v2rayN
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             Utils.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
+        }
+
+        public static void ChangeCulture(CultureInfo newCulture)
+        {
+            if (newCulture != null)
+            {
+                Thread.CurrentThread.CurrentCulture = newCulture;
+                Thread.CurrentThread.CurrentUICulture = newCulture;
+                _config.uiItem.currentLanguage = newCulture.Name;
+                var oldWindow = Current.MainWindow;
+                ignoreClosing = false;
+                Current.MainWindow = new MainWindow();
+                oldWindow.Close();
+                ignoreClosing = true;
+                Current.MainWindow.Show();
+
+            }
         }
     }
 }

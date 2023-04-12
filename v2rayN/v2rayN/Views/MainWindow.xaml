@@ -355,6 +355,7 @@
                                         Width="100"
                                         Margin="8"
                                         materialDesign:HintAssist.Hint="Language"
+                                        SelectionChanged="cmbCurrentLanguage_SelectionChanged"
                                         Style="{StaticResource DefComboBox}" />
 
                                 </Grid>
