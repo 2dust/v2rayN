@@ -332,7 +332,13 @@ namespace v2rayN.Handler
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
                 arguments = "run",
                 coreUrl = Global.singboxCoreUrl,
-                redirectInfo = true,
+                redirectInfo = true,                 
+                coreReleaseApiUrl = Global.singboxCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
+                coreDownloadUrl32 = Global.singboxCoreUrl + "/download/{0}/sing-box-{1}-windows-386.zip",
+                coreDownloadUrl64 = Global.singboxCoreUrl + "/download/{0}/sing-box-{1}-windows-amd64.zip",
+                coreDownloadUrlArm64 = Global.singboxCoreUrl + "/download/{0}/sing-box-{1}-windows-arm64.zip",
+                match = "sing-box",
+                versionArg = "version",
             });
         }
 

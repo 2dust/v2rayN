@@ -403,7 +403,10 @@ namespace v2rayN.Handler
                         break;
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
-                        version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
+                        version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value; 
+                        break;
+                    case ECoreType.sing_box:
+                        version = Regex.Match(echo, $"([0-9.]+)").Groups[1].Value;
                         break;
                 }
                 return version;
@@ -468,15 +471,35 @@ namespace v2rayN.Handler
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
                                 case Architecture.Arm64:
-                                    url = string.Format(coreInfo.coreDownloadUrlArm64, version);
+                                    url = coreInfo.coreDownloadUrlArm64;
                                     break;
                                 case Architecture.X86:
-                                    url = string.Format(coreInfo.coreDownloadUrl32, version);
+                                    url = coreInfo.coreDownloadUrl32;
                                     break;
                                 default:
-                                    url = string.Format(coreInfo.coreDownloadUrl64, version);
+                                    url = coreInfo.coreDownloadUrl64;
                                     break;
                             }
+                            url = string.Format(url, version);
+                            break;
+                        }
+                    case ECoreType.sing_box:
+                        {
+                            curVersion = "v" + getCoreVersion(type);
+                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            switch (RuntimeInformation.ProcessArchitecture)
+                            {
+                                case Architecture.Arm64:
+                                    url = coreInfo.coreDownloadUrlArm64;
+                                    break;
+                                case Architecture.X86:
+                                    url = coreInfo.coreDownloadUrl32;
+                                    break;
+                                default:
+                                    url = coreInfo.coreDownloadUrl64;
+                                    break;
+                            }
+                            url = string.Format(url, version, version.Replace("v", ""));
                             break;
                         }
                     case ECoreType.v2rayN:

@@ -133,6 +133,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateClashCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
+        public ReactiveCommand<Unit, Unit> CheckUpdateSingBoxCoreCmd { get; }        
         public ReactiveCommand<Unit, Unit> CheckUpdateGeoCmd { get; }
 
 
@@ -472,6 +473,10 @@ namespace v2rayN.ViewModels
             {
                 CheckUpdateCore(ECoreType.clash_meta);
             });
+            CheckUpdateSingBoxCoreCmd = ReactiveCommand.Create(() =>
+            {
+                CheckUpdateCore(ECoreType.sing_box);
+            });            
             CheckUpdateGeoCmd = ReactiveCommand.Create(() =>
             {
                 CheckUpdateGeo();
