@@ -214,7 +214,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(Utils.ToJson(node));
+                //Utils.SaveLog(Utils.ToJson(node));
                 Utils.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 ShowMsg(true, msg);
