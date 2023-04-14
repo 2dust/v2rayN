@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Grpc.Net.Client;
 using ProtosLib.Statistics;
 using System.Net;
 using System.Net.Sockets;
@@ -7,17 +8,17 @@ using v2rayN.Mode;
 
 namespace v2rayN.Handler
 {
-    class StatisticsHandler
+    internal class StatisticsHandler
     {
         private Mode.Config config_;
-        private Channel channel_;
-        private StatsService.StatsServiceClient client_;
-        private bool exitFlag_;
+        private GrpcChannel _channel;
+        private StatsService.StatsServiceClient _client;
+        private bool _exitFlag;
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
-        Action<ServerSpeedItem> updateFunc_;
+        private Action<ServerSpeedItem> _updateFunc;
 
         public bool Enable
         {
@@ -28,8 +29,8 @@ namespace v2rayN.Handler
         {
             config_ = config;
             Enable = config.guiItem.enableStatistics;
-            updateFunc_ = update;
-            exitFlag_ = false;
+            _updateFunc = update;
+            _exitFlag = false;
 
             Init();
             GrpcInit();
@@ -39,13 +40,12 @@ namespace v2rayN.Handler
 
         private void GrpcInit()
         {
-            if (channel_ == null)
+            if (_channel == null)
             {
                 Global.statePort = GetFreePort();
 
-                channel_ = new Channel($"{Global.Loopback}:{Global.statePort}", ChannelCredentials.Insecure);
-                channel_.ConnectAsync();
-                client_ = new StatsService.StatsServiceClient(channel_);
+                _channel = GrpcChannel.ForAddress($"{Global.httpProtocol}{Global.Loopback}:{Global.statePort}");
+                _client = new StatsService.StatsServiceClient(_channel);
             }
         }
 
@@ -53,8 +53,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                exitFlag_ = true;
-                channel_.ShutdownAsync();
+                _exitFlag = true;
+                //channel_.ShutdownAsync();
             }
             catch (Exception ex)
             {
@@ -62,18 +62,18 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Run()
+        public async void Run()
         {
-            while (!exitFlag_)
+            while (!_exitFlag)
             {
                 try
                 {
-                    if (Enable && channel_.State == ChannelState.Ready)
+                    if (Enable && _channel.State == ConnectivityState.Ready)
                     {
                         QueryStatsResponse? res = null;
                         try
                         {
-                            res = client_.QueryStats(new QueryStatsRequest() { Pattern = "", Reset = true });
+                            res = await _client.QueryStatsAsync(new QueryStatsRequest() { Pattern = "", Reset = true });
                         }
                         catch (Exception ex)
                         {
@@ -99,13 +99,13 @@ namespace v2rayN.Handler
                                 server.todayDown = _serverStatItem.todayDown;
                                 server.totalUp = _serverStatItem.totalUp;
                                 server.totalDown = _serverStatItem.totalDown;
-                                updateFunc_(server);
+                                _updateFunc(server);
                             }
                         }
                     }
                     var sleep = config_.guiItem.statisticsFreshRate < 1 ? 1 : config_.guiItem.statisticsFreshRate;
                     Thread.Sleep(1000 * sleep);
-                    channel_.ConnectAsync();
+                    await _channel.ConnectAsync();
                 }
                 catch
                 {
@@ -182,7 +182,6 @@ namespace v2rayN.Handler
             server = new();
             try
             {
-
                 foreach (Stat stat in source)
                 {
                     string name = stat.Name;

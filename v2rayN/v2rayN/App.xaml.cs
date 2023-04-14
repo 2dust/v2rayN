@@ -65,10 +65,10 @@ namespace v2rayN
                 Environment.Exit(0);
                 return;
             }
-            if (RuntimeInformation.ProcessArchitecture != Architecture.X86 && RuntimeInformation.ProcessArchitecture != Architecture.X64)
-            {
-                _config.guiItem.enableStatistics = false;
-            }
+            //if (RuntimeInformation.ProcessArchitecture != Architecture.X86 && RuntimeInformation.ProcessArchitecture != Architecture.X64)
+            //{
+            //    _config.guiItem.enableStatistics = false;
+            //}
         }
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
