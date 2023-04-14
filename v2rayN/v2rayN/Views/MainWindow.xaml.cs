@@ -93,7 +93,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.menuMoveDown).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
-                //servers ping 
+                //servers ping
                 this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.PingServerCmd, v => v.menuPingServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
@@ -207,7 +207,7 @@ namespace v2rayN.Views
             }
         }
 
-        #region Event 
+        #region Event
 
         private void UpdateViewHandler(EViewAction action)
         {
@@ -248,6 +248,7 @@ namespace v2rayN.Views
         {
             ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
         }
+
         private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)
         {
             //if (e.Row.GetIndex() == 0)
@@ -379,12 +380,12 @@ namespace v2rayN.Views
             }
         }
 
-
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
             StorageUI();
             ViewModel?.ShowHideWindow(false);
         }
+
         private void menuPromotion_Click(object sender, RoutedEventArgs e)
         {
             Utils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
@@ -394,6 +395,7 @@ namespace v2rayN.Views
         {
             ViewModel?.TestServerAvailability();
         }
+
         private void menuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
         {
             Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
@@ -403,6 +405,7 @@ namespace v2rayN.Views
         {
             AutofitColumnWidth();
         }
+
         private void AutofitColumnWidth()
         {
             foreach (var it in lstProfiles.Columns)
@@ -418,9 +421,10 @@ namespace v2rayN.Views
                 ViewModel?.RefreshServers();
             }
         }
-        #endregion
 
-        #region UI          
+        #endregion Event
+
+        #region UI
 
         private void RestoreUI()
         {
@@ -470,6 +474,7 @@ namespace v2rayN.Views
                 colTotalDown.Visibility = Visibility.Hidden;
             }
         }
+
         private void StorageUI()
         {
             _config.uiItem.mainWidth = this.Width;
@@ -506,6 +511,7 @@ namespace v2rayN.Views
                 menuHelp.Items.Add(item);
             }
         }
+
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuItem item)
@@ -514,8 +520,8 @@ namespace v2rayN.Views
             }
         }
 
+        #endregion UI
 
-        #endregion
         #region Drag and Drop
 
         private Point startPoint = new();
@@ -542,12 +548,12 @@ namespace v2rayN.Views
             return null;
         }
 
-
         private void LstProfiles_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Get current mouse position
             startPoint = e.GetPosition(null);
         }
+
         private void LstProfiles_MouseMove(object sender, MouseEventArgs e)
         {
             // Get the current mouse position
@@ -596,7 +602,7 @@ namespace v2rayN.Views
                 // Find the data behind the Item
                 ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
                 if (item == null) return;
-                // Move item into observable collection 
+                // Move item into observable collection
                 // (this will be automatically reflected to lstView.ItemsSource)
                 e.Effects = DragDropEffects.Move;
 
@@ -606,8 +612,6 @@ namespace v2rayN.Views
             }
         }
 
-        #endregion
-
-
+        #endregion Drag and Drop
     }
 }

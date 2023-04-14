@@ -12,9 +12,9 @@ using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
-    class UpdateHandle
+    internal class UpdateHandle
     {
-        Action<bool, string> _updateFunc;
+        private Action<bool, string> _updateFunc;
         private Config _config;
 
         public event EventHandler<ResultEventArgs> AbsoluteCompleted;
@@ -96,7 +96,6 @@ namespace v2rayN.Handler
             CheckUpdateAsync(ECoreType.v2rayN, preRelease);
         }
 
-
         public void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
@@ -147,7 +146,6 @@ namespace v2rayN.Handler
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, "Core"));
             CheckUpdateAsync(type, preRelease);
         }
-
 
         public void UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> update)
         {
@@ -264,7 +262,6 @@ namespace v2rayN.Handler
                 }
 
                 _updateFunc(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
-
             });
         }
 
@@ -313,7 +310,6 @@ namespace v2rayN.Handler
                 _updateFunc(false, args.GetException().Message);
             };
             askToDownload(downloadHandle, url, false);
-
         }
 
         public void RunAvailabilityCheck(Action<bool, string> update)
@@ -360,7 +356,6 @@ namespace v2rayN.Handler
         {
             try
             {
-
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
                 string filePath = string.Empty;
                 foreach (string name in coreInfo.coreExes)
@@ -401,10 +396,12 @@ namespace v2rayN.Handler
                     case ECoreType.v2fly_v5:
                         version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
                         break;
+
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
-                        version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value; 
+                        version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
                         break;
+
                     case ECoreType.sing_box:
                         version = Regex.Match(echo, $"([0-9.]+)").Groups[1].Value;
                         break;
@@ -418,6 +415,7 @@ namespace v2rayN.Handler
                 return "";
             }
         }
+
         private void responseHandler(ECoreType type, string gitHubReleaseApi, bool preRelease)
         {
             try
@@ -452,9 +450,11 @@ namespace v2rayN.Handler
                                 case Architecture.Arm64:
                                     osBit = "arm64-v8a";
                                     break;
+
                                 case Architecture.X86:
                                     osBit = "32";
                                     break;
+
                                 default:
                                     osBit = "64";
                                     break;
@@ -473,9 +473,11 @@ namespace v2rayN.Handler
                                 case Architecture.Arm64:
                                     url = coreInfo.coreDownloadUrlArm64;
                                     break;
+
                                 case Architecture.X86:
                                     url = coreInfo.coreDownloadUrl32;
                                     break;
+
                                 default:
                                     url = coreInfo.coreDownloadUrl64;
                                     break;
@@ -492,9 +494,11 @@ namespace v2rayN.Handler
                                 case Architecture.Arm64:
                                     url = coreInfo.coreDownloadUrlArm64;
                                     break;
+
                                 case Architecture.X86:
                                     url = coreInfo.coreDownloadUrl32;
                                     break;
+
                                 default:
                                     url = coreInfo.coreDownloadUrl64;
                                     break;
@@ -511,9 +515,11 @@ namespace v2rayN.Handler
                                 case Architecture.Arm64:
                                     url = string.Format(coreInfo.coreDownloadUrlArm64, version);
                                     break;
+
                                 case Architecture.X86:
                                     url = string.Format(coreInfo.coreDownloadUrl32, version);
                                     break;
+
                                 default:
                                     url = string.Format(coreInfo.coreDownloadUrl64, version);
                                     break;
@@ -569,6 +575,7 @@ namespace v2rayN.Handler
                 downloadHandle.DownloadFileAsync(url, true, 600);
             }
         }
-        #endregion
+
+        #endregion private
     }
 }

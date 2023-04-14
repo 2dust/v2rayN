@@ -335,7 +335,6 @@
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                 </DockPanel>
-
             </TabItem>
 
             <!--<TabItem Header="{x:Static resx:ResUI.TbSettingsCoreKcp}">
@@ -455,7 +454,6 @@
                         Grid.Column="1"
                         Margin="{StaticResource SettingItemMargin}"
                         HorizontalAlignment="Left" />
-
                 </Grid>
             </TabItem>-->
 
@@ -771,7 +769,6 @@
                             Margin="{StaticResource SettingItemMargin}"
                             materialDesign:HintAssist.Hint="Protocol"
                             Style="{StaticResource DefComboBox}" />
-
                     </StackPanel>
 
                     <TextBlock
@@ -939,7 +936,6 @@
                             Text="{x:Static resx:ResUI.TbSettingsTunModeBypassModeTip}" />
                     </Grid>
 
-
                     <Grid
                         x:Name="gridTunModeDirect"
                         Width="800"
@@ -1037,7 +1033,6 @@
                                 VerticalScrollBarVisibility="Auto" />
                         </GroupBox>
                     </Grid>
-
                 </DockPanel>
             </TabItem>
 

@@ -51,9 +51,9 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
             });
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtRemarks.Focus();
@@ -102,6 +102,7 @@ namespace v2rayN.Views
         {
             ViewModel?.RuleEdit(false);
         }
+
         private void menuRuleSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             lstRules.SelectAll();

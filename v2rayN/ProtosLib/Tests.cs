@@ -8,8 +8,6 @@ namespace ProtosLib
 
         public Tests()
         {
-
-
         }
     }
 }

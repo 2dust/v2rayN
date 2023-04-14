@@ -16,6 +16,7 @@ namespace v2rayN.ViewModels
         private Window _view;
 
         #region Core
+
         [Reactive] public int localPort { get; set; }
         [Reactive] public bool udpEnabled { get; set; }
         [Reactive] public bool sniffingEnabled { get; set; }
@@ -30,14 +31,18 @@ namespace v2rayN.ViewModels
         [Reactive] public bool defAllowInsecure { get; set; }
         [Reactive] public string defFingerprint { get; set; }
         [Reactive] public string defUserAgent { get; set; }
-        #endregion
+
+        #endregion Core
 
         #region Core DNS
+
         [Reactive] public string domainStrategy4Freedom { get; set; }
         [Reactive] public string remoteDNS { get; set; }
-        #endregion
+
+        #endregion Core DNS
 
         #region Core KCP
+
         //[Reactive] public int Kcpmtu { get; set; }
         //[Reactive] public int Kcptti { get; set; }
         //[Reactive] public int KcpuplinkCapacity { get; set; }
@@ -45,9 +50,11 @@ namespace v2rayN.ViewModels
         //[Reactive] public int KcpreadBufferSize { get; set; }
         //[Reactive] public int KcpwriteBufferSize { get; set; }
         //[Reactive] public bool Kcpcongestion { get; set; }
-        #endregion
+
+        #endregion Core KCP
 
         #region UI
+
         [Reactive] public bool AutoRun { get; set; }
         [Reactive] public bool EnableStatistics { get; set; }
         [Reactive] public int StatisticsFreshRate { get; set; }
@@ -66,14 +73,17 @@ namespace v2rayN.ViewModels
         [Reactive] public string SpeedTestUrl { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
 
-        #endregion
+        #endregion UI
 
         #region System proxy
+
         [Reactive] public string systemProxyAdvancedProtocol { get; set; }
         [Reactive] public string systemProxyExceptions { get; set; }
-        #endregion
+
+        #endregion System proxy
 
         #region Tun mode
+
         [Reactive] public bool TunShowWindow { get; set; }
         [Reactive] public bool TunEnabledLog { get; set; }
         [Reactive] public bool TunStrictRoute { get; set; }
@@ -88,9 +98,11 @@ namespace v2rayN.ViewModels
         [Reactive] public string TunProxyIP { get; set; }
         [Reactive] public string TunProxyProcess { get; set; }
         [Reactive] public string TunProxyDNS { get; set; }
-        #endregion
+
+        #endregion Tun mode
 
         #region CoreType
+
         [Reactive] public string CoreType1 { get; set; }
         [Reactive] public string CoreType2 { get; set; }
         [Reactive] public string CoreType3 { get; set; }
@@ -98,10 +110,9 @@ namespace v2rayN.ViewModels
         [Reactive] public string CoreType5 { get; set; }
         [Reactive] public string CoreType6 { get; set; }
 
-        #endregion
+        #endregion CoreType
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-
 
         public OptionSettingViewModel(Window view)
         {
@@ -110,6 +121,7 @@ namespace v2rayN.ViewModels
             _view = view;
 
             #region Core
+
             var inbound = _config.inbound[0];
             localPort = inbound.localPort;
             udpEnabled = inbound.udpEnabled;
@@ -125,14 +137,18 @@ namespace v2rayN.ViewModels
             defAllowInsecure = _config.coreBasicItem.defAllowInsecure;
             defFingerprint = _config.coreBasicItem.defFingerprint;
             defUserAgent = _config.coreBasicItem.defUserAgent;
-            #endregion
+
+            #endregion Core
 
             #region Core DNS
+
             domainStrategy4Freedom = _config.domainStrategy4Freedom;
             remoteDNS = _config.remoteDNS;
-            #endregion
+
+            #endregion Core DNS
 
             #region Core KCP
+
             //Kcpmtu = _config.kcpItem.mtu;
             //Kcptti = _config.kcpItem.tti;
             //KcpuplinkCapacity = _config.kcpItem.uplinkCapacity;
@@ -140,9 +156,11 @@ namespace v2rayN.ViewModels
             //KcpreadBufferSize = _config.kcpItem.readBufferSize;
             //KcpwriteBufferSize = _config.kcpItem.writeBufferSize;
             //Kcpcongestion = _config.kcpItem.congestion;
-            #endregion
+
+            #endregion Core KCP
 
             #region UI
+
             AutoRun = _config.guiItem.autoRun;
             EnableStatistics = _config.guiItem.enableStatistics;
             StatisticsFreshRate = _config.guiItem.statisticsFreshRate;
@@ -161,12 +179,14 @@ namespace v2rayN.ViewModels
             SpeedTestUrl = _config.speedTestItem.speedTestUrl;
             EnableHWA = _config.guiItem.enableHWA;
 
-            #endregion
+            #endregion UI
 
             #region System proxy
+
             systemProxyAdvancedProtocol = _config.systemProxyAdvancedProtocol;
             systemProxyExceptions = _config.systemProxyExceptions;
-            #endregion
+
+            #endregion System proxy
 
             #region Tun mode
 
@@ -187,7 +207,7 @@ namespace v2rayN.ViewModels
               x => x.TunBypassMode)
               .Subscribe(c => TunBypassMode2 = !TunBypassMode);
 
-            #endregion
+            #endregion Tun mode
 
             InitCoreType();
 
@@ -227,25 +247,29 @@ namespace v2rayN.ViewModels
                     case 1:
                         CoreType1 = type;
                         break;
+
                     case 2:
                         CoreType2 = type;
                         break;
+
                     case 3:
                         CoreType3 = type;
                         break;
+
                     case 4:
                         CoreType4 = type;
                         break;
+
                     case 5:
                         CoreType5 = type;
                         break;
+
                     case 6:
                         CoreType6 = type;
                         break;
                 }
             });
         }
-
 
         private void SaveSetting()
         {
@@ -300,11 +324,9 @@ namespace v2rayN.ViewModels
             _config.coreBasicItem.defFingerprint = defFingerprint;
             _config.coreBasicItem.defUserAgent = defUserAgent;
 
-
             //DNS
             _config.remoteDNS = remoteDNS;
             _config.domainStrategy4Freedom = domainStrategy4Freedom;
-
 
             //Kcp
             //_config.kcpItem.mtu = Kcpmtu;
@@ -314,7 +336,6 @@ namespace v2rayN.ViewModels
             //_config.kcpItem.readBufferSize = KcpreadBufferSize;
             //_config.kcpItem.writeBufferSize = KcpwriteBufferSize;
             //_config.kcpItem.congestion = Kcpcongestion;
-
 
             //UI
             Utils.SetAutoRun(AutoRun);
@@ -359,7 +380,7 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.proxyProcess = Utils.String2List(TunProxyProcess);
             _config.tunModeItem.proxyDNS = Utils.ToJson(Utils.ParseJson(TunProxyDNS));
 
-            //coreType 
+            //coreType
             SaveCoreType();
 
             if (ConfigHandler.SaveConfig(ref _config) == 0)
@@ -371,8 +392,8 @@ namespace v2rayN.ViewModels
             {
                 UI.ShowWarning(ResUI.OperationFailed);
             }
-
         }
+
         private int SaveCoreType()
         {
             for (int k = 1; k <= _config.coreTypeItem.Count; k++)
@@ -384,18 +405,23 @@ namespace v2rayN.ViewModels
                     case 1:
                         type = CoreType1;
                         break;
+
                     case 2:
                         type = CoreType2;
                         break;
+
                     case 3:
                         type = CoreType3;
                         break;
+
                     case 4:
                         type = CoreType4;
                         break;
+
                     case 5:
                         type = CoreType5;
                         break;
+
                     case 6:
                         type = CoreType6;
                         break;

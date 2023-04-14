@@ -29,7 +29,6 @@ namespace v2rayN.Views
                 cmbdomainMatcher.Items.Add(it);
             });
 
-
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.lstRoutings.ItemsSource).DisposeWith(disposables);
@@ -60,7 +59,6 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
             });
         }
 
@@ -87,10 +85,12 @@ namespace v2rayN.Views
         {
             lstRoutings.SelectAll();
         }
+
         private void lstRoutings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
         }
+
         private void LstRoutings_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ViewModel?.RoutingAdvancedEdit(false);

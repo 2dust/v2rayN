@@ -30,7 +30,7 @@ namespace v2rayN.Views
             }
         }
 
-        void DelegateAppendText(string msg)
+        private void DelegateAppendText(string msg)
         {
             Dispatcher.BeginInvoke(AppendText, DispatcherPriority.Send, msg);
         }
@@ -109,10 +109,10 @@ namespace v2rayN.Views
         {
             ClearMsg();
         }
+
         private void cmbMsgFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             _config.uiItem.mainMsgFilter = cmbMsgFilter.Text.TrimEx();
         }
-
     }
 }

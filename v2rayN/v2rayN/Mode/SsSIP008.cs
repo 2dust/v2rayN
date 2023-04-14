@@ -15,5 +15,4 @@
         public string password { get; set; }
         public string plugin { get; set; }
     }
-
 }

@@ -10,7 +10,7 @@ namespace v2rayN.Handler
     /// <summary>
     /// Core configuration file processing class
     /// </summary>
-    class CoreConfigHandler
+    internal class CoreConfigHandler
     {
         private static string SampleClient = Global.v2raySampleClient;
         private static string SampleServer = Global.v2raySampleServer;
@@ -228,6 +228,7 @@ namespace v2rayN.Handler
             }
             return 0;
         }
+
         private static int routingUserRule(RulesItem rules, ref V2rayConfig v2rayConfig)
         {
             try
@@ -371,7 +372,6 @@ namespace v2rayN.Handler
                     serversItem.port = node.port;
                     serversItem.password = node.id;
                     serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys(node).Contains(node.security) ? node.security : "none";
-
 
                     serversItem.ota = false;
                     serversItem.level = 1;
@@ -663,6 +663,7 @@ namespace v2rayN.Handler
                             }
                         }
                         break;
+
                     case "grpc":
                         GrpcSettings grpcSettings = new()
                         {
@@ -675,6 +676,7 @@ namespace v2rayN.Handler
                         };
                         streamSettings.grpcSettings = grpcSettings;
                         break;
+
                     default:
                         //tcp
                         if (node.headerType == Global.TcpHeaderHttp)
@@ -874,9 +876,10 @@ namespace v2rayN.Handler
                         case ECoreType.Xray:
                         case ECoreType.v2fly_v5:
                             break;
+
                         case ECoreType.clash:
                         case ECoreType.clash_meta:
-                            //remove the original 
+                            //remove the original
                             var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
                             if (indexPort >= 0)
                             {
@@ -961,7 +964,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        #endregion
+        #endregion Generate client configuration
 
         #region Generate server-side configuration
 
@@ -1036,7 +1039,6 @@ namespace v2rayN.Handler
                 {
                     inbound.protocol = Global.vmessProtocolLite;
                     usersItem.alterId = node.alterId;
-
                 }
                 else if (node.configType == EConfigType.VLESS)
                 {
@@ -1069,7 +1071,8 @@ namespace v2rayN.Handler
             }
             return 0;
         }
-        #endregion
+
+        #endregion Generate server-side configuration
 
         #region Import (export) client/server configuration
 
@@ -1340,10 +1343,9 @@ namespace v2rayN.Handler
             return GenerateServerConfig(node, fileName, out msg);
         }
 
-        #endregion
+        #endregion Import (export) client/server configuration
 
         #region Gen speedtest config
-
 
         public static string GenerateClientSpeedtestConfigString(Config config, List<ServerTestItem> selecteds, out string msg)
         {
@@ -1491,7 +1493,6 @@ namespace v2rayN.Handler
             }
         }
 
-        #endregion
-
+        #endregion Gen speedtest config
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace v2rayN.Mode
 {
     [Serializable]
-    class ServerTestItem
+    internal class ServerTestItem
     {
         public string indexId { get; set; }
         public string address { get; set; }

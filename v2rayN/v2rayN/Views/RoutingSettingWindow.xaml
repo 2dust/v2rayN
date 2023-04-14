@@ -109,7 +109,6 @@
                     Width="80"
                     Margin="8,0,0,0"
                     Style="{StaticResource DefComboBox}" />
-
             </ToolBar>
         </ToolBarTray>
 
@@ -326,5 +325,4 @@
             </TabControl>
         </DockPanel>
     </DockPanel>
-
 </reactiveui:ReactiveWindow>

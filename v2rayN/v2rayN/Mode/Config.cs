@@ -12,6 +12,7 @@
         public string subIndexId { get; set; }
 
         public string remoteDNS { get; set; }
+
         /// <summary>
         /// Outbound Freedom domainStrategy
         /// </summary>
@@ -21,7 +22,7 @@
         public string systemProxyExceptions { get; set; }
         public string systemProxyAdvancedProtocol { get; set; }
 
-        #endregion
+        #endregion property
 
         #region other entities
 
@@ -38,7 +39,6 @@
         public List<KeyEventItem> globalHotkeys { get; set; }
         public List<CoreTypeItem> coreTypeItem { get; set; }
 
-        #endregion
-
+        #endregion other entities
     }
 }

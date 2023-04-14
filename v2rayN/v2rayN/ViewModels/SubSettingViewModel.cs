@@ -21,8 +21,10 @@ namespace v2rayN.ViewModels
 
         private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
         public IObservableCollection<SubItem> SubItems => _subItems;
+
         [Reactive]
         public SubItem SelectedSource { get; set; }
+
         public IList<SubItem> SelectedSources { get; set; }
 
         public ReactiveCommand<Unit, Unit> SubAddCmd { get; }
@@ -91,7 +93,6 @@ namespace v2rayN.ViewModels
                 RefreshSubItems();
                 IsModified = true;
             }
-
         }
 
         private void DeleteSub()
@@ -125,6 +126,5 @@ namespace v2rayN.ViewModels
 
             await DialogHost.Show(dialog, "SubDialog");
         }
-
     }
 }

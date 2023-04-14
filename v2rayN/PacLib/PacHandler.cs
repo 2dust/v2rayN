@@ -17,11 +17,10 @@ public class PacHandler
     private static bool _isRunning;
     private static bool _needRestart = true;
 
-
     public static void Start(string configPath, int httpPort, int pacPort)
     {
         _needRestart = (configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning);
-      
+
         _configPath = configPath;
         _httpPort = httpPort;
         _pacPort = pacPort;
@@ -83,9 +82,7 @@ public class PacHandler
                 {
                 }
             }
-
         }, TaskCreationOptions.LongRunning);
-
     }
 
     public static void Stop()

@@ -10,7 +10,7 @@ namespace v2rayN.Handler
     /// <summary>
     /// 本软件配置文件处理类
     /// </summary>
-    class ConfigHandler
+    internal class ConfigHandler
     {
         private static string configRes = Global.ConfigFileName;
         private static readonly object objLock = new();
@@ -24,7 +24,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int LoadConfig(ref Config config)
         {
-            //载入配置文件 
+            //载入配置文件
             string result = Utils.LoadResource(Utils.GetConfigPath(configRes));
             if (!Utils.IsNullOrEmpty(result))
             {
@@ -198,6 +198,7 @@ namespace v2rayN.Handler
             LazyConfig.Instance.SetConfig(config);
             return 0;
         }
+
         /// <summary>
         /// 保参数
         /// </summary>
@@ -205,7 +206,6 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int SaveConfig(ref Config config, bool reload = true)
         {
-
             ToJsonFile(config);
 
             return 0;
@@ -221,7 +221,6 @@ namespace v2rayN.Handler
             {
                 try
                 {
-
                     //save temp file
                     var resPath = Utils.GetConfigPath(configRes);
                     var tempPath = $"{resPath}_temp";
@@ -342,7 +341,8 @@ namespace v2rayN.Handler
 
             return 0;
         }
-        #endregion
+
+        #endregion ConfigHandler
 
         #region Server
 
@@ -467,6 +467,7 @@ namespace v2rayN.Handler
             }
             return SetDefaultServerIndex(ref config, SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.port > 0).Select(t => t.indexId).FirstOrDefault());
         }
+
         public static ProfileItem? GetDefaultServer(ref Config config)
         {
             var item = LazyConfig.Instance.GetProfileItem(config.indexId);
@@ -592,9 +593,7 @@ namespace v2rayN.Handler
                 profileItem.remarks = $"import custom@{DateTime.Now.ToShortDateString()}";
             }
 
-
             AddServerCommon(ref config, profileItem, true);
-
 
             return 0;
         }
@@ -682,7 +681,6 @@ namespace v2rayN.Handler
             return 0;
         }
 
-
         public static int SortServers(ref Config config, string subId, string colName, bool asc)
         {
             var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
@@ -709,7 +707,6 @@ namespace v2rayN.Handler
                                   sort = t33 == null ? 0 : t33.sort
                               }).ToList();
 
-
             Enum.TryParse(colName, true, out EServerColName name);
             var propertyName = string.Empty;
             switch (name)
@@ -723,15 +720,19 @@ namespace v2rayN.Handler
                 case EServerColName.streamSecurity:
                     propertyName = name.ToString();
                     break;
+
                 case EServerColName.delayVal:
                     propertyName = "delay";
                     break;
+
                 case EServerColName.speedVal:
                     propertyName = "speed";
                     break;
+
                 case EServerColName.subRemarks:
                     propertyName = "subid";
                     break;
+
                 default:
                     return -1;
             }
@@ -910,7 +911,8 @@ namespace v2rayN.Handler
 
             return 0;
         }
-        #endregion
+
+        #endregion Server
 
         #region Batch add servers
 
@@ -1123,7 +1125,6 @@ namespace v2rayN.Handler
             if (AddCustomServer(ref config, profileItem, true) == 0)
             {
                 return 1;
-
             }
             else
             {
@@ -1209,7 +1210,7 @@ namespace v2rayN.Handler
                 counter = AddBatchServers4SsSIP008(ref config, clipboardData, subid, isSub, lstOriSub);
             }
 
-            //maybe other sub 
+            //maybe other sub
             if (counter < 1)
             {
                 counter = AddBatchServers4Custom(ref config, clipboardData, subid, isSub, lstOriSub);
@@ -1218,8 +1219,7 @@ namespace v2rayN.Handler
             return counter;
         }
 
-
-        #endregion
+        #endregion Batch add servers
 
         #region Sub & Group
 
@@ -1273,7 +1273,6 @@ namespace v2rayN.Handler
             }
         }
 
-
         /// <summary>
         /// 移除服务器
         /// </summary>
@@ -1326,9 +1325,10 @@ namespace v2rayN.Handler
 
             return 0;
         }
-        #endregion
 
-        #region Routing        
+        #endregion Sub & Group
+
+        #region Routing
 
         public static int SaveRoutingItem(ref Config config, RoutingItem item)
         {
@@ -1461,7 +1461,6 @@ namespace v2rayN.Handler
                         rules.Remove(removeItem);
                         break;
                     }
-
             }
             return 0;
         }
@@ -1477,6 +1476,7 @@ namespace v2rayN.Handler
 
             return 0;
         }
+
         public static RoutingItem GetDefaultRouting(ref Config config)
         {
             var item = LazyConfig.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
@@ -1551,6 +1551,7 @@ namespace v2rayN.Handler
         {
             SqliteHelper.Instance.Delete(routingItem);
         }
-        #endregion
+
+        #endregion Routing
     }
 }

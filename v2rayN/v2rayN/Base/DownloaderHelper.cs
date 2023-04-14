@@ -56,7 +56,6 @@ namespace v2rayN.Base
             return reader.ReadToEnd();
         }
 
-
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
         {
             if (string.IsNullOrEmpty(url))

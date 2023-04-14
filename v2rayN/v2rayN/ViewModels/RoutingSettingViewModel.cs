@@ -20,34 +20,43 @@ namespace v2rayN.ViewModels
         private RoutingItem _lockedItem;
         private List<RulesItem> _lockedRules;
 
-
         #region Reactive
 
         private IObservableCollection<RoutingItemModel> _routingItems = new ObservableCollectionExtended<RoutingItemModel>();
         public IObservableCollection<RoutingItemModel> RoutingItems => _routingItems;
+
         [Reactive]
         public RoutingItemModel SelectedSource { get; set; }
+
         public IList<RoutingItemModel> SelectedSources { get; set; }
 
         [Reactive]
         public bool enableRoutingAdvanced { get; set; }
+
         [Reactive]
         public bool enableRoutingBasic { get; set; }
+
         [Reactive]
         public string domainStrategy { get; set; }
+
         [Reactive]
         public string domainMatcher { get; set; }
 
         [Reactive]
         public string ProxyDomain { get; set; }
+
         [Reactive]
         public string ProxyIP { get; set; }
+
         [Reactive]
         public string DirectDomain { get; set; }
+
         [Reactive]
         public string DirectIP { get; set; }
+
         [Reactive]
         public string BlockDomain { get; set; }
+
         [Reactive]
         public string BlockIP { get; set; }
 
@@ -59,7 +68,8 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public bool IsModified { get; set; }
-        #endregion
+
+        #endregion Reactive
 
         public RoutingSettingViewModel(Window view)
         {
@@ -117,6 +127,7 @@ namespace v2rayN.ViewModels
         }
 
         #region locked
+
         private void BindingLockedData()
         {
             _lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
@@ -133,6 +144,7 @@ namespace v2rayN.ViewModels
                 BlockIP = Utils.List2String(_lockedRules[2].ip, true);
             }
         }
+
         private void EndBindingLockedData()
         {
             if (_lockedItem != null)
@@ -151,9 +163,11 @@ namespace v2rayN.ViewModels
                 ConfigHandler.SaveRoutingItem(ref _config, _lockedItem);
             }
         }
-        #endregion
+
+        #endregion locked
 
         #region Refresh Save
+
         public void RefreshRoutingItems()
         {
             _routingItems.Clear();
@@ -180,6 +194,7 @@ namespace v2rayN.ViewModels
                 _routingItems.Add(it);
             }
         }
+
         private void SaveRouting()
         {
             _config.routingBasicItem.domainStrategy = domainStrategy;
@@ -199,7 +214,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        #endregion
+        #endregion Refresh Save
 
         private void RoutingBasicImportRules()
         {
@@ -275,6 +290,7 @@ namespace v2rayN.ViewModels
                 IsModified = true;
             }
         }
+
         private void RoutingAdvancedImportRules()
         {
             if (ConfigHandler.InitBuiltinRouting(ref _config, true) == 0)

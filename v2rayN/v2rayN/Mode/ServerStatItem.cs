@@ -10,22 +10,27 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+
         public long totalUp
         {
             get; set;
         }
+
         public long totalDown
         {
             get; set;
         }
+
         public long todayUp
         {
             get; set;
         }
+
         public long todayDown
         {
             get; set;
         }
+
         public long dateNow
         {
             get; set;

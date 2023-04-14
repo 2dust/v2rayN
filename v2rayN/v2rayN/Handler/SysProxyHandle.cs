@@ -22,7 +22,7 @@ namespace v2rayN.Handler
         //  <pac-url>
         private static SysproxyConfig? _userSettings = null;
 
-        enum RET_ERRORS : int
+        private enum RET_ERRORS : int
         {
             RET_NO_ERROR = 0,
             INVALID_FORMAT = 1,
@@ -44,7 +44,6 @@ namespace v2rayN.Handler
                 Utils.SaveLog(ex.Message, ex);
             }
         }
-
 
         public static bool UpdateSysProxy(Config config, bool forceDisable)
         {
@@ -119,7 +118,6 @@ namespace v2rayN.Handler
             {
             }
         }
-
 
         public static void SetIEProxy(bool global, string strProxy, string strExceptions)
         {
@@ -209,7 +207,6 @@ namespace v2rayN.Handler
             }
             catch (System.ComponentModel.Win32Exception e)
             {
-
                 // log the arguments
                 throw new Exception(process.StartInfo.Arguments);
             }
@@ -231,7 +228,5 @@ namespace v2rayN.Handler
             //    _queryStr = stdout;
             //}
         }
-
-
     }
 }

@@ -4,6 +4,5 @@
     {
         AdjustMainLvColWidth,
         ProfilesFocus
-
     }
 }

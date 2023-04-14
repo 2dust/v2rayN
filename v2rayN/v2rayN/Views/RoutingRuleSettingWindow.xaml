@@ -207,7 +207,6 @@
                 HorizontalAlignment="Left"
                 AcceptsReturn="True"
                 Style="{StaticResource DefTextBox}" />
-
         </Grid>
 
         <TabControl x:Name="tabAdvanced">
@@ -291,11 +290,9 @@
                             Width="80"
                             Binding="{Binding enabled}"
                             Header="enabled" />
-
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
         </TabControl>
     </DockPanel>
-
 </reactiveui:ReactiveWindow>

@@ -45,7 +45,6 @@ namespace v2rayN.Views
             BindingData();
         }
 
-
         private void TxtGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
@@ -68,8 +67,8 @@ namespace v2rayN.Views
                 Shift = false,
                 KeyCode = null
             });
-
         }
+
         private string KeyEventItemToString(KeyEventItem item)
         {
             var res = new StringBuilder();
@@ -82,6 +81,7 @@ namespace v2rayN.Views
 
             return res.ToString();
         }
+
         private void BindingData()
         {
             foreach (var item in _TextBoxKeyEventItem)

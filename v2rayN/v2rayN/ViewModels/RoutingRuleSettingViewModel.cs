@@ -26,8 +26,10 @@ namespace v2rayN.ViewModels
 
         private IObservableCollection<RulesItemModel> _rulesItems = new ObservableCollectionExtended<RulesItemModel>();
         public IObservableCollection<RulesItemModel> RulesItems => _rulesItems;
+
         [Reactive]
         public RulesItemModel SelectedSource { get; set; }
+
         public IList<RulesItemModel> SelectedSources { get; set; }
 
         public ReactiveCommand<Unit, Unit> RuleAddCmd { get; }
@@ -42,7 +44,6 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-
 
         public RoutingRuleSettingViewModel(RoutingItem routingItem, Window view)
         {
@@ -188,6 +189,7 @@ namespace v2rayN.ViewModels
 
             RefreshRulesItems();
         }
+
         public void RuleExportSelected()
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
@@ -299,6 +301,7 @@ namespace v2rayN.ViewModels
                 UI.Show(ResUI.OperationSuccess);
             }
         }
+
         private async Task ImportRulesFromUrl()
         {
             var url = SelectedRouting.url;
@@ -319,6 +322,7 @@ namespace v2rayN.ViewModels
                 UI.Show(ResUI.OperationSuccess);
             }
         }
+
         private int AddBatchRoutingRules(RoutingItem routingItem, string clipboardData)
         {
             bool blReplace = false;
@@ -351,6 +355,6 @@ namespace v2rayN.ViewModels
             return 0;
         }
 
-        #endregion
+        #endregion Import rules
     }
 }

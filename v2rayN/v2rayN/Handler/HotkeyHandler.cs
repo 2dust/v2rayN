@@ -15,15 +15,20 @@ namespace v2rayN.Handler
         public static HotkeyHandler Instance = _instance.Value;
 
         private const int WmHotkey = 0x0312;
+
         private Config _config
         {
             get => LazyConfig.Instance.GetConfig();
         }
+
         private Dictionary<int, List<EGlobalHotkey>> _hotkeyTriggerDic;
 
         public bool IsPause { get; set; } = false;
+
         public event Action<bool, string>? UpdateViewEvent;
+
         public event Action<EGlobalHotkey>? HotkeyTriggerEvent;
+
         public HotkeyHandler()
         {
             _hotkeyTriggerDic = new();
@@ -57,6 +62,7 @@ namespace v2rayN.Handler
                 }
             }
         }
+
         public void Load()
         {
             foreach (var _hotkeyCode in _hotkeyTriggerDic.Keys)
@@ -82,7 +88,6 @@ namespace v2rayN.Handler
                     }
                     UpdateViewEvent?.Invoke(false, msg);
                 }
-
             }
         }
 
@@ -98,6 +103,7 @@ namespace v2rayN.Handler
             Init();
             Load();
         }
+
         private (int fsModifiers, int vKey, string hotkeyStr, List<string> Names) GetHotkeyInfo(int hotkeycode)
         {
             var _fsModifiers = hotkeycode & 0xffff;
@@ -117,9 +123,9 @@ namespace v2rayN.Handler
                 _names.Add(name.ToString());
             }
 
-
             return (_fsModifiers, _vkey, _hotkeyStr.ToString(), _names);
         }
+
         private void OnThreadPreProcessMessage(ref MSG msg, ref bool handled)
         {
             if (msg.message != WmHotkey || !_hotkeyTriggerDic.ContainsKey((int)msg.lParam))
@@ -153,11 +159,13 @@ namespace v2rayN.Handler
                 }
             }
         }
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         [Flags]
         private enum KeyModifiers
         {

@@ -134,6 +134,7 @@ namespace v2rayUpgrade
         {
             return Application.StartupPath;
         }
+
         public static string GetPath(string fileName)
         {
             string startupPath = StartupPath();

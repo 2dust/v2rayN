@@ -3,7 +3,7 @@ using System.IO;
 
 namespace v2rayN.Base
 {
-    static class StringEx
+    internal static class StringEx
     {
         public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
         {
@@ -31,7 +31,6 @@ namespace v2rayN.Base
             }
             return true;
         }
-
 
         public static IEnumerable<string> NonWhiteSpaceLines(this TextReader reader)
         {

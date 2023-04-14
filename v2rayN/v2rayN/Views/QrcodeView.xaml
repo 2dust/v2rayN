@@ -44,6 +44,5 @@
             IsCancel="True"
             IsDefault="True"
             Style="{StaticResource MaterialDesignFlatButton}" />
-
     </Grid>
 </UserControl>

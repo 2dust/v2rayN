@@ -28,9 +28,9 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSource.filter, v => v.txtFilter.Text).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
             });
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtRemarks.Focus();

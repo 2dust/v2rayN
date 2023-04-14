@@ -10,6 +10,5 @@
         public string domains { get; set; }
 
         public string protocols { get; set; }
-
     }
 }

@@ -82,7 +82,6 @@
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuClose}" />
                         </StackPanel>
                     </Button>
-
                 </ToolBar>
             </ToolBarTray>
 
@@ -123,7 +122,6 @@
                         Width="80"
                         Binding="{Binding sort}"
                         Header="{x:Static resx:ResUI.LvSort}" />
-
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

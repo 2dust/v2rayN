@@ -94,7 +94,6 @@
                                     x:Name="menuAddServerViaScan"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
-
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -361,7 +360,6 @@
                                         Margin="8"
                                         materialDesign:HintAssist.Hint="Language"
                                         Style="{StaticResource DefComboBox}" />
-
                                 </Grid>
                             </StackPanel>
                         </materialDesign:PopupBox>
@@ -627,7 +625,6 @@
                         <DataGrid.Resources>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
                                 <EventSetter Event="MouseDoubleClick" Handler="LstProfiles_MouseDoubleClick" />
-
                             </Style>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                                 <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
@@ -642,7 +639,6 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-
                         </DataGrid.Resources>
                         <DataGrid.Columns>
 
@@ -734,13 +730,11 @@
                                 Binding="{Binding totalDown}"
                                 ExName="totalDown"
                                 Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
-
                         </DataGrid.Columns>
                     </DataGrid>
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                     <local:MsgView Grid.Row="2" />
                 </Grid>
-
             </DockPanel>
             <tb:TaskbarIcon
                 x:Name="tbNotify"
@@ -867,6 +861,5 @@
             </tb:TaskbarIcon>
             <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
-
     </materialDesign:DialogHost>
 </reactiveui:ReactiveWindow>

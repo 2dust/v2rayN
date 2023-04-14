@@ -9,12 +9,13 @@ namespace v2rayN.Base
     /// </summary>
     public class HttpClientHelper
     {
-        private readonly static Lazy<HttpClientHelper> _instance = new(() =>
+        private static readonly Lazy<HttpClientHelper> _instance = new(() =>
         {
             HttpClientHandler handler = new() { UseCookies = false };
             HttpClientHelper helper = new(new HttpClient(handler));
             return helper;
         });
+
         public static HttpClientHelper Instance => _instance.Value;
         private readonly HttpClient httpClient;
 
@@ -82,7 +83,6 @@ namespace v2rayN.Base
             if (canReportProgress)
             {
                 progress!.Report(101);
-
             }
         }
 
@@ -136,7 +136,7 @@ namespace v2rayN.Base
                     var data = new byte[read];
                     buffer.ToList().CopyTo(0, data, 0, read);
 
-                    // TODO:   
+                    // TODO:
                     totalRead += read;
 
                     TimeSpan ts = (DateTime.Now - totalDatetime);
@@ -153,6 +153,5 @@ namespace v2rayN.Base
                 }
             } while (isMoreToRead);
         }
-
     }
 }

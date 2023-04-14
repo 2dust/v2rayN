@@ -150,7 +150,6 @@
                         Text="{x:Static resx:ResUI.TipDisplayLog}" />
                 </StackPanel>
 
-
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
@@ -178,7 +177,6 @@
                         Text="{x:Static resx:ResUI.TipPreSocksPort}"
                         TextWrapping="Wrap" />
                 </StackPanel>
-
             </Grid>
 
             <Grid
@@ -204,9 +202,6 @@
                     IsCancel="true"
                     Style="{StaticResource DefButton}" />
             </Grid>
-
-
-
         </Grid>
     </ScrollViewer>
 </reactiveui:ReactiveWindow>

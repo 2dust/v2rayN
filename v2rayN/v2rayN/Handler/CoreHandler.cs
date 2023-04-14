@@ -9,13 +9,13 @@ namespace v2rayN.Handler
     /// <summary>
     /// Core process processing class
     /// </summary>
-    class CoreHandler
+    internal class CoreHandler
     {
         private static string _coreCConfigRes = Global.coreConfigFileName;
         private CoreInfo? _coreInfo;
         private int _processId = 0;
         private Process? _process;
-        Action<bool, string> _updateFunc;
+        private Action<bool, string> _updateFunc;
 
         public CoreHandler(Action<bool, string> update)
         {
@@ -119,7 +119,6 @@ namespace v2rayN.Handler
                     CoreStopPid(_processId);
                     _processId = 0;
                 }
-
             }
             catch (Exception ex)
             {

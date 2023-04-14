@@ -22,7 +22,6 @@ namespace v2rayN.ViewModels
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
 
-
         public ReactiveCommand<Unit, Unit> BrowseServerCmd { get; }
         public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }

@@ -5,7 +5,7 @@ using v2rayN.Mode;
 
 namespace v2rayN.Handler
 {
-    class ProfileExHandler
+    internal class ProfileExHandler
     {
         private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
         private ConcurrentBag<ProfileExItem> _lstProfileEx;
@@ -132,6 +132,7 @@ namespace v2rayN.Handler
             }
             return profileEx.sort;
         }
+
         public int GetMaxSort()
         {
             if (_lstProfileEx.Count <= 0)

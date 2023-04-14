@@ -193,7 +193,6 @@
                     Width="200"
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefComboBox}" />
-
             </Grid>
             <Grid
                 x:Name="gridSs"
@@ -239,7 +238,6 @@
                     Width="300"
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefComboBox}" />
-
             </Grid>
             <Grid
                 x:Name="gridSocks"
@@ -285,7 +283,6 @@
                     Width="400"
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefTextBox}" />
-
             </Grid>
             <Grid
                 x:Name="gridVLESS"
@@ -523,7 +520,6 @@
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbPath}" />
-
             </Grid>
 
             <Separator
@@ -732,8 +728,6 @@
                     Margin="{StaticResource ServerItemMargin}"
                     HorizontalAlignment="Left"
                     Style="{StaticResource DefTextBox}" />
-
-
             </Grid>
             <Separator
                 Grid.Row="8"
@@ -765,7 +759,6 @@
                     IsCancel="true"
                     Style="{StaticResource DefButton}" />
             </Grid>
-
         </Grid>
     </ScrollViewer>
 </reactiveui:ReactiveWindow>

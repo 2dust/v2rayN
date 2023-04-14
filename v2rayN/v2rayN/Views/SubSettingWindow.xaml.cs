@@ -29,7 +29,6 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SubDeleteCmd, v => v.menuSubDelete).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare).DisposeWith(disposables);
-
             });
         }
 
@@ -45,6 +44,7 @@ namespace v2rayN.Views
         {
             ViewModel?.EditSub(false);
         }
+
         private void LstSubscription_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();

@@ -23,6 +23,5 @@
         public string versionArg { get; set; }
 
         public bool redirectInfo { get; set; }
-
     }
 }

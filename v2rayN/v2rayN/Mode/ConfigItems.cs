@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+
 namespace v2rayN.Mode
 {
     [Serializable]
@@ -51,7 +52,6 @@ namespace v2rayN.Mode
         public string user { get; set; }
 
         public string pass { get; set; }
-
     }
 
     [Serializable]
@@ -127,7 +127,6 @@ namespace v2rayN.Mode
         public bool autoHideStartup { get; set; } = true;
         public string mainMsgFilter { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
-
     }
 
     [Serializable]
@@ -148,7 +147,6 @@ namespace v2rayN.Mode
         public bool Shift { get; set; }
 
         public Key? KeyCode { get; set; }
-
     }
 
     [Serializable]
@@ -176,7 +174,6 @@ namespace v2rayN.Mode
         public List<string> proxyIP { get; set; }
         public List<string> proxyProcess { get; set; }
         public string proxyDNS { get; set; }
-
     }
 
     [Serializable]
@@ -185,7 +182,6 @@ namespace v2rayN.Mode
         public int speedTestTimeout { get; set; }
         public string speedTestUrl { get; set; }
         public string speedPingTestUrl { get; set; }
-
     }
 
     [Serializable]
@@ -195,6 +191,7 @@ namespace v2rayN.Mode
         /// 域名解析策略
         /// </summary>
         public string domainStrategy { get; set; }
+
         public string domainMatcher { get; set; }
         public string routingIndexId { get; set; }
         public bool enableRoutingAdvanced { get; set; }

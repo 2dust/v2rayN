@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -56,10 +55,12 @@ namespace v2rayN.Handler
                 case 0:
                     index = 1;
                     break;
+
                 case 1:
                 case 3:
                     index = 2;
                     break;
+
                 case 2:
                     index = 3;
                     break;
@@ -97,7 +98,7 @@ namespace v2rayN.Handler
                 SolidBrush drawBrush = new(color);
 
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));                
+                //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
                 graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
                 graphics.FillEllipse(drawBrush, width / 2, width / 2, width / 2, width / 2);
 
@@ -225,7 +226,6 @@ namespace v2rayN.Handler
             {
                 if (ret == 0)
                 {
-
                     UI.Show(ResUI.OperationSuccess);
                 }
                 else
@@ -354,6 +354,5 @@ namespace v2rayN.Handler
             HotkeyHandler.Instance.HotkeyTriggerEvent += handler;
             HotkeyHandler.Instance.Load();
         }
-
     }
 }

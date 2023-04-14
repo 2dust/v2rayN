@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ESysProxyType sysProxyType
         {
@@ -97,14 +97,17 @@
         {
             get; set;
         }
+
         public string domainMatcher
         {
             get; set;
         }
+
         public int routingIndex
         {
             get; set;
         }
+
         public bool enableRoutingAdvanced
         {
             get; set;
@@ -122,6 +125,7 @@
         {
             get; set;
         }
+
         public string systemProxyAdvancedProtocol { get; set; }
 
         public int autoUpdateInterval { get; set; } = 0;
@@ -137,7 +141,7 @@
 
         public int trayMenuServersLimit { get; set; }
 
-        #endregion
+        #endregion property
 
         #region other entities
 
@@ -172,6 +176,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// UI
         /// </summary>
@@ -179,6 +184,7 @@
         {
             get; set;
         }
+
         public List<RoutingItemOld> routings
         {
             get; set;
@@ -194,14 +200,12 @@
             get; set;
         }
 
-
         public List<CoreTypeItem> coreTypeItem
         {
             get; set;
         }
 
-        #endregion
-
+        #endregion other entities
     }
 
     [Serializable]
@@ -230,7 +234,6 @@
             flow = string.Empty;
             groupId = string.Empty;
         }
-
 
         public string indexId
         {
@@ -265,6 +268,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// 远程服务器端口
         /// </summary>
@@ -272,6 +276,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// 远程服务器ID
         /// </summary>
@@ -279,6 +284,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// 远程服务器额外ID
         /// </summary>
@@ -286,6 +292,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// 本地安全策略
         /// </summary>
@@ -293,6 +300,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// tcp,kcp,ws,h2,quic
         /// </summary>
@@ -300,8 +308,9 @@
         {
             get; set;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string remarks
         {
@@ -349,7 +358,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string testResult
         {
@@ -371,6 +380,7 @@
         {
             get; set;
         }
+
         /// <summary>
         /// tls sni
         /// </summary>
@@ -404,20 +414,24 @@
         {
             get; set;
         }
+
         public string url
         {
             get; set;
         }
+
         public List<RulesItem> rules
         {
             get; set;
         }
+
         public bool enabled { get; set; } = true;
 
         public bool locked
         {
             get; set;
         }
+
         public string customIcon
         {
             get; set;

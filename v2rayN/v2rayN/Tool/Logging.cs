@@ -17,6 +17,7 @@ namespace v2rayN.Tool
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
             LogManager.Configuration = config;
         }
+
         public static void LoggingEnabled(bool enable)
         {
             if (!enable)

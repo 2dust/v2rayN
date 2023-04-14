@@ -74,11 +74,8 @@
                         Height="{StaticResource MenuItemHeight}"
                         Click="menuMsgViewClear_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewClear}" />
-
                 </ContextMenu>
             </TextBox.ContextMenu>
         </TextBox>
-
-
     </DockPanel>
 </UserControl>

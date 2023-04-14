@@ -14,6 +14,5 @@
         public string todayDown { get; set; }
         public string totalUp { get; set; }
         public string totalDown { get; set; }
-
     }
 }

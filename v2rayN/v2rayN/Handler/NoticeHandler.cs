@@ -18,16 +18,16 @@ namespace v2rayN.Handler
         {
             _snackbarMessageQueue?.Enqueue(content);
         }
+
         public void SendMessage(string msg)
         {
             MessageBus.Current.SendMessage(msg, "MsgView");
         }
+
         public void SendMessage(string msg, bool time)
         {
             msg = $"{DateTime.Now} {msg}";
             MessageBus.Current.SendMessage(msg, "MsgView");
         }
-
-
     }
 }

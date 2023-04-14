@@ -211,7 +211,6 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
-
             </Grid>
             <Grid
                 Grid.Row="1"

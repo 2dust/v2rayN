@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-
 namespace v2rayN
 {
     /*
      * See:
      * http://stackoverflow.com/questions/6266820/working-example-of-createjobobject-setinformationjobobject-pinvoke-in-net
      */
+
     public class Job : IDisposable
     {
         private IntPtr handle = IntPtr.Zero;
@@ -95,7 +95,7 @@ namespace v2rayN
             Dispose(false);
         }
 
-        #endregion
+        #endregion IDisposable
 
         #region Interop
 
@@ -112,13 +112,13 @@ namespace v2rayN
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool CloseHandle(IntPtr hObject);
 
-        #endregion
+        #endregion Interop
     }
 
     #region Helper classes
 
     [StructLayout(LayoutKind.Sequential)]
-    struct IO_COUNTERS
+    internal struct IO_COUNTERS
     {
         public UInt64 ReadOperationCount;
         public UInt64 WriteOperationCount;
@@ -128,9 +128,8 @@ namespace v2rayN
         public UInt64 OtherTransferCount;
     }
 
-
     [StructLayout(LayoutKind.Sequential)]
-    struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+    internal struct JOBOBJECT_BASIC_LIMIT_INFORMATION
     {
         public Int64 PerProcessUserTimeLimit;
         public Int64 PerJobUserTimeLimit;
@@ -152,7 +151,7 @@ namespace v2rayN
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+    internal struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
     {
         public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
         public IO_COUNTERS IoInfo;
@@ -173,5 +172,5 @@ namespace v2rayN
         GroupInformation = 11
     }
 
-    #endregion
+    #endregion Helper classes
 }
