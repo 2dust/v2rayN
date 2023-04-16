@@ -371,19 +371,19 @@ namespace v2rayN
                         long TBs = GBs / factor;
                         if (TBs > 0)
                         {
-                            result = TBs + (GBs % factor / (factor + 0.0));
+                            result = TBs + ((GBs % factor) / (factor + 0.0));
                             unit = "TB";
                             return;
                         }
-                        result = GBs + (MBs % factor / (factor + 0.0));
+                        result = GBs + ((MBs % factor) / (factor + 0.0));
                         unit = "GB";
                         return;
                     }
-                    result = MBs + (KBs % factor / (factor + 0.0));
+                    result = MBs + ((KBs % factor) / (factor + 0.0));
                     unit = "MB";
                     return;
                 }
-                result = KBs + (amount % factor / (factor + 0.0));
+                result = KBs + ((amount % factor) / (factor + 0.0));
                 unit = "KB";
                 return;
             }

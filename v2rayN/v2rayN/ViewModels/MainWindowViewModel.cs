@@ -1424,7 +1424,7 @@ namespace v2rayN.ViewModels
                 {
                     MyAppExit(false);
                 }
-            };
+            }
             (new UpdateHandle()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
@@ -1453,7 +1453,7 @@ namespace v2rayN.ViewModels
                         File.Delete(fileName);
                     }
                 }
-            };
+            }
             (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
@@ -1660,7 +1660,7 @@ namespace v2rayN.ViewModels
                 //Application.Current.MainWindow.ShowInTaskbar = false;
                 //IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
                 //Utils.RegWriteValue(Global.MyRegPath, Utils.WindowHwndKey, Convert.ToString((long)windowHandle));
-            };
+            }
             Global.ShowInTaskbar = bl;
         }
 
