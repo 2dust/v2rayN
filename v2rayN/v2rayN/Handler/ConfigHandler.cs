@@ -812,7 +812,7 @@ namespace v2rayN.Handler
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
-            if (config.guiItem.keepOlderDedupl) lstProfile.Reverse();
+            if (!config.guiItem.keepOlderDedupl) lstProfile.Reverse();
 
             foreach (ProfileItem item in lstProfile)
             {
