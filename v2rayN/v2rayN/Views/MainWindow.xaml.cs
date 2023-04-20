@@ -63,8 +63,13 @@ namespace v2rayN.Views
 
                 this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.lstGroup.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
+
                 this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.AddSubCmd, v => v.btnAddSub).DisposeWith(disposables);
+
+                this.BindCommand(ViewModel, vm => vm.AddGroupCmd, v => v.btnAddGroup).DisposeWith(disposables);
+
+                this.BindCommand(ViewModel, vm => vm.DelGroupCmd, v => v.btnDeleteGroup).DisposeWith(disposables);
 
                 //servers
                 this.BindCommand(ViewModel, vm => vm.AddVmessServerCmd, v => v.menuAddVmessServer).DisposeWith(disposables);

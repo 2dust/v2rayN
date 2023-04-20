@@ -13,6 +13,7 @@ using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using v2rayN.Base;
@@ -129,6 +130,8 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
 
         public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
+        public ReactiveCommand<Unit, Unit> AddGroupCmd { get; }
+        public ReactiveCommand<Unit, Unit> DelGroupCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
         public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
@@ -434,6 +437,18 @@ namespace v2rayN.ViewModels
             {
                 SubSetting();
             });
+
+            AddGroupCmd = ReactiveCommand.Create(() =>
+            {
+                AddGroup();
+            });
+
+            DelGroupCmd = ReactiveCommand.Create(() =>
+            {
+                DelGroup();
+            });
+
+
             AddSubCmd = ReactiveCommand.Create(() =>
             {
                 AddSub();
@@ -549,6 +564,8 @@ namespace v2rayN.ViewModels
 
             Global.ShowInTaskbar = true;
         }
+
+
 
         private void Init()
         {
@@ -892,6 +909,25 @@ namespace v2rayN.ViewModels
             else
             {
                 SelectedSub = _subItems[0];
+            }
+        }
+
+        private void InitSubscriptionViewLast()
+        {
+            _subItems.Clear();
+
+            _subItems.Add(new SubItem { remarks = ResUI.AllGroupServers });
+            foreach (var item in LazyConfig.Instance.SubItems().OrderBy(t => t.sort))
+            {
+                _subItems.Add(item);
+            }
+            if (_subId != null && _subItems.FirstOrDefault(t => t.id == _subId) != null)
+            {
+                SelectedSub = _subItems.FirstOrDefault(t => t.id == _subId);
+            }
+            else
+            {
+                SelectedSub = _subItems[_subItems.Count - 1];
             }
         }
 
@@ -1327,6 +1363,69 @@ namespace v2rayN.ViewModels
                 InitSubscriptionView();
                 SubSelectedChanged(true);
             }
+        }
+        
+        private void AddGroup()
+        {
+            SubItem newItem = new();
+            var lastNum = 1;
+            var preffixStr = "g";
+            foreach (var config in LazyConfig.Instance.SubItems().OrderBy(t => t.sort))
+            {
+                var flag = config.remarks.StartsWith(preffixStr);
+                if (flag)
+                {
+                    var numStr = config.remarks.Substring( 1 );
+                    if (Regex.IsMatch(numStr, @"^\d+$"))
+                    {
+                        var num = int.Parse(numStr);
+                        if (lastNum == num)
+                        {
+                            lastNum += 1;
+                        }
+                    }
+                }
+            }
+            newItem.remarks = preffixStr + lastNum;
+            var ret = true;
+
+            var item = LazyConfig.Instance.GetSubItem(newItem.id);
+            if (item is null)
+            {
+                item = newItem;
+            }
+            else
+            {
+                item.remarks = newItem.remarks;
+                item.url = newItem.url;
+                item.moreUrl = newItem.moreUrl;
+                item.enabled = newItem.enabled;
+                item.autoUpdateInterval = newItem.autoUpdateInterval;
+                item.userAgent = newItem.userAgent;
+                item.sort = newItem.sort;
+                item.filter = newItem.filter;
+            }
+
+            ret = (ConfigHandler.AddSubItem(ref _config, item) == 0);
+
+                if (ret == true)
+            {
+                InitSubscriptionViewLast();
+                SubSelectedChanged(true);
+                // _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            }
+        }
+
+        private void DelGroup()
+        {
+            // MessageBox.Show("delete");
+            ConfigHandler.DeleteSubItem(ref _config, SelectedSub?.id);
+            InitSubscriptionViewLast();
+            SubSelectedChanged(true);
+
+            // RefreshSubItems();
+            // _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            // v.lstGroup.SelectedItem
         }
 
         private void UpdateSubscriptionProcess(string subId, bool blProxy)

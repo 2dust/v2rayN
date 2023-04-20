@@ -378,6 +378,24 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <Button
+                        x:Name="btnAddGroup"
+                        Width="30"
+                        Height="30"
+                        Margin="4,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="FolderPlusOutline" />
+                    </Button>
+
+                    <Button
+                        x:Name="btnDeleteGroup"
+                        Width="30"
+                        Height="30"
+                        Margin="4,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
+                    </Button>
+
+                    <Button
                         x:Name="btnAddSub"
                         Width="30"
                         Height="30"
