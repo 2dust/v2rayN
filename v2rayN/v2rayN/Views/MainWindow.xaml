@@ -844,6 +844,7 @@
                 </tb:TaskbarIcon.ContextMenu>
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border
+                        x:Name="borTrayToolTip"
                         Width="Auto"
                         Height="Auto"
                         Background="{DynamicResource MaterialDesignLightBackground}"

@@ -167,6 +167,9 @@ namespace v2rayN.ViewModels
         [Reactive]
         public ImageSource AppIcon { get; set; }
 
+        [Reactive]
+        public bool BlShowTrayTip { get; set; }
+
         #endregion Menu
 
         #region System Proxy
@@ -1694,6 +1697,7 @@ namespace v2rayN.ViewModels
             }
             CurrentFontSize = _config.uiItem.currentFontSize;
             CurrentLanguage = _config.uiItem.currentLanguage;
+            BlShowTrayTip = _config.uiItem.showTrayTip;
 
             this.WhenAnyValue(
                   x => x.ColorModeDark,

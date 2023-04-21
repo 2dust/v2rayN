@@ -96,8 +96,6 @@ namespace v2rayN.Mode
 
         public int autoUpdateInterval { get; set; } = 10;
 
-        public int autoUpdateSubInterval { get; set; } = 10;
-
         public bool checkPreReleaseUpdate { get; set; } = false;
 
         public bool enableSecurityProtocolTls13 { get; set; }
@@ -126,6 +124,7 @@ namespace v2rayN.Mode
         public bool doubleClick2Activate { get; set; }
         public bool autoHideStartup { get; set; } = true;
         public string mainMsgFilter { get; set; }
+        public bool showTrayTip { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
     }
 
