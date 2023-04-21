@@ -1060,7 +1060,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Rule Setting 的本地化字符串。
+        ///   查找类似 Rule Settings 的本地化字符串。
         /// </summary>
         public static string menuRoutingRuleSetting {
             get {
@@ -1141,7 +1141,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Setting 的本地化字符串。
+        ///   查找类似 Settings 的本地化字符串。
         /// </summary>
         public static string menuSetting {
             get {
@@ -1231,7 +1231,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Subscription group Setting 的本地化字符串。
+        ///   查找类似 Subscription group Settings 的本地化字符串。
         /// </summary>
         public static string menuSubSetting {
             get {
@@ -2006,7 +2006,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 GlobalHotkey Setting 的本地化字符串。
+        ///   查找类似 GlobalHotkey Settings 的本地化字符串。
         /// </summary>
         public static string TbGlobalHotkeySetting {
             get {

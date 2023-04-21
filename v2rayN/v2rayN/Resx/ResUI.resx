@@ -467,7 +467,7 @@
     <value>Servers</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
-    <value>Setting</value>
+    <value>Settings</value>
   </data>
   <data name="menuSubGroupUpdate" xml:space="preserve">
     <value>Update current subscription without proxy</value>
@@ -479,7 +479,7 @@
     <value>Subscription group</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
-    <value>Subscription group Setting</value>
+    <value>Subscription group Settings</value>
   </data>
   <data name="menuSubUpdate" xml:space="preserve">
     <value>Update subscription without proxy</value>
@@ -827,7 +827,7 @@
     <value>Display GUI</value>
   </data>
   <data name="TbGlobalHotkeySetting" xml:space="preserve">
-    <value>GlobalHotkey Setting</value>
+    <value>GlobalHotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
     <value>Set directly by pressing the keyboard, Take effect after restart</value>
@@ -929,7 +929,7 @@
     <value>Import Rules From Sub Url</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
-    <value>Rule Setting</value>
+    <value>Rule Settings</value>
   </data>
   <data name="menuRuleAdd" xml:space="preserve">
     <value>Rule Add</value>

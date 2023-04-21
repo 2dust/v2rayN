@@ -195,12 +195,21 @@ namespace v2rayN.Handler
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
                         }
+                    }; 
+                    p.ErrorDataReceived += (sender, e) =>
+                    {
+                        if (!string.IsNullOrEmpty(e.Data))
+                        {
+                            string msg = e.Data + Environment.NewLine;
+                            ShowMsg(false, msg);
+                        }
                     };
                 }
                 p.Start();
                 if (displayLog)
                 {
                     p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
                 }
                 _process = p;
 
@@ -254,8 +263,17 @@ namespace v2rayN.Handler
                         ShowMsg(false, msg);
                     }
                 };
+                p.ErrorDataReceived += (sender, e) =>
+                {
+                    if (!string.IsNullOrEmpty(e.Data))
+                    {
+                        string msg = e.Data + Environment.NewLine;
+                        ShowMsg(false, msg);
+                    }
+                };
                 p.Start();
                 p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
 
                 p.StandardInput.Write(configStr);
                 p.StandardInput.Close();
