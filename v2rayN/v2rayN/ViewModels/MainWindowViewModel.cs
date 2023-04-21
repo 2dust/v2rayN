@@ -1016,7 +1016,7 @@ namespace v2rayN.ViewModels
 
         public void RemoveServer()
         {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
