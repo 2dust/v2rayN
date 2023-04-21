@@ -132,6 +132,7 @@
         public static readonly List<string> networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> kcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
         public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "v2fly_v5" };
+        public static readonly List<string> coreTypes4VLESS = new() { "Xray" };
         public static readonly List<string> domainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> domainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
