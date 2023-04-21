@@ -16,6 +16,11 @@ namespace v2rayN.Views
 
             ViewModel = new SubEditViewModel(subItem, this);
 
+            Global.SubConvertTargets.ForEach(it =>
+            {
+                cmbConvertTarget.Items.Add(it);
+            });
+
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.SelectedSource.remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
@@ -26,6 +31,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSource.userAgent, v => v.txtUserAgent.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.sort, v => v.txtSort.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.filter, v => v.txtFilter.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.convertTarget, v => v.cmbConvertTarget.Text).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });

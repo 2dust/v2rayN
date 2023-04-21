@@ -1103,12 +1103,18 @@
     <value>以管理员身份重启</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>更多地址(url)，用逗号(,)分隔</value>
+    <value>更多地址(url)，用逗号(,)分隔；订阅转换将失效</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>自动更新间隔(分钟)</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
     <value>启用日志存到文件</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>订阅转换目标类型</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>不需要转换时请留空</value>
   </data>
 </root>

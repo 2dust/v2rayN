@@ -132,6 +132,7 @@ namespace v2rayN.Mode
     public class ConstItem
     {
         public string defIEProxyExceptions { get; set; }
+        public string subConvertUrl { get; set; } = string.Empty;
     }
 
     [Serializable]

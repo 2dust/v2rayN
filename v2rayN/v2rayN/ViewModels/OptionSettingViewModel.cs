@@ -72,6 +72,7 @@ namespace v2rayN.ViewModels
         [Reactive] public int SpeedTestTimeout { get; set; }
         [Reactive] public string SpeedTestUrl { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
+        [Reactive] public string SubConvertUrl { get; set; }
 
         #endregion UI
 
@@ -178,6 +179,7 @@ namespace v2rayN.ViewModels
             SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
             SpeedTestUrl = _config.speedTestItem.speedTestUrl;
             EnableHWA = _config.guiItem.enableHWA;
+            SubConvertUrl = _config.constItem.subConvertUrl;
 
             #endregion UI
 
@@ -360,6 +362,7 @@ namespace v2rayN.ViewModels
             _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
             _config.speedTestItem.speedTestUrl = SpeedTestUrl;
             _config.guiItem.enableHWA = EnableHWA;
+            _config.constItem.subConvertUrl = SubConvertUrl;
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;

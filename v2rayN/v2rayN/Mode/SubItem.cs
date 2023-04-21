@@ -20,10 +20,12 @@ namespace v2rayN.Mode
 
         public int sort { get; set; }
 
-        public string filter { get; set; }
+        public string? filter { get; set; }
 
         public int autoUpdateInterval { get; set; }
 
         public long updateTime { get; set; }
+
+        public string? convertTarget { get; set; }
     }
 }

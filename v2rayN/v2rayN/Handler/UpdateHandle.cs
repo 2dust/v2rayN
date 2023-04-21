@@ -190,6 +190,20 @@ namespace v2rayN.Handler
 
                     //one url
                     url = Utils.GetPunycode(url);
+                    //convert
+                    if (!Utils.IsNullOrEmpty(item.convertTarget))
+                    {
+                        var subConvertUrl = string.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
+                        url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
+                        if (!url.Contains("target="))
+                        {
+                            url += string.Format("&target={0}", item.convertTarget);
+                        }
+                        if (!url.Contains("config="))
+                        {
+                            url += string.Format("&config={0}", Global.SubConvertConfig.FirstOrDefault());
+                        }
+                    }
                     var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
                     if (blProxy && Utils.IsNullOrEmpty(result))
                     {
@@ -197,7 +211,7 @@ namespace v2rayN.Handler
                     }
 
                     //more url
-                    if (!Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
+                    if (Utils.IsNullOrEmpty(item.convertTarget) && !Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
                     {
                         if (!Utils.IsNullOrEmpty(result) && Utils.IsBase64String(result))
                         {

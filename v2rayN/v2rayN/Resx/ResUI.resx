@@ -1103,7 +1103,7 @@
     <value>Reboot as administrator</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>More urls, separated by commas</value>
+    <value>More urls, separated by commas;Subscription conversion will be invalid</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0}:{1}/s↑ | {2}/s↓</value>
@@ -1113,5 +1113,11 @@
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
     <value>Enable logging to file</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Convert target type</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Please leave blank if no conversion is required</value>
   </data>
 </root>

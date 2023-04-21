@@ -376,6 +376,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Convert target type 的本地化字符串。
+        /// </summary>
+        public static string LvConvertTarget {
+            get {
+                return ResourceManager.GetString("LvConvertTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please leave blank if no conversion is required 的本地化字符串。
+        /// </summary>
+        public static string LvConvertTargetTip {
+            get {
+                return ResourceManager.GetString("LvConvertTargetTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Count 的本地化字符串。
         /// </summary>
         public static string LvCount {
@@ -421,7 +439,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 More urls, separated by commas 的本地化字符串。
+        ///   查找类似 More urls, separated by commas;Subscription conversion will be invalid 的本地化字符串。
         /// </summary>
         public static string LvMoreUrl {
             get {

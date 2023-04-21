@@ -68,6 +68,7 @@ namespace v2rayN.ViewModels
                 item.userAgent = SelectedSource.userAgent;
                 item.sort = SelectedSource.sort;
                 item.filter = SelectedSource.filter;
+                item.convertTarget = SelectedSource.convertTarget;
             }
 
             if (ConfigHandler.AddSubItem(ref _config, item) == 0)
