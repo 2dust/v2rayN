@@ -1,0 +1,33 @@
+﻿{
+	"log": {
+		"level": "debug",
+		"timestamp": true
+	},
+	"inbounds": [
+		{
+			"type": "socks",
+			"tag": "socks",
+			"listen": "127.0.0.1",
+			"listen_port": 10000
+		}
+	],
+	"outbounds": [
+		{
+			"type": "vless",
+			"tag": "proxy",
+			"server": "",
+			"server_port": 443
+		},
+		{
+			"type": "direct",
+			"tag": "direct"
+		},
+		{
+			"type": "block",
+			"tag": "block"
+		}
+	],
+	"route": {
+		"rules": []
+	}
+}

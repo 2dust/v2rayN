@@ -195,7 +195,7 @@ namespace v2rayN.Handler
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
                         }
-                    }; 
+                    };
                     p.ErrorDataReceived += (sender, e) =>
                     {
                         if (!string.IsNullOrEmpty(e.Data))

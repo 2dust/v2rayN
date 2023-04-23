@@ -28,7 +28,7 @@
         public const string ConfigDB = "guiNDB.db";
         public const string coreConfigFileName = "config.json";
         public const string v2raySampleClient = "v2rayN.Sample.SampleClientConfig";
-        public const string v2raySampleServer = "v2rayN.Sample.SampleServerConfig";
+        public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string v2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
         public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
@@ -131,8 +131,8 @@
         public static readonly List<string> flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> kcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "v2fly_v5" };
-        public static readonly List<string> coreTypes4VLESS = new() { "Xray" };
+        public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "v2fly_v5", "sing_box" };
+        public static readonly List<string> coreTypes4VLESS = new() { "Xray", "sing_box" };
         public static readonly List<string> domainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> domainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };

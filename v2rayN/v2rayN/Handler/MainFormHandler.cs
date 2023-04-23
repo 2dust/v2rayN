@@ -144,9 +144,7 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            //Config configCopy = Utils.DeepCopy(config);
-            //configCopy.index = index;
-            if (CoreConfigHandler.Export2ClientConfig(item, fileName, out string msg) != 0)
+            if (CoreConfigHandler.GenerateClientConfig(item, fileName, out string msg, out string content) != 0)
             {
                 UI.Show(msg);
             }
