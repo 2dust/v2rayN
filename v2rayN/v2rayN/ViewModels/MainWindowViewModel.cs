@@ -121,7 +121,6 @@ namespace v2rayN.ViewModels
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
 
-        public ReactiveCommand<Unit, Unit> Export2ServerConfigCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2SubContentCmd { get; }
 
@@ -418,11 +417,7 @@ namespace v2rayN.ViewModels
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
             {
                 Export2ClientConfig();
-            }, canEditRemove);
-            Export2ServerConfigCmd = ReactiveCommand.Create(() =>
-            {
-                Export2ServerConfig();
-            }, canEditRemove);
+            }, canEditRemove);          
             Export2ShareUrlCmd = ReactiveCommand.Create(() =>
             {
                 Export2ShareUrl();
@@ -1245,17 +1240,6 @@ namespace v2rayN.ViewModels
                 return;
             }
             MainFormHandler.Instance.Export2ClientConfig(item, _config);
-        }
-
-        private void Export2ServerConfig()
-        {
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
-            if (item is null)
-            {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                return;
-            }
-            MainFormHandler.Instance.Export2ServerConfig(item, _config);
         }
 
         public void Export2ShareUrl()

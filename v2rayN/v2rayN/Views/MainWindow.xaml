@@ -609,10 +609,6 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
                                 <MenuItem
-                                    x:Name="menuExport2ServerConfig"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuExport2ServerConfig}" />
-                                <MenuItem
                                     x:Name="menuExport2ShareUrl"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
