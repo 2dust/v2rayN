@@ -719,7 +719,7 @@
     <value>Auto hide startup</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Automatic update interval of and Geo (hours)</value>
+    <value>Automatic update interval of Geo (hours)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: basic settings</value>
