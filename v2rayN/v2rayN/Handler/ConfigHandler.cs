@@ -1553,5 +1553,49 @@ namespace v2rayN.Handler
         }
 
         #endregion Routing
+
+        #region DNS
+
+        public static int InitBuiltinDNS(Config config)
+        {
+            var items = LazyConfig.Instance.DNSItems();
+            if (items.Count <= 0)
+            {
+                var item = new DNSItem()
+                {
+                    remarks = "V2ray",
+                    coreType = ECoreType.Xray,
+                };
+                SaveDNSItems(config, item);
+
+                var item2 = new DNSItem()
+                {
+                    remarks = "sing-box",
+                    coreType = ECoreType.sing_box,
+                };
+                SaveDNSItems(config, item2);
+            }
+
+            return 0;
+        }
+
+        public static int SaveDNSItems(Config config, DNSItem item)
+        {
+            if (Utils.IsNullOrEmpty(item.id))
+            {
+                item.id = Utils.GetGUID(false);
+            }
+
+            if (SqliteHelper.Instance.Replace(item) > 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        #endregion DNS
     }
 }

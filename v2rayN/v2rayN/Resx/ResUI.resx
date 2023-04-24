@@ -300,9 +300,6 @@
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
   </data>
-  <data name="SaveServerConfigurationIn" xml:space="preserve">
-    <value>The server configuration file is saved at: {0}</value>
-  </data>
   <data name="StartService" xml:space="preserve">
     <value>Start service ({0})...</value>
   </data>
@@ -553,9 +550,6 @@
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Export selected server for client configuration</value>
   </data>
-  <data name="menuExport2ServerConfig" xml:space="preserve">
-    <value>Export selected server for server configuration</value>
-  </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Export share URLs to clipboard (Ctrl+C)</value>
   </data>
@@ -731,7 +725,7 @@
     <value>Core: basic settings</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>Core: DNS settings</value>
+    <value>V2ray DNS settings</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP settings</value>
@@ -953,7 +947,7 @@
     <value>Ruleobject Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Support DnsObject</value>
+    <value>Support DnsObject, Click to view the document</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>Group please leave blank here</value>
@@ -1119,5 +1113,14 @@
   </data>
   <data name="LvConvertTargetTip" xml:space="preserve">
     <value>Please leave blank if no conversion is required</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>DNS Settings</value>
+  </data>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>Sing-box DNS settings</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Please fill in DNS Structure, Click to view the document</value>
   </data>
 </root>

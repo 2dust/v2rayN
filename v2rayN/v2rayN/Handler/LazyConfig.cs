@@ -18,6 +18,7 @@ namespace v2rayN.Handler
             SqliteHelper.Instance.CreateTable<ServerStatItem>();
             SqliteHelper.Instance.CreateTable<RoutingItem>();
             SqliteHelper.Instance.CreateTable<ProfileExItem>();
+            SqliteHelper.Instance.CreateTable<DNSItem>();
         }
 
         #region Config
@@ -136,6 +137,16 @@ namespace v2rayN.Handler
         public RoutingItem GetRoutingItem(string id)
         {
             return SqliteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == false && it.id == id);
+        }
+
+        public List<DNSItem> DNSItems()
+        {
+            return SqliteHelper.Instance.Table<DNSItem>().ToList();
+        }
+
+        public DNSItem GetDNSItem(ECoreType eCoreType)
+        {
+            return SqliteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
         }
 
         #endregion Config

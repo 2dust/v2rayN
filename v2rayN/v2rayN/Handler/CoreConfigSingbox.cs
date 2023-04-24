@@ -50,7 +50,7 @@ namespace v2rayN.Handler
 
                 routing(singboxConfig);
 
-                //dns(singboxConfig);
+                dns(singboxConfig);
 
                 //statistic(singboxConfig);
 
@@ -497,7 +497,18 @@ namespace v2rayN.Handler
         {
             try
             {
-                //singboxConfig.dns = new();
+                var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+                var normalDNS = item?.normalDNS;
+                if (string.IsNullOrWhiteSpace(normalDNS))
+                {
+                    return 0;
+                }
+
+                var obj = Utils.ParseJson(normalDNS);
+                if (obj?.ContainsKey("servers") == true)
+                {
+                    singboxConfig.dns = obj;
+                }
             }
             catch (Exception ex)
             {

@@ -691,6 +691,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 DNS Settings 的本地化字符串。
+        /// </summary>
+        public static string menuDNSSetting {
+            get {
+                return ResourceManager.GetString("menuDNSSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit Server (Ctrl+D) 的本地化字符串。
         /// </summary>
         public static string menuEditServer {
@@ -714,15 +723,6 @@ namespace v2rayN.Resx {
         public static string menuExport2ClientConfig {
             get {
                 return ResourceManager.GetString("menuExport2ClientConfig", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Export selected server for server configuration 的本地化字符串。
-        /// </summary>
-        public static string menuExport2ServerConfig {
-            get {
-                return ResourceManager.GetString("menuExport2ServerConfig", resourceCulture);
             }
         }
         
@@ -1699,15 +1699,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The server configuration file is saved at: {0} 的本地化字符串。
-        /// </summary>
-        public static string SaveServerConfigurationIn {
-            get {
-                return ResourceManager.GetString("SaveServerConfigurationIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {0}:{1}/s↑ | {2}/s↓ 的本地化字符串。
         /// </summary>
         public static string SpeedDisplayText {
@@ -1934,11 +1925,20 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Support DnsObject 的本地化字符串。
+        ///   查找类似 Support DnsObject, Click to view the document 的本地化字符串。
         /// </summary>
         public static string TbDnsObjectDoc {
             get {
                 return ResourceManager.GetString("TbDnsObjectDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please fill in DNS Structure, Click to view the document 的本地化字符串。
+        /// </summary>
+        public static string TbDnsSingboxObjectDoc {
+            get {
+                return ResourceManager.GetString("TbDnsSingboxObjectDoc", resourceCulture);
             }
         }
         
@@ -2321,11 +2321,20 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Core: DNS settings 的本地化字符串。
+        ///   查找类似 V2ray DNS settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCoreDns {
             get {
                 return ResourceManager.GetString("TbSettingsCoreDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sing-box DNS settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCoreDnsSingbox {
+            get {
+                return ResourceManager.GetString("TbSettingsCoreDnsSingbox", resourceCulture);
             }
         }
         

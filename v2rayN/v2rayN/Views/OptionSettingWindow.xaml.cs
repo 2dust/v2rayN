@@ -39,10 +39,7 @@ namespace v2rayN.Views
             {
                 cmbdefUserAgent.Items.Add(it);
             });
-            Global.domainStrategy4Freedoms.ForEach(it =>
-            {
-                cmbdomainStrategy4Freedom.Items.Add(it);
-            });
+
             for (int i = 1; i <= 10; i++)
             {
                 cmbStatisticsFreshRate.Items.Add(i);
@@ -72,7 +69,7 @@ namespace v2rayN.Views
             Global.SpeedTestUrls.ForEach(it =>
             {
                 cmbSpeedTestUrl.Items.Add(it);
-            }); 
+            });
             Global.SubConvertUrls.ForEach(it =>
             {
                 cmbSubConvertUrl.Items.Add(it);
@@ -138,9 +135,6 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.defFingerprint, v => v.cmbdefFingerprint.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.defUserAgent, v => v.cmbdefUserAgent.Text).DisposeWith(disposables);
 
-                this.Bind(ViewModel, vm => vm.domainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.remoteDNS, v => v.txtremoteDNS.Text).DisposeWith(disposables);
-
                 //this.Bind(ViewModel, vm => vm.Kcpmtu, v => v.txtKcpmtu.Text).DisposeWith(disposables);
                 //this.Bind(ViewModel, vm => vm.Kcptti, v => v.txtKcptti.Text).DisposeWith(disposables);
                 //this.Bind(ViewModel, vm => vm.KcpuplinkCapacity, v => v.txtKcpuplinkCapacity.Text).DisposeWith(disposables);
@@ -196,11 +190,6 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-        }
-
-        private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)
-        {
-            Utils.ProcessStart("https://www.v2fly.org/config/dns.html#dnsobject");
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

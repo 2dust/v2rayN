@@ -295,48 +295,6 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
-                <DockPanel Margin="{StaticResource SettingItemMargin}">
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Freedom}" />
-                        <ComboBox
-                            x:Name="cmbdomainStrategy4Freedom"
-                            Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
-                            Style="{StaticResource DefComboBox}" />
-                    </StackPanel>
-
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsRemoteDNS}" />
-                        <TextBlock
-                            Margin="8,0,0,0"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}">
-                            <Hyperlink Click="linkDnsObjectDoc_Click">
-                                <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                    <TextBox
-                        x:Name="txtremoteDNS"
-                        Margin="{StaticResource SettingItemMargin}"
-                        VerticalAlignment="Stretch"
-                        AcceptsReturn="True"
-                        BorderThickness="1"
-                        Style="{StaticResource DefTextBox}"
-                        TextWrapping="Wrap"
-                        VerticalScrollBarVisibility="Auto" />
-                </DockPanel>
-            </TabItem>
-
             <!--<TabItem Header="{x:Static resx:ResUI.TbSettingsCoreKcp}">
                 <Grid Margin="{StaticResource SettingItemMargin}">
                     <Grid.RowDefinitions>

@@ -10,14 +10,6 @@
 
         public string indexId { get; set; }
         public string subIndexId { get; set; }
-
-        public string remoteDNS { get; set; }
-
-        /// <summary>
-        /// Outbound Freedom domainStrategy
-        /// </summary>
-        public string domainStrategy4Freedom { get; set; }
-
         public ESysProxyType sysProxyType { get; set; }
         public string systemProxyExceptions { get; set; }
         public string systemProxyAdvancedProtocol { get; set; }

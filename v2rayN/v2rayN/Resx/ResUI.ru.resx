@@ -300,9 +300,6 @@
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>Файл конфигурации клиента сохранен по адресу: {0}</value>
   </data>
-  <data name="SaveServerConfigurationIn" xml:space="preserve">
-    <value>Файл конфигурации сервера сохранен по адресу: {0}</value>
-  </data>
   <data name="StartService" xml:space="preserve">
     <value>Запуск сервиса ({0})...</value>
   </data>
@@ -553,9 +550,6 @@
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Экспортировать выбранный сервер для клиента</value>
   </data>
-  <data name="menuExport2ServerConfig" xml:space="preserve">
-    <value>Экспортировать выбранный сервер для сервера</value>
-  </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Экспорт URL-адресов общего доступа в буфер обмена (Ctrl+C)</value>
   </data>
@@ -731,7 +725,7 @@
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>Ядро: настройки DNS</value>
+    <value>V2ray DNS settings</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Ядро: настройки KCP</value>

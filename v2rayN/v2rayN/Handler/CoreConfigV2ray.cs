@@ -684,20 +684,23 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(_config.remoteDNS))
+                var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+                var normalDNS = item?.normalDNS;
+                var domainStrategy4Freedom = item?.domainStrategy4Freedom;
+                if (string.IsNullOrWhiteSpace(normalDNS))
                 {
                     return 0;
                 }
 
                 //Outbound Freedom domainStrategy
-                if (!string.IsNullOrWhiteSpace(_config.domainStrategy4Freedom))
+                if (!string.IsNullOrWhiteSpace(domainStrategy4Freedom))
                 {
                     var outbound = v2rayConfig.outbounds[1];
-                    outbound.settings.domainStrategy = _config.domainStrategy4Freedom;
+                    outbound.settings.domainStrategy = domainStrategy4Freedom;
                     outbound.settings.userLevel = 0;
                 }
 
-                var obj = Utils.ParseJson(_config.remoteDNS);
+                var obj = Utils.ParseJson(normalDNS);
                 if (obj?.ContainsKey("servers") == true)
                 {
                     v2rayConfig.dns = obj;
@@ -706,7 +709,7 @@ namespace v2rayN.Handler
                 {
                     List<string> servers = new();
 
-                    string[] arrDNS = _config.remoteDNS.Split(',');
+                    string[] arrDNS = normalDNS.Split(',');
                     foreach (string str in arrDNS)
                     {
                         //if (Utils.IsIP(str))

@@ -137,6 +137,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> OptionSettingCmd { get; }
 
         public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
+        public ReactiveCommand<Unit, Unit> DNSSettingCmd { get; }
         public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
         public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
@@ -417,7 +418,7 @@ namespace v2rayN.ViewModels
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
             {
                 Export2ClientConfig();
-            }, canEditRemove);          
+            }, canEditRemove);
             Export2ShareUrlCmd = ReactiveCommand.Create(() =>
             {
                 Export2ShareUrl();
@@ -461,6 +462,10 @@ namespace v2rayN.ViewModels
             RoutingSettingCmd = ReactiveCommand.Create(() =>
             {
                 RoutingSetting();
+            });
+            DNSSettingCmd = ReactiveCommand.Create(() =>
+            {
+                DNSSetting();
             });
             GlobalHotkeySettingCmd = ReactiveCommand.Create(() =>
             {
@@ -551,7 +556,7 @@ namespace v2rayN.ViewModels
         private void Init()
         {
             ConfigHandler.InitBuiltinRouting(ref _config);
-            //MainFormHandler.Instance.BackupGuiNConfig(_config, true);
+            ConfigHandler.InitBuiltinDNS(_config);
             _coreHandler = new CoreHandler(UpdateHandler);
 
             if (_config.guiItem.enableStatistics)
@@ -1344,6 +1349,14 @@ namespace v2rayN.ViewModels
                 ConfigHandler.InitBuiltinRouting(ref _config);
                 RefreshRoutingsMenu();
                 //RefreshServers();
+                Reload();
+            }
+        }
+        private void DNSSetting()
+        {
+            var ret = (new DNSSettingWindow()).ShowDialog();
+            if (ret == true)
+            {
                 Reload();
             }
         }

@@ -300,9 +300,6 @@
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
   </data>
-  <data name="SaveServerConfigurationIn" xml:space="preserve">
-    <value>The server configuration file is saved at: {0}</value>
-  </data>
   <data name="StartService" xml:space="preserve">
     <value>Start service ({0})...</value>
   </data>
@@ -553,9 +550,6 @@
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>سرور انتخابی را برای پیکربندی کلاینت صادر کنید</value>
   </data>
-  <data name="menuExport2ServerConfig" xml:space="preserve">
-    <value>سرور انتخاب شده را برای پیکربندی سرور صادر کنید</value>
-  </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>URL های اشتراک گذاری را به کلیپ بورد صادر کنید (Ctrl+C)</value>
   </data>
@@ -731,7 +725,7 @@
     <value>هسته: تنظیمات اولیه</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>هسته: تنظیمات DNS</value>
+    <value>V2ray DNS settings</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>هسته: تنظیمات KCP</value>

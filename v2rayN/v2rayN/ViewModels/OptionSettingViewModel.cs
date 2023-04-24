@@ -34,13 +34,6 @@ namespace v2rayN.ViewModels
 
         #endregion Core
 
-        #region Core DNS
-
-        [Reactive] public string domainStrategy4Freedom { get; set; }
-        [Reactive] public string remoteDNS { get; set; }
-
-        #endregion Core DNS
-
         #region Core KCP
 
         //[Reactive] public int Kcpmtu { get; set; }
@@ -140,13 +133,6 @@ namespace v2rayN.ViewModels
             defUserAgent = _config.coreBasicItem.defUserAgent;
 
             #endregion Core
-
-            #region Core DNS
-
-            domainStrategy4Freedom = _config.domainStrategy4Freedom;
-            remoteDNS = _config.remoteDNS;
-
-            #endregion Core DNS
 
             #region Core KCP
 
@@ -282,19 +268,6 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            var obj = Utils.ParseJson(remoteDNS);
-            if (obj?.ContainsKey("servers") == true)
-            {
-            }
-            else
-            {
-                if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
-                {
-                    UI.Show(ResUI.FillCorrectDNSText);
-                    return;
-                }
-            }
-
             //if (Utils.IsNullOrEmpty(Kcpmtu.ToString()) || !Utils.IsNumberic(Kcpmtu.ToString())
             //       || Utils.IsNullOrEmpty(Kcptti.ToString()) || !Utils.IsNumberic(Kcptti.ToString())
             //       || Utils.IsNullOrEmpty(KcpuplinkCapacity.ToString()) || !Utils.IsNumberic(KcpuplinkCapacity.ToString())
@@ -325,10 +298,6 @@ namespace v2rayN.ViewModels
             _config.coreBasicItem.defAllowInsecure = defAllowInsecure;
             _config.coreBasicItem.defFingerprint = defFingerprint;
             _config.coreBasicItem.defUserAgent = defUserAgent;
-
-            //DNS
-            _config.remoteDNS = remoteDNS;
-            _config.domainStrategy4Freedom = domainStrategy4Freedom;
 
             //Kcp
             //_config.kcpItem.mtu = Kcpmtu;
