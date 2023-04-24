@@ -136,7 +136,6 @@ namespace v2rayN.Base
                     var data = new byte[read];
                     buffer.ToList().CopyTo(0, data, 0, read);
 
-                    // TODO:
                     totalRead += read;
 
                     TimeSpan ts = (DateTime.Now - totalDatetime);

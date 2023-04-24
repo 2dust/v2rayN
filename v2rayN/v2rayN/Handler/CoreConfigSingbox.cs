@@ -326,13 +326,28 @@ namespace v2rayN.Handler
         {
             try
             {
-                var routing = ConfigHandler.GetDefaultRouting(ref _config);
-                if (routing != null)
+                if (_config.routingBasicItem.enableRoutingAdvanced)
                 {
-                    var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
-                    foreach (var item in rules!)
+                    var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                    if (routing != null)
                     {
-                        if (item.enabled)
+                        var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
+                        foreach (var item in rules!)
+                        {
+                            if (item.enabled)
+                            {
+                                routingUserRule(item, singboxConfig.route.rules);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
+                    if (lockedItem != null)
+                    {
+                        var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
+                        foreach (var item in rules!)
                         {
                             routingUserRule(item, singboxConfig.route.rules);
                         }

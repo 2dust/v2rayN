@@ -484,7 +484,6 @@ namespace v2rayN.Handler
             switch (i.streamSecurity)
             {
                 case "tls":
-                    // TODO tls config
                     break;
 
                 default:
@@ -499,13 +498,10 @@ namespace v2rayN.Handler
                 case "tcp":
                     string t1 = q["type"] ?? "none";
                     i.headerType = t1;
-                    // TODO http option
-
                     break;
 
                 case "kcp":
                     i.headerType = q["type"] ?? "none";
-                    // TODO kcp seed
                     break;
 
                 case "ws":
