@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
+using System.Threading;
 using v2rayN.Base;
 using v2rayN.Resx;
 
@@ -206,10 +207,8 @@ namespace v2rayN.Handler
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
                 }
 
-                var cts = new CancellationTokenSource();
-                cts.CancelAfter(1000 * 30);
-
-                var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token);
+                using var cts = new CancellationTokenSource();
+                var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(30), cts.Token);
                 return result;
             }
             catch (Exception ex)
