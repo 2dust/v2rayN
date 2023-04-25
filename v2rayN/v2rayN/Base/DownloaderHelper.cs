@@ -16,9 +16,6 @@ namespace v2rayN.Base
                 return null;
             }
 
-            var cancellationToken = new CancellationTokenSource();
-            cancellationToken.CancelAfter(timeout * 1000);
-
             Uri uri = new(url);
             //Authorization Header
             var headers = new WebHeaderCollection();
@@ -48,7 +45,9 @@ namespace v2rayN.Base
                     throw value.Error;
                 }
             };
-            using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
+
+            using var cts = new CancellationTokenSource();
+            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
             using StreamReader reader = new(stream);
 
             downloadOpt = null;
@@ -62,9 +61,6 @@ namespace v2rayN.Base
             {
                 throw new ArgumentNullException(nameof(url));
             }
-
-            var cancellationToken = new CancellationTokenSource();
-            cancellationToken.CancelAfter(timeout * 1000);
 
             var downloadOpt = new DownloadConfiguration()
             {
@@ -115,8 +111,8 @@ namespace v2rayN.Base
                 }
             };
             //progress.Report("......");
-
-            using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken: cancellationToken.Token);
+            using var cts = new CancellationTokenSource();
+            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
 
             downloadOpt = null;
         }
@@ -135,9 +131,6 @@ namespace v2rayN.Base
             {
                 File.Delete(fileName);
             }
-
-            var cancellationToken = new CancellationTokenSource();
-            cancellationToken.CancelAfter(timeout * 1000);
 
             var downloadOpt = new DownloadConfiguration()
             {
@@ -178,7 +171,8 @@ namespace v2rayN.Base
                 }
             };
 
-            await downloader.DownloadFileTaskAsync(url, fileName, cancellationToken: cancellationToken.Token);
+            using var cts = new CancellationTokenSource();
+            await downloader.DownloadFileTaskAsync(url, fileName, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
 
             downloadOpt = null;
         }
