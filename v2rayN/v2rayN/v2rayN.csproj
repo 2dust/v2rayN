@@ -12,7 +12,7 @@
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
 		<FileVersion>6.23</FileVersion>
 	</PropertyGroup>
- 
+
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.4" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
@@ -65,6 +65,12 @@
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\SampleInbound">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\tun_singbox_rules">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>  
+        <EmbeddedResource Include="Sample\tun_singbox_inbound">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
         <EmbeddedResource Include="v2rayN.ico">

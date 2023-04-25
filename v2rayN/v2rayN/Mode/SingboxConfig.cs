@@ -26,8 +26,8 @@
 
     public class Route4Sbox
     {
-        public List<Rule4Sbox> rules { get; set; }
         public bool? auto_detect_interface { get; set; }
+        public List<Rule4Sbox> rules { get; set; }
     }
 
     [Serializable]
@@ -40,6 +40,7 @@
         public List<string>? protocol { get; set; }
         public string type { get; set; }
         public string mode { get; set; }
+        public string network { get; set; }
         public List<int>? port { get; set; }
         public List<string>? port_range { get; set; }
         public List<string>? geosite { get; set; }
@@ -49,6 +50,7 @@
         public List<string>? domain_regex { get; set; }
         public List<string>? geoip { get; set; }
         public List<string>? ip_cidr { get; set; }
+        public List<string>? source_ip_cidr { get; set; }
 
         public List<string>? process_name { get; set; }
     }
@@ -59,7 +61,7 @@
         public string type { get; set; }
         public string tag { get; set; }
         public string listen { get; set; }
-        public int listen_port { get; set; }
+        public int? listen_port { get; set; }
         public string domain_strategy { get; set; }
         public string interface_name { get; set; }
         public string inet4_address { get; set; }
