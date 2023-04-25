@@ -100,6 +100,7 @@ namespace v2rayN.Views
 
                 case EConfigType.Trojan:
                     gridTrojan.Visibility = Visibility.Visible;
+                    cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
                     Global.flows.ForEach(it =>
                     {
                         cmbFlow6.Items.Add(it);
