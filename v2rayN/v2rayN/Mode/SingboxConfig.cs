@@ -109,7 +109,7 @@
         public List<string> alpn { get; set; }
         public Utls4Sbox utls { get; set; }
         public Reality4Sbox reality { get; set; }
-    } 
+    }
 
     public class Multiplex4Sbox
     {
@@ -152,7 +152,7 @@
         public string strategy { get; set; }
         public string detour { get; set; }
     }
-    
+
     public class Experimental4Sbox
     {
         public V2ray_Api4Sbox v2ray_api { get; set; }
