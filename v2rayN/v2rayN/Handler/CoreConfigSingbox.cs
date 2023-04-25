@@ -1,4 +1,5 @@
-﻿using v2rayN.Base;
+﻿using System.ComponentModel;
+using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
@@ -130,7 +131,7 @@ namespace v2rayN.Handler
                     var inbound = singboxConfig.inbounds[0];
                     inbound.listen_port = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
                     inbound.sniff = _config.inbound[0].sniffingEnabled;
-                    inbound.sniff_override_destination = _config.inbound[0].sniffingEnabled;
+                    inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
 
                     //http
                     var inbound2 = Utils.DeepCopy(inbound);
