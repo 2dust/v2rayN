@@ -168,10 +168,6 @@ namespace v2rayN.Handler
             {
                 config.constItem.defIEProxyExceptions = Global.IEProxyExceptions;
             }
-            //if (Utils.IsNullOrEmpty(config.remoteDNS))
-            //{
-            //    config.remoteDNS = "1.1.1.1";
-            //}
 
             if (config.speedTestItem == null)
             {

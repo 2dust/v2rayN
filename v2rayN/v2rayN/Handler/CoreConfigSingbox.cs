@@ -640,7 +640,19 @@ namespace v2rayN.Handler
             {
                 if (_config.tunModeItem.enableTun)
                 {
-                    var tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
+                    string tunDNS = String.Empty;
+                    if (_config.tunModeItem.bypassMode)
+                    {
+                        tunDNS = _config.tunModeItem.directDNS;
+                    }
+                    else
+                    {
+                        tunDNS = _config.tunModeItem.proxyDNS;
+                    }
+                    if (tunDNS.IsNullOrEmpty() || Utils.ParseJson(tunDNS)?.ContainsKey("servers") == false)
+                    {
+                        tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
+                    }
                     var obj = Utils.ParseJson(tunDNS);
                     singboxConfig.dns = obj;
                 }
