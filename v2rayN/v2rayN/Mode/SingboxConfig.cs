@@ -62,7 +62,7 @@
         public string tag { get; set; }
         public string listen { get; set; }
         public int? listen_port { get; set; }
-        public string domain_strategy { get; set; }
+        public string? domain_strategy { get; set; }
         public string interface_name { get; set; }
         public string inet4_address { get; set; }
         public string inet6_address { get; set; }

@@ -1126,4 +1126,7 @@
   <data name="TBSettingDnsImportDefConfig" xml:space="preserve">
     <value>Click to import default DNS config</value>
   </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>Sing-box domain strategy</value>
+  </data>
 </root>

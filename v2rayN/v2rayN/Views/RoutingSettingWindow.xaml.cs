@@ -28,6 +28,10 @@ namespace v2rayN.Views
             {
                 cmbdomainMatcher.Items.Add(it);
             });
+            Global.domainStrategys4Singbox.ForEach(it =>
+            {
+                cmbdomainStrategy4Singbox.Items.Add(it);
+            });
 
             this.WhenActivated(disposables =>
             {
@@ -37,6 +41,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.enableRoutingAdvanced, v => v.togenableRoutingAdvanced.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.domainStrategy, v => v.cmbdomainStrategy.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.domainMatcher, v => v.cmbdomainMatcher.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.domainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.Text).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.ProxyDomain, v => v.txtProxyDomain.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.ProxyIP, v => v.txtProxyIP.Text).DisposeWith(disposables);
@@ -45,8 +50,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.BlockDomain, v => v.txtBlockDomain.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.BlockIP, v => v.txtBlockIP.Text).DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.enableRoutingBasic, v => v.menuRoutingBasic.IsEnabled).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.enableRoutingAdvanced, v => v.menuRoutingAdvanced.IsEnabled).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.enableRoutingBasic, v => v.menuRoutingBasic.Visibility).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.enableRoutingAdvanced, v => v.menuRoutingAdvanced.Visibility).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.enableRoutingBasic, v => v.tabBasic.Visibility).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.enableRoutingAdvanced, v => v.tabAdvanced.Visibility).DisposeWith(disposables);
 
@@ -99,6 +104,11 @@ namespace v2rayN.Views
         private void linkdomainStrategy_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Utils.ProcessStart("https://www.v2fly.org/config/routing.html");
+        }
+
+        private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
         }
 
         private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -235,7 +235,7 @@
                                 <MenuItem
                                     x:Name="menuCheckUpdateSingBoxCore"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="SingBox Core" />
+                                    Header="Sing-box Core" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateGeo"

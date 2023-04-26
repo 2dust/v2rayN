@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuRoutingSetting}"
-    Width="900"
+    Width="990"
     Height="700"
     x:TypeArguments="vms:RoutingSettingViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -52,7 +52,6 @@
                             Header="{x:Static resx:ResUI.menuRoutingBasicImportRules}" />
                     </MenuItem>
                 </Menu>
-                <Separator />
                 <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
                     <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
                         <MenuItem.Header>
@@ -106,7 +105,21 @@
                     Text="{x:Static resx:ResUI.TbdomainMatcher}" />
                 <ComboBox
                     x:Name="cmbdomainMatcher"
-                    Width="80"
+                    Width="60"
+                    Margin="8,0,0,0"
+                    Style="{StaticResource DefComboBox}" />
+                <Separator />
+                <TextBlock
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}">
+                    <Hyperlink Click="linkdomainStrategy4Singbox_Click">
+                        <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
+                    </Hyperlink>
+                </TextBlock>
+                <ComboBox
+                    x:Name="cmbdomainStrategy4Singbox"
+                    Width="100"
                     Margin="8,0,0,0"
                     Style="{StaticResource DefComboBox}" />
             </ToolBar>

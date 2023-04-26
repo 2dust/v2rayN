@@ -191,6 +191,7 @@ namespace v2rayN.Mode
         /// 域名解析策略
         /// </summary>
         public string domainStrategy { get; set; }
+        public string domainStrategy4Singbox { get; set; }
 
         public string domainMatcher { get; set; }
         public string routingIndexId { get; set; }
