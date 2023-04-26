@@ -135,30 +135,7 @@ namespace v2rayN.Base
             configStr = configStr.Replace("$dns_object$", dnsObject);
 
             //exe
-            List<string> lstDnsExe = new();
-            List<string> lstDirectExe = new();
-            var coreInfos = LazyConfig.Instance.GetCoreInfos();
-            foreach (var it in coreInfos)
-            {
-                if (it.coreType == ECoreType.v2rayN)
-                {
-                    continue;
-                }
-                foreach (var it2 in it.coreExes)
-                {
-                    if (!lstDnsExe.Contains(it2) && it.coreType != ECoreType.sing_box)
-                    {
-                        //lstDnsExe.Add(it2);
-                        lstDnsExe.Add($"{it2}.exe");
-                    }
-
-                    if (!lstDirectExe.Contains(it2))
-                    {
-                        //lstDirectExe.Add(it2);
-                        lstDirectExe.Add($"{it2}.exe");
-                    }
-                }
-            }
+            routingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe);
             string strDns = string.Join("\",\"", lstDnsExe.ToArray());
             configStr = configStr.Replace("$dnsProcessName$", $"\"{strDns}\"");
 
@@ -207,6 +184,33 @@ namespace v2rayN.Base
             File.WriteAllText(Utils.GetConfigPath(_tunConfigName), configStr);
 
             return true;
+        }
+
+
+        private void routingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe)
+        {
+            lstDnsExe = new();
+            lstDirectExe = new();
+            var coreInfos = LazyConfig.Instance.GetCoreInfos();
+            foreach (var it in coreInfos)
+            {
+                if (it.coreType == ECoreType.v2rayN)
+                {
+                    continue;
+                }
+                foreach (var it2 in it.coreExes)
+                {
+                    if (!lstDnsExe.Contains(it2) && it.coreType != ECoreType.sing_box)
+                    {
+                        lstDnsExe.Add($"{it2}.exe");
+                    }
+
+                    if (!lstDirectExe.Contains(it2))
+                    {
+                        lstDirectExe.Add($"{it2}.exe");
+                    }
+                }
+            }
         }
 
         private void CoreStop()

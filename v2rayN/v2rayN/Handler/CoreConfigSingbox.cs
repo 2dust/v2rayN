@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using v2rayN.Base;
+﻿using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
@@ -382,7 +381,7 @@ namespace v2rayN.Handler
                     {
                         outbound = "direct",
                         process_name = lstDirectExe
-                    });                     
+                    });
                 }
 
                 if (_config.routingBasicItem.enableRoutingAdvanced)
@@ -410,6 +409,38 @@ namespace v2rayN.Handler
                         {
                             routingUserRule(item, singboxConfig.route.rules);
                         }
+                    }
+                }
+
+                if (_config.tunModeItem.enableTun)
+                {
+                    if (_config.tunModeItem.bypassMode)
+                    {
+                        //direct ips
+                        if (_config.tunModeItem.directIP != null && _config.tunModeItem.directIP.Count > 0)
+                        {
+                            singboxConfig.route.rules.Add(new() { outbound = "direct", ip_cidr = _config.tunModeItem.directIP });
+                        }
+                        //direct process
+                        if (_config.tunModeItem.directProcess != null && _config.tunModeItem.directProcess.Count > 0)
+                        {
+                            singboxConfig.route.rules.Add(new() { outbound = "direct", process_name = _config.tunModeItem.directProcess });
+                        }
+                    }
+                    else
+                    {
+                        //proxy ips
+                        if (_config.tunModeItem.proxyIP != null && _config.tunModeItem.proxyIP.Count > 0)
+                        {
+                            singboxConfig.route.rules.Add(new() { outbound = "proxy", ip_cidr = _config.tunModeItem.proxyIP });
+                        }
+                        //proxy process
+                        if (_config.tunModeItem.proxyProcess != null && _config.tunModeItem.proxyProcess.Count > 0)
+                        {
+                            singboxConfig.route.rules.Add(new() { outbound = "proxy", process_name = _config.tunModeItem.proxyProcess });
+                        }
+
+                        singboxConfig.route.rules.Add(new() { outbound = "direct", inbound = new() { "tun-in" } });
                     }
                 }
             }
