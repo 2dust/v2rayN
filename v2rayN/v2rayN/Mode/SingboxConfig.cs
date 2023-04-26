@@ -73,6 +73,13 @@
         public string? stack { get; set; }
         public bool? sniff { get; set; }
         public bool? sniff_override_destination { get; set; }
+        public List<User4Sbox> users { get; set; }
+    }
+
+    public class User4Sbox
+    {
+        public string username { get; set; }
+        public string password { get; set; }
     }
 
     public class Outbound4Sbox

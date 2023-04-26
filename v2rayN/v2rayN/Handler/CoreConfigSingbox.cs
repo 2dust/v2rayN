@@ -101,6 +101,8 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        #region inbound private
+
         private int inbound(SingboxConfig singboxConfig)
         {
             try
@@ -133,16 +135,27 @@ namespace v2rayN.Handler
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
 
                     //http
-                    var inbound2 = Utils.DeepCopy(inbound);
-                    inbound2.listen_port = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
-                    inbound2.type = Global.InboundHttp;
-                    inbound2.tag = Global.InboundHttp;
+                    var inbound2 = GetInbound(inbound, Global.InboundHttp, 1, false);
                     singboxConfig.inbounds.Add(inbound2);
 
                     if (_config.inbound[0].allowLANConn)
                     {
                         if (_config.inbound[0].newPort4LAN)
                         {
+                            var inbound3 = GetInbound(inbound, Global.InboundSocks2, 2, true);
+                            inbound3.listen = "::";
+                            singboxConfig.inbounds.Add(inbound3);
+
+                            var inbound4 = GetInbound(inbound, Global.InboundHttp2, 3, false);
+                            inbound4.listen = "::";
+                            singboxConfig.inbounds.Add(inbound4);
+
+                            //auth
+                            if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
+                            {
+                                inbound3.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
+                                inbound4.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
+                            }
                         }
                         else
                         {
@@ -158,6 +171,17 @@ namespace v2rayN.Handler
             }
             return 0;
         }
+
+        private Inbound4Sbox? GetInbound(Inbound4Sbox inItem, string tag, int offset, bool bSocks)
+        {
+            var inbound = Utils.DeepCopy(inItem);
+            inbound.tag = tag;
+            inbound.listen_port = inItem.listen_port + offset;
+            inbound.type = bSocks ? Global.InboundSocks : Global.InboundHttp;
+            return inbound;
+        }
+
+        #endregion inbound private
 
         #region outbound private
 
