@@ -13,12 +13,6 @@
         "geoip:cn"
       ]
     },
-    {
-      "address": "https://1.1.1.1/dns-query",
-      "domains": [
-        "geosite:geolocation-!cn"
-      ]
-    },
     "1.1.1.1",
     "https://dns.google/dns-query"
   ],

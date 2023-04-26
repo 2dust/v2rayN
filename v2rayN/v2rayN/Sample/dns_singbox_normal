@@ -1,11 +1,6 @@
 {
   "servers": [
     {
-      "tag": "out_dns",
-      "address": "8.8.8.8",
-      "detour": "proxy"
-    },
-    {
       "tag": "local",
       "address": "223.5.5.5",
       "detour": "direct"
