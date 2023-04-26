@@ -650,7 +650,7 @@ namespace v2rayN.Handler
                     var normalDNS = item?.normalDNS;
                     if (string.IsNullOrWhiteSpace(normalDNS))
                     {
-                        return 0;
+                        normalDNS = "{\"servers\":[{\"address\":\"tls://8.8.8.8\"}]}";
                     }
 
                     var obj = Utils.ParseJson(normalDNS);

@@ -689,7 +689,7 @@ namespace v2rayN.Handler
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
                 if (string.IsNullOrWhiteSpace(normalDNS))
                 {
-                    return 0;
+                    normalDNS = "1.1.1.1,8.8.8.8";
                 }
 
                 //Outbound Freedom domainStrategy
