@@ -1120,4 +1120,7 @@
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>请填写 DNS JSON 结构，点击查看文档</value>
   </data>
+  <data name="TBSettingDnsImportDefConfig" xml:space="preserve">
+    <value>点击导入默认DNS配置</value>
+  </data>
 </root>

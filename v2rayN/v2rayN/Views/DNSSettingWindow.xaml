@@ -78,6 +78,12 @@
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />
                             </Hyperlink>
                         </TextBlock>
+                        <Button
+                            x:Name="btnImportDefConfig4V2ray"
+                            Margin="8,0,0,0"
+                            Content="{x:Static resx:ResUI.TBSettingDnsImportDefConfig}"
+                            Cursor="Hand"
+                            Style="{StaticResource DefButton}" />
                     </StackPanel>
                     <TextBox
                         x:Name="txtnormalDNS"
@@ -102,6 +108,12 @@
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsSingboxObjectDoc}" />
                             </Hyperlink>
                         </TextBlock>
+                        <Button
+                            x:Name="btnImportDefConfig4Singbox"
+                            Margin="8,0,0,0"
+                            Content="{x:Static resx:ResUI.TBSettingDnsImportDefConfig}"
+                            Cursor="Hand"
+                            Style="{StaticResource DefButton}" />
                     </StackPanel>
                     <TextBox
                         x:Name="txtnormalDNS2"

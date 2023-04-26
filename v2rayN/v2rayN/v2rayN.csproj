@@ -72,6 +72,12 @@
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\tun_singbox_inbound">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+		<EmbeddedResource Include="Sample\dns_v2ray_normal">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Sample\dns_singbox_normal">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
         <EmbeddedResource Include="v2rayN.ico">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>

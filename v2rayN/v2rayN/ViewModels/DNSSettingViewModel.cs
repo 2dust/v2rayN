@@ -20,6 +20,8 @@ namespace v2rayN.ViewModels
         [Reactive] public string normalDNS2 { get; set; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+        public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
+        public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCmd { get; }
 
         public DNSSettingViewModel(Window view)
         {
@@ -37,6 +39,16 @@ namespace v2rayN.ViewModels
             SaveCmd = ReactiveCommand.Create(() =>
             {
                 SaveSetting();
+            });
+
+            ImportDefConfig4V2rayCmd = ReactiveCommand.Create(() =>
+            {
+                normalDNS = Utils.GetEmbedText(Global.DNSV2rayNormalFileName);
+            });
+
+            ImportDefConfig4SingboxCmd = ReactiveCommand.Create(() =>
+            {
+                normalDNS2 = Utils.GetEmbedText(Global.DNSSingboxNormalFileName);
             });
 
             Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);

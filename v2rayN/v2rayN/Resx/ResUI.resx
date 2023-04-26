@@ -1123,4 +1123,7 @@
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Please fill in DNS Structure, Click to view the document</value>
   </data>
+  <data name="TBSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Click to import default DNS config</value>
+  </data>
 </root>

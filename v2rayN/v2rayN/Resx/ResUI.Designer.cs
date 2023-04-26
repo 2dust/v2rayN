@@ -2258,6 +2258,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Click to import default DNS config 的本地化字符串。
+        /// </summary>
+        public static string TBSettingDnsImportDefConfig {
+            get {
+                return ResourceManager.GetString("TBSettingDnsImportDefConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Advanced proxy settings, protocol selection (optional) 的本地化字符串。
         /// </summary>
         public static string TbSettingsAdvancedProtocol {

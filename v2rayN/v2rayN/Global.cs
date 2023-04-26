@@ -27,16 +27,21 @@
         public const string ConfigFileName = "guiNConfig.json";
         public const string ConfigDB = "guiNDB.db";
         public const string coreConfigFileName = "config.json";
+
         public const string v2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string v2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
         public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
-        public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
         public const string v2raySampleInbound = "v2rayN.Sample.SampleInbound";
+        public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
+
         public const string TunSingboxFileName = "v2rayN.Sample.tun_singbox";
         public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
         public const string TunSingboxInboundFileName = "v2rayN.Sample.tun_singbox_inbound";
         public const string TunSingboxRulesFileName = "v2rayN.Sample.tun_singbox_rules";
+
+        public const string DNSV2rayNormalFileName = "v2rayN.Sample.dns_v2ray_normal";
+        public const string DNSSingboxNormalFileName = "v2rayN.Sample.dns_singbox_normal";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";
