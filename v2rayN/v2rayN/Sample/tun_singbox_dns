@@ -1,8 +1,8 @@
   {
     "servers": [
       {
-        "tag": "out_dns",
-        "address": "8.8.8.8",
+        "tag": "remote",
+        "address": "tcp://8.8.8.8",
         "detour": "proxy"
       },
       {

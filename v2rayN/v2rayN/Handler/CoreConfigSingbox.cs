@@ -77,8 +77,8 @@ namespace v2rayN.Handler
                         singboxConfig.log.level = _config.coreBasicItem.loglevel;
                         break;
 
-                    case "warn":
-                        singboxConfig.log.level = "warning";
+                    case "warning":
+                        singboxConfig.log.level = "warn";
                         break;
 
                     default:
@@ -323,6 +323,7 @@ namespace v2rayN.Handler
                             public_key = node.publicKey,
                             short_id = node.shortId
                         };
+                        tls.insecure = false;
                     }
                     outbound.tls = tls;
                 }
@@ -662,7 +663,7 @@ namespace v2rayN.Handler
                     var normalDNS = item?.normalDNS;
                     if (string.IsNullOrWhiteSpace(normalDNS))
                     {
-                        normalDNS = "{\"servers\":[{\"address\":\"tls://8.8.8.8\"}]}";
+                        normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
                     }
 
                     var obj = Utils.ParseJson(normalDNS);
