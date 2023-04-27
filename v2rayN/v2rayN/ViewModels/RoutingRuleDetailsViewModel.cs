@@ -64,6 +64,9 @@ namespace v2rayN.ViewModels
 
         private void SaveRules()
         {
+            Domain = Domain.Replace(Environment.NewLine, ",");
+            IP = IP.Replace(Environment.NewLine, ",");
+            
             if (AutoSort)
             {
                 SelectedSource.domain = Utils.String2ListSorted(Domain);
