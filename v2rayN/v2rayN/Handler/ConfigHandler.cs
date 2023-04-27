@@ -1281,7 +1281,7 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
-            var customProfile = SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid && t.isSub == isSub && t.configType == EConfigType.Custom).ToList();
+            var customProfile = SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid && t.configType == EConfigType.Custom).ToList();
             if (isSub)
             {
                 SqliteHelper.Instance.Execute($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");

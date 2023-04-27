@@ -112,7 +112,8 @@ namespace v2rayN.Base
             };
             //progress.Report("......");
             using var cts = new CancellationTokenSource();
-            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            cts.CancelAfter(timeout * 1000);
+            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
 
             downloadOpt = null;
         }
