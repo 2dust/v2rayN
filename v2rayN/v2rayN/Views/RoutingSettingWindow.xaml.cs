@@ -84,6 +84,10 @@ namespace v2rayN.Views
                     lstRoutings.SelectAll();
                 }
             }
+            else if (e.Key is Key.Enter or Key.Return)
+            {
+                ViewModel?.RoutingAdvancedSetDefault();
+            }
         }
 
         private void menuRoutingAdvancedSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)

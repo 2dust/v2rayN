@@ -280,7 +280,7 @@ namespace v2rayN.ViewModels
             IsModified = true;
         }
 
-        private void RoutingAdvancedSetDefault()
+        public void RoutingAdvancedSetDefault()
         {
             var item = LazyConfig.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)

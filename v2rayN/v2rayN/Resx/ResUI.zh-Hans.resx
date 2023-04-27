@@ -881,7 +881,7 @@
     <value>移除所选规则</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>设为活动规则</value>
+    <value>设为活动规则 (Enter)</value>
   </data>
   <data name="menuRoutingBasic" xml:space="preserve">
     <value>基础功能</value>

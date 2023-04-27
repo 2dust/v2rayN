@@ -881,7 +881,7 @@
     <value>Remove selected</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Set as active rule</value>
+    <value>Set as active rule(Enter)</value>
   </data>
   <data name="menuRoutingBasic" xml:space="preserve">
     <value>Basic Function</value>

@@ -1024,7 +1024,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set as active rule 的本地化字符串。
+        ///   查找类似 Set as active rule(Enter) 的本地化字符串。
         /// </summary>
         public static string menuRoutingAdvancedSetDefault {
             get {
