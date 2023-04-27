@@ -939,6 +939,7 @@ namespace v2rayN.ViewModels
                 {
                     subid = _subId,
                     configType = eConfigType,
+                    isSub = false,
                 };
             }
             else
@@ -1337,7 +1338,6 @@ namespace v2rayN.ViewModels
             {
                 //RefreshServers();
                 Reload();
-                TunModeSwitch();
             }
         }
 
@@ -1352,6 +1352,7 @@ namespace v2rayN.ViewModels
                 Reload();
             }
         }
+
         private void DNSSetting()
         {
             var ret = (new DNSSettingWindow()).ShowDialog();
@@ -1483,10 +1484,6 @@ namespace v2rayN.ViewModels
                 BlReloadEnabled = false;
             }));
 
-            //if (Global.reloadV2ray)
-            //{
-            //    _noticeHandler?.SendMessage(Global.CommandClearMsg);
-            //}
             await Task.Run(() =>
             {
                 _coreHandler.LoadCore(_config);
@@ -1620,8 +1617,8 @@ namespace v2rayN.ViewModels
             if (_config.tunModeItem.enableTun != EnableTun)
             {
                 _config.tunModeItem.enableTun = EnableTun;
+                Reload();
             }
-            TunModeSwitch();
         }
 
         private void TunModeSwitch()

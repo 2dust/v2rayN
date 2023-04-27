@@ -17,12 +17,12 @@
     ],
     "rules": [
       {
-        "geosite": "cn",
+        "geosite": [ "cn" ],
         "server": "local",
         "disable_cache": true
       },
       {
-        "geosite": "category-ads-all",
+        "geosite": [ "category-ads-all" ],
         "server": "block",
         "disable_cache": true
       }

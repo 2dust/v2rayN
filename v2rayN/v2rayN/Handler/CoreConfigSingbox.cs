@@ -50,7 +50,7 @@ namespace v2rayN.Handler
 
                 routing(singboxConfig);
 
-                dns(singboxConfig);
+                dns(node, singboxConfig);
 
                 //statistic(singboxConfig);
 
@@ -133,7 +133,7 @@ namespace v2rayN.Handler
                     inbound.listen_port = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
                     inbound.sniff = _config.inbound[0].sniffingEnabled;
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
-                    inbound.domain_strategy = Utils.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null: _config.routingBasicItem.domainStrategy4Singbox;
+                    inbound.domain_strategy = Utils.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
 
                     //http
                     var inbound2 = GetInbound(inbound, Global.InboundHttp, 1, false);
@@ -635,10 +635,13 @@ namespace v2rayN.Handler
 
         #endregion routing rule private
 
-        private int dns(SingboxConfig singboxConfig)
+        #region dns private
+
+        private int dns(ProfileItem node, SingboxConfig singboxConfig)
         {
             try
             {
+                Dns4Sbox? dns4Sbox;
                 if (_config.tunModeItem.enableTun)
                 {
                     string tunDNS = String.Empty;
@@ -650,12 +653,11 @@ namespace v2rayN.Handler
                     {
                         tunDNS = _config.tunModeItem.proxyDNS;
                     }
-                    if (tunDNS.IsNullOrEmpty() || Utils.ParseJson(tunDNS)?.ContainsKey("servers") == false)
+                    if (tunDNS.IsNullOrEmpty() || Utils.FromJson<Dns4Sbox>(tunDNS) is null)
                     {
                         tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
                     }
-                    var obj = Utils.ParseJson(tunDNS);
-                    singboxConfig.dns = obj;
+                    dns4Sbox = Utils.FromJson<Dns4Sbox>(tunDNS);
                 }
                 else
                 {
@@ -666,12 +668,33 @@ namespace v2rayN.Handler
                         normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
                     }
 
-                    var obj = Utils.ParseJson(normalDNS);
-                    if (obj?.ContainsKey("servers") == true)
-                    {
-                        singboxConfig.dns = obj;
-                    }
+                    dns4Sbox = Utils.FromJson<Dns4Sbox>(normalDNS);
                 }
+                if (dns4Sbox is null)
+                {
+                    return 0;
+                }
+                //Add the dns of the remote server domain
+                if (Utils.IsDomain(node.address))
+                {
+                    if (dns4Sbox.rules is null)
+                    {
+                        dns4Sbox.rules = new();
+                    }
+                    dns4Sbox.servers.Add(new()
+                    {
+                        tag = "local_local",
+                        address = "223.5.5.5",
+                        detour = "direct"
+                    });
+                    dns4Sbox.rules.Add(new()
+                    {
+                        server = "local_local",
+                        domain = new List<string>() { node.address }
+                    });
+                }
+
+                singboxConfig.dns = dns4Sbox;
             }
             catch (Exception ex)
             {
@@ -679,6 +702,8 @@ namespace v2rayN.Handler
             }
             return 0;
         }
+
+        #endregion dns private
 
         private int statistic(SingboxConfig singboxConfig)
         {

@@ -73,8 +73,8 @@ namespace v2rayN.ViewModels
             }
             if (!Utils.IsNullOrEmpty(normalDNS2))
             {
-                var obj2 = Utils.ParseJson(normalDNS2);
-                if (obj2 == null || obj2.ContainsKey("servers") == false)
+                var obj2 = Utils.FromJson<Dns4Sbox>(normalDNS2);
+                if (obj2 == null)
                 {
                     UI.Show(ResUI.FillCorrectDNSText);
                     return;
