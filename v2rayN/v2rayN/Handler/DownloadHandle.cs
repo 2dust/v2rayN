@@ -62,12 +62,12 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public void DownloadFileAsync(string url, bool blProxy, int downloadTimeout)
+        public async Task DownloadFileAsync(string url, bool blProxy, int downloadTimeout)
         {
             try
             {
                 Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, ResUI.Downloading));
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
                 progress.ProgressChanged += (sender, value) =>
@@ -76,7 +76,7 @@ namespace v2rayN.Handler
                 };
 
                 var webProxy = GetWebProxy(blProxy);
-                _ = DownloaderHelper.Instance.DownloadFileAsync(webProxy,
+                await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                     url,
                     Utils.GetTempPath(Utils.GetDownloadFileName(url)),
                     progress,

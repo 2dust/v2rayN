@@ -20,6 +20,7 @@
         public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
         public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
         public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
+        public const string singboxGeoUrl = "https://github.com/soffchen/sing-{0}/releases/latest/download/{0}.db";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 

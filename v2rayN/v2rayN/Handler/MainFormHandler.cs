@@ -206,19 +206,10 @@ namespace v2rayN.Handler
                 {
                     if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)
                     {
-                        updateHandle.UpdateGeoFile("geosite", config, (bool success, string msg) =>
+                        updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                         {
-                            update(false, msg);
-                            if (success)
-                                Utils.SaveLog("geosite" + msg);
-                        });
-
-                        updateHandle.UpdateGeoFile("geoip", config, (bool success, string msg) =>
-                        {
-                            update(false, msg);
-                            if (success)
-                                Utils.SaveLog("geoip" + msg);
-                        });
+                            update(false, msg);                          
+                        });                      
                         autoUpdateGeoTime = dtNow;
                     }
                 }

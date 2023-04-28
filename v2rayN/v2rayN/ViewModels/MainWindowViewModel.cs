@@ -1460,12 +1460,7 @@ namespace v2rayN.ViewModels
 
         private void CheckUpdateGeo()
         {
-            Task.Run(() =>
-            {
-                var updateHandle = new UpdateHandle();
-                updateHandle.UpdateGeoFile("geosite", _config, UpdateTaskHandler);
-                updateHandle.UpdateGeoFile("geoip", _config, UpdateTaskHandler);
-            });
+            (new UpdateHandle()).UpdateGeoFileAll(_config, UpdateTaskHandler);
         }
 
         #endregion CheckUpdate

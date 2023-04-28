@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                     _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, "v2rayN"));
 
                     url = args.Msg;
-                    askToDownload(downloadHandle, url, true);
+                    _ = askToDownload(downloadHandle, url, true);
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace v2rayN.Handler
                 {
                     _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, "Core"));
                     url = args.Msg;
-                    askToDownload(downloadHandle, url, true);
+                    _ = askToDownload(downloadHandle, url, true);
                 }
                 else
                 {
@@ -279,51 +279,16 @@ namespace v2rayN.Handler
             });
         }
 
-        public void UpdateGeoFile(string geoName, Config config, Action<bool, string> update)
+        public void UpdateGeoFileAll(Config config, Action<bool, string> update)
         {
-            _config = config;
-            _updateFunc = update;
-            var url = string.Format(Global.geoUrl, geoName);
-
-            DownloadHandle downloadHandle = new();
-            downloadHandle.UpdateCompleted += (sender2, args) =>
+            Task.Run(async () =>
             {
-                if (args.Success)
-                {
-                    _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+                await UpdateGeoFile("geosite", _config, update);
+                await UpdateGeoFile("geoip", _config, update);
 
-                    try
-                    {
-                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
-                        if (File.Exists(fileName))
-                        {
-                            //Global.coreTypes.ForEach(it =>
-                            //{
-                            //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
-                            //    File.Copy(fileName, targetPath, true);
-                            //});
-                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
-                            File.Copy(fileName, targetPath, true);
-
-                            File.Delete(fileName);
-                            //_updateFunc(true, "");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _updateFunc(false, ex.Message);
-                    }
-                }
-                else
-                {
-                    _updateFunc(false, args.Msg);
-                }
-            };
-            downloadHandle.Error += (sender2, args) =>
-            {
-                _updateFunc(false, args.GetException().Message);
-            };
-            askToDownload(downloadHandle, url, false);
+                await UpdateGeoFile4Singbox("geosite", _config, update);
+                await UpdateGeoFile4Singbox("geoip", _config, update);
+            });
         }
 
         public void RunAvailabilityCheck(Action<bool, string> update)
@@ -570,7 +535,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private void askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
+        private async Task askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
         {
             bool blDownload = false;
             if (blAsk)
@@ -586,8 +551,96 @@ namespace v2rayN.Handler
             }
             if (blDownload)
             {
-                downloadHandle.DownloadFileAsync(url, true, 600);
+                await downloadHandle.DownloadFileAsync(url, true, 600);
             }
+        }
+
+        private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> update)
+        {
+            _config = config;
+            _updateFunc = update;
+            var url = string.Format(Global.geoUrl, geoName);
+
+            DownloadHandle downloadHandle = new();
+            downloadHandle.UpdateCompleted += (sender2, args) =>
+            {
+                if (args.Success)
+                {
+                    _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+
+                    try
+                    {
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        if (File.Exists(fileName))
+                        {
+                            //Global.coreTypes.ForEach(it =>
+                            //{
+                            //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
+                            //    File.Copy(fileName, targetPath, true);
+                            //});
+                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
+                            File.Copy(fileName, targetPath, true);
+
+                            File.Delete(fileName);
+                            //_updateFunc(true, "");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _updateFunc(false, ex.Message);
+                    }
+                }
+                else
+                {
+                    _updateFunc(false, args.Msg);
+                }
+            };
+            downloadHandle.Error += (sender2, args) =>
+            {
+                _updateFunc(false, args.GetException().Message);
+            };
+            await askToDownload(downloadHandle, url, false);
+        }
+
+        private async Task UpdateGeoFile4Singbox(string geoName, Config config, Action<bool, string> update)
+        {
+            _config = config;
+            _updateFunc = update;
+            var url = string.Format(Global.singboxGeoUrl, geoName);
+
+            DownloadHandle downloadHandle = new();
+            downloadHandle.UpdateCompleted += (sender2, args) =>
+            {
+                if (args.Success)
+                {
+                    _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+
+                    try
+                    {
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        if (File.Exists(fileName))
+                        {
+                            string targetPath = Utils.GetConfigPath($"{geoName}.db");
+                            File.Copy(fileName, targetPath, true);
+
+                            File.Delete(fileName);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _updateFunc(false, ex.Message);
+                    }
+                }
+                else
+                {
+                    _updateFunc(false, args.Msg);
+                }
+            };
+            downloadHandle.Error += (sender2, args) =>
+            {
+                _updateFunc(false, args.GetException().Message);
+            };
+            await askToDownload(downloadHandle, url, false);
         }
 
         #endregion private
