@@ -88,6 +88,10 @@ namespace v2rayN.Views
             {
                 ViewModel?.RoutingAdvancedSetDefault();
             }
+            else if (e.Key == Key.Delete)
+            {
+                ViewModel?.RoutingAdvancedRemove();
+            }
         }
 
         private void menuRoutingAdvancedSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)

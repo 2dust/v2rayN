@@ -167,7 +167,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void RuleRemove()
+        public void RuleRemove()
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
             {

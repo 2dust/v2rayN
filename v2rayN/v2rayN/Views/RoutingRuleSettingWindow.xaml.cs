@@ -90,6 +90,10 @@ namespace v2rayN.Views
                 {
                     ViewModel?.MoveRule(EMove.Bottom);
                 }
+                else if (e.Key == Key.Delete)
+                {
+                    ViewModel?.RuleRemove();
+                }
             }
         }
 
