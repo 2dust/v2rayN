@@ -701,7 +701,7 @@
     <value>txtPreSocksPort</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* После установки этого значения служба socks будет запущена с использованием V2ray для обеспечения таких функций, как отображение скорости</value>
+    <value>* После установки этого значения служба socks будет запущена с использованием Sing-box для обеспечения таких функций, как отображение скорости</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Просмотр</value>

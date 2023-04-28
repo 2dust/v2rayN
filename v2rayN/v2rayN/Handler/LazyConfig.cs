@@ -343,7 +343,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
-                arguments = "run",
+                arguments = "run{0}",
                 coreUrl = Global.singboxCoreUrl,
                 redirectInfo = true,
                 coreReleaseApiUrl = Global.singboxCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),

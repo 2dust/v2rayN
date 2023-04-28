@@ -2951,7 +2951,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 * After setting this value, an socks service will be started using V2ray to provide functions such as speed display 的本地化字符串。
+        ///   查找类似 * After setting this value, an socks service will be started using Sing-box to provide functions such as speed display 的本地化字符串。
         /// </summary>
         public static string TipPreSocksPort {
             get {

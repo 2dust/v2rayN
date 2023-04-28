@@ -186,7 +186,6 @@ namespace v2rayN.Base
             return true;
         }
 
-
         private void routingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe)
         {
             lstDnsExe = new();

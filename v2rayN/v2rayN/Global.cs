@@ -27,6 +27,7 @@
         public const string ConfigFileName = "guiNConfig.json";
         public const string ConfigDB = "guiNDB.db";
         public const string coreConfigFileName = "config.json";
+        public const string corePreConfigFileName = "configPre.json";
 
         public const string v2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
