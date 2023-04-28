@@ -935,7 +935,7 @@
     <value>Список правил</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Удалить правила</value>
+    <value>Удалить правила (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>RoutingRuleDetailsSetting</value>

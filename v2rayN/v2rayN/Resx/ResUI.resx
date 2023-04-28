@@ -878,7 +878,7 @@
     <value>Import Advanced Rules</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Remove selected</value>
+    <value>Remove selected (Delete)</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Set as active rule(Enter)</value>
@@ -935,7 +935,7 @@
     <value>Rule List</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Remove Rules</value>
+    <value>Remove Rules (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>RoutingRuleDetailsSetting</value>

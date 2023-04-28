@@ -1015,7 +1015,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Remove selected 的本地化字符串。
+        ///   查找类似 Remove selected (Delete) 的本地化字符串。
         /// </summary>
         public static string menuRoutingAdvancedRemove {
             get {
@@ -1105,7 +1105,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Remove Rules 的本地化字符串。
+        ///   查找类似 Remove Rules (Delete) 的本地化字符串。
         /// </summary>
         public static string menuRuleRemove {
             get {

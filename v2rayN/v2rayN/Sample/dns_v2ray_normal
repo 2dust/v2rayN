@@ -16,6 +16,5 @@
     "1.1.1.1",
     "8.8.8.8",
     "https://dns.google/dns-query"
-  ],
-  "queryStrategy": "UseIPv4"
+  ]
 }

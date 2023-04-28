@@ -1820,7 +1820,7 @@ namespace v2rayN.ViewModels
             if (_config.uiItem.autoHideStartup)
             {
                 Observable.Range(1, 1)
-                 .Delay(TimeSpan.FromSeconds(1))
+                 .Delay(TimeSpan.FromSeconds(2))
                  .Subscribe(x =>
                  {
                      Application.Current.Dispatcher.Invoke(() =>

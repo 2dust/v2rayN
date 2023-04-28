@@ -878,7 +878,7 @@
     <value>一键导入高级规则</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>移除所选规则</value>
+    <value>移除所选规则 (Delete)</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>设为活动规则 (Enter)</value>
@@ -935,7 +935,7 @@
     <value>规则列表</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>移除所选规则</value>
+    <value>移除所选规则 (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>路由规则详情设置</value>
