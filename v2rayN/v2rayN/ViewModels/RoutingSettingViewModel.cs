@@ -153,14 +153,14 @@ namespace v2rayN.ViewModels
         {
             if (_lockedItem != null)
             {
-                _lockedRules[0].domain = Utils.String2List(ProxyDomain.TrimEx());
-                _lockedRules[0].ip = Utils.String2List(ProxyIP.TrimEx());
+                _lockedRules[0].domain = Utils.String2List(Utils.Convert2Comma(ProxyDomain.TrimEx()));
+                _lockedRules[0].ip = Utils.String2List(Utils.Convert2Comma(ProxyIP.TrimEx()));
 
-                _lockedRules[1].domain = Utils.String2List(DirectDomain.TrimEx());
-                _lockedRules[1].ip = Utils.String2List(DirectIP.TrimEx());
+                _lockedRules[1].domain = Utils.String2List(Utils.Convert2Comma(DirectDomain.TrimEx()));
+                _lockedRules[1].ip = Utils.String2List(Utils.Convert2Comma(DirectIP.TrimEx()));
 
-                _lockedRules[2].domain = Utils.String2List(BlockDomain.TrimEx());
-                _lockedRules[2].ip = Utils.String2List(BlockIP.TrimEx());
+                _lockedRules[2].domain = Utils.String2List(Utils.Convert2Comma(BlockDomain.TrimEx()));
+                _lockedRules[2].ip = Utils.String2List(Utils.Convert2Comma(BlockIP.TrimEx()));
 
                 _lockedItem.ruleSet = Utils.ToJson(_lockedRules, false);
 
@@ -256,7 +256,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void RoutingAdvancedRemove()
+        public void RoutingAdvancedRemove()
         {
             if (SelectedSource is null || SelectedSource.remarks.IsNullOrEmpty())
             {

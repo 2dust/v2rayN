@@ -345,11 +345,11 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.mtu = TunMtu;
             _config.tunModeItem.customTemplate = TunCustomTemplate;
             _config.tunModeItem.bypassMode = TunBypassMode;
-            _config.tunModeItem.directIP = Utils.String2List(TunDirectIP);
-            _config.tunModeItem.directProcess = Utils.String2List(TunDirectProcess);
+            _config.tunModeItem.directIP = Utils.String2List(Utils.Convert2Comma(TunDirectIP));
+            _config.tunModeItem.directProcess = Utils.String2List(Utils.Convert2Comma(TunDirectProcess));
             _config.tunModeItem.directDNS = Utils.ToJson(Utils.ParseJson(TunDirectDNS));
-            _config.tunModeItem.proxyIP = Utils.String2List(TunProxyIP);
-            _config.tunModeItem.proxyProcess = Utils.String2List(TunProxyProcess);
+            _config.tunModeItem.proxyIP = Utils.String2List(Utils.Convert2Comma(TunProxyIP));
+            _config.tunModeItem.proxyProcess = Utils.String2List(Utils.Convert2Comma(TunProxyProcess));
             _config.tunModeItem.proxyDNS = Utils.ToJson(Utils.ParseJson(TunProxyDNS));
 
             //coreType

@@ -466,6 +466,15 @@ namespace v2rayN
             return Convert.TryFromBase64String(plainText, buffer, out int _);
         }
 
+        public static string Convert2Comma(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return text;
+            }
+            return text.Replace("，", ",").Replace(Environment.NewLine, ",");
+        }
+
         #endregion 转换函数
 
         #region 数据检查
