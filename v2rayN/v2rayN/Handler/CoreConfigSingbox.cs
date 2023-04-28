@@ -135,6 +135,15 @@ namespace v2rayN.Handler
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
                     inbound.domain_strategy = Utils.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
 
+                    if (_config.routingBasicItem.enableRoutingAdvanced)
+                    {
+                        var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                        if (!Utils.IsNullOrEmpty(routing.domainStrategy4Singbox))
+                        {
+                            inbound.domain_strategy = routing.domainStrategy4Singbox;
+                        }
+                    }
+
                     //http
                     var inbound2 = GetInbound(inbound, Global.InboundHttp, 1, false);
                     singboxConfig.inbounds.Add(inbound2);

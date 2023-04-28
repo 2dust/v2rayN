@@ -138,13 +138,26 @@
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbdomainStrategy}" />
-            <ComboBox
-                x:Name="cmbdomainStrategy"
+            <StackPanel
                 Grid.Row="1"
                 Grid.Column="1"
-                Width="200"
-                Margin="4"
-                Style="{StaticResource DefComboBox}" />
+                Orientation="Horizontal">
+                <ComboBox
+                    x:Name="cmbdomainStrategy"
+                    Width="200"
+                    Margin="4"
+                    Style="{StaticResource DefComboBox}" />
+                <TextBlock
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
+                <ComboBox
+                    x:Name="cmbdomainStrategy4Singbox"
+                    Width="200"
+                    Margin="4"
+                    Style="{StaticResource DefComboBox}" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="2"
