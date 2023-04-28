@@ -293,9 +293,9 @@ namespace v2rayN.Handler
 
         public void RunAvailabilityCheck(Action<bool, string> update)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var time = (new DownloadHandle()).RunAvailabilityCheck(null);
+                var time = await (new DownloadHandle()).RunAvailabilityCheck(null);
 
                 update(false, string.Format(ResUI.TestMeOutput, time));
             });

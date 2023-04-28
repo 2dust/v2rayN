@@ -170,12 +170,12 @@ namespace v2rayN.Handler
                     {
                         continue;
                     }
-                    tasks.Add(Task.Run(() =>
+                    tasks.Add(Task.Run(async () =>
                     {
                         try
                         {
                             WebProxy webProxy = new(Global.Loopback, it.port);
-                            string output = GetRealPingTime(downloadHandle, webProxy);
+                            string output = await GetRealPingTime(downloadHandle, webProxy);
 
                             ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
                             UpdateFunc(it.indexId, output);
@@ -334,11 +334,11 @@ namespace v2rayN.Handler
             await RunSpeedTestMulti();
         }
 
-        public string GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
+        public async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
         {
-            string status = downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10, out int responseTime);
+            int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
             //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
-            return FormatOut(Utils.IsNullOrEmpty(status) ? responseTime : -1, Global.DelayUnit);
+            return FormatOut(responseTime, Global.DelayUnit);
         }
 
         private int GetTcpingTime(string url, int port)

@@ -253,22 +253,20 @@ namespace v2rayN.Handler
             return null;
         }
 
-        public int RunAvailabilityCheck(IWebProxy? webProxy)
+        public async Task<int> RunAvailabilityCheck(IWebProxy? webProxy)
         {
             try
             {
                 if (webProxy == null)
                 {
-                    var httpPort = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
-                    webProxy = new WebProxy(Global.Loopback, httpPort);
+                    webProxy = GetWebProxy(true);
                 }
 
                 try
                 {
                     var config = LazyConfig.Instance.GetConfig();
-                    string status = GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10, out int responseTime);
-                    bool noError = Utils.IsNullOrEmpty(status);
-                    return noError ? responseTime : -1;
+                    int responseTime = await GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10);
+                    return responseTime;
                 }
                 catch (Exception ex)
                 {
@@ -283,31 +281,29 @@ namespace v2rayN.Handler
             }
         }
 
-        public string GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout, out int responseTime)
+        public async Task<int> GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout)
         {
-            string msg = string.Empty;
-            responseTime = -1;
+            int responseTime = -1;
             try
             {
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                myHttpWebRequest.Timeout = downloadTimeout * 1000;
-                myHttpWebRequest.Proxy = webProxy;
-
                 Stopwatch timer = Stopwatch.StartNew();
 
-                using HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
-                if (myHttpWebResponse.StatusCode is not HttpStatusCode.OK and not HttpStatusCode.NoContent)
+                using var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(downloadTimeout));
+                using var client = new HttpClient(new SocketsHttpHandler()
                 {
-                    msg = myHttpWebResponse.StatusDescription;
-                }
+                    Proxy = webProxy,
+                    UseProxy = webProxy != null
+                });
+                await client.GetAsync(url, cts.Token);
+
                 responseTime = timer.Elapsed.Milliseconds;
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
-                msg = ex.Message;
+                //Utils.SaveLog(ex.Message, ex);
             }
-            return msg;
+            return responseTime;
         }
 
         private WebProxy? GetWebProxy(bool blProxy)
