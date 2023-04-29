@@ -23,6 +23,12 @@
       "server": "local"
     },
     {
+      "source_geoip": [
+        "cn"
+      ],
+      "server": "local"
+    },
+    {
       "geosite": [
         "category-ads-all"
       ],
