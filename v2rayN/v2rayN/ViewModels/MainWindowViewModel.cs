@@ -557,7 +557,7 @@ namespace v2rayN.ViewModels
         {
             ConfigHandler.InitBuiltinRouting(ref _config);
             ConfigHandler.InitBuiltinDNS(_config);
-            _coreHandler = new CoreHandler(UpdateHandler);
+            _coreHandler = new CoreHandler(_config, UpdateHandler);
 
             if (_config.guiItem.enableStatistics)
             {
@@ -1481,7 +1481,7 @@ namespace v2rayN.ViewModels
 
             await Task.Run(() =>
             {
-                _coreHandler.LoadCore(_config);
+                _coreHandler.LoadCore();
 
                 //ConfigHandler.SaveConfig(ref _config, false);
 

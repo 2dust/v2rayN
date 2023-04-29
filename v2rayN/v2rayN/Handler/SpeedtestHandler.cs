@@ -150,7 +150,7 @@ namespace v2rayN.Handler
             {
                 string msg = string.Empty;
 
-                pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
+                pid = _coreHandler.LoadCoreConfigString(_selecteds);
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
@@ -212,7 +212,7 @@ namespace v2rayN.Handler
             //    _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
             //}
 
-            pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
+            pid = _coreHandler.LoadCoreConfigString(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -269,7 +269,7 @@ namespace v2rayN.Handler
         private async Task RunSpeedTestMulti()
         {
             int pid = -1;
-            pid = _coreHandler.LoadCoreConfigString(_config, _selecteds);
+            pid = _coreHandler.LoadCoreConfigString(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);

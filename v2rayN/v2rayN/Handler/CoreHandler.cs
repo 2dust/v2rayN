@@ -11,29 +11,31 @@ namespace v2rayN.Handler
     /// </summary>
     internal class CoreHandler
     {
+        private Config _config;
         private CoreInfo? _coreInfo;
         private Process? _process;
         private Process? _processPre;
         private Action<bool, string> _updateFunc;
 
-        public CoreHandler(Action<bool, string> update)
+        public CoreHandler(Config config, Action<bool, string> update)
         {
+            _config = config;
             _updateFunc = update;
 
             Environment.SetEnvironmentVariable("v2ray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
-        public void LoadCore(Config config)
+        public void LoadCore()
         {
-            var node = ConfigHandler.GetDefaultServer(ref config);
+            var node = ConfigHandler.GetDefaultServer(ref _config);
             if (node == null)
             {
                 ShowMsg(false, ResUI.CheckServerSettings);
                 return;
             }
 
-            if (SetCore(config, node) != 0)
+            if (SetCore(node) != 0)
             {
                 ShowMsg(false, ResUI.CheckServerSettings);
                 return;
@@ -52,10 +54,10 @@ namespace v2rayN.Handler
             }
         }
 
-        public int LoadCoreConfigString(Config config, List<ServerTestItem> _selecteds)
+        public int LoadCoreConfigString(List<ServerTestItem> _selecteds)
         {
             int pid = -1;
-            string configStr = CoreConfigHandler.GenerateClientSpeedtestConfigString(config, _selecteds, out string msg);
+            string configStr = CoreConfigHandler.GenerateClientSpeedtestConfigString(_config, _selecteds, out string msg);
             if (configStr == "")
             {
                 ShowMsg(false, msg);
@@ -158,23 +160,27 @@ namespace v2rayN.Handler
             _process = proc;
 
             //start a socks service
-            if (_process != null && !_process.HasExited && node.configType == EConfigType.Custom && node.preSocksPort > 0)
+            if (_process != null && !_process.HasExited)
             {
-                var itemSocks = new ProfileItem()
+                if ((node.configType == EConfigType.Custom && node.preSocksPort > 0)
+                    || (node.configType != EConfigType.Custom && _coreInfo.coreType != ECoreType.sing_box && _config.tunModeItem.enableTun))
                 {
-                    coreType = ECoreType.sing_box,
-                    configType = EConfigType.Socks,
-                    address = Global.Loopback,
-                    port = node.preSocksPort
-                };
-                string fileName2 = Utils.GetConfigPath(Global.corePreConfigFileName);
-                if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
-                {
-                    var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
-                    var proc2 = RunProcess(node, coreInfo, $" -c {Global.corePreConfigFileName}", ShowMsg);
-                    if (proc2 is not null)
+                    var itemSocks = new ProfileItem()
                     {
-                        _processPre = proc2;
+                        coreType = ECoreType.sing_box,
+                        configType = EConfigType.Socks,
+                        address = Global.Loopback,
+                        port = node.preSocksPort > 0 ? node.preSocksPort : LazyConfig.Instance.GetLocalPort(Global.InboundSocks)
+                    };
+                    string fileName2 = Utils.GetConfigPath(Global.corePreConfigFileName);
+                    if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
+                    {
+                        var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
+                        var proc2 = RunProcess(node, coreInfo, $" -c {Global.corePreConfigFileName}", ShowMsg);
+                        if (proc2 is not null)
+                        {
+                            _processPre = proc2;
+                        }
                     }
                 }
             }
@@ -251,7 +257,7 @@ namespace v2rayN.Handler
             _updateFunc(updateToTrayTooltip, msg);
         }
 
-        private int SetCore(Config config, ProfileItem node)
+        private int SetCore(ProfileItem node)
         {
             if (node == null)
             {
