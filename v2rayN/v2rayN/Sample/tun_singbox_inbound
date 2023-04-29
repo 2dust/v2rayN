@@ -7,6 +7,5 @@
    "auto_route":true,
    "strict_route":false,
    "stack":"system",
-   "endpoint_independent_nat":true,
    "sniff":true
 }

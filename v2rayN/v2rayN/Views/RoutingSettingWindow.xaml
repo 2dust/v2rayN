@@ -163,6 +163,7 @@
                 <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRoutingTabRuleList}">
                     <DataGrid
                         x:Name="lstRoutings"
+                        Margin="2,0"
                         AutoGenerateColumns="False"
                         BorderThickness="1"
                         CanUserAddRows="False"
@@ -212,7 +213,7 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn
-                                Width="200"
+                                Width="250"
                                 Binding="{Binding remarks}"
                                 Header="{x:Static resx:ResUI.LvRemarks}" />
                             <DataGridTextColumn
@@ -224,11 +225,11 @@
                                 Binding="{Binding sort}"
                                 Header="{x:Static resx:ResUI.LvSort}" />
                             <DataGridTextColumn
-                                Width="260"
+                                Width="300"
                                 Binding="{Binding url}"
                                 Header="{x:Static resx:ResUI.LvUrl}" />
                             <DataGridTextColumn
-                                Width="260"
+                                Width="300"
                                 Binding="{Binding customIcon}"
                                 Header="{x:Static resx:ResUI.LvCustomIcon}" />
                         </DataGrid.Columns>

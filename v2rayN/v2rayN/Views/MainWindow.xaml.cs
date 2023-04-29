@@ -252,12 +252,7 @@ namespace v2rayN.Views
 
         private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)
         {
-            //if (e.Row.GetIndex() == 0)
-            //{
-            //    lstProfiles.Focus();
-            //}
-
-            e.Row.Header = e.Row.GetIndex() + 1;
+            e.Row.Header = $" {e.Row.GetIndex() + 1}";
         }
 
         private void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)

@@ -17,7 +17,6 @@
       "auto_route": true,
       "strict_route": $strict_route$,
       "stack": "$stack$",
-      "endpoint_independent_nat": true,
       "sniff": true
     }
   ],
