@@ -24,6 +24,13 @@
       "disable_cache": true
     },
     {
+      "source_geoip": [
+        "cn"
+      ],
+      "server": "local",
+      "disable_cache": true
+    },
+    {
       "geosite": [
         "category-ads-all"
       ],
