@@ -286,8 +286,8 @@ namespace v2rayN.Handler
                 await UpdateGeoFile("geosite", _config, update);
                 await UpdateGeoFile("geoip", _config, update);
 
-                await UpdateGeoFile4Singbox("geosite", _config, update);
-                await UpdateGeoFile4Singbox("geoip", _config, update);
+                await UpdateGeoFile4Singbox("geosite", _config, false, update);
+                await UpdateGeoFile4Singbox("geoip", _config, true, update);
             });
         }
 
@@ -602,7 +602,7 @@ namespace v2rayN.Handler
             await askToDownload(downloadHandle, url, false);
         }
 
-        private async Task UpdateGeoFile4Singbox(string geoName, Config config, Action<bool, string> update)
+        private async Task UpdateGeoFile4Singbox(string geoName, Config config, bool needStop, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
@@ -614,9 +614,11 @@ namespace v2rayN.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+                    var coreHandler = Locator.Current.GetService<CoreHandler>();
 
                     try
                     {
+                        if (needStop) coreHandler?.CoreStop();
                         string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
@@ -625,6 +627,7 @@ namespace v2rayN.Handler
 
                             File.Delete(fileName);
                         }
+                        if (needStop) coreHandler?.LoadCore();
                     }
                     catch (Exception ex)
                     {

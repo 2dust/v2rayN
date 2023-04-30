@@ -558,6 +558,7 @@ namespace v2rayN.ViewModels
             ConfigHandler.InitBuiltinRouting(ref _config);
             ConfigHandler.InitBuiltinDNS(_config);
             _coreHandler = new CoreHandler(_config, UpdateHandler);
+            Locator.CurrentMutable.RegisterLazySingleton(() => _coreHandler, typeof(CoreHandler));
 
             if (_config.guiItem.enableStatistics)
             {
