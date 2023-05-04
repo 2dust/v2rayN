@@ -165,7 +165,8 @@ namespace v2rayN.Handler
             }
             var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
 
-            var proc = RunProcess(node, coreInfo, "", ShowMsg);
+            var displayLog = node.configType != EConfigType.Custom || node.displayLog;
+            var proc = RunProcess(node, coreInfo, "", displayLog, ShowMsg);
             if (proc is null)
             {
                 return;
@@ -188,7 +189,7 @@ namespace v2rayN.Handler
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
                         var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
-                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.corePreConfigFileName}", ShowMsg);
+                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.corePreConfigFileName}", true, ShowMsg);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -271,7 +272,7 @@ namespace v2rayN.Handler
 
         #region Process
 
-        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, Action<bool, string> update)
+        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog, Action<bool, string> update)
         {
             try
             {
@@ -280,7 +281,6 @@ namespace v2rayN.Handler
                 {
                     return null;
                 }
-                var displayLog = node.configType != EConfigType.Custom || node.displayLog;
                 Process proc = new()
                 {
                     StartInfo = new ProcessStartInfo
