@@ -1126,4 +1126,7 @@
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
     <value>Sing-box域名解析策略</value>
   </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>Singbox Mux 多路复用协议</value>
+  </data>
 </root>

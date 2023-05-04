@@ -191,6 +191,7 @@ namespace v2rayN.Mode
         /// 域名解析策略
         /// </summary>
         public string domainStrategy { get; set; }
+
         public string domainStrategy4Singbox { get; set; }
 
         public string domainMatcher { get; set; }
@@ -204,5 +205,15 @@ namespace v2rayN.Mode
         public string Name { get; set; }
         public int Width { get; set; }
         public int Index { get; set; }
+    }
+
+    [Serializable]
+    public class Mux4Sbox
+    {
+        public string protocol { get; set; }
+        public int max_connections { get; set; }
+        public int min_streams { get; set; }
+        public int max_streams { get; set; }
+        public bool padding { get; set; }
     }
 }

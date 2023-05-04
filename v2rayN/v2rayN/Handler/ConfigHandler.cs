@@ -191,6 +191,18 @@ namespace v2rayN.Handler
                 config.guiItem.statisticsFreshRate = 1;
             }
 
+            if (config.mux4Sbox == null)
+            {
+                config.mux4Sbox = new()
+                {
+                    protocol = Global.SingboxMuxs[0],
+                    max_connections = 4,
+                    min_streams = 4,
+                    max_streams = 0,
+                    padding = true
+                };
+            }
+
             LazyConfig.Instance.SetConfig(config);
             return 0;
         }

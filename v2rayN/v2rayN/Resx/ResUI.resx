@@ -1129,4 +1129,7 @@
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
     <value>Sing-box domain strategy</value>
   </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>Singbox Mux Protocol</value>
+  </data>
 </root>

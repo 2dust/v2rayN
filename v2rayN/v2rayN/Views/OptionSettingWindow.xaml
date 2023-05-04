@@ -67,6 +67,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -291,6 +292,21 @@
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
+
+                        <TextBlock
+                            Grid.Row="14"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxProtocol}" />
+                        <ComboBox
+                            x:Name="cmbmux4SboxProtocol"
+                            Grid.Row="14"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -791,34 +807,6 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeShowWindow}" />
-                        <ToggleButton
-                            x:Name="togShowWindow"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
-                        <ToggleButton
-                            x:Name="togEnabledLog"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
@@ -863,33 +851,6 @@
                             Margin="{StaticResource SettingItemMargin}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeCustomTemplate}" />
-                        <TextBox
-                            x:Name="txtCustomTemplate"
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Width="400"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Top"
-                            AcceptsReturn="True"
-                            Style="{StaticResource DefTextBox}"
-                            TextWrapping="Wrap" />
-                        <Button
-                            x:Name="btnBrowse"
-                            Grid.Row="5"
-                            Grid.Column="2"
-                            Width="100"
-                            Margin="2,0,8,0"
-                            Click="btnBrowse_Click"
-                            Content="{x:Static resx:ResUI.TbBrowse}"
-                            Style="{StaticResource DefButton}" />
 
                         <TextBlock
                             Grid.Row="6"

@@ -158,6 +158,7 @@
         public static readonly List<string> TunMtus = new() { "9000", "1500" };
         public static readonly List<string> TunStacks = new() { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
+        public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
 
         #endregion const
 

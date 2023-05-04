@@ -74,7 +74,7 @@ namespace v2rayN.Handler
                     KillProcess(_process);
                     _process.Dispose();
                     _process = null;
-                    hasProc =true;
+                    hasProc = true;
                 }
 
                 if (_processPre != null)

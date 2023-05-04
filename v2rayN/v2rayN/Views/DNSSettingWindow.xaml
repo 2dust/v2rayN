@@ -126,7 +126,6 @@
                         VerticalScrollBarVisibility="Auto" />
                 </DockPanel>
             </TabItem>
-
         </TabControl>
     </DockPanel>
 </reactiveui:ReactiveWindow>

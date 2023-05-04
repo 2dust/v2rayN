@@ -2573,6 +2573,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Singbox Mux Protocol 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxProtocol {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Turn on Mux Multiplexing 的本地化字符串。
         /// </summary>
         public static string TbSettingsMuxEnabled {
