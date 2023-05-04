@@ -19,15 +19,16 @@ namespace v2rayN.Handler
                     msg = ResUI.CheckServerSettings;
                     return -1;
                 }
+                var config = LazyConfig.Instance.GetConfig();
 
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)
                 {
                     return GenerateClientCustomConfig(node, fileName, out msg);
                 }
-                else if (LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
+                else if (config.tunModeItem.enableTun || LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
                 {
-                    var configGenSingbox = new CoreConfigSingbox(LazyConfig.Instance.GetConfig());
+                    var configGenSingbox = new CoreConfigSingbox(config);
                     if (configGenSingbox.GenerateClientConfigContent(node, out SingboxConfig? singboxConfig, out msg) != 0)
                     {
                         return -1;
@@ -43,7 +44,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    var coreConfigV2ray = new CoreConfigV2ray(LazyConfig.Instance.GetConfig());
+                    var coreConfigV2ray = new CoreConfigV2ray(config);
                     if (coreConfigV2ray.GenerateClientConfigContent(node, out V2rayConfig? v2rayConfig, out msg) != 0)
                     {
                         return -1;
