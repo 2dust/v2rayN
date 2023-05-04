@@ -701,7 +701,7 @@
     <value>txtPreSocksPort</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Sing-box to provide functions such as speed display</value>
+    <value>* After setting this value, an socks service will be started using sing-box to provide functions such as speed display</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Browse</value>
@@ -1118,7 +1118,7 @@
     <value>DNS Settings</value>
   </data>
   <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>Sing-box DNS settings</value>
+    <value>sing-box DNS settings</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Please fill in DNS Structure, Click to view the document</value>
@@ -1127,9 +1127,9 @@
     <value>Click to import default DNS config</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>Sing-box domain strategy</value>
+    <value>sing-box domain strategy</value>
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
-    <value>Singbox Mux Protocol</value>
+    <value>sing-box Mux Protocol</value>
   </data>
 </root>
