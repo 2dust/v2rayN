@@ -258,6 +258,11 @@ namespace v2rayN.Handler
                     outbound.flow = node.flow;
 
                     outbound.packet_encoding = "xudp";
+
+                    if (Utils.IsNullOrEmpty(node.flow))
+                    {
+                        outboundMux(node, outbound);
+                    }
                 }
                 else if (node.configType == EConfigType.Trojan)
                 {
