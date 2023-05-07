@@ -172,10 +172,12 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <GroupBox
                 Grid.Column="0"
-                Header="Domain"
+                Header="{x:Static resx:ResUI.TbRoutingRuleDomain}"
                 Style="{StaticResource MyGroupBox}">
                 <TextBox
                     Name="txtDomain"
@@ -187,10 +189,22 @@
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
             <GroupBox
                 Grid.Column="2"
-                Header="IP"
+                Header="{x:Static resx:ResUI.TbRoutingRuleIP}"
                 Style="{StaticResource MyGroupBox}">
                 <TextBox
                     Name="txtIP"
+                    AcceptsReturn="True"
+                    Style="{StaticResource DefTextBox}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </GroupBox>
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
+            <GroupBox
+                Grid.Column="4"
+                Header="{x:Static resx:ResUI.TbRoutingRuleProcess}"
+                Style="{StaticResource MyGroupBox}">
+                <TextBox
+                    Name="txtProcess"
                     AcceptsReturn="True"
                     Style="{StaticResource DefTextBox}"
                     TextWrapping="Wrap"

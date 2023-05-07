@@ -941,7 +941,7 @@
     <value>路由规则详情设置</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>保存时Domain和IP自动排序</value>
+    <value>保存时Domain, IP, 进程名 自动排序</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>规则详细说明文档</value>
@@ -1057,9 +1057,6 @@
   <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
     <value>绕行模式</value>
   </data>
-  <data name="TbSettingsTunModeBypassModeTip" xml:space="preserve">
-    <value>启用：路由无匹配则最终代理</value>
-  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>测速单个超时值</value>
   </data>
@@ -1128,5 +1125,14 @@
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路复用协议</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>进程名全称 (Tun模式)</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP 或 IP CIDR</value>
   </data>
 </root>

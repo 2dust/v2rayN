@@ -173,15 +173,6 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunBypassMode, v => v.togBypassMode.IsChecked).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TunBypassMode, v => v.gridTunModeDirect.Visibility, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TunBypassMode2, v => v.gridTunModeProxy.Visibility, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunDirectIP, v => v.txtDirectIP.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunDirectProcess, v => v.txtDirectProcess.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunDirectDNS, v => v.txtDirectDNS.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunProxyIP, v => v.txtProxyIP.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunProxyProcess, v => v.txtProxyProcess.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TunProxyDNS, v => v.txtProxyDNS.Text).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CoreType2, v => v.cmbCoreType2.Text).DisposeWith(disposables);

@@ -452,38 +452,6 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-
-                if (_config.tunModeItem.enableTun)
-                {
-                    if (_config.tunModeItem.bypassMode)
-                    {
-                        //direct ips
-                        if (_config.tunModeItem.directIP != null && _config.tunModeItem.directIP.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "direct", ip_cidr = _config.tunModeItem.directIP });
-                        }
-                        //direct process
-                        if (_config.tunModeItem.directProcess != null && _config.tunModeItem.directProcess.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "direct", process_name = _config.tunModeItem.directProcess });
-                        }
-                    }
-                    else
-                    {
-                        //proxy ips
-                        if (_config.tunModeItem.proxyIP != null && _config.tunModeItem.proxyIP.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "proxy", ip_cidr = _config.tunModeItem.proxyIP });
-                        }
-                        //proxy process
-                        if (_config.tunModeItem.proxyProcess != null && _config.tunModeItem.proxyProcess.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "proxy", process_name = _config.tunModeItem.proxyProcess });
-                        }
-
-                        singboxConfig.route.rules.Add(new() { outbound = "direct", inbound = new() { "tun-in" } });
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -552,6 +520,7 @@ namespace v2rayN.Handler
                     rule.inbound = item.inboundTag;
                 }
                 var rule2 = Utils.DeepCopy(rule);
+                var rule3 = Utils.DeepCopy(rule);
 
                 var hasDomainIp = false;
                 if (item.domain?.Count > 0)
@@ -571,6 +540,13 @@ namespace v2rayN.Handler
                         parseV2Address(it, rule2);
                     }
                     rules.Add(rule2);
+                    hasDomainIp = true;
+                }
+
+                if (_config.tunModeItem.enableTun && item.process?.Count > 0)
+                {
+                    rule3.process_name = item.process;
+                    rules.Add(rule3);
                     hasDomainIp = true;
                 }
 
@@ -659,16 +635,9 @@ namespace v2rayN.Handler
                 Dns4Sbox? dns4Sbox;
                 if (_config.tunModeItem.enableTun)
                 {
-                    string tunDNS = String.Empty;
-                    if (_config.tunModeItem.bypassMode)
-                    {
-                        tunDNS = _config.tunModeItem.directDNS;
-                    }
-                    else
-                    {
-                        tunDNS = _config.tunModeItem.proxyDNS;
-                    }
-                    if (tunDNS.IsNullOrEmpty() || Utils.FromJson<Dns4Sbox>(tunDNS) is null)
+                    var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+                    var tunDNS = item?.tunDNS;
+                    if (string.IsNullOrWhiteSpace(tunDNS))
                     {
                         tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
                     }

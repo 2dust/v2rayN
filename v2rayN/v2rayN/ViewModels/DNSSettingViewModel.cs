@@ -18,6 +18,8 @@ namespace v2rayN.ViewModels
         [Reactive] public string domainStrategy4Freedom { get; set; }
         [Reactive] public string normalDNS { get; set; }
         [Reactive] public string normalDNS2 { get; set; }
+        [Reactive] public string tunDNS2 { get; set; }
+        
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
@@ -35,6 +37,7 @@ namespace v2rayN.ViewModels
 
             var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
             normalDNS2 = item2?.normalDNS!;
+            tunDNS2 = item2?.tunDNS!;
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
@@ -49,6 +52,7 @@ namespace v2rayN.ViewModels
             ImportDefConfig4SingboxCmd = ReactiveCommand.Create(() =>
             {
                 normalDNS2 = Utils.GetEmbedText(Global.DNSSingboxNormalFileName);
+                tunDNS2 = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
             });
 
             Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
@@ -80,6 +84,15 @@ namespace v2rayN.ViewModels
                     return;
                 }
             }
+            if (!Utils.IsNullOrEmpty(tunDNS2))
+            {
+                var obj2 = Utils.FromJson<Dns4Sbox>(tunDNS2);
+                if (obj2 == null)
+                {
+                    UI.Show(ResUI.FillCorrectDNSText);
+                    return;
+                }
+            }
 
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
             item.domainStrategy4Freedom = domainStrategy4Freedom;
@@ -88,6 +101,7 @@ namespace v2rayN.ViewModels
 
             var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
             item2.normalDNS = Utils.ToJson(Utils.ParseJson(normalDNS2));
+            item2.tunDNS = Utils.ToJson(Utils.ParseJson(tunDNS2));
             ConfigHandler.SaveDNSItems(_config, item2);
 
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);

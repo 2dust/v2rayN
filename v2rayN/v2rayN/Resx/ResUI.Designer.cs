@@ -1853,7 +1853,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Domain and ip are auto sorted when saving 的本地化字符串。
+        ///   查找类似 Domain, ip, process are auto sorted when saving 的本地化字符串。
         /// </summary>
         public static string TbAutoSort {
             get {
@@ -2164,6 +2164,33 @@ namespace v2rayN.Resx {
         public static string TbReset {
             get {
                 return ResourceManager.GetString("TbReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Domain 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleDomain {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IP or IP CIDR 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleIP {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Full process name (Tun mode) 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleProcess {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleProcess", resourceCulture);
             }
         }
         
@@ -2776,15 +2803,6 @@ namespace v2rayN.Resx {
         public static string TbSettingsTunModeBypassMode {
             get {
                 return ResourceManager.GetString("TbSettingsTunModeBypassMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Enable: If no route matches, the final proxy 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTunModeBypassModeTip {
-            get {
-                return ResourceManager.GetString("TbSettingsTunModeBypassModeTip", resourceCulture);
             }
         }
         

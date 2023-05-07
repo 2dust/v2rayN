@@ -27,6 +27,8 @@ namespace v2rayN.ViewModels
 
         [Reactive]
         public string IP { get; set; }
+        [Reactive]
+        public string Process { get; set; }
 
         [Reactive]
         public bool AutoSort { get; set; }
@@ -53,6 +55,7 @@ namespace v2rayN.ViewModels
 
             Domain = Utils.List2String(SelectedSource.domain, true);
             IP = Utils.List2String(SelectedSource.ip, true);
+            Process = Utils.List2String(SelectedSource.process, true);
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
@@ -66,16 +69,19 @@ namespace v2rayN.ViewModels
         {
             Domain = Utils.Convert2Comma(Domain);
             IP = Utils.Convert2Comma(IP);
+            Process = Utils.Convert2Comma(Process);
 
             if (AutoSort)
             {
                 SelectedSource.domain = Utils.String2ListSorted(Domain);
                 SelectedSource.ip = Utils.String2ListSorted(IP);
+                SelectedSource.process = Utils.String2ListSorted(Process);
             }
             else
             {
                 SelectedSource.domain = Utils.String2List(Domain);
                 SelectedSource.ip = Utils.String2List(IP);
+                SelectedSource.process = Utils.String2List(Process);
             }
             SelectedSource.protocol = ProtocolItems?.ToList();
             SelectedSource.inboundTag = InboundTagItems?.ToList();

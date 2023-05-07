@@ -132,7 +132,6 @@ namespace v2rayN.Handler
                 config.tunModeItem = new TunModeItem
                 {
                     enableTun = false,
-                    showWindow = true,
                     mtu = 9000,
                 };
             }
