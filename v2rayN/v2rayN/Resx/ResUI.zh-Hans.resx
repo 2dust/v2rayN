@@ -1129,4 +1129,13 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路复用协议</value>
   </data>
+  <data name="TbSettingsUserPac" xml:space="preserve">
+    <value>用户Pac设置</value>
+  </data>
+  <data name="TbSettingsUserPacDirectDomains" xml:space="preserve">
+    <value>直连的域名（每行一个）:</value>
+  </data>
+  <data name="TbSettingsUserPacProxyDomains" xml:space="preserve">
+    <value>需要代理的域名（每行一个）:</value>
+  </data>
 </root>

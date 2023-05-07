@@ -1051,4 +1051,13 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
+  <data name="TbSettingsUserPac" xml:space="preserve">
+    <value>User Pac settings</value>
+  </data>
+  <data name="TbSettingsUserPacProxyDomains" xml:space="preserve">
+    <value>Proxy domains(One at a line):</value>
+  </data>
+  <data name="TbSettingsUserPacDirectDomains" xml:space="preserve">
+    <value>Direct domains(One at a line):</value>
+  </data>
 </root>

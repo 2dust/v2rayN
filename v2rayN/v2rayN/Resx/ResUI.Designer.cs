@@ -2870,6 +2870,33 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 User Pac settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUserPac {
+            get {
+                return ResourceManager.GetString("TbSettingsUserPac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Direct domains(One at a line): 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUserPacDirectDomains {
+            get {
+                return ResourceManager.GetString("TbSettingsUserPacDirectDomains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy domains(One at a line): 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUserPacProxyDomains {
+            get {
+                return ResourceManager.GetString("TbSettingsUserPacProxyDomains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ShortId 的本地化字符串。
         /// </summary>
         public static string TbShortId {
