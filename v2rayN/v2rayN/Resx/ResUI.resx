@@ -814,6 +814,15 @@
   <data name="TbSettingsUser" xml:space="preserve">
     <value>Auth user</value>
   </data>
+  <data name="TbSettingsUserPac" xml:space="preserve">
+    <value>User Pac settings</value>
+  </data>
+	<data name="TbSettingsUserPacDirectDomains" xml:space="preserve">
+    <value>Direct domains(One at a line):</value>
+  </data>
+  <data name="TbSettingsUserPacProxyDomains" xml:space="preserve">
+    <value>Proxy domains(One at a line):</value>
+  </data>
   <data name="TbClearSystemProxy" xml:space="preserve">
     <value>Clear system proxy</value>
   </data>

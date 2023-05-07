@@ -954,6 +954,51 @@
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>
+
+            <TabItem Header="{x:Static resx:ResUI.TbSettingsUserPac}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Margin="{StaticResource SettingItemMargin}">
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Top"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUserPacDirectDomains}" />
+                        <TextBox
+                            x:Name="txtUserPacDirectDomains"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Stretch"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource DefTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                    </DockPanel>
+                    <DockPanel Grid.Column="1" Margin="{StaticResource SettingItemMargin}">
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Top"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUserPacProxyDomains}" />
+                        <TextBox
+                            x:Name="txtUserPacProxyDomains"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Stretch"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource DefTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                    </DockPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </reactiveui:ReactiveWindow>
