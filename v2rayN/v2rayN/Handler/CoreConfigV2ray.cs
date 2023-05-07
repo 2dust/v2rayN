@@ -330,9 +330,7 @@ namespace v2rayN.Handler
                         usersItem.security = Global.DefaultSecurity;
                     }
 
-                    //Mux
-                    outbound.mux.enabled = _config.coreBasicItem.muxEnabled;
-                    outbound.mux.concurrency = _config.coreBasicItem.muxEnabled ? 8 : -1;
+                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     outbound.protocol = Global.vmessProtocolLite;
                     outbound.settings.servers = null;
@@ -357,8 +355,7 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.ssProtocolLite;
                     outbound.settings.vnext = null;
@@ -393,8 +390,7 @@ namespace v2rayN.Handler
                         serversItem.users = new List<SocksUsersItem>() { socksUsersItem };
                     }
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.socksProtocolLite;
                     outbound.settings.vnext = null;
@@ -429,9 +425,7 @@ namespace v2rayN.Handler
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = node.security;
 
-                    //Mux
-                    outbound.mux.enabled = _config.coreBasicItem.muxEnabled;
-                    outbound.mux.concurrency = _config.coreBasicItem.muxEnabled ? 8 : -1;
+                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     if (node.streamSecurity == Global.StreamSecurityReality
                         || node.streamSecurity == Global.StreamSecurity)
@@ -440,9 +434,12 @@ namespace v2rayN.Handler
                         {
                             usersItem.flow = node.flow;
 
-                            outbound.mux.enabled = false;
-                            outbound.mux.concurrency = -1;
+                            outboundMux(node, outbound, false);
                         }
+                    }
+                    if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
+                    {
+                        outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                     }
 
                     outbound.protocol = Global.vlessProtocolLite;
@@ -468,13 +465,34 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
                 }
                 boundStreamSettings(node, outbound.streamSettings);
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+            return 0;
+        }
+
+        private int outboundMux(ProfileItem node, Outbounds outbound, bool enabled)
+        {
+            try
+            {
+                if (_config.coreBasicItem.muxEnabled)
+                {
+                    outbound.mux.enabled = true;
+                    outbound.mux.concurrency = 8;
+                }
+                else
+                {
+                    outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
+                }
             }
             catch (Exception ex)
             {
