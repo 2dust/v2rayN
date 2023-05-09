@@ -166,12 +166,19 @@
     public class Experimental4Sbox
     {
         public V2ray_Api4Sbox v2ray_api { get; set; }
+        public Clash_Api4Sbox clash_api { get; set; }
     }
 
     public class V2ray_Api4Sbox
     {
         public string listen { get; set; }
         public Stats4Sbox stats { get; set; }
+    }
+
+    public class Clash_Api4Sbox
+    {
+        public string external_controller { get; set; }
+        public bool store_selected { get; set; }
     }
 
     public class Stats4Sbox

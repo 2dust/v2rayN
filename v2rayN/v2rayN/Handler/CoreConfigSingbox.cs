@@ -52,7 +52,7 @@ namespace v2rayN.Handler
 
                 dns(node, singboxConfig);
 
-                //statistic(singboxConfig);
+                statistic(singboxConfig);
 
                 msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
@@ -695,13 +695,18 @@ namespace v2rayN.Handler
             {
                 singboxConfig.experimental = new Experimental4Sbox()
                 {
-                    v2ray_api = new V2ray_Api4Sbox()
+                    //v2ray_api = new V2ray_Api4Sbox()
+                    //{
+                    //    listen = $"{Global.Loopback}:{Global.statePort}",
+                    //    stats = new Stats4Sbox()
+                    //    {
+                    //        enabled = true,
+                    //    }
+                    //}
+                    clash_api = new Clash_Api4Sbox()
                     {
-                        listen = $"{Global.Loopback}:{Global.statePort}",
-                        stats = new Stats4Sbox()
-                        {
-                            enabled = true,
-                        }
+                        external_controller = $"{Global.Loopback}:{Global.statePort}",
+                        store_selected = true
                     }
                 };
             }
