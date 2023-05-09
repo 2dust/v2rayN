@@ -367,6 +367,13 @@ namespace v2rayN.Handler
                     case "ws":
                         transport.type = "ws";
                         transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
+                        if (!Utils.IsNullOrEmpty(node.requestHost))
+                        {
+                            transport.headers = new()
+                            {
+                                Host = node.requestHost
+                            };
+                        }
                         break;
 
                     case "quic":

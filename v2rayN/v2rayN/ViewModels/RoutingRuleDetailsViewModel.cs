@@ -27,6 +27,7 @@ namespace v2rayN.ViewModels
 
         [Reactive]
         public string IP { get; set; }
+
         [Reactive]
         public string Process { get; set; }
 

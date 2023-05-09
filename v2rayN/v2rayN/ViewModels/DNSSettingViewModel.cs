@@ -19,7 +19,6 @@ namespace v2rayN.ViewModels
         [Reactive] public string normalDNS { get; set; }
         [Reactive] public string normalDNS2 { get; set; }
         [Reactive] public string tunDNS2 { get; set; }
-        
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
