@@ -46,5 +46,29 @@ namespace v2rayN.Base
         {
             return value == null ? string.Empty : value.Trim();
         }
+
+        public static string RemovePrefix(this string value, char prefix)
+        {
+            if (value.StartsWith(prefix))
+            {
+                return value.Substring(1);
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        public static string RemovePrefix(this string value, string prefix)
+        {
+            if (value.StartsWith(prefix))
+            {
+                return value.Substring(prefix.Length);
+            }
+            else
+            {
+                return value;
+            }
+        }
     }
 }
