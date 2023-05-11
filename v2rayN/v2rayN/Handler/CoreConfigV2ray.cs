@@ -96,24 +96,24 @@ namespace v2rayN.Handler
         {
             try
             {
-                v2rayConfig.inbounds = new List<Inbounds>();
+                v2rayConfig.inbounds = new List<Inbounds4Ray>();
 
-                Inbounds? inbound = GetInbound(_config.inbound[0], Global.InboundSocks, 0, true);
+                Inbounds4Ray? inbound = GetInbound(_config.inbound[0], Global.InboundSocks, 0, true);
                 v2rayConfig.inbounds.Add(inbound);
 
                 //http
-                Inbounds? inbound2 = GetInbound(_config.inbound[0], Global.InboundHttp, 1, false);
+                Inbounds4Ray? inbound2 = GetInbound(_config.inbound[0], Global.InboundHttp, 1, false);
                 v2rayConfig.inbounds.Add(inbound2);
 
                 if (_config.inbound[0].allowLANConn)
                 {
                     if (_config.inbound[0].newPort4LAN)
                     {
-                        Inbounds inbound3 = GetInbound(_config.inbound[0], Global.InboundSocks2, 2, true);
+                        Inbounds4Ray inbound3 = GetInbound(_config.inbound[0], Global.InboundSocks2, 2, true);
                         inbound3.listen = "0.0.0.0";
                         v2rayConfig.inbounds.Add(inbound3);
 
-                        Inbounds inbound4 = GetInbound(_config.inbound[0], Global.InboundHttp2, 3, false);
+                        Inbounds4Ray inbound4 = GetInbound(_config.inbound[0], Global.InboundHttp2, 3, false);
                         inbound4.listen = "0.0.0.0";
                         v2rayConfig.inbounds.Add(inbound4);
 
@@ -121,10 +121,10 @@ namespace v2rayN.Handler
                         if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
                         {
                             inbound3.settings.auth = "password";
-                            inbound3.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
+                            inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
 
                             inbound4.settings.auth = "password";
-                            inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
+                            inbound4.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
                         }
                     }
                     else
@@ -141,7 +141,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private Inbounds? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
+        private Inbounds4Ray? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
         {
             string result = Utils.GetEmbedText(Global.v2raySampleInbound);
             if (Utils.IsNullOrEmpty(result))
@@ -149,7 +149,7 @@ namespace v2rayN.Handler
                 return null;
             }
 
-            var inbound = Utils.FromJson<Inbounds>(result);
+            var inbound = Utils.FromJson<Inbounds4Ray>(result);
             if (inbound == null)
             {
                 return null;
@@ -187,7 +187,8 @@ namespace v2rayN.Handler
                             {
                                 if (item.enabled)
                                 {
-                                    routingUserRule(item, v2rayConfig);
+                                    var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
+                                    routingUserRule(item2, v2rayConfig);
                                 }
                             }
                         }
@@ -200,7 +201,8 @@ namespace v2rayN.Handler
                             var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
                             foreach (var item in rules)
                             {
-                                routingUserRule(item, v2rayConfig);
+                                var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
+                                routingUserRule(item2, v2rayConfig);
                             }
                         }
                     }
@@ -213,7 +215,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int routingUserRule(RulesItem rules, V2rayConfig v2rayConfig)
+        private int routingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -291,13 +293,13 @@ namespace v2rayN.Handler
         {
             try
             {
-                Outbounds outbound = v2rayConfig.outbounds[0];
+                Outbounds4Ray outbound = v2rayConfig.outbounds[0];
                 if (node.configType == EConfigType.VMess)
                 {
-                    VnextItem vnextItem;
+                    VnextItem4Ray vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
                     {
-                        vnextItem = new VnextItem();
+                        vnextItem = new VnextItem4Ray();
                         outbound.settings.vnext.Add(vnextItem);
                     }
                     else
@@ -307,10 +309,10 @@ namespace v2rayN.Handler
                     vnextItem.address = node.address;
                     vnextItem.port = node.port;
 
-                    UsersItem usersItem;
+                    UsersItem4Ray usersItem;
                     if (vnextItem.users.Count <= 0)
                     {
-                        usersItem = new UsersItem();
+                        usersItem = new UsersItem4Ray();
                         vnextItem.users.Add(usersItem);
                     }
                     else
@@ -330,19 +332,17 @@ namespace v2rayN.Handler
                         usersItem.security = Global.DefaultSecurity;
                     }
 
-                    //Mux
-                    outbound.mux.enabled = _config.coreBasicItem.muxEnabled;
-                    outbound.mux.concurrency = _config.coreBasicItem.muxEnabled ? 8 : -1;
+                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     outbound.protocol = Global.vmessProtocolLite;
                     outbound.settings.servers = null;
                 }
                 else if (node.configType == EConfigType.Shadowsocks)
                 {
-                    ServersItem serversItem;
+                    ServersItem4Ray serversItem;
                     if (outbound.settings.servers.Count <= 0)
                     {
-                        serversItem = new ServersItem();
+                        serversItem = new ServersItem4Ray();
                         outbound.settings.servers.Add(serversItem);
                     }
                     else
@@ -357,18 +357,17 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.ssProtocolLite;
                     outbound.settings.vnext = null;
                 }
                 else if (node.configType == EConfigType.Socks)
                 {
-                    ServersItem serversItem;
+                    ServersItem4Ray serversItem;
                     if (outbound.settings.servers.Count <= 0)
                     {
-                        serversItem = new ServersItem();
+                        serversItem = new ServersItem4Ray();
                         outbound.settings.servers.Add(serversItem);
                     }
                     else
@@ -383,28 +382,27 @@ namespace v2rayN.Handler
                     if (!Utils.IsNullOrEmpty(node.security)
                         && !Utils.IsNullOrEmpty(node.id))
                     {
-                        SocksUsersItem socksUsersItem = new()
+                        SocksUsersItem4Ray socksUsersItem = new()
                         {
                             user = node.security,
                             pass = node.id,
                             level = 1
                         };
 
-                        serversItem.users = new List<SocksUsersItem>() { socksUsersItem };
+                        serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
                     }
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.socksProtocolLite;
                     outbound.settings.vnext = null;
                 }
                 else if (node.configType == EConfigType.VLESS)
                 {
-                    VnextItem vnextItem;
+                    VnextItem4Ray vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
                     {
-                        vnextItem = new VnextItem();
+                        vnextItem = new VnextItem4Ray();
                         outbound.settings.vnext.Add(vnextItem);
                     }
                     else
@@ -414,10 +412,10 @@ namespace v2rayN.Handler
                     vnextItem.address = node.address;
                     vnextItem.port = node.port;
 
-                    UsersItem usersItem;
+                    UsersItem4Ray usersItem;
                     if (vnextItem.users.Count <= 0)
                     {
-                        usersItem = new UsersItem();
+                        usersItem = new UsersItem4Ray();
                         vnextItem.users.Add(usersItem);
                     }
                     else
@@ -429,9 +427,7 @@ namespace v2rayN.Handler
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = node.security;
 
-                    //Mux
-                    outbound.mux.enabled = _config.coreBasicItem.muxEnabled;
-                    outbound.mux.concurrency = _config.coreBasicItem.muxEnabled ? 8 : -1;
+                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     if (node.streamSecurity == Global.StreamSecurityReality
                         || node.streamSecurity == Global.StreamSecurity)
@@ -440,9 +436,12 @@ namespace v2rayN.Handler
                         {
                             usersItem.flow = node.flow;
 
-                            outbound.mux.enabled = false;
-                            outbound.mux.concurrency = -1;
+                            outboundMux(node, outbound, false);
                         }
+                    }
+                    if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
+                    {
+                        outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                     }
 
                     outbound.protocol = Global.vlessProtocolLite;
@@ -450,10 +449,10 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Trojan)
                 {
-                    ServersItem serversItem;
+                    ServersItem4Ray serversItem;
                     if (outbound.settings.servers.Count <= 0)
                     {
-                        serversItem = new ServersItem();
+                        serversItem = new ServersItem4Ray();
                         outbound.settings.servers.Add(serversItem);
                     }
                     else
@@ -468,8 +467,7 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    outboundMux(node, outbound, false);
 
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
@@ -483,7 +481,29 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int boundStreamSettings(ProfileItem node, StreamSettings streamSettings)
+        private int outboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        {
+            try
+            {
+                if (enabled)
+                {
+                    outbound.mux.enabled = true;
+                    outbound.mux.concurrency = 8;
+                }
+                else
+                {
+                    outbound.mux.enabled = false;
+                    outbound.mux.concurrency = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+            return 0;
+        }
+
+        private int boundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
         {
             try
             {
@@ -508,7 +528,7 @@ namespace v2rayN.Handler
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings tlsSettings = new()
+                    TlsSettings4Ray tlsSettings = new()
                     {
                         allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
@@ -530,7 +550,7 @@ namespace v2rayN.Handler
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings realitySettings = new()
+                    TlsSettings4Ray realitySettings = new()
                     {
                         fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint,
                         serverName = sni,
@@ -546,7 +566,7 @@ namespace v2rayN.Handler
                 switch (node.GetNetwork())
                 {
                     case "kcp":
-                        KcpSettings kcpSettings = new()
+                        KcpSettings4Ray kcpSettings = new()
                         {
                             mtu = _config.kcpItem.mtu,
                             tti = _config.kcpItem.tti
@@ -558,7 +578,7 @@ namespace v2rayN.Handler
                         kcpSettings.congestion = _config.kcpItem.congestion;
                         kcpSettings.readBufferSize = _config.kcpItem.readBufferSize;
                         kcpSettings.writeBufferSize = _config.kcpItem.writeBufferSize;
-                        kcpSettings.header = new Header
+                        kcpSettings.header = new Header4Ray
                         {
                             type = node.headerType
                         };
@@ -570,8 +590,8 @@ namespace v2rayN.Handler
                         break;
                     //ws
                     case "ws":
-                        WsSettings wsSettings = new();
-                        wsSettings.headers = new Headers();
+                        WsSettings4Ray wsSettings = new();
+                        wsSettings.headers = new Headers4Ray();
                         string path = node.path;
                         if (!string.IsNullOrWhiteSpace(host))
                         {
@@ -590,7 +610,7 @@ namespace v2rayN.Handler
                         break;
                     //h2
                     case "h2":
-                        HttpSettings httpSettings = new();
+                        HttpSettings4Ray httpSettings = new();
 
                         if (!string.IsNullOrWhiteSpace(host))
                         {
@@ -603,11 +623,11 @@ namespace v2rayN.Handler
                         break;
                     //quic
                     case "quic":
-                        QuicSettings quicsettings = new()
+                        QuicSettings4Ray quicsettings = new()
                         {
                             security = host,
                             key = node.path,
-                            header = new Header
+                            header = new Header4Ray
                             {
                                 type = node.headerType
                             }
@@ -627,7 +647,7 @@ namespace v2rayN.Handler
                         break;
 
                     case "grpc":
-                        GrpcSettings grpcSettings = new()
+                        GrpcSettings4Ray grpcSettings = new()
                         {
                             serviceName = node.path,
                             multiMode = (node.headerType == Global.GrpcmultiMode),
@@ -643,9 +663,9 @@ namespace v2rayN.Handler
                         //tcp
                         if (node.headerType == Global.TcpHeaderHttp)
                         {
-                            TcpSettings tcpSettings = new()
+                            TcpSettings4Ray tcpSettings = new()
                             {
-                                header = new Header
+                                header = new Header4Ray
                                 {
                                     type = node.headerType
                                 }
@@ -718,7 +738,7 @@ namespace v2rayN.Handler
                         //}
                     }
                     //servers.Add("localhost");
-                    v2rayConfig.dns = new Mode.Dns
+                    v2rayConfig.dns = new Mode.Dns4Ray
                     {
                         servers = servers
                     };
@@ -736,13 +756,13 @@ namespace v2rayN.Handler
             if (_config.guiItem.enableStatistics)
             {
                 string tag = Global.InboundAPITagName;
-                API apiObj = new();
-                Policy policyObj = new();
-                SystemPolicy policySystemSetting = new();
+                API4Ray apiObj = new();
+                Policy4Ray policyObj = new();
+                SystemPolicy4Ray policySystemSetting = new();
 
                 string[] services = { "StatsService" };
 
-                v2rayConfig.stats = new Stats();
+                v2rayConfig.stats = new Stats4Ray();
 
                 apiObj.tag = tag;
                 apiObj.services = services.ToList();
@@ -755,8 +775,8 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
                 {
-                    Inbounds apiInbound = new();
-                    Inboundsettings apiInboundSettings = new();
+                    Inbounds4Ray apiInbound = new();
+                    Inboundsettings4Ray apiInboundSettings = new();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
                     apiInbound.port = Global.statePort;
@@ -768,12 +788,13 @@ namespace v2rayN.Handler
 
                 if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
                 {
-                    RulesItem apiRoutingRule = new()
+                    RulesItem4Ray apiRoutingRule = new()
                     {
                         inboundTag = new List<string> { tag },
                         outboundTag = tag,
                         type = "field"
                     };
+
                     v2rayConfig.routing.rules.Add(apiRoutingRule);
                 }
             }
@@ -873,7 +894,7 @@ namespace v2rayN.Handler
                     it.allowTest = true;
 
                     //inbound
-                    Inbounds inbound = new()
+                    Inbounds4Ray inbound = new()
                     {
                         listen = Global.Loopback,
                         port = port,
@@ -905,7 +926,7 @@ namespace v2rayN.Handler
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
                     //rule
-                    RulesItem rule = new()
+                    RulesItem4Ray rule = new()
                     {
                         inboundTag = new List<string> { inbound.tag },
                         outboundTag = v2rayConfigCopy.outbounds[0].tag,

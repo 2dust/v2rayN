@@ -196,7 +196,6 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
 
-
                 <TextBlock
                     Grid.Row="7"
                     Grid.Column="0"
@@ -213,7 +212,6 @@
                     FontSize="{DynamicResource StdFontSize}"
                     MaxDropDownHeight="1000"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}" />
-
 
                 <TextBlock
                     Grid.Row="8"

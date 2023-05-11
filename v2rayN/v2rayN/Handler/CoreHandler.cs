@@ -12,7 +12,6 @@ namespace v2rayN.Handler
     internal class CoreHandler
     {
         private Config _config;
-        private CoreInfo? _coreInfo;
         private Process? _process;
         private Process? _processPre;
         private Action<bool, string> _updateFunc;
@@ -35,11 +34,6 @@ namespace v2rayN.Handler
                 return;
             }
 
-            if (SetCore(node) != 0)
-            {
-                ShowMsg(false, ResUI.CheckServerSettings);
-                return;
-            }
             string fileName = Utils.GetConfigPath(Global.coreConfigFileName);
             if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
             {
@@ -74,30 +68,13 @@ namespace v2rayN.Handler
         {
             try
             {
+                bool hasProc = false;
                 if (_process != null)
                 {
                     KillProcess(_process);
                     _process.Dispose();
                     _process = null;
-                }
-                else
-                {
-                    if (_coreInfo == null || _coreInfo.coreExes == null)
-                    {
-                        return;
-                    }
-                    foreach (string vName in _coreInfo.coreExes)
-                    {
-                        Process[] existing = Process.GetProcessesByName(vName);
-                        foreach (Process p in existing)
-                        {
-                            string? path = p.MainModule?.FileName;
-                            if (path == $"{Utils.GetBinPath(vName, _coreInfo.coreType)}.exe")
-                            {
-                                KillProcess(p);
-                            }
-                        }
-                    }
+                    hasProc = true;
                 }
 
                 if (_processPre != null)
@@ -105,6 +82,31 @@ namespace v2rayN.Handler
                     KillProcess(_processPre);
                     _processPre.Dispose();
                     _processPre = null;
+                    hasProc = true;
+                }
+
+                if (!hasProc)
+                {
+                    var coreInfos = LazyConfig.Instance.GetCoreInfos();
+                    foreach (var it in coreInfos)
+                    {
+                        if (it.coreType == ECoreType.v2rayN)
+                        {
+                            continue;
+                        }
+                        foreach (string vName in it.coreExes)
+                        {
+                            Process[] existing = Process.GetProcessesByName(vName);
+                            foreach (Process p in existing)
+                            {
+                                string? path = p.MainModule?.FileName;
+                                if (path == $"{Utils.GetBinPath(vName, it.coreType)}.exe")
+                                {
+                                    KillProcess(p);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -152,7 +154,19 @@ namespace v2rayN.Handler
         {
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
 
-            var proc = RunProcess(node, _coreInfo, "", ShowMsg);
+            ECoreType coreType;
+            if (node.configType != EConfigType.Custom && _config.tunModeItem.enableTun)
+            {
+                coreType = ECoreType.sing_box;
+            }
+            else
+            {
+                coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+            }
+            var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+
+            var displayLog = node.configType != EConfigType.Custom || node.displayLog;
+            var proc = RunProcess(node, coreInfo, "", displayLog, ShowMsg);
             if (proc is null)
             {
                 return;
@@ -162,21 +176,20 @@ namespace v2rayN.Handler
             //start a socks service
             if (_process != null && !_process.HasExited)
             {
-                if ((node.configType == EConfigType.Custom && node.preSocksPort > 0)
-                    || (node.configType != EConfigType.Custom && _coreInfo.coreType != ECoreType.sing_box && _config.tunModeItem.enableTun))
+                if ((node.configType == EConfigType.Custom && node.preSocksPort > 0))
                 {
                     var itemSocks = new ProfileItem()
                     {
                         coreType = ECoreType.sing_box,
                         configType = EConfigType.Socks,
                         address = Global.Loopback,
-                        port = node.preSocksPort > 0 ? node.preSocksPort : LazyConfig.Instance.GetLocalPort(Global.InboundSocks)
+                        port = node.preSocksPort
                     };
                     string fileName2 = Utils.GetConfigPath(Global.corePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
-                        var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
-                        var proc2 = RunProcess(node, coreInfo, $" -c {Global.corePreConfigFileName}", ShowMsg);
+                        var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
+                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.corePreConfigFileName}", true, ShowMsg);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -257,26 +270,9 @@ namespace v2rayN.Handler
             _updateFunc(updateToTrayTooltip, msg);
         }
 
-        private int SetCore(ProfileItem node)
-        {
-            if (node == null)
-            {
-                return -1;
-            }
-            var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
-
-            _coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
-
-            if (_coreInfo == null)
-            {
-                return -1;
-            }
-            return 0;
-        }
-
         #region Process
 
-        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, Action<bool, string> update)
+        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog, Action<bool, string> update)
         {
             try
             {
@@ -285,7 +281,6 @@ namespace v2rayN.Handler
                 {
                     return null;
                 }
-                var displayLog = node.configType != EConfigType.Custom || node.displayLog;
                 Process proc = new()
                 {
                     StartInfo = new ProcessStartInfo

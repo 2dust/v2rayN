@@ -208,8 +208,8 @@ namespace v2rayN.Handler
                     {
                         updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                         {
-                            update(false, msg);                          
-                        });                      
+                            update(false, msg);
+                        });
                         autoUpdateGeoTime = dtNow;
                     }
                 }

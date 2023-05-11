@@ -1617,18 +1617,6 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void TunModeSwitch()
-        {
-            if (EnableTun)
-            {
-                TunHandler.Instance.Start();
-            }
-            else
-            {
-                TunHandler.Instance.Stop();
-            }
-        }
-
         #endregion System proxy and Routings
 
         #region UI

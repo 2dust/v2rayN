@@ -67,6 +67,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -291,6 +292,21 @@
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
+
+                        <TextBlock
+                            Grid.Row="14"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxProtocol}" />
+                        <ComboBox
+                            x:Name="cmbmux4SboxProtocol"
+                            Grid.Row="14"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -776,47 +792,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeShowWindow}" />
-                        <ToggleButton
-                            x:Name="togShowWindow"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsLogEnabled}" />
-                        <ToggleButton
-                            x:Name="togEnabledLog"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -863,152 +844,6 @@
                             Margin="{StaticResource SettingItemMargin}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeCustomTemplate}" />
-                        <TextBox
-                            x:Name="txtCustomTemplate"
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Width="400"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Top"
-                            AcceptsReturn="True"
-                            Style="{StaticResource DefTextBox}"
-                            TextWrapping="Wrap" />
-                        <Button
-                            x:Name="btnBrowse"
-                            Grid.Row="5"
-                            Grid.Column="2"
-                            Width="100"
-                            Margin="2,0,8,0"
-                            Click="btnBrowse_Click"
-                            Content="{x:Static resx:ResUI.TbBrowse}"
-                            Style="{StaticResource DefButton}" />
-
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeBypassMode}" />
-                        <ToggleButton
-                            x:Name="togBypassMode"
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="2"
-                            Margin="{StaticResource ServerItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTunModeBypassModeTip}" />
-                    </Grid>
-
-                    <Grid
-                        x:Name="gridTunModeDirect"
-                        Width="800"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="3*" />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox
-                            Grid.Column="0"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeDirectIP}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtDirectIP"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="2"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeDirectProcess}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtDirectProcess"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="4"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeDNS}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtDirectDNS"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                    </Grid>
-
-                    <Grid
-                        x:Name="gridTunModeProxy"
-                        Width="800"
-                        Margin="{StaticResource SettingItemMargin}"
-                        HorizontalAlignment="Left">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="3*" />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox
-                            Grid.Column="0"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeProxyIP}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtProxyIP"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="2"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeProxyProcess}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtProxyProcess"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="4"
-                            Header="{x:Static resx:ResUI.TbSettingsTunModeDNS}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtProxyDNS"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
                     </Grid>
                 </DockPanel>
             </TabItem>

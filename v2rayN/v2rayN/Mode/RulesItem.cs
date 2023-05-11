@@ -18,6 +18,8 @@
 
         public List<string> protocol { get; set; }
 
+        public List<string> process { get; set; }
+
         public bool enabled { get; set; } = true;
     }
 }

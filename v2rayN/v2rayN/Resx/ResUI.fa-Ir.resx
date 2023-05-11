@@ -701,7 +701,7 @@
     <value>txtPreSocksPort</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Sing-box to provide functions such as speed display</value>
+    <value>* After setting this value, an socks service will be started using sing-box to provide functions such as speed display</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Browse</value>

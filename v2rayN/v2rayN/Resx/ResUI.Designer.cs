@@ -1853,7 +1853,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Domain and ip are auto sorted when saving 的本地化字符串。
+        ///   查找类似 Domain, ip, process are auto sorted when saving 的本地化字符串。
         /// </summary>
         public static string TbAutoSort {
             get {
@@ -1961,7 +1961,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Sing-box domain strategy 的本地化字符串。
+        ///   查找类似 sing-box domain strategy 的本地化字符串。
         /// </summary>
         public static string TbdomainStrategy4Singbox {
             get {
@@ -2168,6 +2168,33 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Domain 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleDomain {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IP or IP CIDR 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleIP {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Full process name (Tun mode) 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingRuleProcess {
+            get {
+                return ResourceManager.GetString("TbRoutingRuleProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 3.Block Domain or IP 的本地化字符串。
         /// </summary>
         public static string TbRoutingTabBlock {
@@ -2348,7 +2375,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Sing-box DNS settings 的本地化字符串。
+        ///   查找类似 sing-box DNS settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCoreDnsSingbox {
             get {
@@ -2573,6 +2600,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 sing-box Mux Protocol 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxProtocol {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Turn on Mux Multiplexing 的本地化字符串。
         /// </summary>
         public static string TbSettingsMuxEnabled {
@@ -2771,15 +2807,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable: If no route matches, the final proxy 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTunModeBypassModeTip {
-            get {
-                return ResourceManager.GetString("TbSettingsTunModeBypassModeTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Custom Template 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunModeCustomTemplate {
@@ -2951,7 +2978,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 * After setting this value, an socks service will be started using Sing-box to provide functions such as speed display 的本地化字符串。
+        ///   查找类似 * After setting this value, an socks service will be started using sing-box to provide functions such as speed display 的本地化字符串。
         /// </summary>
         public static string TipPreSocksPort {
             get {

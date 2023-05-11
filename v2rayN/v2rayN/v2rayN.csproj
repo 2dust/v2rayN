@@ -33,10 +33,7 @@
         <AdditionalFiles Include="app.manifest" />       
         <EmbeddedResource Include="Sample\SingboxSampleClientConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>       
-        <EmbeddedResource Include="Sample\tun_singbox">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
+        </EmbeddedResource>
 		<EmbeddedResource Include="Sample\tun_singbox_dns">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>

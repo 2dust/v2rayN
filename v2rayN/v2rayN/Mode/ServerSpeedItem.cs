@@ -23,4 +23,18 @@
             get; set;
         }
     }
+
+    [Serializable]
+    public class TrafficItem
+    {
+        public ulong up
+        {
+            get; set;
+        }
+
+        public ulong down
+        {
+            get; set;
+        }
+    }
 }

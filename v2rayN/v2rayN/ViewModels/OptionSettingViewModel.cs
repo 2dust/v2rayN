@@ -31,6 +31,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool defAllowInsecure { get; set; }
         [Reactive] public string defFingerprint { get; set; }
         [Reactive] public string defUserAgent { get; set; }
+        [Reactive] public string mux4SboxProtocol { get; set; }
 
         #endregion Core
 
@@ -78,20 +79,9 @@ namespace v2rayN.ViewModels
 
         #region Tun mode
 
-        [Reactive] public bool TunShowWindow { get; set; }
-        [Reactive] public bool TunEnabledLog { get; set; }
         [Reactive] public bool TunStrictRoute { get; set; }
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
-        [Reactive] public string TunCustomTemplate { get; set; }
-        [Reactive] public bool TunBypassMode { get; set; }
-        [Reactive] public bool TunBypassMode2 { get; set; }
-        [Reactive] public string TunDirectIP { get; set; }
-        [Reactive] public string TunDirectProcess { get; set; }
-        [Reactive] public string TunDirectDNS { get; set; }
-        [Reactive] public string TunProxyIP { get; set; }
-        [Reactive] public string TunProxyProcess { get; set; }
-        [Reactive] public string TunProxyDNS { get; set; }
 
         #endregion Tun mode
 
@@ -131,6 +121,7 @@ namespace v2rayN.ViewModels
             defAllowInsecure = _config.coreBasicItem.defAllowInsecure;
             defFingerprint = _config.coreBasicItem.defFingerprint;
             defUserAgent = _config.coreBasicItem.defUserAgent;
+            mux4SboxProtocol = _config.mux4Sbox.protocol;
 
             #endregion Core
 
@@ -178,22 +169,9 @@ namespace v2rayN.ViewModels
 
             #region Tun mode
 
-            TunShowWindow = _config.tunModeItem.showWindow;
-            TunEnabledLog = _config.tunModeItem.enabledLog;
             TunStrictRoute = _config.tunModeItem.strictRoute;
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
-            TunCustomTemplate = _config.tunModeItem.customTemplate;
-            TunBypassMode = _config.tunModeItem.bypassMode;
-            TunDirectIP = Utils.List2String(_config.tunModeItem.directIP, true);
-            TunDirectProcess = Utils.List2String(_config.tunModeItem.directProcess, true);
-            TunDirectDNS = _config.tunModeItem.directDNS;
-            TunProxyIP = Utils.List2String(_config.tunModeItem.proxyIP, true);
-            TunProxyProcess = Utils.List2String(_config.tunModeItem.proxyProcess, true);
-            TunProxyDNS = _config.tunModeItem.proxyDNS;
-            this.WhenAnyValue(
-              x => x.TunBypassMode)
-              .Subscribe(c => TunBypassMode2 = !TunBypassMode);
 
             #endregion Tun mode
 
@@ -298,6 +276,7 @@ namespace v2rayN.ViewModels
             _config.coreBasicItem.defAllowInsecure = defAllowInsecure;
             _config.coreBasicItem.defFingerprint = defFingerprint;
             _config.coreBasicItem.defUserAgent = defUserAgent;
+            _config.mux4Sbox.protocol = mux4SboxProtocol;
 
             //Kcp
             //_config.kcpItem.mtu = Kcpmtu;
@@ -338,19 +317,9 @@ namespace v2rayN.ViewModels
             _config.systemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
 
             //tun mode
-            _config.tunModeItem.showWindow = TunShowWindow;
-            _config.tunModeItem.enabledLog = TunEnabledLog;
             _config.tunModeItem.strictRoute = TunStrictRoute;
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
-            _config.tunModeItem.customTemplate = TunCustomTemplate;
-            _config.tunModeItem.bypassMode = TunBypassMode;
-            _config.tunModeItem.directIP = Utils.String2List(Utils.Convert2Comma(TunDirectIP));
-            _config.tunModeItem.directProcess = Utils.String2List(Utils.Convert2Comma(TunDirectProcess));
-            _config.tunModeItem.directDNS = Utils.ToJson(Utils.ParseJson(TunDirectDNS));
-            _config.tunModeItem.proxyIP = Utils.String2List(Utils.Convert2Comma(TunProxyIP));
-            _config.tunModeItem.proxyProcess = Utils.String2List(Utils.Convert2Comma(TunProxyProcess));
-            _config.tunModeItem.proxyDNS = Utils.ToJson(Utils.ParseJson(TunProxyDNS));
 
             //coreType
             SaveCoreType();

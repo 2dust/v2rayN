@@ -52,7 +52,7 @@ namespace v2rayN.Handler
 
                 dns(node, singboxConfig);
 
-                //statistic(singboxConfig);
+                statistic(singboxConfig);
 
                 msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
@@ -258,6 +258,11 @@ namespace v2rayN.Handler
                     outbound.flow = node.flow;
 
                     outbound.packet_encoding = "xudp";
+
+                    if (Utils.IsNullOrEmpty(node.flow))
+                    {
+                        outboundMux(node, outbound);
+                    }
                 }
                 else if (node.configType == EConfigType.Trojan)
                 {
@@ -288,10 +293,11 @@ namespace v2rayN.Handler
                     var mux = new Multiplex4Sbox()
                     {
                         enabled = true,
-                        protocol = "smux",
-                        max_connections = 4,
-                        min_streams = 4,
-                        max_streams = 0,
+                        protocol = _config.mux4Sbox.protocol,
+                        max_connections = _config.mux4Sbox.max_connections,
+                        min_streams = _config.mux4Sbox.min_streams,
+                        max_streams = _config.mux4Sbox.max_streams,
+                        padding = _config.mux4Sbox.padding
                     };
                     outbound.multiplex = mux;
                 }
@@ -361,6 +367,13 @@ namespace v2rayN.Handler
                     case "ws":
                         transport.type = "ws";
                         transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
+                        if (!Utils.IsNullOrEmpty(node.requestHost))
+                        {
+                            transport.headers = new()
+                            {
+                                Host = node.requestHost
+                            };
+                        }
                         break;
 
                     case "quic":
@@ -446,38 +459,6 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-
-                if (_config.tunModeItem.enableTun)
-                {
-                    if (_config.tunModeItem.bypassMode)
-                    {
-                        //direct ips
-                        if (_config.tunModeItem.directIP != null && _config.tunModeItem.directIP.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "direct", ip_cidr = _config.tunModeItem.directIP });
-                        }
-                        //direct process
-                        if (_config.tunModeItem.directProcess != null && _config.tunModeItem.directProcess.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "direct", process_name = _config.tunModeItem.directProcess });
-                        }
-                    }
-                    else
-                    {
-                        //proxy ips
-                        if (_config.tunModeItem.proxyIP != null && _config.tunModeItem.proxyIP.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "proxy", ip_cidr = _config.tunModeItem.proxyIP });
-                        }
-                        //proxy process
-                        if (_config.tunModeItem.proxyProcess != null && _config.tunModeItem.proxyProcess.Count > 0)
-                        {
-                            singboxConfig.route.rules.Add(new() { outbound = "proxy", process_name = _config.tunModeItem.proxyProcess });
-                        }
-
-                        singboxConfig.route.rules.Add(new() { outbound = "direct", inbound = new() { "tun-in" } });
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -546,6 +527,7 @@ namespace v2rayN.Handler
                     rule.inbound = item.inboundTag;
                 }
                 var rule2 = Utils.DeepCopy(rule);
+                var rule3 = Utils.DeepCopy(rule);
 
                 var hasDomainIp = false;
                 if (item.domain?.Count > 0)
@@ -565,6 +547,13 @@ namespace v2rayN.Handler
                         parseV2Address(it, rule2);
                     }
                     rules.Add(rule2);
+                    hasDomainIp = true;
+                }
+
+                if (_config.tunModeItem.enableTun && item.process?.Count > 0)
+                {
+                    rule3.process_name = item.process;
+                    rules.Add(rule3);
                     hasDomainIp = true;
                 }
 
@@ -653,16 +642,9 @@ namespace v2rayN.Handler
                 Dns4Sbox? dns4Sbox;
                 if (_config.tunModeItem.enableTun)
                 {
-                    string tunDNS = String.Empty;
-                    if (_config.tunModeItem.bypassMode)
-                    {
-                        tunDNS = _config.tunModeItem.directDNS;
-                    }
-                    else
-                    {
-                        tunDNS = _config.tunModeItem.proxyDNS;
-                    }
-                    if (tunDNS.IsNullOrEmpty() || Utils.FromJson<Dns4Sbox>(tunDNS) is null)
+                    var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+                    var tunDNS = item?.tunDNS;
+                    if (string.IsNullOrWhiteSpace(tunDNS))
                     {
                         tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
                     }
@@ -720,13 +702,18 @@ namespace v2rayN.Handler
             {
                 singboxConfig.experimental = new Experimental4Sbox()
                 {
-                    v2ray_api = new V2ray_Api4Sbox()
+                    //v2ray_api = new V2ray_Api4Sbox()
+                    //{
+                    //    listen = $"{Global.Loopback}:{Global.statePort}",
+                    //    stats = new Stats4Sbox()
+                    //    {
+                    //        enabled = true,
+                    //    }
+                    //}
+                    clash_api = new Clash_Api4Sbox()
                     {
-                        listen = $"{Global.Loopback}:{Global.statePort}",
-                        stats = new Stats4Sbox()
-                        {
-                            enabled = true,
-                        }
+                        external_controller = $"{Global.Loopback}:{Global.statePort}",
+                        store_selected = true
                     }
                 };
             }

@@ -701,7 +701,7 @@
     <value>txtPreSocksPort</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Sing-box to provide functions such as speed display</value>
+    <value>* After setting this value, an socks service will be started using sing-box to provide functions such as speed display</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Browse</value>
@@ -941,7 +941,7 @@
     <value>RoutingRuleDetailsSetting</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Domain and ip are auto sorted when saving</value>
+    <value>Domain, ip, process are auto sorted when saving</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>Ruleobject Doc</value>
@@ -1057,9 +1057,6 @@
   <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
     <value>Bypass Mode</value>
   </data>
-  <data name="TbSettingsTunModeBypassModeTip" xml:space="preserve">
-    <value>Enable: If no route matches, the final proxy</value>
-  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>SpeedTest Single Timeout Value</value>
   </data>
@@ -1118,7 +1115,7 @@
     <value>DNS Settings</value>
   </data>
   <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>Sing-box DNS settings</value>
+    <value>sing-box DNS settings</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Please fill in DNS Structure, Click to view the document</value>
@@ -1127,6 +1124,18 @@
     <value>Click to import default DNS config</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>Sing-box domain strategy</value>
+    <value>sing-box domain strategy</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>sing-box Mux Protocol</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Full process name (Tun mode)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP or IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
   </data>
 </root>
