@@ -20,11 +20,11 @@ namespace v2rayN.Views
             _config = LazyConfig.Instance.GetConfig();
             _config.globalHotkeys ??= new List<KeyEventItem>();
 
-            txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_KeyDown;
-            txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_KeyDown;
+            txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
+            txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
+            txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
+            txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
+            txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
 
             HotkeyHandler.Instance.IsPause = true;
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
@@ -45,7 +45,7 @@ namespace v2rayN.Views
             BindingData();
         }
 
-        private void TxtGlobalHotkey_KeyDown(object sender, KeyEventArgs e)
+        private void TxtGlobalHotkey_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
             var _ModifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift,

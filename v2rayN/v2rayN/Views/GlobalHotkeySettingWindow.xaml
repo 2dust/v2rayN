@@ -72,7 +72,8 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -89,7 +90,8 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown" />
 
                 <TextBlock
                     Grid.Row="3"
@@ -106,7 +108,8 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
@@ -122,7 +125,8 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown" />
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
@@ -138,7 +142,8 @@
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     IsReadOnly="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown" />
             </Grid>
 
             <TextBlock
