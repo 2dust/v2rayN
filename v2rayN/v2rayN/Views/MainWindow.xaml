@@ -301,6 +301,7 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -319,17 +320,30 @@
                                         x:Name="togDarkMode"
                                         Grid.Row="0"
                                         Grid.Column="1"
+                                        Margin="8"
+                                        IsEnabled="{Binding ElementName=followSystemTheme, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"/>
+									
+									<TextBlock
+	                                    Grid.Row="1"
+	                                    Grid.Column="0"
+	                                    VerticalAlignment="Center"
+	                                    Style="{StaticResource ToolbarTextBlock}"
+	                                    Text="{x:Static resx:ResUI.TbSettingsFollowSystemTheme}" />
+									<ToggleButton
+                                        x:Name="followSystemTheme"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
                                         Margin="8" />
 
                                     <TextBlock
-                                        Grid.Row="1"
+                                        Grid.Row="2"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsColor}" />
                                     <ComboBox
                                         x:Name="cmbSwatches"
-                                        Grid.Row="1"
+                                        Grid.Row="2"
                                         Grid.Column="1"
                                         Width="100"
                                         Margin="8"
@@ -337,28 +351,28 @@
                                         Style="{StaticResource DefComboBox}" />
 
                                     <TextBlock
-                                        Grid.Row="2"
+                                        Grid.Row="3"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
                                     <ComboBox
                                         x:Name="cmbCurrentFontSize"
-                                        Grid.Row="2"
+                                        Grid.Row="3"
                                         Grid.Column="1"
                                         Width="100"
                                         Margin="8"
                                         Style="{StaticResource DefComboBox}" />
 
                                     <TextBlock
-                                        Grid.Row="3"
+                                        Grid.Row="4"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                                     <ComboBox
                                         x:Name="cmbCurrentLanguage"
-                                        Grid.Row="3"
+                                        Grid.Row="4"
                                         Grid.Column="1"
                                         Width="100"
                                         Margin="8"
@@ -560,7 +574,7 @@
                                 <MenuItem
                                     x:Name="menuSpeedServer"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSpeedServer}" />
+                                    Header="{x:Static resx:ResUI.menuSpeedServer}"/>
                                 <MenuItem
                                     x:Name="menuSortServerResult"
                                     Height="{StaticResource MenuItemHeight}"
