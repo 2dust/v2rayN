@@ -2,6 +2,7 @@
 using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -43,7 +44,10 @@ namespace v2rayN.Views
                 lstProfiles.Drop += LstProfiles_Drop;
             }
 
-            ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
+            var helper = new WindowInteropHelper(this);
+            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
+
+            ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler,hwndSource);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
@@ -183,6 +187,7 @@ namespace v2rayN.Views
 
                 //UI
                 this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.FollowSystemTheme, v => v.followSystemTheme.IsChecked).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.Swatches, v => v.cmbSwatches.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);

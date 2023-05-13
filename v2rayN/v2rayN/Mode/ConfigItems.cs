@@ -116,6 +116,7 @@ namespace v2rayN.Mode
         public double mainGirdHeight1 { get; set; }
         public double mainGirdHeight2 { get; set; }
         public bool colorModeDark { get; set; }
+        public bool followSystemTheme { get; set; }
         public string? colorPrimaryName { get; set; }
         public string currentLanguage { get; set; }
         public string currentFontFamily { get; set; }

@@ -2528,6 +2528,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Follow System Theme 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFollowSystemTheme {
+            get {
+                return ResourceManager.GetString("TbSettingsFollowSystemTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 FontSize 的本地化字符串。
         /// </summary>
         public static string TbSettingsFontSize {

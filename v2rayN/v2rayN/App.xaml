@@ -20,6 +20,8 @@
             <system:Double x:Key="StdFontSize1">13</system:Double>
             <system:Double x:Key="StdFontSize2">14</system:Double>
             <system:Double x:Key="StdFontSizeMsg">11</system:Double>
+
+            <conv:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <Thickness
                 x:Key="ServerItemMargin"
                 Bottom="4"
