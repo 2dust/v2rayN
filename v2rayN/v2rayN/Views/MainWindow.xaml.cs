@@ -44,10 +44,7 @@ namespace v2rayN.Views
                 lstProfiles.Drop += LstProfiles_Drop;
             }
 
-            var helper = new WindowInteropHelper(this);
-            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
-
-            ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler,hwndSource);
+            ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
@@ -211,6 +208,25 @@ namespace v2rayN.Views
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
+
+            var helper = new WindowInteropHelper(this);
+            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
+            hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            {
+                if (_config.uiItem.followSystemTheme)
+                {
+                    const int WM_SETTINGCHANGE = 0x001A;
+                    if (msg == WM_SETTINGCHANGE)
+                    {
+                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
+                        {
+                            ViewModel?.ModifyTheme(!Utils.IsLightTheme());
+                        }
+                    }
+                }
+
+                return IntPtr.Zero;
+            });
         }
 
         #region Event

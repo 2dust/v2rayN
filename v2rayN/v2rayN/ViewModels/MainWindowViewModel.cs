@@ -12,10 +12,8 @@ using System.Drawing;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -249,7 +247,7 @@ namespace v2rayN.ViewModels
 
         #region Init
 
-        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Action<EViewAction> updateView,HwndSource hwndSource)
+        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Action<EViewAction> updateView)
         {
             _updateView = updateView;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
@@ -314,7 +312,7 @@ namespace v2rayN.ViewModels
                y => y == true)
                   .Subscribe(c => DoEnableTun(c));
 
-            BindingUI(hwndSource);
+            BindingUI();
             RestoreUI();
             AutoHideStartup();
 
@@ -1652,7 +1650,14 @@ namespace v2rayN.ViewModels
 
         private void RestoreUI()
         {
-            ModifyTheme(_config.uiItem.colorModeDark);
+            if (FollowSystemTheme)
+            {
+                ModifyTheme(!Utils.IsLightTheme());
+            }
+            else
+            {
+                ModifyTheme(_config.uiItem.colorModeDark);
+            }
 
             if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
             {
@@ -1670,7 +1675,7 @@ namespace v2rayN.ViewModels
         {
         }
 
-        private void BindingUI(HwndSource hwndSource)
+        private void BindingUI()
         {
             ColorModeDark = _config.uiItem.colorModeDark;
             FollowSystemTheme = _config.uiItem.followSystemTheme;
@@ -1703,47 +1708,11 @@ namespace v2rayN.ViewModels
                         if (_config.uiItem.followSystemTheme != FollowSystemTheme)
                         {
                             _config.uiItem.followSystemTheme = FollowSystemTheme;
+                            ConfigHandler.SaveConfig(ref _config);
                             if (FollowSystemTheme)
                             {
-                                hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
-                                {
-                                    const int WM_SETTINGCHANGE = 0x001A;
-                                    if (msg == WM_SETTINGCHANGE)
-                                    {
-                                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                                        {
-                                            var isLightTheme = Utils.IsLightTheme();
-                                            ColorModeDark = !isLightTheme;
-                                        }
-                                    }
-
-                                    return IntPtr.Zero;
-
-                                });
-
-                                var isLightTheme = Utils.IsLightTheme();
-                                ColorModeDark = !isLightTheme;
+                                ModifyTheme(!Utils.IsLightTheme());
                             }
-                            else
-                            {
-                                hwndSource.RemoveHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
-                                {
-                                    const int WM_SETTINGCHANGE = 0x001A;
-                                    if (msg == WM_SETTINGCHANGE)
-                                    {
-                                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                                        {
-                                            var isLightTheme = Utils.IsLightTheme();
-                                            ColorModeDark = !isLightTheme;
-                                        }
-                                    }
-
-                                    return IntPtr.Zero;
-
-                                });
-                            }
-
-                            ConfigHandler.SaveConfig(ref _config);
                         }
                     });
 
