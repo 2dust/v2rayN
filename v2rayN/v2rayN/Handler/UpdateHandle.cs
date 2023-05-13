@@ -9,6 +9,7 @@ using System.Windows;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
+using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -331,7 +332,7 @@ namespace v2rayN.Handler
         /// <summary>
         /// 获取V2RayCore版本
         /// </summary>
-        private string getCoreVersion(ECoreType type)
+        private SemanticVersion getCoreVersion(ECoreType type)
         {
             try
             {
@@ -352,7 +353,7 @@ namespace v2rayN.Handler
                 {
                     string msg = string.Format(ResUI.NotFoundCore, @"", "", "");
                     //ShowMsg(true, msg);
-                    return "";
+                    return new SemanticVersion("");
                 }
 
                 using Process p = new();
@@ -385,13 +386,13 @@ namespace v2rayN.Handler
                         version = Regex.Match(echo, $"([0-9.]+)").Groups[1].Value;
                         break;
                 }
-                return version;
+                return new SemanticVersion(version);
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
                 _updateFunc(false, ex.Message);
-                return "";
+                return new SemanticVersion("");
             }
         }
 
@@ -400,18 +401,18 @@ namespace v2rayN.Handler
             try
             {
                 var gitHubReleases = Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);
-                string version;
+                SemanticVersion version;
                 if (preRelease)
                 {
-                    version = gitHubReleases!.First().TagName;
+                    version = new SemanticVersion(gitHubReleases!.First().TagName);
                 }
                 else
                 {
-                    version = gitHubReleases!.First(r => r.Prerelease == false).TagName;
+                    version = new SemanticVersion(gitHubReleases!.First(r => r.Prerelease == false).TagName);
                 }
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
-                string curVersion;
+                SemanticVersion curVersion;
                 string message;
                 string url;
                 switch (type)
@@ -421,8 +422,8 @@ namespace v2rayN.Handler
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
                         {
-                            curVersion = "v" + getCoreVersion(type);
-                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            curVersion = getCoreVersion(type);
+                            message = string.Format(ResUI.IsLatestCore, curVersion.ToVersionString("v"));
                             string osBit = "64";
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -439,7 +440,7 @@ namespace v2rayN.Handler
                                     break;
                             }
 
-                            url = string.Format(coreInfo.coreDownloadUrl64, version, osBit);
+                            url = string.Format(coreInfo.coreDownloadUrl64, version.ToVersionString("v"), osBit);
                             break;
                         }
                     case ECoreType.clash:
@@ -466,8 +467,8 @@ namespace v2rayN.Handler
                         }
                     case ECoreType.sing_box:
                         {
-                            curVersion = "v" + getCoreVersion(type);
-                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            curVersion = getCoreVersion(type);
+                            message = string.Format(ResUI.IsLatestCore, curVersion.ToVersionString("v"));
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
                                 case Architecture.Arm64:
@@ -482,12 +483,12 @@ namespace v2rayN.Handler
                                     url = coreInfo.coreDownloadUrl64;
                                     break;
                             }
-                            url = string.Format(url, version, version.Replace("v", ""));
+                            url = string.Format(url, version.ToVersionString("v"), version);
                             break;
                         }
                     case ECoreType.v2rayN:
                         {
-                            curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
+                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString());
                             message = string.Format(ResUI.IsLatestN, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -509,18 +510,7 @@ namespace v2rayN.Handler
                         throw new ArgumentException("Type");
                 }
 
-                if (type == ECoreType.v2rayN)
-                {
-                    decimal.TryParse(curVersion, out decimal decCur);
-                    decimal.TryParse(version, out decimal dec);
-                    if (decCur >= dec)
-                    {
-                        AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
-                        return;
-                    }
-                }
-
-                if (curVersion == version)
+                if (curVersion >= version)
                 {
                     AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
                     return;
