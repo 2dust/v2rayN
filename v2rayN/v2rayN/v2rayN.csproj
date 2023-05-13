@@ -15,7 +15,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.4" />		
-		<PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
 		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.108" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
