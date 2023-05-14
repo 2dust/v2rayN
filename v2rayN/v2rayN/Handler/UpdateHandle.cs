@@ -462,7 +462,7 @@ namespace v2rayN.Handler
                                     url = coreInfo.coreDownloadUrl64;
                                     break;
                             }
-                            url = string.Format(url, version);
+                            url = string.Format(url, version.ToVersionString("v"));
                             break;
                         }
                     case ECoreType.sing_box:
