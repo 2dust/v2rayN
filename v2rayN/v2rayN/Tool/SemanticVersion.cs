@@ -87,12 +87,20 @@ namespace v2rayN.Tool
             }
         }
 
-        public static bool operator ==(SemanticVersion v1, SemanticVersion v2) { return v1.Equals(v2); }
-        public static bool operator !=(SemanticVersion v1, SemanticVersion v2) { return !v1.Equals(v2); }
-        public static bool operator >=(SemanticVersion v1, SemanticVersion v2) { return v1.GreaterEquals(v2); }
-        public static bool operator <=(SemanticVersion v1, SemanticVersion v2) { return v1.LessEquals(v2); }
+        public static bool operator ==(SemanticVersion v1, SemanticVersion v2)
+        { return v1.Equals(v2); }
+
+        public static bool operator !=(SemanticVersion v1, SemanticVersion v2)
+        { return !v1.Equals(v2); }
+
+        public static bool operator >=(SemanticVersion v1, SemanticVersion v2)
+        { return v1.GreaterEquals(v2); }
+
+        public static bool operator <=(SemanticVersion v1, SemanticVersion v2)
+        { return v1.LessEquals(v2); }
 
         #region Private
+
         private bool GreaterEquals(SemanticVersion other)
         {
             if (this.major < other.major)
@@ -168,6 +176,7 @@ namespace v2rayN.Tool
                 }
             }
         }
+
         #endregion Private
     }
 }

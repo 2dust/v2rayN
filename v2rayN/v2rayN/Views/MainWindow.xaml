@@ -321,8 +321,8 @@
                                         Grid.Row="0"
                                         Grid.Column="1"
                                         Margin="8"
-                                        IsEnabled="{Binding ElementName=followSystemTheme, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}"/>
-									
+                                        IsEnabled="{Binding ElementName=followSystemTheme, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" />
+
 									<TextBlock
 	                                    Grid.Row="1"
 	                                    Grid.Column="0"
@@ -574,7 +574,7 @@
                                 <MenuItem
                                     x:Name="menuSpeedServer"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSpeedServer}"/>
+                                    Header="{x:Static resx:ResUI.menuSpeedServer}" />
                                 <MenuItem
                                     x:Name="menuSortServerResult"
                                     Height="{StaticResource MenuItemHeight}"
