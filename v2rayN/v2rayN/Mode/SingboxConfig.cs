@@ -22,6 +22,13 @@
     {
         public List<Server4Sbox> servers { get; set; }
         public List<Rule4Sbox> rules { get; set; }
+        public string? final { get; set; }
+        public string? strategy { get; set; }
+        public bool? disable_cache { get; set; }
+        public bool? disable_expire { get; set; }
+        public bool? independent_cache { get; set; }
+        public bool? reverse_mapping { get; set; }
+        public Fakeip4Sbox? fakeip { get; set; }
     }
 
     public class Route4Sbox
@@ -194,5 +201,12 @@
         public List<string>? inbounds { get; set; }
         public List<string>? outbounds { get; set; }
         public List<string>? users { get; set; }
+    }
+
+    public class Fakeip4Sbox
+    {
+        public bool enabled { get; set; }
+        public string inet4_range { get; set; }
+        public string inet6_range { get; set; }
     }
 }
