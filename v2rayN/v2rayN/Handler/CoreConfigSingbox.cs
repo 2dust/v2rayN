@@ -675,24 +675,21 @@ namespace v2rayN.Handler
                     return 0;
                 }
                 //Add the dns of the remote server domain
-                if (Utils.IsDomain(node.address))
+                if (dns4Sbox.rules is null)
                 {
-                    if (dns4Sbox.rules is null)
-                    {
-                        dns4Sbox.rules = new();
-                    }
-                    dns4Sbox.servers.Add(new()
-                    {
-                        tag = "local_local",
-                        address = "223.5.5.5",
-                        detour = "direct"
-                    });
-                    dns4Sbox.rules.Add(new()
-                    {
-                        server = "local_local",
-                        domain = new List<string>() { node.address }
-                    });
+                    dns4Sbox.rules = new();
                 }
+                dns4Sbox.servers.Add(new()
+                {
+                    tag = "local_local",
+                    address = "223.5.5.5",
+                    detour = "direct"
+                });
+                dns4Sbox.rules.Add(new()
+                {
+                    server = "local_local",
+                    outbound = "any"
+                });
 
                 singboxConfig.dns = dns4Sbox;
             }
