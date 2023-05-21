@@ -87,13 +87,10 @@ namespace v2rayN.ViewModels
             SelectedSource.protocol = ProtocolItems?.ToList();
             SelectedSource.inboundTag = InboundTagItems?.ToList();
 
-            bool hasRule =
-              SelectedSource.domain != null
-              && SelectedSource.domain.Count > 0
-              || SelectedSource.ip != null
-              && SelectedSource.ip.Count > 0
-              || SelectedSource.protocol != null
-              && SelectedSource.protocol.Count > 0
+            bool hasRule = SelectedSource.domain?.Count > 0
+              || SelectedSource.ip?.Count > 0
+              || SelectedSource.protocol?.Count > 0
+              || SelectedSource.process?.Count > 0
               || !Utils.IsNullOrEmpty(SelectedSource.port);
 
             if (!hasRule)
