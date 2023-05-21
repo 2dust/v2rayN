@@ -315,10 +315,19 @@ namespace v2rayN.Handler
             {
                 if (node.streamSecurity == Global.StreamSecurityReality || node.streamSecurity == Global.StreamSecurity)
                 {
+                    var server_name = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(node.sni))
+                    {
+                        server_name = node.sni;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(node.requestHost))
+                    {
+                        server_name = Utils.String2List(node.requestHost)[0];
+                    }
                     var tls = new Tls4Sbox()
                     {
                         enabled = true,
-                        server_name = node.sni,
+                        server_name = server_name,
                         insecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                     };
