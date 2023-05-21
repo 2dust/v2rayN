@@ -288,19 +288,19 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (_config.coreBasicItem.muxEnabled)
-                {
-                    var mux = new Multiplex4Sbox()
-                    {
-                        enabled = true,
-                        protocol = _config.mux4Sbox.protocol,
-                        max_connections = _config.mux4Sbox.max_connections,
-                        min_streams = _config.mux4Sbox.min_streams,
-                        max_streams = _config.mux4Sbox.max_streams,
-                        padding = _config.mux4Sbox.padding
-                    };
-                    outbound.multiplex = mux;
-                }
+                //if (_config.coreBasicItem.muxEnabled)
+                //{
+                //    var mux = new Multiplex4Sbox()
+                //    {
+                //        enabled = true,
+                //        protocol = _config.mux4Sbox.protocol,
+                //        max_connections = _config.mux4Sbox.max_connections,
+                //        min_streams = _config.mux4Sbox.min_streams,
+                //        max_streams = _config.mux4Sbox.max_streams,
+                //        padding = _config.mux4Sbox.padding
+                //    };
+                //    outbound.multiplex = mux;
+                //}
             }
             catch (Exception ex)
             {
