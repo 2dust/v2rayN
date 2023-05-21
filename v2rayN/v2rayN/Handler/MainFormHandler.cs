@@ -160,9 +160,9 @@ namespace v2rayN.Handler
             Task.Run(() => UpdateTaskRunGeo(config, update));
         }
 
-        private void UpdateTaskRunSubscription(Config config, Action<bool, string> update)
+        private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> update)
         {
-            Thread.Sleep(60000);
+            await Task.Delay(60000);
             Utils.SaveLog("UpdateTaskRunSubscription");
 
             var updateHandle = new UpdateHandle();
@@ -185,17 +185,17 @@ namespace v2rayN.Handler
                     item.updateTime = updateTime;
                     ConfigHandler.AddSubItem(ref config, item);
 
-                    Thread.Sleep(5000);
+                    await Task.Delay(5000);
                 }
-                Thread.Sleep(60000);
+                await Task.Delay(60000);
             }
         }
 
-        private void UpdateTaskRunGeo(Config config, Action<bool, string> update)
+        private async Task UpdateTaskRunGeo(Config config, Action<bool, string> update)
         {
             var autoUpdateGeoTime = DateTime.Now;
 
-            Thread.Sleep(1000 * 120);
+            await Task.Delay(1000 * 120);
             Utils.SaveLog("UpdateTaskRunGeo");
 
             var updateHandle = new UpdateHandle();
@@ -214,7 +214,7 @@ namespace v2rayN.Handler
                     }
                 }
 
-                Thread.Sleep(1000 * 3600);
+                await Task.Delay(1000 * 3600);
             }
         }
 

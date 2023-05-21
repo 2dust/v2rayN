@@ -23,7 +23,7 @@ namespace v2rayN.Handler
 
         private async void Init()
         {
-            Thread.Sleep(5000);
+            await Task.Delay(5000);
 
             try
             {
@@ -102,7 +102,7 @@ namespace v2rayN.Handler
                 }
                 finally
                 {
-                    Thread.Sleep(1000);
+                    await Task.Delay(1000);
                 }
             }
         }

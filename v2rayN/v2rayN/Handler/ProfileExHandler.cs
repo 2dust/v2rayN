@@ -24,7 +24,7 @@ namespace v2rayN.Handler
 
             _lstProfileEx = new(SqliteHelper.Instance.Table<ProfileExItem>());
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
@@ -38,7 +38,7 @@ namespace v2rayN.Handler
                             SqliteHelper.Instance.Replace(item);
                         }
                     }
-                    Thread.Sleep(1000 * 60);
+                    await Task.Delay(1000 * 60);
                 }
             });
         }

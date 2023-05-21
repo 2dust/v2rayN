@@ -95,7 +95,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private void RunPingSub(Action<ServerTestItem> updateFun)
+        private async Task RunPingSubAsync(Action<ServerTestItem> updateFun)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace v2rayN.Handler
                     }
                 }
 
-                Thread.Sleep(10);
+                await Task.Delay(10);
             }
             catch (Exception ex)
             {
@@ -119,21 +119,21 @@ namespace v2rayN.Handler
             }
         }
 
-        private void RunPing()
+        private async void RunPing()
         {
-            RunPingSub((ServerTestItem it) =>
-            {
-                long time = Ping(it.address);
-                var output = FormatOut(time, Global.DelayUnit);
+            await RunPingSubAsync((ServerTestItem it) =>
+             {
+                 long time = Ping(it.address);
+                 var output = FormatOut(time, Global.DelayUnit);
 
-                ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                UpdateFunc(it.indexId, output);
-            });
+                 ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
+                 UpdateFunc(it.indexId, output);
+             });
         }
 
-        private void RunTcping()
+        private async void RunTcping()
         {
-            RunPingSub((ServerTestItem it) =>
+            await RunPingSubAsync((ServerTestItem it) =>
             {
                 int time = GetTcpingTime(it.address, it.port);
                 var output = FormatOut(time, Global.DelayUnit);
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
                 }
 
                 DownloadHandle downloadHandle = new DownloadHandle();
-                //Thread.Sleep(5000);
+
                 List<Task> tasks = new();
                 foreach (var it in _selecteds)
                 {
@@ -187,7 +187,6 @@ namespace v2rayN.Handler
                             Utils.SaveLog(ex.Message, ex);
                         }
                     }));
-                    //Thread.Sleep(100);
                 }
                 Task.WaitAll(tasks.ToArray());
             }
@@ -312,10 +311,10 @@ namespace v2rayN.Handler
                     }
                     UpdateFunc(it.indexId, "", msg);
                 });
-                Thread.Sleep(2000);
+                await Task.Delay(2000);
             }
 
-            Thread.Sleep((timeout + 2) * 1000);
+            await Task.Delay((timeout + 2) * 1000);
 
             if (pid > 0)
             {
@@ -329,7 +328,7 @@ namespace v2rayN.Handler
         {
             await RunRealPing();
 
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
 
             await RunSpeedTestMulti();
         }

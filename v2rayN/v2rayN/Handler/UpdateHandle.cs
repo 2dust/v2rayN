@@ -609,6 +609,7 @@ namespace v2rayN.Handler
                     try
                     {
                         if (needStop) coreHandler?.CoreStop();
+                        Task.Delay(1000);
                         string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
