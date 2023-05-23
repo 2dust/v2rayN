@@ -905,15 +905,15 @@ namespace v2rayN
         /// <returns></returns>
         public static T DeepCopy<T>(T obj)
         {
-            object retval;
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter bf = new BinaryFormatter();
-            //序列化成流
-            bf.Serialize(ms, obj);
-            ms.Seek(0, SeekOrigin.Begin);
-            //反序列化成对象
-            retval = bf.Deserialize(ms);
-            return (T)retval;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                // Serialize object to JSON
+                System.Text.Json.JsonSerializer.Serialize(stream, obj);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                // Deserialize JSON to new object
+                return System.Text.Json.JsonSerializer.Deserialize<T>(stream);
+            }
         }
 
         /// <summary>
