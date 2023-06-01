@@ -30,6 +30,10 @@ namespace v2rayN.ViewModels
 
         private CoreHandler _coreHandler;
         private StatisticsHandler _statistics;
+<<<<<<< HEAD
+        private QuickSelectHandler _quickSelectHandler;
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         private List<ProfileItem> _lstProfile;
         private string _subId = string.Empty;
         private string _serverFilter = string.Empty;
@@ -110,6 +114,10 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
 
         //servers ping
+<<<<<<< HEAD
+        public ReactiveCommand<Unit, Unit> QuickSelectCmd { get; }
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
 
         public ReactiveCommand<Unit, Unit> PingServerCmd { get; }
@@ -255,6 +263,10 @@ namespace v2rayN.ViewModels
             Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(snackbarMessageQueue), typeof(NoticeHandler));
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = LazyConfig.Instance.GetConfig();
+<<<<<<< HEAD
+            _quickSelectHandler = new QuickSelectHandler();
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
             //ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
             Init();
 
@@ -393,6 +405,14 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
 
             //servers ping
+<<<<<<< HEAD
+            QuickSelectCmd = ReactiveCommand.Create(() =>
+            {
+                QuickSelect();
+            });
+
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
             MixedTestServerCmd = ReactiveCommand.Create(() =>
             {
                 ServerSpeedtest(ESpeedActionType.Mixedtest);
@@ -666,6 +686,95 @@ namespace v2rayN.ViewModels
             }));
         }
 
+<<<<<<< HEAD
+        private void UpdateSpeedtestAndSelectUselessResultHandler(string indexId, string delay, string speed)
+        {
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                SetTestResultAndSelect(indexId, delay, speed);
+            }));
+        }
+
+        private void SetTestResultAndSelect(string indexId, string delay, string speed)
+        {
+            if (Utils.IsNullOrEmpty(indexId))
+            {
+                _noticeHandler?.SendMessage(delay, true);
+                _noticeHandler?.Enqueue(delay);
+                return;
+            }
+            else if (indexId.Equals("#"))
+            {
+                if (delay.Equals("ok"))
+                {
+                    List<string> invaliditems = _quickSelectHandler.select();
+                    List<ProfileItem> items = new List<ProfileItem>();
+                    foreach(var it in invaliditems)
+                    {
+                        var ite = LazyConfig.Instance.GetProfileItem(it);
+                        if (ite is not null)
+                        {
+                            items.Add(ite);
+                        }
+                    }
+                    RemoveServerByItems(items);
+                    if (_quickSelectHandler.selectContent)
+                    {
+                        foreach(var it in _quickSelectHandler.validItems)
+                        {
+                            var ite = _profileItems.Where(i => i.indexId == it.indexId).FirstOrDefault();
+                            if (!Utils.IsNullOrEmpty(delay))
+                            {
+                                ite.delay = it.E;
+                                ite.delayVal = $"{it.E.ToString()} {Global.DelayUnit}";
+                                ProfileExHandler.Instance.SetTestDelay(it.indexId, it.E.ToString());
+                            }
+                            _profileItems.Replace(ite, Utils.DeepCopy(ite));
+                        }
+                    }
+                    else
+                    {
+                        foreach (var it in _quickSelectHandler.validItems)
+                        {
+                            var ite = _profileItems.Where(i => i.indexId == it.indexId).FirstOrDefault();
+                            if (!Utils.IsNullOrEmpty(delay))
+                            {
+                                ite.delay = int.Parse(it.getDelay(2));
+                                ite.delayVal = $"{it.getDelay(2)} {Global.DelayUnit}";
+                                ProfileExHandler.Instance.SetTestDelay(it.indexId, it.getDelay(2));
+                            }
+                            _profileItems.Replace(ite, Utils.DeepCopy(ite));
+                        }
+                    }
+                    SortServer(EServerColName.delayVal.ToString());
+                    SetDefaultServer(_profileItems.First().indexId);
+                    _noticeHandler?.SendMessage(ResUI.OperationSuccess, true);
+                    _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                }
+                return;
+            }
+            var item = _profileItems.Where(it => it.indexId == indexId).FirstOrDefault();
+            if (item != null)
+            {
+                if (!Utils.IsNullOrEmpty(delay))
+                {
+                    int.TryParse(delay, out int temp);
+                    item.delay = temp;
+                    item.delayVal = $"{delay} {Global.DelayUnit}";
+                    if (int.TryParse(delay,out int tmp)) {
+                        _quickSelectHandler.itemAdd(item.indexId, delay);
+                    }
+                }
+                if (!Utils.IsNullOrEmpty(speed))
+                {
+                    item.speedVal = $"{speed} {Global.SpeedUnit}";
+                }
+                _profileItems.Replace(item, Utils.DeepCopy(item));
+            }
+        }
+
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         private void SetTestResult(string indexId, string delay, string speed)
         {
             if (Utils.IsNullOrEmpty(indexId))
@@ -1019,6 +1128,20 @@ namespace v2rayN.ViewModels
             }
         }
 
+<<<<<<< HEAD
+        public void RemoveServerByItems(List<ProfileItem> lst)
+        {
+            var exists = lst.Exists(t => t.indexId == _config.indexId);
+            ConfigHandler.RemoveServer(_config, lst);
+            RefreshServers();
+            if (exists)
+            {
+                Reload();
+            }
+        }
+
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         public void RemoveServer()
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
@@ -1226,6 +1349,19 @@ namespace v2rayN.ViewModels
                 }
             }
         }
+<<<<<<< HEAD
+        public void QuickSelect()
+        {
+            SelectedProfiles = _profileItems;
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
+            {
+                return;
+            }
+            _quickSelectHandler.clear();
+            new SpeedtestHandler(_config, _coreHandler, lstSelecteds, ESpeedActionType.QuickSelect, UpdateSpeedtestAndSelectUselessResultHandler);
+        }
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 
         public void ServerSpeedtest(ESpeedActionType actionType)
         {

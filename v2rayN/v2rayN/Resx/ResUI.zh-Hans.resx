@@ -1138,4 +1138,13 @@
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
   </data>
+<<<<<<< HEAD
+  <data name="flashSelect" xml:space="preserve">
+    <value>一键筛选</value>
+  </data>
+  <data name="quickSelect" xml:space="preserve">
+    <value>一键筛选</value>
+  </data>
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 </root>

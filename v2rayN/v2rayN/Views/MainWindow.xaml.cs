@@ -1,5 +1,9 @@
 ﻿using ReactiveUI;
 using Splat;
+<<<<<<< HEAD
+using System;
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
@@ -95,6 +99,10 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
                 //servers ping
+<<<<<<< HEAD
+                this.BindCommand(ViewModel, vm => vm.QuickSelectCmd, v => v.btnQuickOp).DisposeWith(disposables);
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
                 this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.PingServerCmd, v => v.menuPingServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
@@ -630,5 +638,9 @@ namespace v2rayN.Views
         }
 
         #endregion Drag and Drop
+<<<<<<< HEAD
+
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
     }
 }

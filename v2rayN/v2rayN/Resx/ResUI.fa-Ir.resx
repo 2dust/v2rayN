@@ -1009,4 +1009,15 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
+<<<<<<< HEAD
+  <data name="flashSelect" xml:space="preserve">
+    <value>Filtre en un clic</value>
+  </data>
+  <data name="quickSelect" xml:space="preserve">
+    <value>一键筛选
+一键筛选
+Filtre en un clic</value>
+  </data>
+=======
+>>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 </root>
