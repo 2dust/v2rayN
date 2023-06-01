@@ -1141,10 +1141,7 @@
   <data name="TbRoutingRuleDomain" xml:space="preserve">
     <value>Domain</value>
   </data>
-<<<<<<< HEAD
   <data name="quickSelect" xml:space="preserve">
     <value>flash filtering</value>
   </data>
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 </root>

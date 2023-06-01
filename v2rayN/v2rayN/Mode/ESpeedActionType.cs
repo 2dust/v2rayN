@@ -6,11 +6,7 @@
         Tcping,
         Realping,
         Speedtest,
-<<<<<<< HEAD
         Mixedtest,
         QuickSelect
-=======
-        Mixedtest
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
     }
 }

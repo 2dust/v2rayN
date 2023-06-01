@@ -1054,13 +1054,10 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
-<<<<<<< HEAD
   <data name="flashSelect" xml:space="preserve">
     <value>Фильтр одним нажатием клавиш</value>
   </data>
   <data name="quickSelect" xml:space="preserve">
     <value>Фильтр одним нажатием клавиш</value>
   </data>
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
 </root>

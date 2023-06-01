@@ -13,15 +13,9 @@
     xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="v2rayN"
-<<<<<<< HEAD
     Width="950"
     Height="700"
     MinWidth="950"
-=======
-    Width="900"
-    Height="700"
-    MinWidth="900"
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
     MinHeight="700"
     x:TypeArguments="vms:MainWindowViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -387,7 +381,6 @@
                                 </Grid>
                             </StackPanel>
                         </materialDesign:PopupBox>
-<<<<<<< HEAD
                         <Separator/>
                         <Button x:Name="btnQuickOp"
                             >
@@ -399,8 +392,6 @@
                                 <TextBlock Text="{x:Static resx:ResUI.quickSelect}" />
                             </StackPanel>
                         </Button>
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
                     </ToolBar>
                 </ToolBarTray>
                 <WrapPanel Margin="2" DockPanel.Dock="Top">

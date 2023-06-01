@@ -68,13 +68,10 @@ namespace v2rayN.Handler
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;
-<<<<<<< HEAD
                     case ESpeedActionType.QuickSelect:
                         UpdateFunc(it.indexId, ResUI.Speedtesting, "");
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         break;
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
                 }
             }
 
@@ -99,12 +96,9 @@ namespace v2rayN.Handler
                 case ESpeedActionType.Mixedtest:
                     Task.Run(RunMixedtestAsync);
                     break;
-<<<<<<< HEAD
                 case ESpeedActionType.QuickSelect:
                     Task.Run(RunQuickSelectAsync);
                     break;
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
             }
         }
 
@@ -346,7 +340,6 @@ namespace v2rayN.Handler
             await RunSpeedTestMulti();
         }
 
-<<<<<<< HEAD
         private async Task RunQuickSelectAsync()
         {
             await RunRealPing();
@@ -355,8 +348,6 @@ namespace v2rayN.Handler
             UpdateFunc("#", "ok");
         }
 
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         public async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
         {
             int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);

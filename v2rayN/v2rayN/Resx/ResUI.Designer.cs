@@ -1627,7 +1627,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-<<<<<<< HEAD
         ///   查找类似 flash filtering 的本地化字符串。
         /// </summary>
         public static string quickSelect {
@@ -1637,8 +1636,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-=======
->>>>>>> bc957fea71fac743870efdaecacb22c70bef9488
         ///   查找类似 Global hotkey {0} registered failed, reason {1} 的本地化字符串。
         /// </summary>
         public static string RegisterGlobalHotkeyFailed {
