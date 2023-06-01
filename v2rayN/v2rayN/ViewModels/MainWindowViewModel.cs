@@ -714,6 +714,7 @@ namespace v2rayN.ViewModels
                             {
                                 ite.delay = it.E;
                                 ite.delayVal = $"{it.E.ToString()} {Global.DelayUnit}";
+                                ProfileExHandler.Instance.SetTestDelay(it.indexId, it.E.ToString());
                             }
                             _profileItems.Replace(ite, Utils.DeepCopy(ite));
                         }
@@ -727,10 +728,13 @@ namespace v2rayN.ViewModels
                             {
                                 ite.delay = int.Parse(it.getDelay(2));
                                 ite.delayVal = $"{it.getDelay(2)} {Global.DelayUnit}";
+                                ProfileExHandler.Instance.SetTestDelay(it.indexId, it.getDelay(2));
                             }
                             _profileItems.Replace(ite, Utils.DeepCopy(ite));
                         }
                     }
+                    SortServer(EServerColName.delayVal.ToString());
+                    SetDefaultServer(_profileItems.First().indexId);
                     _noticeHandler?.SendMessage(ResUI.OperationSuccess, true);
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
