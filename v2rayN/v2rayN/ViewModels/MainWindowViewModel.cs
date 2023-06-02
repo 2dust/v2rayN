@@ -14,6 +14,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using v2rayN.Base;
 using v2rayN.Handler;
@@ -952,13 +953,25 @@ namespace v2rayN.ViewModels
                 }
             }));
         }
-
+        
         private void RefreshServersMenu()
         {
             _servers.Clear();
             if (_lstProfile.Count > _config.guiItem.trayMenuServersLimit)
             {
-                BlServers = false;
+                BlServers = true;
+                for (int k = 0; k < _config.guiItem.trayMenuServersLimit; k++)
+                {
+                    ProfileItem it = _lstProfile[k];
+                    string name = it.GetSummary();
+
+                    var item = new ComboItem() { ID = it.indexId, Text = name };
+                    _servers.Add(item);
+                    if (_config.indexId == it.indexId)
+                    {
+                        SelectedServer = item;
+                    }
+                }
                 return;
             }
 
