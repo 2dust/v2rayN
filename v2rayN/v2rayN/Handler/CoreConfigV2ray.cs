@@ -423,7 +423,6 @@ namespace v2rayN.Handler
                         usersItem = vnextItem.users[0];
                     }
                     usersItem.id = node.id;
-                    usersItem.flow = string.Empty;
                     usersItem.email = Global.userEMail;
                     usersItem.encryption = node.security;
 
@@ -462,7 +461,6 @@ namespace v2rayN.Handler
                     serversItem.address = node.address;
                     serversItem.port = node.port;
                     serversItem.password = node.id;
-                    serversItem.flow = string.Empty;
 
                     serversItem.ota = false;
                     serversItem.level = 1;

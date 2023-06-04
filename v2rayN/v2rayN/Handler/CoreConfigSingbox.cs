@@ -255,13 +255,16 @@ namespace v2rayN.Handler
                     outbound.type = Global.vlessProtocolLite;
 
                     outbound.uuid = node.id;
-                    outbound.flow = node.flow;
 
                     outbound.packet_encoding = "xudp";
 
                     if (Utils.IsNullOrEmpty(node.flow))
                     {
                         outboundMux(node, outbound);
+                    }
+                    else
+                    {
+                        outbound.flow = node.flow;
                     }
                 }
                 else if (node.configType == EConfigType.Trojan)
