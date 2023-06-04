@@ -71,6 +71,7 @@ namespace v2rayN.Handler
                             webSocket.Abort();
                             webSocket = null;
                             Init();
+                            continue;
                         }
 
                         if (webSocket.State != WebSocketState.Open)
