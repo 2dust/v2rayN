@@ -47,7 +47,7 @@ namespace v2rayN.ViewModels
         private void SaveSub()
         {
             string remarks = SelectedSource.remarks;
-            if (Utils.IsNullOrEmpty(remarks))
+            if (string.IsNullOrEmpty(remarks))
             {
                 UI.Show(ResUI.PleaseFillRemarks);
                 return;
