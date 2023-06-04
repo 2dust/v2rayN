@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.25</FileVersion>
+		<FileVersion>6.26</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
