@@ -163,6 +163,7 @@ namespace v2rayN.Mode
         public bool strictRoute { get; set; }
         public string stack { get; set; }
         public int mtu { get; set; }
+        public bool enableExInbound { get; set; }
     }
 
     [Serializable]
