@@ -1034,7 +1034,7 @@ namespace v2rayN.Handler
                     addStatus = AddVlessServer(ref config, profileItem, false);
                 }
 
-                if (addStatus == 0 && profileItem.port > 0)
+                if (addStatus == 0)
                 {
                     countServers++;
                     lstAdd.Add(profileItem);
