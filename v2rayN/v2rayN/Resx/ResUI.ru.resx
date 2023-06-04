@@ -796,9 +796,6 @@
   <data name="TbSettingsStatistics" xml:space="preserve">
     <value>Включить статистику (требуется перезагрузка)</value>
   </data>
-  <data name="TbSettingsStatisticsFreshRate" xml:space="preserve">
-    <value>Частота обновления статистики в секундах</value>
-  </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>URL-адрес конверсии подписки</value>
   </data>

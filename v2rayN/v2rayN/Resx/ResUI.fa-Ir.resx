@@ -793,9 +793,6 @@
   <data name="TbSettingsStatistics" xml:space="preserve">
     <value>فعال کردن آمار (نیاز به راه اندازی مجدد)</value>
   </data>
-  <data name="TbSettingsStatisticsFreshRate" xml:space="preserve">
-    <value>نرخ تازه سازی آمار (ثانیه)</value>
-  </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion Url</value>
   </data>

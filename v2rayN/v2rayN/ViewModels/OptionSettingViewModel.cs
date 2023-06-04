@@ -51,7 +51,6 @@ namespace v2rayN.ViewModels
 
         [Reactive] public bool AutoRun { get; set; }
         [Reactive] public bool EnableStatistics { get; set; }
-        [Reactive] public int StatisticsFreshRate { get; set; }
         [Reactive] public bool KeepOlderDedupl { get; set; }
         [Reactive] public bool IgnoreGeoUpdateCore { get; set; }
         [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
@@ -141,7 +140,6 @@ namespace v2rayN.ViewModels
 
             AutoRun = _config.guiItem.autoRun;
             EnableStatistics = _config.guiItem.enableStatistics;
-            StatisticsFreshRate = _config.guiItem.statisticsFreshRate;
             KeepOlderDedupl = _config.guiItem.keepOlderDedupl;
             IgnoreGeoUpdateCore = _config.guiItem.ignoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
@@ -291,11 +289,6 @@ namespace v2rayN.ViewModels
             Utils.SetAutoRun(AutoRun);
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
-            _config.guiItem.statisticsFreshRate = StatisticsFreshRate;
-            if (_config.guiItem.statisticsFreshRate > 100 || _config.guiItem.statisticsFreshRate < 1)
-            {
-                _config.guiItem.statisticsFreshRate = 1;
-            }
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
             _config.guiItem.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;

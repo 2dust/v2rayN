@@ -61,8 +61,7 @@ namespace v2rayN.Handler
                             _updateFunc(server);
                         }
                     }
-                    var sleep = _config.guiItem.statisticsFreshRate < 1 ? 1 : _config.guiItem.statisticsFreshRate;
-                    await Task.Delay(1000 * sleep);
+                    await Task.Delay(1000);
                     await _channel.ConnectAsync();
                 }
                 catch

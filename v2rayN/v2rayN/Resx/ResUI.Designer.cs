@@ -2753,15 +2753,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Statistics freshrate (second) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsStatisticsFreshRate {
-            get {
-                return ResourceManager.GetString("TbSettingsStatisticsFreshRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Subscription conversion Url 的本地化字符串。
         /// </summary>
         public static string TbSettingsSubConvert {

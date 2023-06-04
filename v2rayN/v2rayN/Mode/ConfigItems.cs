@@ -88,8 +88,6 @@ namespace v2rayN.Mode
 
         public bool enableStatistics { get; set; }
 
-        public int statisticsFreshRate { get; set; }
-
         public bool keepOlderDedupl { get; set; }
 
         public bool ignoreGeoUpdateCore { get; set; } = true;

@@ -796,9 +796,6 @@
   <data name="TbSettingsStatistics" xml:space="preserve">
     <value>Enable Statistics (Require restart)</value>
   </data>
-  <data name="TbSettingsStatisticsFreshRate" xml:space="preserve">
-    <value>Statistics freshrate (second)</value>
-  </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion Url</value>
   </data>
