@@ -88,8 +88,6 @@ namespace v2rayN.Mode
 
         public bool enableStatistics { get; set; }
 
-        public int statisticsFreshRate { get; set; }
-
         public bool keepOlderDedupl { get; set; }
 
         public bool ignoreGeoUpdateCore { get; set; } = true;
@@ -165,6 +163,7 @@ namespace v2rayN.Mode
         public bool strictRoute { get; set; }
         public string stack { get; set; }
         public int mtu { get; set; }
+        public bool enableExInbound { get; set; }
     }
 
     [Serializable]

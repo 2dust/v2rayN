@@ -185,7 +185,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// VLESS
         /// </summary>
-        public string flow { get; set; }
+        public string? flow { get; set; }
     }
 
     public class Sniffing4Ray

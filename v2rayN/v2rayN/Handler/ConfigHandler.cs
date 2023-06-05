@@ -140,7 +140,6 @@ namespace v2rayN.Handler
                 config.guiItem = new()
                 {
                     enableStatistics = false,
-                    statisticsFreshRate = 1,
                 };
             }
             if (config.uiItem == null)
@@ -183,11 +182,6 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(config.speedTestItem.speedPingTestUrl))
             {
                 config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
-            }
-
-            if (config.guiItem.statisticsFreshRate is > 100 or < 1)
-            {
-                config.guiItem.statisticsFreshRate = 1;
             }
 
             if (config.mux4Sbox == null)
@@ -331,7 +325,6 @@ namespace v2rayN.Handler
                 config.guiItem = new()
                 {
                     enableStatistics = configOld.enableStatistics,
-                    statisticsFreshRate = configOld.statisticsFreshRate,
                     keepOlderDedupl = configOld.keepOlderDedupl,
                     ignoreGeoUpdateCore = configOld.ignoreGeoUpdateCore,
                     autoUpdateInterval = configOld.autoUpdateInterval,

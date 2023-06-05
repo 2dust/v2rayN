@@ -107,29 +107,18 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (_config.tunModeItem.enableTun)
+                singboxConfig.inbounds.Clear();
+
+                if (!_config.tunModeItem.enableTun || (_config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound))
                 {
-                    singboxConfig.inbounds.Clear();
-
-                    if (_config.tunModeItem.mtu <= 0)
+                    var inbound = new Inbound4Sbox()
                     {
-                        _config.tunModeItem.mtu = Convert.ToInt32(Global.TunMtus[0]);
-                    }
-                    if (Utils.IsNullOrEmpty(_config.tunModeItem.stack))
-                    {
-                        _config.tunModeItem.stack = Global.TunStacks[0];
-                    }
+                        type = Global.InboundSocks,
+                        tag = Global.InboundSocks,
+                        listen = Global.Loopback,
+                    };
+                    singboxConfig.inbounds.Add(inbound);
 
-                    var tunInbound = Utils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName));
-                    tunInbound.mtu = _config.tunModeItem.mtu;
-                    tunInbound.strict_route = _config.tunModeItem.strictRoute;
-                    tunInbound.stack = _config.tunModeItem.stack;
-
-                    singboxConfig.inbounds.Add(tunInbound);
-                }
-                else
-                {
-                    var inbound = singboxConfig.inbounds[0];
                     inbound.listen_port = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
                     inbound.sniff = _config.inbound[0].sniffingEnabled;
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
@@ -173,6 +162,25 @@ namespace v2rayN.Handler
                             inbound2.listen = "::";
                         }
                     }
+                }
+
+                if (_config.tunModeItem.enableTun)
+                {
+                    if (_config.tunModeItem.mtu <= 0)
+                    {
+                        _config.tunModeItem.mtu = Convert.ToInt32(Global.TunMtus[0]);
+                    }
+                    if (Utils.IsNullOrEmpty(_config.tunModeItem.stack))
+                    {
+                        _config.tunModeItem.stack = Global.TunStacks[0];
+                    }
+
+                    var tunInbound = Utils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName));
+                    tunInbound.mtu = _config.tunModeItem.mtu;
+                    tunInbound.strict_route = _config.tunModeItem.strictRoute;
+                    tunInbound.stack = _config.tunModeItem.stack;
+
+                    singboxConfig.inbounds.Add(tunInbound);
                 }
             }
             catch (Exception ex)
@@ -255,13 +263,16 @@ namespace v2rayN.Handler
                     outbound.type = Global.vlessProtocolLite;
 
                     outbound.uuid = node.id;
-                    outbound.flow = node.flow;
 
                     outbound.packet_encoding = "xudp";
 
                     if (Utils.IsNullOrEmpty(node.flow))
                     {
                         outboundMux(node, outbound);
+                    }
+                    else
+                    {
+                        outbound.flow = node.flow;
                     }
                 }
                 else if (node.configType == EConfigType.Trojan)
