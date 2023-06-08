@@ -369,6 +369,10 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
+            }
 
             AddServerCommon(ref config, profileItem, toFile);
 
@@ -636,6 +640,10 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
+            }
 
             AddServerCommon(ref config, profileItem, toFile);
 
@@ -674,6 +682,10 @@ namespace v2rayN.Handler
             if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
             {
                 profileItem.streamSecurity = Global.StreamSecurity;
+            }
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
             }
 
             AddServerCommon(ref config, profileItem, toFile);
@@ -799,6 +811,10 @@ namespace v2rayN.Handler
             if (!Global.flows.Contains(profileItem.flow))
             {
                 profileItem.flow = Global.flows.First();
+            }
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
             }
 
             AddServerCommon(ref config, profileItem, toFile);
