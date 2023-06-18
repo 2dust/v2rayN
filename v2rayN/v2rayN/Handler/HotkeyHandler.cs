@@ -113,9 +113,9 @@ namespace v2rayN.Handler
 
             var mdif = (KeyModifiers)_fsModifiers;
             var key = KeyInterop.KeyFromVirtualKey(_vkey);
-            if ((mdif | KeyModifiers.Ctrl) == KeyModifiers.Ctrl) _hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
-            if ((mdif | KeyModifiers.Alt) == KeyModifiers.Alt) _hotkeyStr.Append($"{KeyModifiers.Alt}+");
-            if ((mdif | KeyModifiers.Shift) == KeyModifiers.Shift) _hotkeyStr.Append($"{KeyModifiers.Shift}+");
+            if ((mdif & KeyModifiers.Ctrl) == KeyModifiers.Ctrl) _hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
+            if ((mdif & KeyModifiers.Alt) == KeyModifiers.Alt) _hotkeyStr.Append($"{KeyModifiers.Alt}+");
+            if ((mdif & KeyModifiers.Shift) == KeyModifiers.Shift) _hotkeyStr.Append($"{KeyModifiers.Shift}+");
             _hotkeyStr.Append(key.ToString());
 
             foreach (var name in _hotkeyTriggerDic[hotkeycode])
