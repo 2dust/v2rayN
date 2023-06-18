@@ -44,7 +44,7 @@ namespace v2rayN.Views
 
         private void linkDnsSingboxObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("http://sing-box.sagernet.org/zh/configuration/dns/");
+            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
