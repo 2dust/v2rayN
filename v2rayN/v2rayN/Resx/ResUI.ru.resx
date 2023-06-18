@@ -545,7 +545,7 @@
     <value>Проверить скорость загрузки серверов (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Тестировать сервера с tcping (Ctrl+O)</value>
+    <value>Тест сервера с tcping (Ctrl+O)</value>
   </data>
   <data name="menuTestMe" xml:space="preserve">
     <value>Проверить текущий статус службы</value>
@@ -644,7 +644,7 @@
     <value>Тип камуфляжа</value>
   </data>
   <data name="TbId" xml:space="preserve">
-    <value>UUID(id)</value>
+    <value>UUID (id)</value>
   </data>
   <data name="TbNetwork" xml:space="preserve">
     <value>Транспортный протокол сети</value>
@@ -656,7 +656,7 @@
     <value>Порт</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
-    <value>Псевдоним (примечания)</value>
+    <value>Примечание</value>
   </data>
   <data name="TbRequestHost" xml:space="preserve">
     <value>Маскирующий домен (хост)</value>
@@ -719,7 +719,7 @@
     <value>Разрешить подключения из локальной сети</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Auto hide startup</value>
+    <value>Автоскрытие при автозапуске</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Интервал автоматического обновления Geo в часах</value>
@@ -728,7 +728,10 @@
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS settings</value>
+    <value>Настройки DNS V2ray</value>
+  </data>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>Настройки DNS sing-box</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Ядро: настройки KCP</value>
@@ -806,7 +809,7 @@
     <value>Включить протокол безопасности TLS v1.3 (обновление подписки)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tray right-click menu servers display limit</value>
+    <value>Лимит серверов в меню трея</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Включить UDP</value>
@@ -950,7 +953,7 @@
     <value>Поддержка DnsObject</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
-    <value>Group please leave blank here</value>
+    <value>Необязательное поле</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
     <value>Настройки маршрутизации изменены</value>
@@ -962,7 +965,7 @@
     <value>Только маршрут</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>Тест задержки и скорости (Ctrl+E)</value>
+    <value>Тест задержки и скорости всех серверов (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>Задержка (ms)</value>
@@ -983,7 +986,7 @@
     <value>Импортировать старый конфиг guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>Включить интерфейс</value>
+    <value>Режим VPN</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>Новый порт для локальной сети</value>
@@ -1050,5 +1053,20 @@
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Перезагрузить как администратор</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>Настройки DNS</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Включить логгирование в файл</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>Таймаут одиночного спидтеста</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>URL спидтеста</value>
   </data>
 </root>
