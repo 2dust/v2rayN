@@ -1529,7 +1529,7 @@ namespace v2rayN.ViewModels
         private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
         {
             SysProxyHandle.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
-            _noticeHandler?.SendMessage(ResUI.TipChangeSystemProxy, true);
+            _noticeHandler?.SendMessage(ResUI.TipChangeSystemProxy + _config.sysProxyType.ToString(), true);
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
