@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuRoutingRuleSetting}"
-    Width="900"
+    Width="960"
     Height="700"
     x:TypeArguments="vms:RoutingRuleSettingViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -280,7 +280,7 @@
                             Binding="{Binding outboundTag}"
                             Header="outboundTag" />
                         <DataGridTextColumn
-                            Width="100"
+                            Width="80"
                             Binding="{Binding port}"
                             Header="port" />
                         <DataGridTextColumn
@@ -288,15 +288,15 @@
                             Binding="{Binding protocols}"
                             Header="protocol" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="110"
                             Binding="{Binding inboundTags}"
                             Header="inboundTag" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="220"
                             Binding="{Binding domains}"
                             Header="domain" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="220"
                             Binding="{Binding ips}"
                             Header="ip" />
                         <DataGridTextColumn

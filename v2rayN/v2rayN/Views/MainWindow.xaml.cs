@@ -519,10 +519,14 @@ namespace v2rayN.Views
             var coreInfos = LazyConfig.Instance.GetCoreInfos();
             foreach (var it in coreInfos)
             {
+                if (it.coreType == ECoreType.v2fly)
+                {
+                    continue;
+                }
                 var item = new MenuItem()
                 {
                     Tag = it.coreUrl.Replace(@"/releases", ""),
-                    Header = string.Format(Resx.ResUI.menuWebsiteItem, it.coreType.ToString().Replace("_", " "))
+                    Header = string.Format(Resx.ResUI.menuWebsiteItem, it.coreType.ToString().Replace("_", " ")).UpperFirstChar()
                 };
                 item.Click += MenuItem_Click;
                 menuHelp.Items.Add(item);

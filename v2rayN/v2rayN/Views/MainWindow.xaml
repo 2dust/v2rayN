@@ -209,7 +209,7 @@
                                 <MenuItem
                                     x:Name="menuCheckUpdateN"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="v2rayN" />
+                                    Header="V2rayN" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateV2flyCore"
                                     Height="{StaticResource MenuItemHeight}"
@@ -235,7 +235,7 @@
                                 <MenuItem
                                     x:Name="menuCheckUpdateSingBoxCore"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="sing-box Core" />
+                                    Header="Sing-box Core" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateGeo"

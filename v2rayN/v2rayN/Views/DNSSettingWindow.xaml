@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
@@ -84,13 +85,15 @@
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
                     </StackPanel>
+
                     <TextBox
                         x:Name="txtnormalDNS"
                         Margin="{StaticResource SettingItemMargin}"
                         VerticalAlignment="Stretch"
+                        materialDesign:HintAssist.Hint="Http/Socks"
                         AcceptsReturn="True"
                         BorderThickness="1"
-                        Style="{StaticResource DefTextBox}"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                 </DockPanel>
@@ -122,35 +125,29 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
 
-                        <GroupBox
+                        <TextBox
+                            x:Name="txtnormalDNS2"
                             Grid.Column="0"
-                            Header=""
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                x:Name="txtnormalDNS2"
-                                Margin="{StaticResource SettingItemMargin}"
-                                VerticalAlignment="Stretch"
-                                AcceptsReturn="True"
-                                BorderThickness="1"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="Http/Socks"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
+
+                        <TextBox
+                            x:Name="txttunDNS2"
                             Grid.Column="2"
-                            Header="{x:Static resx:ResUI.TbSettingsTunMode}"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                x:Name="txttunDNS2"
-                                Margin="{StaticResource SettingItemMargin}"
-                                VerticalAlignment="Stretch"
-                                AcceptsReturn="True"
-                                BorderThickness="1"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TbSettingsTunMode}"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
                     </Grid>
                 </DockPanel>
             </TabItem>
