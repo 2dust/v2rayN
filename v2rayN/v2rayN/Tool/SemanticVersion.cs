@@ -45,7 +45,7 @@ namespace v2rayN.Tool
                 this.major = 0;
                 this.minor = 0;
                 this.patch = 0;
-                this.version = "0.0.0";
+                //this.version = "0.0.0";
             }
         }
 

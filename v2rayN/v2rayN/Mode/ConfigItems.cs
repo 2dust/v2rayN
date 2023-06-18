@@ -160,7 +160,7 @@ namespace v2rayN.Mode
     public class TunModeItem
     {
         public bool enableTun { get; set; }
-        public bool strictRoute { get; set; }
+        public bool strictRoute { get; set; } = true;
         public string stack { get; set; }
         public int mtu { get; set; }
         public bool enableExInbound { get; set; }

@@ -514,7 +514,7 @@ namespace v2rayN.Handler
                         throw new ArgumentException("Type");
                 }
 
-                if (curVersion >= version)
+                if (curVersion >= version && version != new SemanticVersion(0, 0, 0))
                 {
                     AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
                     return;

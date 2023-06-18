@@ -629,7 +629,7 @@ namespace v2rayN.Handler
             server.security = details.Groups["method"].Value;
             server.id = details.Groups["password"].Value;
             server.address = details.Groups["hostname"].Value;
-            server.port = int.Parse(details.Groups["port"].Value);
+            server.port = Utils.ToInt(details.Groups["port"].Value);
             return server;
         }
 
