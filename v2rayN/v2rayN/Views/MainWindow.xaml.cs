@@ -25,6 +25,10 @@ namespace v2rayN.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             _config = LazyConfig.Instance.GetConfig();
 
             App.Current.SessionEnding += Current_SessionEnding;

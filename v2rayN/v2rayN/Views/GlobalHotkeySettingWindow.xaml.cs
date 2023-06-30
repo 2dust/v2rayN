@@ -16,6 +16,10 @@ namespace v2rayN.Views
         public GlobalHotkeySettingWindow()
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
             _config.globalHotkeys ??= new List<KeyEventItem>();

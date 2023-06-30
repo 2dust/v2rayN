@@ -18,6 +18,10 @@ namespace v2rayN.Views
         public OptionSettingWindow()
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
 

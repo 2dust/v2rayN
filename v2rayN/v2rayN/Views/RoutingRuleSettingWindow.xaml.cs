@@ -13,6 +13,10 @@ namespace v2rayN.Views
         public RoutingRuleSettingWindow(RoutingItem routingItem)
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             this.PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;

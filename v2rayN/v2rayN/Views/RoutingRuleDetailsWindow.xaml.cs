@@ -12,6 +12,10 @@ namespace v2rayN.Views
         public RoutingRuleDetailsWindow(RulesItem rulesItem)
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;

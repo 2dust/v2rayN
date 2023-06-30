@@ -13,6 +13,10 @@ namespace v2rayN.Views
         public SubSettingWindow()
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
 
             ViewModel = new SubSettingViewModel(this);

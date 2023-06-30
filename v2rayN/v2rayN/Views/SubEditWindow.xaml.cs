@@ -11,6 +11,10 @@ namespace v2rayN.Views
         public SubEditWindow(SubItem subItem)
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
 

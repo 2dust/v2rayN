@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using System.Net.Security;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,10 @@ namespace v2rayN.Views
         public AddServerWindow(ProfileItem profileItem)
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;

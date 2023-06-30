@@ -12,6 +12,10 @@ namespace v2rayN.Views
         public RoutingSettingWindow()
         {
             InitializeComponent();
+
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             this.Owner = Application.Current.MainWindow;
             this.Closing += RoutingSettingWindow_Closing;
             this.PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
