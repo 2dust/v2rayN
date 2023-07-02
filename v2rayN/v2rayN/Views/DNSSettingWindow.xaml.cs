@@ -4,6 +4,7 @@ using System.Windows;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.ViewModels;
+using Application = System.Windows.Application;
 
 namespace v2rayN.Views
 {
@@ -14,13 +15,11 @@ namespace v2rayN.Views
         public DNSSettingWindow()
         {
             InitializeComponent();
-
-            this.MaxWidth = SystemParameters.WorkArea.Width;
-            this.MaxHeight = SystemParameters.WorkArea.Height;
-
             this.Owner = Application.Current.MainWindow;
-            _config = LazyConfig.Instance.GetConfig();
 
+            this.Loaded += Window_Loaded;
+
+            _config = LazyConfig.Instance.GetConfig();
             ViewModel = new DNSSettingViewModel(this);
 
             Global.domainStrategy4Freedoms.ForEach(it =>
@@ -39,6 +38,39 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCmd, v => v.btnImportDefConfig4Singbox).DisposeWith(disposables);
             });
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // 获取当前屏幕的尺寸
+            var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+            var screenWidth = screen.WorkingArea.Width;
+            var screenHeight = screen.WorkingArea.Height;
+            var screenTop = screen.WorkingArea.Top;
+
+            // 获取屏幕的 DPI 缩放因素
+            double dpiFactor = 1;
+            PresentationSource source = PresentationSource.FromVisual(this);
+            if (source != null)
+            {
+                dpiFactor = source.CompositionTarget.TransformToDevice.M11;
+            }
+
+            // 设置窗口尺寸不超过当前屏幕的尺寸
+            if (this.Width > screenWidth / dpiFactor)
+            {
+                this.Width = screenWidth / dpiFactor;
+            }
+            if (this.Height > screenHeight / dpiFactor)
+            {
+                this.Height = screenHeight / dpiFactor;
+            }
+
+            // 设置窗口不要显示在屏幕外面
+            if (this.Top < screenTop / dpiFactor)
+            {
+                this.Top = screenTop / dpiFactor;
+            }
         }
 
         private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)

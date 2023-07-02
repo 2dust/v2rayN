@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
@@ -10,6 +9,7 @@ using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace v2rayN.ViewModels
 {

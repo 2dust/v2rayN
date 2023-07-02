@@ -1,5 +1,4 @@
 ﻿using DynamicData.Binding;
-using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -11,6 +10,7 @@ using v2rayN.Mode;
 using v2rayN.Resx;
 using v2rayN.Views;
 using Application = System.Windows.Application;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace v2rayN.ViewModels
 {

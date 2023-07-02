@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
@@ -28,6 +27,9 @@ using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.Windows.Compatibility;
+using Clipboard = System.Windows.Clipboard;
+using DataFormats = System.Windows.DataFormats;
+using IDataObject = System.Windows.IDataObject;
 
 namespace v2rayN
 {

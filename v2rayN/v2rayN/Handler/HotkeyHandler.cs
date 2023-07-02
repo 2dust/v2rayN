@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using v2rayN.Mode;
 using v2rayN.Resx;
+using Application = System.Windows.Application;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace v2rayN.Handler
 {

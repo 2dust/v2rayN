@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Tool;
+using Application = System.Windows.Application;
 
 namespace v2rayN
 {

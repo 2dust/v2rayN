@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
@@ -8,6 +7,9 @@ using System.Windows.Media;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.ViewModels;
+using Application = System.Windows.Application;
+using FontFamily = System.Windows.Media.FontFamily;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace v2rayN.Views
 {
@@ -18,11 +20,8 @@ namespace v2rayN.Views
         public OptionSettingWindow()
         {
             InitializeComponent();
-
-            this.MaxWidth = SystemParameters.WorkArea.Width;
-            this.MaxHeight = SystemParameters.WorkArea.Height;
-
             this.Owner = Application.Current.MainWindow;
+            this.Loaded += Window_Loaded;
             _config = LazyConfig.Instance.GetConfig();
 
             ViewModel = new OptionSettingViewModel(this);
@@ -182,6 +181,39 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // 获取当前屏幕的尺寸
+            var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+            var screenWidth = screen.WorkingArea.Width;
+            var screenHeight = screen.WorkingArea.Height;
+            var screenTop = screen.WorkingArea.Top;
+
+            // 获取屏幕的 DPI 缩放因素
+            double dpiFactor = 1;
+            PresentationSource source = PresentationSource.FromVisual(this);
+            if (source != null)
+            {
+                dpiFactor = source.CompositionTarget.TransformToDevice.M11;
+            }
+
+            // 设置窗口尺寸不超过当前屏幕的尺寸
+            if (this.Width > screenWidth / dpiFactor)
+            {
+                this.Width = screenWidth / dpiFactor;
+            }
+            if (this.Height > screenHeight / dpiFactor)
+            {
+                this.Height = screenHeight / dpiFactor;
+            }
+
+            // 设置窗口不要显示在屏幕外面
+            if (this.Top < screenTop / dpiFactor)
+            {
+                this.Top = screenTop / dpiFactor;
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

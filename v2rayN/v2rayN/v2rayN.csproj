@@ -11,6 +11,7 @@
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
 		<FileVersion>6.27</FileVersion>
+		<UseWindowsForms>True</UseWindowsForms>
 	</PropertyGroup>
 
 	<ItemGroup>
