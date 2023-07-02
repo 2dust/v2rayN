@@ -37,12 +37,6 @@ namespace v2rayN.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // 获取当前屏幕的尺寸
-            var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
-            var screenWidth = screen.WorkingArea.Width;
-            var screenHeight = screen.WorkingArea.Height;
-            var screenTop = screen.WorkingArea.Top;
-
             // 获取屏幕的 DPI 缩放因素
             double dpiFactor = 1;
             PresentationSource source = PresentationSource.FromVisual(this);
@@ -51,20 +45,41 @@ namespace v2rayN.Views
                 dpiFactor = source.CompositionTarget.TransformToDevice.M11;
             }
 
+            // 获取当前屏幕的尺寸
+            var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+            var screenWidth = screen.WorkingArea.Width / dpiFactor;
+            var screenHeight = screen.WorkingArea.Height / dpiFactor;
+            var screenTop = screen.WorkingArea.Top / dpiFactor;
+            var screenLeft = screen.WorkingArea.Left / dpiFactor;
+            var screenBottom = screen.WorkingArea.Bottom / dpiFactor;
+            var screenRight = screen.WorkingArea.Right / dpiFactor;
+
             // 设置窗口尺寸不超过当前屏幕的尺寸
-            if (this.Width > screenWidth / dpiFactor)
+            if (this.Width > screenWidth)
             {
-                this.Width = screenWidth / dpiFactor;
+                this.Width = screenWidth;
             }
-            if (this.Height > screenHeight / dpiFactor)
+            if (this.Height > screenHeight)
             {
-                this.Height = screenHeight / dpiFactor;
+                this.Height = screenHeight;
             }
 
             // 设置窗口不要显示在屏幕外面
-            if (this.Top < screenTop / dpiFactor)
+            if (this.Top < screenTop)
             {
-                this.Top = screenTop / dpiFactor;
+                this.Top = screenTop;
+            }
+            if (this.Left < screenLeft)
+            {
+                this.Left = screenLeft;
+            }
+            if (this.Top + this.Height > screenBottom)
+            {
+                this.Top = screenBottom - this.Height;
+            }
+            if (this.Left + this.Width > screenRight)
+            {
+                this.Left = screenRight - this.Width;
             }
         }
 

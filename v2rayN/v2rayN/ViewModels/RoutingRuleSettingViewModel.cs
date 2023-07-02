@@ -2,6 +2,7 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using Microsoft.Win32;
 using System.Reactive;
 using System.Windows;
 using v2rayN.Base;

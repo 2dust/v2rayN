@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.Win32;
+using System.Drawing;
+using System.IO;
 using System.Windows.Media.Imaging;
 using v2rayN.Mode;
 using v2rayN.Resx;
