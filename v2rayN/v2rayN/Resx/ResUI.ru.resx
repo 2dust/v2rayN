@@ -317,7 +317,7 @@
     <value>Сканирование URL-адреса импорта успешна.</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>Пинг текущей службы: {0} мс</value>
+    <value>Задержка текущего сервера: {0} мс</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>Операция успешна</value>
@@ -335,7 +335,7 @@
     <value>Примечания</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>Url(Необязательно)</value>
+    <value>URL (необязательно)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>Количество</value>
@@ -506,7 +506,7 @@
     <value>Тёмный режим</value>
   </data>
   <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>следить за системной темой</value>
+    <value>Следить за системной темой</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>Язык (требуется перезапуск)</value>
@@ -533,19 +533,19 @@
     <value>Очистить всю статистику</value>
   </data>
   <data name="menuPingServer" xml:space="preserve">
-    <value>Проверить пинг серверов (Ctrl+P)</value>
+    <value>Тест на задержку сервера (Ctrl+P)</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Тест на реальную задержку серверов (Ctrl+R)</value>
+    <value>Тест на реальную задержку сервера (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Сортировать по результату теста</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Проверить скорость загрузки серверов (Ctrl+T)</value>
+    <value>Тест на скорость загрузки сервера (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Тест сервера с tcping (Ctrl+O)</value>
+    <value>Тест задержки с tcping (Ctrl+O)</value>
   </data>
   <data name="menuTestMe" xml:space="preserve">
     <value>Проверить текущий статус службы</value>
@@ -723,6 +723,9 @@
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Интервал автоматического обновления Geo в часах</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Интервал автоматического обновления в минутах</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Ядро: базовые настройки</value>
