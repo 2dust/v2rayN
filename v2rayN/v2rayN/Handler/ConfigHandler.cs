@@ -594,7 +594,7 @@ namespace v2rayN.Handler
             profileItem.configType = EConfigType.Custom;
             if (Utils.IsNullOrEmpty(profileItem.remarks))
             {
-                profileItem.remarks = $"import custom@{DateTime.Now.ToShortDateString()}";
+                profileItem.remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
             }
 
             AddServerCommon(ref config, profileItem, true);

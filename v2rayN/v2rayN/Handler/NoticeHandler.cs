@@ -26,7 +26,7 @@ namespace v2rayN.Handler
 
         public void SendMessage(string msg, bool time)
         {
-            msg = $"{DateTime.Now} {msg}";
+            msg = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {msg}";
             MessageBus.Current.SendMessage(msg, "MsgView");
         }
     }
