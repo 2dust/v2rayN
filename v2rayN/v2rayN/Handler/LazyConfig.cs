@@ -353,6 +353,14 @@ namespace v2rayN.Handler
                 match = "sing-box",
                 versionArg = "version",
             });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.juicity,
+                coreExes = new List<string> { "juicity-client", "juicity" },
+                arguments = "-c config.json",
+                coreUrl = Global.juicityCoreUrl
+            });
         }
 
         #endregion Core Type
