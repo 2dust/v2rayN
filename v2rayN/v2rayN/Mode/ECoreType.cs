@@ -12,6 +12,7 @@
         naiveproxy = 22,
         tuic = 23,
         sing_box = 24,
+        juicity = 25,
         v2rayN = 99
     }
 }
