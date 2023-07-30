@@ -108,6 +108,9 @@
 	  <EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
