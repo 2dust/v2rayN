@@ -358,7 +358,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.juicity,
                 coreExes = new List<string> { "juicity-client", "juicity" },
-                arguments = "-c config.json",
+                arguments = "run -c config.json",
                 coreUrl = Global.juicityCoreUrl
             });
         }
