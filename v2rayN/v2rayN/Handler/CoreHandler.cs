@@ -152,7 +152,7 @@ namespace v2rayN.Handler
 
         private void CoreStart(ProfileItem node)
         {
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
             ECoreType coreType;
             if (node.configType != EConfigType.Custom && _config.tunModeItem.enableTun)
@@ -201,7 +201,7 @@ namespace v2rayN.Handler
 
         private int CoreStartViaString(string configStr)
         {
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
             try
             {
