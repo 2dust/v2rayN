@@ -22,6 +22,7 @@
         public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
         public const string singboxGeoUrl = "https://github.com/soffchen/sing-{0}/releases/latest/download/{0}.db";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
+        public const string juicityCoreUrl = "https://github.com/juicity/juicity/releases";
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
         public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
