@@ -1,8 +1,7 @@
-﻿namespace v2rayN.Mode
+﻿namespace v2rayN.Mode;
+
+public enum EViewAction
 {
-    public enum EViewAction
-    {
-        AdjustMainLvColWidth,
-        ProfilesFocus
-    }
+    AdjustMainLvColWidth,
+    ProfilesFocus
 }

@@ -1,40 +1,39 @@
-﻿namespace v2rayN.Mode
+﻿namespace v2rayN.Mode;
+
+[Serializable]
+internal class ServerSpeedItem : ServerStatItem
 {
-    [Serializable]
-    internal class ServerSpeedItem : ServerStatItem
+    public long proxyUp
     {
-        public long proxyUp
-        {
-            get; set;
-        }
-
-        public long proxyDown
-        {
-            get; set;
-        }
-
-        public long directUp
-        {
-            get; set;
-        }
-
-        public long directDown
-        {
-            get; set;
-        }
+        get; set;
     }
 
-    [Serializable]
-    public class TrafficItem
+    public long proxyDown
     {
-        public ulong up
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        public ulong down
-        {
-            get; set;
-        }
+    public long directUp
+    {
+        get; set;
+    }
+
+    public long directDown
+    {
+        get; set;
+    }
+}
+
+[Serializable]
+public class TrafficItem
+{
+    public ulong up
+    {
+        get; set;
+    }
+
+    public ulong down
+    {
+        get; set;
     }
 }

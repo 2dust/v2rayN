@@ -4,202 +4,188 @@ using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
-namespace v2rayN.Handler
+namespace v2rayN.Handler;
+
+internal class CoreConfigV2ray
 {
-    internal class CoreConfigV2ray
+    private string SampleClient = Global.v2raySampleClient;
+    private Config _config;
+
+    public CoreConfigV2ray(Config config)
     {
-        private string SampleClient = Global.v2raySampleClient;
-        private Config _config;
+        _config = config;
+    }
 
-        public CoreConfigV2ray(Config config)
+    public int GenerateClientConfigContent(ProfileItem node, out V2rayConfig? v2rayConfig, out string msg)
+    {
+        v2rayConfig = null;
+        try
         {
-            _config = config;
-        }
-
-        public int GenerateClientConfigContent(ProfileItem node, out V2rayConfig? v2rayConfig, out string msg)
-        {
-            v2rayConfig = null;
-            try
+            if (node == null
+                || node.port <= 0)
             {
-                if (node == null
-                    || node.port <= 0)
-                {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
-                }
-
-                msg = ResUI.InitialConfiguration;
-
-                string result = Utils.GetEmbedText(SampleClient);
-                if (Utils.IsNullOrEmpty(result))
-                {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
-                }
-
-                v2rayConfig = Utils.FromJson<V2rayConfig>(result);
-                if (v2rayConfig == null)
-                {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
-                }
-
-                log(v2rayConfig);
-
-                inbound(v2rayConfig);
-
-                routing(v2rayConfig);
-
-                outbound(node, v2rayConfig);
-
-                dns(v2rayConfig);
-
-                statistic(v2rayConfig);
-
-                msg = string.Format(ResUI.SuccessfulConfiguration, "");
+                msg = ResUI.CheckServerSettings;
+                return -1;
             }
-            catch (Exception ex)
+
+            msg = ResUI.InitialConfiguration;
+
+            string result = Utils.GetEmbedText(SampleClient);
+            if (Utils.IsNullOrEmpty(result))
             {
-                Utils.SaveLog("GenerateClientConfig4V2ray", ex);
+                msg = ResUI.FailedGetDefaultConfiguration;
+                return -1;
+            }
+
+            v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+            if (v2rayConfig == null)
+            {
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
-            return 0;
-        }
 
-        private int log(V2rayConfig v2rayConfig)
+            log(v2rayConfig);
+
+            inbound(v2rayConfig);
+
+            routing(v2rayConfig);
+
+            outbound(node, v2rayConfig);
+
+            dns(v2rayConfig);
+
+            statistic(v2rayConfig);
+
+            msg = string.Format(ResUI.SuccessfulConfiguration, "");
+        }
+        catch (Exception ex)
         {
-            try
+            Utils.SaveLog("GenerateClientConfig4V2ray", ex);
+            msg = ResUI.FailedGenDefaultConfiguration;
+            return -1;
+        }
+        return 0;
+    }
+
+    private int log(V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            if (_config.coreBasicItem.logEnabled)
             {
-                if (_config.coreBasicItem.logEnabled)
+                var dtNow = DateTime.Now;
+                v2rayConfig.log.loglevel = _config.coreBasicItem.loglevel;
+                v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow:yyyy-MM-dd}.txt");
+                v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow:yyyy-MM-dd}.txt");
+            }
+            else
+            {
+                v2rayConfig.log.loglevel = _config.coreBasicItem.loglevel;
+                v2rayConfig.log.access = "";
+                v2rayConfig.log.error = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int inbound(V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            v2rayConfig.inbounds = new List<Inbounds4Ray>();
+
+            Inbounds4Ray? inbound = GetInbound(_config.inbound[0], Global.InboundSocks, 0, true);
+            v2rayConfig.inbounds.Add(inbound);
+
+            //http
+            Inbounds4Ray? inbound2 = GetInbound(_config.inbound[0], Global.InboundHttp, 1, false);
+            v2rayConfig.inbounds.Add(inbound2);
+
+            if (_config.inbound[0].allowLANConn)
+            {
+                if (_config.inbound[0].newPort4LAN)
                 {
-                    var dtNow = DateTime.Now;
-                    v2rayConfig.log.loglevel = _config.coreBasicItem.loglevel;
-                    v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow:yyyy-MM-dd}.txt");
-                    v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow:yyyy-MM-dd}.txt");
+                    Inbounds4Ray inbound3 = GetInbound(_config.inbound[0], Global.InboundSocks2, 2, true);
+                    inbound3.listen = "0.0.0.0";
+                    v2rayConfig.inbounds.Add(inbound3);
+
+                    Inbounds4Ray inbound4 = GetInbound(_config.inbound[0], Global.InboundHttp2, 3, false);
+                    inbound4.listen = "0.0.0.0";
+                    v2rayConfig.inbounds.Add(inbound4);
+
+                    //auth
+                    if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
+                    {
+                        inbound3.settings.auth = "password";
+                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
+
+                        inbound4.settings.auth = "password";
+                        inbound4.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
+                    }
                 }
                 else
                 {
-                    v2rayConfig.log.loglevel = _config.coreBasicItem.loglevel;
-                    v2rayConfig.log.access = "";
-                    v2rayConfig.log.error = "";
+                    inbound.listen = "0.0.0.0";
+                    inbound2.listen = "0.0.0.0";
                 }
             }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private Inbounds4Ray? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
+    {
+        string result = Utils.GetEmbedText(Global.v2raySampleInbound);
+        if (Utils.IsNullOrEmpty(result))
+        {
+            return null;
         }
 
-        private int inbound(V2rayConfig v2rayConfig)
+        var inbound = Utils.FromJson<Inbounds4Ray>(result);
+        if (inbound == null)
         {
-            try
+            return null;
+        }
+        inbound.tag = tag;
+        inbound.port = inItem.localPort + offset;
+        inbound.protocol = bSocks ? Global.InboundSocks : Global.InboundHttp;
+        inbound.settings.udp = inItem.udpEnabled;
+        inbound.sniffing.enabled = inItem.sniffingEnabled;
+        inbound.sniffing.routeOnly = inItem.routeOnly;
+
+        return inbound;
+    }
+
+    private int routing(V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            if (v2rayConfig.routing?.rules != null)
             {
-                v2rayConfig.inbounds = new List<Inbounds4Ray>();
+                v2rayConfig.routing.domainStrategy = _config.routingBasicItem.domainStrategy;
+                v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(_config.routingBasicItem.domainMatcher) ? null : _config.routingBasicItem.domainMatcher;
 
-                Inbounds4Ray? inbound = GetInbound(_config.inbound[0], Global.InboundSocks, 0, true);
-                v2rayConfig.inbounds.Add(inbound);
-
-                //http
-                Inbounds4Ray? inbound2 = GetInbound(_config.inbound[0], Global.InboundHttp, 1, false);
-                v2rayConfig.inbounds.Add(inbound2);
-
-                if (_config.inbound[0].allowLANConn)
+                if (_config.routingBasicItem.enableRoutingAdvanced)
                 {
-                    if (_config.inbound[0].newPort4LAN)
+                    var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                    if (routing != null)
                     {
-                        Inbounds4Ray inbound3 = GetInbound(_config.inbound[0], Global.InboundSocks2, 2, true);
-                        inbound3.listen = "0.0.0.0";
-                        v2rayConfig.inbounds.Add(inbound3);
-
-                        Inbounds4Ray inbound4 = GetInbound(_config.inbound[0], Global.InboundHttp2, 3, false);
-                        inbound4.listen = "0.0.0.0";
-                        v2rayConfig.inbounds.Add(inbound4);
-
-                        //auth
-                        if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
+                        if (!Utils.IsNullOrEmpty(routing.domainStrategy))
                         {
-                            inbound3.settings.auth = "password";
-                            inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
-
-                            inbound4.settings.auth = "password";
-                            inbound4.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
+                            v2rayConfig.routing.domainStrategy = routing.domainStrategy;
                         }
-                    }
-                    else
-                    {
-                        inbound.listen = "0.0.0.0";
-                        inbound2.listen = "0.0.0.0";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
-        }
-
-        private Inbounds4Ray? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
-        {
-            string result = Utils.GetEmbedText(Global.v2raySampleInbound);
-            if (Utils.IsNullOrEmpty(result))
-            {
-                return null;
-            }
-
-            var inbound = Utils.FromJson<Inbounds4Ray>(result);
-            if (inbound == null)
-            {
-                return null;
-            }
-            inbound.tag = tag;
-            inbound.port = inItem.localPort + offset;
-            inbound.protocol = bSocks ? Global.InboundSocks : Global.InboundHttp;
-            inbound.settings.udp = inItem.udpEnabled;
-            inbound.sniffing.enabled = inItem.sniffingEnabled;
-            inbound.sniffing.routeOnly = inItem.routeOnly;
-
-            return inbound;
-        }
-
-        private int routing(V2rayConfig v2rayConfig)
-        {
-            try
-            {
-                if (v2rayConfig.routing?.rules != null)
-                {
-                    v2rayConfig.routing.domainStrategy = _config.routingBasicItem.domainStrategy;
-                    v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(_config.routingBasicItem.domainMatcher) ? null : _config.routingBasicItem.domainMatcher;
-
-                    if (_config.routingBasicItem.enableRoutingAdvanced)
-                    {
-                        var routing = ConfigHandler.GetDefaultRouting(ref _config);
-                        if (routing != null)
+                        var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
+                        foreach (var item in rules)
                         {
-                            if (!Utils.IsNullOrEmpty(routing.domainStrategy))
-                            {
-                                v2rayConfig.routing.domainStrategy = routing.domainStrategy;
-                            }
-                            var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
-                            foreach (var item in rules)
-                            {
-                                if (item.enabled)
-                                {
-                                    var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
-                                    routingUserRule(item2, v2rayConfig);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
-                        if (lockedItem != null)
-                        {
-                            var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
-                            foreach (var item in rules)
+                            if (item.enabled)
                             {
                                 var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
                                 routingUserRule(item2, v2rayConfig);
@@ -207,743 +193,756 @@ namespace v2rayN.Handler
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
-        }
-
-        private int routingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
-        {
-            try
-            {
-                if (rules == null)
+                else
                 {
-                    return 0;
-                }
-                if (Utils.IsNullOrEmpty(rules.port))
-                {
-                    rules.port = null;
-                }
-                if (rules.domain?.Count == 0)
-                {
-                    rules.domain = null;
-                }
-                if (rules.ip?.Count == 0)
-                {
-                    rules.ip = null;
-                }
-                if (rules.protocol?.Count == 0)
-                {
-                    rules.protocol = null;
-                }
-                if (rules.inboundTag?.Count == 0)
-                {
-                    rules.inboundTag = null;
-                }
-
-                var hasDomainIp = false;
-                if (rules.domain?.Count > 0)
-                {
-                    var it = Utils.DeepCopy(rules);
-                    it.ip = null;
-                    it.type = "field";
-                    for (int k = it.domain.Count - 1; k >= 0; k--)
+                    var lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
+                    if (lockedItem != null)
                     {
-                        if (it.domain[k].StartsWith("#"))
+                        var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
+                        foreach (var item in rules)
                         {
-                            it.domain.RemoveAt(k);
-                        }
-                        it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
-                    }
-                    v2rayConfig.routing.rules.Add(it);
-                    hasDomainIp = true;
-                }
-                if (rules.ip?.Count > 0)
-                {
-                    var it = Utils.DeepCopy(rules);
-                    it.domain = null;
-                    it.type = "field";
-                    v2rayConfig.routing.rules.Add(it);
-                    hasDomainIp = true;
-                }
-                if (!hasDomainIp)
-                {
-                    if (!Utils.IsNullOrEmpty(rules.port)
-                        || (rules.protocol?.Count > 0)
-                        || (rules.inboundTag?.Count > 0)
-                        )
-                    {
-                        var it = Utils.DeepCopy(rules);
-                        it.type = "field";
-                        v2rayConfig.routing.rules.Add(it);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
-        }
-
-        private int outbound(ProfileItem node, V2rayConfig v2rayConfig)
-        {
-            try
-            {
-                Outbounds4Ray outbound = v2rayConfig.outbounds[0];
-                if (node.configType == EConfigType.VMess)
-                {
-                    VnextItem4Ray vnextItem;
-                    if (outbound.settings.vnext.Count <= 0)
-                    {
-                        vnextItem = new VnextItem4Ray();
-                        outbound.settings.vnext.Add(vnextItem);
-                    }
-                    else
-                    {
-                        vnextItem = outbound.settings.vnext[0];
-                    }
-                    vnextItem.address = node.address;
-                    vnextItem.port = node.port;
-
-                    UsersItem4Ray usersItem;
-                    if (vnextItem.users.Count <= 0)
-                    {
-                        usersItem = new UsersItem4Ray();
-                        vnextItem.users.Add(usersItem);
-                    }
-                    else
-                    {
-                        usersItem = vnextItem.users[0];
-                    }
-                    //远程服务器用户ID
-                    usersItem.id = node.id;
-                    usersItem.alterId = node.alterId;
-                    usersItem.email = Global.userEMail;
-                    if (Global.vmessSecuritys.Contains(node.security))
-                    {
-                        usersItem.security = node.security;
-                    }
-                    else
-                    {
-                        usersItem.security = Global.DefaultSecurity;
-                    }
-
-                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-
-                    outbound.protocol = Global.vmessProtocolLite;
-                    outbound.settings.servers = null;
-                }
-                else if (node.configType == EConfigType.Shadowsocks)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.password = node.id;
-                    serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys(node).Contains(node.security) ? node.security : "none";
-
-                    serversItem.ota = false;
-                    serversItem.level = 1;
-
-                    outboundMux(node, outbound, false);
-
-                    outbound.protocol = Global.ssProtocolLite;
-                    outbound.settings.vnext = null;
-                }
-                else if (node.configType == EConfigType.Socks)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.method = null;
-                    serversItem.password = null;
-
-                    if (!Utils.IsNullOrEmpty(node.security)
-                        && !Utils.IsNullOrEmpty(node.id))
-                    {
-                        SocksUsersItem4Ray socksUsersItem = new()
-                        {
-                            user = node.security,
-                            pass = node.id,
-                            level = 1
-                        };
-
-                        serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
-                    }
-
-                    outboundMux(node, outbound, false);
-
-                    outbound.protocol = Global.socksProtocolLite;
-                    outbound.settings.vnext = null;
-                }
-                else if (node.configType == EConfigType.VLESS)
-                {
-                    VnextItem4Ray vnextItem;
-                    if (outbound.settings.vnext.Count <= 0)
-                    {
-                        vnextItem = new VnextItem4Ray();
-                        outbound.settings.vnext.Add(vnextItem);
-                    }
-                    else
-                    {
-                        vnextItem = outbound.settings.vnext[0];
-                    }
-                    vnextItem.address = node.address;
-                    vnextItem.port = node.port;
-
-                    UsersItem4Ray usersItem;
-                    if (vnextItem.users.Count <= 0)
-                    {
-                        usersItem = new UsersItem4Ray();
-                        vnextItem.users.Add(usersItem);
-                    }
-                    else
-                    {
-                        usersItem = vnextItem.users[0];
-                    }
-                    usersItem.id = node.id;
-                    usersItem.email = Global.userEMail;
-                    usersItem.encryption = node.security;
-
-                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-
-                    if (node.streamSecurity == Global.StreamSecurityReality
-                        || node.streamSecurity == Global.StreamSecurity)
-                    {
-                        if (!Utils.IsNullOrEmpty(node.flow))
-                        {
-                            usersItem.flow = node.flow;
-
-                            outboundMux(node, outbound, false);
+                            var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
+                            routingUserRule(item2, v2rayConfig);
                         }
                     }
-                    if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
-                    {
-                        outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-                    }
-
-                    outbound.protocol = Global.vlessProtocolLite;
-                    outbound.settings.servers = null;
                 }
-                else if (node.configType == EConfigType.Trojan)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.password = node.id;
-
-                    serversItem.ota = false;
-                    serversItem.level = 1;
-
-                    outboundMux(node, outbound, false);
-
-                    outbound.protocol = Global.trojanProtocolLite;
-                    outbound.settings.vnext = null;
-                }
-                boundStreamSettings(node, outbound.streamSettings);
             }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
         }
-
-        private int outboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        catch (Exception ex)
         {
-            try
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int routingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            if (rules == null)
             {
-                if (enabled)
+                return 0;
+            }
+            if (Utils.IsNullOrEmpty(rules.port))
+            {
+                rules.port = null;
+            }
+            if (rules.domain?.Count == 0)
+            {
+                rules.domain = null;
+            }
+            if (rules.ip?.Count == 0)
+            {
+                rules.ip = null;
+            }
+            if (rules.protocol?.Count == 0)
+            {
+                rules.protocol = null;
+            }
+            if (rules.inboundTag?.Count == 0)
+            {
+                rules.inboundTag = null;
+            }
+
+            var hasDomainIp = false;
+            if (rules.domain?.Count > 0)
+            {
+                var it = Utils.DeepCopy(rules);
+                it.ip = null;
+                it.type = "field";
+                for (int k = it.domain.Count - 1; k >= 0; k--)
                 {
-                    outbound.mux.enabled = true;
-                    outbound.mux.concurrency = 8;
+                    if (it.domain[k].StartsWith("#"))
+                    {
+                        it.domain.RemoveAt(k);
+                    }
+                    it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
+                }
+                v2rayConfig.routing.rules.Add(it);
+                hasDomainIp = true;
+            }
+            if (rules.ip?.Count > 0)
+            {
+                var it = Utils.DeepCopy(rules);
+                it.domain = null;
+                it.type = "field";
+                v2rayConfig.routing.rules.Add(it);
+                hasDomainIp = true;
+            }
+            if (!hasDomainIp)
+            {
+                if (!Utils.IsNullOrEmpty(rules.port)
+                    || (rules.protocol?.Count > 0)
+                    || (rules.inboundTag?.Count > 0)
+                    )
+                {
+                    var it = Utils.DeepCopy(rules);
+                    it.type = "field";
+                    v2rayConfig.routing.rules.Add(it);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int outbound(ProfileItem node, V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            Outbounds4Ray outbound = v2rayConfig.outbounds[0];
+            if (node.configType == EConfigType.VMess)
+            {
+                VnextItem4Ray vnextItem;
+                if (outbound.settings.vnext.Count <= 0)
+                {
+                    vnextItem = new VnextItem4Ray();
+                    outbound.settings.vnext.Add(vnextItem);
                 }
                 else
                 {
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
+                    vnextItem = outbound.settings.vnext[0];
                 }
+                vnextItem.address = node.address;
+                vnextItem.port = node.port;
+
+                UsersItem4Ray usersItem;
+                if (vnextItem.users.Count <= 0)
+                {
+                    usersItem = new UsersItem4Ray();
+                    vnextItem.users.Add(usersItem);
+                }
+                else
+                {
+                    usersItem = vnextItem.users[0];
+                }
+                //远程服务器用户ID
+                usersItem.id = node.id;
+                usersItem.alterId = node.alterId;
+                usersItem.email = Global.userEMail;
+                if (Global.vmessSecuritys.Contains(node.security))
+                {
+                    usersItem.security = node.security;
+                }
+                else
+                {
+                    usersItem.security = Global.DefaultSecurity;
+                }
+
+                outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+
+                outbound.protocol = Global.vmessProtocolLite;
+                outbound.settings.servers = null;
             }
-            catch (Exception ex)
+            else if (node.configType == EConfigType.Shadowsocks)
             {
-                Utils.SaveLog(ex.Message, ex);
+                ServersItem4Ray serversItem;
+                if (outbound.settings.servers.Count <= 0)
+                {
+                    serversItem = new ServersItem4Ray();
+                    outbound.settings.servers.Add(serversItem);
+                }
+                else
+                {
+                    serversItem = outbound.settings.servers[0];
+                }
+                serversItem.address = node.address;
+                serversItem.port = node.port;
+                serversItem.password = node.id;
+                serversItem.method = LazyConfig.Instance.GetShadowsocksSecuritys(node).Contains(node.security) ? node.security : "none";
+
+                serversItem.ota = false;
+                serversItem.level = 1;
+
+                outboundMux(node, outbound, false);
+
+                outbound.protocol = Global.ssProtocolLite;
+                outbound.settings.vnext = null;
             }
-            return 0;
+            else if (node.configType == EConfigType.Socks)
+            {
+                ServersItem4Ray serversItem;
+                if (outbound.settings.servers.Count <= 0)
+                {
+                    serversItem = new ServersItem4Ray();
+                    outbound.settings.servers.Add(serversItem);
+                }
+                else
+                {
+                    serversItem = outbound.settings.servers[0];
+                }
+                serversItem.address = node.address;
+                serversItem.port = node.port;
+                serversItem.method = null;
+                serversItem.password = null;
+
+                if (!Utils.IsNullOrEmpty(node.security)
+                    && !Utils.IsNullOrEmpty(node.id))
+                {
+                    SocksUsersItem4Ray socksUsersItem = new()
+                    {
+                        user = node.security,
+                        pass = node.id,
+                        level = 1
+                    };
+
+                    serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
+                }
+
+                outboundMux(node, outbound, false);
+
+                outbound.protocol = Global.socksProtocolLite;
+                outbound.settings.vnext = null;
+            }
+            else if (node.configType == EConfigType.VLESS)
+            {
+                VnextItem4Ray vnextItem;
+                if (outbound.settings.vnext.Count <= 0)
+                {
+                    vnextItem = new VnextItem4Ray();
+                    outbound.settings.vnext.Add(vnextItem);
+                }
+                else
+                {
+                    vnextItem = outbound.settings.vnext[0];
+                }
+                vnextItem.address = node.address;
+                vnextItem.port = node.port;
+
+                UsersItem4Ray usersItem;
+                if (vnextItem.users.Count <= 0)
+                {
+                    usersItem = new UsersItem4Ray();
+                    vnextItem.users.Add(usersItem);
+                }
+                else
+                {
+                    usersItem = vnextItem.users[0];
+                }
+                usersItem.id = node.id;
+                usersItem.email = Global.userEMail;
+                usersItem.encryption = node.security;
+
+                outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+
+                if (node.streamSecurity == Global.StreamSecurityReality
+                    || node.streamSecurity == Global.StreamSecurity)
+                {
+                    if (!Utils.IsNullOrEmpty(node.flow))
+                    {
+                        usersItem.flow = node.flow;
+
+                        outboundMux(node, outbound, false);
+                    }
+                }
+                if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
+                {
+                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                }
+
+                outbound.protocol = Global.vlessProtocolLite;
+                outbound.settings.servers = null;
+            }
+            else if (node.configType == EConfigType.Trojan)
+            {
+                ServersItem4Ray serversItem;
+                if (outbound.settings.servers.Count <= 0)
+                {
+                    serversItem = new ServersItem4Ray();
+                    outbound.settings.servers.Add(serversItem);
+                }
+                else
+                {
+                    serversItem = outbound.settings.servers[0];
+                }
+                serversItem.address = node.address;
+                serversItem.port = node.port;
+                serversItem.password = node.id;
+
+                serversItem.ota = false;
+                serversItem.level = 1;
+
+                outboundMux(node, outbound, false);
+
+                outbound.protocol = Global.trojanProtocolLite;
+                outbound.settings.vnext = null;
+            }
+            boundStreamSettings(node, outbound.streamSettings);
         }
-
-        private int boundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+        catch (Exception ex)
         {
-            try
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int outboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+    {
+        try
+        {
+            if (enabled)
             {
-                streamSettings.network = node.GetNetwork();
-                string host = node.requestHost.TrimEx();
-                string sni = node.sni;
-                string useragent = "";
-                if (!_config.coreBasicItem.defUserAgent.IsNullOrEmpty())
+                outbound.mux.enabled = true;
+                outbound.mux.concurrency = 8;
+            }
+            else
+            {
+                outbound.mux.enabled = false;
+                outbound.mux.concurrency = -1;
+            }
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int boundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+    {
+        try
+        {
+            streamSettings.network = node.GetNetwork();
+            string host = node.requestHost.TrimEx();
+            string sni = node.sni;
+            string useragent = "";
+            if (!_config.coreBasicItem.defUserAgent.IsNullOrEmpty())
+            {
+                try
                 {
-                    try
-                    {
-                        useragent = Global.userAgentTxt[_config.coreBasicItem.defUserAgent];
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        useragent = _config.coreBasicItem.defUserAgent;
-                    }
+                    useragent = Global.userAgentTxt[_config.coreBasicItem.defUserAgent];
                 }
-
-                //if tls
-                if (node.streamSecurity == Global.StreamSecurity)
+                catch (KeyNotFoundException)
                 {
-                    streamSettings.security = node.streamSecurity;
+                    useragent = _config.coreBasicItem.defUserAgent;
+                }
+            }
 
-                    TlsSettings4Ray tlsSettings = new()
+            //if tls
+            if (node.streamSecurity == Global.StreamSecurity)
+            {
+                streamSettings.security = node.streamSecurity;
+
+                TlsSettings4Ray tlsSettings = new()
+                {
+                    allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
+                    alpn = node.GetAlpn(),
+                    fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint
+                };
+                if (!string.IsNullOrWhiteSpace(sni))
+                {
+                    tlsSettings.serverName = sni;
+                }
+                else if (!string.IsNullOrWhiteSpace(host))
+                {
+                    tlsSettings.serverName = Utils.String2List(host)[0];
+                }
+                streamSettings.tlsSettings = tlsSettings;
+            }
+
+            //if Reality
+            if (node.streamSecurity == Global.StreamSecurityReality)
+            {
+                streamSettings.security = node.streamSecurity;
+
+                TlsSettings4Ray realitySettings = new()
+                {
+                    fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint,
+                    serverName = sni,
+                    publicKey = node.publicKey,
+                    shortId = node.shortId,
+                    spiderX = node.spiderX,
+                };
+
+                streamSettings.realitySettings = realitySettings;
+            }
+
+            //streamSettings
+            switch (node.GetNetwork())
+            {
+                case "kcp":
+                    KcpSettings4Ray kcpSettings = new()
                     {
-                        allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
-                        alpn = node.GetAlpn(),
-                        fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint
+                        mtu = _config.kcpItem.mtu,
+                        tti = _config.kcpItem.tti
                     };
-                    if (!string.IsNullOrWhiteSpace(sni))
-                    {
-                        tlsSettings.serverName = sni;
-                    }
-                    else if (!string.IsNullOrWhiteSpace(host))
-                    {
-                        tlsSettings.serverName = Utils.String2List(host)[0];
-                    }
-                    streamSettings.tlsSettings = tlsSettings;
-                }
 
-                //if Reality
-                if (node.streamSecurity == Global.StreamSecurityReality)
-                {
-                    streamSettings.security = node.streamSecurity;
+                    kcpSettings.uplinkCapacity = _config.kcpItem.uplinkCapacity;
+                    kcpSettings.downlinkCapacity = _config.kcpItem.downlinkCapacity;
 
-                    TlsSettings4Ray realitySettings = new()
+                    kcpSettings.congestion = _config.kcpItem.congestion;
+                    kcpSettings.readBufferSize = _config.kcpItem.readBufferSize;
+                    kcpSettings.writeBufferSize = _config.kcpItem.writeBufferSize;
+                    kcpSettings.header = new Header4Ray
                     {
-                        fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint,
-                        serverName = sni,
-                        publicKey = node.publicKey,
-                        shortId = node.shortId,
-                        spiderX = node.spiderX,
+                        type = node.headerType
                     };
+                    if (!Utils.IsNullOrEmpty(node.path))
+                    {
+                        kcpSettings.seed = node.path;
+                    }
+                    streamSettings.kcpSettings = kcpSettings;
+                    break;
+                //ws
+                case "ws":
+                    WsSettings4Ray wsSettings = new();
+                    wsSettings.headers = new Headers4Ray();
+                    string path = node.path;
+                    if (!string.IsNullOrWhiteSpace(host))
+                    {
+                        wsSettings.headers.Host = host;
+                    }
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        wsSettings.path = path;
+                    }
+                    if (!string.IsNullOrWhiteSpace(useragent))
+                    {
+                        wsSettings.headers.UserAgent = useragent;
+                    }
+                    streamSettings.wsSettings = wsSettings;
 
-                    streamSettings.realitySettings = realitySettings;
-                }
+                    break;
+                //h2
+                case "h2":
+                    HttpSettings4Ray httpSettings = new();
 
-                //streamSettings
-                switch (node.GetNetwork())
-                {
-                    case "kcp":
-                        KcpSettings4Ray kcpSettings = new()
-                        {
-                            mtu = _config.kcpItem.mtu,
-                            tti = _config.kcpItem.tti
-                        };
+                    if (!string.IsNullOrWhiteSpace(host))
+                    {
+                        httpSettings.host = Utils.String2List(host);
+                    }
+                    httpSettings.path = node.path;
 
-                        kcpSettings.uplinkCapacity = _config.kcpItem.uplinkCapacity;
-                        kcpSettings.downlinkCapacity = _config.kcpItem.downlinkCapacity;
+                    streamSettings.httpSettings = httpSettings;
 
-                        kcpSettings.congestion = _config.kcpItem.congestion;
-                        kcpSettings.readBufferSize = _config.kcpItem.readBufferSize;
-                        kcpSettings.writeBufferSize = _config.kcpItem.writeBufferSize;
-                        kcpSettings.header = new Header4Ray
+                    break;
+                //quic
+                case "quic":
+                    QuicSettings4Ray quicsettings = new()
+                    {
+                        security = host,
+                        key = node.path,
+                        header = new Header4Ray
                         {
                             type = node.headerType
-                        };
-                        if (!Utils.IsNullOrEmpty(node.path))
-                        {
-                            kcpSettings.seed = node.path;
                         }
-                        streamSettings.kcpSettings = kcpSettings;
-                        break;
-                    //ws
-                    case "ws":
-                        WsSettings4Ray wsSettings = new();
-                        wsSettings.headers = new Headers4Ray();
-                        string path = node.path;
-                        if (!string.IsNullOrWhiteSpace(host))
+                    };
+                    streamSettings.quicSettings = quicsettings;
+                    if (node.streamSecurity == Global.StreamSecurity)
+                    {
+                        if (!string.IsNullOrWhiteSpace(sni))
                         {
-                            wsSettings.headers.Host = host;
+                            streamSettings.tlsSettings.serverName = sni;
                         }
-                        if (!string.IsNullOrWhiteSpace(path))
+                        else
                         {
-                            wsSettings.path = path;
+                            streamSettings.tlsSettings.serverName = node.address;
                         }
-                        if (!string.IsNullOrWhiteSpace(useragent))
-                        {
-                            wsSettings.headers.UserAgent = useragent;
-                        }
-                        streamSettings.wsSettings = wsSettings;
+                    }
+                    break;
 
-                        break;
-                    //h2
-                    case "h2":
-                        HttpSettings4Ray httpSettings = new();
+                case "grpc":
+                    GrpcSettings4Ray grpcSettings = new()
+                    {
+                        serviceName = node.path,
+                        multiMode = (node.headerType == Global.GrpcmultiMode),
+                        idle_timeout = _config.grpcItem.idle_timeout,
+                        health_check_timeout = _config.grpcItem.health_check_timeout,
+                        permit_without_stream = _config.grpcItem.permit_without_stream,
+                        initial_windows_size = _config.grpcItem.initial_windows_size,
+                    };
+                    streamSettings.grpcSettings = grpcSettings;
+                    break;
 
-                        if (!string.IsNullOrWhiteSpace(host))
+                default:
+                    //tcp
+                    if (node.headerType == Global.TcpHeaderHttp)
+                    {
+                        TcpSettings4Ray tcpSettings = new()
                         {
-                            httpSettings.host = Utils.String2List(host);
-                        }
-                        httpSettings.path = node.path;
-
-                        streamSettings.httpSettings = httpSettings;
-
-                        break;
-                    //quic
-                    case "quic":
-                        QuicSettings4Ray quicsettings = new()
-                        {
-                            security = host,
-                            key = node.path,
                             header = new Header4Ray
                             {
                                 type = node.headerType
                             }
                         };
-                        streamSettings.quicSettings = quicsettings;
-                        if (node.streamSecurity == Global.StreamSecurity)
+
+                        //request Host
+                        string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
+                        string[] arrHost = host.Split(',');
+                        string host2 = string.Join("\",\"", arrHost);
+                        request = request.Replace("$requestHost$", $"\"{host2}\"");
+                        //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
+                        request = request.Replace("$requestUserAgent$", $"\"{useragent}\"");
+                        //Path
+                        string pathHttp = @"/";
+                        if (!Utils.IsNullOrEmpty(node.path))
                         {
-                            if (!string.IsNullOrWhiteSpace(sni))
-                            {
-                                streamSettings.tlsSettings.serverName = sni;
-                            }
-                            else
-                            {
-                                streamSettings.tlsSettings.serverName = node.address;
-                            }
+                            string[] arrPath = node.path.Split(',');
+                            pathHttp = string.Join("\",\"", arrPath);
                         }
-                        break;
+                        request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
+                        tcpSettings.header.request = Utils.FromJson<object>(request);
 
-                    case "grpc":
-                        GrpcSettings4Ray grpcSettings = new()
-                        {
-                            serviceName = node.path,
-                            multiMode = (node.headerType == Global.GrpcmultiMode),
-                            idle_timeout = _config.grpcItem.idle_timeout,
-                            health_check_timeout = _config.grpcItem.health_check_timeout,
-                            permit_without_stream = _config.grpcItem.permit_without_stream,
-                            initial_windows_size = _config.grpcItem.initial_windows_size,
-                        };
-                        streamSettings.grpcSettings = grpcSettings;
-                        break;
-
-                    default:
-                        //tcp
-                        if (node.headerType == Global.TcpHeaderHttp)
-                        {
-                            TcpSettings4Ray tcpSettings = new()
-                            {
-                                header = new Header4Ray
-                                {
-                                    type = node.headerType
-                                }
-                            };
-
-                            //request Host
-                            string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
-                            string[] arrHost = host.Split(',');
-                            string host2 = string.Join("\",\"", arrHost);
-                            request = request.Replace("$requestHost$", $"\"{host2}\"");
-                            //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
-                            request = request.Replace("$requestUserAgent$", $"\"{useragent}\"");
-                            //Path
-                            string pathHttp = @"/";
-                            if (!Utils.IsNullOrEmpty(node.path))
-                            {
-                                string[] arrPath = node.path.Split(',');
-                                pathHttp = string.Join("\",\"", arrPath);
-                            }
-                            request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
-                            tcpSettings.header.request = Utils.FromJson<object>(request);
-
-                            streamSettings.tcpSettings = tcpSettings;
-                        }
-                        break;
-                }
+                        streamSettings.tcpSettings = tcpSettings;
+                    }
+                    break;
             }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
         }
-
-        private int dns(V2rayConfig v2rayConfig)
+        catch (Exception ex)
         {
-            try
-            {
-                var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
-                var normalDNS = item?.normalDNS;
-                var domainStrategy4Freedom = item?.domainStrategy4Freedom;
-                if (string.IsNullOrWhiteSpace(normalDNS))
-                {
-                    normalDNS = "1.1.1.1,8.8.8.8";
-                }
-
-                //Outbound Freedom domainStrategy
-                if (!string.IsNullOrWhiteSpace(domainStrategy4Freedom))
-                {
-                    var outbound = v2rayConfig.outbounds[1];
-                    outbound.settings.domainStrategy = domainStrategy4Freedom;
-                    outbound.settings.userLevel = 0;
-                }
-
-                var obj = Utils.ParseJson(normalDNS);
-                if (obj?.ContainsKey("servers") == true)
-                {
-                    v2rayConfig.dns = obj;
-                }
-                else
-                {
-                    List<string> servers = new();
-
-                    string[] arrDNS = normalDNS.Split(',');
-                    foreach (string str in arrDNS)
-                    {
-                        //if (Utils.IsIP(str))
-                        //{
-                        servers.Add(str);
-                        //}
-                    }
-                    //servers.Add("localhost");
-                    v2rayConfig.dns = new Mode.Dns4Ray
-                    {
-                        servers = servers
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return 0;
+            Utils.SaveLog(ex.Message, ex);
         }
+        return 0;
+    }
 
-        private int statistic(V2rayConfig v2rayConfig)
+    private int dns(V2rayConfig v2rayConfig)
+    {
+        try
         {
-            if (_config.guiItem.enableStatistics)
+            var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+            var normalDNS = item?.normalDNS;
+            var domainStrategy4Freedom = item?.domainStrategy4Freedom;
+            if (string.IsNullOrWhiteSpace(normalDNS))
             {
-                string tag = Global.InboundAPITagName;
-                API4Ray apiObj = new();
-                Policy4Ray policyObj = new();
-                SystemPolicy4Ray policySystemSetting = new();
-
-                string[] services = { "StatsService" };
-
-                v2rayConfig.stats = new Stats4Ray();
-
-                apiObj.tag = tag;
-                apiObj.services = services.ToList();
-                v2rayConfig.api = apiObj;
-
-                policySystemSetting.statsOutboundDownlink = true;
-                policySystemSetting.statsOutboundUplink = true;
-                policyObj.system = policySystemSetting;
-                v2rayConfig.policy = policyObj;
-
-                if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
-                {
-                    Inbounds4Ray apiInbound = new();
-                    Inboundsettings4Ray apiInboundSettings = new();
-                    apiInbound.tag = tag;
-                    apiInbound.listen = Global.Loopback;
-                    apiInbound.port = Global.statePort;
-                    apiInbound.protocol = Global.InboundAPIProtocal;
-                    apiInboundSettings.address = Global.Loopback;
-                    apiInbound.settings = apiInboundSettings;
-                    v2rayConfig.inbounds.Add(apiInbound);
-                }
-
-                if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
-                {
-                    RulesItem4Ray apiRoutingRule = new()
-                    {
-                        inboundTag = new List<string> { tag },
-                        outboundTag = tag,
-                        type = "field"
-                    };
-
-                    v2rayConfig.routing.rules.Add(apiRoutingRule);
-                }
+                normalDNS = "1.1.1.1,8.8.8.8";
             }
-            return 0;
+
+            //Outbound Freedom domainStrategy
+            if (!string.IsNullOrWhiteSpace(domainStrategy4Freedom))
+            {
+                var outbound = v2rayConfig.outbounds[1];
+                outbound.settings.domainStrategy = domainStrategy4Freedom;
+                outbound.settings.userLevel = 0;
+            }
+
+            var obj = Utils.ParseJson(normalDNS);
+            if (obj?.ContainsKey("servers") == true)
+            {
+                v2rayConfig.dns = obj;
+            }
+            else
+            {
+                List<string> servers = new();
+
+                string[] arrDNS = normalDNS.Split(',');
+                foreach (string str in arrDNS)
+                {
+                    //if (Utils.IsIP(str))
+                    //{
+                    servers.Add(str);
+                    //}
+                }
+                //servers.Add("localhost");
+                v2rayConfig.dns = new Mode.Dns4Ray
+                {
+                    servers = servers
+                };
+            }
         }
-
-        #region Gen speedtest config
-
-        public string GenerateClientSpeedtestConfigString(List<ServerTestItem> selecteds, out string msg)
+        catch (Exception ex)
         {
-            try
+            Utils.SaveLog(ex.Message, ex);
+        }
+        return 0;
+    }
+
+    private int statistic(V2rayConfig v2rayConfig)
+    {
+        if (_config.guiItem.enableStatistics)
+        {
+            string tag = Global.InboundAPITagName;
+            API4Ray apiObj = new();
+            Policy4Ray policyObj = new();
+            SystemPolicy4Ray policySystemSetting = new();
+
+            string[] services = { "StatsService" };
+
+            v2rayConfig.stats = new Stats4Ray();
+
+            apiObj.tag = tag;
+            apiObj.services = services.ToList();
+            v2rayConfig.api = apiObj;
+
+            policySystemSetting.statsOutboundDownlink = true;
+            policySystemSetting.statsOutboundUplink = true;
+            policyObj.system = policySystemSetting;
+            v2rayConfig.policy = policyObj;
+
+            if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
             {
-                if (_config == null)
-                {
-                    msg = ResUI.CheckServerSettings;
-                    return "";
-                }
-
-                msg = ResUI.InitialConfiguration;
-
-                Config configCopy = Utils.DeepCopy(_config);
-
-                string result = Utils.GetEmbedText(SampleClient);
-                if (Utils.IsNullOrEmpty(result))
-                {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return "";
-                }
-
-                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
-                if (v2rayConfig == null)
-                {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return "";
-                }
-                List<IPEndPoint> lstIpEndPoints = new();
-                List<TcpConnectionInformation> lstTcpConns = new();
-                try
-                {
-                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
-                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
-                    lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
-                }
-                catch (Exception ex)
-                {
-                    Utils.SaveLog(ex.Message, ex);
-                }
-
-                log(v2rayConfig);
-                v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
-
-                int httpPort = LazyConfig.Instance.GetLocalPort("speedtest");
-
-                foreach (var it in selecteds)
-                {
-                    if (it.configType == EConfigType.Custom)
-                    {
-                        continue;
-                    }
-                    if (it.port <= 0)
-                    {
-                        continue;
-                    }
-                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
-                    {
-                        var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
-                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
-                        {
-                            continue;
-                        }
-                    }
-
-                    //find unuse port
-                    var port = httpPort;
-                    for (int k = httpPort; k < Global.MaxPort; k++)
-                    {
-                        if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
-                        {
-                            continue;
-                        }
-                        if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
-                        {
-                            continue;
-                        }
-                        //found
-                        port = k;
-                        httpPort = port + 1;
-                        break;
-                    }
-
-                    //Port In Used
-                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
-                    {
-                        continue;
-                    }
-                    it.port = port;
-                    it.allowTest = true;
-
-                    //inbound
-                    Inbounds4Ray inbound = new()
-                    {
-                        listen = Global.Loopback,
-                        port = port,
-                        protocol = Global.InboundHttp
-                    };
-                    inbound.tag = Global.InboundHttp + inbound.port.ToString();
-                    v2rayConfig.inbounds.Add(inbound);
-
-                    //outbound
-                    V2rayConfig? v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
-                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
-                    if (item is null)
-                    {
-                        continue;
-                    }
-                    if (item.configType == EConfigType.Shadowsocks
-                        && !Global.ssSecuritysInXray.Contains(item.security))
-                    {
-                        continue;
-                    }
-                    if (item.configType == EConfigType.VLESS
-                     && !Global.flows.Contains(item.flow))
-                    {
-                        continue;
-                    }
-
-                    outbound(item, v2rayConfigCopy);
-                    v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
-                    v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
-
-                    //rule
-                    RulesItem4Ray rule = new()
-                    {
-                        inboundTag = new List<string> { inbound.tag },
-                        outboundTag = v2rayConfigCopy.outbounds[0].tag,
-                        type = "field"
-                    };
-                    v2rayConfig.routing.rules.Add(rule);
-                }
-
-                //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
-                return Utils.ToJson(v2rayConfig);
+                Inbounds4Ray apiInbound = new();
+                Inboundsettings4Ray apiInboundSettings = new();
+                apiInbound.tag = tag;
+                apiInbound.listen = Global.Loopback;
+                apiInbound.port = Global.statePort;
+                apiInbound.protocol = Global.InboundAPIProtocal;
+                apiInboundSettings.address = Global.Loopback;
+                apiInbound.settings = apiInboundSettings;
+                v2rayConfig.inbounds.Add(apiInbound);
             }
-            catch (Exception ex)
+
+            if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
             {
-                Utils.SaveLog(ex.Message, ex);
+                RulesItem4Ray apiRoutingRule = new()
+                {
+                    inboundTag = new List<string> { tag },
+                    outboundTag = tag,
+                    type = "field"
+                };
+
+                v2rayConfig.routing.rules.Add(apiRoutingRule);
+            }
+        }
+        return 0;
+    }
+
+    #region Gen speedtest config
+
+    public string GenerateClientSpeedtestConfigString(List<ServerTestItem> selecteds, out string msg)
+    {
+        try
+        {
+            if (_config == null)
+            {
+                msg = ResUI.CheckServerSettings;
+                return "";
+            }
+
+            msg = ResUI.InitialConfiguration;
+
+            Config configCopy = Utils.DeepCopy(_config);
+
+            string result = Utils.GetEmbedText(SampleClient);
+            if (Utils.IsNullOrEmpty(result))
+            {
+                msg = ResUI.FailedGetDefaultConfiguration;
+                return "";
+            }
+
+            V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+            if (v2rayConfig == null)
+            {
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return "";
             }
-        }
+            List<IPEndPoint> lstIpEndPoints = new();
+            List<TcpConnectionInformation> lstTcpConns = new();
+            try
+            {
+                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
+                lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
 
-        #endregion Gen speedtest config
+            log(v2rayConfig);
+            v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
+
+            int httpPort = LazyConfig.Instance.GetLocalPort("speedtest");
+
+            foreach (var it in selecteds)
+            {
+                if (it.configType == EConfigType.Custom)
+                {
+                    continue;
+                }
+                if (it.port <= 0)
+                {
+                    continue;
+                }
+                if (it.configType is EConfigType.VMess or EConfigType.VLESS)
+                {
+                    var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
+                    {
+                        continue;
+                    }
+                }
+
+                //find unuse port
+                var port = httpPort;
+                for (int k = httpPort; k < Global.MaxPort; k++)
+                {
+                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
+                    {
+                        continue;
+                    }
+                    if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
+                    {
+                        continue;
+                    }
+                    //found
+                    port = k;
+                    httpPort = port + 1;
+                    break;
+                }
+
+                //Port In Used
+                if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
+                {
+                    continue;
+                }
+                it.port = port;
+                it.allowTest = true;
+
+                //inbound
+                Inbounds4Ray inbound = new()
+                {
+                    listen = Global.Loopback,
+                    port = port,
+                    protocol = Global.InboundHttp
+                };
+                inbound.tag = Global.InboundHttp + inbound.port.ToString();
+                v2rayConfig.inbounds.Add(inbound);
+
+                //outbound
+                V2rayConfig? v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
+                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                if (item is null)
+                {
+                    continue;
+                }
+                if (item.configType == EConfigType.Shadowsocks
+                    && !Global.ssSecuritysInXray.Contains(item.security))
+                {
+                    continue;
+                }
+                if (item.configType == EConfigType.VLESS
+                 && !Global.flows.Contains(item.flow))
+                {
+                    continue;
+                }
+
+                outbound(item, v2rayConfigCopy);
+                v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
+                v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
+
+                //rule
+                RulesItem4Ray rule = new()
+                {
+                    inboundTag = new List<string> { inbound.tag },
+                    outboundTag = v2rayConfigCopy.outbounds[0].tag,
+                    type = "field"
+                };
+                v2rayConfig.routing.rules.Add(rule);
+            }
+
+            //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
+            return Utils.ToJson(v2rayConfig);
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+            msg = ResUI.FailedGenDefaultConfiguration;
+            return "";
+        }
     }
+
+    #endregion Gen speedtest config
 }

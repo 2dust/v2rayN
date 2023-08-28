@@ -1,10 +1,9 @@
-﻿namespace v2rayN.Mode
+﻿namespace v2rayN.Mode;
+
+public enum ESysProxyType
 {
-    public enum ESysProxyType
-    {
-        ForcedClear = 0,
-        ForcedChange = 1,
-        Unchanged = 2,
-        Pac = 3
-    }
+    ForcedClear = 0,
+    ForcedChange = 1,
+    Unchanged = 2,
+    Pac = 3
 }

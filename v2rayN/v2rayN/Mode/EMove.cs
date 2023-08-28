@@ -1,11 +1,10 @@
-﻿namespace v2rayN.Mode
+﻿namespace v2rayN.Mode;
+
+public enum EMove
 {
-    public enum EMove
-    {
-        Top = 1,
-        Up = 2,
-        Down = 3,
-        Bottom = 4,
-        Position = 5
-    }
+    Top = 1,
+    Up = 2,
+    Down = 3,
+    Bottom = 4,
+    Position = 5
 }

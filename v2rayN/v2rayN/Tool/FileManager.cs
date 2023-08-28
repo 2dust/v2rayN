@@ -2,89 +2,88 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace v2rayN.Tool
+namespace v2rayN.Tool;
+
+public static class FileManager
 {
-    public static class FileManager
+    public static bool ByteArrayToFile(string fileName, byte[] content)
     {
-        public static bool ByteArrayToFile(string fileName, byte[] content)
+        try
         {
-            try
-            {
-                File.WriteAllBytes(fileName, content);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
-            return false;
+            File.WriteAllBytes(fileName, content);
+            return true;
         }
-
-        public static void UncompressFile(string fileName, byte[] content)
+        catch (Exception ex)
         {
-            try
-            {
-                using FileStream fs = File.Create(fileName);
-                using GZipStream input = new(new MemoryStream(content), CompressionMode.Decompress, false);
-                input.CopyTo(fs);
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-            }
+            Utils.SaveLog(ex.Message, ex);
         }
+        return false;
+    }
 
-        public static string NonExclusiveReadAllText(string path)
+    public static void UncompressFile(string fileName, byte[] content)
+    {
+        try
         {
-            return NonExclusiveReadAllText(path, Encoding.Default);
+            using FileStream fs = File.Create(fileName);
+            using GZipStream input = new(new MemoryStream(content), CompressionMode.Decompress, false);
+            input.CopyTo(fs);
         }
-
-        public static string NonExclusiveReadAllText(string path, Encoding encoding)
+        catch (Exception ex)
         {
-            try
-            {
-                using FileStream fs = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                using StreamReader sr = new(fs, encoding);
-                return sr.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                throw;
-            }
+            Utils.SaveLog(ex.Message, ex);
         }
+    }
 
-        public static bool ZipExtractToFile(string fileName, string toPath, string ignoredName)
+    public static string NonExclusiveReadAllText(string path)
+    {
+        return NonExclusiveReadAllText(path, Encoding.Default);
+    }
+
+    public static string NonExclusiveReadAllText(string path, Encoding encoding)
+    {
+        try
         {
-            try
+            using FileStream fs = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using StreamReader sr = new(fs, encoding);
+            return sr.ReadToEnd();
+        }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+            throw;
+        }
+    }
+
+    public static bool ZipExtractToFile(string fileName, string toPath, string ignoredName)
+    {
+        try
+        {
+            using ZipArchive archive = ZipFile.OpenRead(fileName);
+            foreach (ZipArchiveEntry entry in archive.Entries)
             {
-                using ZipArchive archive = ZipFile.OpenRead(fileName);
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                if (entry.Length == 0)
                 {
-                    if (entry.Length == 0)
+                    continue;
+                }
+                try
+                {
+                    if (!Utils.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
                     {
                         continue;
                     }
-                    try
-                    {
-                        if (!Utils.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
-                        {
-                            continue;
-                        }
-                        entry.ExtractToFile(Path.Combine(toPath, entry.Name), true);
-                    }
-                    catch (IOException ex)
-                    {
-                        Utils.SaveLog(ex.Message, ex);
-                    }
+                    entry.ExtractToFile(Path.Combine(toPath, entry.Name), true);
+                }
+                catch (IOException ex)
+                {
+                    Utils.SaveLog(ex.Message, ex);
                 }
             }
-            catch (Exception ex)
-            {
-                Utils.SaveLog(ex.Message, ex);
-                return false;
-            }
-            return true;
         }
+        catch (Exception ex)
+        {
+            Utils.SaveLog(ex.Message, ex);
+            return false;
+        }
+        return true;
     }
 }

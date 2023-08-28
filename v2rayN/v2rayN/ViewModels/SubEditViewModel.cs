@@ -8,79 +8,78 @@ using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
-namespace v2rayN.ViewModels
+namespace v2rayN.ViewModels;
+
+public class SubEditViewModel : ReactiveObject
 {
-    public class SubEditViewModel : ReactiveObject
+    private static Config _config;
+    private NoticeHandler? _noticeHandler;
+    private Window _view;
+
+    [Reactive]
+    public SubItem SelectedSource { get; set; }
+
+    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+
+    public SubEditViewModel(SubItem subItem, Window view)
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
+        _config = LazyConfig.Instance.GetConfig();
+        _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+        _view = view;
 
-        [Reactive]
-        public SubItem SelectedSource { get; set; }
-
-        public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-
-        public SubEditViewModel(SubItem subItem, Window view)
+        if (subItem.id.IsNullOrEmpty())
         {
-            _config = LazyConfig.Instance.GetConfig();
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
-
-            if (subItem.id.IsNullOrEmpty())
-            {
-                SelectedSource = subItem;
-            }
-            else
-            {
-                SelectedSource = Utils.DeepCopy(subItem);
-            }
-
-            SaveCmd = ReactiveCommand.Create(() =>
-            {
-                SaveSub();
-            });
-
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            SelectedSource = subItem;
+        }
+        else
+        {
+            SelectedSource = Utils.DeepCopy(subItem);
         }
 
-        private void SaveSub()
+        SaveCmd = ReactiveCommand.Create(() =>
         {
-            string remarks = SelectedSource.remarks;
-            if (string.IsNullOrEmpty(remarks))
-            {
-                UI.Show(ResUI.PleaseFillRemarks);
-                return;
-            }
+            SaveSub();
+        });
 
-            var item = LazyConfig.Instance.GetSubItem(SelectedSource.id);
-            if (item is null)
-            {
-                item = SelectedSource;
-            }
-            else
-            {
-                item.remarks = SelectedSource.remarks;
-                item.url = SelectedSource.url;
-                item.moreUrl = SelectedSource.moreUrl;
-                item.enabled = SelectedSource.enabled;
-                item.autoUpdateInterval = SelectedSource.autoUpdateInterval;
-                item.userAgent = SelectedSource.userAgent;
-                item.sort = SelectedSource.sort;
-                item.filter = SelectedSource.filter;
-                item.convertTarget = SelectedSource.convertTarget;
-            }
+        Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+    }
 
-            if (ConfigHandler.AddSubItem(ref _config, item) == 0)
-            {
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _view.DialogResult = true;
-                //_view?.Close();
-            }
-            else
-            {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
-            }
+    private void SaveSub()
+    {
+        string remarks = SelectedSource.remarks;
+        if (string.IsNullOrEmpty(remarks))
+        {
+            UI.Show(ResUI.PleaseFillRemarks);
+            return;
+        }
+
+        var item = LazyConfig.Instance.GetSubItem(SelectedSource.id);
+        if (item is null)
+        {
+            item = SelectedSource;
+        }
+        else
+        {
+            item.remarks = SelectedSource.remarks;
+            item.url = SelectedSource.url;
+            item.moreUrl = SelectedSource.moreUrl;
+            item.enabled = SelectedSource.enabled;
+            item.autoUpdateInterval = SelectedSource.autoUpdateInterval;
+            item.userAgent = SelectedSource.userAgent;
+            item.sort = SelectedSource.sort;
+            item.filter = SelectedSource.filter;
+            item.convertTarget = SelectedSource.convertTarget;
+        }
+
+        if (ConfigHandler.AddSubItem(ref _config, item) == 0)
+        {
+            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            _view.DialogResult = true;
+            //_view?.Close();
+        }
+        else
+        {
+            _noticeHandler?.Enqueue(ResUI.OperationFailed);
         }
     }
 }

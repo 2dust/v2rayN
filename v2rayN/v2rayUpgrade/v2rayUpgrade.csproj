@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>net6.0-windows</TargetFramework>
-	<OutputType>WinExe</OutputType>
-	<UseWindowsForms>true</UseWindowsForms>	    
-	<Copyright>Copyright © 2019-2023 (GPLv3)</Copyright>
-	<FileVersion>1.1.0.0</FileVersion>
-	<ApplicationManifest>app.manifest</ApplicationManifest>
-	<Nullable>enable</Nullable>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Copyright>Copyright © 2019-2023 (GPLv3)</Copyright>
+    <FileVersion>1.1.0.0</FileVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

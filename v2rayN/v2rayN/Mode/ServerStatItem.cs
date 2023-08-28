@@ -1,39 +1,38 @@
 ﻿using SQLite;
 
-namespace v2rayN.Mode
+namespace v2rayN.Mode;
+
+[Serializable]
+public class ServerStatItem
 {
-    [Serializable]
-    public class ServerStatItem
+    [PrimaryKey]
+    public string indexId
     {
-        [PrimaryKey]
-        public string indexId
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        public long totalUp
-        {
-            get; set;
-        }
+    public long totalUp
+    {
+        get; set;
+    }
 
-        public long totalDown
-        {
-            get; set;
-        }
+    public long totalDown
+    {
+        get; set;
+    }
 
-        public long todayUp
-        {
-            get; set;
-        }
+    public long todayUp
+    {
+        get; set;
+    }
 
-        public long todayDown
-        {
-            get; set;
-        }
+    public long todayDown
+    {
+        get; set;
+    }
 
-        public long dateNow
-        {
-            get; set;
-        }
+    public long dateNow
+    {
+        get; set;
     }
 }

@@ -2,27 +2,22 @@
 using QRCoder.Xaml;
 using System.Windows.Media;
 
-namespace v2rayN.Handler
+namespace v2rayN.Handler;
+public class QRCodeHelper
 {
-    /// <summary>
-    /// 含有QR码的描述类和包装编码和渲染
-    /// </summary>
-    public class QRCodeHelper
+    public static DrawingImage? GetQRCode(string strContent)
     {
-        public static DrawingImage? GetQRCode(string strContent)
+        try
         {
-            try
-            {
-                QRCodeGenerator qrGenerator = new();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
-                XamlQRCode qrCode = new(qrCodeData);
-                DrawingImage qrCodeAsXaml = qrCode.GetGraphic(40);
-                return qrCodeAsXaml;
-            }
-            catch
-            {
-                return null;
-            }
+            QRCodeGenerator qrGenerator = new();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
+            XamlQRCode qrCode = new(qrCodeData);
+            DrawingImage qrCodeAsXaml = qrCode.GetGraphic(40);
+            return qrCodeAsXaml;
+        }
+        catch
+        {
+            return null;
         }
     }
 }

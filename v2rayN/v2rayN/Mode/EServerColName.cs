@@ -1,22 +1,21 @@
-﻿namespace v2rayN.Mode
-{
-    public enum EServerColName
-    {
-        def = 0,
-        configType,
-        remarks,
-        address,
-        port,
-        security,
-        network,
-        streamSecurity,
-        subRemarks,
-        delayVal,
-        speedVal,
+﻿namespace v2rayN.Mode;
 
-        todayDown,
-        todayUp,
-        totalDown,
-        totalUp
-    }
+public enum EServerColName
+{
+    def = 0,
+    configType,
+    remarks,
+    address,
+    port,
+    security,
+    network,
+    streamSecurity,
+    subRemarks,
+    delayVal,
+    speedVal,
+
+    todayDown,
+    todayUp,
+    totalDown,
+    totalUp
 }

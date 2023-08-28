@@ -1,11 +1,10 @@
-﻿namespace v2rayN.Mode
+﻿namespace v2rayN.Mode;
+
+public enum ESpeedActionType
 {
-    public enum ESpeedActionType
-    {
-        Ping,
-        Tcping,
-        Realping,
-        Speedtest,
-        Mixedtest
-    }
+    Ping,
+    Tcping,
+    Realping,
+    Speedtest,
+    Mixedtest
 }

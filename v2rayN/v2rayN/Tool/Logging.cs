@@ -3,53 +3,52 @@ using NLog.Config;
 using NLog.Targets;
 using System.IO;
 
-namespace v2rayN.Tool
+namespace v2rayN.Tool;
+
+public class Logging
 {
-    public class Logging
+    public static void Setup()
     {
-        public static void Setup()
-        {
-            LoggingConfiguration config = new();
-            FileTarget fileTarget = new();
-            config.AddTarget("file", fileTarget);
-            fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
-            fileTarget.FileName = Utils.GetLogPath("${shortdate}.txt");
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
-            LogManager.Configuration = config;
-        }
+        LoggingConfiguration config = new();
+        FileTarget fileTarget = new();
+        config.AddTarget("file", fileTarget);
+        fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
+        fileTarget.FileName = Utils.GetLogPath("${shortdate}.txt");
+        config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
+        LogManager.Configuration = config;
+    }
 
-        public static void LoggingEnabled(bool enable)
+    public static void LoggingEnabled(bool enable)
+    {
+        if (!enable)
         {
-            if (!enable)
-            {
-                LogManager.SuspendLogging();
-            }
+            LogManager.SuspendLogging();
         }
+    }
 
-        public static void ClearLogs()
+    public static void ClearLogs()
+    {
+        Task.Run(() =>
         {
-            Task.Run(() =>
+            try
             {
-                try
+                var now = DateTime.Now.AddMonths(-1);
+                var dir = Utils.GetLogPath();
+                var files = Directory.GetFiles(dir, "*.txt");
+                foreach (var filePath in files)
                 {
-                    var now = DateTime.Now.AddMonths(-1);
-                    var dir = Utils.GetLogPath();
-                    var files = Directory.GetFiles(dir, "*.txt");
-                    foreach (var filePath in files)
+                    var file = new FileInfo(filePath);
+                    if (file.CreationTime < now)
                     {
-                        var file = new FileInfo(filePath);
-                        if (file.CreationTime < now)
+                        try
                         {
-                            try
-                            {
-                                file.Delete();
-                            }
-                            catch { }
+                            file.Delete();
                         }
+                        catch { }
                     }
                 }
-                catch { }
-            });
-        }
+            }
+            catch { }
+        });
     }
 }
