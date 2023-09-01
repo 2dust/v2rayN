@@ -911,7 +911,7 @@
     <value>預定義規則集列表</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*設置的路由規則,用逗號(,)分隔;正則中的逗號用&lt;COMMA&gt;替代</value>
+    <value>*設定的路由規則,用逗號(,)分隔;正則中的逗號用&lt;COMMA&gt;替代</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>從剪貼簿中匯入規則</value>
