@@ -559,22 +559,22 @@
     <value>批次匯出訂閱內容至剪貼簿(多選)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>添加自訂配置伺服器</value>
+    <value>新增自訂配置伺服器</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>添加[Shadowsocks]伺服器</value>
+    <value>新增[Shadowsocks]伺服器</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加[Socks]伺服器</value>
+    <value>新增[Socks]伺服器</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>添加[Trojan]伺服器</value>
+    <value>新增[Trojan]伺服器</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>添加[VLESS]伺服器</value>
+    <value>新增[VLESS]伺服器</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>添加[VMess]伺服器</value>
+    <value>新增[VMess]伺服器</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>全選 (Ctrl+A)</value>
@@ -595,7 +595,7 @@
     <value>全選 (Ctrl+A)</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
-    <value>添加</value>
+    <value>新增</value>
   </data>
   <data name="menuSubDelete" xml:space="preserve">
     <value>刪除</value>
@@ -872,7 +872,7 @@
     <value>進階功能</value>
   </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
-    <value>添加規則集</value>
+    <value>新增規則集</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
     <value>一鍵匯入進階規則</value>
@@ -926,7 +926,7 @@
     <value>規則集設定</value>
   </data>
   <data name="menuRuleAdd" xml:space="preserve">
-    <value>添加規則</value>
+    <value>新增規則</value>
   </data>
   <data name="menuRuleExportSelected" xml:space="preserve">
     <value>到處所選規則至剪貼簿</value>
