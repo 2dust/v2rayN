@@ -998,7 +998,7 @@
     <value>直連的行程名，用逗號(,)分隔</value>
   </data>
   <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>顯示控制臺</value>
+    <value>顯示控制台</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>移至訂閱分組</value>
