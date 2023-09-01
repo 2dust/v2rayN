@@ -1034,10 +1034,10 @@
     <value>僅對tcp/http、ws協議生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>目前字體(需重啟)</value>
+    <value>目前字型(需重啟)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>複製字體TTF文件到目錄guiFonts，重啟設定</value>
+    <value>複製字型TTF文件到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>http埠=socks埠+1</value>
@@ -1046,7 +1046,7 @@
     <value>以管理員權限設定此項，在啟動後獲得管理員權限</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
-    <value>字體大小</value>
+    <value>字型大小</value>
   </data>
   <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
     <value>代理的IP CIDR，用逗號(,)分隔</value>
