@@ -265,7 +265,7 @@
     <value>更新Core成功！正在重啟服務...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>非VMess或ss協議</value>
+    <value>非VMess或ss協定</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
     <value>非標準服務，此功能無效</value>
@@ -286,7 +286,7 @@
     <value>請選擇加密方式</value>
   </data>
   <data name="PleaseSelectProtocol" xml:space="preserve">
-    <value>請選擇協議</value>
+    <value>請選擇協定</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
     <value>請先選擇伺服器</value>
@@ -713,7 +713,7 @@
     <value>編輯</value>
   </data>
   <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
-    <value>進階代理設定, 協議選擇(可選)</value>
+    <value>進階代理設定, 協定選擇(可選)</value>
   </data>
   <data name="TbSettingsAllowLAN" xml:space="preserve">
     <value>允許來自區域網路的連接</value>
@@ -803,7 +803,7 @@
     <value>系統代理設定</value>
   </data>
   <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>啟用安全協議TLS v1.3 (訂閱/檢查更新)</value>
+    <value>啟用安全協定TLS v1.3 (訂閱/檢查更新)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>工具列右鍵選單伺服器展示數量限制</value>
@@ -1031,7 +1031,7 @@
     <value>使用者代理(User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>僅對tcp/http、ws協議生效</value>
+    <value>僅對tcp/http、ws協定生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>目前字型(需重啟)</value>
@@ -1124,7 +1124,7 @@
     <value>sing-box域名解析策略</value>
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
-    <value>sing-box Mux 多路復用協議</value>
+    <value>sing-box Mux 多路復用協定</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>行程名全稱 (Tun模式)</value>
