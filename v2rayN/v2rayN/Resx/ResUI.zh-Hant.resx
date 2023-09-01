@@ -169,7 +169,7 @@
     <value>請填寫密碼</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>請填寫伺服器地址</value>
+    <value>請填寫伺服器位址</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
     <value>請填寫使用者ID</value>
@@ -193,7 +193,7 @@
     <value>{0} 已是最新版本。</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
-    <value>地址</value>
+    <value>位址</value>
   </data>
   <data name="LvEncryptionMethod" xml:space="preserve">
     <value>加密方式</value>
@@ -334,7 +334,7 @@
     <value>別名</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>可選地址(Url)</value>
+    <value>可選位址(Url)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>數量</value>
@@ -625,7 +625,7 @@
     <value>底層傳輸方式(transport)</value>
   </data>
   <data name="TbAddress" xml:space="preserve">
-    <value>地址(address)</value>
+    <value>位址(address)</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
     <value>跳過證書驗證(allowInsecure)</value>
@@ -752,7 +752,7 @@
     <value>例外</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>例外. 對於下列字元開頭的地址不使用代理配置檔案:使用分號(;)分隔</value>
+    <value>例外. 對於下列字元開頭的位址不使用代理配置檔案:使用分號(;)分隔</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>本機http監聽埠</value>
@@ -1061,7 +1061,7 @@
     <value>測速單個超時值</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>測速文件地址</value>
+    <value>測速文件位址</value>
   </data>
   <data name="TbSettingsTunModeDNS" xml:space="preserve">
     <value>DNS物件，例如 {"servers":[]}</value>
@@ -1094,7 +1094,7 @@
     <value>以管理員身份重啟</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>更多地址(url)，用逗號(,)分隔；訂閱轉換將失效</value>
+    <value>更多位址(url)，用逗號(,)分隔；訂閱轉換將失效</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>自動更新間隔(分鐘)</value>
