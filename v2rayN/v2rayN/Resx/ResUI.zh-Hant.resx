@@ -1019,7 +1019,7 @@
     <value>編輯伺服器 (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>主介面雙擊設為活動伺服器</value>
+    <value>主介面輕按兩下設為活動伺服器</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>測試完成</value>
