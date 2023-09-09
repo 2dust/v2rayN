@@ -386,7 +386,7 @@
                         x:Name="lstGroup"
                         FontSize="{DynamicResource StdFontSize}"
                         ItemContainerStyle="{StaticResource MyChipListBoxItem}"
-                        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}" MaxHeight="120">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding remarks}" />
