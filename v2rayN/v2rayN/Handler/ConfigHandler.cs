@@ -889,7 +889,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private static bool CompareProfileItem(ProfileItem o, ProfileItem n, bool remarks)
+        public static bool CompareProfileItem(ProfileItem o, ProfileItem n, bool remarks)
         {
             if (o == null || n == null)
             {
@@ -909,6 +909,12 @@ namespace v2rayN.Handler
                 && (o.configType == EConfigType.Trojan || o.streamSecurity == n.streamSecurity)
                 && o.flow == n.flow
                 && o.sni == n.sni
+                && o.alpn == n.alpn
+                && o.allowInsecure == n.allowInsecure
+                && o.fingerprint == n.fingerprint
+                && o.publicKey == n.publicKey
+                && o.shortId == n.shortId
+                && o.spiderX == n.spiderX
                 && (!remarks || o.remarks == n.remarks);
         }
 

@@ -765,7 +765,23 @@ namespace v2rayN.ViewModels
             _subId = SelectedSub?.id;
             _config.subIndexId = _subId;
 
-            RefreshServers();
+            // RefreshServers();
+
+            // 读取节点列表 lstModel
+            List<ProfileItemModel> lstModel = LoadProfilelist();
+
+            // lstModel 节点去重 不修改底层保存的节点数据
+            List<ProfileItemModel> lstKeep = new();
+            foreach (ProfileItemModel item in lstModel)
+            {
+                if (!lstKeep.Exists(i => ConfigHandler.CompareProfileItem(i, item, false)))
+                {
+                    lstKeep.Add(item);
+                }
+            }
+
+            // 向界面显示节点列表 lstModel
+            DisplayProfilelist(lstKeep);
 
             _updateView(EViewAction.ProfilesFocus);
         }
@@ -785,8 +801,20 @@ namespace v2rayN.ViewModels
 
         public void RefreshServers()
         {
+            List<ProfileItemModel> lstModel = LoadProfilelist();
+
+            DisplayProfilelist(lstModel);
+        }
+
+        private List<ProfileItemModel> LoadProfilelist()
+        {
             List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
 
+            return lstModel;
+        }
+
+        private void DisplayProfilelist(List<ProfileItemModel> lstModel)
+        {
             ConfigHandler.SetDefaultServer(_config, lstModel);
 
             List<ServerStatItem> lstServerStat = new();
