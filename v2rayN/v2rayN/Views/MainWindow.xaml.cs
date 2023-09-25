@@ -322,33 +322,29 @@ namespace v2rayN.Views
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                if (e.Key == Key.V)
+                switch (e.key)
                 {
-                    ViewModel?.AddServerViaClipboard();
-                }
-                else if (e.Key == Key.P)
-                {
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Ping);
-                }
-                else if (e.Key == Key.O)
-                {
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Tcping);
-                }
-                else if (e.Key == Key.R)
-                {
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Realping);
-                }
-                else if (e.Key == Key.S)
-                {
-                    _ = ViewModel?.ScanScreenTaskAsync();
-                }
-                else if (e.Key == Key.T)
-                {
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Speedtest);
-                }
-                else if (e.Key == Key.E)
-                {
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
+                    case Key.V
+                        ViewModel?.AddServerViaClipboard();
+                        break;
+                    case Key.P
+                        ViewModel?.ServerSpeedtest(ESpeedActionType.Ping);
+                        break;
+                    case Key.O
+                        ViewModel?.ServerSpeedtest(ESpeedActionType.Tcping);
+                        break;
+                    case Key.R
+                        ViewModel?.ServerSpeedtest(ESpeedActionType.Realping);
+                        break;
+                    case Key.S
+                        _ = ViewModel?.ScanScreenTaskAsync();
+                        break;
+                    case Key.T
+                        ViewModel?.ServerSpeedtest(ESpeedActionType.Speedtest);
+                        break;
+                    case Key.E
+                        ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
+                        break;
                 }
             }
             else
