@@ -324,25 +324,25 @@ namespace v2rayN.Views
             {
                 switch (e.key)
                 {
-                    case Key.V
+                    case Key.V:
                         ViewModel?.AddServerViaClipboard();
                         break;
-                    case Key.P
+                    case Key.P:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Ping);
                         break;
-                    case Key.O
+                    case Key.O:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Tcping);
                         break;
-                    case Key.R
+                    case Key.R:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Realping);
                         break;
-                    case Key.S
+                    case Key.S:
                         _ = ViewModel?.ScanScreenTaskAsync();
                         break;
-                    case Key.T
+                    case Key.T:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Speedtest);
                         break;
-                    case Key.E
+                    case Key.E:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
                         break;
                 }
