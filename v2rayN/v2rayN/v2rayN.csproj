@@ -9,12 +9,12 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.28</FileVersion>
+		<FileVersion>6.29</FileVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.115" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.118" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
