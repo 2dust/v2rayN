@@ -436,9 +436,6 @@
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>بررسی بروزرسانی</value>
   </data>
-  <data name="menuClose" xml:space="preserve">
-    <value>بستن</value>
-  </data>
   <data name="menuExit" xml:space="preserve">
     <value>خروج</value>
   </data>

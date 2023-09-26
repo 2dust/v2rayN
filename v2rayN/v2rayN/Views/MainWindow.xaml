@@ -272,23 +272,6 @@
                                 </MenuItem.Header>
                             </MenuItem>
                         </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem
-                                x:Name="menuClose"
-                                Padding="8,0"
-                                Click="menuClose_Click">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Kind="Minimize" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuClose}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
 
                         <materialDesign:PopupBox
                             Padding="8,0"

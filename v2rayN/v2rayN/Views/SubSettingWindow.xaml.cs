@@ -60,17 +60,5 @@ namespace v2rayN.Views
         {
             ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
         }
-
-        private void menuClose_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (ViewModel?.IsModified == true)
-            {
-                this.DialogResult = true;
-            }
-            else
-            {
-                this.Close();
-            }
-        }
     }
 }

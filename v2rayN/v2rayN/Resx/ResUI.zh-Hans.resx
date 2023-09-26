@@ -436,9 +436,6 @@
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>检查更新</value>
   </data>
-  <data name="menuClose" xml:space="preserve">
-    <value>关闭</value>
-  </data>
   <data name="menuExit" xml:space="preserve">
     <value>退出</value>
   </data>

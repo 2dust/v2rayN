@@ -673,15 +673,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Close 的本地化字符串。
-        /// </summary>
-        public static string menuClose {
-            get {
-                return ResourceManager.GetString("menuClose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Clone selected server 的本地化字符串。
         /// </summary>
         public static string menuCopyServer {

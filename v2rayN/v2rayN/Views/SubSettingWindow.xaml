@@ -70,18 +70,6 @@
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubShare}" />
                         </StackPanel>
                     </Button>
-                    <Button
-                        x:Name="menuClose"
-                        Click="menuClose_Click"
-                        IsCancel="True">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="0,0,8,0"
-                                VerticalAlignment="Center"
-                                Kind="Close" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuClose}" />
-                        </StackPanel>
-                    </Button>
                 </ToolBar>
             </ToolBarTray>
 
