@@ -48,7 +48,7 @@
                         ClipToBounds="True"
                         Style="{StaticResource MaterialDesignToolBar}">
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
+                            <MenuItem Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -95,7 +95,7 @@
                             </MenuItem>
                         </Menu>
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
+                            <MenuItem Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -129,7 +129,7 @@
                             </MenuItem>
                         </Menu>
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
+                            <MenuItem Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -177,7 +177,7 @@
                             </MenuItem>
                         </Menu>
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuReload" Padding="8,0">
+                            <MenuItem x:Name="menuReload" Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -190,7 +190,7 @@
                             </MenuItem>
                         </Menu>
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
+                            <MenuItem Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -238,7 +238,7 @@
                             </MenuItem>
                         </Menu>
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuHelp" Padding="8,0">
+                            <MenuItem x:Name="menuHelp" Padding="12,0,16,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -253,7 +253,7 @@
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuPromotion"
-                                Padding="8,0"
+                                Padding="12,0,16,0"
                                 Click="menuPromotion_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -269,7 +269,7 @@
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuClose"
-                                Padding="8,0"
+                                Padding="12,0,16,0"
                                 Click="menuClose_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
@@ -284,7 +284,7 @@
                         </Menu>
 
                         <materialDesign:PopupBox
-                            Padding="8,0"
+                            Padding="12,0,16,0"
                             HorizontalAlignment="Right"
                             StaysOpen="True"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">

@@ -36,7 +36,7 @@
                 ClipToBounds="True"
                 Style="{StaticResource MaterialDesignToolBar}">
                 <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
-                    <MenuItem x:Name="menuRoutingBasic" Padding="8,0">
+                    <MenuItem x:Name="menuRoutingBasic" Padding="12,0,16,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -53,7 +53,7 @@
                     </MenuItem>
                 </Menu>
                 <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
-                    <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
+                    <MenuItem x:Name="menuRoutingAdvanced" Padding="12,0,16,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
