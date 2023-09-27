@@ -94,7 +94,6 @@
                                     Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
@@ -129,7 +128,6 @@
                                     Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
@@ -178,7 +176,6 @@
                                     Header="{x:Static resx:ResUI.menuImportOldGuiConfig}" />
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem x:Name="menuReload" Padding="8,0">
                                 <MenuItem.Header>
@@ -192,7 +189,6 @@
                                 </MenuItem.Header>
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0">
                                 <MenuItem.Header>
@@ -241,7 +237,6 @@
                                     Header="Geo files" />
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem x:Name="menuHelp" Padding="8,0">
                                 <MenuItem.Header>
@@ -255,7 +250,6 @@
                                 </MenuItem.Header>
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuPromotion"
@@ -272,7 +266,6 @@
                                 </MenuItem.Header>
                             </MenuItem>
                         </Menu>
-                        <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
                                 x:Name="menuClose"
