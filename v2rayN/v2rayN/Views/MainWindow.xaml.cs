@@ -36,6 +36,8 @@ namespace v2rayN.Views
                 this.Height = SystemParameters.WorkArea.Height;
             }
 
+            lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
+
             _config = LazyConfig.Instance.GetConfig();
 
             App.Current.SessionEnding += Current_SessionEnding;
