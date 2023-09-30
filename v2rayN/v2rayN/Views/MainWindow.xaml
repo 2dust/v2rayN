@@ -751,6 +751,7 @@
             <tb:TaskbarIcon
                 x:Name="tbNotify"
                 IconSource="/v2rayN.ico"
+                ToolTipText="v2rayN"
                 NoLeftClickDelay="True">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
