@@ -118,6 +118,10 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
 
+        // clear server test result
+        public ReactiveCommand<Unit, Unit> ClearDelayResultCmd { get; }
+        public ReactiveCommand<Unit, Unit> ClearSpeedResultCmd { get; }
+
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
 
@@ -417,6 +421,15 @@ namespace v2rayN.ViewModels
             {
                 SortServer(EServerColName.delayVal.ToString());
             });
+            //clear server test result
+            ClearDelayResultCmd = ReactiveCommand.Create(() =>
+            {
+                ServerSpeedtest(ESpeedActionType.ClearDelay);
+            }, canEditRemove);
+            ClearSpeedResultCmd = ReactiveCommand.Create(() =>
+            {
+                ServerSpeedtest(ESpeedActionType.ClearSpeed);
+            }, canEditRemove);  
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
             {

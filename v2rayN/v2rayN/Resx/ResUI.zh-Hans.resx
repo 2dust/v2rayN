@@ -1135,4 +1135,10 @@
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
   </data>
+  <data name="menuClearDelayResult" xml:space="preserve">
+    <value>清除延时测试结果</value>
+  </data>
+  <data name="menuClearSpeedResult" xml:space="preserve">
+    <value>清除速度测试结果</value>
+  </data>
 </root>

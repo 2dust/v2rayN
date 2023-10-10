@@ -54,11 +54,13 @@ namespace v2rayN.Handler
                     case ESpeedActionType.Ping:
                     case ESpeedActionType.Tcping:
                     case ESpeedActionType.Realping:
+                    case ESpeedActionType.ClearDelay:
                         UpdateFunc(it.indexId, ResUI.Speedtesting, "");
                         ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
                         break;
 
                     case ESpeedActionType.Speedtest:
+                    case ESpeedActionType.ClearSpeed:
                         UpdateFunc(it.indexId, "", ResUI.SpeedtestingWait);
                         ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
                         break;

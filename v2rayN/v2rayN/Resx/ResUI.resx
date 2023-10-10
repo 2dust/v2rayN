@@ -1138,4 +1138,10 @@
   <data name="TbRoutingRuleDomain" xml:space="preserve">
     <value>Domain</value>
   </data>
+  <data name="menuClearDelayResult" xml:space="preserve">
+    <value>Clear Delay Result</value>
+  </data>
+  <data name="menuClearSpeedResult" xml:space="preserve">
+    <value>Clear Speed Result</value>
+  </data>
 </root>

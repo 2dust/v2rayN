@@ -6,6 +6,8 @@
         Tcping,
         Realping,
         Speedtest,
-        Mixedtest
+        Mixedtest,
+        ClearDelay,
+        ClearSpeed
     }
 }

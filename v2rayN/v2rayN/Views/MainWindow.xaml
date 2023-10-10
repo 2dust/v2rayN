@@ -577,6 +577,14 @@
                                     x:Name="menuSortServerResult"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                                <MenuItem
+                                    x:Name="menuClearDelayResult"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuClearDelayResult}" />
+                                <MenuItem
+                                    x:Name="menuClearSpeedResult"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuClearSpeedResult}" />
                                 <Separator />
                                 <MenuItem
                                     x:Name="menuMoveToGroup"

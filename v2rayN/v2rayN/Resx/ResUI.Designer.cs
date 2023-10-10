@@ -664,11 +664,29 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Clear Delay Result 的本地化字符串。
+        /// </summary>
+        public static string menuClearDelayResult {
+            get {
+                return ResourceManager.GetString("menuClearDelayResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clear all service statistics 的本地化字符串。
         /// </summary>
         public static string menuClearServerStatistics {
             get {
                 return ResourceManager.GetString("menuClearServerStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear Speed Result 的本地化字符串。
+        /// </summary>
+        public static string menuClearSpeedResult {
+            get {
+                return ResourceManager.GetString("menuClearSpeedResult", resourceCulture);
             }
         }
         
