@@ -906,8 +906,11 @@ namespace v2rayN
         public static T DeepCopy<T>(T obj)
         {
             object retval;
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter bf = new BinaryFormatter();
+            var ms = new MemoryStream();
+            #pragma warning disable SYSLIB0011 // 類型或成員已經過時
+            var bf = new BinaryFormatter();
+            #pragma warning restore SYSLIB0011 // 類型或成員已經過時
+
             //序列化成流
             bf.Serialize(ms, obj);
             ms.Seek(0, SeekOrigin.Begin);

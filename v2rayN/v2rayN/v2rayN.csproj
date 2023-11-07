@@ -3,16 +3,17 @@
 	<PropertyGroup>
 		<GenerateSatelliteAssembliesForCore>true</GenerateSatelliteAssembliesForCore>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>  
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.29</FileVersion>
+		<FileVersion>6.29.1</FileVersion>
+		<NeutralLanguage>zh-TW</NeutralLanguage>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
