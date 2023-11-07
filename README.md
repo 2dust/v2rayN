@@ -9,12 +9,16 @@ A GUI client for Windows, support [Xray core](https://github.com/XTLS/Xray-core)
 
 
 ## How to use
-- If you are new to this, please download v2rayN-With-Core.zip from [releases](https://github.com/2dust/v2rayN/releases)
-- Otherwise please download v2rayN.zip (you will also need to download cores in the bin directory)
+- If you are new to this, please download v2rayN-With-Core(.net8).zip or 7z from [Pre-releases](https://github.com/2dust/v2rayN/releases)
 - Run v2rayN.exe
 
+## Warning
+>[!Warning]
+> Recoded based on pre-release 6.29, may be unstable
+> Known issue: It may take several seconds to exit the program
+
 ## Requirements  
-- [Microsoft .NET 6.0 Desktop Runtime ](https://download.visualstudio.microsoft.com/download/pr/513d13b7-b456-45af-828b-b7b7981ff462/edf44a743b78f8b54a2cec97ce888346/windowsdesktop-runtime-6.0.15-win-x64.exe)
+- [Microsoft .NET 8.0 Desktop Runtime ](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-8.0.0-rc.2-windows-x64-installer)
 - [Supported cores](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
 
 
