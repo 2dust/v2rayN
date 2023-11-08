@@ -16,6 +16,7 @@ A GUI client for Windows, support [Xray core](https://github.com/XTLS/Xray-core)
 >[!Warning]
 > Recoded based on pre-release 6.29, may be unstable
 > Known issue: It may take several seconds to exit the program
+>
 > Windows 7 An error will be reported when exiting the program. (Window7 will not be supported in the future.)
 ## Requirements  
 - [Microsoft .NET 8.0 Desktop Runtime ](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-8.0.0-rc.2-windows-x64-installer)
