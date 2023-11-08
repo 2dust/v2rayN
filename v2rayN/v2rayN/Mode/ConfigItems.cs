@@ -206,4 +206,13 @@ namespace v2rayN.Mode
         public int max_streams { get; set; }
         public bool padding { get; set; }
     }
+
+    [Serializable]
+    //  Socks出口
+    public class SocksOutbound
+    {
+        public bool isEnable { get; set; }
+        public string address { get; set; }
+        public int port { get; set; }
+    }
 }

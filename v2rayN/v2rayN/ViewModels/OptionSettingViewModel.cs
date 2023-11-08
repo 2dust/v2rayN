@@ -33,6 +33,11 @@ namespace v2rayN.ViewModels
         [Reactive] public string defUserAgent { get; set; }
         [Reactive] public string mux4SboxProtocol { get; set; }
 
+        // Socsk出口设置
+        [Reactive] public bool socksOutboundEnable { get; set; }
+        [Reactive] public string socksOutboundIP { get; set; }
+        [Reactive] public int socksOutboundPort { get; set; }
+
         #endregion Core
 
         #region Core KCP
@@ -175,6 +180,11 @@ namespace v2rayN.ViewModels
 
             InitCoreType();
 
+            // Socks出口
+            socksOutboundEnable = _config.socksOutbound.isEnable;
+            socksOutboundIP = _config.socksOutbound.address;
+            socksOutboundPort = _config.socksOutbound.port;
+
             SaveCmd = ReactiveCommand.Create(() =>
             {
                 SaveSetting();
@@ -316,6 +326,11 @@ namespace v2rayN.ViewModels
 
             //coreType
             SaveCoreType();
+
+            // Socks出口
+            _config.socksOutbound.isEnable = socksOutboundEnable;
+            _config.socksOutbound.address = socksOutboundIP;
+            _config.socksOutbound.port = socksOutboundPort;
 
             if (ConfigHandler.SaveConfig(ref _config) == 0)
             {

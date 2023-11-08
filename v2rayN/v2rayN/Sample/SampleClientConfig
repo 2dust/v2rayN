@@ -76,7 +76,10 @@
 				}]
 			},
 			"streamSettings": {
-				"network": "tcp"
+				"network": "tcp",
+				"sockopt": {
+					"dialerProxy": "tunnel"
+				}
 			},
 			"mux": {
 				"enabled": false
@@ -95,16 +98,24 @@
 					"type": "http"
 				}
 			}
+		},
+		{
+			"tag": "tunnel",
+			"protocol": "socks",
+			"settings": {
+				"servers": [{
+						"address": "127.0.0.1",
+						"port": 10086
+					}]
+			}
 		}
 	],
 	"routing": {
 		"domainStrategy": "IPIfNonMatch",
-		"rules": [
-				{
-                    "inboundTag": ["api"],
-                    "outboundTag": "api",
-                    "type": "field"
-                }
-		]
+		"rules": [{
+			"inboundTag": ["api"],
+			"outboundTag": "api",
+			"type": "field"
+		}]
 	}
 }

@@ -196,6 +196,16 @@ namespace v2rayN.Handler
                 };
             }
 
+            if (config.socksOutbound == null)
+            {
+                config.socksOutbound = new()
+                {
+                    isEnable = false,
+                    address = "127.0.0.1",
+                    port = 10086
+                };
+            }
+
             LazyConfig.Instance.SetConfig(config);
             return 0;
         }

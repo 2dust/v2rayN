@@ -52,6 +52,8 @@ namespace v2rayN.Handler
 
                 outbound(node, v2rayConfig);
 
+                socksOut(v2rayConfig);
+
                 dns(v2rayConfig);
 
                 statistic(v2rayConfig);
@@ -470,6 +472,7 @@ namespace v2rayN.Handler
                     outbound.protocol = Global.trojanProtocolLite;
                     outbound.settings.vnext = null;
                 }
+
                 boundStreamSettings(node, outbound.streamSettings);
             }
             catch (Exception ex)
@@ -689,6 +692,28 @@ namespace v2rayN.Handler
                             streamSettings.tcpSettings = tcpSettings;
                         }
                         break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+            return 0;
+        }
+
+        private int socksOut(V2rayConfig v2rayConfig)
+        {
+            try
+            {
+                Outbounds4Ray outbound = v2rayConfig.outbounds[3];
+                ServersItem4Ray server = outbound.settings.servers[0];
+                server.address = _config.socksOutbound.address;
+                server.port = _config.socksOutbound.port;
+
+                // 如果下一跳Socks功能不打开, 那么配置文件中要删除sockopt这一段
+                if (! _config.socksOutbound.isEnable)
+                {
+                    v2rayConfig.outbounds[0].streamSettings.sockopt = null;
                 }
             }
             catch (Exception ex)

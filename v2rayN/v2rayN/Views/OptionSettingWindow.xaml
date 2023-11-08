@@ -939,6 +939,18 @@
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>
+            <TabItem Header="Core出口设置">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="端口" HorizontalAlignment="Left" Margin="41,83,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtSocksOutboundPort" HorizontalAlignment="Left" Margin="112,83,0,0" TextWrapping="Wrap" Text="10086" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="IP" HorizontalAlignment="Left" Margin="41,53,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtSocksOutboundIP" HorizontalAlignment="Left" Margin="112,53,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="下一跳Socks5接口" HorizontalAlignment="Left" Margin="41,24,0,0" VerticalAlignment="Top" Width="141"/>
+                    <CheckBox x:Name="chkSocksOut" Content="" HorizontalAlignment="Left" Margin="187,27,0,0" VerticalAlignment="Top" IsChecked="False"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </reactiveui:ReactiveWindow>

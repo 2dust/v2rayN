@@ -187,6 +187,11 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.Text).DisposeWith(disposables);
 
+                // Socks出口设置
+                this.Bind(ViewModel, vm => vm.socksOutboundEnable, v => v.chkSocksOut.IsChecked).DisposeWith(disposables);                
+                this.Bind(ViewModel, vm => vm.socksOutboundIP, v => v.txtSocksOutboundIP.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.socksOutboundPort, v => v.txtSocksOutboundPort.Text).DisposeWith(disposables);
+
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
         }

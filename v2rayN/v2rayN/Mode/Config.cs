@@ -32,6 +32,9 @@
         public List<KeyEventItem> globalHotkeys { get; set; }
         public List<CoreTypeItem> coreTypeItem { get; set; }
 
+        //  Socks出口
+        public SocksOutbound socksOutbound { get; set; }
+
         #endregion other entities
     }
 }
