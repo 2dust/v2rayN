@@ -210,8 +210,8 @@ namespace v2rayN.ViewModels
         [Reactive]
         public string RunningServerDisplay { get; set; }
 
-        //[Reactive]
-        //public string RunningServerToolTipText { get; set; }
+        [Reactive]
+        public string RunningServerToolTipText { get; set; }
 
         [Reactive]
         public string RunningInfoDisplay { get; set; }
@@ -849,12 +849,12 @@ namespace v2rayN.ViewModels
                 {
                     var runningSummary = running.GetSummary();
                     RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
-                    //RunningServerToolTipText = runningSummary;
+                    RunningServerToolTipText = runningSummary;
                 }
                 else
                 {
                     RunningServerDisplay = ResUI.CheckServerSettings;
-                    //RunningServerToolTipText = ResUI.CheckServerSettings;
+                    RunningServerToolTipText = ResUI.CheckServerSettings;
                 }
             }));
         }
