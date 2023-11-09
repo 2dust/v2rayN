@@ -1037,7 +1037,7 @@
     <value>當前字體(需重啓)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>拷貝字體TTF/TTC文件到目錄guiFonts，重啓設置</value>
+    <value>複製字型TTF/TTC文件到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>http端口=socks端口+1</value>
