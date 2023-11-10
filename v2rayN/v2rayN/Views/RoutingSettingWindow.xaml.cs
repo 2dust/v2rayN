@@ -88,6 +88,11 @@ namespace v2rayN.Views
 
         private void RoutingSettingWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (ViewModel?.enableRoutingBasic ?? false)
+            {
+                return;
+            }
+
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 if (e.Key == Key.A)
