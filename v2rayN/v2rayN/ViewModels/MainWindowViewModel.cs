@@ -147,10 +147,10 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
 
         public ReactiveCommand<Unit, Unit> CheckUpdateV2flyCoreCmd { get; }
-        public ReactiveCommand<Unit, Unit> CheckUpdateSagerNetCoreCmd { get; }
+        //public ReactiveCommand<Unit, Unit> CheckUpdateSagerNetCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
-        public ReactiveCommand<Unit, Unit> CheckUpdateClashCoreCmd { get; }
-        public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
+        //public ReactiveCommand<Unit, Unit> CheckUpdateClashCoreCmd { get; }
+        //public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateSingBoxCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateGeoCmd { get; }
 
@@ -500,22 +500,22 @@ namespace v2rayN.ViewModels
             {
                 CheckUpdateCore(ECoreType.v2fly_v5);
             });
-            CheckUpdateSagerNetCoreCmd = ReactiveCommand.Create(() =>
-            {
-                CheckUpdateCore(ECoreType.SagerNet);
-            });
+            //CheckUpdateSagerNetCoreCmd = ReactiveCommand.Create(() =>
+            //{
+            //    CheckUpdateCore(ECoreType.SagerNet);
+            //});
             CheckUpdateXrayCoreCmd = ReactiveCommand.Create(() =>
             {
                 CheckUpdateCore(ECoreType.Xray);
             });
-            CheckUpdateClashCoreCmd = ReactiveCommand.Create(() =>
-            {
-                CheckUpdateCore(ECoreType.clash);
-            });
-            CheckUpdateClashMetaCoreCmd = ReactiveCommand.Create(() =>
-            {
-                CheckUpdateCore(ECoreType.clash_meta);
-            });
+            //CheckUpdateClashCoreCmd = ReactiveCommand.Create(() =>
+            //{
+            //    CheckUpdateCore(ECoreType.clash);
+            //});
+            //CheckUpdateClashMetaCoreCmd = ReactiveCommand.Create(() =>
+            //{
+            //    CheckUpdateCore(ECoreType.clash_meta);
+            //});
             CheckUpdateSingBoxCoreCmd = ReactiveCommand.Create(() =>
             {
                 CheckUpdateCore(ECoreType.sing_box);

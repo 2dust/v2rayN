@@ -143,7 +143,7 @@
         public static readonly List<string> flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> kcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "v2fly_v5", "sing_box" };
+        public static readonly List<string> coreTypes = new() { "Xray", "sing_box" };
         public static readonly List<string> coreTypes4VLESS = new() { "Xray", "sing_box" };
         public static readonly List<string> domainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> domainStrategys4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };

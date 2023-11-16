@@ -252,7 +252,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.v2fly_v5,
                 coreExes = new List<string> { "v2ray" },
-                arguments = "run",
+                arguments = "run -c config.json -format jsonv5",
                 coreUrl = Global.v2flyCoreUrl,
                 coreReleaseApiUrl = Global.v2flyCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
                 coreDownloadUrl32 = Global.v2flyCoreUrl + "/download/{0}/v2ray-windows-{1}.zip",

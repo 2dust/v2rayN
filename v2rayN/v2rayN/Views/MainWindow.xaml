@@ -212,15 +212,15 @@
                                     x:Name="menuCheckUpdateV2flyCore"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="V2fly v5 Core" />
-                                <MenuItem
+                                <!--<MenuItem
                                     x:Name="menuCheckUpdateSagerNetCore"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="SagerNet Core" />
+                                    Header="SagerNet Core" />-->
                                 <MenuItem
                                     x:Name="menuCheckUpdateXrayCore"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="Xray Core" />
-                                <Separator Margin="-40,5" />
+                                <!--<Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateClashCore"
                                     Height="{StaticResource MenuItemHeight}"
@@ -229,7 +229,7 @@
                                     x:Name="menuCheckUpdateClashMetaCore"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="Clash.Meta Core" />
-                                <Separator Margin="-40,5" />
+                                <Separator Margin="-40,5" />-->
                                 <MenuItem
                                     x:Name="menuCheckUpdateSingBoxCore"
                                     Height="{StaticResource MenuItemHeight}"
@@ -384,9 +384,10 @@
                 <WrapPanel Margin="2" DockPanel.Dock="Top">
                     <ListBox
                         x:Name="lstGroup"
+                        MaxHeight="120"
                         FontSize="{DynamicResource StdFontSize}"
                         ItemContainerStyle="{StaticResource MyChipListBoxItem}"
-                        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}" MaxHeight="120">
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding remarks}" />
@@ -751,8 +752,8 @@
             <tb:TaskbarIcon
                 x:Name="tbNotify"
                 IconSource="/v2rayN.ico"
-                ToolTipText="v2rayN"
-                NoLeftClickDelay="True">
+                NoLeftClickDelay="True"
+                ToolTipText="v2rayN">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
                         <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}">
