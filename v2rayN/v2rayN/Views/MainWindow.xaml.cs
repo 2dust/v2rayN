@@ -322,7 +322,7 @@ namespace v2rayN.Views
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                switch (e.key)
+                switch (e.Key)
                 {
                     case Key.V:
                         ViewModel?.AddServerViaClipboard();
