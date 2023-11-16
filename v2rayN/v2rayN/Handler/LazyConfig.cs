@@ -361,6 +361,19 @@ namespace v2rayN.Handler
                 arguments = "run -c config.json",
                 coreUrl = Global.juicityCoreUrl
             });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.hysteria2,
+                coreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },
+                arguments = "",
+                coreUrl = Global.hysteriaCoreUrl,
+                coreReleaseApiUrl = Global.hysteriaCoreUrl.Replace(Global.githubUrl, Global.githubApiUrl),
+                coreDownloadUrl32 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-386.exe",
+                coreDownloadUrl64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-amd64.exe",
+                coreDownloadUrlArm64 = Global.hysteriaCoreUrl + "/download/{0}/hysteria-windows-arm64.exe",
+                redirectInfo = true,
+            });
         }
 
         #endregion Core Type
