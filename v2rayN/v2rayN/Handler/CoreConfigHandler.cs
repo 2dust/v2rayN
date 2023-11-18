@@ -80,6 +80,7 @@ namespace v2rayN.Handler
 
                 if (File.Exists(fileName))
                 {
+                    File.SetAttributes(fileName, FileAttributes.Normal); //If the file has a read-only attribute, direct deletion will fail
                     File.Delete(fileName);
                 }
 
@@ -94,6 +95,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
                 File.Copy(addressFileName, fileName);
+                File.SetAttributes(fileName, FileAttributes.Normal); //Copy will keep the attributes of addressFileName, so we need to add write permissions to fileName just in case of addressFileName is a read-only file.
 
                 //check again
                 if (!File.Exists(fileName))
