@@ -187,10 +187,10 @@
     <value>Исходная конфигурация</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} является последней версией.</value>
+    <value>{0} {1} является последней версией.</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} является последней версией.</value>
+    <value>{0} {1} является последней версией.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Адрес</value>

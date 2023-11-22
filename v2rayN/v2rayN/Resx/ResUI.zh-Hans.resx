@@ -187,10 +187,10 @@
     <value>初始化配置</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} 已是最新版本。</value>
+    <value>{0} {1} 已是最新版本。</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} 已是最新版本。</value>
+    <value>{0} {1} 已是最新版本。</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>地址</value>
