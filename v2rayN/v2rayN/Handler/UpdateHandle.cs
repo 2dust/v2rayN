@@ -427,7 +427,7 @@ namespace v2rayN.Handler
                     case ECoreType.v2fly_v5:
                         {
                             curVersion = getCoreVersion(type);
-                            message = string.Format(ResUI.IsLatestCore, curVersion.ToVersionString("v"));
+                            message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             string osBit = "64";
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -451,7 +451,7 @@ namespace v2rayN.Handler
                     case ECoreType.clash_meta:
                         {
                             curVersion = getCoreVersion(type);
-                            message = string.Format(ResUI.IsLatestCore, curVersion);
+                            message = string.Format(ResUI.IsLatestCore, type, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
                                 case Architecture.Arm64:
@@ -472,7 +472,7 @@ namespace v2rayN.Handler
                     case ECoreType.sing_box:
                         {
                             curVersion = getCoreVersion(type);
-                            message = string.Format(ResUI.IsLatestCore, curVersion.ToVersionString("v"));
+                            message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
                                 case Architecture.Arm64:
@@ -493,7 +493,7 @@ namespace v2rayN.Handler
                     case ECoreType.v2rayN:
                         {
                             curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString());
-                            message = string.Format(ResUI.IsLatestN, curVersion);
+                            message = string.Format(ResUI.IsLatestN, type, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
                                 case Architecture.Arm64:

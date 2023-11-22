@@ -187,10 +187,10 @@
     <value>Initial Configuration</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} {1} already up to date.</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} already up to date.</value>
+    <value>{0} {1} already up to date.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>Address</value>
