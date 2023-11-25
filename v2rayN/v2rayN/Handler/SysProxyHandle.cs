@@ -20,7 +20,6 @@ namespace v2rayN.Handler
         //  <proxy-server><CR-LF>
         //  <bypass-list><CR-LF>
         //  <pac-url>
-        private static SysproxyConfig? _userSettings = null;
 
         private enum RET_ERRORS : int
         {
