@@ -494,10 +494,17 @@ namespace v2rayN.Views
 
             if (!_config.guiItem.enableStatistics)
             {
-                colTodayUp.Visibility = Visibility.Hidden;
-                colTodayDown.Visibility = Visibility.Hidden;
-                colTotalUp.Visibility = Visibility.Hidden;
+                colTodayUp.Visibility =
+                colTodayDown.Visibility =
+                colTotalUp.Visibility =
                 colTotalDown.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                colTodayUp.Visibility =
+                colTodayDown.Visibility =
+                colTotalUp.Visibility =
+                colTotalDown.Visibility = Visibility.Visible;
             }
         }
 
