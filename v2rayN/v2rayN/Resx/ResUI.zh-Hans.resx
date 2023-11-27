@@ -1135,4 +1135,7 @@
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
   </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>添加[Hysteria2]服务器</value>
+  </data>
 </root>

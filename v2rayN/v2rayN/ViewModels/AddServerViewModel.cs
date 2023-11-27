@@ -145,6 +145,10 @@ namespace v2rayN.ViewModels
                 case EConfigType.Trojan:
                     ret = ConfigHandler.AddTrojanServer(ref _config, item);
                     break;
+
+                case EConfigType.Hysteria2:
+                    ret = ConfigHandler.AddHysteria2Server(ref _config, item);
+                    break;
             }
 
             if (ret == 0)

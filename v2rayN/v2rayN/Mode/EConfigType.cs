@@ -7,6 +7,7 @@
         Shadowsocks = 3,
         Socks = 4,
         VLESS = 5,
-        Trojan = 6
+        Trojan = 6,
+        Hysteria2 = 7
     }
 }

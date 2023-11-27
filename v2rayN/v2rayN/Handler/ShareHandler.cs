@@ -29,6 +29,7 @@ namespace v2rayN.Handler
                     EConfigType.Socks => ShareSocks(item),
                     EConfigType.Trojan => ShareTrojan(item),
                     EConfigType.VLESS => ShareVLESS(item),
+                    EConfigType.Hysteria2 => ShareHysteria2(item),
                     _ => null,
                 };
 
@@ -159,6 +160,35 @@ namespace v2rayN.Handler
             GetIpv6(item.address),
             item.port);
             url = $"{Global.vlessProtocol}{url}{query}{remark}";
+            return url;
+        }
+
+        private static string ShareHysteria2(ProfileItem item)
+        {
+            string url = string.Empty;
+            string remark = string.Empty;
+            if (!Utils.IsNullOrEmpty(item.remarks))
+            {
+                remark = "#" + Utils.UrlEncode(item.remarks);
+            }
+            var dicQuery = new Dictionary<string, string>();
+            if (!Utils.IsNullOrEmpty(item.sni))
+            {
+                dicQuery.Add("sni", item.sni);
+            }
+            if (!Utils.IsNullOrEmpty(item.alpn))
+            {
+                dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+            }
+            dicQuery.Add("insecure", item.allowInsecure.ToLower() == "true" ? "1" : "0");
+
+            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
+
+            url = string.Format("{0}@{1}:{2}",
+            item.id,
+            GetIpv6(item.address),
+            item.port);
+            url = $"{Global.hysteria2Protocol}{url}{query}{remark}";
             return url;
         }
 
@@ -352,6 +382,12 @@ namespace v2rayN.Handler
                 else if (result.StartsWith(Global.vlessProtocol))
                 {
                     profileItem = ResolveStdVLESS(result);
+                }
+                else if (result.StartsWith(Global.hysteria2Protocol))
+                {
+                    msg = ResUI.ConfigurationFormatIncorrect;
+
+                    profileItem = ResolveHysteria2(result);
                 }
                 else
                 {
@@ -753,6 +789,26 @@ namespace v2rayN.Handler
             var query = HttpUtility.ParseQueryString(url.Query);
             item.security = query["encryption"] ?? "none";
             item.streamSecurity = query["security"] ?? "";
+            ResolveStdTransport(query, ref item);
+
+            return item;
+        }
+
+        private static ProfileItem ResolveHysteria2(string result)
+        {
+            ProfileItem item = new()
+            {
+                configType = EConfigType.Hysteria2
+            };
+
+            Uri url = new(result);
+
+            item.address = url.IdnHost;
+            item.port = url.Port;
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.id = url.UserInfo;
+
+            var query = HttpUtility.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
 
             return item;

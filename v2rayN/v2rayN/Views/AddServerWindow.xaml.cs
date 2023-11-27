@@ -117,6 +117,14 @@ namespace v2rayN.Views
                         cmbFlow6.Items.Add(it);
                     });
                     break;
+
+                case EConfigType.Hysteria2:
+                    gridHysteria2.Visibility = Visibility.Visible;
+                    sepa2.Visibility = Visibility.Collapsed;
+                    gridTransport.Visibility = Visibility.Collapsed;
+                    cmbCoreType.IsEnabled = false;
+
+                    break;
             }
 
             gridTlsMore.Visibility = Visibility.Hidden;
@@ -155,6 +163,10 @@ namespace v2rayN.Views
                     case EConfigType.Trojan:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId6.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.flow, v => v.cmbFlow6.Text).DisposeWith(disposables);
+                        break;
+
+                    case EConfigType.Hysteria2:
+                        this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId7.Text).DisposeWith(disposables);
                         break;
                 }
                 this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);

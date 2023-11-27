@@ -83,6 +83,10 @@
                                     x:Name="menuAddTrojanServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                                <MenuItem
+                                    x:Name="menuAddHysteria2Server"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuAddServerViaClipboard"

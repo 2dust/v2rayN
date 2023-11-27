@@ -74,6 +74,8 @@
         public const string vlessProtocolLite = "vless";
         public const string trojanProtocol = "trojan://";
         public const string trojanProtocolLite = "trojan";
+        public const string hysteria2Protocol = "hysteria2://";
+        public const string hysteria2ProtocolLite = "hysteria2";
 
         public const string userEMail = "t@t.tt";
         public const string MyRegPath = "Software\\v2rayNGUI";
@@ -154,7 +156,7 @@
         public static readonly List<string> allowInsecures = new() { "true", "false", "" };
         public static readonly List<string> domainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
-        public static readonly List<string> alpns = new() { "h2", "http/1.1", "h2,http/1.1", "" };
+        public static readonly List<string> alpns = new() { "h2", "http/1.1", "h2,http/1.1", "h3", "" };
         public static readonly List<string> LogLevel = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
         public static readonly List<string> Protocols = new() { "http", "tls", "bittorrent" };

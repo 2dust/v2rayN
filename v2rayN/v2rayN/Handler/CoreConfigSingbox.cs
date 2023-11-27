@@ -283,6 +283,14 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound);
                 }
+                else if (node.configType == EConfigType.Hysteria2)
+                {
+                    outbound.type = Global.hysteria2ProtocolLite;
+
+                    outbound.password = node.id;
+
+                    outboundMux(node, outbound);
+                }
 
                 outboundTls(node, outbound);
 

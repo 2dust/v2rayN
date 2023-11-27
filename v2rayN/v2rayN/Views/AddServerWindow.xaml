@@ -399,13 +399,43 @@
                     Margin="{StaticResource ServerItemMargin}"
                     Style="{StaticResource DefComboBox}" />
             </Grid>
+            <Grid
+                x:Name="gridHysteria2"
+                Grid.Row="2"
+                Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="{StaticResource ServerItemMargin}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbId3}" />
+                <TextBox
+                    x:Name="txtId7"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource ServerItemMargin}"
+                    Style="{StaticResource DefTextBox}" />
+            </Grid>
 
             <Separator
+                x:Name="sepa2"
                 Grid.Row="3"
                 Margin="0,2"
                 Style="{DynamicResource MaterialDesignSeparator}" />
 
-            <Grid Grid.Row="4">
+            <Grid x:Name="gridTransport" Grid.Row="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
