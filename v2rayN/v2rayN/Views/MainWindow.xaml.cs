@@ -328,21 +328,27 @@ namespace v2rayN.Views
                     case Key.V:
                         ViewModel?.AddServerViaClipboard();
                         break;
+
                     case Key.P:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Ping);
                         break;
+
                     case Key.O:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Tcping);
                         break;
+
                     case Key.R:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Realping);
                         break;
+
                     case Key.S:
                         _ = ViewModel?.ScanScreenTaskAsync();
                         break;
+
                     case Key.T:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Speedtest);
                         break;
+
                     case Key.E:
                         ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
                         break;

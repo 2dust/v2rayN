@@ -309,7 +309,6 @@
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource DefComboBox}" />
 
-
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="0"
@@ -335,10 +334,7 @@
                                 Margin="{StaticResource SettingItemMargin}"
                                 materialDesign:HintAssist.Hint="Down"
                                 Style="{StaticResource DefTextBox}" />
-
                         </StackPanel>
-
-
                     </Grid>
                 </ScrollViewer>
             </TabItem>

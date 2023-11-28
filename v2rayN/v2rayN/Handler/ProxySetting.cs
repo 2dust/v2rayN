@@ -78,7 +78,7 @@ namespace v2rayN.Handler
             if (optionCount > 1)
             {
                 options[1].m_Option = m_Option;
-                options[1].m_Value.m_StringPtr = Marshal.StringToHGlobalAuto(strProxy); // !! remember to deallocate memory 1 
+                options[1].m_Value.m_StringPtr = Marshal.StringToHGlobalAuto(strProxy); // !! remember to deallocate memory 1
                 // except for these addresses ...
                 if (optionCount > 2)
                 {
@@ -91,10 +91,10 @@ namespace v2rayN.Handler
             list.dwSize = Marshal.SizeOf(list);
             if (connectionName != null)
             {
-                list.szConnection = Marshal.StringToHGlobalAuto(connectionName); // !! remember to deallocate memory 3 
+                list.szConnection = Marshal.StringToHGlobalAuto(connectionName); // !! remember to deallocate memory 3
             }
             else
-            { 
+            {
                 list.szConnection = IntPtr.Zero;
             }
             list.dwOptionCount = options.Length;
@@ -141,7 +141,7 @@ namespace v2rayN.Handler
             }
 
             // FREE the data ASAP
-            if(list.szConnection != IntPtr.Zero) Marshal.FreeHGlobal(list.szConnection); // release mem 3
+            if (list.szConnection != IntPtr.Zero) Marshal.FreeHGlobal(list.szConnection); // release mem 3
             if (optionCount > 1)
             {
                 Marshal.FreeHGlobal(options[1].m_Value.m_StringPtr); // release mem 1
@@ -155,7 +155,7 @@ namespace v2rayN.Handler
             if (returnvalue != 0)
             {
                 // throw the error codes, they might be helpful
-                throw new ApplicationException($"Set Internet Proxy failed with error code: {Marshal.GetLastWin32Error()}" );
+                throw new ApplicationException($"Set Internet Proxy failed with error code: {Marshal.GetLastWin32Error()}");
             }
 
             return true;
@@ -256,8 +256,8 @@ namespace v2rayN.Handler
 
             // Constants
             public const int RAS_MaxEntryName = 256;
-            public const int MAX_PATH = 260; // Standard MAX_PATH value in Windows
 
+            public const int MAX_PATH = 260; // Standard MAX_PATH value in Windows
         }
 
         #endregion WinInet structures
@@ -310,6 +310,7 @@ namespace v2rayN.Handler
             [DllImport("WinInet.dll", SetLastError = true, CharSet = CharSet.Auto)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool InternetSetOption(IntPtr hInternet, InternetOption dwOption, IntPtr lpBuffer, int dwBufferLength);
+
             [DllImport("Rasapi32.dll", CharSet = CharSet.Auto)]
             public static extern uint RasEnumEntries(
                 string? reserved,          // Reserved, must be null

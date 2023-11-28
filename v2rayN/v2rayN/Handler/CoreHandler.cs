@@ -62,7 +62,6 @@ namespace v2rayN.Handler
                                 Utils.SaveLog("Tun mode restart the core once");
                             }
                         }
-
                     });
                 }
             }

@@ -1,10 +1,5 @@
 ﻿using PacLib;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using v2rayN.Mode;
-using v2rayN.Properties;
-using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -33,7 +28,6 @@ namespace v2rayN.Handler
 
         static SysProxyHandle()
         {
-
         }
 
         public static bool UpdateSysProxy(Config config, bool forceDisable)

@@ -89,7 +89,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> AddShadowsocksServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddSocksServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddTrojanServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }        
+        public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
@@ -148,11 +148,14 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
 
         public ReactiveCommand<Unit, Unit> CheckUpdateV2flyCoreCmd { get; }
+
         //public ReactiveCommand<Unit, Unit> CheckUpdateSagerNetCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
+
         //public ReactiveCommand<Unit, Unit> CheckUpdateClashCoreCmd { get; }
         //public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateSingBoxCoreCmd { get; }
+
         public ReactiveCommand<Unit, Unit> CheckUpdateGeoCmd { get; }
 
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
