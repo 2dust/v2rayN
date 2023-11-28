@@ -1141,4 +1141,7 @@
   <data name="menuAddHysteria2Server" xml:space="preserve">
     <value>Add [Trojan] server</value>
   </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria Max bandwidth (Up/Dw)</value>
+  </data>
 </root>

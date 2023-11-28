@@ -2564,6 +2564,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Hysteria Max bandwidth (Up/Dw) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsHysteriaBandwidth {
+            get {
+                return ResourceManager.GetString("TbSettingsHysteriaBandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Ignore Geo files when updating core 的本地化字符串。
         /// </summary>
         public static string TbSettingsIgnoreGeoUpdateCore {

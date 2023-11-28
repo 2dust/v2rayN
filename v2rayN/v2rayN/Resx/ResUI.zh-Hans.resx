@@ -1138,4 +1138,7 @@
   <data name="menuAddHysteria2Server" xml:space="preserve">
     <value>添加[Hysteria2]服务器</value>
   </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria 最大带宽(Up/Dw)</value>
+  </data>
 </root>

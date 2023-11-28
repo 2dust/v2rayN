@@ -184,9 +184,9 @@ namespace v2rayN.Handler
                 config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
 
-            if (config.mux4Sbox == null)
+            if (config.mux4SboxItem == null)
             {
-                config.mux4Sbox = new()
+                config.mux4SboxItem = new()
                 {
                     protocol = Global.SingboxMuxs[0],
                     max_connections = 4,
@@ -195,6 +195,16 @@ namespace v2rayN.Handler
                     padding = true
                 };
             }
+
+            if (config.hysteriaItem == null)
+            {
+                config.hysteriaItem = new()
+                {
+                    up_mbps = 100,
+                    down_mbps = 100
+                };
+            }
+
 
             LazyConfig.Instance.SetConfig(config);
             return 0;

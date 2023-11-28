@@ -383,7 +383,7 @@ namespace v2rayN.Handler
                 {
                     profileItem = ResolveStdVLESS(result);
                 }
-                else if (result.StartsWith(Global.hysteria2Protocol))
+                else if (result.StartsWith(Global.hysteria2Protocol) || result.StartsWith(Global.hysteria2Protocol2))
                 {
                     msg = ResUI.ConfigurationFormatIncorrect;
 

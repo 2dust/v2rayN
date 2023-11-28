@@ -289,6 +289,9 @@ namespace v2rayN.Handler
 
                     outbound.password = node.id;
 
+                    outbound.up_mbps = _config.hysteriaItem.up_mbps > 0 ? _config.hysteriaItem.up_mbps : null;
+                    outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
+
                     outboundMux(node, outbound);
                 }
 

@@ -75,6 +75,7 @@
         public const string trojanProtocol = "trojan://";
         public const string trojanProtocolLite = "trojan";
         public const string hysteria2Protocol = "hysteria2://";
+        public const string hysteria2Protocol2 = "hy2://";
         public const string hysteria2ProtocolLite = "hysteria2";
 
         public const string userEMail = "t@t.tt";

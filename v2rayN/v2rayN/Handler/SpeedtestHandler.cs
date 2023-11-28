@@ -30,7 +30,7 @@ namespace v2rayN.Handler
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
-                if (it.configType == EConfigType.Custom)
+                if (it.configType == EConfigType.Custom || it.configType == EConfigType.Hysteria2)
                 {
                     continue;
                 }
