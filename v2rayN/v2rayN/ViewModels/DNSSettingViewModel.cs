@@ -15,6 +15,7 @@ namespace v2rayN.ViewModels
         private NoticeHandler? _noticeHandler;
         private Window _view;
 
+        [Reactive] public bool useSystemHosts { get; set; }
         [Reactive] public string domainStrategy4Freedom { get; set; }
         [Reactive] public string normalDNS { get; set; }
         [Reactive] public string normalDNS2 { get; set; }
@@ -31,6 +32,7 @@ namespace v2rayN.ViewModels
             _view = view;
 
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+            useSystemHosts = item.useSystemHosts;
             domainStrategy4Freedom = item?.domainStrategy4Freedom!;
             normalDNS = item?.normalDNS!;
 
@@ -95,6 +97,7 @@ namespace v2rayN.ViewModels
 
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
             item.domainStrategy4Freedom = domainStrategy4Freedom;
+            item.useSystemHosts = useSystemHosts;
             item.normalDNS = normalDNS;
             ConfigHandler.SaveDNSItems(_config, item);
 

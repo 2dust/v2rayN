@@ -37,6 +37,7 @@ namespace v2rayN.Views
 
             this.WhenActivated(disposables =>
             {
+                this.Bind(ViewModel, vm=>vm.useSystemHosts, v=>v.togUseSystemHosts.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.domainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.normalDNS, v => v.txtnormalDNS.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.normalDNS2, v => v.txtnormalDNS2.Text).DisposeWith(disposables);

@@ -1117,7 +1117,7 @@
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>请填写 DNS JSON 结构，点击查看文档</value>
   </data>
-  <data name="TBSettingDnsImportDefConfig" xml:space="preserve">
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
     <value>点击导入默认DNS配置</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
@@ -1140,5 +1140,8 @@
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria 最大带宽(Up/Dw)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>使用系统hosts</value>
   </data>
 </root>
