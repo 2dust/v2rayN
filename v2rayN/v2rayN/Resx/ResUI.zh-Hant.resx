@@ -1117,7 +1117,7 @@
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>請填寫 DNS JSON 結構，點擊查看文件</value>
   </data>
-  <data name="TBSettingDnsImportDefConfig" xml:space="preserve">
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
     <value>點擊匯入預設DNS配置</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">

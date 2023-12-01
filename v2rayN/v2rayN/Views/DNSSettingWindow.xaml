@@ -81,9 +81,23 @@
                         <Button
                             x:Name="btnImportDefConfig4V2ray"
                             Margin="8,0,0,0"
-                            Content="{x:Static resx:ResUI.TBSettingDnsImportDefConfig}"
+                            Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
+                    </StackPanel>
+                    
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
+                        <ToggleButton
+                            x:Name="togUseSystemHosts"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
                     </StackPanel>
 
                     <TextBox
@@ -113,7 +127,7 @@
                         <Button
                             x:Name="btnImportDefConfig4Singbox"
                             Margin="8,0,0,0"
-                            Content="{x:Static resx:ResUI.TBSettingDnsImportDefConfig}"
+                            Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
                     </StackPanel>
