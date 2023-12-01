@@ -64,6 +64,20 @@
                             Style="{StaticResource DefComboBox}" />
                     </StackPanel>
 
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
+                        <ToggleButton
+                            x:Name="togUseSystemHosts"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+                    </StackPanel>
+
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock
                             Margin="{StaticResource SettingItemMargin}"
@@ -84,20 +98,6 @@
                             Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
-                    </StackPanel>
-                    
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
-                        <ToggleButton
-                            x:Name="togUseSystemHosts"
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
                     </StackPanel>
 
                     <TextBox

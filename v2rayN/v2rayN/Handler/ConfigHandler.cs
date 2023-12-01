@@ -892,7 +892,7 @@ namespace v2rayN.Handler
                 {
                     profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
                 }
-                if (Utils.IsNullOrEmpty(profileItem.fingerprint))
+                if (Utils.IsNullOrEmpty(profileItem.fingerprint) && profileItem.streamSecurity == Global.StreamSecurityReality)
                 {
                     profileItem.fingerprint = config.coreBasicItem.defFingerprint;
                 }

@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json.Linq;
+using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
-using Newtonsoft.Json.Linq;
 using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -721,7 +721,7 @@ namespace v2rayN.Handler
                 }
 
                 var obj = Utils.ParseJson(normalDNS) ?? new JObject();
-                
+
                 if (!obj.ContainsKey("servers"))
                 {
                     List<string> servers = new();
@@ -732,16 +732,16 @@ namespace v2rayN.Handler
                     }
                     obj["servers"] = JArray.FromObject(servers);
                 }
-                
+
                 if (item.useSystemHosts)
                 {
-                    var hostfile = @"C:\Windows\System32\drivers\etc\hosts" ;
+                    var hostfile = @"C:\Windows\System32\drivers\etc\hosts";
 
                     if (File.Exists(hostfile))
                     {
                         var hosts = File.ReadAllText(hostfile).Replace("\r", "");
                         var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        
+
                         // 获取系统hosts
                         var systemHosts = new Dictionary<string, string>();
                         foreach (var host in hostsList)
@@ -751,7 +751,7 @@ namespace v2rayN.Handler
                             if (hostItem.Length < 2) continue;
                             systemHosts.Add(hostItem[1], hostItem[0]);
                         }
-                        
+
                         // 追加至 dns 设置
                         var normalHost = obj["hosts"] ?? new JObject();
                         foreach (var host in systemHosts)
@@ -762,7 +762,7 @@ namespace v2rayN.Handler
                         obj["hosts"] = normalHost;
                     }
                 }
-                
+
                 v2rayConfig.dns = obj;
             }
             catch (Exception ex)

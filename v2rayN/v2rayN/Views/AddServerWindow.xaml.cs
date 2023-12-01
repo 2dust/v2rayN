@@ -123,7 +123,8 @@ namespace v2rayN.Views
                     sepa2.Visibility = Visibility.Collapsed;
                     gridTransport.Visibility = Visibility.Collapsed;
                     cmbCoreType.IsEnabled = false;
-
+                    cmbFingerprint.IsEnabled = false;
+                    cmbFingerprint.Text = string.Empty;
                     break;
             }
 
