@@ -24,11 +24,13 @@ namespace v2rayN.Handler
         {
             public bool Success;
             public string Msg;
+            public string Url;
 
-            public ResultEventArgs(bool success, string msg)
+            public ResultEventArgs(bool success, string msg, string url = "")
             {
                 Success = success;
                 Msg = msg;
+                Url = url;
             }
         }
 
@@ -83,8 +85,9 @@ namespace v2rayN.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, "v2rayN"));
+                    _updateFunc(false, args.Msg);
 
-                    url = args.Msg;
+                    url = args.Url;
                     _ = askToDownload(downloadHandle, url, true);
                 }
                 else
@@ -135,7 +138,9 @@ namespace v2rayN.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, "Core"));
-                    url = args.Msg;
+                    _updateFunc(false, args.Msg);
+
+                    url = args.Url;
                     _ = askToDownload(downloadHandle, url, true);
                 }
                 else
@@ -405,15 +410,10 @@ namespace v2rayN.Handler
             try
             {
                 var gitHubReleases = Utils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);
-                SemanticVersion version;
-                if (preRelease)
-                {
-                    version = new SemanticVersion(gitHubReleases!.First().TagName);
-                }
-                else
-                {
-                    version = new SemanticVersion(gitHubReleases!.First(r => r.Prerelease == false).TagName);
-                }
+                var gitHubRelease = preRelease ? gitHubReleases!.First() : gitHubReleases!.First(r => r.Prerelease == false);
+                var version = new SemanticVersion(gitHubRelease!.TagName);
+                var body = gitHubRelease!.Body;
+
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
                 SemanticVersion curVersion;
@@ -520,7 +520,7 @@ namespace v2rayN.Handler
                     return;
                 }
 
-                AbsoluteCompleted?.Invoke(this, new ResultEventArgs(true, url));
+                AbsoluteCompleted?.Invoke(this, new ResultEventArgs(true, body, url));
             }
             catch (Exception ex)
             {
@@ -603,7 +603,7 @@ namespace v2rayN.Handler
             var url = string.Format(Global.singboxGeoUrl, geoName);
 
             DownloadHandle downloadHandle = new();
-            downloadHandle.UpdateCompleted += (sender2, args) =>
+            downloadHandle.UpdateCompleted += async (sender2, args) =>
             {
                 if (args.Success)
                 {
@@ -612,8 +612,11 @@ namespace v2rayN.Handler
 
                     try
                     {
-                        if (needStop) coreHandler?.CoreStop();
-                        Task.Delay(1000);
+                        if (needStop)
+                        {
+                            coreHandler?.CoreStop();
+                            await Task.Delay(3000);
+                        }
                         string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {

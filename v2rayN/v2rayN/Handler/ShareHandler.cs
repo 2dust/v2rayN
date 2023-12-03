@@ -810,6 +810,7 @@ namespace v2rayN.Handler
 
             var query = HttpUtility.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
+            item.allowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
             return item;
         }
