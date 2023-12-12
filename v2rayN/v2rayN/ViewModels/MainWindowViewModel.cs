@@ -800,7 +800,7 @@ namespace v2rayN.ViewModels
 
         public void RefreshServers()
         {
-            List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
+            List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItemsReg(_subId, _serverFilter);
 
             ConfigHandler.SetDefaultServer(_config, lstModel);
 

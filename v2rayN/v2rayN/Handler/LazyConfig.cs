@@ -1,4 +1,4 @@
-﻿using System.Runtime.Intrinsics.X86;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -73,6 +73,19 @@ namespace v2rayN.Handler
             return SqliteHelper.Instance.Table<SubItem>().FirstOrDefault(t => t.id == subid);
         }
 
+        public List<SubItem> SubItemIndexs(string filterreg)
+        {
+            if (Utils.IsNullOrEmpty(filterreg))
+            {
+                return SqliteHelper.Instance.Table<SubItem>().ToList();
+            }
+            else
+            {
+                var sql = String.Format("SELECT * FROM SubItem WHERE remarks REGEXP '{0}'",filterreg);
+                return SqliteHelper.Instance.Query<SubItem>(sql);
+            }
+        }
+
         public List<ProfileItem> ProfileItems(string subid)
         {
             if (Utils.IsNullOrEmpty(subid))
@@ -115,6 +128,35 @@ namespace v2rayN.Handler
                     filter = filter.Replace("'", "");
                 }
                 sql += String.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
+            }
+
+            return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
+        }
+
+        public List<ProfileItemModel> ProfileItemsReg(string subidfilter, string profilefilter)
+        {
+            var sql = @$"SELECT * FROM ProfileItem";
+
+            if (!Utils.IsNullOrEmpty(profilefilter))
+            {
+                if (profilefilter[0] != '^' && profilefilter[0] != '.')
+                    profilefilter = @".*" + profilefilter;
+                if (profilefilter[profilefilter.Length - 1] != '$' && profilefilter[profilefilter.Length - 1] != '*')
+                    profilefilter = profilefilter + @".*";
+
+                sql += String.Format(" WHERE remarks REGEXP '{0}'", profilefilter);
+            }
+
+            if (!Utils.IsNullOrEmpty(subidfilter))
+            {
+                //if (subidfilter[0] != '^' && subidfilter[0] != '.')
+                //    subidfilter = @".*" + subidfilter;
+                //if (subidfilter[subidfilter.Length-1] != '$' && subidfilter[subidfilter.Length - 1] != '*')
+                //    subidfilter =subidfilter+@".*";
+                if (!Utils.IsNullOrEmpty(profilefilter))
+                    sql += String.Format(" AND subid REGEXP '{0}'", subidfilter);
+                else
+                    sql += String.Format(" WHERE subid REGEXP '{0}'", subidfilter);
             }
 
             return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();

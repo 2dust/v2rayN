@@ -1,5 +1,8 @@
 ﻿using SQLite;
+using SQLitePCL;
 using System.Collections;
+using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace v2rayN
 {
@@ -17,6 +20,20 @@ namespace v2rayN
             _connstr = Utils.GetConfigPath(Global.ConfigDB);
             _db = new SQLiteConnection(_connstr, false);
             _dbAsync = new SQLiteAsyncConnection(_connstr, false);
+            SQLitePCL.raw.sqlite3_create_function(_db.Handle, "REGEXP", 2, null, MatchRegex);
+            SQLitePCL.raw.sqlite3_create_function(_dbAsync.GetConnection().Handle, "REGEXP", 2, null, MatchRegex);
+        }
+
+        private void MatchRegex(sqlite3_context ctx, object user_data, sqlite3_value[] args)
+        {
+            lock (objLock)
+            {
+                bool isMatched = System.Text.RegularExpressions.Regex.IsMatch(SQLitePCL.raw.sqlite3_value_text(args[1]).utf8_to_string(), SQLitePCL.raw.sqlite3_value_text(args[0]).utf8_to_string(), RegexOptions.IgnoreCase);
+                if (isMatched)
+                    SQLitePCL.raw.sqlite3_result_int(ctx, 1);
+                else
+                    SQLitePCL.raw.sqlite3_result_int(ctx, 0);
+            }
         }
 
         public CreateTableResult CreateTable<T>()
