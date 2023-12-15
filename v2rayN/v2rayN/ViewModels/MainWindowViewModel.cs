@@ -818,6 +818,7 @@ namespace v2rayN.ViewModels
                         select new ProfileItemModel
                         {
                             indexId = t.indexId,
+                            autoSwitch=t.autoSwitch,
                             configType = t.configType,
                             remarks = t.remarks,
                             address = t.address,

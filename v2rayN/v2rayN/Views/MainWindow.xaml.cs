@@ -563,7 +563,13 @@ namespace v2rayN.Views
                 Utils.ProcessStart(item.Tag.ToString());
             }
         }
-
+        private void AutoSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            //CheckBox cb = sender as CheckBox;
+           var item = LazyConfig.Instance.GetProfileItem(ViewModel.SelectedProfile.indexId);
+            item.autoSwitch = ViewModel.SelectedProfile.autoSwitch;
+            SqliteHelper.Instance.Update(item);
+        }
         #endregion UI
 
         #region Drag and Drop

@@ -667,8 +667,23 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-
-                            <base:MyDGTextColumn
+                            <base:MyDGBoolColumn
+                                Width="Auto"
+                                Binding="{Binding autoSwitch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ExName="autoSwitch"
+                                Header="{x:Static resx:ResUI.LvAutoSwitch}">
+                                <DataGridCheckBoxColumn.ElementStyle>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property= "HorizontalAlignment" Value= "Center" />
+                                    </Style>
+                                </DataGridCheckBoxColumn.ElementStyle>
+                                <DataGridCheckBoxColumn.CellStyle>
+                                    <Style>
+                                        <EventSetter Event="CheckBox.Click" Handler="AutoSwitch_Click"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.CellStyle>
+                            </base:MyDGBoolColumn>
+                                <base:MyDGTextColumn
                                 Width="80"
                                 Binding="{Binding configType}"
                                 ExName="configType"

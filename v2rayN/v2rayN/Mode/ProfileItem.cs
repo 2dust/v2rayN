@@ -8,6 +8,7 @@ namespace v2rayN.Mode
         public ProfileItem()
         {
             indexId = string.Empty;
+            autoSwitch = false;
             configType = EConfigType.VMess;
             configVersion = 2;
             address = string.Empty;
@@ -89,6 +90,7 @@ namespace v2rayN.Mode
         /// </summary>
         public EConfigType configType { get; set; }
 
+        public bool autoSwitch { get; set; }
         /// <summary>
         /// 版本(现在=2)
         /// </summary>

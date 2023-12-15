@@ -369,6 +369,15 @@ namespace v2rayN.Resx {
         /// <summary>
         ///   查找类似 Automatic update interval(minutes) 的本地化字符串。
         /// </summary>
+        public static string LvAutoSwitch {
+            get {
+                return ResourceManager.GetString("LvAutoSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automatic update interval(minutes) 的本地化字符串。
+        /// </summary>
         public static string LvAutoUpdateInterval {
             get {
                 return ResourceManager.GetString("LvAutoUpdateInterval", resourceCulture);

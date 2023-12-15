@@ -204,6 +204,9 @@
   <data name="LvServiceType" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="LvAutoSwitch" xml:space="preserve">
+  <value>AutoSwitch</value>
+  </data>
   <data name="LvSubscription" xml:space="preserve">
     <value>Subs group</value>
   </data>

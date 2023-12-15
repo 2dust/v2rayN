@@ -204,6 +204,9 @@
   <data name="LvServiceType" xml:space="preserve">
     <value>类型</value>
   </data>
+  <data name="LvAutoSwitch" xml:space="preserve">
+    <value>切换</value>
+  </data>
   <data name="LvSubscription" xml:space="preserve">
     <value>订阅分组</value>
   </data>

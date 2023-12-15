@@ -3,6 +3,7 @@
     public enum EServerColName
     {
         def = 0,
+        autoSwitch,
         configType,
         remarks,
         address,

@@ -813,6 +813,7 @@ namespace v2rayN.Handler
                               from t33 in t3b.DefaultIfEmpty()
                               select new ProfileItemModel
                               {
+                                  autoSwitch= t.autoSwitch,
                                   indexId = t.indexId,
                                   configType = t.configType,
                                   remarks = t.remarks,
