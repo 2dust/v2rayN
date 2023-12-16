@@ -98,6 +98,11 @@ namespace v2rayN.Handler
             }
         }
 
+        public List<ProfileItem> ProfileItemsAutoSwitch()
+        {
+                return SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.autoSwitch == true).ToList();
+        }
+
         public List<string> ProfileItemIndexs(string subid)
         {
             if (Utils.IsNullOrEmpty(subid))
