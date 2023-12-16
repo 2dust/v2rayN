@@ -16,7 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.118" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.123" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
@@ -25,7 +25,7 @@
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
 		<PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
 		<PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
-		<PackageReference Include="Splat.NLog" Version="14.8.6" />
+		<PackageReference Include="Splat.NLog" Version="14.8.12" />
 		<PackageReference Include="System.Reactive" Version="6.0.0" />
 	</ItemGroup>
 	
