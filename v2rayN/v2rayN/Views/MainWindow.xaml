@@ -751,6 +751,10 @@
                     </DataGrid>
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                     <local:MsgView Grid.Row="2" />
+                    <materialDesign:Snackbar
+                        x:Name="MainSnackbar"
+                        Grid.Row="2"
+                        MessageQueue="{materialDesign:MessageQueue}" />
                 </Grid>
             </DockPanel>
             <tb:TaskbarIcon
@@ -861,7 +865,6 @@
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>
             </tb:TaskbarIcon>
-            <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
     </materialDesign:DialogHost>
 </reactiveui:ReactiveWindow>
