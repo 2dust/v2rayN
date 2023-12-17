@@ -1072,4 +1072,94 @@
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>URL спидтеста</value>
   </data>
+  <data name="LvAutoSwitch" xml:space="preserve">
+    <value>Автопереключение</value>
+  </data>
+  <data name="TbSettingsAutoSwitch" xml:space="preserve">
+    <value>Настройки автопереключения</value>
+  </data>
+  <data name="TbSettingsServerSelectMode" xml:space="preserve">
+    <value>Переключиться на сервер</value>
+  </data>
+  <data name="TbSettingsAutoSwitchMainMode" xml:space="preserve">
+    <value>Режим автопереключения</value>
+  </data>
+  <data name="TbSettingsFailTimeMax" xml:space="preserve">
+    <value>Максимальное время сбоя сервера (секунды)</value>
+  </data>
+  <data name="TbEnableAutoSwitchAs" xml:space="preserve">
+    <value>Автопереключение</value>
+  </data>
+  <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
+    <value>IP-адрес прокси-сервера CIDR, через запятую (,)</value>
+  </data>
+  <data name="TbSettingsTunModeProxyProcess" xml:space="preserve">
+    <value>Имя прокси-процесса, разделенное запятыми (,)</value>
+  </data>
+  <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
+    <value>Режим обхода</value>
+  </data>
+  <data name="TbSettingsTunModeDNS" xml:space="preserve">
+    <value>DNS-объект, например.</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Двигайтесь вверх и вниз</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>Публичный ключ</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>ПаукX</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Ожидание тестирования</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Пожалуйста, выключите, если происходит ненормальное отключение</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Обновления не включены, пропустите эту подписку</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>Дополнительные URL-адреса, разделенные запятыми; Преобразование подписки будет недействительным.</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Преобразовать тип цели</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Оставьте поле пустым, если преобразование не требуется.</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Пожалуйста, заполните структуру DNS. Нажмите, чтобы просмотреть документ.</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Нажмите, чтобы импортировать конфигурацию DNS по умолчанию</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>стратегия домена «sing-box»</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>Протокол мультиплексирования Sing-Box</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Полное имя процесса (режим Tun)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP или IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>Добавить сервер [Trojan]</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Максимальная полоса пропускания Hysteria (Up/Dw)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Используйте системные хосты</value>
+  </data>
 </root>

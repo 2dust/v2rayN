@@ -736,6 +736,15 @@
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP设置</value>
   </data>
+  <data name="TbSettingsAutoSwitch" xml:space="preserve">
+    <value>自动切换设置</value>
+  </data>
+  <data name="TbSettingsServerSelectMode" xml:space="preserve">
+    <value>切换到什么节点</value>
+  </data>
+  <data name="TbSettingsAutoSwitchMainMode" xml:space="preserve">
+    <value>自动切换模式</value>
+  </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
     <value>Core类型设置</value>
   </data>
@@ -789,6 +798,9 @@
   </data>
   <data name="TbSettingsSniffingEnabled" xml:space="preserve">
     <value>开启流量探测</value>
+  </data>
+  <data name="TbSettingsFailTimeMax" xml:space="preserve">
+    <value>节点失效多少秒执行切换</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
     <value>本地socks监听端口</value>

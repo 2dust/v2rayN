@@ -2438,6 +2438,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 AutoSwitch settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoSwitch {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 AutoSwitch mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoSwitchMainMode {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoSwitchMainMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Automatic update interval of Geo (hours) 的本地化字符串。
         /// </summary>
         public static string TbSettingsAutoUpdateInterval {
@@ -2654,6 +2672,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server fail max time (seconds) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFailTimeMax {
+            get {
+                return ResourceManager.GetString("TbSettingsFailTimeMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Follow System Theme 的本地化字符串。
         /// </summary>
         public static string TbSettingsFollowSystemTheme {
@@ -2803,6 +2830,15 @@ namespace v2rayN.Resx {
         public static string TbSettingsRouteOnly {
             get {
                 return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch to server 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsServerSelectMode {
+            get {
+                return ResourceManager.GetString("TbSettingsServerSelectMode", resourceCulture);
             }
         }
         

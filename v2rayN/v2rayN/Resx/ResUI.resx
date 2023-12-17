@@ -739,6 +739,15 @@
   <data name="TbSettingsCoreType" xml:space="preserve">
     <value>CoreType settings</value>
   </data>
+  <data name="TbSettingsAutoSwitch" xml:space="preserve">
+    <value>AutoSwitch settings</value>
+  </data>
+  <data name="TbSettingsServerSelectMode" xml:space="preserve">
+    <value>Switch to server</value>
+  </data>
+  <data name="TbSettingsAutoSwitchMainMode" xml:space="preserve">
+    <value>AutoSwitch mode</value>
+  </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
     <value>AllowInsecure</value>
   </data>
@@ -789,6 +798,9 @@
   </data>
   <data name="TbSettingsSniffingEnabled" xml:space="preserve">
     <value>Turn on Sniffing</value>
+  </data>
+  <data name="TbSettingsFailTimeMax" xml:space="preserve">
+    <value>Server fail max time (seconds)</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
     <value>Socks Port</value>

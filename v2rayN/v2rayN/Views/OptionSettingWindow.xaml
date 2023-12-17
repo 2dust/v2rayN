@@ -997,6 +997,83 @@
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>
+            <TabItem Header="{x:Static resx:ResUI.TbSettingsAutoSwitch}">
+                <Grid Margin="{StaticResource SettingItemMargin}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+Grid.Row="0"
+Grid.Column="0"
+Margin="{StaticResource SettingItemMargin}"
+VerticalAlignment="Center"
+Style="{StaticResource ToolbarTextBlock}"
+Text="{x:Static resx:ResUI.TbSettingsAutoSwitchMainMode}" />
+                    <ComboBox
+x:Name="cmbAutoSwitchMainMode"
+Grid.Row="0"
+Grid.Column="1"
+Width="200"
+Margin="{StaticResource SettingItemMargin}"
+IsEditable="True"
+Style="{StaticResource DefComboBox}" />
+                    
+                    <TextBlock
+    Grid.Row="1"
+    Grid.Column="0"
+    Margin="{StaticResource SettingItemMargin}"
+    VerticalAlignment="Center"
+    Style="{StaticResource ToolbarTextBlock}"
+    Text="{x:Static resx:ResUI.TbSettingsFailTimeMax}" />
+                    <TextBox
+    x:Name="txtFailTimeMax"
+    Grid.Row="1"
+    Grid.Column="1"
+    Width="200"
+    Margin="{StaticResource SettingItemMargin}"
+    Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+    Grid.Row="2"
+    Grid.Column="0"
+    Margin="{StaticResource SettingItemMargin}"
+    VerticalAlignment="Center"
+    Style="{StaticResource ToolbarTextBlock}"
+    Text="{x:Static resx:ResUI.TbSettingsServerSelectMode}" />
+                    <ComboBox
+    x:Name="cmbServerSelectMode"
+    Grid.Row="2"
+    Grid.Column="1"
+    Width="200"
+    Margin="{StaticResource SettingItemMargin}"
+    materialDesign:HintAssist.Hint="Level"
+    Style="{StaticResource DefComboBox}" />
+
+                    
+                </Grid>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </reactiveui:ReactiveWindow>

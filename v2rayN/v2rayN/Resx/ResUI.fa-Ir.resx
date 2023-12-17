@@ -1006,4 +1006,160 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
+  <data name="LvAutoSwitch" xml:space="preserve">
+    <value>سوئیچ خودکار</value>
+  </data>
+  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
+    <value>موضوع سیستم را دنبال کنید</value>
+  </data>
+  <data name="TbSettingsAutoSwitch" xml:space="preserve">
+    <value>تنظیمات سوئیچ خودکار</value>
+  </data>
+  <data name="TbSettingsServerSelectMode" xml:space="preserve">
+    <value>به سرور تغییر دهید</value>
+  </data>
+  <data name="TbSettingsAutoSwitchMainMode" xml:space="preserve">
+    <value>حالت سوئیچ خودکار</value>
+  </data>
+  <data name="TbSettingsFailTimeMax" xml:space="preserve">
+    <value>حداکثر زمان خرابی سرور (ثانیه)</value>
+  </data>
+  <data name="TbEnableAutoSwitchAs" xml:space="preserve">
+    <value>سوئیچ خودکار</value>
+  </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>انتقال به گروه</value>
+  </data>
+  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
+    <value>قالب سفارشی</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>فعال کردن مرتب سازی با کشیدن سرور (نیاز به راه اندازی مجدد)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>بازخوانی خودکار</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>رد شدن از آزمون</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>ویرایش سرور (Ctrl+D)</value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>روی server make active دوبار کلیک کنید</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>تست تکمیل شد</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>اثر انگشت TLS پیش فرض</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>FontFamily (نیاز به راه اندازی مجدد)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید، تنظیمات را مجددا راه اندازی کنید</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>پورت http=پورت جوراب+1</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>این را با امتیازات ادمین تنظیم کنید، پس از راه اندازی، امتیازات مدیر را دریافت کنید</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>اندازه فونت</value>
+  </data>
+  <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
+    <value>پروکسی IP CIDR، جدا شده با کاما (،)</value>
+  </data>
+  <data name="TbSettingsTunModeProxyProcess" xml:space="preserve">
+    <value>نام فرآیند پراکسی، جدا شده با کاما (،)</value>
+  </data>
+  <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
+    <value>حالت دور زدن</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>SpeedTest Single Timeout Value</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>آدرس اینترنتی SpeedTest</value>
+  </data>
+  <data name="TbSettingsTunModeDNS" xml:space="preserve">
+    <value>شی DNS، به عنوان مثال.</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>بالا و پایین حرکت کنید</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>کلید عمومی</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>منتظر تست</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>لطفاً در صورت قطع غیرعادی آن را خاموش کنید</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>به روز رسانی ها فعال نیستند، از این اشتراک رد شوید</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>راه اندازی مجدد به عنوان مدیر</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>آدرس‌های اینترنتی بیشتر که با کاما از هم جدا شده‌اند؛ تبدیل اشتراک نامعتبر خواهد بود</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>فاصله به روز رسانی خودکار (دقیقه)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>ورود به فایل را فعال کنید</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>تبدیل نوع هدف</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>اگر نیازی به تبدیل نیست، لطفاً خالی بگذارید</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>تنظیمات DNS</value>
+  </data>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>تنظیمات DNS sing-box</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>لطفا ساختار DNS را پر کنید، برای مشاهده سند کلیک کنید</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>برای وارد کردن تنظیمات پیش‌فرض DNS کلیک کنید</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>استراتژی دامنه sing-box</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>پروتکل sing-box Mux</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>نام کامل فرآیند (حالت تنظیم)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP یا IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>دامنه</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>سرور [تروجان] را اضافه کنید</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>پهنای باند Hysteria Max (Up/Dw)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>از هاست های سیستم استفاده کنید</value>
+  </data>
 </root>
