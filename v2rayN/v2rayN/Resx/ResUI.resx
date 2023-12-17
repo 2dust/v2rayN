@@ -988,6 +988,9 @@
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Enable Tun</value>
   </data>
+  <data name="TbEnableAutoSwitchAs" xml:space="preserve">
+    <value>AutoSwitch</value>
+  </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>New Port for LAN</value>
   </data>

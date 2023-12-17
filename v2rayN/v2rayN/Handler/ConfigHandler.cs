@@ -133,6 +133,13 @@ namespace v2rayN.Handler
                     mtu = 9000,
                 };
             }
+            if (config.autoSwitchItem == null)
+            {
+                config.autoSwitchItem = new AutoSwitchItem
+                {
+                    EnableAutoSwitch = false,
+                };
+            }
             if (config.guiItem == null)
             {
                 config.guiItem = new()

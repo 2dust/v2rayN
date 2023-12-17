@@ -168,6 +168,15 @@ namespace v2rayN.Mode
     }
 
     [Serializable]
+    public class AutoSwitchItem
+    {
+        public bool EnableAutoSwitch { get; set; }
+        public int FailTimeMax { get; set; } = 60;
+        public int ServerSelectMode { get; set; } = 1;
+        public int mode { get; set; } = 0;
+    }
+
+    [Serializable]
     public class SpeedTestItem
     {
         public int speedTestTimeout { get; set; }

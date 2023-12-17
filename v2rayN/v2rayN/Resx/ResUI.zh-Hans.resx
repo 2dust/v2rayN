@@ -988,6 +988,9 @@
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>启用Tun模式</value>
   </data>
+  <data name="TbEnableAutoSwitchAs" xml:space="preserve">
+    <value>自动切换</value>
+  </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>为局域网开启新的端口</value>
   </data>

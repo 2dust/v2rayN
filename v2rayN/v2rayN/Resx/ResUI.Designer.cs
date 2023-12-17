@@ -2042,6 +2042,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 AutoSwitch 的本地化字符串。
+        /// </summary>
+        public static string TbEnableAutoSwitchAs {
+            get {
+                return ResourceManager.GetString("TbEnableAutoSwitchAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable advanced function 的本地化字符串。
         /// </summary>
         public static string TbenableRoutingAdvanced {

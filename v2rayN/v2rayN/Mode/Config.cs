@@ -20,6 +20,7 @@
 
         public CoreBasicItem coreBasicItem { get; set; }
         public TunModeItem tunModeItem { get; set; }
+        public AutoSwitchItem autoSwitchItem { get; set; }
         public KcpItem kcpItem { get; set; }
         public GrpcItem grpcItem { get; set; }
         public RoutingBasicItem routingBasicItem { get; set; }

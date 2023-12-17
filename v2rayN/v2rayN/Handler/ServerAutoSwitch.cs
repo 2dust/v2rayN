@@ -16,7 +16,7 @@ namespace v2rayN.Handler
         public string indexId { get; set; }
         public long latency { get; set; }
     }
-    internal class ServerAutoSwitch
+    public class ServerAutoSwitch
     {
         private List<TestResultItem> testResultItems= new List<TestResultItem>();
         private static readonly object objLock = new();
@@ -69,6 +69,11 @@ namespace v2rayN.Handler
         {
             if (taskmain != null)
                 return;
+
+            var profiles = LazyConfig.Instance.ProfileItemsAutoSwitch();
+            if (profiles.Count < 2)
+                return;
+            bStop = false;
 
             taskmain = Task.Run(() =>
             {

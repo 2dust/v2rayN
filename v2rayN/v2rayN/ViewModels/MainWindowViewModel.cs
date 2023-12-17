@@ -21,6 +21,7 @@ using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
+    public delegate void SetAutoSwitchTogDelegate(bool b);
     public class MainWindowViewModel : ReactiveObject
     {
         #region private prop
@@ -35,7 +36,11 @@ namespace v2rayN.ViewModels
         private readonly PaletteHelper _paletteHelper = new();
         private Dictionary<string, bool> _dicHeaderSort = new();
         private Action<EViewAction> _updateView;
-
+        private SetAutoSwitchTogDelegate _setAutoSwitchTog;
+        public void SetDelegate(SetAutoSwitchTogDelegate s = null)
+        {
+            this._setAutoSwitchTog = s;
+        }
         #endregion private prop
 
         #region ObservableCollection
@@ -229,6 +234,9 @@ namespace v2rayN.ViewModels
         public bool EnableTun { get; set; }
 
         [Reactive]
+        public bool EnableAutoSwitch { get; set; }
+
+        [Reactive]
         public bool ColorModeDark { get; set; }
 
         private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
@@ -250,7 +258,7 @@ namespace v2rayN.ViewModels
 
         
 
-        ServerAutoSwitch ServerAutoSwitchs= new ServerAutoSwitch();
+        public ServerAutoSwitch ServerAutoSwitchs= new ServerAutoSwitch();
 
         #region Init
 
@@ -275,6 +283,8 @@ namespace v2rayN.ViewModels
                 EnableTun = true;
             }
             _subId = _config.subIndexId;
+
+            EnableAutoSwitch = _config.autoSwitchItem.EnableAutoSwitch;
 
             InitSubscriptionView();
             RefreshRoutingsMenu();
@@ -318,6 +328,8 @@ namespace v2rayN.ViewModels
               x => x.EnableTun,
                y => y == true)
                   .Subscribe(c => DoEnableTun(c));
+
+            this.WhenAnyValue(x => x.EnableAutoSwitch).Subscribe(c => DoEnableAutoSwitch(c));
 
             BindingUI();
             RestoreUI();
@@ -593,7 +605,8 @@ namespace v2rayN.ViewModels
             Reload();
             ChangeSystemProxyStatus(_config.sysProxyType, true);
             ServerAutoSwitchs.SetDelegate(SetDefaultServer);
-            ServerAutoSwitchs.Start();
+            if(_config.autoSwitchItem.EnableAutoSwitch)
+                ServerAutoSwitchs.Start();
         }
 
         private void OnProgramStarted(object state, bool timeout)
@@ -1641,6 +1654,37 @@ namespace v2rayN.ViewModels
                     return;
                 }
                 Reload();
+            }
+        }
+
+        private void DoEnableAutoSwitch(bool c)
+        {
+            if (_config.autoSwitchItem.EnableAutoSwitch != c)
+            {
+                _config.autoSwitchItem.EnableAutoSwitch = c;
+
+                if (c)
+                {
+                    var profiles = LazyConfig.Instance.ProfileItemsAutoSwitch();
+                    if (profiles.Count < 2)
+                    {
+                        MessageBox.Show("选择的切换服务器必须大于等于2才能启动切换!");
+                        _setAutoSwitchTog(false);
+                        _config.autoSwitchItem.EnableAutoSwitch = false;
+                        EnableAutoSwitch = false;
+                        ConfigHandler.SaveConfig(ref _config);
+                        return;
+                    }
+                    ServerAutoSwitchs.Start();
+                }
+                else
+                {
+                    Task.Run(() =>
+                    {
+                        ServerAutoSwitchs.Stop();
+                    });
+                }                 
+                ConfigHandler.SaveConfig(ref _config);
             }
         }
 

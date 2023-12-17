@@ -431,6 +431,12 @@
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Style="{StaticResource DefTextBox}" />
+                    <TextBlock
+                        Text="{x:Static resx:ResUI.TbEnableAutoSwitchAs}" VerticalAlignment="Center" />
+                    <ToggleButton
+                                x:Name="togEnableAutoSwitch"
+                                Margin="4"
+                                HorizontalAlignment="Left" />
                 </WrapPanel>
 
                 <materialDesign:ColorZone
@@ -785,7 +791,7 @@
                 x:Name="tbNotify"
                 IconSource="/v2rayN.ico"
                 NoLeftClickDelay="True"
-                ToolTipText="v2rayN">
+                ToolTipText="v2rayN" d:IsHidden="True">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
                         <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}">

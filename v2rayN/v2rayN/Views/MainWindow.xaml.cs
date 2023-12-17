@@ -60,6 +60,8 @@ namespace v2rayN.Views
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue!, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
+            ViewModel.SetDelegate((bool b)=> togEnableAutoSwitch.IsChecked = b);
+
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
             {
                 cmbCurrentFontSize.Items.Add(i.ToString());
@@ -192,6 +194,7 @@ namespace v2rayN.Views
                 this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.EnableAutoSwitch, v => v.togEnableAutoSwitch.IsChecked).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SystemProxySelected, v => v.cmbSystemProxy.SelectedIndex).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings2.ItemsSource).DisposeWith(disposables);
@@ -466,7 +469,7 @@ namespace v2rayN.Views
                 Width = _config.uiItem.mainWidth;
                 Height = _config.uiItem.mainHeight;
             }
-
+ 
             var maxWidth = SystemParameters.WorkArea.Width;
             var maxHeight = SystemParameters.WorkArea.Height;
             if (Width > maxWidth) Width = maxWidth;
@@ -569,6 +572,10 @@ namespace v2rayN.Views
            var item = LazyConfig.Instance.GetProfileItem(ViewModel.SelectedProfile.indexId);
             item.autoSwitch = ViewModel.SelectedProfile.autoSwitch;
             SqliteHelper.Instance.Update(item);
+            //if(ViewModel.EnableAutoSwitch)
+            //{
+            //    ViewModel.ServerAutoSwitchs.Start();
+            //}
         }
         #endregion UI
 
