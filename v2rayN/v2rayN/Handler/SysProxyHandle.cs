@@ -76,7 +76,7 @@ namespace v2rayN.Handler
                 else if (type == ESysProxyType.Pac)
                 {
                     PacHandler.Start(Utils.GetConfigPath(), port, portPac);
-                    var strProxy = $"{Global.httpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+                    var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
                     ProxySetting.SetProxy(strProxy, "", 4); // use pac script url for auto-config proxy
                 }
 

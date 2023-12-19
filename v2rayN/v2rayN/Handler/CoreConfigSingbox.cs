@@ -222,7 +222,7 @@ namespace v2rayN.Handler
 
                 if (node.configType == EConfigType.VMess)
                 {
-                    outbound.type = Global.vmessProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.VMess];
 
                     outbound.uuid = node.id;
                     outbound.alter_id = node.alterId;
@@ -239,7 +239,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Shadowsocks)
                 {
-                    outbound.type = Global.ssProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.Shadowsocks];
 
                     outbound.method = LazyConfig.Instance.GetShadowsocksSecuritys(node).Contains(node.security) ? node.security : "none";
                     outbound.password = node.id;
@@ -248,7 +248,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Socks)
                 {
-                    outbound.type = Global.socksProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.Socks];
 
                     outbound.version = "5";
                     if (!Utils.IsNullOrEmpty(node.security)
@@ -260,7 +260,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.VLESS)
                 {
-                    outbound.type = Global.vlessProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.VLESS];
 
                     outbound.uuid = node.id;
 
@@ -277,7 +277,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Trojan)
                 {
-                    outbound.type = Global.trojanProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.Trojan];
 
                     outbound.password = node.id;
 
@@ -285,7 +285,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Hysteria2)
                 {
-                    outbound.type = Global.hysteria2ProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.Hysteria2];
 
                     outbound.password = node.id;
 
@@ -296,7 +296,7 @@ namespace v2rayN.Handler
                 }
                 else if (node.configType == EConfigType.Tuic)
                 {
-                    outbound.type = Global.tuicProtocolLite;
+                    outbound.type = Global.ProtocolTypes[EConfigType.Tuic];
 
                     outbound.uuid = node.id;
                     outbound.password = node.security;

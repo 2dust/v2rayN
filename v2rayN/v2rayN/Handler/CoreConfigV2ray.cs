@@ -336,7 +336,7 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
-                    outbound.protocol = Global.vmessProtocolLite;
+                    outbound.protocol = Global.ProtocolTypes[EConfigType.VMess];
                     outbound.settings.servers = null;
                 }
                 else if (node.configType == EConfigType.Shadowsocks)
@@ -361,7 +361,7 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound, false);
 
-                    outbound.protocol = Global.ssProtocolLite;
+                    outbound.protocol = Global.ProtocolTypes[EConfigType.Shadowsocks];
                     outbound.settings.vnext = null;
                 }
                 else if (node.configType == EConfigType.Socks)
@@ -396,7 +396,7 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound, false);
 
-                    outbound.protocol = Global.socksProtocolLite;
+                    outbound.protocol = Global.ProtocolTypes[EConfigType.Socks];
                     outbound.settings.vnext = null;
                 }
                 else if (node.configType == EConfigType.VLESS)
@@ -445,7 +445,7 @@ namespace v2rayN.Handler
                         outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                     }
 
-                    outbound.protocol = Global.vlessProtocolLite;
+                    outbound.protocol = Global.ProtocolTypes[EConfigType.VLESS];
                     outbound.settings.servers = null;
                 }
                 else if (node.configType == EConfigType.Trojan)
@@ -469,7 +469,7 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound, false);
 
-                    outbound.protocol = Global.trojanProtocolLite;
+                    outbound.protocol = Global.ProtocolTypes[EConfigType.Trojan];
                     outbound.settings.vnext = null;
                 }
                 boundStreamSettings(node, outbound.streamSettings);
@@ -515,7 +515,7 @@ namespace v2rayN.Handler
                 {
                     try
                     {
-                        useragent = Global.UserAgentTxt[_config.coreBasicItem.defUserAgent];
+                        useragent = Global.UserAgentTxts[_config.coreBasicItem.defUserAgent];
                     }
                     catch (KeyNotFoundException)
                     {

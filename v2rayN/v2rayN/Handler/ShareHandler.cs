@@ -68,7 +68,7 @@ namespace v2rayN.Handler
 
             url = Utils.ToJson(vmessQRCode);
             url = Utils.Base64Encode(url);
-            url = $"{Global.vmessProtocol}{url}";
+            url = $"{Global.ProtocolShares[EConfigType.VMess]}{url}";
 
             return url;
         }
@@ -91,7 +91,7 @@ namespace v2rayN.Handler
             //new Sip002
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
             url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
-            url = $"{Global.ssProtocol}{url}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Shadowsocks]}{url}{remark}";
             return url;
         }
 
@@ -112,7 +112,7 @@ namespace v2rayN.Handler
             //new
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
             url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
-            url = $"{Global.socksProtocol}{url}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Socks]}{url}{remark}";
             return url;
         }
 
@@ -132,7 +132,7 @@ namespace v2rayN.Handler
             item.id,
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.trojanProtocol}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Trojan]}{url}{query}{remark}";
             return url;
         }
 
@@ -160,7 +160,7 @@ namespace v2rayN.Handler
             item.id,
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.vlessProtocol}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.VLESS]}{url}{query}{remark}";
             return url;
         }
 
@@ -189,7 +189,7 @@ namespace v2rayN.Handler
             item.id,
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.hysteria2Protocol}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Hysteria2]}{url}{query}{remark}";
             return url;
         }
 
@@ -218,7 +218,7 @@ namespace v2rayN.Handler
             $"{item.id}:{item.security}",
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.tuicProtocol}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Tuic]}{url}{query}{remark}";
             return url;
         }
 
@@ -359,7 +359,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                if (result.StartsWith(Global.vmessProtocol))
+                if (result.StartsWith(Global.ProtocolShares[EConfigType.VMess]))
                 {
                     int indexSplit = result.IndexOf("?");
                     if (indexSplit > 0)
@@ -371,7 +371,7 @@ namespace v2rayN.Handler
                         profileItem = ResolveVmess(result, out msg);
                     }
                 }
-                else if (result.StartsWith(Global.ssProtocol))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Shadowsocks]))
                 {
                     msg = ResUI.ConfigurationFormatIncorrect;
 
@@ -387,7 +387,7 @@ namespace v2rayN.Handler
 
                     profileItem.configType = EConfigType.Shadowsocks;
                 }
-                else if (result.StartsWith(Global.socksProtocol))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Socks]))
                 {
                     msg = ResUI.ConfigurationFormatIncorrect;
 
@@ -403,23 +403,23 @@ namespace v2rayN.Handler
 
                     profileItem.configType = EConfigType.Socks;
                 }
-                else if (result.StartsWith(Global.trojanProtocol))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Trojan]))
                 {
                     msg = ResUI.ConfigurationFormatIncorrect;
 
                     profileItem = ResolveTrojan(result);
                 }
-                else if (result.StartsWith(Global.vlessProtocol))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.VLESS]))
                 {
                     profileItem = ResolveStdVLESS(result);
                 }
-                else if (result.StartsWith(Global.hysteria2Protocol) || result.StartsWith(Global.hysteria2Protocol2))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2]) || result.StartsWith(Global.Hysteria2ProtocolShare))
                 {
                     msg = ResUI.ConfigurationFormatIncorrect;
 
                     profileItem = ResolveHysteria2(result);
                 }
-                else if (result.StartsWith(Global.tuicProtocol))
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Tuic]))
                 {
                     profileItem = ResolveTuic(result);
                 }
@@ -447,7 +447,7 @@ namespace v2rayN.Handler
                 configType = EConfigType.VMess
             };
 
-            result = result[Global.vmessProtocol.Length..];
+            result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
             result = Utils.Base64Decode(result);
 
             //转成Json
@@ -495,7 +495,7 @@ namespace v2rayN.Handler
             {
                 configType = EConfigType.VMess
             };
-            result = result[Global.vmessProtocol.Length..];
+            result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
             int indexSplit = result.IndexOf("?");
             if (indexSplit > 0)
             {
@@ -712,7 +712,7 @@ namespace v2rayN.Handler
             {
                 configType = EConfigType.Socks
             };
-            result = result[Global.socksProtocol.Length..];
+            result = result[Global.ProtocolShares[EConfigType.Socks].Length..];
             //remark
             int indexRemark = result.IndexOf("#");
             if (indexRemark > 0)

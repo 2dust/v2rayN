@@ -1,4 +1,6 @@
-﻿namespace v2rayN
+﻿using v2rayN.Mode;
+
+namespace v2rayN
 {
     internal class Global
     {
@@ -30,18 +32,15 @@
         public const string ConfigDB = "guiNDB.db";
         public const string CoreConfigFileName = "config.json";
         public const string CorePreConfigFileName = "configPre.json";
-
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string V2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
         public const string V2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
         public const string V2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
-
         public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
         public const string TunSingboxInboundFileName = "v2rayN.Sample.tun_singbox_inbound";
         public const string TunSingboxRulesFileName = "v2rayN.Sample.tun_singbox_rules";
-
         public const string DNSV2rayNormalFileName = "v2rayN.Sample.dns_v2ray_normal";
         public const string DNSSingboxNormalFileName = "v2rayN.Sample.dns_singbox_normal";
 
@@ -61,24 +60,8 @@
         public const string Loopback = "127.0.0.1";
         public const string InboundAPITagName = "api";
         public const string InboundAPIProtocal = "dokodemo-door";
-
-        public const string vmessProtocol = "vmess://";
-        public const string vmessProtocolLite = "vmess";
-        public const string ssProtocol = "ss://";
-        public const string ssProtocolLite = "shadowsocks";
-        public const string socksProtocol = "socks://";
-        public const string socksProtocolLite = "socks";
-        public const string httpProtocol = "http://";
-        public const string httpsProtocol = "https://";
-        public const string vlessProtocol = "vless://";
-        public const string vlessProtocolLite = "vless";
-        public const string trojanProtocol = "trojan://";
-        public const string trojanProtocolLite = "trojan";
-        public const string hysteria2Protocol = "hysteria2://";
-        public const string hysteria2Protocol2 = "hy2://";
-        public const string hysteria2ProtocolLite = "hysteria2";
-        public const string tuicProtocol = "tuic://";
-        public const string tuicProtocolLite = "tuic";
+        public const string HttpProtocol = "http://";
+        public const string HttpsProtocol = "https://";
 
         public const string UserEMail = "t@t.tt";
         public const string MyRegPath = "Software\\v2rayNGUI";
@@ -132,13 +115,36 @@
             @"http://cachefly.cachefly.net/10mb.test"
         };
 
-        public static readonly Dictionary<string, string> UserAgentTxt = new()
+        public static readonly Dictionary<string, string> UserAgentTxts = new()
         {
             {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
             {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
             {"safari","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" },
             {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
             {"none",""}
+        };
+
+        public const string Hysteria2ProtocolShare = "hy2://";
+        public static readonly Dictionary<EConfigType, string> ProtocolShares = new()
+        {
+            {EConfigType.VMess,"vmess://"},
+            {EConfigType.Shadowsocks,"ss://"},
+            {EConfigType.Socks,"socks://"},
+            {EConfigType.VLESS,"vless://"},
+            {EConfigType.Trojan,"trojan://"},
+            {EConfigType.Hysteria2,"hysteria2://"},
+            {EConfigType.Tuic,"tuic://"}
+        };
+
+        public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
+        {
+            {EConfigType.VMess,"vmess"},
+            {EConfigType.Shadowsocks,"shadowsocks"},
+            {EConfigType.Socks,"socks"},
+            {EConfigType.VLESS,"vless"},
+            {EConfigType.Trojan,"trojan"},
+            {EConfigType.Hysteria2,"hysteria2"},
+            {EConfigType.Tuic,"tuic"}
         };
 
         public static readonly List<string> VmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };

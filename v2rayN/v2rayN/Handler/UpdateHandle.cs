@@ -180,7 +180,7 @@ namespace v2rayN.Handler
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                         continue;
                     }
-                    if (!url.StartsWith(Global.httpsProtocol) && !url.StartsWith(Global.httpProtocol))
+                    if (!url.StartsWith(Global.HttpsProtocol) && !url.StartsWith(Global.HttpProtocol))
                     {
                         continue;
                     }

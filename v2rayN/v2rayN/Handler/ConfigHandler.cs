@@ -1051,7 +1051,7 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 //maybe sub
-                if (!isSub && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
+                if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
                 {
                     if (AddSubItem(ref config, str) == 0)
                     {

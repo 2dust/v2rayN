@@ -28,7 +28,7 @@ namespace v2rayN.Handler
         {
             if (_channel == null)
             {
-                _channel = GrpcChannel.ForAddress($"{Global.httpProtocol}{Global.Loopback}:{Global.StatePort}");
+                _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{Global.StatePort}");
                 _client = new StatsService.StatsServiceClient(_channel);
             }
         }
