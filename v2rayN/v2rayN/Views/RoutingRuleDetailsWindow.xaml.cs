@@ -29,10 +29,10 @@ namespace v2rayN.Views
             clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
             ViewModel = new RoutingRuleDetailsViewModel(rulesItem, this);
-            cmbOutboundTag.Items.Add(Global.agentTag);
-            cmbOutboundTag.Items.Add(Global.directTag);
-            cmbOutboundTag.Items.Add(Global.blockTag);
-            Global.Protocols.ForEach(it =>
+            cmbOutboundTag.Items.Add(Global.ProxyTag);
+            cmbOutboundTag.Items.Add(Global.DirectTag);
+            cmbOutboundTag.Items.Add(Global.BlockTag);
+            Global.RuleProtocols.ForEach(it =>
             {
                 clbProtocol.Items.Add(it);
             });

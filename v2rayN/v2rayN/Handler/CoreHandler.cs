@@ -35,7 +35,7 @@ namespace v2rayN.Handler
                 return;
             }
 
-            string fileName = Utils.GetConfigPath(Global.coreConfigFileName);
+            string fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
             {
                 ShowMsg(false, msg);
@@ -204,11 +204,11 @@ namespace v2rayN.Handler
                         address = Global.Loopback,
                         port = node.preSocksPort
                     };
-                    string fileName2 = Utils.GetConfigPath(Global.corePreConfigFileName);
+                    string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
                         var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
-                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.corePreConfigFileName}", true, ShowMsg);
+                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true, ShowMsg);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -272,7 +272,7 @@ namespace v2rayN.Handler
                     throw new Exception(p.StandardError.ReadToEnd());
                 }
 
-                Global.processJob.AddProcess(p.Handle);
+                Global.ProcessJob.AddProcess(p.Handle);
                 return p.Id;
             }
             catch (Exception ex)
@@ -346,7 +346,7 @@ namespace v2rayN.Handler
                     throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
-                Global.processJob.AddProcess(proc.Handle);
+                Global.ProcessJob.AddProcess(proc.Handle);
                 return proc;
             }
             catch (Exception ex)

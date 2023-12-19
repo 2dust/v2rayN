@@ -31,12 +31,12 @@ namespace v2rayN.Views
             lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
 
             ViewModel = new RoutingRuleSettingViewModel(routingItem, this);
-            Global.domainStrategys.ForEach(it =>
+            Global.DomainStrategys.ForEach(it =>
             {
                 cmbdomainStrategy.Items.Add(it);
             });
             cmbdomainStrategy.Items.Add(string.Empty);
-            Global.domainStrategys4Singbox.ForEach(it =>
+            Global.DomainStrategys4Singbox.ForEach(it =>
             {
                 cmbdomainStrategy4Singbox.Items.Add(it);
             });

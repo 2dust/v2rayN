@@ -226,7 +226,7 @@ namespace v2rayN.Handler
 
                     outbound.uuid = node.id;
                     outbound.alter_id = node.alterId;
-                    if (Global.vmessSecuritys.Contains(node.security))
+                    if (Global.VmessSecuritys.Contains(node.security))
                     {
                         outbound.security = node.security;
                     }
@@ -750,7 +750,7 @@ namespace v2rayN.Handler
                     //}
                     clash_api = new Clash_Api4Sbox()
                     {
-                        external_controller = $"{Global.Loopback}:{Global.statePort}",
+                        external_controller = $"{Global.Loopback}:{Global.StatePort}",
                         store_selected = true
                     }
                 };

@@ -4,38 +4,38 @@
     {
         #region const
 
-        public const string githubUrl = "https://github.com";
-        public const string githubApiUrl = "https://api.github.com/repos";
-        public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
+        public const string GithubUrl = "https://github.com";
+        public const string GithubApiUrl = "https://api.github.com/repos";
+        public const string V2rayWebsiteUrl = @"https://www.v2fly.org/";
         public const string AboutUrl = @"https://github.com/2dust/v2rayN";
         public const string UpdateUrl = AboutUrl + @"/releases";
-        public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
-        public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
+        public const string V2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
+        public const string XrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
         public const string SagerNetCoreUrl = "https://github.com/SagerNet/v2ray-core/releases";
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
-        public const string clashCoreUrl = "https://github.com/Dreamacro/clash/releases";
-        public const string clashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
-        public const string hysteriaCoreUrl = "https://github.com/apernet/hysteria/releases";
-        public const string naiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
-        public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
-        public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
-        public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-        public const string singboxGeoUrl = "https://github.com/soffchen/sing-{0}/releases/latest/download/{0}.db";
+        public const string ClashCoreUrl = "https://github.com/Dreamacro/clash/releases";
+        public const string ClashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
+        public const string HysteriaCoreUrl = "https://github.com/apernet/hysteria/releases";
+        public const string NaiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
+        public const string TuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
+        public const string SingboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
+        public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
+        public const string SingboxGeoUrl = "https://github.com/soffchen/sing-{0}/releases/latest/download/{0}.db";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
-        public const string juicityCoreUrl = "https://github.com/juicity/juicity/releases";
+        public const string JuicityCoreUrl = "https://github.com/juicity/juicity/releases";
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
 
         public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
         public const string ConfigFileName = "guiNConfig.json";
         public const string ConfigDB = "guiNDB.db";
-        public const string coreConfigFileName = "config.json";
-        public const string corePreConfigFileName = "configPre.json";
+        public const string CoreConfigFileName = "config.json";
+        public const string CorePreConfigFileName = "configPre.json";
 
-        public const string v2raySampleClient = "v2rayN.Sample.SampleClientConfig";
+        public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
-        public const string v2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
-        public const string v2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
-        public const string v2raySampleInbound = "v2rayN.Sample.SampleInbound";
+        public const string V2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
+        public const string V2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
+        public const string V2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
 
         public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
@@ -49,9 +49,9 @@
         public const string DefaultNetwork = "tcp";
         public const string TcpHeaderHttp = "http";
         public const string None = "none";
-        public const string agentTag = "proxy";
-        public const string directTag = "direct";
-        public const string blockTag = "block";
+        public const string ProxyTag = "proxy";
+        public const string DirectTag = "direct";
+        public const string BlockTag = "block";
         public const string StreamSecurity = "tls";
         public const string StreamSecurityReality = "reality";
         public const string InboundSocks = "socks";
@@ -80,7 +80,7 @@
         public const string tuicProtocol = "tuic://";
         public const string tuicProtocolLite = "tuic";
 
-        public const string userEMail = "t@t.tt";
+        public const string UserEMail = "t@t.tt";
         public const string MyRegPath = "Software\\v2rayNGUI";
         public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
         public const string AutoRunName = "v2rayNAutoRun";
@@ -132,7 +132,7 @@
             @"http://cachefly.cachefly.net/10mb.test"
         };
 
-        public static readonly Dictionary<string, string> userAgentTxt = new()
+        public static readonly Dictionary<string, string> UserAgentTxt = new()
         {
             {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
             {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
@@ -141,40 +141,40 @@
             {"none",""}
         };
 
-        public static readonly List<string> vmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
-        public static readonly List<string> ssSecuritys = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
-        public static readonly List<string> ssSecuritysInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
-        public static readonly List<string> ssSecuritysInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
-        public static readonly List<string> flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
-        public static readonly List<string> networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
-        public static readonly List<string> kcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> coreTypes = new() { "v2fly", "SagerNet", "Xray", "sing_box" };
-        public static readonly List<string> coreTypes4VLESS = new() { "Xray", "sing_box" };
-        public static readonly List<string> domainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
-        public static readonly List<string> domainStrategys4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
-        public static readonly List<string> domainMatchers = new() { "linear", "mph", "" };
-        public static readonly List<string> fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
-        public static readonly List<string> userAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
+        public static readonly List<string> VmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
+        public static readonly List<string> SsSecuritys = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+        public static readonly List<string> SsSecuritysInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
+        public static readonly List<string> SsSecuritysInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
+        public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
+        public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
+        public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
+        public static readonly List<string> CoreTypes = new() { "v2fly", "SagerNet", "Xray", "sing_box" };
+        public static readonly List<string> CoreTypes4VLESS = new() { "Xray", "sing_box" };
+        public static readonly List<string> DomainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
+        public static readonly List<string> DomainStrategys4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
+        public static readonly List<string> DomainMatchers = new() { "linear", "mph", "" };
+        public static readonly List<string> Fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
+        public static readonly List<string> UserAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
 
-        public static readonly List<string> allowInsecures = new() { "true", "false", "" };
-        public static readonly List<string> domainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
+        public static readonly List<string> AllowInsecures = new() { "true", "false", "" };
+        public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
-        public static readonly List<string> alpns = new() { "h2", "http/1.1", "h2,http/1.1", "h3", "" };
-        public static readonly List<string> LogLevel = new() { "debug", "info", "warning", "error", "none" };
+        public static readonly List<string> Alpns = new() { "h2", "http/1.1", "h2,http/1.1", "h3", "" };
+        public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
-        public static readonly List<string> Protocols = new() { "http", "tls", "bittorrent" };
+        public static readonly List<string> RuleProtocols = new() { "http", "tls", "bittorrent" };
         public static readonly List<string> TunMtus = new() { "9000", "1500" };
         public static readonly List<string> TunStacks = new() { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
-        public static readonly List<string> TuicCongestionControl = new() { "cubic", "new_reno", "bbr" };
+        public static readonly List<string> TuicCongestionControls = new() { "cubic", "new_reno", "bbr" };
 
         #endregion const
 
         #region global variable
 
-        public static int statePort { get; set; }
-        public static Job processJob { get; set; }
+        public static int StatePort { get; set; }
+        public static Job ProcessJob { get; set; }
         public static bool ShowInTaskbar { get; set; }
         public static string ExePathKey { get; set; }
 

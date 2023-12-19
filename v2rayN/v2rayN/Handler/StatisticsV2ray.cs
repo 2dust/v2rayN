@@ -28,7 +28,7 @@ namespace v2rayN.Handler
         {
             if (_channel == null)
             {
-                _channel = GrpcChannel.ForAddress($"{Global.httpProtocol}{Global.Loopback}:{Global.statePort}");
+                _channel = GrpcChannel.ForAddress($"{Global.httpProtocol}{Global.Loopback}:{Global.StatePort}");
                 _client = new StatsService.StatsServiceClient(_channel);
             }
         }
@@ -87,7 +87,7 @@ namespace v2rayN.Handler
                     name = nStr[1];
                     type = nStr[3];
 
-                    if (name == Global.agentTag)
+                    if (name == Global.ProxyTag)
                     {
                         if (type == "uplink")
                         {
@@ -98,7 +98,7 @@ namespace v2rayN.Handler
                             server.proxyDown = value;
                         }
                     }
-                    else if (name == Global.directTag)
+                    else if (name == Global.DirectTag)
                     {
                         if (type == "uplink")
                         {

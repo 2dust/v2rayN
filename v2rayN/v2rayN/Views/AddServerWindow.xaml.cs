@@ -35,14 +35,14 @@ namespace v2rayN.Views
 
             if (profileItem.configType == EConfigType.VLESS)
             {
-                Global.coreTypes4VLESS.ForEach(it =>
+                Global.CoreTypes4VLESS.ForEach(it =>
                 {
                     cmbCoreType.Items.Add(it);
                 });
             }
             else
             {
-                Global.coreTypes.ForEach(it =>
+                Global.CoreTypes.ForEach(it =>
                 {
                     cmbCoreType.Items.Add(it);
                 });
@@ -52,20 +52,20 @@ namespace v2rayN.Views
             cmbStreamSecurity.Items.Add(string.Empty);
             cmbStreamSecurity.Items.Add(Global.StreamSecurity);
 
-            Global.networks.ForEach(it =>
+            Global.Networks.ForEach(it =>
             {
                 cmbNetwork.Items.Add(it);
             });
-            Global.fingerprints.ForEach(it =>
+            Global.Fingerprints.ForEach(it =>
             {
                 cmbFingerprint.Items.Add(it);
                 cmbFingerprint2.Items.Add(it);
             });
-            Global.allowInsecures.ForEach(it =>
+            Global.AllowInsecures.ForEach(it =>
             {
                 cmbAllowInsecure.Items.Add(it);
             });
-            Global.alpns.ForEach(it =>
+            Global.Alpns.ForEach(it =>
             {
                 cmbAlpn.Items.Add(it);
             });
@@ -74,7 +74,7 @@ namespace v2rayN.Views
             {
                 case EConfigType.VMess:
                     gridVMess.Visibility = Visibility.Visible;
-                    Global.vmessSecuritys.ForEach(it =>
+                    Global.VmessSecuritys.ForEach(it =>
                     {
                         cmbSecurity.Items.Add(it);
                     });
@@ -99,7 +99,7 @@ namespace v2rayN.Views
                 case EConfigType.VLESS:
                     gridVLESS.Visibility = Visibility.Visible;
                     cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
-                    Global.flows.ForEach(it =>
+                    Global.Flows.ForEach(it =>
                     {
                         cmbFlow5.Items.Add(it);
                     });
@@ -112,7 +112,7 @@ namespace v2rayN.Views
                 case EConfigType.Trojan:
                     gridTrojan.Visibility = Visibility.Visible;
                     cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
-                    Global.flows.ForEach(it =>
+                    Global.Flows.ForEach(it =>
                     {
                         cmbFlow6.Items.Add(it);
                     });
@@ -135,7 +135,7 @@ namespace v2rayN.Views
                     cmbFingerprint.IsEnabled = false;
                     cmbFingerprint.Text = string.Empty;
 
-                    Global.TuicCongestionControl.ForEach(it =>
+                    Global.TuicCongestionControls.ForEach(it =>
                     {
                         cmbHeaderType8.Items.Add(it);
                     });
@@ -269,7 +269,7 @@ namespace v2rayN.Views
             else if (network is "kcp" or "quic")
             {
                 cmbHeaderType.Items.Add(Global.None);
-                Global.kcpHeaderTypes.ForEach(it =>
+                Global.KcpHeaderTypes.ForEach(it =>
                 {
                     cmbHeaderType.Items.Add(it);
                 });

@@ -31,15 +31,15 @@ namespace v2rayN.Views
 
             ViewModel = new RoutingSettingViewModel(this);
 
-            Global.domainStrategys.ForEach(it =>
+            Global.DomainStrategys.ForEach(it =>
             {
                 cmbdomainStrategy.Items.Add(it);
             });
-            Global.domainMatchers.ForEach(it =>
+            Global.DomainMatchers.ForEach(it =>
             {
                 cmbdomainMatcher.Items.Add(it);
             });
-            Global.domainStrategys4Singbox.ForEach(it =>
+            Global.DomainStrategys4Singbox.ForEach(it =>
             {
                 cmbdomainStrategy4Singbox.Items.Add(it);
             });

@@ -29,7 +29,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
 
             Init();
-            Global.statePort = GetFreePort();
+            Global.StatePort = GetFreePort();
 
             _statisticsV2Ray = new StatisticsV2ray(config, UpdateServerStat);
             _statisticsSingbox = new StatisticsSingbox(config, UpdateServerStat);

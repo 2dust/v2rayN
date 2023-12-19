@@ -96,7 +96,7 @@ namespace v2rayN.Handler
             //路由规则
             if (Utils.IsNullOrEmpty(config.routingBasicItem.domainStrategy))
             {
-                config.routingBasicItem.domainStrategy = Global.domainStrategys[0];//"IPIfNonMatch";
+                config.routingBasicItem.domainStrategy = Global.DomainStrategys[0];//"IPIfNonMatch";
             }
             //if (Utils.IsNullOrEmpty(config.domainMatcher))
             //{
@@ -374,7 +374,7 @@ namespace v2rayN.Handler
             profileItem.path = profileItem.path.TrimEx();
             profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
 
-            if (!Global.vmessSecuritys.Contains(profileItem.security))
+            if (!Global.VmessSecuritys.Contains(profileItem.security))
             {
                 return -1;
             }
@@ -715,6 +715,8 @@ namespace v2rayN.Handler
 
             profileItem.address = profileItem.address.TrimEx();
             profileItem.id = profileItem.id.TrimEx();
+            profileItem.network = string.Empty;
+
             if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
             {
                 profileItem.streamSecurity = Global.StreamSecurity;
@@ -743,10 +745,11 @@ namespace v2rayN.Handler
             profileItem.address = profileItem.address.TrimEx();
             profileItem.id = profileItem.id.TrimEx();
             profileItem.security = profileItem.security.TrimEx();
+            profileItem.network = string.Empty;
 
-            if (!Global.TuicCongestionControl.Contains(profileItem.headerType))
+            if (!Global.TuicCongestionControls.Contains(profileItem.headerType))
             {
-                profileItem.headerType = Global.TuicCongestionControl.FirstOrDefault()!;
+                profileItem.headerType = Global.TuicCongestionControls.FirstOrDefault()!;
             }
 
             if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
@@ -882,9 +885,9 @@ namespace v2rayN.Handler
             profileItem.path = profileItem.path.TrimEx();
             profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
 
-            if (!Global.flows.Contains(profileItem.flow))
+            if (!Global.Flows.Contains(profileItem.flow))
             {
-                profileItem.flow = Global.flows.First();
+                profileItem.flow = Global.Flows.First();
             }
             if (profileItem.id.IsNullOrEmpty())
             {
@@ -936,7 +939,7 @@ namespace v2rayN.Handler
                 }
             }
 
-            if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.networks.Contains(profileItem.network))
+            if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.Networks.Contains(profileItem.network))
             {
                 profileItem.network = Global.DefaultNetwork;
             }

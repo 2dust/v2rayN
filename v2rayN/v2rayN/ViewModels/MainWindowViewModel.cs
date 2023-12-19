@@ -634,8 +634,8 @@ namespace v2rayN.ViewModels
                         return;
                     }
 
-                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.agentTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.directTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {

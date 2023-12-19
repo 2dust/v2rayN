@@ -30,7 +30,7 @@ namespace v2rayN.Views
 
             ViewModel = new DNSSettingViewModel(this);
 
-            Global.domainStrategy4Freedoms.ForEach(it =>
+            Global.DomainStrategy4Freedoms.ForEach(it =>
             {
                 cmbdomainStrategy4Freedom.Items.Add(it);
             });

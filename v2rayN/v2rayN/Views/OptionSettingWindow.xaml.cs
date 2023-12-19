@@ -38,15 +38,15 @@ namespace v2rayN.Views
             {
                 cmbsystemProxyAdvancedProtocol.Items.Add(it);
             });
-            Global.LogLevel.ForEach(it =>
+            Global.LogLevels.ForEach(it =>
             {
                 cmbloglevel.Items.Add(it);
             });
-            Global.fingerprints.ForEach(it =>
+            Global.Fingerprints.ForEach(it =>
             {
                 cmbdefFingerprint.Items.Add(it);
             });
-            Global.userAgent.ForEach(it =>
+            Global.UserAgent.ForEach(it =>
             {
                 cmbdefUserAgent.Items.Add(it);
             });
@@ -63,7 +63,7 @@ namespace v2rayN.Views
             {
                 cmbStack.Items.Add(it);
             });
-            Global.coreTypes.ForEach(it =>
+            Global.CoreTypes.ForEach(it =>
             {
                 cmbCoreType1.Items.Add(it);
                 cmbCoreType2.Items.Add(it);

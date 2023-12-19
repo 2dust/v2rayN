@@ -40,7 +40,7 @@ namespace v2rayN
                 return;
             }
 
-            Global.processJob = new Job();
+            Global.ProcessJob = new Job();
 
             Logging.Setup();
             Init();

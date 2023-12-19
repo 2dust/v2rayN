@@ -79,7 +79,7 @@ namespace v2rayN.Mode
 
         public string GetNetwork()
         {
-            if (Utils.IsNullOrEmpty(network) || !Global.networks.Contains(network))
+            if (Utils.IsNullOrEmpty(network) || !Global.Networks.Contains(network))
             {
                 return Global.DefaultNetwork;
             }

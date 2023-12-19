@@ -45,7 +45,7 @@ namespace v2rayN.ViewModels
             if (rulesItem.id.IsNullOrEmpty())
             {
                 rulesItem.id = Utils.GetGUID(false);
-                rulesItem.outboundTag = Global.agentTag;
+                rulesItem.outboundTag = Global.ProxyTag;
                 rulesItem.enabled = true;
                 SelectedSource = rulesItem;
             }

@@ -10,7 +10,7 @@ namespace v2rayN.Handler
 {
     internal class CoreConfigV2ray
     {
-        private string SampleClient = Global.v2raySampleClient;
+        private string SampleClient = Global.V2raySampleClient;
         private Config _config;
 
         public CoreConfigV2ray(Config config)
@@ -145,7 +145,7 @@ namespace v2rayN.Handler
 
         private Inbounds4Ray? GetInbound(InItem inItem, string tag, int offset, bool bSocks)
         {
-            string result = Utils.GetEmbedText(Global.v2raySampleInbound);
+            string result = Utils.GetEmbedText(Global.V2raySampleInbound);
             if (Utils.IsNullOrEmpty(result))
             {
                 return null;
@@ -324,8 +324,8 @@ namespace v2rayN.Handler
                     //远程服务器用户ID
                     usersItem.id = node.id;
                     usersItem.alterId = node.alterId;
-                    usersItem.email = Global.userEMail;
-                    if (Global.vmessSecuritys.Contains(node.security))
+                    usersItem.email = Global.UserEMail;
+                    if (Global.VmessSecuritys.Contains(node.security))
                     {
                         usersItem.security = node.security;
                     }
@@ -425,7 +425,7 @@ namespace v2rayN.Handler
                         usersItem = vnextItem.users[0];
                     }
                     usersItem.id = node.id;
-                    usersItem.email = Global.userEMail;
+                    usersItem.email = Global.UserEMail;
                     usersItem.encryption = node.security;
 
                     outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
@@ -515,7 +515,7 @@ namespace v2rayN.Handler
                 {
                     try
                     {
-                        useragent = Global.userAgentTxt[_config.coreBasicItem.defUserAgent];
+                        useragent = Global.UserAgentTxt[_config.coreBasicItem.defUserAgent];
                     }
                     catch (KeyNotFoundException)
                     {
@@ -672,7 +672,7 @@ namespace v2rayN.Handler
                             };
 
                             //request Host
-                            string request = Utils.GetEmbedText(Global.v2raySampleHttprequestFileName);
+                            string request = Utils.GetEmbedText(Global.V2raySampleHttprequestFileName);
                             string[] arrHost = host.Split(',');
                             string host2 = string.Join("\",\"", arrHost);
                             request = request.Replace("$requestHost$", $"\"{host2}\"");
@@ -800,7 +800,7 @@ namespace v2rayN.Handler
                     Inboundsettings4Ray apiInboundSettings = new();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
-                    apiInbound.port = Global.statePort;
+                    apiInbound.port = Global.StatePort;
                     apiInbound.protocol = Global.InboundAPIProtocal;
                     apiInboundSettings.address = Global.Loopback;
                     apiInbound.settings = apiInboundSettings;
@@ -932,18 +932,18 @@ namespace v2rayN.Handler
                         continue;
                     }
                     if (item.configType == EConfigType.Shadowsocks
-                        && !Global.ssSecuritysInXray.Contains(item.security))
+                        && !Global.SsSecuritysInXray.Contains(item.security))
                     {
                         continue;
                     }
                     if (item.configType == EConfigType.VLESS
-                     && !Global.flows.Contains(item.flow))
+                     && !Global.Flows.Contains(item.flow))
                     {
                         continue;
                     }
 
                     outbound(item, v2rayConfigCopy);
-                    v2rayConfigCopy.outbounds[0].tag = Global.agentTag + inbound.port.ToString();
+                    v2rayConfigCopy.outbounds[0].tag = Global.ProxyTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
 
                     //rule
