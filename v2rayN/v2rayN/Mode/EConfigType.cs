@@ -8,6 +8,7 @@
         Socks = 4,
         VLESS = 5,
         Trojan = 6,
-        Hysteria2 = 7
+        Hysteria2 = 7,
+        Tuic = 8
     }
 }

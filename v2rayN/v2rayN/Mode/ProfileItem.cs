@@ -54,6 +54,7 @@ namespace v2rayN.Mode
                 case EConfigType.VLESS:
                 case EConfigType.Trojan:
                 case EConfigType.Hysteria2:
+                case EConfigType.Tuic:
                     summary += string.Format("{0}({1}:{2})", remarks, addr, port);
                     break;
 

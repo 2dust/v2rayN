@@ -906,8 +906,8 @@ namespace v2rayN
         public static T DeepCopy<T>(T obj)
         {
             object retval;
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new();
+            BinaryFormatter bf = new();
             //序列化成流
             bf.Serialize(ms, obj);
             ms.Seek(0, SeekOrigin.Begin);

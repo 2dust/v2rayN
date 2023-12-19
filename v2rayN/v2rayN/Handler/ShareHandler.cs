@@ -30,6 +30,7 @@ namespace v2rayN.Handler
                     EConfigType.Trojan => ShareTrojan(item),
                     EConfigType.VLESS => ShareVLESS(item),
                     EConfigType.Hysteria2 => ShareHysteria2(item),
+                    EConfigType.Tuic => ShareTuic(item),
                     _ => null,
                 };
 
@@ -189,6 +190,35 @@ namespace v2rayN.Handler
             GetIpv6(item.address),
             item.port);
             url = $"{Global.hysteria2Protocol}{url}{query}{remark}";
+            return url;
+        }
+
+        private static string ShareTuic(ProfileItem item)
+        {
+            string url = string.Empty;
+            string remark = string.Empty;
+            if (!Utils.IsNullOrEmpty(item.remarks))
+            {
+                remark = "#" + Utils.UrlEncode(item.remarks);
+            }
+            var dicQuery = new Dictionary<string, string>();
+            if (!Utils.IsNullOrEmpty(item.sni))
+            {
+                dicQuery.Add("sni", item.sni);
+            }
+            if (!Utils.IsNullOrEmpty(item.alpn))
+            {
+                dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+            }
+            dicQuery.Add("congestion_control", item.headerType);
+
+            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
+
+            url = string.Format("{0}@{1}:{2}",
+            $"{item.id}:{item.security}",
+            GetIpv6(item.address),
+            item.port);
+            url = $"{Global.tuicProtocol}{url}{query}{remark}";
             return url;
         }
 
@@ -388,6 +418,10 @@ namespace v2rayN.Handler
                     msg = ResUI.ConfigurationFormatIncorrect;
 
                     profileItem = ResolveHysteria2(result);
+                }
+                else if (result.StartsWith(Global.tuicProtocol))
+                {
+                    profileItem = ResolveTuic(result);
                 }
                 else
                 {
@@ -811,6 +845,32 @@ namespace v2rayN.Handler
             var query = HttpUtility.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
             item.allowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
+
+            return item;
+        }
+
+        private static ProfileItem ResolveTuic(string result)
+        {
+            ProfileItem item = new()
+            {
+                configType = EConfigType.Tuic
+            };
+
+            Uri url = new(result);
+
+            item.address = url.IdnHost;
+            item.port = url.Port;
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            var userInfoParts = url.UserInfo.Split(new[] { ':' }, 2);
+            if (userInfoParts.Length == 2)
+            {
+                item.id = userInfoParts[0];
+                item.security = userInfoParts[1];
+            }
+
+            var query = HttpUtility.ParseQueryString(url.Query);
+            ResolveStdTransport(query, ref item);
+            item.headerType = query["congestion_control"] ?? "";
 
             return item;
         }

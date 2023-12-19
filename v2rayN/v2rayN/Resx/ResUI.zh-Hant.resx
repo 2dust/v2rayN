@@ -1082,7 +1082,7 @@
     <value>啟用硬體加速(需重啟)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待測試中...</value>
+    <value>等待測試中......</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>當有異常斷流時請關閉</value>
@@ -1134,5 +1134,8 @@
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>新增[Tuic]伺服器</value>
   </data>
 </root>

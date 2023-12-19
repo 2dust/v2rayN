@@ -1082,7 +1082,7 @@
     <value>启用硬件加速(需重启)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待测试中...</value>
+    <value>等待测试中......</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
@@ -1143,5 +1143,11 @@
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>使用系统hosts</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>添加[Tuic]服务器</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>拥塞控制算法</value>
   </data>
 </root>

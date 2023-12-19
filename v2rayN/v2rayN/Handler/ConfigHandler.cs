@@ -729,6 +729,44 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        /// <summary>
+        /// Add or edit server
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="profileItem"></param>
+        /// <returns></returns>
+        public static int AddTuicServer(ref Config config, ProfileItem profileItem, bool toFile = true)
+        {
+            profileItem.configType = EConfigType.Tuic;
+            profileItem.coreType = ECoreType.sing_box;
+
+            profileItem.address = profileItem.address.TrimEx();
+            profileItem.id = profileItem.id.TrimEx();
+            profileItem.security = profileItem.security.TrimEx();
+
+            if (!Global.TuicCongestionControl.Contains(profileItem.headerType))
+            {
+                profileItem.headerType = Global.TuicCongestionControl.FirstOrDefault()!;
+            }
+
+            if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
+            {
+                profileItem.streamSecurity = Global.StreamSecurity;
+            }
+            if (Utils.IsNullOrEmpty(profileItem.alpn))
+            {
+                profileItem.alpn = "h3";
+            }
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
+            }
+
+            AddServerCommon(ref config, profileItem, toFile);
+
+            return 0;
+        }
+
         public static int SortServers(ref Config config, string subId, string colName, bool asc)
         {
             var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
@@ -1081,6 +1119,10 @@ namespace v2rayN.Handler
                 else if (profileItem.configType == EConfigType.Hysteria2)
                 {
                     addStatus = AddHysteria2Server(ref config, profileItem, false);
+                }
+                else if (profileItem.configType == EConfigType.Tuic)
+                {
+                    addStatus = AddTuicServer(ref config, profileItem, false);
                 }
 
                 if (addStatus == 0)

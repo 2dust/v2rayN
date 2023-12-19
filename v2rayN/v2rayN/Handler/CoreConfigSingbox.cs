@@ -294,6 +294,16 @@ namespace v2rayN.Handler
 
                     outboundMux(node, outbound);
                 }
+                else if (node.configType == EConfigType.Tuic)
+                {
+                    outbound.type = Global.tuicProtocolLite;
+
+                    outbound.uuid = node.id;
+                    outbound.password = node.security;
+                    outbound.congestion_control = node.headerType;
+
+                    outboundMux(node, outbound);
+                }
 
                 outboundTls(node, outbound);
 

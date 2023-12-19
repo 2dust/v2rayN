@@ -148,7 +148,7 @@
     <value>Failed to generate default configuration file</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value> Failed to get the default configuration</value>
+    <value>Failed to get the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
     <value>Failed to import custom configuration server</value>
@@ -175,13 +175,13 @@
     <value>Please fill in the user ID</value>
   </data>
   <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value> is not the correct client configuration file, please check</value>
+    <value>Is not the correct client configuration file, please check</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value> is not the correct configuration, please check</value>
+    <value>Is not the correct configuration, please check</value>
   </data>
   <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value> is not the correct server configuration file, please check</value>
+    <value>Is not the correct server configuration file, please check</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
@@ -250,7 +250,7 @@
     <value>Invalid subscription content</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>is unpacking...</value>
+    <value>Is unpacking......</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
     <value>Update subscription end</value>
@@ -268,7 +268,7 @@
     <value>Non-VMess or ss protocol</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
-    <value> non-standard service, this feature is invalid</value>
+    <value>Non-standard service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
@@ -277,7 +277,7 @@
     <value>Scan completed, no valid QR code found</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value> operation failed, please check and retry</value>
+    <value>Operation failed, please check and retry</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
     <value>Please Fill Remarks</value>
@@ -308,10 +308,10 @@
 {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Custom configuration server imported successfully.</value>
+    <value>Custom configuration server imported successfully</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} servers have been imported from clipboard.</value>
+    <value>{0} servers have been imported from clipboard</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
     <value>Scan import URL successfully</value>
@@ -1082,7 +1082,7 @@
     <value>Enable hardware acceleration(Require restart)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Waiting for testing</value>
+    <value>Waiting for testing......</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
@@ -1146,5 +1146,11 @@
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>Use System Hosts</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>Add [Tuic] server</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>Congestion control</value>
   </data>
 </root>

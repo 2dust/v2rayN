@@ -126,6 +126,20 @@ namespace v2rayN.Views
                     cmbFingerprint.IsEnabled = false;
                     cmbFingerprint.Text = string.Empty;
                     break;
+
+                case EConfigType.Tuic:
+                    gridTuic.Visibility = Visibility.Visible;
+                    sepa2.Visibility = Visibility.Collapsed;
+                    gridTransport.Visibility = Visibility.Collapsed;
+                    cmbCoreType.IsEnabled = false;
+                    cmbFingerprint.IsEnabled = false;
+                    cmbFingerprint.Text = string.Empty;
+
+                    Global.TuicCongestionControl.ForEach(it =>
+                    {
+                        cmbHeaderType8.Items.Add(it);
+                    });
+                    break;
             }
 
             gridTlsMore.Visibility = Visibility.Hidden;
@@ -168,6 +182,12 @@ namespace v2rayN.Views
 
                     case EConfigType.Hysteria2:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId7.Text).DisposeWith(disposables);
+                        break;
+
+                    case EConfigType.Tuic:
+                        this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId8.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.txtSecurity8.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.headerType, v => v.cmbHeaderType8.Text).DisposeWith(disposables);
                         break;
                 }
                 this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);

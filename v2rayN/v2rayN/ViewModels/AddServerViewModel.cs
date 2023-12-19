@@ -149,6 +149,10 @@ namespace v2rayN.ViewModels
                 case EConfigType.Hysteria2:
                     ret = ConfigHandler.AddHysteria2Server(ref _config, item);
                     break;
+
+                case EConfigType.Tuic:
+                    ret = ConfigHandler.AddTuicServer(ref _config, item);
+                    break;
             }
 
             if (ret == 0)

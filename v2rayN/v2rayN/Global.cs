@@ -77,6 +77,8 @@
         public const string hysteria2Protocol = "hysteria2://";
         public const string hysteria2Protocol2 = "hy2://";
         public const string hysteria2ProtocolLite = "hysteria2";
+        public const string tuicProtocol = "tuic://";
+        public const string tuicProtocolLite = "tuic";
 
         public const string userEMail = "t@t.tt";
         public const string MyRegPath = "Software\\v2rayNGUI";
@@ -165,6 +167,7 @@
         public static readonly List<string> TunStacks = new() { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
+        public static readonly List<string> TuicCongestionControl = new() { "cubic", "new_reno", "bbr" };
 
         #endregion const
 

@@ -109,6 +109,7 @@
         public string method { get; set; }
         public string username { get; set; }
         public string password { get; set; }
+        public string congestion_control { get; set; }
         public string? version { get; set; }
         public string? network { get; set; }
         public string packet_encoding { get; set; }
