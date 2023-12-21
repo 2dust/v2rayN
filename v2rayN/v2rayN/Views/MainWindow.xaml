@@ -674,10 +674,16 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <base:MyDGBoolColumn
+                                x:Name="autoSwitchCheckCol"
                                 Width="Auto"
                                 Binding="{Binding autoSwitch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ExName="autoSwitch"
                                 Header="{x:Static resx:ResUI.LvAutoSwitch}">
+                                <DataGridCheckBoxColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="autoSwitchCheckAll"  Content="{x:Static resx:ResUI.LvAutoSwitch}" Click="AutoSwitchAll_Click"/>
+                                    </DataTemplate>
+                                </DataGridCheckBoxColumn.HeaderTemplate>
                                 <DataGridCheckBoxColumn.ElementStyle>
                                     <Style TargetType="CheckBox">
                                         <Setter Property= "HorizontalAlignment" Value= "Center" />

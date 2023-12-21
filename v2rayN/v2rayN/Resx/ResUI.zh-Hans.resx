@@ -1195,4 +1195,22 @@
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address(Ip,Ipv6)</value>
   </data>
+  <data name="TbSettingsNextServer" xml:space="preserve">
+    <value>下一个服务器</value>
+  </data>
+  <data name="TbSettingsLowestTCPingServer" xml:space="preserve">
+    <value>最低TCPing延迟服务器</value>
+  </data>
+  <data name="TbSettingsLowestRealPingServer" xml:space="preserve">
+    <value>最低真连接延迟服务器</value>
+  </data>
+  <data name="TbSettingsServerFail" xml:space="preserve">
+    <value>服务器无法连接时切换</value>
+  </data>
+  <data name="stopSwtichWarn" xml:space="preserve">
+    <value>因为选择的切换服务器数量小于最低值2,停止自动切换!</value>
+  </data>
+  <data name="turnOnSwitchWarn" xml:space="preserve">
+    <value>选择的切换服务器数量必须大于等于2才能启动切换!</value>
+  </data>
 </root>

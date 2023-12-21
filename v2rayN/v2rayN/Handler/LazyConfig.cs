@@ -1,4 +1,4 @@
-using v2rayN.Base;
+using System.Runtime.Intrinsics.X86;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -174,6 +174,15 @@ namespace v2rayN.Handler
                 return null;
             }
             return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
+        }
+
+        public ProfileItem? GetProfileItemRemarks(string Remarks)
+        {
+            if (Utils.IsNullOrEmpty(Remarks))
+            {
+                return null;
+            }
+            return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.remarks == Remarks);
         }
 
         public ProfileItem? GetProfileItemViaRemarks(string remarks)

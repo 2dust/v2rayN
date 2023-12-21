@@ -1162,4 +1162,22 @@
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>Используйте системные хосты</value>
   </data>
+  <data name="TbSettingsNextServer" xml:space="preserve">
+    <value>Следующий сервер</value>
+  </data>
+  <data name="TbSettingsLowestTCPingServer" xml:space="preserve">
+    <value>Сервер с наименьшей задержкой TCPing</value>
+  </data>
+  <data name="TbSettingsLowestRealPingServer" xml:space="preserve">
+    <value>Сервер с самой низкой задержкой RealPing</value>
+  </data>
+  <data name="TbSettingsServerFail" xml:space="preserve">
+    <value>Переключиться, когда сервер не может подключиться</value>
+  </data>
+  <data name="stopSwtichWarn" xml:space="preserve">
+    <value>Поскольку количество выбранных коммутационных серверов меньше минимального значения 2, остановите автоматическое переключение!</value>
+  </data>
+  <data name="turnOnSwitchWarn" xml:space="preserve">
+    <value>Для начала переключения количество выбранных коммутационных серверов должно быть больше или равно 2!</value>
+  </data>
 </root>

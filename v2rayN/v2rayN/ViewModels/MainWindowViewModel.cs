@@ -13,6 +13,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -22,6 +23,7 @@ using v2rayN.Views;
 namespace v2rayN.ViewModels
 {
     public delegate void SetAutoSwitchTogDelegate(bool b);
+    public delegate void SetAutoSwitchAllDelegate(bool b);
     public class MainWindowViewModel : ReactiveObject
     {
         #region private prop
@@ -37,9 +39,14 @@ namespace v2rayN.ViewModels
         private Dictionary<string, bool> _dicHeaderSort = new();
         private Action<EViewAction> _updateView;
         private SetAutoSwitchTogDelegate _setAutoSwitchTog;
+        private SetAutoSwitchAllDelegate _setAutoSwitchAll;
         public void SetDelegate(SetAutoSwitchTogDelegate s = null)
         {
             this._setAutoSwitchTog = s;
+        }
+        public void SetDelegate2(SetAutoSwitchAllDelegate s = null)
+        {
+            this._setAutoSwitchAll = s;
         }
         #endregion private prop
 
@@ -254,9 +261,12 @@ namespace v2rayN.ViewModels
         [Reactive]
         public string CurrentLanguage { get; set; }
 
+        [Reactive]
+        public bool autoSwitchCheckAll { get; set; }
+
         #endregion UI
 
-        
+
 
         public ServerAutoSwitch ServerAutoSwitchs= new ServerAutoSwitch();
 
@@ -605,7 +615,9 @@ namespace v2rayN.ViewModels
             Reload();
             ChangeSystemProxyStatus(_config.sysProxyType, true);
             ServerAutoSwitchs.SetDelegate(SetDefaultServer);
-            if(_config.autoSwitchItem.EnableAutoSwitch)
+            ServerAutoSwitchs.SetDelegate(UpdateSpeedtestHandler);
+            ServerAutoSwitchs.SetDelegate(_setAutoSwitchTog);
+            if (_config.autoSwitchItem.EnableAutoSwitch)
                 ServerAutoSwitchs.Start();
         }
 
@@ -614,7 +626,7 @@ namespace v2rayN.ViewModels
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
                 ShowHideWindow(true);
-            }));
+            }));  
         }
 
         #endregion Init
@@ -757,9 +769,9 @@ namespace v2rayN.ViewModels
             {
                 Logging.SaveLog("MyAppExit Begin");
 
-                StorageUI();
+                StorageUI();                
                 ConfigHandler.SaveConfig(_config);
-
+                ServerAutoSwitchs.Stop();
                 //HttpProxyHandle.CloseHttpAgent(config);
                 if (blWindowsShutDown)
                 {
@@ -891,6 +903,16 @@ namespace v2rayN.ViewModels
                     RunningServerDisplay = ResUI.CheckServerSettings;
                     RunningServerToolTipText = ResUI.CheckServerSettings;
                 }
+
+                int autoswitchservercount = 0;
+                foreach (var item in lstModel)
+                {
+                    if(item.autoSwitch)
+                        autoswitchservercount++;
+                }
+
+                if(_setAutoSwitchAll!=null)
+                  _setAutoSwitchAll( lstModel.Count>0 && autoswitchservercount == lstModel.Count);
             }));
         }
 
@@ -1668,11 +1690,11 @@ namespace v2rayN.ViewModels
                     var profiles = LazyConfig.Instance.ProfileItemsAutoSwitch();
                     if (profiles.Count < 2)
                     {
-                        MessageBox.Show("选择的切换服务器必须大于等于2才能启动切换!");
+                        MessageBox.Show(ResUI.turnOnSwitchWarn);
                         _setAutoSwitchTog(false);
                         _config.autoSwitchItem.EnableAutoSwitch = false;
                         EnableAutoSwitch = false;
-                        ConfigHandler.SaveConfig(ref _config);
+                        ConfigHandler.SaveConfig(_config);
                         return;
                     }
                     ServerAutoSwitchs.Start();
@@ -1684,7 +1706,7 @@ namespace v2rayN.ViewModels
                         ServerAutoSwitchs.Stop();
                     });
                 }                 
-                ConfigHandler.SaveConfig(ref _config);
+                ConfigHandler.SaveConfig(_config);
             }
         }
 
@@ -1899,18 +1921,18 @@ namespace v2rayN.ViewModels
 
         private void AutoHideStartup()
         {
-            if (_config.uiItem.autoHideStartup)
-            {
+           
                 Observable.Range(1, 1)
                  .Delay(TimeSpan.FromSeconds(0.5))
                  .Subscribe(x =>
                  {
                      Application.Current.Dispatcher.Invoke(() =>
                      {
-                         ShowHideWindow(false);
+                         ShowHideWindow(!_config.uiItem.autoHideStartup);
+                         RefreshServers();
                      });
                  });
-            }
+            
         }
 
         #endregion UI

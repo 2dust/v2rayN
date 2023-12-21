@@ -1136,7 +1136,7 @@
     <value>IP 或 IP CIDR</value>
   </data>
   <data name="LvAutoSwitch" xml:space="preserve">
-    <value>自動切換</value>
+    <value>切換</value>
   </data>
   <data name="TbSettingsAutoSwitch" xml:space="preserve">
     <value>自動切換設定</value>
@@ -1179,5 +1179,23 @@
   </data>
 	<data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>啟用IPv6</value>
+  </data>
+  <data name="TbSettingsNextServer" xml:space="preserve">
+    <value>下一个服务器</value>
+  </data>
+  <data name="TbSettingsLowestTCPingServer" xml:space="preserve">
+    <value>TCPing 延遲最低的伺服器</value>
+  </data>
+  <data name="TbSettingsLowestRealPingServer" xml:space="preserve">
+    <value>最低 RealPing 延遲伺服器</value>
+  </data>
+  <data name="TbSettingsServerFail" xml:space="preserve">
+    <value>伺服器無法連接時切換</value>
+  </data>
+  <data name="stopSwtichWarn" xml:space="preserve">
+    <value>由於選擇的切換伺服器數量小於最小值2，因此停止自動切換！</value>
+  </data>
+  <data name="turnOnSwitchWarn" xml:space="preserve">
+    <value>選定的切換伺服器數量必須大於或等於2才能開始切換！</value>
   </data>
 </root>

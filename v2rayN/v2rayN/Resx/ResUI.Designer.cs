@@ -1816,6 +1816,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Because the number of selected switching servers is less than the minimum value of 2, stop automatic switching! 的本地化字符串。
+        /// </summary>
+        public static string stopSwtichWarn {
+            get {
+                return ResourceManager.GetString("stopSwtichWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Group please leave blank here 的本地化字符串。
         /// </summary>
         public static string SubUrlTips {
@@ -2771,6 +2780,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Lowest RealPing Latency Server 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLowestRealPingServer {
+            get {
+                return ResourceManager.GetString("TbSettingsLowestRealPingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Lowest TCPing Latency Server 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLowestTCPingServer {
+            get {
+                return ResourceManager.GetString("TbSettingsLowestTCPingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box Mux Protocol 的本地化字符串。
         /// </summary>
         public static string TbSettingsMux4SboxProtocol {
@@ -2807,6 +2834,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Next Server 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsNextServer {
+            get {
+                return ResourceManager.GetString("TbSettingsNextServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Auth pass 的本地化字符串。
         /// </summary>
         public static string TbSettingsPass {
@@ -2830,6 +2866,15 @@ namespace v2rayN.Resx {
         public static string TbSettingsRouteOnly {
             get {
                 return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch when server cannot connect 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsServerFail {
+            get {
+                return ResourceManager.GetString("TbSettingsServerFail", resourceCulture);
             }
         }
         
@@ -3289,6 +3334,15 @@ namespace v2rayN.Resx {
         public static string TransportRequestHostTip4 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The number of selected switching servers must be greater than or equal to 2 to start switching! 的本地化字符串。
+        /// </summary>
+        public static string turnOnSwitchWarn {
+            get {
+                return ResourceManager.GetString("turnOnSwitchWarn", resourceCulture);
             }
         }
         

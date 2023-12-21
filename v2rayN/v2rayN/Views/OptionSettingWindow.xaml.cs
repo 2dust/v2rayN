@@ -2,7 +2,9 @@
 using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
+using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using v2rayN.Handler;
 using v2rayN.Mode;
@@ -85,6 +87,11 @@ namespace v2rayN.Views
                 cmbSubConvertUrl.Items.Add(it);
             });
 
+            cmbServerSelectMode.Items.Add(Resx.ResUI.TbSettingsNextServer);
+            cmbServerSelectMode.Items.Add(Resx.ResUI.TbSettingsLowestTCPingServer);
+            cmbServerSelectMode.Items.Add(Resx.ResUI.TbSettingsLowestRealPingServer);
+
+            cmbAutoSwitchMainMode.Items.Add(Resx.ResUI.TbSettingsServerFail);
             //fill fonts
             try
             {
@@ -195,10 +202,38 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.Text).DisposeWith(disposables);
 
+                this.Bind(ViewModel, vm => vm.AutoSwitchMode, v => v.cmbAutoSwitchMainMode.SelectedIndex).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.ServerSelectMode, v => v.cmbServerSelectMode.SelectedIndex).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.FailTimeMax, v => v.txtFailTimeMax.Text).DisposeWith(disposables);
+
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-        }
 
+            txtFailTimeMax.TextChanged += (s, e) =>
+            {
+                txtFailTimeMax_OnTextChanged(s, e);
+            };
+        }
+        private async void txtFailTimeMax_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                string beginContext = tb.Text;
+                await Task.Delay(2000);
+                if (beginContext == tb.Text)
+                {
+                    int value;
+                    if (int.TryParse(tb.Text, out value))
+                    {
+                        if (value > 600)
+                            tb.Text = "600";
+                        else if (value < 30)
+                            tb.Text = "30";
+                    }
+                    ViewModel.FailTimeMax=value;
+                }
+            }
+        }
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

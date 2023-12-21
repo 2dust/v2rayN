@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -61,6 +62,12 @@ namespace v2rayN.Views
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             ViewModel.SetDelegate((bool b)=> togEnableAutoSwitch.IsChecked = b);
+            ViewModel.SetDelegate2((bool b) =>
+            {
+                var autoswitchcheckbox = FindVisualChild<CheckBox>(lstProfiles, "autoSwitchCheckAll");
+                if(autoswitchcheckbox != null)
+                    autoswitchcheckbox.IsChecked = b;
+            });
 
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
             {
@@ -208,8 +215,9 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
+              
             });
-
+            
             RestoreUI();
             AddHelpMenuItem();
 
@@ -312,9 +320,10 @@ namespace v2rayN.Views
             {
                 return;
             }
-
-            var colName = ((MyDGTextColumn)colHeader.Column).ExName;
-            ViewModel?.SortServer(colName);
+            var colHeader2 = colHeader.Column as MyDGTextColumn;
+            var colName = colHeader2==null ? "" : colHeader2.ExName;
+            if(colName != "")
+                ViewModel?.SortServer(colName);
         }
 
         private void menuSelectAll_Click(object sender, RoutedEventArgs e)
@@ -481,13 +490,27 @@ namespace v2rayN.Views
             }
 
             var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
+            if(lvColumnItem.FindIndex(t=>t.Name== "autoSwitch")==-1)
+            {
+                lvColumnItem.Insert(0,new()
+                {
+                    Name = "autoSwitch",
+                    Width = 79,
+                    Index = 0
+                });
+                for(var p=0;p<lvColumnItem.Count;p++)
+                {
+                    lvColumnItem[p].Index = p;
+                }
+            }
             for (int i = 0; i < lvColumnItem.Count; i++)
             {
                 var item = lvColumnItem[i];
                 for (int k = 0; k < lstProfiles.Columns.Count; k++)
                 {
-                    var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
-                    if (item2.ExName == item.Name)
+                    var item2 = lstProfiles.Columns[k] as MyDGTextColumn;
+
+                    if(item2 != null && item2.ExName == item.Name)
                     {
                         if (item.Width < 0)
                         {
@@ -499,6 +522,23 @@ namespace v2rayN.Views
                             item2.DisplayIndex = i;
                         }
                     }
+                    else
+                    {
+                      var item3 = lstProfiles.Columns[k] as MyDGBoolColumn;
+                        if (item3 != null && item3.ExName == item.Name)
+                        {
+                            if (item.Width < 0)
+                            {
+                                item3.Visibility = Visibility.Hidden;
+                            }
+                            else
+                            {
+                                item3.Width = item.Width;
+                                item3.DisplayIndex = i;
+                            }
+                        }
+                    }
+                  
                 }
             }
 
@@ -526,13 +566,25 @@ namespace v2rayN.Views
             List<ColumnItem> lvColumnItem = new();
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
             {
-                var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
+                var item2 = lstProfiles.Columns[k] as MyDGTextColumn;
+                if(item2!=null)
                 lvColumnItem.Add(new()
                 {
                     Name = item2.ExName,
                     Width = item2.Visibility == Visibility.Visible ? Convert.ToInt32(item2.ActualWidth) : -1,
                     Index = item2.DisplayIndex
                 });
+                else
+                {
+                    var item3 = lstProfiles.Columns[k] as MyDGBoolColumn;
+                    if (item3 != null)
+                        lvColumnItem.Add(new()
+                        {
+                            Name = item3.ExName,
+                            Width = item3.Visibility == Visibility.Visible ? Convert.ToInt32(item3.ActualWidth) : -1,
+                            Index = item3.DisplayIndex
+                        });
+                }
             }
             _config.uiItem.mainColumnItem = lvColumnItem;
 
@@ -566,12 +618,108 @@ namespace v2rayN.Views
                 Utils.ProcessStart(item.Tag.ToString());
             }
         }
+        private void AutoSwitchAll_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            foreach (var item in ViewModel.ProfileItems)
+            {
+                item.autoSwitch = cb.IsChecked ?? item.autoSwitch;
+                var item2 = LazyConfig.Instance.GetProfileItem(item.indexId);
+                if(item2.autoSwitch != item.autoSwitch)
+                {
+                    item2.autoSwitch = item.autoSwitch;
+                    SqliteHelper.Instance.Update(item2);
+                }
+            }
+
+            ViewModel.RefreshServers();
+            var profiles = LazyConfig.Instance.ProfileItemsAutoSwitch();
+            if (profiles.Count < 2 && _config.autoSwitchItem.EnableAutoSwitch)
+            {
+                togEnableAutoSwitch.IsChecked = false;
+                _config.autoSwitchItem.EnableAutoSwitch = false;
+                MessageBox.Show(ResUI.stopSwtichWarn);
+            }
+        }
+        private T FindVisualChild<T>(DependencyObject obj,string name = null)
+             where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                var currChildElement = child as FrameworkElement;
+                if (child != null && child is T)
+                {
+                    if(string.IsNullOrEmpty(name) == false && currChildElement.Name == name)
+                        return (T)child;
+                }
+                else
+                {
+                    T childOfChild = FindVisualChild<T>(child,name);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
+        }
+        public static T GetVisualChild<T>(DependencyObject parent,
+                                  string name = null) where T : DependencyObject
+        {
+            T result;
+            int count;
+            DependencyObject currChild;
+            FrameworkElement currChildElement;
+
+            count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                currChild = VisualTreeHelper.GetChild(parent, i);
+                currChildElement = currChild as FrameworkElement;
+
+                if (currChild is T)
+                {
+                    if (string.IsNullOrEmpty(name) == false)
+                    {
+                        // A name was given so the child must match it
+                        if ((currChildElement != null) &&
+                            (currChildElement.Name == name))
+                        {
+                            return ((T)currChild);
+                        }
+                    }
+                    else
+                    {
+                        // No name was given but the type matches
+                        return ((T)currChild);
+                    }
+                }
+
+                // Recursively search children
+                result = GetVisualChild<T>(currChild, name);
+                if (result != null)
+                {
+                    return (result);
+                }
+            }
+
+            return (null);
+        }
         private void AutoSwitch_Click(object sender, RoutedEventArgs e)
         {
             //CheckBox cb = sender as CheckBox;
            var item = LazyConfig.Instance.GetProfileItem(ViewModel.SelectedProfile.indexId);
             item.autoSwitch = ViewModel.SelectedProfile.autoSwitch;
             SqliteHelper.Instance.Update(item);
+            if(!ViewModel.SelectedProfile.autoSwitch)
+            {
+                var profiles = LazyConfig.Instance.ProfileItemsAutoSwitch();
+                if(profiles.Count< 2 && _config.autoSwitchItem.EnableAutoSwitch)
+                {
+                    togEnableAutoSwitch.IsChecked = false;
+                    _config.autoSwitchItem.EnableAutoSwitch = false;
+                    MessageBox.Show(ResUI.stopSwtichWarn);
+                }
+            }
             //if(ViewModel.EnableAutoSwitch)
             //{
             //    ViewModel.ServerAutoSwitchs.Start();

@@ -1162,4 +1162,22 @@
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>از هاست های سیستم استفاده کنید</value>
   </data>
+  <data name="TbSettingsNextServer" xml:space="preserve">
+    <value>سرور بعدی</value>
+  </data>
+  <data name="TbSettingsLowestTCPingServer" xml:space="preserve">
+    <value>سرور با کمترین تاخیر TCPing</value>
+  </data>
+  <data name="TbSettingsLowestRealPingServer" xml:space="preserve">
+    <value>کمترین سرور RealPing Latency</value>
+  </data>
+  <data name="TbSettingsServerFail" xml:space="preserve">
+    <value>هنگامی که سرور نمی تواند متصل شود، تغییر دهید</value>
+  </data>
+  <data name="stopSwtichWarn" xml:space="preserve">
+    <value>از آنجایی که تعداد سرورهای سوئیچینگ انتخابی کمتر از مقدار حداقل 2 است، تعویض خودکار را متوقف کنید!</value>
+  </data>
+  <data name="turnOnSwitchWarn" xml:space="preserve">
+    <value>برای شروع سوئیچینگ، تعداد سرورهای سوئیچینگ انتخابی باید بیشتر یا مساوی 2 باشد!</value>
+  </data>
 </root>
