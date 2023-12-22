@@ -1,4 +1,5 @@
-﻿using v2rayN.Base;
+﻿using System.Runtime.Intrinsics.X86;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -195,13 +196,13 @@ namespace v2rayN.Handler
             return coreInfos!.FirstOrDefault(t => t.coreType == coreType);
         }
 
-        public List<CoreInfo>? GetCoreInfos()
+        public List<CoreInfo> GetCoreInfos()
         {
             if (coreInfos == null)
             {
                 InitCoreInfo();
             }
-            return coreInfos;
+            return coreInfos!;
         }
 
         private void InitCoreInfo()
@@ -307,6 +308,18 @@ namespace v2rayN.Handler
                 versionArg = "-v",
                 redirectInfo = true,
             });
+
+            coreInfos.Add(new CoreInfo
+            {
+                coreType = ECoreType.mihomo,
+                coreExes = new List<string> { $"mihomo-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-windows-386", "mihomo", "clash" },
+                arguments = "-f config.yaml",
+                coreUrl = Global.MihomoCoreUrl,
+                coreReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                match = "Mihomo",
+                redirectInfo = true,
+            });
+
 
             coreInfos.Add(new CoreInfo
             {

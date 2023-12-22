@@ -17,6 +17,7 @@ namespace v2rayN
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
         public const string ClashCoreUrl = "https://github.com/Dreamacro/clash/releases";
         public const string ClashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
+        public const string MihomoCoreUrl = "https://github.com/MetaCubeX/mihomo/releases";
         public const string HysteriaCoreUrl = "https://github.com/apernet/hysteria/releases";
         public const string NaiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
         public const string TuicCoreUrl = "https://github.com/EAimTY/tuic/releases";

@@ -541,12 +541,12 @@ namespace v2rayN.Views
         private void AddHelpMenuItem()
         {
             var coreInfos = LazyConfig.Instance.GetCoreInfos();
-            foreach (var it in coreInfos)
+            foreach (var it in coreInfos
+                .Where(t => t.coreType != ECoreType.v2fly
+                            && t.coreType != ECoreType.clash
+                            && t.coreType != ECoreType.clash_meta
+                            && t.coreType != ECoreType.hysteria))
             {
-                if (it.coreType == ECoreType.v2fly)
-                {
-                    continue;
-                }
                 var item = new MenuItem()
                 {
                     Tag = it.coreUrl.Replace(@"/releases", ""),
