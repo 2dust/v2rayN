@@ -104,7 +104,7 @@ namespace v2rayN.ViewModels
 
             foreach (var it in SelectedSources)
             {
-                ConfigHandler.DeleteSubItem(ref _config, it?.id);
+                ConfigHandler.DeleteSubItem(_config, it?.id);
             }
             RefreshSubItems();
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);

@@ -71,7 +71,7 @@ namespace v2rayN.ViewModels
                 item.convertTarget = SelectedSource.convertTarget;
             }
 
-            if (ConfigHandler.AddSubItem(ref _config, item) == 0)
+            if (ConfigHandler.AddSubItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _view.DialogResult = true;

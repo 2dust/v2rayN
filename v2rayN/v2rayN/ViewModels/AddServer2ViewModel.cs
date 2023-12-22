@@ -90,7 +90,7 @@ namespace v2rayN.ViewModels
                 item.preSocksPort = SelectedSource.preSocksPort;
             }
 
-            if (ConfigHandler.EditCustomServer(ref _config, item) == 0)
+            if (ConfigHandler.EditCustomServer(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _view.DialogResult = true;
@@ -122,7 +122,7 @@ namespace v2rayN.ViewModels
             var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
             item ??= SelectedSource;
             item.address = fileName;
-            if (ConfigHandler.AddCustomServer(ref _config, item, false) == 0)
+            if (ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedCustomServer);
                 if (!Utils.IsNullOrEmpty(item.indexId))

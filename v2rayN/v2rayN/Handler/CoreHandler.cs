@@ -28,7 +28,7 @@ namespace v2rayN.Handler
 
         public void LoadCore()
         {
-            var node = ConfigHandler.GetDefaultServer(ref _config);
+            var node = ConfigHandler.GetDefaultServer(_config);
             if (node == null)
             {
                 ShowMsg(false, ResUI.CheckServerSettings);

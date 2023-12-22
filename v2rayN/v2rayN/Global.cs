@@ -126,6 +126,7 @@ namespace v2rayN
         };
 
         public const string Hysteria2ProtocolShare = "hy2://";
+
         public static readonly Dictionary<EConfigType, string> ProtocolShares = new()
         {
             {EConfigType.VMess,"vmess://"},

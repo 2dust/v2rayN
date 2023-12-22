@@ -250,7 +250,7 @@ namespace v2rayN.ViewModels
             item.ruleNum = _rules.Count;
             item.ruleSet = Utils.ToJson(_rules, false);
 
-            if (ConfigHandler.SaveRoutingItem(ref _config, item) == 0)
+            if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _view.DialogResult = true;

@@ -127,31 +127,31 @@ namespace v2rayN.ViewModels
             switch (item.configType)
             {
                 case EConfigType.VMess:
-                    ret = ConfigHandler.AddServer(ref _config, item);
+                    ret = ConfigHandler.AddServer(_config, item);
                     break;
 
                 case EConfigType.Shadowsocks:
-                    ret = ConfigHandler.AddShadowsocksServer(ref _config, item);
+                    ret = ConfigHandler.AddShadowsocksServer(_config, item);
                     break;
 
                 case EConfigType.Socks:
-                    ret = ConfigHandler.AddSocksServer(ref _config, item);
+                    ret = ConfigHandler.AddSocksServer(_config, item);
                     break;
 
                 case EConfigType.VLESS:
-                    ret = ConfigHandler.AddVlessServer(ref _config, item);
+                    ret = ConfigHandler.AddVlessServer(_config, item);
                     break;
 
                 case EConfigType.Trojan:
-                    ret = ConfigHandler.AddTrojanServer(ref _config, item);
+                    ret = ConfigHandler.AddTrojanServer(_config, item);
                     break;
 
                 case EConfigType.Hysteria2:
-                    ret = ConfigHandler.AddHysteria2Server(ref _config, item);
+                    ret = ConfigHandler.AddHysteria2Server(_config, item);
                     break;
 
                 case EConfigType.Tuic:
-                    ret = ConfigHandler.AddTuicServer(ref _config, item);
+                    ret = ConfigHandler.AddTuicServer(_config, item);
                     break;
             }
 

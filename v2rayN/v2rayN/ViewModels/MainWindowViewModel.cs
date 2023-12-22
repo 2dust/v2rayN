@@ -571,7 +571,7 @@ namespace v2rayN.ViewModels
 
         private void Init()
         {
-            ConfigHandler.InitBuiltinRouting(ref _config);
+            ConfigHandler.InitBuiltinRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
             _coreHandler = new CoreHandler(_config, UpdateHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => _coreHandler, typeof(CoreHandler));
@@ -737,7 +737,7 @@ namespace v2rayN.ViewModels
                 Utils.SaveLog("MyAppExit Begin");
 
                 StorageUI();
-                ConfigHandler.SaveConfig(ref _config);
+                ConfigHandler.SaveConfig(_config);
 
                 //HttpProxyHandle.CloseHttpAgent(config);
                 if (blWindowsShutDown)
@@ -857,7 +857,7 @@ namespace v2rayN.ViewModels
                 RefreshServersMenu();
 
                 //display running server
-                var running = ConfigHandler.GetDefaultServer(ref _config);
+                var running = ConfigHandler.GetDefaultServer(_config);
                 if (running != null)
                 {
                     var runningSummary = running.GetSummary();
@@ -995,7 +995,7 @@ namespace v2rayN.ViewModels
         public void AddServerViaClipboard()
         {
             var clipboardData = Utils.GetClipboardData();
-            int ret = ConfigHandler.AddBatchServers(ref _config, clipboardData!, _subId, false);
+            int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _subId, false);
             if (ret > 0)
             {
                 InitSubscriptionView();
@@ -1022,7 +1022,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                int ret = ConfigHandler.AddBatchServers(ref _config, result, _subId, false);
+                int ret = ConfigHandler.AddBatchServers(_config, result, _subId, false);
                 if (ret > 0)
                 {
                     InitSubscriptionView();
@@ -1069,7 +1069,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (ConfigHandler.CopyServer(ref _config, lstSelecteds) == 0)
+            if (ConfigHandler.CopyServer(_config, lstSelecteds) == 0)
             {
                 RefreshServers();
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
@@ -1102,7 +1102,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultServerIndex(ref _config, indexId) == 0)
+            if (ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
             {
                 RefreshServers();
                 Reload();
@@ -1158,7 +1158,7 @@ namespace v2rayN.ViewModels
 
             _dicHeaderSort.TryAdd(colName, true);
             _dicHeaderSort.TryGetValue(colName, out bool asc);
-            if (ConfigHandler.SortServers(ref _config, _subId, colName, asc) != 0)
+            if (ConfigHandler.SortServers(_config, _subId, colName, asc) != 0)
             {
                 return;
             }
@@ -1168,7 +1168,7 @@ namespace v2rayN.ViewModels
 
         public void TestServerAvailability()
         {
-            var item = ConfigHandler.GetDefaultServer(ref _config);
+            var item = ConfigHandler.GetDefaultServer(_config);
             if (item == null || item.configType == EConfigType.Custom)
             {
                 return;
@@ -1222,7 +1222,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (ConfigHandler.MoveServer(ref _config, ref _lstProfile, index, eMove) == 0)
+            if (ConfigHandler.MoveServer(_config, ref _lstProfile, index, eMove) == 0)
             {
                 RefreshServers();
             }
@@ -1233,7 +1233,7 @@ namespace v2rayN.ViewModels
             var targetIndex = _profileItems.IndexOf(targetItem);
             if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
             {
-                if (ConfigHandler.MoveServer(ref _config, ref _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
+                if (ConfigHandler.MoveServer(_config, ref _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
                 {
                     RefreshServers();
                 }
@@ -1363,7 +1363,7 @@ namespace v2rayN.ViewModels
             var ret = (new RoutingSettingWindow()).ShowDialog();
             if (ret == true)
             {
-                ConfigHandler.InitBuiltinRouting(ref _config);
+                ConfigHandler.InitBuiltinRouting(_config);
                 RefreshRoutingsMenu();
                 //RefreshServers();
                 Reload();
@@ -1414,7 +1414,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            var ret = ConfigHandler.ImportOldGuiConfig(ref _config, fileName);
+            var ret = ConfigHandler.ImportOldGuiConfig(_config, fileName);
             if (ret == 0)
             {
                 RefreshRoutingsMenu();
@@ -1500,7 +1500,7 @@ namespace v2rayN.ViewModels
             {
                 _coreHandler.LoadCore();
 
-                //ConfigHandler.SaveConfig(ref _config, false);
+                //ConfigHandler.SaveConfig(_config, false);
 
                 ChangeSystemProxyStatus(_config.sysProxyType, false);
             });
@@ -1515,7 +1515,7 @@ namespace v2rayN.ViewModels
 
         private void CloseV2ray()
         {
-            ConfigHandler.SaveConfig(ref _config, false);
+            ConfigHandler.SaveConfig(_config, false);
 
             ChangeSystemProxyStatus(ESysProxyType.ForcedClear, false);
 
@@ -1536,7 +1536,7 @@ namespace v2rayN.ViewModels
             ChangeSystemProxyStatus(type, true);
 
             SystemProxySelected = (int)_config.sysProxyType;
-            ConfigHandler.SaveConfig(ref _config, false);
+            ConfigHandler.SaveConfig(_config, false);
         }
 
         private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
@@ -1604,7 +1604,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultRouting(ref _config, item) == 0)
+            if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
                 _noticeHandler?.SendMessage(ResUI.TipChangeRouting, true);
                 Reload();
@@ -1710,7 +1710,7 @@ namespace v2rayN.ViewModels
                           {
                               _config.uiItem.colorModeDark = ColorModeDark;
                               ModifyTheme(ColorModeDark);
-                              ConfigHandler.SaveConfig(ref _config);
+                              ConfigHandler.SaveConfig(_config);
                           }
                       });
 
@@ -1721,7 +1721,7 @@ namespace v2rayN.ViewModels
                         if (_config.uiItem.followSystemTheme != FollowSystemTheme)
                         {
                             _config.uiItem.followSystemTheme = FollowSystemTheme;
-                            ConfigHandler.SaveConfig(ref _config);
+                            ConfigHandler.SaveConfig(_config);
                             if (FollowSystemTheme)
                             {
                                 ModifyTheme(!Utils.IsLightTheme());
@@ -1745,7 +1745,7 @@ namespace v2rayN.ViewModels
                      {
                          _config.uiItem.colorPrimaryName = SelectedSwatch?.Name;
                          ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
-                         ConfigHandler.SaveConfig(ref _config);
+                         ConfigHandler.SaveConfig(_config);
                      }
                  });
 
@@ -1763,7 +1763,7 @@ namespace v2rayN.ViewModels
                           Application.Current.Resources["StdFontSize2"] = size + 2;
                           Application.Current.Resources["StdFontSizeMsg"] = size - 1;
 
-                          ConfigHandler.SaveConfig(ref _config);
+                          ConfigHandler.SaveConfig(_config);
                       }
                   });
 
@@ -1776,7 +1776,7 @@ namespace v2rayN.ViewModels
                     {
                         _config.uiItem.currentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                        ConfigHandler.SaveConfig(ref _config);
+                        ConfigHandler.SaveConfig(_config);
                     }
                 });
         }

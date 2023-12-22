@@ -271,7 +271,7 @@ namespace v2rayN.Handler
                             _updateFunc(false, $"{hashCode}{result}");
                         }
 
-                        int ret = ConfigHandler.AddBatchServers(ref config, result, id, true);
+                        int ret = ConfigHandler.AddBatchServers(config, result, id, true);
                         if (ret <= 0)
                         {
                             Utils.SaveLog("FailedImportSubscription");

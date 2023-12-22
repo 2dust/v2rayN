@@ -177,7 +177,7 @@ namespace v2rayN.Handler
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
-                        var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                        var routing = ConfigHandler.GetDefaultRouting(_config);
                         if (routing != null)
                         {
                             if (!Utils.IsNullOrEmpty(routing.domainStrategy))
@@ -197,7 +197,7 @@ namespace v2rayN.Handler
                     }
                     else
                     {
-                        var lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
+                        var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                         if (lockedItem != null)
                         {
                             var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);

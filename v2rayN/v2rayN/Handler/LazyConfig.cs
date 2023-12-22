@@ -320,7 +320,6 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-
             coreInfos.Add(new CoreInfo
             {
                 coreType = ECoreType.hysteria,

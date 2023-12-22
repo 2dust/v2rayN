@@ -81,7 +81,7 @@ namespace v2rayN.ViewModels
             _view = view;
             SelectedSource = new();
 
-            ConfigHandler.InitBuiltinRouting(ref _config);
+            ConfigHandler.InitBuiltinRouting(_config);
 
             enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
             domainStrategy = _config.routingBasicItem.domainStrategy;
@@ -134,7 +134,7 @@ namespace v2rayN.ViewModels
 
         private void BindingLockedData()
         {
-            _lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
+            _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
             if (_lockedItem != null)
             {
                 _lockedRules = Utils.FromJson<List<RulesItem>>(_lockedItem.ruleSet);
@@ -164,7 +164,7 @@ namespace v2rayN.ViewModels
 
                 _lockedItem.ruleSet = Utils.ToJson(_lockedRules, false);
 
-                ConfigHandler.SaveRoutingItem(ref _config, _lockedItem);
+                ConfigHandler.SaveRoutingItem(_config, _lockedItem);
             }
         }
 
@@ -208,7 +208,7 @@ namespace v2rayN.ViewModels
 
             EndBindingLockedData();
 
-            if (ConfigHandler.SaveConfig(ref _config) == 0)
+            if (ConfigHandler.SaveConfig(_config) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _view.DialogResult = true;
@@ -289,7 +289,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultRouting(ref _config, item) == 0)
+            if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
                 RefreshRoutingItems();
                 IsModified = true;
@@ -298,7 +298,7 @@ namespace v2rayN.ViewModels
 
         private void RoutingAdvancedImportRules()
         {
-            if (ConfigHandler.InitBuiltinRouting(ref _config, true) == 0)
+            if (ConfigHandler.InitBuiltinRouting(_config, true) == 0)
             {
                 RefreshRoutingItems();
                 IsModified = true;

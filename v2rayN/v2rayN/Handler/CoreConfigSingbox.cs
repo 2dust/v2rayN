@@ -126,7 +126,7 @@ namespace v2rayN.Handler
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
-                        var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                        var routing = ConfigHandler.GetDefaultRouting(_config);
                         if (!Utils.IsNullOrEmpty(routing.domainStrategy4Singbox))
                         {
                             inbound.domain_strategy = routing.domainStrategy4Singbox;
@@ -475,7 +475,7 @@ namespace v2rayN.Handler
 
                 if (_config.routingBasicItem.enableRoutingAdvanced)
                 {
-                    var routing = ConfigHandler.GetDefaultRouting(ref _config);
+                    var routing = ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
                     {
                         var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
@@ -490,7 +490,7 @@ namespace v2rayN.Handler
                 }
                 else
                 {
-                    var lockedItem = ConfigHandler.GetLockedRoutingItem(ref _config);
+                    var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                     if (lockedItem != null)
                     {
                         var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);

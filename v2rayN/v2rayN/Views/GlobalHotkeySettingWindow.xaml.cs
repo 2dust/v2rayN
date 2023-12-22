@@ -112,7 +112,7 @@ namespace v2rayN.Views
         {
             _config.globalHotkeys = _TextBoxKeyEventItem.Values.ToList();
 
-            if (ConfigHandler.SaveConfig(ref _config, false) == 0)
+            if (ConfigHandler.SaveConfig(_config, false) == 0)
             {
                 HotkeyHandler.Instance.ReLoad();
                 this.DialogResult = true;

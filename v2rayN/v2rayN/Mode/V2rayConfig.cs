@@ -451,6 +451,11 @@ namespace v2rayN.Mode
         /// grpc
         /// </summary>
         public GrpcSettings4Ray grpcSettings { get; set; }
+
+        /// <summary>
+        /// sockopt
+        /// </summary>
+        public Sockopt4Ray? sockopt { get; set; }
     }
 
     public class TlsSettings4Ray
@@ -631,5 +636,10 @@ namespace v2rayN.Mode
         ///
         /// </summary>
         public string pass { get; set; }
+    }
+
+    public class Sockopt4Ray
+    {
+        public string? dialerProxy { get; set; }
     }
 }

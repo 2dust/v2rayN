@@ -51,7 +51,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private void AddProfileEx(string indexId, ref ProfileExItem profileEx)
+        private void AddProfileEx(string indexId, ref ProfileExItem? profileEx)
         {
             profileEx = new()
             {

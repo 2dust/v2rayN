@@ -77,7 +77,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var item = ConfigHandler.GetDefaultRouting(ref config);
+                var item = ConfigHandler.GetDefaultRouting(config);
                 if (item == null || Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
                 {
                     return null;
@@ -183,7 +183,7 @@ namespace v2rayN.Handler
                             Utils.SaveLog("subscription" + msg);
                     });
                     item.updateTime = updateTime;
-                    ConfigHandler.AddSubItem(ref config, item);
+                    ConfigHandler.AddSubItem(config, item);
 
                     await Task.Delay(5000);
                 }
