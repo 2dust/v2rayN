@@ -12,7 +12,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
@@ -898,22 +897,26 @@ namespace v2rayN
         }
 
         /// <summary>
-        /// 深度拷贝
+        /// DeepCopy
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
         public static T DeepCopy<T>(T obj)
         {
-            object retval;
-            MemoryStream ms = new();
-            BinaryFormatter bf = new();
-            //序列化成流
-            bf.Serialize(ms, obj);
-            ms.Seek(0, SeekOrigin.Begin);
-            //反序列化成对象
-            retval = bf.Deserialize(ms);
-            return (T)retval;
+            return FromJson<T>(ToJson(obj, false))!;
+
+            //            object retval;
+            //            MemoryStream ms = new();
+            //#pragma warning disable SYSLIB0011 // 类型或成员已过时
+            //            BinaryFormatter bf = new();
+            //#pragma warning restore SYSLIB0011 // 类型或成员已过时
+            //                                  //序列化成流
+            //            bf.Serialize(ms, obj);
+            //            ms.Seek(0, SeekOrigin.Begin);
+            //            //反序列化成对象
+            //            retval = bf.Deserialize(ms);
+            //            return (T)retval;
         }
 
         /// <summary>

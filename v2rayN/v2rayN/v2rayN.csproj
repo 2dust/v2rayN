@@ -22,9 +22,9 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="TaskScheduler" Version="2.10.1" /> 
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
-		<PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
+		<PackageReference Include="ReactiveUI.Fody" Version="19.5.31" />
 		<PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
-		<PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
+		<PackageReference Include="ReactiveUI.WPF" Version="19.5.31" />
 		<PackageReference Include="Splat.NLog" Version="14.8.12" />
 		<PackageReference Include="System.Reactive" Version="6.0.0" />
 	</ItemGroup>
