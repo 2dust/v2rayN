@@ -296,8 +296,8 @@ namespace v2rayN.Handler
                 await UpdateGeoFile("geosite", _config, update);
                 await UpdateGeoFile("geoip", _config, update);
 
-                await UpdateGeoFile4Singbox("geosite", _config, false, update);
-                await UpdateGeoFile4Singbox("geoip", _config, true, update);
+                //await UpdateGeoFile4Singbox("geosite", _config, false, update);
+                //await UpdateGeoFile4Singbox("geoip", _config, true, update);
             });
         }
 
