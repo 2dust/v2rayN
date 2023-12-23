@@ -53,6 +53,8 @@ namespace v2rayN.Handler
 
                 GenOutbound(node, v2rayConfig.outbounds[0]);
 
+                GenMoreOutbounds(node, v2rayConfig);
+
                 GenDns(v2rayConfig);
 
                 GenStatistic(v2rayConfig);
@@ -820,6 +822,64 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        private int GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
+        {
+            if (node.subid.IsNullOrEmpty())
+            {
+                return 0;
+            }
+            try
+            {
+                var subItem = LazyConfig.Instance.GetSubItem(node.subid);
+                if (subItem is null)
+                {
+                    return 0;
+                }
+
+                //current proxy
+                var outbound = v2rayConfig.outbounds[0];
+
+                //Previous proxy
+                var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);
+                if (prevNode is not null)
+                {
+                    var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                    var prevOutbound = Utils.FromJson<Outbounds4Ray>(txtOutbound);
+                    GenOutbound(prevNode, prevOutbound);
+                    prevOutbound.tag = $"{Global.ProxyTag}2";
+                    v2rayConfig.outbounds.Add(prevOutbound);
+
+                    outbound.streamSettings.sockopt = new()
+                    {
+                        dialerProxy = prevOutbound.tag
+                    };
+                }
+
+                //Next proxy
+                var nextNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.nextProfile!);
+                if (nextNode is not null)
+                {
+                    var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                    var nextOutbound = Utils.FromJson<Outbounds4Ray>(txtOutbound);
+                    GenOutbound(nextNode, nextOutbound);
+                    nextOutbound.tag = Global.ProxyTag;
+                    v2rayConfig.outbounds.Insert(0, nextOutbound);
+
+                    outbound.tag = $"{Global.ProxyTag}1";
+                    nextOutbound.streamSettings.sockopt = new()
+                    {
+                        dialerProxy = outbound.tag
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+
+            return 0;
+        }
+
         #region Gen speedtest config
 
         public string GenerateClientSpeedtestConfigString(List<ServerTestItem> selecteds, out string msg)
@@ -833,7 +893,7 @@ namespace v2rayN.Handler
                 }
 
                 msg = ResUI.InitialConfiguration;
-                 
+
                 string result = Utils.GetEmbedText(Global.V2raySampleClient);
                 string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())

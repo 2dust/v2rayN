@@ -45,7 +45,7 @@ namespace v2rayN.Handler
 
                 GenInbounds(singboxConfig);
 
-                GenOutbounds(node, singboxConfig);
+                GenOutbound(node, singboxConfig);
 
                 GenRouting(singboxConfig);
 
@@ -202,7 +202,7 @@ namespace v2rayN.Handler
 
         #region outbound private
 
-        private int GenOutbounds(ProfileItem node, SingboxConfig singboxConfig)
+        private int GenOutbound(ProfileItem node, SingboxConfig singboxConfig)
         {
             try
             {
