@@ -11,8 +11,7 @@
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
 		<FileVersion>6.31</FileVersion>
-	</PropertyGroup>
-
+	</PropertyGroup> 
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
@@ -63,8 +62,9 @@
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\SampleInbound">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\tun_singbox_rules">
+        </EmbeddedResource>
+		<EmbeddedResource Include="Sample\SampleOutbound" />
+		<EmbeddedResource Include="Sample\tun_singbox_rules">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\tun_singbox_inbound">

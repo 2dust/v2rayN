@@ -10,7 +10,6 @@ namespace v2rayN.Handler
 {
     internal class CoreConfigV2ray
     {
-        private string SampleClient = Global.V2raySampleClient;
         private Config _config;
 
         public CoreConfigV2ray(Config config)
@@ -32,7 +31,7 @@ namespace v2rayN.Handler
 
                 msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(SampleClient);
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
                 if (Utils.IsNullOrEmpty(result))
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
@@ -46,17 +45,17 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                log(v2rayConfig);
+                GenLog(v2rayConfig);
 
-                inbound(v2rayConfig);
+                GenInbounds(v2rayConfig);
 
-                routing(v2rayConfig);
+                GenRouting(v2rayConfig);
 
-                outbound(node, v2rayConfig);
+                GenOutbound(node, v2rayConfig.outbounds[0]);
 
-                dns(v2rayConfig);
+                GenDns(v2rayConfig);
 
-                statistic(v2rayConfig);
+                GenStatistic(v2rayConfig);
 
                 msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
@@ -69,7 +68,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int log(V2rayConfig v2rayConfig)
+        private int GenLog(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -94,7 +93,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int inbound(V2rayConfig v2rayConfig)
+        private int GenInbounds(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -166,7 +165,7 @@ namespace v2rayN.Handler
             return inbound;
         }
 
-        private int routing(V2rayConfig v2rayConfig)
+        private int GenRouting(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -190,7 +189,7 @@ namespace v2rayN.Handler
                                 if (item.enabled)
                                 {
                                     var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
-                                    routingUserRule(item2, v2rayConfig);
+                                    GenRoutingUserRule(item2, v2rayConfig);
                                 }
                             }
                         }
@@ -204,7 +203,7 @@ namespace v2rayN.Handler
                             foreach (var item in rules)
                             {
                                 var item2 = Utils.FromJson<RulesItem4Ray>(Utils.ToJson(item));
-                                routingUserRule(item2, v2rayConfig);
+                                GenRoutingUserRule(item2, v2rayConfig);
                             }
                         }
                     }
@@ -217,7 +216,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int routingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
+        private int GenRoutingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -291,11 +290,10 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int outbound(ProfileItem node, V2rayConfig v2rayConfig)
+        private int GenOutbound(ProfileItem node, Outbounds4Ray outbound)
         {
             try
             {
-                Outbounds4Ray outbound = v2rayConfig.outbounds[0];
                 if (node.configType == EConfigType.VMess)
                 {
                     VnextItem4Ray vnextItem;
@@ -334,7 +332,7 @@ namespace v2rayN.Handler
                         usersItem.security = Global.DefaultSecurity;
                     }
 
-                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                    GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     outbound.protocol = Global.ProtocolTypes[EConfigType.VMess];
                     outbound.settings.servers = null;
@@ -359,7 +357,7 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outboundMux(node, outbound, false);
+                    GenOutboundMux(node, outbound, false);
 
                     outbound.protocol = Global.ProtocolTypes[EConfigType.Shadowsocks];
                     outbound.settings.vnext = null;
@@ -394,7 +392,7 @@ namespace v2rayN.Handler
                         serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
                     }
 
-                    outboundMux(node, outbound, false);
+                    GenOutboundMux(node, outbound, false);
 
                     outbound.protocol = Global.ProtocolTypes[EConfigType.Socks];
                     outbound.settings.vnext = null;
@@ -428,7 +426,7 @@ namespace v2rayN.Handler
                     usersItem.email = Global.UserEMail;
                     usersItem.encryption = node.security;
 
-                    outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                    GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                     if (node.streamSecurity == Global.StreamSecurityReality
                         || node.streamSecurity == Global.StreamSecurity)
@@ -437,12 +435,12 @@ namespace v2rayN.Handler
                         {
                             usersItem.flow = node.flow;
 
-                            outboundMux(node, outbound, false);
+                            GenOutboundMux(node, outbound, false);
                         }
                     }
                     if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
                     {
-                        outboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                        GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                     }
 
                     outbound.protocol = Global.ProtocolTypes[EConfigType.VLESS];
@@ -467,12 +465,12 @@ namespace v2rayN.Handler
                     serversItem.ota = false;
                     serversItem.level = 1;
 
-                    outboundMux(node, outbound, false);
+                    GenOutboundMux(node, outbound, false);
 
                     outbound.protocol = Global.ProtocolTypes[EConfigType.Trojan];
                     outbound.settings.vnext = null;
                 }
-                boundStreamSettings(node, outbound.streamSettings);
+                GenBoundStreamSettings(node, outbound.streamSettings);
             }
             catch (Exception ex)
             {
@@ -481,7 +479,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int outboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        private int GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
         {
             try
             {
@@ -503,7 +501,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int boundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+        private int GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
         {
             try
             {
@@ -700,7 +698,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int dns(V2rayConfig v2rayConfig)
+        private int GenDns(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -772,7 +770,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int statistic(V2rayConfig v2rayConfig)
+        private int GenStatistic(V2rayConfig v2rayConfig)
         {
             if (_config.guiItem.enableStatistics)
             {
@@ -835,17 +833,16 @@ namespace v2rayN.Handler
                 }
 
                 msg = ResUI.InitialConfiguration;
-
-                Config configCopy = Utils.DeepCopy(_config);
-
-                string result = Utils.GetEmbedText(SampleClient);
-                if (Utils.IsNullOrEmpty(result))
+                 
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return "";
                 }
 
-                V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                var v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -864,7 +861,7 @@ namespace v2rayN.Handler
                     Utils.SaveLog(ex.Message, ex);
                 }
 
-                log(v2rayConfig);
+                GenLog(v2rayConfig);
                 v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
 
                 int httpPort = LazyConfig.Instance.GetLocalPort("speedtest");
@@ -925,7 +922,6 @@ namespace v2rayN.Handler
                     v2rayConfig.inbounds.Add(inbound);
 
                     //outbound
-                    V2rayConfig? v2rayConfigCopy = Utils.FromJson<V2rayConfig>(result);
                     var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                     if (item is null)
                     {
@@ -942,15 +938,16 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    outbound(item, v2rayConfigCopy);
-                    v2rayConfigCopy.outbounds[0].tag = Global.ProxyTag + inbound.port.ToString();
-                    v2rayConfig.outbounds.Add(v2rayConfigCopy.outbounds[0]);
+                    var outbound = Utils.FromJson<Outbounds4Ray>(txtOutbound);
+                    GenOutbound(item, outbound);
+                    outbound.tag = Global.ProxyTag + inbound.port.ToString();
+                    v2rayConfig.outbounds.Add(outbound);
 
                     //rule
                     RulesItem4Ray rule = new()
                     {
                         inboundTag = new List<string> { inbound.tag },
-                        outboundTag = v2rayConfigCopy.outbounds[0].tag,
+                        outboundTag = outbound.tag,
                         type = "field"
                     };
                     v2rayConfig.routing.rules.Add(rule);
