@@ -148,7 +148,7 @@ namespace v2rayN.ViewModels
         //CheckUpdate
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
 
-        public ReactiveCommand<Unit, Unit> CheckUpdateV2flyCoreCmd { get; }
+        //public ReactiveCommand<Unit, Unit> CheckUpdateV2flyCoreCmd { get; }
 
         //public ReactiveCommand<Unit, Unit> CheckUpdateSagerNetCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
@@ -509,10 +509,10 @@ namespace v2rayN.ViewModels
             {
                 CheckUpdateN();
             });
-            CheckUpdateV2flyCoreCmd = ReactiveCommand.Create(() =>
-            {
-                CheckUpdateCore(ECoreType.v2fly_v5);
-            });
+            //CheckUpdateV2flyCoreCmd = ReactiveCommand.Create(() =>
+            //{
+            //    CheckUpdateCore(ECoreType.v2fly_v5);
+            //});
             //CheckUpdateSagerNetCoreCmd = ReactiveCommand.Create(() =>
             //{
             //    CheckUpdateCore(ECoreType.SagerNet);

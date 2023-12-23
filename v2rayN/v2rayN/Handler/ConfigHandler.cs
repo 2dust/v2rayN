@@ -1180,7 +1180,7 @@ namespace v2rayN.Handler
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.yaml");
                 File.WriteAllText(fileName, clipboardData);
 
-                profileItem.coreType = ECoreType.clash;
+                profileItem.coreType = ECoreType.mihomo;
                 profileItem.address = fileName;
                 profileItem.remarks = "clash_custom";
             }

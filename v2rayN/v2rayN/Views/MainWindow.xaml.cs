@@ -140,7 +140,7 @@ namespace v2rayN.Views
 
                 //checkupdate
                 this.BindCommand(ViewModel, vm => vm.CheckUpdateNCmd, v => v.menuCheckUpdateN).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateV2flyCoreCmd, v => v.menuCheckUpdateV2flyCore).DisposeWith(disposables);
+                //this.BindCommand(ViewModel, vm => vm.CheckUpdateV2flyCoreCmd, v => v.menuCheckUpdateV2flyCore).DisposeWith(disposables);
                 //this.BindCommand(ViewModel, vm => vm.CheckUpdateSagerNetCoreCmd, v => v.menuCheckUpdateSagerNetCore).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.CheckUpdateXrayCoreCmd, v => v.menuCheckUpdateXrayCore).DisposeWith(disposables);
                 //this.BindCommand(ViewModel, vm => vm.CheckUpdateClashCoreCmd, v => v.menuCheckUpdateClashCore).DisposeWith(disposables);
