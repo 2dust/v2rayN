@@ -448,11 +448,38 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Next proxy remarks 的本地化字符串。
+        /// </summary>
+        public static string LvNextProfile {
+            get {
+                return ResourceManager.GetString("LvNextProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
         public static string LvPort {
             get {
                 return ResourceManager.GetString("LvPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Previous proxy remakrs 的本地化字符串。
+        /// </summary>
+        public static string LvPrevProfile {
+            get {
+                return ResourceManager.GetString("LvPrevProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please make sure the remarks exists and is unique 的本地化字符串。
+        /// </summary>
+        public static string LvPrevProfileTip {
+            get {
+                return ResourceManager.GetString("LvPrevProfileTip", resourceCulture);
             }
         }
         

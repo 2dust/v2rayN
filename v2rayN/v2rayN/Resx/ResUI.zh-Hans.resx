@@ -1150,4 +1150,13 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
   </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>前置代理别名</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>落地代理別名</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>请确保别名存在并唯一</value>
+  </data>
 </root>

@@ -97,17 +97,17 @@
                     Grid.Row="2"
                     Grid.Column="2"
                     VerticalAlignment="Center"
-                    Orientation="Vertical">
+                    Orientation="Horizontal">
                     <Button
                         x:Name="btnBrowse"
-                        Width="100"
-                        Margin="2,0,8,0"
+                        Width="80"
+                        Margin="2,0"
                         Content="{x:Static resx:ResUI.TbBrowse}"
                         Style="{StaticResource DefButton}" />
                     <Button
                         x:Name="btnEdit"
-                        Width="100"
-                        Margin="2,2,8,0"
+                        Width="80"
+                        Margin="2,0"
                         Content="{x:Static resx:ResUI.TbEdit}"
                         Style="{StaticResource DefButton}" />
                 </StackPanel>
@@ -126,9 +126,8 @@
                     Width="200"
                     Margin="4"
                     HorizontalAlignment="Left"
-                    FontSize="{DynamicResource StdFontSize}"
                     MaxDropDownHeight="1000"
-                    Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                    Style="{StaticResource MyOutlinedTextComboBox}" />
 
                 <TextBlock
                     Grid.Row="4"
