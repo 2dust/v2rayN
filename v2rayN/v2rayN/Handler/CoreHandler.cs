@@ -147,7 +147,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private string CoreFindexe(CoreInfo coreInfo)
+        private string CoreFindExe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
             foreach (string name in coreInfo.coreExes)
@@ -225,7 +225,7 @@ namespace v2rayN.Handler
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.Xray);
-                string fileName = CoreFindexe(coreInfo);
+                string fileName = CoreFindExe(coreInfo);
                 if (fileName == "") return -1;
 
                 Process p = new()
@@ -269,6 +269,7 @@ namespace v2rayN.Handler
 
                 if (p.WaitForExit(1000))
                 {
+                    p.CancelErrorRead();
                     throw new Exception(p.StandardError.ReadToEnd());
                 }
 
@@ -295,7 +296,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                string fileName = CoreFindexe(coreInfo);
+                string fileName = CoreFindExe(coreInfo);
                 if (Utils.IsNullOrEmpty(fileName))
                 {
                     return null;
@@ -343,6 +344,7 @@ namespace v2rayN.Handler
 
                 if (proc.WaitForExit(1000))
                 {
+                    proc.CancelErrorRead();
                     throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
