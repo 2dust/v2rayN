@@ -45,7 +45,9 @@ namespace v2rayN.Handler
 
                 GenInbounds(singboxConfig);
 
-                GenOutbound(node, singboxConfig);
+                GenOutbound(node, singboxConfig.outbounds[0]);
+
+                GenMoreOutbounds(node, singboxConfig);
 
                 GenRouting(singboxConfig);
 
@@ -202,20 +204,10 @@ namespace v2rayN.Handler
 
         #region outbound private
 
-        private int GenOutbound(ProfileItem node, SingboxConfig singboxConfig)
+        private int GenOutbound(ProfileItem node, Outbound4Sbox outbound)
         {
             try
             {
-                if (_config.tunModeItem.enableTun)
-                {
-                    singboxConfig.outbounds.Add(new()
-                    {
-                        type = "dns",
-                        tag = "dns_out"
-                    });
-                }
-
-                var outbound = singboxConfig.outbounds[0];
                 outbound.server = node.address;
                 outbound.server_port = node.port;
 
@@ -439,6 +431,59 @@ namespace v2rayN.Handler
             {
                 Utils.SaveLog(ex.Message, ex);
             }
+            return 0;
+        }
+
+        private int GenMoreOutbounds(ProfileItem node, SingboxConfig singboxConfig)
+        {
+            if (node.subid.IsNullOrEmpty())
+            {
+                return 0;
+            }
+            try
+            {
+                var subItem = LazyConfig.Instance.GetSubItem(node.subid);
+                if (subItem is null)
+                {
+                    return 0;
+                }
+
+                //current proxy
+                var outbound = singboxConfig.outbounds[0];
+                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+
+                //Previous proxy
+                var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);
+                if (prevNode is not null
+                    && prevNode.configType != EConfigType.Custom)
+                {
+                    var prevOutbound = Utils.FromJson<Outbound4Sbox>(txtOutbound);
+                    GenOutbound(prevNode, prevOutbound);
+                    prevOutbound.tag = $"{Global.ProxyTag}2";
+                    singboxConfig.outbounds.Add(prevOutbound);
+
+                    outbound.detour = prevOutbound.tag;
+                }
+
+                //Next proxy
+                var nextNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.nextProfile!);
+                if (nextNode is not null
+                    && nextNode.configType != EConfigType.Custom)
+                {
+                    var nextOutbound = Utils.FromJson<Outbound4Sbox>(txtOutbound);
+                    GenOutbound(nextNode, nextOutbound);
+                    nextOutbound.tag = Global.ProxyTag;
+                    singboxConfig.outbounds.Insert(0, nextOutbound);
+
+                    outbound.tag = $"{Global.ProxyTag}1";
+                    nextOutbound.detour = outbound.tag;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.SaveLog(ex.Message, ex);
+            }
+
             return 0;
         }
 

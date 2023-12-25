@@ -1,9 +1,5 @@
 [
   {
-    "inbound": [ "dns_in" ],
-    "outbound": "dns_out"
-  },
-  {
     "protocol": [ "dns" ],
     "outbound": "dns_out"
   },

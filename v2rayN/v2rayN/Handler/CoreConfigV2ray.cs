@@ -838,12 +838,15 @@ namespace v2rayN.Handler
 
                 //current proxy
                 var outbound = v2rayConfig.outbounds[0];
+                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
 
                 //Previous proxy
                 var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);
-                if (prevNode is not null)
+                if (prevNode is not null
+                    && prevNode.configType != EConfigType.Custom
+                    && prevNode.configType != EConfigType.Hysteria2
+                    && prevNode.configType != EConfigType.Tuic)
                 {
-                    var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                     var prevOutbound = Utils.FromJson<Outbounds4Ray>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
@@ -857,9 +860,11 @@ namespace v2rayN.Handler
 
                 //Next proxy
                 var nextNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.nextProfile!);
-                if (nextNode is not null)
+                if (nextNode is not null
+                    && nextNode.configType != EConfigType.Custom
+                    && nextNode.configType != EConfigType.Hysteria2
+                    && nextNode.configType != EConfigType.Tuic)
                 {
-                    var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                     var nextOutbound = Utils.FromJson<Outbounds4Ray>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;

@@ -25,9 +25,18 @@
 		{
 			"type": "block",
 			"tag": "block"
+		},
+		{
+			"tag": "dns_out",
+			"type": "dns"
 		}
 	],
 	"route": {
-		"rules": []
+		"rules": [
+			{
+				"protocol": [ "dns" ],
+				"outbound": "dns_out"
+			}
+		]
 	}
 }
