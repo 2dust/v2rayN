@@ -2555,11 +2555,29 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable additional Inbound 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableExInbound {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableExInbound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable hardware acceleration(Require restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableHWA {
             get {
                 return ResourceManager.GetString("TbSettingsEnableHWA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable IPv6 Address 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableIPv6Address {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableIPv6Address", resourceCulture);
             }
         }
         

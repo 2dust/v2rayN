@@ -1147,4 +1147,10 @@
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>請確保別名存在並且唯一</value>
   </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>啟用額外監聽端口</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>啟用IPv6</value>
+  </data>
 </root>

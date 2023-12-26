@@ -11,7 +11,8 @@
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
 		<FileVersion>6.31</FileVersion>
-	</PropertyGroup> 
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
@@ -30,6 +31,7 @@
 	
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
+        <EmbeddedResource Include="Sample\SingboxSampleOutbound" />       
         <EmbeddedResource Include="Sample\SingboxSampleClientConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>

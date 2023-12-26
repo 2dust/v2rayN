@@ -805,6 +805,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -857,6 +859,34 @@
                             Margin="{StaticResource SettingItemMargin}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableExInbound}" />
+                        <ToggleButton
+                            x:Name="togEnableExInbound"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
+                        <ToggleButton
+                            x:Name="togEnableIPv6Address"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </DockPanel>
             </TabItem>

@@ -83,6 +83,8 @@ namespace v2rayN.ViewModels
         [Reactive] public bool TunStrictRoute { get; set; }
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
+        [Reactive] public bool TunEnableExInbound { get; set; }
+        [Reactive] public bool TunEnableIPv6Address { get; set; }
 
         #endregion Tun mode
 
@@ -174,6 +176,8 @@ namespace v2rayN.ViewModels
             TunStrictRoute = _config.tunModeItem.strictRoute;
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
+            TunEnableExInbound = _config.tunModeItem.enableExInbound;
+            TunEnableIPv6Address = _config.tunModeItem.enableIPv6Address;
 
             #endregion Tun mode
 
@@ -319,6 +323,8 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.strictRoute = TunStrictRoute;
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
+            _config.tunModeItem.enableExInbound = TunEnableExInbound;
+            _config.tunModeItem.enableIPv6Address = TunEnableIPv6Address;
 
             //coreType
             SaveCoreType();

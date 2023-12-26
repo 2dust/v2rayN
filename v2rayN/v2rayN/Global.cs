@@ -39,6 +39,7 @@ namespace v2rayN
         public const string V2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
         public const string V2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string V2raySampleOutbound = "v2rayN.Sample.SampleOutbound";
+        public const string SingboxSampleOutbound = "v2rayN.Sample.SingboxSampleOutbound";
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
         public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
         public const string TunSingboxInboundFileName = "v2rayN.Sample.tun_singbox_inbound";

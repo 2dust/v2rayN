@@ -164,6 +164,7 @@ namespace v2rayN.Mode
         public string stack { get; set; }
         public int mtu { get; set; }
         public bool enableExInbound { get; set; }
+        public bool enableIPv6Address { get; set; } = true;
     }
 
     [Serializable]

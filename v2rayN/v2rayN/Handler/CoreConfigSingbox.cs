@@ -180,6 +180,10 @@ namespace v2rayN.Handler
                     tunInbound.mtu = _config.tunModeItem.mtu;
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
+                    if (_config.tunModeItem.enableIPv6Address == false)
+                    {
+                        tunInbound.inet6_address = null;
+                    }
 
                     singboxConfig.inbounds.Add(tunInbound);
                 }
@@ -450,7 +454,7 @@ namespace v2rayN.Handler
 
                 //current proxy
                 var outbound = singboxConfig.outbounds[0];
-                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
 
                 //Previous proxy
                 var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);

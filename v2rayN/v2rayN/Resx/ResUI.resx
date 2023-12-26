@@ -1162,4 +1162,10 @@
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>Please make sure the remarks exists and is unique</value>
   </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>Enable additional Inbound</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>Enable IPv6 Address</value>
+  </data>
 </root>
