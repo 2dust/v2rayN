@@ -150,10 +150,26 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static string GenerateClientSpeedtestConfigString(Config config, List<ServerTestItem> selecteds, out string msg)
+        public static int GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType, out string msg)
         {
-            var coreConfigV2ray = new CoreConfigV2ray(config);
-            return coreConfigV2ray.GenerateClientSpeedtestConfigString(selecteds, out msg);
+            if (coreType == ECoreType.sing_box)
+            {
+                if ((new CoreConfigSingbox(config)).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+                Utils.ToJsonFile(singboxConfig, fileName, false);
+            }
+            else
+            {
+                if ((new CoreConfigV2ray(config)).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+
+                Utils.ToJsonFile(v2rayConfig, fileName, false);
+            }
+            return 0;
         }
     }
 }

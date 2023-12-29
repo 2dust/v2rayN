@@ -70,6 +70,8 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        #region private gen function
+
         private int GenLog(V2rayConfig v2rayConfig)
         {
             try
@@ -885,16 +887,19 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        #endregion private gen function
+
         #region Gen speedtest config
 
-        public string GenerateClientSpeedtestConfigString(List<ServerTestItem> selecteds, out string msg)
+        public int GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
         {
+            v2rayConfig = null;
             try
             {
                 if (_config == null)
                 {
                     msg = ResUI.CheckServerSettings;
-                    return "";
+                    return -1;
                 }
 
                 msg = ResUI.InitialConfiguration;
@@ -904,14 +909,14 @@ namespace v2rayN.Handler
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
-                    return "";
+                    return -1;
                 }
 
-                var v2rayConfig = Utils.FromJson<V2rayConfig>(result);
+                v2rayConfig = Utils.FromJson<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
-                    return "";
+                    return -1;
                 }
                 List<IPEndPoint> lstIpEndPoints = new();
                 List<TcpConnectionInformation> lstTcpConns = new();
@@ -928,6 +933,7 @@ namespace v2rayN.Handler
 
                 GenLog(v2rayConfig);
                 v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
+                v2rayConfig.outbounds.RemoveAt(0);
 
                 int httpPort = LazyConfig.Instance.GetLocalPort("speedtest");
 
@@ -1019,13 +1025,13 @@ namespace v2rayN.Handler
                 }
 
                 //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
-                return Utils.ToJson(v2rayConfig);
+                return 0;
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
-                return "";
+                return -1;
             }
         }
 

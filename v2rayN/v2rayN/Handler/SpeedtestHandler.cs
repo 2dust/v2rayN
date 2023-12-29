@@ -30,7 +30,7 @@ namespace v2rayN.Handler
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
-                if (it.configType == EConfigType.Custom || it.configType == EConfigType.Hysteria2 || it.configType == EConfigType.Tuic)
+                if (it.configType == EConfigType.Custom)
                 {
                     continue;
                 }
@@ -150,7 +150,7 @@ namespace v2rayN.Handler
             {
                 string msg = string.Empty;
 
-                pid = _coreHandler.LoadCoreConfigString(_selecteds);
+                pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
@@ -196,7 +196,10 @@ namespace v2rayN.Handler
             }
             finally
             {
-                if (pid > 0) _coreHandler.CoreStopPid(pid);
+                if (pid > 0)
+                {
+                    _coreHandler.CoreStopPid(pid);
+                }
                 ProfileExHandler.Instance.SaveTo();
             }
 
@@ -211,7 +214,7 @@ namespace v2rayN.Handler
             //    _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
             //}
 
-            pid = _coreHandler.LoadCoreConfigString(_selecteds);
+            pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -268,7 +271,7 @@ namespace v2rayN.Handler
         private async Task RunSpeedTestMulti()
         {
             int pid = -1;
-            pid = _coreHandler.LoadCoreConfigString(_selecteds);
+            pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);

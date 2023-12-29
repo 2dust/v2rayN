@@ -33,6 +33,7 @@ namespace v2rayN
         public const string ConfigDB = "guiNDB.db";
         public const string CoreConfigFileName = "config.json";
         public const string CorePreConfigFileName = "configPre.json";
+        public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string V2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";

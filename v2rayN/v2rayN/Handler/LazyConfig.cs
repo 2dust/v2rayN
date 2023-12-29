@@ -277,7 +277,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.Xray,
                 coreExes = new List<string> { "xray", "wxray" },
-                arguments = "",
+                arguments = "run {0}",
                 coreUrl = Global.XrayCoreUrl,
                 coreReleaseApiUrl = Global.XrayCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                 coreDownloadUrl32 = Global.XrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
@@ -364,7 +364,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
-                arguments = "run{0}",
+                arguments = "run {0} --disable-color",
                 coreUrl = Global.SingboxCoreUrl,
                 redirectInfo = true,
                 coreReleaseApiUrl = Global.SingboxCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
