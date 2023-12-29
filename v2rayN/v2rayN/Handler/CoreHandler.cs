@@ -223,10 +223,11 @@ namespace v2rayN.Handler
         {
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
+            ShowMsg(false, configPath);
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
-                var proc = RunProcess(new(), coreInfo, $" -c {configPath}", true, ShowMsg);
+                var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true, ShowMsg);
                 if (proc is null)
                 {
                     return -1;
