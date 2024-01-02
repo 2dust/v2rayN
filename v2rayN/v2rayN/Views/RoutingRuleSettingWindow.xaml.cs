@@ -132,7 +132,7 @@ namespace v2rayN.Views
         private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "PNG|*.png";
+            openFileDialog1.Filter = "PNG,ICO|*.png;*.ico";
             openFileDialog1.ShowDialog();
 
             txtCustomIcon.Text = openFileDialog1.FileName;
