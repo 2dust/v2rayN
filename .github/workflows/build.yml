@@ -18,13 +18,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: 删除工作流运行
-      uses: Mattraks/delete-workflow-runs@v2
-      with:
-        token: ${{ github.token }}
-        repository: ${{ github.repository }}
-        retain_days: 0
-        keep_minimum_runs: 1
+    # - name: 删除工作流运行
+    #   uses: Mattraks/delete-workflow-runs@v2
+    #   with:
+    #     token: ${{ github.token }}
+    #     repository: ${{ github.repository }}
+    #     retain_days: 0
+    #     keep_minimum_runs: 1
 
     - name: Build
       run:  cd v2rayN && 
