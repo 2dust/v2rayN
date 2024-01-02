@@ -1726,6 +1726,10 @@ namespace v2rayN.ViewModels
                             {
                                 ModifyTheme(!Utils.IsLightTheme());
                             }
+                            else
+                            {
+                                ModifyTheme(ColorModeDark);
+                            }
                         }
                     });
 
