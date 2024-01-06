@@ -143,14 +143,12 @@ namespace v2rayN.Handler
                 {
                     return defaultPort;
                 }
-                for (int i = 0; i < 3; i++)
-                {
-                    TcpListener l = new(IPAddress.Loopback, 0);
-                    l.Start();
-                    int port = ((IPEndPoint)l.LocalEndpoint).Port;
-                    l.Stop();
-                    return port;
-                }
+
+                TcpListener l = new(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+                return port;
             }
             catch
             {

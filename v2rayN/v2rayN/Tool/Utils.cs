@@ -880,13 +880,13 @@ namespace v2rayN
                 if (blFull)
                 {
                     return string.Format("v2rayN - V{0} - {1}",
-                            FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
+                            FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString(),
                             File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
                 }
                 else
                 {
                     return string.Format("v2rayN/{0}",
-                        FileVersionInfo.GetVersionInfo(location).FileVersion.ToString());
+                        FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString());
                 }
             }
             catch (Exception ex)

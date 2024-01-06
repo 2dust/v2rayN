@@ -180,8 +180,9 @@
 
     public class Experimental4Sbox
     {
-        public V2ray_Api4Sbox v2ray_api { get; set; }
-        public Clash_Api4Sbox clash_api { get; set; }
+        public CacheFile4Sbox? cache_file { get; set; }
+        public V2ray_Api4Sbox? v2ray_api { get; set; }
+        public Clash_Api4Sbox? clash_api { get; set; }
     }
 
     public class V2ray_Api4Sbox
@@ -192,8 +193,8 @@
 
     public class Clash_Api4Sbox
     {
-        public string external_controller { get; set; }
-        public bool store_selected { get; set; }
+        public string? external_controller { get; set; }
+        public bool? store_selected { get; set; }
     }
 
     public class Stats4Sbox
@@ -209,5 +210,13 @@
         public bool enabled { get; set; }
         public string inet4_range { get; set; }
         public string inet6_range { get; set; }
+    }
+
+    public class CacheFile4Sbox
+    {
+        public bool enabled { get; set; }
+        public string? path { get; set; }
+        public string? cache_id { get; set; }
+        public bool? store_fakeip { get; set; }
     }
 }

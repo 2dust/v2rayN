@@ -776,18 +776,21 @@ namespace v2rayN.Handler
             {
                 singboxConfig.experimental = new Experimental4Sbox()
                 {
+                    //cache_file = new CacheFile4Sbox()
+                    //{
+                    //    enabled = true
+                    //},
                     //v2ray_api = new V2ray_Api4Sbox()
                     //{
-                    //    listen = $"{Global.Loopback}:{Global.statePort}",
+                    //    listen = $"{Global.Loopback}:{Global.StatePort}",
                     //    stats = new Stats4Sbox()
                     //    {
                     //        enabled = true,
                     //    }
-                    //}
+                    //},
                     clash_api = new Clash_Api4Sbox()
                     {
                         external_controller = $"{Global.Loopback}:{Global.StatePort}",
-                        store_selected = true
                     }
                 };
             }
