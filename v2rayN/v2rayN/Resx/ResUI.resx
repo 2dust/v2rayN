@@ -1097,7 +1097,7 @@
     <value>More urls, separated by commas;Subscription conversion will be invalid</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
-    <value>{0}:{1}/s↑ | {2}/s↓</value>
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval(minutes)</value>

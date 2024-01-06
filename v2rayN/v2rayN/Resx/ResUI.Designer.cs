@@ -1744,7 +1744,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 {0}:{1}/s↑ | {2}/s↓ 的本地化字符串。
+        ///   查找类似 {0} : {1}/s↑ | {2}/s↓ 的本地化字符串。
         /// </summary>
         public static string SpeedDisplayText {
             get {

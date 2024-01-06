@@ -9,8 +9,8 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
-		<Copyright>Copyright © 2017-2023 (GPLv3)</Copyright>
-		<FileVersion>6.32</FileVersion>
+		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
+		<FileVersion>6.33</FileVersion>
 	</PropertyGroup>
 	
 	<ItemGroup>
