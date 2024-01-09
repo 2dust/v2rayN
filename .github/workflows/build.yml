@@ -36,13 +36,12 @@ jobs:
     #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: v2rayN
-        path: 
+        path: |
           .\v2rayN\v2rayN.zip
 
-      
     # - name: Release
     #   uses: softprops/action-gh-release@v1
     #   env:
