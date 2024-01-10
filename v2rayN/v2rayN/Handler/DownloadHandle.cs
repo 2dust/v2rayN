@@ -298,7 +298,7 @@ namespace v2rayN.Handler
 
                 responseTime = timer.Elapsed.Milliseconds;
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 //Utils.SaveLog(ex.Message, ex);
             }

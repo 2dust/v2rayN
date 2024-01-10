@@ -103,7 +103,7 @@ namespace v2rayN.Handler
                 {
                     try
                     {
-                        Task.Run(() => updateFun(it));
+                        _ = Task.Run(() => updateFun(it));
                     }
                     catch (Exception ex)
                     {
@@ -349,7 +349,7 @@ namespace v2rayN.Handler
 
             try
             {
-                if (!IPAddress.TryParse(url, out IPAddress ipAddress))
+                if (!IPAddress.TryParse(url, out IPAddress? ipAddress))
                 {
                     IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
                     ipAddress = ipHostInfo.AddressList[0];

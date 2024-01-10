@@ -80,9 +80,9 @@ namespace v2rayN.ViewModels
             {
                 ImportRulesFromClipboard();
             });
-            ImportRulesFromUrlCmd = ReactiveCommand.Create(() =>
+            ImportRulesFromUrlCmd = ReactiveCommand.CreateFromTask(() =>
             {
-                ImportRulesFromUrl();
+                return ImportRulesFromUrl();
             });
 
             RuleRemoveCmd = ReactiveCommand.Create(() =>
@@ -142,7 +142,7 @@ namespace v2rayN.ViewModels
 
         public void RuleEdit(bool blNew)
         {
-            RulesItem item;
+            RulesItem? item;
             if (blNew)
             {
                 item = new();

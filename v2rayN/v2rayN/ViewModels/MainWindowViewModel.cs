@@ -1132,7 +1132,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
-            string url = ShareHandler.GetShareUrl(item);
+            var url = ShareHandler.GetShareUrl(item);
             if (Utils.IsNullOrEmpty(url))
             {
                 return;

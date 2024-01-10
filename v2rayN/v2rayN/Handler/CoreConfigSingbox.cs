@@ -177,7 +177,7 @@ namespace v2rayN.Handler
                         _config.tunModeItem.stack = Global.TunStacks[0];
                     }
 
-                    var tunInbound = JsonUtils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName));
+                    var tunInbound = JsonUtils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
                     tunInbound.mtu = _config.tunModeItem.mtu;
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
@@ -196,7 +196,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private Inbound4Sbox? GetInbound(Inbound4Sbox inItem, string tag, int offset, bool bSocks)
+        private Inbound4Sbox GetInbound(Inbound4Sbox inItem, string tag, int offset, bool bSocks)
         {
             var inbound = JsonUtils.DeepCopy(inItem);
             inbound.tag = tag;
