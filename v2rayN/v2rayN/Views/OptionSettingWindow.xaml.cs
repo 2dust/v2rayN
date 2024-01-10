@@ -128,7 +128,7 @@ namespace v2rayN.Views
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("fill fonts error", ex);
+                Logging.SaveLog("fill fonts error", ex);
             }
             cmbcurrentFontFamily.Items.Add(string.Empty);
 

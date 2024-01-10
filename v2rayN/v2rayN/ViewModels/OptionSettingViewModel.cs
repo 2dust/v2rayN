@@ -296,7 +296,7 @@ namespace v2rayN.ViewModels
             //_config.kcpItem.congestion = Kcpcongestion;
 
             //UI
-            Utils.SetAutoRun(AutoRun);
+            Utils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;

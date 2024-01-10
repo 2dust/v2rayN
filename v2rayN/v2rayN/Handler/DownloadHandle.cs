@@ -84,7 +84,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
 
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
@@ -111,7 +111,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                Utils.SaveLog("StatusCode error: " + url);
+                Logging.SaveLog("StatusCode error: " + url);
                 return null;
             }
         }
@@ -128,7 +128,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -146,7 +146,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -166,7 +166,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -212,7 +212,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -243,7 +243,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -270,13 +270,13 @@ namespace v2rayN.Handler
                 }
                 catch (Exception ex)
                 {
-                    Utils.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(ex.Message, ex);
                     return -1;
                 }
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return -1;
             }
         }

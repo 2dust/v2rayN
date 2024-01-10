@@ -276,7 +276,7 @@ namespace v2rayN.Views
 
         private void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
-            Utils.SaveLog("Current_SessionEnding");
+            Logging.SaveLog("Current_SessionEnding");
             StorageUI();
             ViewModel?.MyAppExit(true);
         }

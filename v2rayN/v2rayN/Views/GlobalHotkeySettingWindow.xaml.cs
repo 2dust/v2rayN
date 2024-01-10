@@ -70,7 +70,7 @@ namespace v2rayN.Views
 
         private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit, EGlobalHotkey eg)
         {
-            return Utils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
+            return JsonUtils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
             {
                 eGlobalHotkey = eg,
                 Control = false,

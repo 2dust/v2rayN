@@ -2,7 +2,6 @@
 using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Mode;
-using v2rayN.Tool;
 
 namespace v2rayN
 {
@@ -45,7 +44,7 @@ namespace v2rayN
             Logging.Setup();
             Init();
             Logging.LoggingEnabled(_config.guiItem.enableLog);
-            Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.ClearLogs();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
@@ -70,7 +69,7 @@ namespace v2rayN
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Utils.SaveLog("App_DispatcherUnhandledException", e.Exception);
+            Logging.SaveLog("App_DispatcherUnhandledException", e.Exception);
             e.Handled = true;
         }
 
@@ -78,13 +77,13 @@ namespace v2rayN
         {
             if (e.ExceptionObject != null)
             {
-                Utils.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
+                Logging.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
             }
         }
 
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
-            Utils.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
+            Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
         }
     }
 }

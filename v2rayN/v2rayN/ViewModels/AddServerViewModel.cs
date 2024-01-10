@@ -37,7 +37,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = Utils.DeepCopy(profileItem);
+                SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
 
             SaveCmd = ReactiveCommand.Create(() =>

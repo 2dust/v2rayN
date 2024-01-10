@@ -36,7 +36,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                singboxConfig = Utils.FromJson<SingboxConfig>(result);
+                singboxConfig = JsonUtils.FromJson<SingboxConfig>(result);
                 if (singboxConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -61,7 +61,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("GenerateClientConfig4Singbox", ex);
+                Logging.SaveLog("GenerateClientConfig4Singbox", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -101,7 +101,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -178,7 +178,7 @@ namespace v2rayN.Handler
                         _config.tunModeItem.stack = Global.TunStacks[0];
                     }
 
-                    var tunInbound = Utils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName));
+                    var tunInbound = JsonUtils.FromJson<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName));
                     tunInbound.mtu = _config.tunModeItem.mtu;
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
@@ -192,14 +192,14 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
 
         private Inbound4Sbox? GetInbound(Inbound4Sbox inItem, string tag, int offset, bool bSocks)
         {
-            var inbound = Utils.DeepCopy(inItem);
+            var inbound = JsonUtils.DeepCopy(inItem);
             inbound.tag = tag;
             inbound.listen_port = inItem.listen_port + offset;
             inbound.type = bSocks ? Global.InboundSocks : Global.InboundHttp;
@@ -304,7 +304,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -329,7 +329,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -379,7 +379,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -431,7 +431,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -459,7 +459,7 @@ namespace v2rayN.Handler
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom)
                 {
-                    var prevOutbound = Utils.FromJson<Outbound4Sbox>(txtOutbound);
+                    var prevOutbound = JsonUtils.FromJson<Outbound4Sbox>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
                     singboxConfig.outbounds.Add(prevOutbound);
@@ -472,7 +472,7 @@ namespace v2rayN.Handler
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom)
                 {
-                    var nextOutbound = Utils.FromJson<Outbound4Sbox>(txtOutbound);
+                    var nextOutbound = JsonUtils.FromJson<Outbound4Sbox>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
                     singboxConfig.outbounds.Insert(0, nextOutbound);
@@ -483,7 +483,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
 
             return 0;
@@ -497,7 +497,7 @@ namespace v2rayN.Handler
                 {
                     singboxConfig.route.auto_detect_interface = true;
 
-                    var tunRules = Utils.FromJson<List<Rule4Sbox>>(Utils.GetEmbedText(Global.TunSingboxRulesFileName));
+                    var tunRules = JsonUtils.FromJson<List<Rule4Sbox>>(Utils.GetEmbedText(Global.TunSingboxRulesFileName));
                     singboxConfig.route.rules.AddRange(tunRules);
 
                     GenRoutingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe);
@@ -520,7 +520,7 @@ namespace v2rayN.Handler
                     var routing = ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
                     {
-                        var rules = Utils.FromJson<List<RulesItem>>(routing.ruleSet);
+                        var rules = JsonUtils.FromJson<List<RulesItem>>(routing.ruleSet);
                         foreach (var item in rules!)
                         {
                             if (item.enabled)
@@ -535,7 +535,7 @@ namespace v2rayN.Handler
                     var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                     if (lockedItem != null)
                     {
-                        var rules = Utils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
+                        var rules = JsonUtils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
                         foreach (var item in rules!)
                         {
                             GenRoutingUserRule(item, singboxConfig.route.rules);
@@ -545,7 +545,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -609,8 +609,8 @@ namespace v2rayN.Handler
                 {
                     rule.inbound = item.inboundTag;
                 }
-                var rule2 = Utils.DeepCopy(rule);
-                var rule3 = Utils.DeepCopy(rule);
+                var rule2 = JsonUtils.DeepCopy(rule);
+                var rule3 = JsonUtils.DeepCopy(rule);
 
                 var hasDomainIp = false;
                 if (item.domain?.Count > 0)
@@ -647,7 +647,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -727,7 +727,7 @@ namespace v2rayN.Handler
                     {
                         tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
                     }
-                    dns4Sbox = Utils.FromJson<Dns4Sbox>(tunDNS);
+                    dns4Sbox = JsonUtils.FromJson<Dns4Sbox>(tunDNS);
                 }
                 else
                 {
@@ -738,7 +738,7 @@ namespace v2rayN.Handler
                         normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
                     }
 
-                    dns4Sbox = Utils.FromJson<Dns4Sbox>(normalDNS);
+                    dns4Sbox = JsonUtils.FromJson<Dns4Sbox>(normalDNS);
                 }
                 if (dns4Sbox is null)
                 {
@@ -765,7 +765,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return 0;
         }
@@ -822,7 +822,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                singboxConfig = Utils.FromJson<SingboxConfig>(result);
+                singboxConfig = JsonUtils.FromJson<SingboxConfig>(result);
                 if (singboxConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -838,7 +838,7 @@ namespace v2rayN.Handler
                 }
                 catch (Exception ex)
                 {
-                    Utils.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(ex.Message, ex);
                 }
 
                 GenLog(singboxConfig);
@@ -920,7 +920,7 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    var outbound = Utils.FromJson<Outbound4Sbox>(txtOutbound);
+                    var outbound = JsonUtils.FromJson<Outbound4Sbox>(txtOutbound);
                     GenOutbound(item, outbound);
                     outbound.tag = Global.ProxyTag + inbound.listen_port.ToString();
                     singboxConfig.outbounds.Add(outbound);
@@ -939,7 +939,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }

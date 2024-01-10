@@ -107,7 +107,7 @@ namespace v2rayN.Handler
                     }
                     catch (Exception ex)
                     {
-                        Utils.SaveLog(ex.Message, ex);
+                        Logging.SaveLog(ex.Message, ex);
                     }
                 }
 
@@ -115,7 +115,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -184,7 +184,7 @@ namespace v2rayN.Handler
                         }
                         catch (Exception ex)
                         {
-                            Utils.SaveLog(ex.Message, ex);
+                            Logging.SaveLog(ex.Message, ex);
                         }
                     }));
                 }
@@ -192,7 +192,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             finally
             {
@@ -371,7 +371,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return responseTime;
         }
@@ -407,7 +407,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return -1;
             }
             return roundtripTime;

@@ -59,7 +59,7 @@ namespace v2rayN.Handler
                             {
                                 CoreStart(node);
                                 ShowMsg(false, "Tun mode restart the core once");
-                                Utils.SaveLog("Tun mode restart the core once");
+                                Logging.SaveLog("Tun mode restart the core once");
                             }
                         }
                     });
@@ -120,7 +120,7 @@ namespace v2rayN.Handler
                             foreach (Process p in existing)
                             {
                                 string? path = p.MainModule?.FileName;
-                                if (path == $"{Utils.GetBinPath(vName, it.coreType)}.exe")
+                                if (path == $"{Utils.GetBinPath(vName, it.coreType.ToString())}.exe")
                                 {
                                     KillProcess(p);
                                 }
@@ -131,7 +131,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -144,7 +144,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -154,7 +154,7 @@ namespace v2rayN.Handler
             foreach (string name in coreInfo.coreExes)
             {
                 string vName = $"{name}.exe";
-                vName = Utils.GetBinPath(vName, coreInfo.coreType);
+                vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
                 if (File.Exists(vName))
                 {
                     fileName = vName;
@@ -163,8 +163,8 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
-                Utils.SaveLog(msg);
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType.ToString()), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                Logging.SaveLog(msg);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -237,7 +237,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 ShowMsg(false, msg);
                 return -1;
@@ -311,7 +311,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 update(true, msg);
                 return null;
@@ -336,7 +336,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 

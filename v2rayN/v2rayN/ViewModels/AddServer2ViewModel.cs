@@ -38,7 +38,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = Utils.DeepCopy(profileItem);
+                SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
 
             _view = view;
@@ -127,7 +127,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedCustomServer);
                 if (!Utils.IsNullOrEmpty(item.indexId))
                 {
-                    SelectedSource = Utils.DeepCopy(item);
+                    SelectedSource = JsonUtils.DeepCopy(item);
                 }
                 IsModified = true;
             }

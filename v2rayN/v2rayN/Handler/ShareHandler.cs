@@ -38,7 +38,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return "";
             }
         }
@@ -66,7 +66,7 @@ namespace v2rayN.Handler
                 fp = item.fingerprint
             };
 
-            url = Utils.ToJson(vmessQRCode);
+            url = JsonUtils.ToJson(vmessQRCode);
             url = Utils.Base64Encode(url);
             url = $"{Global.ProtocolShares[EConfigType.VMess]}{url}";
 
@@ -431,7 +431,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 msg = ResUI.Incorrectconfiguration;
                 return null;
             }
@@ -451,7 +451,7 @@ namespace v2rayN.Handler
             result = Utils.Base64Decode(result);
 
             //转成Json
-            VmessQRCode? vmessQRCode = Utils.FromJson<VmessQRCode>(result);
+            VmessQRCode? vmessQRCode = JsonUtils.FromJson<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
                 msg = ResUI.FailedConversionConfiguration;

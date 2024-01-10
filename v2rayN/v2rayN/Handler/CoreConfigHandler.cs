@@ -35,11 +35,11 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = Utils.ToJson(singboxConfig);
+                        content = JsonUtils.ToJson(singboxConfig);
                     }
                     else
                     {
-                        Utils.ToJsonFile(singboxConfig, fileName, false);
+                        JsonUtils.ToJsonFile(singboxConfig, fileName, false);
                     }
                 }
                 else
@@ -51,17 +51,17 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = Utils.ToJson(v2rayConfig);
+                        content = JsonUtils.ToJson(v2rayConfig);
                     }
                     else
                     {
-                        Utils.ToJsonFile(v2rayConfig, fileName, false);
+                        JsonUtils.ToJsonFile(v2rayConfig, fileName, false);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("GenerateClientConfig", ex);
+                Logging.SaveLog("GenerateClientConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -143,7 +143,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("GenerateClientCustomConfig", ex);
+                Logging.SaveLog("GenerateClientCustomConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-                Utils.ToJsonFile(singboxConfig, fileName, false);
+                JsonUtils.ToJsonFile(singboxConfig, fileName, false);
             }
             else
             {
@@ -166,8 +166,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-
-                Utils.ToJsonFile(v2rayConfig, fileName, false);
+                JsonUtils.ToJsonFile(v2rayConfig, fileName, false);
             }
             return 0;
         }
