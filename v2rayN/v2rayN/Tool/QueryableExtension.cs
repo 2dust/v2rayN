@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-namespace v2rayN.Tool
+namespace v2rayN
 {
     public static class QueryableExtension
     {

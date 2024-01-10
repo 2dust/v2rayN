@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using v2rayN.Base;
 using v2rayN.Mode;
-using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
