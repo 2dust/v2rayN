@@ -2,7 +2,6 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;

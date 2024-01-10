@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Reactive.Linq;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler

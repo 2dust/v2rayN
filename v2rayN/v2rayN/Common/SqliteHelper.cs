@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System.Collections;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     public sealed class SqliteHelper
     {

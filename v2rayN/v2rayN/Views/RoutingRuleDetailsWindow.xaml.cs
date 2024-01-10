@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
-using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.ViewModels;
 

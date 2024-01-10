@@ -524,7 +524,7 @@ namespace v2rayN
                 Logging.SaveLog(ex.Message, ex);
             }
         }
-         
+
 
         /// <summary>
         /// 获取启动了应用程序的可执行文件的路径

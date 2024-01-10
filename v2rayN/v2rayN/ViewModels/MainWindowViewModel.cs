@@ -15,7 +15,6 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web;
-using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
 

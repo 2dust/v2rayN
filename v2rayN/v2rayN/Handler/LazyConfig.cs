@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Intrinsics.X86;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler

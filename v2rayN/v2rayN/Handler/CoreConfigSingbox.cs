@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
-using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.Resx;
 

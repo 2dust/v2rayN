@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     /// <summary>
     /// </summary>

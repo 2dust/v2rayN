@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     internal static class StringEx
     {

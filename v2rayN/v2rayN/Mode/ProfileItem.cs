@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using v2rayN.Base;
 
 namespace v2rayN.Mode
 {

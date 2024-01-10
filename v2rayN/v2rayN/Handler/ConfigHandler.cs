@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler

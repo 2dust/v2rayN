@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
