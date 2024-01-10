@@ -189,7 +189,7 @@ namespace v2rayN.Handler
             item.id,
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.ProtocolShares[EConfigType.Hysteria2]}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.Hysteria2]}{url}/{query}{remark}";
             return url;
         }
 
