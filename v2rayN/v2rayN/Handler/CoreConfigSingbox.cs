@@ -41,12 +41,15 @@ namespace v2rayN.Handler
                     msg = ResUI.FailedGenDefaultConfiguration;
                     return -1;
                 }
+                Outbound4Sbox originOutBound = JsonUtils.DeepCopy(singboxConfig.outbounds[0]);
 
                 GenLog(singboxConfig);
 
                 GenInbounds(singboxConfig);
 
                 GenOutbound(node, singboxConfig.outbounds[0]);
+
+                GenOutbounds(singboxConfig, originOutBound);
 
                 GenMoreOutbounds(node, singboxConfig);
 
@@ -203,6 +206,32 @@ namespace v2rayN.Handler
             inbound.listen_port = inItem.listen_port + offset;
             inbound.type = bSocks ? Global.InboundSocks : Global.InboundHttp;
             return inbound;
+        }
+
+        /// <summary>
+        /// 生成分流的出站规则
+        /// </summary>
+        private int GenOutbounds(SingboxConfig singboxConfig, Outbound4Sbox outbound)
+        {
+            var routing = ConfigHandler.GetDefaultRouting(_config);
+            var ruleSet = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
+            if (ruleSet == null) return -1;
+
+            int index = 1;
+            foreach (var item in ruleSet)
+            {
+                string outBoundIndexId = item.bingServerIndexId;
+                if (outBoundIndexId == null) continue;
+                var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                if (serverItem == null) continue;
+
+                var newOutbounds = JsonUtils.DeepCopy(outbound);
+                newOutbounds.tag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                singboxConfig.outbounds.Add(newOutbounds);
+                GenOutbound(serverItem, newOutbounds);
+            }
+
+            return 0;
         }
 
         private int GenOutbound(ProfileItem node, Outbound4Sbox outbound)
@@ -520,8 +549,18 @@ namespace v2rayN.Handler
                     if (routing != null)
                     {
                         var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
-                        foreach (var item in rules!)
+                        int index = 1;
+                        foreach (var item in rules)
                         {
+                            // 分流修改
+                            string outBoundIndexId = item.bingServerIndexId;
+
+                            if (outBoundIndexId == null) continue;
+
+                            var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                            if (serverItem == null) continue;
+                            item.outboundTag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                            // end
                             if (item.enabled)
                             {
                                 GenRoutingUserRule(item, singboxConfig.route.rules);
@@ -535,8 +574,18 @@ namespace v2rayN.Handler
                     if (lockedItem != null)
                     {
                         var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
-                        foreach (var item in rules!)
+                        int index = 1;
+                        foreach (var item in rules)
                         {
+                            // 分流修改
+                            string outBoundIndexId = item.bingServerIndexId;
+
+                            if (outBoundIndexId == null) continue;
+
+                            var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                            if (serverItem == null) continue;
+                            item.outboundTag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                            // end
                             GenRoutingUserRule(item, singboxConfig.route.rules);
                         }
                     }

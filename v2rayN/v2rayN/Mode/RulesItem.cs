@@ -12,6 +12,9 @@
 
         public string outboundTag { get; set; }
 
+        // 分流修改
+        public string bingServerIndexId { get; set; }
+
         public List<string> ip { get; set; }
 
         public List<string> domain { get; set; }

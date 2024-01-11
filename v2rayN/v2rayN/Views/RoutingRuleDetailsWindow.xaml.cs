@@ -1,6 +1,8 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
+using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.ViewModels;
 
@@ -31,6 +33,29 @@ namespace v2rayN.Views
             cmbOutboundTag.Items.Add(Global.ProxyTag);
             cmbOutboundTag.Items.Add(Global.DirectTag);
             cmbOutboundTag.Items.Add(Global.BlockTag);
+
+            // 分流实现
+            cmbOutboundIndexId.Items.Add(Global.ProxyTag);
+            cmbOutboundIndexId.Items.Add(Global.DirectTag);
+            cmbOutboundIndexId.Items.Add(Global.BlockTag);
+
+            var config = LazyConfig.Instance.GetConfig();
+            var allServerItems = LazyConfig.Instance.ProfileItems(null, "");
+
+            string tagName = null;
+            int index = 1;
+            foreach (var serverItem in allServerItems)
+            {
+                if (serverItem == null || serverItem.configType == EConfigType.Custom)
+                {
+                    continue;
+                }
+                tagName = $"[{(serverItem.indexId.Equals(config.indexId) ? "proxy" : index++)}]{serverItem.remarks}";
+                cmbOutboundTag.Items.Add(tagName);
+                cmbOutboundIndexId.Items.Add(serverItem.indexId);
+            }
+            // end
+
             Global.RuleProtocols.ForEach(it =>
             {
                 clbProtocol.Items.Add(it);
@@ -54,6 +79,19 @@ namespace v2rayN.Views
 
             this.WhenActivated(disposables =>
             {
+                // 分流
+                cmbOutboundIndexId.SelectedItem = cmbOutboundIndexId.Items.Cast<object>().FirstOrDefault(item => item.ToString() == ViewModel.SelectedSource.bingServerIndexId);
+                cmbOutboundTag.SelectedIndex = cmbOutboundIndexId.SelectedIndex;
+                this.WhenAnyValue(v => v.cmbOutboundTag.SelectedItem)
+                    .Where(selectedItem => selectedItem != null)
+                    .Subscribe(selectedItem =>
+                    {
+                        cmbOutboundIndexId.SelectedIndex = cmbOutboundTag.SelectedIndex;
+                        ViewModel.SelectedSource.bingServerIndexId = cmbOutboundIndexId.SelectedItem.ToString();
+                        ViewModel.SelectedSource.outboundTag = cmbOutboundTag.Text;
+                    })
+                    .DisposeWith(disposables);
+                // end
                 this.Bind(ViewModel, vm => vm.SelectedSource.outboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.port, v => v.txtPort.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.enabled, v => v.togEnabled.IsChecked).DisposeWith(disposables);

@@ -43,6 +43,7 @@ namespace v2rayN.Handler
                     msg = ResUI.FailedGenDefaultConfiguration;
                     return -1;
                 }
+                Outbounds4Ray originOutBound = JsonUtils.DeepCopy(v2rayConfig.outbounds[0]);
 
                 GenLog(v2rayConfig);
 
@@ -51,6 +52,8 @@ namespace v2rayN.Handler
                 GenRouting(v2rayConfig);
 
                 GenOutbound(node, v2rayConfig.outbounds[0]);
+
+                GenOutbounds(v2rayConfig, originOutBound);
 
                 GenMoreOutbounds(node, v2rayConfig);
 
@@ -187,8 +190,18 @@ namespace v2rayN.Handler
                                 v2rayConfig.routing.domainStrategy = routing.domainStrategy;
                             }
                             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
+                            int index = 1;
                             foreach (var item in rules)
                             {
+                                // 分流
+                                string outBoundIndexId = item.bingServerIndexId;
+
+                                if (outBoundIndexId == null) continue;
+
+                                var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                                if (serverItem == null) continue;
+                                item.outboundTag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                                // end
                                 if (item.enabled)
                                 {
                                     var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
@@ -203,8 +216,18 @@ namespace v2rayN.Handler
                         if (lockedItem != null)
                         {
                             var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
+                            int index = 1;
                             foreach (var item in rules)
                             {
+                                // 分流修改
+                                string outBoundIndexId = item.bingServerIndexId;
+
+                                if (outBoundIndexId == null) continue;
+
+                                var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                                if (serverItem == null) continue;
+                                item.outboundTag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                                // end
                                 var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                 GenRoutingUserRule(item2, v2rayConfig);
                             }
@@ -290,6 +313,32 @@ namespace v2rayN.Handler
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+            return 0;
+        }
+
+        /// <summary>
+        /// 生成分流的出站规则
+        /// </summary>
+        private int GenOutbounds(V2rayConfig v2rayConfig, Outbounds4Ray outbound)
+        {
+            var routing = ConfigHandler.GetDefaultRouting(_config);
+            var ruleSet = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
+            if (ruleSet == null) return -1;
+
+            int index = 1;
+            foreach (var item in ruleSet)
+            {
+                string outBoundIndexId = item.bingServerIndexId;
+                if (outBoundIndexId == null) continue;
+                var serverItem = LazyConfig.Instance.GetProfileItem(outBoundIndexId);
+                if (serverItem == null) continue;
+
+                var newOutbounds = JsonUtils.DeepCopy(outbound);
+                newOutbounds.tag = $"{(serverItem.indexId.Equals(_config.indexId) ? "[proxy]" : $"[{index++}]")}{serverItem.remarks}  ##  {serverItem.indexId}";
+                v2rayConfig.outbounds.Add(newOutbounds);
+                GenOutbound(serverItem, newOutbounds);
+            }
+
             return 0;
         }
 

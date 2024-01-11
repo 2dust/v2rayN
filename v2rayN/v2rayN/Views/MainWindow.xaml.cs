@@ -212,7 +212,8 @@ namespace v2rayN.Views
             var IsAdministrator = Utils.IsAdministrator();
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
-            spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
+            // 非管理员运行时tun模式开启逻辑修改
+            // spEnableTun.Visibility = IsAdministrator ? Visibility.Visible : Visibility.Collapsed;
 
             //if (_config.uiItem.autoHideStartup)
             //{

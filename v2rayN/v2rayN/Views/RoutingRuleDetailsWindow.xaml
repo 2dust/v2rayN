@@ -52,7 +52,22 @@
                 Margin="4"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
-
+            
+            <TextBlock
+                Grid.Column="1"
+                Margin="230,0,186,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="outboundIndexId" />
+                        <ComboBox
+                x:Name="cmbOutboundIndexId"
+                Grid.Column="1"
+                Width="200"
+                Margin="354,4,0,5"
+                HorizontalAlignment="Left"
+                Style="{StaticResource DefComboBox}"
+                IsEnabled="False" />
+            
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
