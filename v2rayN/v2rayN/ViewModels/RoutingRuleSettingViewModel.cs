@@ -1,5 +1,4 @@
 ﻿using DynamicData.Binding;
-using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -264,20 +263,16 @@ namespace v2rayN.ViewModels
 
         private void ImportRulesFromFile()
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Multiselect = false,
-                Filter = "Rules|*.json|All|*.*"
-            };
-            if (fileDialog.ShowDialog() != true)
+            if (UI.OpenFileDialog(out string fileName,
+                "Rules|*.json|All|*.*") != true)
             {
                 return;
             }
-            string fileName = fileDialog.FileName;
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }
+
             string result = Utils.LoadResource(fileName);
             if (Utils.IsNullOrEmpty(result))
             {

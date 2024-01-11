@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
@@ -205,13 +204,5 @@ namespace v2rayN.Views
             this.Close();
         }
 
-        private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "tunConfig|*.json|All|*.*";
-            openFileDialog1.ShowDialog();
-
-            // txtCustomTemplate.Text = openFileDialog1.FileName;
-        }
     }
 }

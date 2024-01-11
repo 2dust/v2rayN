@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
@@ -104,20 +103,16 @@ namespace v2rayN.ViewModels
         {
             UI.Show(ResUI.CustomServerTips);
 
-            OpenFileDialog fileDialog = new()
-            {
-                Multiselect = false,
-                Filter = "Config|*.json|YAML|*.yaml;*.yml|All|*.*"
-            };
-            if (fileDialog.ShowDialog() != true)
+            if (UI.OpenFileDialog(out string fileName,
+                "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
             {
                 return;
             }
-            string fileName = fileDialog.FileName;
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }
+
             var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
             item ??= SelectedSource;
             item.address = fileName;

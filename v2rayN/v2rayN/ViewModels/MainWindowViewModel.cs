@@ -3,7 +3,6 @@ using DynamicData.Binding;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -1397,16 +1396,11 @@ namespace v2rayN.ViewModels
 
         private void ImportOldGuiConfig()
         {
-            OpenFileDialog fileDialog = new()
-            {
-                Multiselect = false,
-                Filter = "guiNConfig|*.json|All|*.*"
-            };
-            if (fileDialog.ShowDialog() != true)
+            if (UI.OpenFileDialog(out string fileName,
+                "guiNConfig|*.json|All|*.*") != true)
             {
                 return;
             }
-            string fileName = fileDialog.FileName;
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
