@@ -37,7 +37,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                v2rayConfig = JsonUtils.FromJson<V2rayConfig>(result);
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -153,7 +153,7 @@ namespace v2rayN.Handler
                 return null;
             }
 
-            var inbound = JsonUtils.FromJson<Inbounds4Ray>(result);
+            var inbound = JsonUtils.Deserialize<Inbounds4Ray>(result);
             if (inbound == null)
             {
                 return null;
@@ -186,12 +186,12 @@ namespace v2rayN.Handler
                             {
                                 v2rayConfig.routing.domainStrategy = routing.domainStrategy;
                             }
-                            var rules = JsonUtils.FromJson<List<RulesItem>>(routing.ruleSet);
+                            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
                             foreach (var item in rules)
                             {
                                 if (item.enabled)
                                 {
-                                    var item2 = JsonUtils.FromJson<RulesItem4Ray>(JsonUtils.ToJson(item));
+                                    var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                     GenRoutingUserRule(item2, v2rayConfig);
                                 }
                             }
@@ -202,10 +202,10 @@ namespace v2rayN.Handler
                         var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                         if (lockedItem != null)
                         {
-                            var rules = JsonUtils.FromJson<List<RulesItem>>(lockedItem.ruleSet);
+                            var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
                             foreach (var item in rules)
                             {
-                                var item2 = JsonUtils.FromJson<RulesItem4Ray>(JsonUtils.ToJson(item));
+                                var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                 GenRoutingUserRule(item2, v2rayConfig);
                             }
                         }
@@ -687,7 +687,7 @@ namespace v2rayN.Handler
                                 pathHttp = string.Join("\",\"", arrPath);
                             }
                             request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
-                            tcpSettings.header.request = JsonUtils.FromJson<object>(request);
+                            tcpSettings.header.request = JsonUtils.Deserialize<object>(request);
 
                             streamSettings.tcpSettings = tcpSettings;
                         }
@@ -848,7 +848,7 @@ namespace v2rayN.Handler
                     && prevNode.configType != EConfigType.Hysteria2
                     && prevNode.configType != EConfigType.Tuic)
                 {
-                    var prevOutbound = JsonUtils.FromJson<Outbounds4Ray>(txtOutbound);
+                    var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
                     v2rayConfig.outbounds.Add(prevOutbound);
@@ -866,7 +866,7 @@ namespace v2rayN.Handler
                     && nextNode.configType != EConfigType.Hysteria2
                     && nextNode.configType != EConfigType.Tuic)
                 {
-                    var nextOutbound = JsonUtils.FromJson<Outbounds4Ray>(txtOutbound);
+                    var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
                     v2rayConfig.outbounds.Insert(0, nextOutbound);
@@ -911,7 +911,7 @@ namespace v2rayN.Handler
                     return -1;
                 }
 
-                v2rayConfig = JsonUtils.FromJson<V2rayConfig>(result);
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -1008,7 +1008,7 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    var outbound = JsonUtils.FromJson<Outbounds4Ray>(txtOutbound);
+                    var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(item, outbound);
                     outbound.tag = Global.ProxyTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(outbound);

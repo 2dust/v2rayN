@@ -35,11 +35,11 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = JsonUtils.ToJson(singboxConfig);
+                        content = JsonUtils.Serialize(singboxConfig);
                     }
                     else
                     {
-                        JsonUtils.ToJsonFile(singboxConfig, fileName, false);
+                        JsonUtils.ToFile(singboxConfig, fileName, false);
                     }
                 }
                 else
@@ -51,11 +51,11 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = JsonUtils.ToJson(v2rayConfig);
+                        content = JsonUtils.Serialize(v2rayConfig);
                     }
                     else
                     {
-                        JsonUtils.ToJsonFile(v2rayConfig, fileName, false);
+                        JsonUtils.ToFile(v2rayConfig, fileName, false);
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-                JsonUtils.ToJsonFile(singboxConfig, fileName, false);
+                JsonUtils.ToFile(singboxConfig, fileName, false);
             }
             else
             {
@@ -166,7 +166,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-                JsonUtils.ToJsonFile(v2rayConfig, fileName, false);
+                JsonUtils.ToFile(v2rayConfig, fileName, false);
             }
             return 0;
         }

@@ -14,7 +14,7 @@ namespace v2rayN
         /// <returns></returns>
         public static T DeepCopy<T>(T obj)
         {
-            return FromJson<T>(ToJson(obj, false))!;
+            return Deserialize<T>(Serialize(obj, false))!;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace v2rayN
         /// <typeparam name="T"></typeparam>
         /// <param name="strJson"></param>
         /// <returns></returns>
-        public static T? FromJson<T>(string? strJson)
+        public static T? Deserialize<T>(string? strJson)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace v2rayN
         /// <param name="obj"></param>
         /// <param name="indented"></param>
         /// <returns></returns>
-        public static string ToJson(object? obj, bool indented = true)
+        public static string Serialize(object? obj, bool indented = true)
         {
             string result = string.Empty;
             try
@@ -95,7 +95,7 @@ namespace v2rayN
         /// <param name="filePath"></param>
         /// <param name="nullValue"></param>
         /// <returns></returns>
-        public static int ToJsonFile(object? obj, string filePath, bool nullValue = true)
+        public static int ToFile(object? obj, string filePath, bool nullValue = true)
         {
             int result;
             try

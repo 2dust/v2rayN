@@ -58,7 +58,7 @@ namespace v2rayN.ViewModels
             else
             {
                 SelectedRouting = routingItem;
-                _rules = JsonUtils.FromJson<List<RulesItem>>(SelectedRouting.ruleSet);
+                _rules = JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
             }
 
             RefreshRulesItems();
@@ -207,7 +207,7 @@ namespace v2rayN.ViewModels
             }
             if (lst.Count > 0)
             {
-                Utils.SetClipboardData(JsonUtils.ToJson(lst));
+                Utils.SetClipboardData(JsonUtils.Serialize(lst));
                 //UI.Show(ResUI.OperationSuccess"));
             }
         }
@@ -246,7 +246,7 @@ namespace v2rayN.ViewModels
                 it.id = Utils.GetGUID(false);
             }
             item.ruleNum = _rules.Count;
-            item.ruleSet = JsonUtils.ToJson(_rules, false);
+            item.ruleSet = JsonUtils.Serialize(_rules, false);
 
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
@@ -328,7 +328,7 @@ namespace v2rayN.ViewModels
             {
                 return -1;
             }
-            var lstRules = JsonUtils.FromJson<List<RulesItem>>(clipboardData);
+            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
             if (lstRules == null)
             {
                 return -1;

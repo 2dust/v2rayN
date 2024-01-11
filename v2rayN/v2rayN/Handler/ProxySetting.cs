@@ -320,27 +320,5 @@ namespace v2rayN.Handler
                 ref int lpcEntries        // Number of entries written to the buffer
             );
         }
-
-        //判断是否使用代理
-        public static bool UsedProxy()
-        {
-            using RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
-            if (rk?.GetValue("ProxyEnable")?.ToString() == "1")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        //获得代理的IP和端口
-        public static string? GetProxyProxyServer()
-        {
-            using RegistryKey? rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
-            string ProxyServer = rk.GetValue("ProxyServer").ToString();
-            return ProxyServer;
-        }
     }
 }

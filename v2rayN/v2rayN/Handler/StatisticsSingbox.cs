@@ -113,7 +113,7 @@ namespace v2rayN.Handler
             up = 0; down = 0;
             try
             {
-                var trafficItem = JsonUtils.FromJson<TrafficItem>(source);
+                var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
                 if (trafficItem != null)
                 {
                     up = trafficItem.up;

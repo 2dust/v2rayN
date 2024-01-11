@@ -27,7 +27,7 @@ namespace v2rayN.Handler
             if (!Utils.IsNullOrEmpty(result))
             {
                 //转成Json
-                config = JsonUtils.FromJson<Config>(result);
+                config = JsonUtils.Deserialize<Config>(result);
             }
             else
             {
@@ -232,7 +232,7 @@ namespace v2rayN.Handler
                     //save temp file
                     var resPath = Utils.GetConfigPath(configRes);
                     var tempPath = $"{resPath}_temp";
-                    if (JsonUtils.ToJsonFile(config, tempPath) != 0)
+                    if (JsonUtils.ToFile(config, tempPath) != 0)
                     {
                         return;
                     }
@@ -259,13 +259,13 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            var configOld = JsonUtils.FromJson<ConfigOld>(result);
+            var configOld = JsonUtils.Deserialize<ConfigOld>(result);
             if (configOld == null)
             {
                 return -1;
             }
 
-            var subItem = JsonUtils.FromJson<List<SubItem>>(JsonUtils.ToJson(configOld.subItem));
+            var subItem = JsonUtils.Deserialize<List<SubItem>>(JsonUtils.Serialize(configOld.subItem));
             foreach (var it in subItem)
             {
                 if (Utils.IsNullOrEmpty(it.id))
@@ -275,7 +275,7 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(it);
             }
 
-            var profileItems = JsonUtils.FromJson<List<ProfileItem>>(JsonUtils.ToJson(configOld.vmess));
+            var profileItems = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(configOld.vmess));
             foreach (var it in profileItems)
             {
                 if (Utils.IsNullOrEmpty(it.indexId))
@@ -291,13 +291,13 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                var routing = JsonUtils.FromJson<RoutingItem>(JsonUtils.ToJson(it));
+                var routing = JsonUtils.Deserialize<RoutingItem>(JsonUtils.Serialize(it));
                 foreach (var it2 in it.rules)
                 {
                     it2.id = Utils.GetGUID(false);
                 }
                 routing.ruleNum = it.rules.Count;
-                routing.ruleSet = JsonUtils.ToJson(it.rules, false);
+                routing.ruleSet = JsonUtils.Serialize(it.rules, false);
 
                 if (Utils.IsNullOrEmpty(routing.id))
                 {
@@ -306,7 +306,7 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(routing);
             }
 
-            config = JsonUtils.FromJson<Config>(JsonUtils.ToJson(configOld));
+            config = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(configOld));
 
             if (config.coreBasicItem == null)
             {
@@ -1161,7 +1161,7 @@ namespace v2rayN.Handler
 
             ProfileItem profileItem = new();
             //Is v2ray configuration
-            V2rayConfig? v2rayConfig = JsonUtils.FromJson<V2rayConfig>(clipboardData);
+            V2rayConfig? v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(clipboardData);
             if (v2rayConfig?.inbounds?.Count > 0
                 && v2rayConfig.outbounds?.Count > 0)
             {
@@ -1252,10 +1252,10 @@ namespace v2rayN.Handler
             }
 
             //SsSIP008
-            var lstSsServer = JsonUtils.FromJson<List<SsServer>>(clipboardData);
+            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(clipboardData);
             if (lstSsServer?.Count <= 0)
             {
-                var ssSIP008 = JsonUtils.FromJson<SsSIP008>(clipboardData);
+                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(clipboardData);
                 if (ssSIP008?.servers?.Count > 0)
                 {
                     lstSsServer = ssSIP008.servers;
@@ -1467,7 +1467,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            var lstRules = JsonUtils.FromJson<List<RulesItem>>(clipboardData);
+            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
             if (lstRules == null)
             {
                 return -1;
@@ -1478,7 +1478,7 @@ namespace v2rayN.Handler
                 item.id = Utils.GetGUID(false);
             }
             routingItem.ruleNum = lstRules.Count;
-            routingItem.ruleSet = JsonUtils.ToJson(lstRules, false);
+            routingItem.ruleSet = JsonUtils.Serialize(lstRules, false);
 
             if (Utils.IsNullOrEmpty(routingItem.id))
             {

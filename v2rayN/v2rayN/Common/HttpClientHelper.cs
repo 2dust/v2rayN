@@ -35,7 +35,7 @@ namespace v2rayN
 
         public async Task PutAsync(string url, Dictionary<string, string> headers)
         {
-            var jsonContent = JsonUtils.ToJson(headers);
+            var jsonContent = JsonUtils.Serialize(headers);
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             var result = await httpClient.PutAsync(url, content);

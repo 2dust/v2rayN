@@ -832,7 +832,7 @@ namespace v2rayN.ViewModels
                             totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
                             totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
                         }).OrderBy(t => t.sort).ToList();
-            _lstProfile = JsonUtils.FromJson<List<ProfileItem>>(JsonUtils.ToJson(lstModel));
+            _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel));
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -938,7 +938,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                lstSelecteds = JsonUtils.FromJson<List<ProfileItem>>(JsonUtils.ToJson(orderProfiles));
+                lstSelecteds = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(orderProfiles));
             }
 
             return 0;

@@ -65,7 +65,7 @@ namespace v2rayN.Handler
                 fp = item.fingerprint
             };
 
-            url = JsonUtils.ToJson(vmessQRCode);
+            url = JsonUtils.Serialize(vmessQRCode);
             url = Utils.Base64Encode(url);
             url = $"{Global.ProtocolShares[EConfigType.VMess]}{url}";
 
@@ -450,7 +450,7 @@ namespace v2rayN.Handler
             result = Utils.Base64Decode(result);
 
             //转成Json
-            VmessQRCode? vmessQRCode = JsonUtils.FromJson<VmessQRCode>(result);
+            VmessQRCode? vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
                 msg = ResUI.FailedConversionConfiguration;

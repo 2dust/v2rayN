@@ -407,7 +407,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var gitHubReleases = JsonUtils.FromJson<List<GitHubRelease>>(gitHubReleaseApi);
+                var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
                 var gitHubRelease = preRelease ? gitHubReleases!.First() : gitHubReleases!.First(r => r.Prerelease == false);
                 var version = new SemanticVersion(gitHubRelease!.TagName);
                 var body = gitHubRelease!.Body;
