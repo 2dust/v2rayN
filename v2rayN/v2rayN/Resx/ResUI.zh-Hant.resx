@@ -929,7 +929,7 @@
     <value>新增規則</value>
   </data>
   <data name="menuRuleExportSelected" xml:space="preserve">
-    <value>到處所選規則至剪貼簿</value>
+    <value>匯出所選規則至剪貼簿</value>
   </data>
   <data name="menuRuleList" xml:space="preserve">
     <value>規則列表</value>
