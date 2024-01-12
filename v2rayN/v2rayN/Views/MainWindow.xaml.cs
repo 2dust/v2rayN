@@ -482,7 +482,7 @@ namespace v2rayN.Views
             for (int i = 0; i < lvColumnItem.Count; i++)
             {
                 var item = lvColumnItem[i];
-                for (int k = 1; k < lstProfiles.Columns.Count; k++)
+                for (int k = 0; k < lstProfiles.Columns.Count; k++)
                 {
                     var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
                     if (item2.ExName == item.Name)
