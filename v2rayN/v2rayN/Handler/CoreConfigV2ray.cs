@@ -721,11 +721,11 @@ namespace v2rayN.Handler
                     outbound.settings.userLevel = 0;
                 }
 
-                var obj = JsonUtils.ParseJson(normalDNS) ?? new JObject();
+                var obj = JsonUtils.ParseJson(normalDNS) ?? [];
 
                 if (!obj.ContainsKey("servers"))
                 {
-                    List<string> servers = new();
+                    List<string> servers = [];
                     string[] arrDNS = normalDNS.Split(',');
                     foreach (string str in arrDNS)
                     {

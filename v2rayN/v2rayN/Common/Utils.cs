@@ -525,7 +525,6 @@ namespace v2rayN
             }
         }
 
-
         /// <summary>
         /// 获取启动了应用程序的可执行文件的路径
         /// </summary>

@@ -253,7 +253,7 @@ namespace v2rayN.Handler
 
         public static int ImportOldGuiConfig(Config config, string fileName)
         {
-            string result = Utils.LoadResource(fileName);
+            var result = Utils.LoadResource(fileName);
             if (Utils.IsNullOrEmpty(result))
             {
                 return -1;
