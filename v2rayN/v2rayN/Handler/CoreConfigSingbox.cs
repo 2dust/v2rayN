@@ -181,6 +181,8 @@ namespace v2rayN.Handler
                     tunInbound.mtu = _config.tunModeItem.mtu;
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
+                    tunInbound.sniff = _config.inbound[0].sniffingEnabled;
+                    tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
                     if (_config.tunModeItem.enableIPv6Address == false)
                     {
                         tunInbound.inet6_address = null;
@@ -293,6 +295,17 @@ namespace v2rayN.Handler
                     outbound.uuid = node.id;
                     outbound.password = node.security;
                     outbound.congestion_control = node.headerType;
+
+                    GenOutboundMux(node, outbound);
+                }
+                else if (node.configType == EConfigType.Wireguard)
+                {
+                    outbound.type = Global.ProtocolTypes[EConfigType.Wireguard];
+
+                    outbound.private_key = node.id;
+                    outbound.peer_public_key = node.publicKey;
+                    outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
+                    outbound.local_address = [.. Utils.String2List(node.requestHost)];
 
                     GenOutboundMux(node, outbound);
                 }

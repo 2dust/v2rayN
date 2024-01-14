@@ -846,7 +846,8 @@ namespace v2rayN.Handler
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom
                     && prevNode.configType != EConfigType.Hysteria2
-                    && prevNode.configType != EConfigType.Tuic)
+                    && prevNode.configType != EConfigType.Tuic
+                    && prevNode.configType != EConfigType.Wireguard)
                 {
                     var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
@@ -864,7 +865,8 @@ namespace v2rayN.Handler
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom
                     && nextNode.configType != EConfigType.Hysteria2
-                    && nextNode.configType != EConfigType.Tuic)
+                    && nextNode.configType != EConfigType.Tuic
+                    && nextNode.configType != EConfigType.Wireguard)
                 {
                     var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);

@@ -138,7 +138,8 @@ namespace v2rayN
             {EConfigType.VLESS,"vless://"},
             {EConfigType.Trojan,"trojan://"},
             {EConfigType.Hysteria2,"hysteria2://"},
-            {EConfigType.Tuic,"tuic://"}
+            {EConfigType.Tuic,"tuic://"},
+            {EConfigType.Wireguard,"wireguard://"}
         };
 
         public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -149,7 +150,8 @@ namespace v2rayN
             {EConfigType.VLESS,"vless"},
             {EConfigType.Trojan,"trojan"},
             {EConfigType.Hysteria2,"hysteria2"},
-            {EConfigType.Tuic,"tuic"}
+            {EConfigType.Tuic,"tuic"},
+            {EConfigType.Wireguard,"wireguard"}
         };
 
         public static readonly List<string> VmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };

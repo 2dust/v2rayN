@@ -112,7 +112,12 @@
         public string congestion_control { get; set; }
         public string? version { get; set; }
         public string? network { get; set; }
-        public string packet_encoding { get; set; }
+        public string? packet_encoding { get; set; }
+        public string[]? local_address { get; set; }
+        public string? private_key { get; set; }
+        public string? peer_public_key { get; set; }
+        public int[]? reserved { get; set; }
+        public int? mtu { get; set; }
         public Tls4Sbox tls { get; set; }
         public Multiplex4Sbox multiplex { get; set; }
         public Transport4Sbox transport { get; set; }

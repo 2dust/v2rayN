@@ -70,7 +70,7 @@ namespace v2rayN.Handler
         public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
         {
             int pid = -1;
-            var coreType = selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic) ? ECoreType.sing_box : ECoreType.Xray;
+            var coreType = selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic || t.configType == EConfigType.Wireguard) ? ECoreType.sing_box : ECoreType.Xray;
             string configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType, out string msg) != 0)
             {

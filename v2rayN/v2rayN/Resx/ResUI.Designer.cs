@@ -700,6 +700,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add [Wireguard] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddWireguardServer {
+            get {
+                return ResourceManager.GetString("menuAddWireguardServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Check Update 的本地化字符串。
         /// </summary>
         public static string menuCheckUpdate {
@@ -2141,6 +2150,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Address(Ip,Ipv6) 的本地化字符串。
+        /// </summary>
+        public static string TbLocalAddress {
+            get {
+                return ResourceManager.GetString("TbLocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Transport protocol(network) 的本地化字符串。
         /// </summary>
         public static string TbNetwork {
@@ -2186,6 +2204,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 PrivateKey 的本地化字符串。
+        /// </summary>
+        public static string TbPrivateKey {
+            get {
+                return ResourceManager.GetString("TbPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 PublicKey 的本地化字符串。
         /// </summary>
         public static string TbPublicKey {
@@ -2209,6 +2236,15 @@ namespace v2rayN.Resx {
         public static string TbRequestHost {
             get {
                 return ResourceManager.GetString("TbRequestHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reserved(2,3,4) 的本地化字符串。
+        /// </summary>
+        public static string TbReserved {
+            get {
+                return ResourceManager.GetString("TbReserved", resourceCulture);
             }
         }
         

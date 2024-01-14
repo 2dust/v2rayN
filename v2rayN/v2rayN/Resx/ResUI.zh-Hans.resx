@@ -1165,4 +1165,16 @@
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>启用IPv6</value>
   </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>添加[Wireguard]服务器</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved(2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address(Ip,Ipv6)</value>
+  </data>
 </root>

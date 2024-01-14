@@ -152,6 +152,10 @@ namespace v2rayN.ViewModels
                 case EConfigType.Tuic:
                     ret = ConfigHandler.AddTuicServer(_config, item);
                     break;
+
+                case EConfigType.Wireguard:
+                    ret = ConfigHandler.AddWireguardServer(_config, item);
+                    break;
             }
 
             if (ret == 0)

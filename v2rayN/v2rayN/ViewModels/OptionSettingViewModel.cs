@@ -372,8 +372,7 @@ namespace v2rayN.ViewModels
                         type = CoreType6;
                         break;
 
-                    case 7:
-                    case 8:
+                    default:
                         continue;
                 }
                 item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);

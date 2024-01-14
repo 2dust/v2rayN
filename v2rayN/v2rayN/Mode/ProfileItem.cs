@@ -47,18 +47,12 @@ namespace v2rayN.Mode
             }
             switch (configType)
             {
-                case EConfigType.VMess:
-                case EConfigType.Shadowsocks:
-                case EConfigType.Socks:
-                case EConfigType.VLESS:
-                case EConfigType.Trojan:
-                case EConfigType.Hysteria2:
-                case EConfigType.Tuic:
-                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                case EConfigType.Custom:
+                    summary += string.Format("{0}", remarks);
                     break;
 
                 default:
-                    summary += string.Format("{0}", remarks);
+                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
                     break;
             }
             return summary;

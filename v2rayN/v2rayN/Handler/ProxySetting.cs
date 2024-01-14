@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using static v2rayN.Handler.ProxySetting.InternetConnectionOption;
 
 namespace v2rayN.Handler

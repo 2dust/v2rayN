@@ -203,6 +203,5 @@ namespace v2rayN.Views
         {
             this.Close();
         }
-
     }
 }
