@@ -1620,11 +1620,11 @@ namespace v2rayN.ViewModels
             if (_config.tunModeItem.enableTun != EnableTun)
             {
                 _config.tunModeItem.enableTun = EnableTun;
-                // 非管理员运行时tun模式开启逻辑修改
+                // When running as a non-administrator, reboot to administrator mode
                 if (EnableTun && !Utils.IsAdministrator())
                 {
+                    _config.tunModeItem.enableTun = false;
                     RebootAsAdmin();
-                    _config.tunModeItem.enableTun = EnableTun = false;
                     return;
                 }
                 Reload();

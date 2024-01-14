@@ -619,7 +619,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Trojan] server 的本地化字符串。
+        ///   查找类似 Add [Hysteria2] server 的本地化字符串。
         /// </summary>
         public static string menuAddHysteria2Server {
             get {
