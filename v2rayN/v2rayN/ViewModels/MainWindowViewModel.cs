@@ -1390,8 +1390,7 @@ namespace v2rayN.ViewModels
             {
                 Process.Start(startInfo);
                 MyAppExit(false);
-            }
-            catch { }
+            } catch { }
         }
 
         private void ImportOldGuiConfig()
@@ -1621,6 +1620,13 @@ namespace v2rayN.ViewModels
             if (_config.tunModeItem.enableTun != EnableTun)
             {
                 _config.tunModeItem.enableTun = EnableTun;
+                // 非管理员运行时tun模式开启逻辑修改
+                if (EnableTun && !Utils.IsAdministrator())
+                {
+                    RebootAsAdmin();
+                    _config.tunModeItem.enableTun = EnableTun = false;
+                    return;
+                }
                 Reload();
             }
         }
@@ -1839,7 +1845,7 @@ namespace v2rayN.ViewModels
             if (_config.uiItem.autoHideStartup)
             {
                 Observable.Range(1, 1)
-                 .Delay(TimeSpan.FromSeconds(2))
+                 .Delay(TimeSpan.FromSeconds(0.5))
                  .Subscribe(x =>
                  {
                      Application.Current.Dispatcher.Invoke(() =>

@@ -1,9 +1,5 @@
 [
   {
-    "protocol": [ "dns" ],
-    "outbound": "dns_out"
-  },
-  {
     "network": "udp",
     "port": [
       135,
@@ -16,13 +12,6 @@
   },
   {
     "ip_cidr": [
-      "224.0.0.0/3",
-      "ff00::/8"
-    ],
-    "outbound": "block"
-  },
-  {
-    "source_ip_cidr": [
       "224.0.0.0/3",
       "ff00::/8"
     ],
