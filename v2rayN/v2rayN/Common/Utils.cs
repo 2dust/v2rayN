@@ -200,11 +200,11 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static int ToInt(object obj)
+        public static int ToInt(object? obj)
         {
             try
             {
-                return Convert.ToInt32(obj);
+                return Convert.ToInt32(obj ?? string.Empty);
             }
             catch //(Exception ex)
             {

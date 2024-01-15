@@ -204,6 +204,7 @@ namespace v2rayN.Views
                         this.Bind(ViewModel, vm => vm.SelectedSource.publicKey, v => v.txtPublicKey9.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath9.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.requestHost, v => v.txtRequestHost9.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.shortId, v => v.txtShortId9.Text).DisposeWith(disposables);
                         break;
                 }
                 this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);

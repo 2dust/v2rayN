@@ -306,7 +306,7 @@ namespace v2rayN.Handler
                     outbound.peer_public_key = node.publicKey;
                     outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
                     outbound.local_address = [.. Utils.String2List(node.requestHost)];
-
+                    outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
                     GenOutboundMux(node, outbound);
                 }
 

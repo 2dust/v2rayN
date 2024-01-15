@@ -176,7 +176,7 @@ namespace v2rayN
         public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
         public static readonly List<string> RuleProtocols = new() { "http", "tls", "bittorrent" };
-        public static readonly List<string> TunMtus = new() { "9000", "1500" };
+        public static readonly List<string> TunMtus = new() { "1280", "1408", "1500", "9000" };
         public static readonly List<string> TunStacks = new() { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };

@@ -785,6 +785,10 @@ namespace v2rayN.Handler
             profileItem.path = profileItem.path.TrimEx();
             profileItem.requestHost = profileItem.requestHost.TrimEx();
             profileItem.network = string.Empty;
+            if (profileItem.shortId.IsNullOrEmpty())
+            {
+                profileItem.shortId = Global.TunMtus.FirstOrDefault();
+            }
 
             if (profileItem.id.IsNullOrEmpty())
             {
