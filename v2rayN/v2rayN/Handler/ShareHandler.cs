@@ -1,6 +1,5 @@
 ﻿using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using System.Web;
 using v2rayN.Mode;
 using v2rayN.Resx;
 
@@ -30,6 +29,7 @@ namespace v2rayN.Handler
                     EConfigType.VLESS => ShareVLESS(item),
                     EConfigType.Hysteria2 => ShareHysteria2(item),
                     EConfigType.Tuic => ShareTuic(item),
+                    EConfigType.Wireguard => ShareWireguard(item),
                     _ => null,
                 };
 
@@ -221,6 +221,42 @@ namespace v2rayN.Handler
             return url;
         }
 
+        private static string ShareWireguard(ProfileItem item)
+        {
+            string url = string.Empty;
+            string remark = string.Empty;
+            if (!Utils.IsNullOrEmpty(item.remarks))
+            {
+                remark = "#" + Utils.UrlEncode(item.remarks);
+            }
+
+            var dicQuery = new Dictionary<string, string>();
+            if (!Utils.IsNullOrEmpty(item.publicKey))
+            {
+                dicQuery.Add("publickey", Utils.UrlEncode(item.publicKey));
+            }
+            if (!Utils.IsNullOrEmpty(item.path))
+            {
+                dicQuery.Add("reserved", Utils.UrlEncode(item.path));
+            }
+            if (!Utils.IsNullOrEmpty(item.requestHost))
+            {
+                dicQuery.Add("address", Utils.UrlEncode(item.requestHost));
+            }
+            if (!Utils.IsNullOrEmpty(item.shortId))
+            {
+                dicQuery.Add("mtu", Utils.UrlEncode(item.shortId));
+            }
+            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
+
+            url = string.Format("{0}@{1}:{2}",
+            Utils.UrlEncode(item.id),
+            GetIpv6(item.address),
+            item.port);
+            url = $"{Global.ProtocolShares[EConfigType.Wireguard]}{url}/{query}{remark}";
+            return url;
+        }
+
         private static string GetIpv6(string address)
         {
             return Utils.IsIpv6(address) ? $"[{address}]" : address;
@@ -346,7 +382,7 @@ namespace v2rayN.Handler
         {
             msg = string.Empty;
 
-            ProfileItem profileItem = new();
+            ProfileItem? profileItem;
 
             try
             {
@@ -421,6 +457,10 @@ namespace v2rayN.Handler
                 else if (result.StartsWith(Global.ProtocolShares[EConfigType.Tuic]))
                 {
                     profileItem = ResolveTuic(result);
+                }
+                else if (result.StartsWith(Global.ProtocolShares[EConfigType.Wireguard]))
+                {
+                    profileItem = ResolveWireguard(result);
                 }
                 else
                 {
@@ -539,7 +579,7 @@ namespace v2rayN.Handler
             i.address = u.IdnHost;
             i.port = u.Port;
             i.remarks = u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            var q = HttpUtility.ParseQueryString(u.Query);
+            var query = Utils.ParseQueryString(u.Query);
 
             var m = StdVmessUserInfo.Match(u.UserInfo);
             if (!m.Success) return null;
@@ -565,17 +605,17 @@ namespace v2rayN.Handler
             switch (i.network)
             {
                 case "tcp":
-                    string t1 = q["type"] ?? "none";
+                    string t1 = query["type"] ?? "none";
                     i.headerType = t1;
                     break;
 
                 case "kcp":
-                    i.headerType = q["type"] ?? "none";
+                    i.headerType = query["type"] ?? "none";
                     break;
 
                 case "ws":
-                    string p1 = q["path"] ?? "/";
-                    string h1 = q["host"] ?? "";
+                    string p1 = query["path"] ?? "/";
+                    string h1 = query["host"] ?? "";
                     i.requestHost = Utils.UrlDecode(h1);
                     i.path = p1;
                     break;
@@ -583,16 +623,16 @@ namespace v2rayN.Handler
                 case "http":
                 case "h2":
                     i.network = "h2";
-                    string p2 = q["path"] ?? "/";
-                    string h2 = q["host"] ?? "";
+                    string p2 = query["path"] ?? "/";
+                    string h2 = query["host"] ?? "";
                     i.requestHost = Utils.UrlDecode(h2);
                     i.path = p2;
                     break;
 
                 case "quic":
-                    string s = q["security"] ?? "none";
-                    string k = q["key"] ?? "";
-                    string t3 = q["type"] ?? "none";
+                    string s = query["security"] ?? "none";
+                    string k = query["key"] ?? "";
+                    string t3 = query["type"] ?? "none";
                     i.headerType = t3;
                     i.requestHost = Utils.UrlDecode(s);
                     i.path = k;
@@ -647,7 +687,7 @@ namespace v2rayN.Handler
                 server.id = userInfoParts[1];
             }
 
-            NameValueCollection queryParameters = HttpUtility.ParseQueryString(parsedUrl.Query);
+            var queryParameters = Utils.ParseQueryString(parsedUrl.Query);
             if (queryParameters["plugin"] != null)
             {
                 //obfs-host exists
@@ -798,7 +838,7 @@ namespace v2rayN.Handler
             item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             item.id = url.UserInfo;
 
-            var query = HttpUtility.ParseQueryString(url.Query);
+            var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
 
             return item;
@@ -819,7 +859,7 @@ namespace v2rayN.Handler
             item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             item.id = url.UserInfo;
 
-            var query = HttpUtility.ParseQueryString(url.Query);
+            var query = Utils.ParseQueryString(url.Query);
             item.security = query["encryption"] ?? "none";
             item.streamSecurity = query["security"] ?? "";
             ResolveStdTransport(query, ref item);
@@ -841,7 +881,7 @@ namespace v2rayN.Handler
             item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             item.id = url.UserInfo;
 
-            var query = HttpUtility.ParseQueryString(url.Query);
+            var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
             item.allowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
@@ -867,9 +907,33 @@ namespace v2rayN.Handler
                 item.security = userInfoParts[1];
             }
 
-            var query = HttpUtility.ParseQueryString(url.Query);
+            var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
             item.headerType = query["congestion_control"] ?? "";
+
+            return item;
+        }
+
+        private static ProfileItem ResolveWireguard(string result)
+        {
+            ProfileItem item = new()
+            {
+                configType = EConfigType.Wireguard
+            };
+
+            Uri url = new(result);
+
+            item.address = url.IdnHost;
+            item.port = url.Port;
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.id = Utils.UrlDecode(url.UserInfo);
+
+            var query = Utils.ParseQueryString(url.Query);
+
+            item.publicKey = Utils.UrlDecode(query["publickey"] ?? "");
+            item.path = Utils.UrlDecode(query["reserved"] ?? "");
+            item.requestHost = Utils.UrlDecode(query["address"] ?? "");
+            item.shortId = Utils.UrlDecode(query["mtu"] ?? "");
 
             return item;
         }
