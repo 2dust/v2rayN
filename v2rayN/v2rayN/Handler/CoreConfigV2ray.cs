@@ -219,7 +219,7 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int GenRoutingUserRule(RulesItem4Ray rules, V2rayConfig v2rayConfig)
+        private int GenRoutingUserRule(RulesItem4Ray? rules, V2rayConfig v2rayConfig)
         {
             try
             {

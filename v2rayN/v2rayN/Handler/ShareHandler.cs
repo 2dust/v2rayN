@@ -879,7 +879,7 @@ namespace v2rayN.Handler
             item.address = url.IdnHost;
             item.port = url.Port;
             item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            item.id = Utils.UrlDecode(url.UserInfo); 
+            item.id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);

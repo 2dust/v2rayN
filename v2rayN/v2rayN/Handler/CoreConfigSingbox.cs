@@ -672,34 +672,34 @@ namespace v2rayN.Handler
             }
             else if (domain.StartsWith("geosite:"))
             {
-                if (rule.geosite is null) { rule.geosite = new(); }
+                rule.geosite ??= [];
                 rule.geosite?.Add(domain.Substring(8));
             }
             else if (domain.StartsWith("regexp:"))
             {
-                if (rule.domain_regex is null) { rule.domain_regex = new(); }
+                rule.domain_regex ??= [];
                 rule.domain_regex?.Add(domain.Replace(Global.RoutingRuleComma, ",").Substring(7));
             }
             else if (domain.StartsWith("domain:"))
             {
-                if (rule.domain is null) { rule.domain = new(); }
-                if (rule.domain_suffix is null) { rule.domain_suffix = new(); }
+                rule.domain ??= [];
+                rule.domain_suffix ??= [];
                 rule.domain?.Add(domain.Substring(7));
                 rule.domain_suffix?.Add("." + domain.Substring(7));
             }
             else if (domain.StartsWith("full:"))
             {
-                if (rule.domain is null) { rule.domain = new(); }
+                rule.domain ??= [];
                 rule.domain?.Add(domain.Substring(5));
             }
             else if (domain.StartsWith("keyword:"))
             {
-                if (rule.domain_keyword is null) { rule.domain_keyword = new(); }
+                rule.domain_keyword ??= [];
                 rule.domain_keyword?.Add(domain.Substring(8));
             }
             else
             {
-                if (rule.domain_keyword is null) { rule.domain_keyword = new(); }
+                rule.domain_keyword ??= [];
                 rule.domain_keyword?.Add(domain);
             }
         }
