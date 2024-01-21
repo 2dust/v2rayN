@@ -67,19 +67,33 @@ namespace v2rayN.Handler
             }
         }
 
-        public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
+        private ECoreType PickCoreTypeBasedOnSelecteds(List<ServerTestItem> selecteds)
+        {
+            return selecteds.Exists(x => x.configType == EConfigType.Shadowsocks) ? ECoreType.Xray :
+                    selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic || t.configType == EConfigType.Wireguard) ? ECoreType.sing_box :
+                    ECoreType.Xray;
+        }
+
+        public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds, ECoreType? coreType = null)
         {
             int pid = -1;
-            var coreType = selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic || t.configType == EConfigType.Wireguard) ? ECoreType.sing_box : ECoreType.Xray;
+            var coreTypeToPick = coreType ?? PickCoreTypeBasedOnSelecteds(selecteds);
             string configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
-            if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType, out string msg) != 0)
+            if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreTypeToPick, out string msg) != 0)
             {
                 ShowMsg(false, msg);
             }
             else
             {
                 ShowMsg(false, msg);
-                pid = CoreStartSpeedtest(configPath, coreType);
+                pid = CoreStartSpeedtest(configPath, coreTypeToPick);
+                var shouldTestAlternativeCoreType = pid == -1 && !coreType.HasValue;
+
+                if(shouldTestAlternativeCoreType)
+                {
+                    var alternatecoreType = coreTypeToPick == ECoreType.Xray ? ECoreType.sing_box : ECoreType.Xray;
+                    pid = LoadCoreConfigSpeedtest(selecteds, alternatecoreType);
+                }
             }
             return pid;
         }
