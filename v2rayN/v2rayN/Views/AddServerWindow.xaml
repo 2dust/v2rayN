@@ -429,6 +429,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
@@ -445,6 +446,21 @@
                     <TextBox
                         x:Name="txtId7"
                         Grid.Row="1"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource ServerItemMargin}"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="{StaticResource ServerItemMargin}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbPath7}" />
+                    <TextBox
+                        x:Name="txtPath7"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource ServerItemMargin}"

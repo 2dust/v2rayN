@@ -180,6 +180,11 @@ namespace v2rayN.Handler
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
             }
+            if (!Utils.IsNullOrEmpty(item.path))
+            {
+                dicQuery.Add("obfs", "salamander");
+                dicQuery.Add("obfs-password", Utils.UrlEncode(item.path));
+            }
             dicQuery.Add("insecure", item.allowInsecure.ToLower() == "true" ? "1" : "0");
 
             string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
@@ -883,6 +888,7 @@ namespace v2rayN.Handler
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
+            item.path = Utils.UrlDecode(query["obfs-password"] ?? "");
             item.allowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
             return item;

@@ -2186,6 +2186,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 obfs password 的本地化字符串。
+        /// </summary>
+        public static string TbPath7 {
+            get {
+                return ResourceManager.GetString("TbPath7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
         public static string TbPort {

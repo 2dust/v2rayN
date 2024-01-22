@@ -1180,4 +1180,7 @@
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address(Ip,Ipv6)</value>
   </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>obfs password</value>
+  </data>
 </root>

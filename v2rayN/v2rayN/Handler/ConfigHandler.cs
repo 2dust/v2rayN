@@ -713,6 +713,7 @@ namespace v2rayN.Handler
 
             profileItem.address = profileItem.address.TrimEx();
             profileItem.id = profileItem.id.TrimEx();
+            profileItem.path = profileItem.path.TrimEx();
             profileItem.network = string.Empty;
 
             if (Utils.IsNullOrEmpty(profileItem.streamSecurity))

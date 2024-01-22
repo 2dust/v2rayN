@@ -191,6 +191,7 @@ namespace v2rayN.Views
 
                     case EConfigType.Hysteria2:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId7.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath7.Text).DisposeWith(disposables);
                         break;
 
                     case EConfigType.Tuic:

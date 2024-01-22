@@ -1177,4 +1177,7 @@
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address(Ip,Ipv6)</value>
   </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>混淆密码(obfs password)</value>
+  </data>
 </root>

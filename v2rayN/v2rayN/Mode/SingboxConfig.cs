@@ -121,6 +121,7 @@
         public Tls4Sbox tls { get; set; }
         public Multiplex4Sbox multiplex { get; set; }
         public Transport4Sbox transport { get; set; }
+        public HyObfs4Sbox obfs { get; set; }
     }
 
     public class Tls4Sbox
@@ -172,6 +173,12 @@
     public class Headers4Sbox
     {
         public string? Host { get; set; }
+    }
+
+    public class HyObfs4Sbox
+    {
+        public string? type { get; set; }
+        public string? password { get; set; }
     }
 
     public class Server4Sbox
