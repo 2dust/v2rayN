@@ -931,7 +931,7 @@ namespace v2rayN.Handler
                         continue;
                     }
                     if (item.configType == EConfigType.Shadowsocks
-                        && !Global.SsSecuritysInXray.Contains(item.security))
+                        && !Global.SsSecuritysInSingbox.Contains(item.security))
                     {
                         continue;
                     }

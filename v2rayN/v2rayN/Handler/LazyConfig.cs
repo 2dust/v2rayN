@@ -164,15 +164,18 @@ namespace v2rayN.Handler
 
         public List<string> GetShadowsocksSecuritys(ProfileItem profileItem)
         {
-            if (GetCoreType(profileItem, EConfigType.Shadowsocks) == ECoreType.v2fly)
+            var coreType = GetCoreType(profileItem, EConfigType.Shadowsocks);
+            switch (coreType)
             {
-                return Global.SsSecuritys;
-            }
-            if (GetCoreType(profileItem, EConfigType.Shadowsocks) == ECoreType.Xray)
-            {
-                return Global.SsSecuritysInXray;
-            }
+                case ECoreType.v2fly:
+                    return Global.SsSecuritys;
 
+                case ECoreType.Xray:
+                    return Global.SsSecuritysInXray;
+
+                case ECoreType.sing_box:
+                    return Global.SsSecuritysInSingbox;
+            }
             return Global.SsSecuritysInSagerNet;
         }
 
