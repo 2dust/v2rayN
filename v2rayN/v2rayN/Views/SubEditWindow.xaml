@@ -31,13 +31,10 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel Margin="8">
-        <Grid
-            Margin="8"
-            HorizontalAlignment="Center"
-            DockPanel.Dock="Bottom">
+        <Grid HorizontalAlignment="Center" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
             <Button
                 x:Name="btnSave"
@@ -50,7 +47,6 @@
                 x:Name="btnCancel"
                 Grid.Column="1"
                 Margin="4"
-                Click="btnCancel_Click"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"

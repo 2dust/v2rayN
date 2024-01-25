@@ -58,10 +58,5 @@ namespace v2rayN.Views
         {
             Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
         }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
     }
 }

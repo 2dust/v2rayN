@@ -123,11 +123,6 @@ namespace v2rayN.Views
             }
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
             foreach (var k in _TextBoxKeyEventItem.Keys)

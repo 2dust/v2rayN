@@ -54,10 +54,5 @@ namespace v2rayN.Views
         {
             txtRemarks.Focus();
         }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
     }
 }

@@ -81,11 +81,6 @@ namespace v2rayN.Views
             ViewModel.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)
         {
             Utils.ProcessStart("https://www.v2fly.org/config/routing.html#ruleobject");
