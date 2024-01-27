@@ -1180,4 +1180,10 @@
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密码(obfs password)</value>
   </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain 或 IP 或 进程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>自动滚动到末尾</value>
+  </data>
 </root>

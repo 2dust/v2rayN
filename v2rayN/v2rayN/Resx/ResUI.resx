@@ -1183,4 +1183,10 @@
   <data name="TbPath7" xml:space="preserve">
     <value>obfs password</value>
   </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Auto ScrollToEnd</value>
+  </data>
 </root>

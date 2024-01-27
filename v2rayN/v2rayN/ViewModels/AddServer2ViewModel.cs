@@ -101,7 +101,7 @@ namespace v2rayN.ViewModels
 
         private void BrowseServer()
         {
-            UI.Show(ResUI.CustomServerTips);
+            //UI.Show(ResUI.CustomServerTips);
 
             if (UI.OpenFileDialog(out string fileName,
                 "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)

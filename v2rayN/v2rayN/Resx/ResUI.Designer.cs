@@ -1907,6 +1907,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto ScrollToEnd 的本地化字符串。
+        /// </summary>
+        public static string TbAutoScrollToEnd {
+            get {
+                return ResourceManager.GetString("TbAutoScrollToEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Domain, ip, process are auto sorted when saving 的本地化字符串。
         /// </summary>
         public static string TbAutoSort {
@@ -2335,6 +2344,15 @@ namespace v2rayN.Resx {
         public static string TbRoutingTips {
             get {
                 return ResourceManager.GetString("TbRoutingTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 (Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag 的本地化字符串。
+        /// </summary>
+        public static string TbRuleMatchingTips {
+            get {
+                return ResourceManager.GetString("TbRuleMatchingTips", resourceCulture);
             }
         }
         

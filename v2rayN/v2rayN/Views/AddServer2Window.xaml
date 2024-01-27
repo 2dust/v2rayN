@@ -195,6 +195,13 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TipPreSocksPort}"
                             TextWrapping="Wrap" />
+                        <TextBlock
+                            Width="500"
+                            Margin="8,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.CustomServerTips}"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
             </Grid>

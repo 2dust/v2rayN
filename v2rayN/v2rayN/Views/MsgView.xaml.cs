@@ -9,9 +9,9 @@ namespace v2rayN.Views
 {
     public partial class MsgView
     {
-        private static Config _config;
+        private static Config? _config;
 
-        private string lastMsgFilter;
+        private string lastMsgFilter = string.Empty;
         private bool lastMsgFilterNotAvailable;
 
         public MsgView()
@@ -65,6 +65,11 @@ namespace v2rayN.Views
             lastMsgFilter = MsgFilter;
 
             ShowMsg(msg);
+
+            if (togScrollToEnd.IsChecked ?? true)
+            {
+                txtMsg.ScrollToEnd();
+            }
         }
 
         private void ShowMsg(string msg)
@@ -78,7 +83,6 @@ namespace v2rayN.Views
             {
                 this.txtMsg.AppendText(Environment.NewLine);
             }
-            txtMsg.ScrollToEnd();
         }
 
         public void ClearMsg()
