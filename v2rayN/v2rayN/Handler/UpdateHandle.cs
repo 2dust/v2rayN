@@ -54,7 +54,7 @@ namespace v2rayN.Handler
                             StartInfo = new ProcessStartInfo
                             {
                                 FileName = "v2rayUpgrade.exe",
-                                Arguments = $"\"{fileName}\"",
+                                Arguments = fileName.AppendQuotes(),                                
                                 WorkingDirectory = Utils.StartupPath()
                             }
                         };
@@ -364,7 +364,7 @@ namespace v2rayN.Handler
                 }
 
                 using Process p = new();
-                p.StartInfo.FileName = filePath;
+                p.StartInfo.FileName = filePath.AppendQuotes();
                 p.StartInfo.Arguments = coreInfo.versionArg;
                 p.StartInfo.WorkingDirectory = Utils.StartupPath();
                 p.StartInfo.UseShellExecute = false;

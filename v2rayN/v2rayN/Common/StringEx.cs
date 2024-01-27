@@ -80,5 +80,15 @@ namespace v2rayN
 
             return char.ToUpper(value[0]) + value.Substring(1);
         }
+
+        public static string AppendQuotes(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            return $"\"{value}\"";
+        }
     }
 }

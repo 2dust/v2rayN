@@ -1388,7 +1388,7 @@ namespace v2rayN.ViewModels
                 UseShellExecute = true,
                 Arguments = Global.RebootAs,
                 WorkingDirectory = Utils.StartupPath(),
-                FileName = Utils.GetExePath(),
+                FileName = Utils.GetExePath().AppendQuotes(),
                 Verb = "runas",
             };
             try
