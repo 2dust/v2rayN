@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
+﻿using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace v2rayN
 {
@@ -31,7 +32,7 @@ namespace v2rayN
                 {
                     return default;
                 }
-                return JsonConvert.DeserializeObject<T>(strJson);
+                return JsonSerializer.Deserialize<T>(strJson);
             }
             catch
             {
@@ -44,7 +45,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="strJson"></param>
         /// <returns></returns>
-        public static JObject? ParseJson(string strJson)
+        public static JsonNode? ParseJson(string strJson)
         {
             try
             {
@@ -52,8 +53,7 @@ namespace v2rayN
                 {
                     return null;
                 }
-
-                return JObject.Parse(strJson);
+                return JsonNode.Parse(strJson);
             }
             catch
             {
@@ -77,9 +77,12 @@ namespace v2rayN
                 {
                     return result;
                 }
-                result = JsonConvert.SerializeObject(obj,
-                                          indented ? Formatting.Indented : Formatting.None,
-                                          new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = indented ? true : false,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                };
+                result = JsonSerializer.Serialize(obj, options);
             }
             catch (Exception ex)
             {
@@ -87,6 +90,13 @@ namespace v2rayN
             }
             return result;
         }
+
+        /// <summary>
+        /// SerializeToNode
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static JsonNode? SerializeToNode(object? obj) => JsonSerializer.SerializeToNode(obj);
 
         /// <summary>
         /// Save as json file
@@ -100,13 +110,15 @@ namespace v2rayN
             int result;
             try
             {
-                using StreamWriter file = File.CreateText(filePath);
-                var serializer = new JsonSerializer()
+                using FileStream file = File.Create(filePath);
+
+                var options = new JsonSerializerOptions
                 {
-                    Formatting = Formatting.Indented,
-                    NullValueHandling = nullValue ? NullValueHandling.Include : NullValueHandling.Ignore
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = nullValue ? JsonIgnoreCondition.Never : JsonIgnoreCondition.WhenWritingNull
                 };
-                serializer.Serialize(file, obj);
+
+                JsonSerializer.Serialize(file, obj, options);
                 result = 0;
             }
             catch (Exception ex)

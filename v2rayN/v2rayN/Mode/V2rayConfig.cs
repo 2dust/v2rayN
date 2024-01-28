@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace v2rayN.Mode
 {
@@ -580,7 +580,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// 用户代理
         /// </summary>
-        [JsonProperty("User-Agent")]
+        [JsonPropertyName("User-Agent")]
         public string UserAgent { get; set; }
     }
 

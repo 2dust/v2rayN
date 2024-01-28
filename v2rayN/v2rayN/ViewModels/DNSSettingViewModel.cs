@@ -64,7 +64,7 @@ namespace v2rayN.ViewModels
             if (!Utils.IsNullOrEmpty(normalDNS))
             {
                 var obj = JsonUtils.ParseJson(normalDNS);
-                if (obj != null && obj.ContainsKey("servers") == true)
+                if (obj != null && obj["servers"] != null)
                 {
                 }
                 else

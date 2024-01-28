@@ -927,6 +927,37 @@ namespace v2rayN
             return value is int i && i > 0;
         }
 
+        /// <summary>
+        /// 获取系统hosts
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetSystemHosts()
+        {
+            var systemHosts = new Dictionary<string, string>();
+            var hostfile = @"C:\Windows\System32\drivers\etc\hosts";
+            try
+            {
+                if (File.Exists(hostfile))
+                {
+                    var hosts = File.ReadAllText(hostfile).Replace("\r", "");
+                    var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var host in hostsList)
+                    {
+                        if (host.StartsWith("#")) continue;
+                        var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (hostItem.Length < 2) continue;
+                        systemHosts.Add(hostItem[1], hostItem[0]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            return systemHosts;
+        }
+
         #endregion 杂项
 
         #region TempPath

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -721,9 +719,8 @@ namespace v2rayN.Handler
                     outbound.settings.userLevel = 0;
                 }
 
-                var obj = JsonUtils.ParseJson(normalDNS) ?? [];
-
-                if (!obj.ContainsKey("servers"))
+                var obj = JsonUtils.ParseJson(normalDNS);
+                if (obj is null)
                 {
                     List<string> servers = [];
                     string[] arrDNS = normalDNS.Split(',');
@@ -731,36 +728,26 @@ namespace v2rayN.Handler
                     {
                         servers.Add(str);
                     }
-                    obj["servers"] = JArray.FromObject(servers);
+                    obj = JsonUtils.ParseJson("{}");
+                    obj["servers"] = JsonUtils.SerializeToNode(servers);
                 }
 
+                // 追加至 dns 设置
                 if (item.useSystemHosts)
                 {
-                    var hostfile = @"C:\Windows\System32\drivers\etc\hosts";
-
-                    if (File.Exists(hostfile))
+                    var systemHosts = Utils.GetSystemHosts();
+                    if (systemHosts.Count > 0)
                     {
-                        var hosts = File.ReadAllText(hostfile).Replace("\r", "");
-                        var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                        // 获取系统hosts
-                        var systemHosts = new Dictionary<string, string>();
-                        foreach (var host in hostsList)
+                        var normalHost = obj["hosts"];
+                        if (normalHost != null)
                         {
-                            if (host.StartsWith("#")) continue;
-                            var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (hostItem.Length < 2) continue;
-                            systemHosts.Add(hostItem[1], hostItem[0]);
+                            foreach (var host in systemHosts)
+                            {
+                                if (normalHost[host.Key] != null)
+                                    continue;
+                                normalHost[host.Key] = host.Value;
+                            }
                         }
-
-                        // 追加至 dns 设置
-                        var normalHost = obj["hosts"] ?? new JObject();
-                        foreach (var host in systemHosts)
-                        {
-                            if (normalHost[host.Key] != null) continue;
-                            normalHost[host.Key] = host.Value;
-                        }
-                        obj["hosts"] = normalHost;
                     }
                 }
 
