@@ -835,7 +835,6 @@ namespace v2rayN.Handler
                 case EServerColName.remarks:
                 case EServerColName.address:
                 case EServerColName.port:
-                case EServerColName.security:
                 case EServerColName.network:
                 case EServerColName.streamSecurity:
                     propertyName = name.ToString();

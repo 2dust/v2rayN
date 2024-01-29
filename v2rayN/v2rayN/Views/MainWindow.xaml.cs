@@ -478,12 +478,11 @@ namespace v2rayN.Views
             }
 
             var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
-            for (int i = 0; i < lvColumnItem.Count; i++)
+            var displayIndex = 0;
+            foreach(var item in lvColumnItem)
             {
-                var item = lvColumnItem[i];
-                for (int k = 0; k < lstProfiles.Columns.Count; k++)
-                {
-                    var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
+                foreach (MyDGTextColumn item2 in lstProfiles.Columns) 
+                { 
                     if (item2.ExName == item.Name)
                     {
                         if (item.Width < 0)
@@ -493,7 +492,7 @@ namespace v2rayN.Views
                         else
                         {
                             item2.Width = item.Width;
-                            item2.DisplayIndex = i;
+                            item2.DisplayIndex = displayIndex++;
                         }
                     }
                 }

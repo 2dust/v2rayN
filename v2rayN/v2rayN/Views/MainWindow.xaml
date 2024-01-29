@@ -690,11 +690,6 @@
                                 Header="{x:Static resx:ResUI.LvPort}" />
                             <base:MyDGTextColumn
                                 Width="100"
-                                Binding="{Binding security}"
-                                ExName="security"
-                                Header="{x:Static resx:ResUI.LvEncryptionMethod}" />
-                            <base:MyDGTextColumn
-                                Width="100"
                                 Binding="{Binding network}"
                                 ExName="network"
                                 Header="{x:Static resx:ResUI.LvTransportProtocol}" />

@@ -7,7 +7,6 @@
         remarks,
         address,
         port,
-        security,
         network,
         streamSecurity,
         subRemarks,
