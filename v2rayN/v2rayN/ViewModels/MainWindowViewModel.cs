@@ -862,13 +862,12 @@ namespace v2rayN.ViewModels
                 var running = ConfigHandler.GetDefaultServer(_config);
                 if (running != null)
                 {
-                    var runningSummary = running.GetSummary();
-                    RunningServerDisplay = $"{ResUI.menuServers}:{runningSummary}";
-                    RunningServerToolTipText = runningSummary;
+                    RunningServerDisplay =
+                    RunningServerToolTipText = running.GetSummary();
                 }
                 else
                 {
-                    RunningServerDisplay = ResUI.CheckServerSettings;
+                    RunningServerDisplay =
                     RunningServerToolTipText = ResUI.CheckServerSettings;
                 }
             }));

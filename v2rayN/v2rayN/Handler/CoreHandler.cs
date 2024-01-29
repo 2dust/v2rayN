@@ -45,6 +45,12 @@ namespace v2rayN.Handler
                 ShowMsg(false, msg);
                 ShowMsg(true, $"{node.GetSummary()}");
                 CoreStop();
+
+                if (_config.tunModeItem.enableTun)
+                {
+                    Thread.Sleep(1000);
+                }
+
                 CoreStart(node);
 
                 //In tun mode, do a delay check and restart the core
