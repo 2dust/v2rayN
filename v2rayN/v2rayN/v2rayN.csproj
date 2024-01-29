@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GenerateSatelliteAssembliesForCore>true</GenerateSatelliteAssembliesForCore>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.17763</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>  
 		<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -11,13 +11,13 @@
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
 		<FileVersion>6.33</FileVersion>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.0.6" />		
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
 		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.124" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.4.3" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="TaskScheduler" Version="2.10.1" /> 
