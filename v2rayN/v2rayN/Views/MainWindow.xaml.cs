@@ -342,7 +342,7 @@ namespace v2rayN.Views
                         break;
 
                     case Key.S:
-                        _ = ViewModel?.ScanScreenTaskAsync();
+                        ViewModel?.ScanScreenTaskAsync().ContinueWith(_ => { });
                         break;
 
                     case Key.T:

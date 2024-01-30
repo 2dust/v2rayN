@@ -1089,8 +1089,8 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                ProfileItem profileItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
-                if (profileItem == null)
+                var profileItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
+                if (profileItem is null)
                 {
                     continue;
                 }
@@ -1127,40 +1127,19 @@ namespace v2rayN.Handler
                 }
                 profileItem.subid = subid;
                 profileItem.isSub = isSub;
-                var addStatus = -1;
 
-                if (profileItem.configType == EConfigType.VMess)
+                var addStatus = profileItem.configType switch
                 {
-                    addStatus = AddServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Shadowsocks)
-                {
-                    addStatus = AddShadowsocksServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Socks)
-                {
-                    addStatus = AddSocksServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Trojan)
-                {
-                    addStatus = AddTrojanServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.VLESS)
-                {
-                    addStatus = AddVlessServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Hysteria2)
-                {
-                    addStatus = AddHysteria2Server(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Tuic)
-                {
-                    addStatus = AddTuicServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Wireguard)
-                {
-                    addStatus = AddWireguardServer(config, profileItem, false);
-                }
+                    EConfigType.VMess => AddServer(config, profileItem, false),
+                    EConfigType.Shadowsocks => AddShadowsocksServer(config, profileItem, false),
+                    EConfigType.Socks => AddSocksServer(config, profileItem, false),
+                    EConfigType.Trojan => AddTrojanServer(config, profileItem, false),
+                    EConfigType.VLESS => AddVlessServer(config, profileItem, false),
+                    EConfigType.Hysteria2 => AddHysteria2Server(config, profileItem, false),
+                    EConfigType.Tuic => AddTuicServer(config, profileItem, false),
+                    EConfigType.Wireguard => AddWireguardServer(config, profileItem, false),
+                    _ => -1,
+                };
 
                 if (addStatus == 0)
                 {

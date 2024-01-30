@@ -86,7 +86,10 @@ namespace v2rayN.Handler
                     _updateFunc(false, args.Msg);
 
                     url = args.Url;
-                    _ = askToDownload(downloadHandle, url, true);
+                    AskToDownload(downloadHandle, url, true).ContinueWith(task =>
+                    {
+                        _updateFunc(false, url);
+                    });
                 }
                 else
                 {
@@ -139,7 +142,10 @@ namespace v2rayN.Handler
                     _updateFunc(false, args.Msg);
 
                     url = args.Url;
-                    _ = askToDownload(downloadHandle, url, true);
+                    AskToDownload(downloadHandle, url, true).ContinueWith(task =>
+                    {
+                        _updateFunc(false, url);
+                    });
                 }
                 else
                 {
@@ -527,7 +533,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private async Task askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
+        private async Task AskToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
         {
             bool blDownload = false;
             if (blAsk)
@@ -591,7 +597,7 @@ namespace v2rayN.Handler
             {
                 _updateFunc(false, args.GetException().Message);
             };
-            await askToDownload(downloadHandle, url, false);
+            await AskToDownload(downloadHandle, url, false);
         }
 
         private async Task UpdateGeoFile4Singbox(string geoName, Config config, bool needStop, Action<bool, string> update)
@@ -639,7 +645,7 @@ namespace v2rayN.Handler
             {
                 _updateFunc(false, args.GetException().Message);
             };
-            await askToDownload(downloadHandle, url, false);
+            await AskToDownload(downloadHandle, url, false);
         }
 
         #endregion private

@@ -1482,16 +1482,21 @@ namespace v2rayN.ViewModels
 
         public void Reload()
         {
-            _ = LoadV2ray();
+            BlReloadEnabled = false;
+
+            LoadV2ray().ContinueWith(task =>
+            {
+                TestServerAvailability();
+
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    BlReloadEnabled = true;
+                }));
+            });
         }
 
         private async Task LoadV2ray()
         {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
-            {
-                BlReloadEnabled = false;
-            }));
-
             await Task.Run(() =>
             {
                 _coreHandler.LoadCore();
@@ -1500,13 +1505,6 @@ namespace v2rayN.ViewModels
 
                 ChangeSystemProxyStatus(_config.sysProxyType, false);
             });
-
-            TestServerAvailability();
-
-            Application.Current.Dispatcher.Invoke((Action)(() =>
-            {
-                BlReloadEnabled = true;
-            }));
         }
 
         private void CloseV2ray()

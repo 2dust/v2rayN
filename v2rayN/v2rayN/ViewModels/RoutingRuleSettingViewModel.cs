@@ -306,7 +306,7 @@ namespace v2rayN.ViewModels
             }
 
             DownloadHandle downloadHandle = new DownloadHandle();
-            string result = await downloadHandle.TryDownloadString(url, true, "");
+            var result = await downloadHandle.TryDownloadString(url, true, "");
             if (AddBatchRoutingRules(SelectedRouting, result) == 0)
             {
                 Application.Current.Dispatcher.Invoke((Action)(() =>
@@ -317,7 +317,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private int AddBatchRoutingRules(RoutingItem routingItem, string clipboardData)
+        private int AddBatchRoutingRules(RoutingItem routingItem, string? clipboardData)
         {
             bool blReplace = false;
             if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)

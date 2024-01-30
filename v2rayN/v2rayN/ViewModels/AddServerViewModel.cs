@@ -122,41 +122,18 @@ namespace v2rayN.ViewModels
                 item.spiderX = SelectedSource.spiderX;
             }
 
-            int ret = -1;
-            switch (item.configType)
+            var ret = item.configType switch
             {
-                case EConfigType.VMess:
-                    ret = ConfigHandler.AddServer(_config, item);
-                    break;
-
-                case EConfigType.Shadowsocks:
-                    ret = ConfigHandler.AddShadowsocksServer(_config, item);
-                    break;
-
-                case EConfigType.Socks:
-                    ret = ConfigHandler.AddSocksServer(_config, item);
-                    break;
-
-                case EConfigType.VLESS:
-                    ret = ConfigHandler.AddVlessServer(_config, item);
-                    break;
-
-                case EConfigType.Trojan:
-                    ret = ConfigHandler.AddTrojanServer(_config, item);
-                    break;
-
-                case EConfigType.Hysteria2:
-                    ret = ConfigHandler.AddHysteria2Server(_config, item);
-                    break;
-
-                case EConfigType.Tuic:
-                    ret = ConfigHandler.AddTuicServer(_config, item);
-                    break;
-
-                case EConfigType.Wireguard:
-                    ret = ConfigHandler.AddWireguardServer(_config, item);
-                    break;
-            }
+                EConfigType.VMess => ConfigHandler.AddServer(_config, item),
+                EConfigType.Shadowsocks => ConfigHandler.AddShadowsocksServer(_config, item),
+                EConfigType.Socks => ConfigHandler.AddSocksServer(_config, item),
+                EConfigType.Trojan => ConfigHandler.AddTrojanServer(_config, item),
+                EConfigType.VLESS => ConfigHandler.AddVlessServer(_config, item),
+                EConfigType.Hysteria2 => ConfigHandler.AddHysteria2Server(_config, item),
+                EConfigType.Tuic => ConfigHandler.AddTuicServer(_config, item),
+                EConfigType.Wireguard => ConfigHandler.AddWireguardServer(_config, item),
+                _ => -1,
+            };
 
             if (ret == 0)
             {
