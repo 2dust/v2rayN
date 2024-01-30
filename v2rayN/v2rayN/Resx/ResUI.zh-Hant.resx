@@ -1159,4 +1159,7 @@
   <data name="TbAutoScrollToEnd" xml:space="preserve">
     <value>自动滚动到末尾</value>
   </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>真連接測試地址</value>
+  </data>
 </root>

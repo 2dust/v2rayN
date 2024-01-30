@@ -123,7 +123,6 @@ namespace v2rayN.Mode
         public bool doubleClick2Activate { get; set; }
         public bool autoHideStartup { get; set; } = true;
         public string mainMsgFilter { get; set; }
-        public bool showTrayTip { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
     }
 

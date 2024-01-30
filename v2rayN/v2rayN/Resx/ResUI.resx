@@ -1189,4 +1189,7 @@
   <data name="TbAutoScrollToEnd" xml:space="preserve">
     <value>Auto ScrollToEnd</value>
   </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Speed Ping Test Url</value>
+  </data>
 </root>

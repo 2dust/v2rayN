@@ -1700,7 +1700,6 @@ namespace v2rayN.ViewModels
             }
             CurrentFontSize = _config.uiItem.currentFontSize;
             CurrentLanguage = _config.uiItem.currentLanguage;
-            //BlShowTrayTip = _config.uiItem.showTrayTip;
 
             this.WhenAnyValue(
                   x => x.ColorModeDark,

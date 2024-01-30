@@ -482,6 +482,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -643,10 +644,24 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
+                        <ToggleButton
+                            x:Name="togEnableHWA"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="14"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAutoUpdateInterval}" />
                         <TextBox
                             x:Name="txtautoUpdateInterval"
-                            Grid.Row="12"
+                            Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
@@ -654,7 +669,7 @@
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
-                            Grid.Row="14"
+                            Grid.Row="15"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -662,7 +677,7 @@
                             Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
                         <TextBox
                             x:Name="txttrayMenuServersLimit"
-                            Grid.Row="14"
+                            Grid.Row="15"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
@@ -670,7 +685,7 @@
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
-                            Grid.Row="15"
+                            Grid.Row="16"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -678,14 +693,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
                         <ComboBox
                             x:Name="cmbcurrentFontFamily"
-                            Grid.Row="15"
+                            Grid.Row="16"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
                             MaxDropDownHeight="1000"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
-                            Grid.Row="15"
+                            Grid.Row="16"
                             Grid.Column="2"
                             Margin="{StaticResource ServerItemMargin}"
                             VerticalAlignment="Center"
@@ -694,7 +709,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="16"
+                            Grid.Row="17"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -702,14 +717,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestTimeout}" />
                         <ComboBox
                             x:Name="cmbSpeedTestTimeout"
-                            Grid.Row="16"
+                            Grid.Row="17"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="17"
+                            Grid.Row="18"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -717,7 +732,7 @@
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
                         <ComboBox
                             x:Name="cmbSpeedTestUrl"
-                            Grid.Row="17"
+                            Grid.Row="18"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource SettingItemMargin}"
@@ -725,21 +740,23 @@
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="18"
+                            Grid.Row="19"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
-                        <ToggleButton
-                            x:Name="togEnableHWA"
-                            Grid.Row="18"
+                            Text="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}" />
+                        <ComboBox
+                            x:Name="cmbSpeedPingTestUrl"
+                            Grid.Row="19"
                             Grid.Column="1"
+                            Width="300"
                             Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="19"
+                            Grid.Row="20"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -747,7 +764,7 @@
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
                         <ComboBox
                             x:Name="cmbSubConvertUrl"
-                            Grid.Row="19"
+                            Grid.Row="20"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource SettingItemMargin}"

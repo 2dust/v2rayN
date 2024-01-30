@@ -118,6 +118,9 @@ namespace v2rayN
             @"http://cachefly.cachefly.net/100mb.test",
             @"http://cachefly.cachefly.net/10mb.test"
         };
+        public static readonly List<string> SpeedPingTestUrls = new() {
+            @"https://www.google.com/generate_204",
+        };
 
         public static readonly Dictionary<string, string> UserAgentTxts = new()
         {
