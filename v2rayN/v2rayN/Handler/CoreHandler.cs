@@ -45,10 +45,10 @@ namespace v2rayN.Handler
                 ShowMsg(false, msg);
                 ShowMsg(true, $"{node.GetSummary()}");
                 CoreStop();
-
                 if (_config.tunModeItem.enableTun)
                 {
                     Thread.Sleep(1000);
+                    Utils.RemoveTunDevice();
                 }
 
                 CoreStart(node);
@@ -154,6 +154,8 @@ namespace v2rayN.Handler
             }
         }
 
+        #region Private
+
         private string CoreFindexe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
@@ -254,6 +256,8 @@ namespace v2rayN.Handler
         {
             _updateFunc(updateToTrayTooltip, msg);
         }
+
+        #endregion Private
 
         #region Process
 

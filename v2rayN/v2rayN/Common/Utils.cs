@@ -512,187 +512,6 @@ namespace v2rayN
 
         #endregion 数据检查
 
-        #region 开机自动启动
-
-        /// <summary>
-        /// 开机自动启动
-        /// </summary>
-        /// <param name="run"></param>
-        /// <returns></returns>
-        public static void SetAutoRun(string AutoRunRegPath, string AutoRunName, bool run)
-        {
-            try
-            {
-                var autoRunName = $"{AutoRunName}_{GetMD5(StartupPath())}";
-
-                //delete first
-                RegWriteValue(AutoRunRegPath, autoRunName, "");
-                if (IsAdministrator())
-                {
-                    AutoStart(autoRunName, "", "");
-                }
-
-                if (run)
-                {
-                    string exePath = $"\"{GetExePath()}\"";
-                    if (IsAdministrator())
-                    {
-                        AutoStart(autoRunName, exePath, "");
-                    }
-                    else
-                    {
-                        RegWriteValue(AutoRunRegPath, autoRunName, exePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 获取启动了应用程序的可执行文件的路径
-        /// </summary>
-        /// <returns></returns>
-        public static string GetPath(string fileName)
-        {
-            string startupPath = StartupPath();
-            if (IsNullOrEmpty(fileName))
-            {
-                return startupPath;
-            }
-            return Path.Combine(startupPath, fileName);
-        }
-
-        /// <summary>
-        /// 获取启动了应用程序的可执行文件的路径及文件名
-        /// </summary>
-        /// <returns></returns>
-        public static string GetExePath()
-        {
-            return Environment.ProcessPath ?? string.Empty;
-        }
-
-        public static string StartupPath()
-        {
-            return AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        public static string? RegReadValue(string path, string name, string def)
-        {
-            RegistryKey? regKey = null;
-            try
-            {
-                regKey = Registry.CurrentUser.OpenSubKey(path, false);
-                string? value = regKey?.GetValue(name) as string;
-                if (IsNullOrEmpty(value))
-                {
-                    return def;
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-            }
-            finally
-            {
-                regKey?.Close();
-            }
-            return def;
-        }
-
-        public static void RegWriteValue(string path, string name, object value)
-        {
-            RegistryKey? regKey = null;
-            try
-            {
-                regKey = Registry.CurrentUser.CreateSubKey(path);
-                if (IsNullOrEmpty(value.ToString()))
-                {
-                    regKey?.DeleteValue(name, false);
-                }
-                else
-                {
-                    regKey?.SetValue(name, value);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-            }
-            finally
-            {
-                regKey?.Close();
-            }
-        }
-
-        /// <summary>
-        /// 判断.Net Framework的Release是否符合
-        /// (.Net Framework 版本在4.0及以上)
-        /// </summary>
-        /// <param name="release">需要的版本4.6.2=394802;4.8=528040</param>
-        /// <returns></returns>
-        public static bool CheckForDotNetVersion(int release = 528040)
-        {
-            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using RegistryKey? ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
-            if (ndpKey?.GetValue("Release") != null)
-            {
-                return (int)ndpKey.GetValue("Release") >= release;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Auto Start via TaskService
-        /// </summary>
-        /// <param name="taskName"></param>
-        /// <param name="fileName"></param>
-        /// <param name="description"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void AutoStart(string taskName, string fileName, string description)
-        {
-            if (string.IsNullOrEmpty(taskName))
-            {
-                return;
-            }
-            string TaskName = taskName;
-            var logonUser = WindowsIdentity.GetCurrent().Name;
-            string taskDescription = description;
-            string deamonFileName = fileName;
-
-            using var taskService = new TaskService();
-            var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
-            foreach (var t in tasks)
-            {
-                taskService.RootFolder.DeleteTask(t.Name);
-            }
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-
-            var task = taskService.NewTask();
-            task.RegistrationInfo.Description = taskDescription;
-            task.Settings.DisallowStartIfOnBatteries = false;
-            task.Settings.StopIfGoingOnBatteries = false;
-            task.Settings.RunOnlyIfIdle = false;
-            task.Settings.IdleSettings.StopOnIdleEnd = false;
-            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
-            task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(10) });
-            task.Principal.RunLevel = TaskRunLevel.Highest;
-            task.Actions.Add(new ExecAction(deamonFileName));
-
-            taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
-        }
-
-        #endregion 开机自动启动
-
         #region 测速
 
         /// <summary>
@@ -962,7 +781,34 @@ namespace v2rayN
 
         #region TempPath
 
-        // return path to store temporary files
+        /// <summary>
+        /// 获取启动了应用程序的可执行文件的路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetPath(string fileName)
+        {
+            string startupPath = StartupPath();
+            if (IsNullOrEmpty(fileName))
+            {
+                return startupPath;
+            }
+            return Path.Combine(startupPath, fileName);
+        }
+
+        /// <summary>
+        /// 获取启动了应用程序的可执行文件的路径及文件名
+        /// </summary>
+        /// <returns></returns>
+        public static string GetExePath()
+        {
+            return Environment.ProcessPath ?? string.Empty;
+        }
+
+        public static string StartupPath()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         public static string GetTempPath(string filename = "")
         {
             string _tempPath = Path.Combine(StartupPath(), "guiTemps");
@@ -1136,6 +982,171 @@ namespace v2rayN
         }
 
         #endregion scan screen
+
+        #region 开机自动启动等
+
+        /// <summary>
+        /// 开机自动启动
+        /// </summary>
+        /// <param name="run"></param>
+        /// <returns></returns>
+        public static void SetAutoRun(string AutoRunRegPath, string AutoRunName, bool run)
+        {
+            try
+            {
+                var autoRunName = $"{AutoRunName}_{GetMD5(StartupPath())}";
+
+                //delete first
+                RegWriteValue(AutoRunRegPath, autoRunName, "");
+                if (IsAdministrator())
+                {
+                    AutoStart(autoRunName, "", "");
+                }
+
+                if (run)
+                {
+                    string exePath = $"\"{GetExePath()}\"";
+                    if (IsAdministrator())
+                    {
+                        AutoStart(autoRunName, exePath, "");
+                    }
+                    else
+                    {
+                        RegWriteValue(AutoRunRegPath, autoRunName, exePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+        }
+
+        public static string? RegReadValue(string path, string name, string def)
+        {
+            RegistryKey? regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.OpenSubKey(path, false);
+                string? value = regKey?.GetValue(name) as string;
+                if (IsNullOrEmpty(value))
+                {
+                    return def;
+                }
+                else
+                {
+                    return value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+            return def;
+        }
+
+        public static void RegWriteValue(string path, string name, object value)
+        {
+            RegistryKey? regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.CreateSubKey(path);
+                if (IsNullOrEmpty(value.ToString()))
+                {
+                    regKey?.DeleteValue(name, false);
+                }
+                else
+                {
+                    regKey?.SetValue(name, value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+        }
+
+        /// <summary>
+        /// Auto Start via TaskService
+        /// </summary>
+        /// <param name="taskName"></param>
+        /// <param name="fileName"></param>
+        /// <param name="description"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void AutoStart(string taskName, string fileName, string description)
+        {
+            if (string.IsNullOrEmpty(taskName))
+            {
+                return;
+            }
+            string TaskName = taskName;
+            var logonUser = WindowsIdentity.GetCurrent().Name;
+            string taskDescription = description;
+            string deamonFileName = fileName;
+
+            using var taskService = new TaskService();
+            var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
+            foreach (var t in tasks)
+            {
+                taskService.RootFolder.DeleteTask(t.Name);
+            }
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            var task = taskService.NewTask();
+            task.RegistrationInfo.Description = taskDescription;
+            task.Settings.DisallowStartIfOnBatteries = false;
+            task.Settings.StopIfGoingOnBatteries = false;
+            task.Settings.RunOnlyIfIdle = false;
+            task.Settings.IdleSettings.StopOnIdleEnd = false;
+            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+            task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(10) });
+            task.Principal.RunLevel = TaskRunLevel.Highest;
+            task.Actions.Add(new ExecAction(deamonFileName));
+
+            taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
+        }
+
+        public static void RemoveTunDevice()
+        {
+            try
+            {
+                string pnputilPath = @"C:\Windows\System32\pnputil.exe";
+                string arg = $" /remove-device /deviceid \"wintun\"";
+
+                // Try to remove the device
+                Process proc = new()
+                {
+                    StartInfo = new()
+                    {
+                        FileName = pnputilPath,
+                        Arguments = arg,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                proc.Start();
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+            catch
+            {
+            }
+        }
+
+        #endregion 开机自动启动等
 
         #region Windows API
 
