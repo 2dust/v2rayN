@@ -128,6 +128,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
 
         public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
+        public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
         public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
@@ -453,7 +454,11 @@ namespace v2rayN.ViewModels
             });
             AddSubCmd = ReactiveCommand.Create(() =>
             {
-                AddSub();
+                EditSub(true);
+            });
+            EditSubCmd = ReactiveCommand.Create(() =>
+            {
+                EditSub(false);
             });
             SubUpdateCmd = ReactiveCommand.Create(() =>
             {
@@ -1329,9 +1334,21 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void AddSub()
+        private void EditSub(bool blNew)
         {
-            SubItem item = new();
+            SubItem item;
+            if (blNew)
+            {
+                item = new();
+            }
+            else
+            {
+                item = LazyConfig.Instance.GetSubItem(_subId);
+                if (item is null)
+                {
+                    return;
+                }
+            }
             var ret = (new SubEditWindow(item)).ShowDialog();
             if (ret == true)
             {

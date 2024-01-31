@@ -407,6 +407,15 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+
+                    <Button
+                        x:Name="btnEditSub"
+                        Width="30"
+                        Height="30"
+                        Margin="4,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="Edit" />
+                    </Button>
                     <Button
                         x:Name="btnAddSub"
                         Width="30"
@@ -415,11 +424,12 @@
                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                         <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                     </Button>
+
                     <Button
                         x:Name="btnAutofitColumnWidth"
                         Width="30"
                         Height="30"
-                        Margin="4,0"
+                        Margin="20,0"
                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                         <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
                     </Button>
