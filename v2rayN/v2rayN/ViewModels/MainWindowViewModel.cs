@@ -259,8 +259,6 @@ namespace v2rayN.ViewModels
             Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(snackbarMessageQueue), typeof(NoticeHandler));
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = LazyConfig.Instance.GetConfig();
-            //ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
-            Init();
 
             SelectedProfile = new();
             SelectedSub = new();
@@ -273,9 +271,11 @@ namespace v2rayN.ViewModels
             }
             _subId = _config.subIndexId;
 
-            InitSubscriptionView();
-            RefreshRoutingsMenu();
-            RefreshServers();
+            Init();
+            BindingUI();
+            RestoreUI();
+
+            #region WhenAnyValue && ReactiveCommand
 
             var canEditRemove = this.WhenAnyValue(
                x => x.SelectedProfile,
@@ -315,10 +315,6 @@ namespace v2rayN.ViewModels
               x => x.EnableTun,
                y => y == true)
                   .Subscribe(c => DoEnableTun(c));
-
-            BindingUI();
-            RestoreUI();
-            AutoHideStartup();
 
             //servers
             AddVmessServerCmd = ReactiveCommand.Create(() =>
@@ -573,6 +569,10 @@ namespace v2rayN.ViewModels
                 SetListenerType(ESysProxyType.Pac);
             });
 
+            #endregion WhenAnyValue && ReactiveCommand
+
+            AutoHideStartup();
+
             Global.ShowInTaskbar = true;
         }
 
@@ -590,6 +590,10 @@ namespace v2rayN.ViewModels
 
             MainFormHandler.Instance.UpdateTask(_config, UpdateTaskHandler);
             MainFormHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, UpdateTaskHandler);
+
+            InitSubscriptionView();
+            RefreshRoutingsMenu();
+            RefreshServers();
 
             Reload();
             ChangeSystemProxyStatus(_config.sysProxyType, true);
@@ -1864,7 +1868,7 @@ namespace v2rayN.ViewModels
             if (_config.uiItem.autoHideStartup)
             {
                 Observable.Range(1, 1)
-                 .Delay(TimeSpan.FromSeconds(0.5))
+                 .Delay(TimeSpan.FromSeconds(1))
                  .Subscribe(x =>
                  {
                      Application.Current.Dispatcher.Invoke(() =>

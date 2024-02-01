@@ -193,7 +193,6 @@
                 x:Name="btnBrowse"
                 Grid.Row="3"
                 Grid.Column="2"
-                Width="100"
                 Margin="2,0,8,0"
                 Click="btnBrowse_Click"
                 Content="{x:Static resx:ResUI.TbBrowse}"
