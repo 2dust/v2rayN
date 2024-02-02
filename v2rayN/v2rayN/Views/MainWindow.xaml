@@ -582,10 +582,6 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                                 <MenuItem
-                                    x:Name="menuPingServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuPingServer}" />
-                                <MenuItem
                                     x:Name="menuTcpingServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuTcpingServer}" />

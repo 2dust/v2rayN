@@ -113,7 +113,6 @@ namespace v2rayN.Views
 
                 //servers ping
                 this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.PingServerCmd, v => v.menuPingServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuRealPingServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
@@ -328,10 +327,6 @@ namespace v2rayN.Views
                 {
                     case Key.V:
                         ViewModel?.AddServerViaClipboard();
-                        break;
-
-                    case Key.P:
-                        ViewModel?.ServerSpeedtest(ESpeedActionType.Ping);
                         break;
 
                     case Key.O:

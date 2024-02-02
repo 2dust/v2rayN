@@ -532,9 +532,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>Test servers ping (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Test servers real delay (Ctrl+R)</value>
   </data>

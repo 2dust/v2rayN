@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -9,7 +8,7 @@ namespace v2rayN.Handler
 {
     internal class SpeedtestHandler
     {
-        private Config _config;
+        private Config? _config;
         private CoreHandler _coreHandler;
         private List<ServerTestItem> _selecteds;
         private ESpeedActionType _actionType;
@@ -51,7 +50,6 @@ namespace v2rayN.Handler
             {
                 switch (actionType)
                 {
-                    case ESpeedActionType.Ping:
                     case ESpeedActionType.Tcping:
                     case ESpeedActionType.Realping:
                         UpdateFunc(it.indexId, ResUI.Speedtesting, "");
@@ -73,10 +71,6 @@ namespace v2rayN.Handler
 
             switch (actionType)
             {
-                case ESpeedActionType.Ping:
-                    Task.Run(RunPing);
-                    break;
-
                 case ESpeedActionType.Tcping:
                     Task.Run(RunTcping);
                     break;
@@ -95,52 +89,45 @@ namespace v2rayN.Handler
             }
         }
 
-        private async Task RunPingSubAsync(Action<ServerTestItem> updateFun)
+        private Task RunTcping()
         {
             try
             {
-                foreach (var it in _selecteds.Where(it => it.configType != EConfigType.Custom))
+                List<Task> tasks = [];
+                foreach (var it in _selecteds)
                 {
-                    try
+                    if (it.configType == EConfigType.Custom)
                     {
-                        _ = Task.Run(() => updateFun(it));
+                        continue;
                     }
-                    catch (Exception ex)
+                    tasks.Add(Task.Run(() =>
                     {
-                        Logging.SaveLog(ex.Message, ex);
-                    }
-                }
+                        try
+                        {
+                            int time = GetTcpingTime(it.address, it.port);
+                            var output = FormatOut(time, Global.DelayUnit);
 
-                await Task.Delay(10);
+                            ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
+                            UpdateFunc(it.indexId, output);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.SaveLog(ex.Message, ex);
+                        }
+                    }));
+                }
+                Task.WaitAll([.. tasks]);
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
             }
-        }
-
-        private async void RunPing()
-        {
-            await RunPingSubAsync((ServerTestItem it) =>
-             {
-                 long time = Ping(it.address);
-                 var output = FormatOut(time, Global.DelayUnit);
-
-                 ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                 UpdateFunc(it.indexId, output);
-             });
-        }
-
-        private async void RunTcping()
-        {
-            await RunPingSubAsync((ServerTestItem it) =>
+            finally
             {
-                int time = GetTcpingTime(it.address, it.port);
-                var output = FormatOut(time, Global.DelayUnit);
+                ProfileExHandler.Instance.SaveTo();
+            }
 
-                ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                UpdateFunc(it.indexId, output);
-            });
+            return Task.CompletedTask;
         }
 
         private Task RunRealPing()
@@ -336,7 +323,7 @@ namespace v2rayN.Handler
             await RunSpeedTestMulti();
         }
 
-        public async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
+        private async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
         {
             int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
             //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
@@ -374,43 +361,6 @@ namespace v2rayN.Handler
                 Logging.SaveLog(ex.Message, ex);
             }
             return responseTime;
-        }
-
-        /// <summary>
-        /// Ping
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public long Ping(string host)
-        {
-            long roundtripTime = -1;
-            try
-            {
-                int timeout = 30;
-                int echoNum = 2;
-                using Ping pingSender = new();
-                for (int i = 0; i < echoNum; i++)
-                {
-                    PingReply reply = pingSender.Send(host, timeout);
-                    if (reply.Status == IPStatus.Success)
-                    {
-                        if (reply.RoundtripTime < 0)
-                        {
-                            continue;
-                        }
-                        if (roundtripTime < 0 || reply.RoundtripTime < roundtripTime)
-                        {
-                            roundtripTime = reply.RoundtripTime;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                return -1;
-            }
-            return roundtripTime;
         }
 
         private string FormatOut(object time, string unit)

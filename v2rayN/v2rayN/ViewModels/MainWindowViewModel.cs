@@ -112,7 +112,6 @@ namespace v2rayN.ViewModels
         //servers ping
         public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
 
-        public ReactiveCommand<Unit, Unit> PingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> TcpingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
@@ -409,10 +408,6 @@ namespace v2rayN.ViewModels
             {
                 ServerSpeedtest(ESpeedActionType.Mixedtest);
             });
-            PingServerCmd = ReactiveCommand.Create(() =>
-            {
-                ServerSpeedtest(ESpeedActionType.Ping);
-            }, canEditRemove);
             TcpingServerCmd = ReactiveCommand.Create(() =>
             {
                 ServerSpeedtest(ESpeedActionType.Tcping);

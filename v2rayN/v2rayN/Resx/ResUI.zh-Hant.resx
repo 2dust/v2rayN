@@ -531,9 +531,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服務統計資料</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>測試伺服器延遲Ping(多選) (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>測試伺服器真連接延遲(多選) (Ctrl+R)</value>
   </data>

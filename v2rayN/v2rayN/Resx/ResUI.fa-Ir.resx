@@ -529,9 +529,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>تمام آمار خدمات را پاک کنید</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>تست پینگ سرورها (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>آزمایش سرورها با تاخیر واقعی (Ctrl+R)</value>
   </data>
