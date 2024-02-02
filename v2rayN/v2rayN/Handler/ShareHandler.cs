@@ -48,12 +48,12 @@ namespace v2rayN.Handler
 
             VmessQRCode vmessQRCode = new()
             {
-                v = item.configVersion.ToString(),
+                v = item.configVersion,
                 ps = item.remarks.TrimEx(),
                 add = item.address,
-                port = item.port.ToString(),
+                port = item.port,
                 id = item.id,
-                aid = item.alterId.ToString(),
+                aid = item.alterId,
                 scy = item.security,
                 net = item.network,
                 type = item.headerType,
