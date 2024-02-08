@@ -1618,6 +1618,8 @@ namespace v2rayN.ViewModels
             {
                 _noticeHandler?.SendMessage(ResUI.TipChangeRouting, true);
                 Reload();
+                NotifyIcon = MainFormHandler.Instance.GetNotifyIcon(_config);
+                AppIcon = MainFormHandler.Instance.GetAppIcon(_config);
             }
         }
 
