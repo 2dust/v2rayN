@@ -30,7 +30,7 @@ namespace v2rayN.Handler
             {
                 try
                 {
-                    _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{Global.StatePort}");
+                    _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{LazyConfig.Instance.StatePort}");
                     _client = new StatsService.StatsServiceClient(_channel);
                 }
                 catch (Exception ex)

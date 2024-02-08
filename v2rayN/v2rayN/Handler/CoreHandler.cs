@@ -316,7 +316,7 @@ namespace v2rayN.Handler
                     throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
-                Global.ProcessJob.AddProcess(proc.Handle);
+                LazyConfig.Instance.AddProcess(proc.Handle);
                 return proc;
             }
             catch (Exception ex)

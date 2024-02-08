@@ -788,7 +788,7 @@ namespace v2rayN.Handler
                     Inboundsettings4Ray apiInboundSettings = new();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
-                    apiInbound.port = Global.StatePort;
+                    apiInbound.port = LazyConfig.Instance.StatePort;
                     apiInbound.protocol = Global.InboundAPIProtocal;
                     apiInboundSettings.address = Global.Loopback;
                     apiInbound.settings = apiInboundSettings;

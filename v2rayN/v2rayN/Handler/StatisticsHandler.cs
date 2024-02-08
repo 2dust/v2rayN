@@ -28,7 +28,6 @@ namespace v2rayN.Handler
             _updateFunc = update;
 
             Init();
-            Global.StatePort = GetFreePort();
 
             _statisticsV2Ray = new StatisticsV2ray(config, UpdateServerStat);
             _statisticsSingbox = new StatisticsSingbox(config, UpdateServerStat);
@@ -80,6 +79,10 @@ namespace v2rayN.Handler
         {
             GetServerStatItem(_config.indexId);
 
+            if (_serverStatItem is null)
+            {
+                return;
+            }
             if (server.proxyUp != 0 || server.proxyDown != 0)
             {
                 _serverStatItem.todayUp += server.proxyUp;
@@ -87,15 +90,13 @@ namespace v2rayN.Handler
                 _serverStatItem.totalUp += server.proxyUp;
                 _serverStatItem.totalDown += server.proxyDown;
             }
-            if (Global.ShowInTaskbar)
-            {
-                server.indexId = _config.indexId;
-                server.todayUp = _serverStatItem.todayUp;
-                server.todayDown = _serverStatItem.todayDown;
-                server.totalUp = _serverStatItem.totalUp;
-                server.totalDown = _serverStatItem.totalDown;
-                _updateFunc(server);
-            }
+
+            server.indexId = _config.indexId;
+            server.todayUp = _serverStatItem.todayUp;
+            server.todayDown = _serverStatItem.todayDown;
+            server.totalUp = _serverStatItem.totalUp;
+            server.totalDown = _serverStatItem.totalDown;
+            _updateFunc(server);
         }
 
         private void GetServerStatItem(string indexId)

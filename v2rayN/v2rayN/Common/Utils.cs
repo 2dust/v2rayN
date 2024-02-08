@@ -576,6 +576,28 @@ namespace v2rayN
             return inUse;
         }
 
+        public static int GetFreePort()
+        {
+            try
+            {
+                int defaultPort = 9090;
+                if (!Utils.PortInUse(defaultPort))
+                {
+                    return defaultPort;
+                }
+
+                TcpListener l = new(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+                return port;
+            }
+            catch
+            {
+            }
+            return 69090;
+        }
+
         #endregion 测速
 
         #region 杂项

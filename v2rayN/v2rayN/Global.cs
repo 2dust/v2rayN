@@ -118,6 +118,7 @@ namespace v2rayN
             @"http://cachefly.cachefly.net/100mb.test",
             @"http://cachefly.cachefly.net/10mb.test"
         };
+
         public static readonly List<string> SpeedPingTestUrls = new() {
             @"https://www.google.com/generate_204",
         };
@@ -187,14 +188,5 @@ namespace v2rayN
         public static readonly List<string> TuicCongestionControls = new() { "cubic", "new_reno", "bbr" };
 
         #endregion const
-
-        #region global variable
-
-        public static int StatePort { get; set; }
-        public static Job ProcessJob { get; set; }
-        public static bool ShowInTaskbar { get; set; }
-        public static string ExePathKey { get; set; }
-
-        #endregion global variable
     }
 }

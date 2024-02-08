@@ -811,7 +811,7 @@ namespace v2rayN.Handler
                     //},
                     clash_api = new Clash_Api4Sbox()
                     {
-                        external_controller = $"{Global.Loopback}:{Global.StatePort}",
+                        external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort}",
                     }
                 };
             }

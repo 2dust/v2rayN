@@ -27,10 +27,10 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            Global.ExePathKey = Utils.GetMD5(Utils.GetExePath());
+            var exePathKey = Utils.GetMD5(Utils.GetExePath());
 
             var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
-            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, Global.ExePathKey, out bool bCreatedNew);
+            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
             if (!rebootas && !bCreatedNew)
             {
                 ProgramStarted.Set();
@@ -38,8 +38,6 @@ namespace v2rayN
                 Environment.Exit(0);
                 return;
             }
-
-            Global.ProcessJob = new Job();
 
             Logging.Setup();
             Init();
