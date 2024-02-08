@@ -11,10 +11,11 @@ namespace v2rayN
         private SQLiteConnection _db;
         private SQLiteAsyncConnection _dbAsync;
         private static readonly object objLock = new();
+        public const string _configDB = "guiNDB.db";
 
         public SqliteHelper()
         {
-            _connstr = Utils.GetConfigPath(Global.ConfigDB);
+            _connstr = Utils.GetConfigPath(_configDB);
             _db = new SQLiteConnection(_connstr, false);
             _dbAsync = new SQLiteAsyncConnection(_connstr, false);
         }
