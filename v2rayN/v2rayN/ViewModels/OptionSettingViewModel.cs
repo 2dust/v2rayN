@@ -56,6 +56,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool KeepOlderDedupl { get; set; }
         [Reactive] public bool IgnoreGeoUpdateCore { get; set; }
         [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
+        [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
@@ -150,6 +151,7 @@ namespace v2rayN.ViewModels
             KeepOlderDedupl = _config.guiItem.keepOlderDedupl;
             IgnoreGeoUpdateCore = _config.guiItem.ignoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
+            EnableUpdateSubOnlyRemarksExist = _config.uiItem.enableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.guiItem.enableSecurityProtocolTls13;
             AutoHideStartup = _config.uiItem.autoHideStartup;
             EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
@@ -304,6 +306,7 @@ namespace v2rayN.ViewModels
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
             _config.guiItem.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
+            _config.uiItem.enableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.guiItem.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.uiItem.autoHideStartup = AutoHideStartup;
             _config.guiItem.autoUpdateInterval = autoUpdateInterval;

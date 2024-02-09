@@ -1186,4 +1186,7 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真连接测试地址</value>
   </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>更新订阅时只判断别名已存在否</value>
+  </data>
 </root>

@@ -1189,4 +1189,7 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Speed Ping Test Url</value>
   </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>Updating subscription, only determine remarks exists</value>
+  </data>
 </root>

@@ -1098,7 +1098,8 @@ namespace v2rayN.Handler
                 //exist sub items
                 if (isSub && !Utils.IsNullOrEmpty(subid))
                 {
-                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub && CompareProfileItem(t, profileItem, true));
+                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub
+                                                && config.uiItem.enableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
                         //Check for duplicate indexId

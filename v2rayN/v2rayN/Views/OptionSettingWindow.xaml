@@ -526,7 +526,7 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="4"
+                            Grid.Row="3"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -534,6 +534,20 @@
                             Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
                         <ToggleButton
                             x:Name="togKeepOlderDedupl"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsIgnoreGeoUpdateCore}" />
+                        <ToggleButton
+                            x:Name="togIgnoreGeoUpdateCore"
                             Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"
@@ -545,9 +559,9 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsIgnoreGeoUpdateCore}" />
+                            Text="{x:Static resx:ResUI.TbSettingsEnableAutoAdjustMainLvColWidth}" />
                         <ToggleButton
-                            x:Name="togIgnoreGeoUpdateCore"
+                            x:Name="togEnableAutoAdjustMainLvColWidth"
                             Grid.Row="5"
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"
@@ -559,9 +573,9 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableAutoAdjustMainLvColWidth}" />
+                            Text="{x:Static resx:ResUI.TbSettingsEnableUpdateSubOnlyRemarksExist}" />
                         <ToggleButton
-                            x:Name="togEnableAutoAdjustMainLvColWidth"
+                            x:Name="togEnableUpdateSubOnlyRemarksExist"
                             Grid.Row="6"
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"

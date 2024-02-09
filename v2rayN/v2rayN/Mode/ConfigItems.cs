@@ -109,6 +109,7 @@ namespace v2rayN.Mode
     public class UIItem
     {
         public bool enableAutoAdjustMainLvColWidth { get; set; }
+        public bool enableUpdateSubOnlyRemarksExist { get; set; }
         public double mainWidth { get; set; }
         public double mainHeight { get; set; }
         public double mainGirdHeight1 { get; set; }
