@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
-		<FileVersion>6.33</FileVersion>
+		<FileVersion>6.35</FileVersion>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 	
@@ -26,7 +26,6 @@
 		<PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
 		<PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
 		<PackageReference Include="Splat.NLog" Version="14.8.12" />
-		<PackageReference Include="System.Reactive" Version="6.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>       
