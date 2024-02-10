@@ -11,7 +11,7 @@ namespace v2rayN
         private SQLiteConnection _db;
         private SQLiteAsyncConnection _dbAsync;
         private static readonly object objLock = new();
-        public const string _configDB = "guiNDB.db";
+        public readonly string _configDB = "guiNDB.db";
 
         public SqliteHelper()
         {
