@@ -40,6 +40,7 @@
             <Button
                 x:Name="btnSave"
                 Width="100"
+                Click="btnSave_Click"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 Cursor="Hand"
                 Style="{StaticResource DefButton}" />
