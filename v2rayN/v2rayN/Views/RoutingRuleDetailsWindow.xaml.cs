@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
-using v2rayN.Base;
 using v2rayN.Mode;
 using v2rayN.ViewModels;
 
@@ -80,11 +79,6 @@ namespace v2rayN.Views
         private void ClbInboundTag_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ViewModel.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)

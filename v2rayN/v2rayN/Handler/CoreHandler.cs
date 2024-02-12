@@ -45,6 +45,12 @@ namespace v2rayN.Handler
                 ShowMsg(false, msg);
                 ShowMsg(true, $"{node.GetSummary()}");
                 CoreStop();
+                if (_config.tunModeItem.enableTun)
+                {
+                    Thread.Sleep(1000);
+                    Utils.RemoveTunDevice();
+                }
+
                 CoreStart(node);
 
                 //In tun mode, do a delay check and restart the core
@@ -59,7 +65,7 @@ namespace v2rayN.Handler
                             {
                                 CoreStart(node);
                                 ShowMsg(false, "Tun mode restart the core once");
-                                Utils.SaveLog("Tun mode restart the core once");
+                                Logging.SaveLog("Tun mode restart the core once");
                             }
                         }
                     });
@@ -67,18 +73,19 @@ namespace v2rayN.Handler
             }
         }
 
-        public int LoadCoreConfigString(List<ServerTestItem> _selecteds)
+        public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
         {
             int pid = -1;
-            string configStr = CoreConfigHandler.GenerateClientSpeedtestConfigString(_config, _selecteds, out string msg);
-            if (configStr == "")
+            var coreType = selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic || t.configType == EConfigType.Wireguard) ? ECoreType.sing_box : ECoreType.Xray;
+            string configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
+            if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType, out string msg) != 0)
             {
                 ShowMsg(false, msg);
             }
             else
             {
                 ShowMsg(false, msg);
-                pid = CoreStartViaString(configStr);
+                pid = CoreStartSpeedtest(configPath, coreType);
             }
             return pid;
         }
@@ -115,11 +122,11 @@ namespace v2rayN.Handler
                         }
                         foreach (string vName in it.coreExes)
                         {
-                            Process[] existing = Process.GetProcessesByName(vName);
+                            var existing = Process.GetProcessesByName(vName);
                             foreach (Process p in existing)
                             {
                                 string? path = p.MainModule?.FileName;
-                                if (path == $"{Utils.GetBinPath(vName, it.coreType)}.exe")
+                                if (path == $"{Utils.GetBinPath(vName, it.coreType.ToString())}.exe")
                                 {
                                     KillProcess(p);
                                 }
@@ -130,7 +137,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -138,22 +145,22 @@ namespace v2rayN.Handler
         {
             try
             {
-                Process _p = Process.GetProcessById(pid);
+                var _p = Process.GetProcessById(pid);
                 KillProcess(_p);
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
-        private string CoreFindExe(CoreInfo coreInfo)
+        private string CoreFindexe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
             foreach (string name in coreInfo.coreExes)
             {
                 string vName = $"{name}.exe";
-                vName = Utils.GetBinPath(vName, coreInfo.coreType);
+                vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
                 if (File.Exists(vName))
                 {
                     fileName = vName;
@@ -162,8 +169,8 @@ namespace v2rayN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
-                Utils.SaveLog(msg);
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType.ToString()), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                Logging.SaveLog(msg);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -171,6 +178,7 @@ namespace v2rayN.Handler
 
         private void CoreStart(ProfileItem node)
         {
+            ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
             ECoreType coreType;
@@ -218,14 +226,15 @@ namespace v2rayN.Handler
             }
         }
 
-        private int CoreStartViaString(string configStr)
+        private int CoreStartSpeedtest(string configPath, ECoreType coreType)
         {
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
+            ShowMsg(false, configPath);
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.Xray);
-                string fileName = CoreFindExe(coreInfo);
+                string fileName = CoreFindexe(coreInfo);
                 if (fileName == "") return -1;
 
                 Process p = new()
@@ -269,16 +278,14 @@ namespace v2rayN.Handler
 
                 if (p.WaitForExit(1000))
                 {
-                    p.CancelErrorRead();
                     throw new Exception(p.StandardError.ReadToEnd());
                 }
 
-                Global.ProcessJob.AddProcess(p.Handle);
-                return p.Id;
+                return proc.Id;
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 ShowMsg(false, msg);
                 return -1;
@@ -289,6 +296,8 @@ namespace v2rayN.Handler
         {
             _updateFunc(updateToTrayTooltip, msg);
         }
+
+        #endregion Private
 
         #region Process
 
@@ -303,7 +312,7 @@ namespace v2rayN.Handler
                 }
                 Process proc = new()
                 {
-                    StartInfo = new ProcessStartInfo
+                    StartInfo = new()
                     {
                         FileName = fileName,
                         Arguments = string.Format(coreInfo.arguments, configPath),
@@ -348,33 +357,37 @@ namespace v2rayN.Handler
                     throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
                 }
 
-                Global.ProcessJob.AddProcess(proc.Handle);
+                LazyConfig.Instance.AddProcess(proc.Handle);
                 return proc;
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 update(true, msg);
                 return null;
             }
         }
 
-        private void KillProcess(Process p)
+        private void KillProcess(Process? proc)
         {
+            if (proc is null)
+            {
+                return;
+            }
             try
             {
-                p.CloseMainWindow();
-                p.WaitForExit(100);
-                if (!p.HasExited)
+                proc.CloseMainWindow();
+                proc.WaitForExit(100);
+                if (!proc.HasExited)
                 {
-                    p.Kill();
-                    p.WaitForExit(100);
+                    proc.Kill();
+                    proc.WaitForExit(100);
                 }
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 

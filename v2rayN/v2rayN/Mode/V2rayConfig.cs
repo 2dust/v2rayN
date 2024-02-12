@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace v2rayN.Mode
 {
     /// <summary>
-    /// v2ray配置文件实体类
-    /// 例子SampleConfig.txt
+    /// v2ray配置文件实体类 例子SampleConfig.txt
     /// </summary>
     public class V2rayConfig
     {
@@ -32,7 +31,7 @@ namespace v2rayN.Mode
         public API4Ray api { get; set; }
 
         /// </summary>
-        public Policy4Ray policy;
+        public Policy4Ray policy { get; set; }
 
         /// <summary>
         /// DNS 配置
@@ -56,13 +55,13 @@ namespace v2rayN.Mode
 
     public class Policy4Ray
     {
-        public SystemPolicy4Ray system;
+        public SystemPolicy4Ray system { get; set; }
     }
 
     public class SystemPolicy4Ray
     {
-        public bool statsOutboundUplink;
-        public bool statsOutboundDownlink;
+        public bool statsOutboundUplink { get; set; }
+        public bool statsOutboundDownlink { get; set; }
     }
 
     public class Log4Ray
@@ -580,7 +579,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// 用户代理
         /// </summary>
-        [JsonProperty("User-Agent")]
+        [JsonPropertyName("User-Agent")]
         public string UserAgent { get; set; }
     }
 

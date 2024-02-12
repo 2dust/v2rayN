@@ -4,7 +4,6 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
 using System.Windows;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -137,7 +136,7 @@ namespace v2rayN.ViewModels
             _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
             if (_lockedItem != null)
             {
-                _lockedRules = Utils.FromJson<List<RulesItem>>(_lockedItem.ruleSet);
+                _lockedRules = JsonUtils.Deserialize<List<RulesItem>>(_lockedItem.ruleSet);
                 ProxyDomain = Utils.List2String(_lockedRules[0].domain, true);
                 ProxyIP = Utils.List2String(_lockedRules[0].ip, true);
 
@@ -162,7 +161,7 @@ namespace v2rayN.ViewModels
                 _lockedRules[2].domain = Utils.String2List(Utils.Convert2Comma(BlockDomain.TrimEx()));
                 _lockedRules[2].ip = Utils.String2List(Utils.Convert2Comma(BlockIP.TrimEx()));
 
-                _lockedItem.ruleSet = Utils.ToJson(_lockedRules, false);
+                _lockedItem.ruleSet = JsonUtils.Serialize(_lockedRules, false);
 
                 ConfigHandler.SaveRoutingItem(_config, _lockedItem);
             }

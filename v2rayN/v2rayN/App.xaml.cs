@@ -2,7 +2,6 @@
 using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Mode;
-using v2rayN.Tool;
 
 namespace v2rayN
 {
@@ -28,10 +27,10 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            Global.ExePathKey = Utils.GetMD5(Utils.GetExePath());
+            var exePathKey = Utils.GetMD5(Utils.GetExePath());
 
             var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
-            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, Global.ExePathKey, out bool bCreatedNew);
+            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
             if (!rebootas && !bCreatedNew)
             {
                 ProgramStarted.Set();
@@ -40,12 +39,10 @@ namespace v2rayN
                 return;
             }
 
-            Global.ProcessJob = new Job();
-
             Logging.Setup();
             Init();
             Logging.LoggingEnabled(_config.guiItem.enableLog);
-            Utils.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.ClearLogs();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
@@ -70,7 +67,7 @@ namespace v2rayN
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Utils.SaveLog("App_DispatcherUnhandledException", e.Exception);
+            Logging.SaveLog("App_DispatcherUnhandledException", e.Exception);
             e.Handled = true;
         }
 
@@ -78,13 +75,13 @@ namespace v2rayN
         {
             if (e.ExceptionObject != null)
             {
-                Utils.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
+                Logging.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
             }
         }
 
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
-            Utils.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
+            Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
         }
     }
 }

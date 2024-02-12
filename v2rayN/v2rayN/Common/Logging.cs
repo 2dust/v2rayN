@@ -3,7 +3,7 @@ using NLog.Config;
 using NLog.Targets;
 using System.IO;
 
-namespace v2rayN.Tool
+namespace v2rayN
 {
     public class Logging
     {
@@ -50,6 +50,29 @@ namespace v2rayN.Tool
                 }
                 catch { }
             });
+        }
+
+        public static void SaveLog(string strContent)
+        {
+            if (LogManager.IsLoggingEnabled())
+            {
+                var logger = LogManager.GetLogger("Log1");
+                logger.Info(strContent);
+            }
+        }
+
+        public static void SaveLog(string strTitle, Exception ex)
+        {
+            if (LogManager.IsLoggingEnabled())
+            {
+                var logger = LogManager.GetLogger("Log2");
+                logger.Debug($"{strTitle},{ex.Message}");
+                logger.Debug(ex.StackTrace);
+                if (ex?.InnerException != null)
+                {
+                    logger.Error(ex.InnerException);
+                }
+            }
         }
     }
 }

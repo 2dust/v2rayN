@@ -448,11 +448,38 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Next proxy remarks 的本地化字符串。
+        /// </summary>
+        public static string LvNextProfile {
+            get {
+                return ResourceManager.GetString("LvNextProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
         public static string LvPort {
             get {
                 return ResourceManager.GetString("LvPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Previous proxy remakrs 的本地化字符串。
+        /// </summary>
+        public static string LvPrevProfile {
+            get {
+                return ResourceManager.GetString("LvPrevProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please make sure the remarks exists and is unique 的本地化字符串。
+        /// </summary>
+        public static string LvPrevProfileTip {
+            get {
+                return ResourceManager.GetString("LvPrevProfileTip", resourceCulture);
             }
         }
         
@@ -592,7 +619,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Trojan] server 的本地化字符串。
+        ///   查找类似 Add [Hysteria2] server 的本地化字符串。
         /// </summary>
         public static string menuAddHysteria2Server {
             get {
@@ -669,6 +696,15 @@ namespace v2rayN.Resx {
         public static string menuAddVmessServer {
             get {
                 return ResourceManager.GetString("menuAddVmessServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add [Wireguard] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddWireguardServer {
+            get {
+                return ResourceManager.GetString("menuAddWireguardServer", resourceCulture);
             }
         }
         
@@ -930,15 +966,6 @@ namespace v2rayN.Resx {
         public static string menuOptionSetting {
             get {
                 return ResourceManager.GetString("menuOptionSetting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Test servers ping (Ctrl+P) 的本地化字符串。
-        /// </summary>
-        public static string menuPingServer {
-            get {
-                return ResourceManager.GetString("menuPingServer", resourceCulture);
             }
         }
         
@@ -1717,7 +1744,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 {0}:{1}/s↑ | {2}/s↓ 的本地化字符串。
+        ///   查找类似 {0} : {1}/s↑ | {2}/s↓ 的本地化字符串。
         /// </summary>
         public static string SpeedDisplayText {
             get {
@@ -1867,6 +1894,15 @@ namespace v2rayN.Resx {
         public static string TbAutoRefresh {
             get {
                 return ResourceManager.GetString("TbAutoRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Auto ScrollToEnd 的本地化字符串。
+        /// </summary>
+        public static string TbAutoScrollToEnd {
+            get {
+                return ResourceManager.GetString("TbAutoScrollToEnd", resourceCulture);
             }
         }
         
@@ -2114,6 +2150,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Address(Ip,Ipv6) 的本地化字符串。
+        /// </summary>
+        public static string TbLocalAddress {
+            get {
+                return ResourceManager.GetString("TbLocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Transport protocol(network) 的本地化字符串。
         /// </summary>
         public static string TbNetwork {
@@ -2141,6 +2186,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 obfs password 的本地化字符串。
+        /// </summary>
+        public static string TbPath7 {
+            get {
+                return ResourceManager.GetString("TbPath7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Port 的本地化字符串。
         /// </summary>
         public static string TbPort {
@@ -2155,6 +2209,15 @@ namespace v2rayN.Resx {
         public static string TbPreSocksPort {
             get {
                 return ResourceManager.GetString("TbPreSocksPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PrivateKey 的本地化字符串。
+        /// </summary>
+        public static string TbPrivateKey {
+            get {
+                return ResourceManager.GetString("TbPrivateKey", resourceCulture);
             }
         }
         
@@ -2182,6 +2245,15 @@ namespace v2rayN.Resx {
         public static string TbRequestHost {
             get {
                 return ResourceManager.GetString("TbRequestHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reserved(2,3,4) 的本地化字符串。
+        /// </summary>
+        public static string TbReserved {
+            get {
+                return ResourceManager.GetString("TbReserved", resourceCulture);
             }
         }
         
@@ -2263,6 +2335,15 @@ namespace v2rayN.Resx {
         public static string TbRoutingTips {
             get {
                 return ResourceManager.GetString("TbRoutingTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 (Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag 的本地化字符串。
+        /// </summary>
+        public static string TbRuleMatchingTips {
+            get {
+                return ResourceManager.GetString("TbRuleMatchingTips", resourceCulture);
             }
         }
         
@@ -2528,11 +2609,38 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable additional Inbound 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableExInbound {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableExInbound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable hardware acceleration(Require restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableHWA {
             get {
                 return ResourceManager.GetString("TbSettingsEnableHWA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable IPv6 Address 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableIPv6Address {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableIPv6Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Updating subscription, only determine remarks exists 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableUpdateSubOnlyRemarksExist {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableUpdateSubOnlyRemarksExist", resourceCulture);
             }
         }
         
@@ -2740,6 +2848,15 @@ namespace v2rayN.Resx {
         public static string TbSettingsSocksPortTip {
             get {
                 return ResourceManager.GetString("TbSettingsSocksPortTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Speed Ping Test Url 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSpeedPingTestUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedPingTestUrl", resourceCulture);
             }
         }
         

@@ -531,9 +531,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服務統計資料</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>測試伺服器延遲Ping(多選) (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>測試伺服器真連接延遲(多選) (Ctrl+R)</value>
   </data>
@@ -929,7 +926,7 @@
     <value>新增規則</value>
   </data>
   <data name="menuRuleExportSelected" xml:space="preserve">
-    <value>到處所選規則至剪貼簿</value>
+    <value>匯出所選規則至剪貼簿</value>
   </data>
   <data name="menuRuleList" xml:space="preserve">
     <value>規則列表</value>
@@ -1137,5 +1134,32 @@
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
     <value>新增[Tuic]伺服器</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>前置代理別名</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>落地代理別名</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>請確保別名存在並且唯一</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>啟用額外監聽端口</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>啟用IPv6</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain 或 IP 或 进程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>自动滚动到末尾</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>真連接測試地址</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>更新订阅时只判断别名已存在否</value>
   </data>
 </root>

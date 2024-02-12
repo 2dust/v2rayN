@@ -27,5 +27,9 @@ namespace v2rayN.Mode
         public long updateTime { get; set; }
 
         public string? convertTarget { get; set; }
+
+        public string? prevProfile { get; set; }
+
+        public string? nextProfile { get; set; }
     }
 }

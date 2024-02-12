@@ -3,7 +3,6 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
 using System.Windows;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -33,7 +32,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = Utils.DeepCopy(subItem);
+                SelectedSource = JsonUtils.DeepCopy(subItem);
             }
 
             SaveCmd = ReactiveCommand.Create(() =>
@@ -69,6 +68,8 @@ namespace v2rayN.ViewModels
                 item.sort = SelectedSource.sort;
                 item.filter = SelectedSource.filter;
                 item.convertTarget = SelectedSource.convertTarget;
+                item.prevProfile = SelectedSource.prevProfile;
+                item.nextProfile = SelectedSource.nextProfile;
             }
 
             if (ConfigHandler.AddSubItem(_config, item) == 0)

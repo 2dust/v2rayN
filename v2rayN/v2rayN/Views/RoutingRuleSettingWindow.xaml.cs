@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
@@ -131,11 +130,13 @@ namespace v2rayN.Views
 
         private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "PNG|*.png";
-            openFileDialog1.ShowDialog();
+            if (UI.OpenFileDialog(out string fileName,
+                "PNG,ICO|*.png;*.ico") != true)
+            {
+                return;
+            }
 
-            txtCustomIcon.Text = openFileDialog1.FileName;
+            txtCustomIcon.Text = fileName;
         }
     }
 }

@@ -30,15 +30,16 @@ namespace v2rayN
 
         public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
         public const string ConfigFileName = "guiNConfig.json";
-        public const string ConfigDB = "guiNDB.db";
         public const string CoreConfigFileName = "config.json";
         public const string CorePreConfigFileName = "configPre.json";
+        public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string V2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
         public const string V2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
         public const string V2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string V2raySampleOutbound = "v2rayN.Sample.SampleOutbound";
+        public const string SingboxSampleOutbound = "v2rayN.Sample.SingboxSampleOutbound";
         public const string CustomRoutingFileName = "v2rayN.Sample.custom_routing_";
         public const string TunSingboxDNSFileName = "v2rayN.Sample.tun_singbox_dns";
         public const string TunSingboxInboundFileName = "v2rayN.Sample.tun_singbox_inbound";
@@ -117,6 +118,10 @@ namespace v2rayN
             @"http://cachefly.cachefly.net/10mb.test"
         };
 
+        public static readonly List<string> SpeedPingTestUrls = new() {
+            @"https://www.google.com/generate_204",
+        };
+
         public static readonly Dictionary<string, string> UserAgentTxts = new()
         {
             {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
@@ -136,7 +141,8 @@ namespace v2rayN
             {EConfigType.VLESS,"vless://"},
             {EConfigType.Trojan,"trojan://"},
             {EConfigType.Hysteria2,"hysteria2://"},
-            {EConfigType.Tuic,"tuic://"}
+            {EConfigType.Tuic,"tuic://"},
+            {EConfigType.Wireguard,"wireguard://"}
         };
 
         public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -147,13 +153,15 @@ namespace v2rayN
             {EConfigType.VLESS,"vless"},
             {EConfigType.Trojan,"trojan"},
             {EConfigType.Hysteria2,"hysteria2"},
-            {EConfigType.Tuic,"tuic"}
+            {EConfigType.Tuic,"tuic"},
+            {EConfigType.Wireguard,"wireguard"}
         };
 
         public static readonly List<string> VmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
         public static readonly List<string> SsSecuritys = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
         public static readonly List<string> SsSecuritysInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
         public static readonly List<string> SsSecuritysInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
+        public static readonly List<string> SsSecuritysInSingbox = new() { "aes-256-gcm", "aes-192-gcm", "aes-128-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "rc4-md5", "chacha20-ietf", "xchacha20" };
         public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
@@ -168,25 +176,16 @@ namespace v2rayN
         public static readonly List<string> AllowInsecures = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
-        public static readonly List<string> Alpns = new() { "h2", "http/1.1", "h2,http/1.1", "h3", "" };
+        public static readonly List<string> Alpns = new() { "h3", "h2", "http/1.1", "h3,h2,http/1.1", "h3,h2", "h2,http/1.1", "" };
         public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
         public static readonly List<string> RuleProtocols = new() { "http", "tls", "bittorrent" };
-        public static readonly List<string> TunMtus = new() { "9000", "1500" };
+        public static readonly List<string> TunMtus = new() { "1280", "1408", "1500", "9000" };
         public static readonly List<string> TunStacks = new() { "gvisor", "system" };
         public static readonly List<string> PresetMsgFilters = new() { "proxy", "direct", "block", "" };
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
         public static readonly List<string> TuicCongestionControls = new() { "cubic", "new_reno", "bbr" };
 
         #endregion const
-
-        #region global variable
-
-        public static int StatePort { get; set; }
-        public static Job ProcessJob { get; set; }
-        public static bool ShowInTaskbar { get; set; }
-        public static string ExePathKey { get; set; }
-
-        #endregion global variable
     }
 }

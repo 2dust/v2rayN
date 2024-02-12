@@ -109,6 +109,7 @@ namespace v2rayN.Mode
     public class UIItem
     {
         public bool enableAutoAdjustMainLvColWidth { get; set; }
+        public bool enableUpdateSubOnlyRemarksExist { get; set; }
         public double mainWidth { get; set; }
         public double mainHeight { get; set; }
         public double mainGirdHeight1 { get; set; }
@@ -123,7 +124,6 @@ namespace v2rayN.Mode
         public bool doubleClick2Activate { get; set; }
         public bool autoHideStartup { get; set; } = true;
         public string mainMsgFilter { get; set; }
-        public bool showTrayTip { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
     }
 
@@ -164,6 +164,7 @@ namespace v2rayN.Mode
         public string stack { get; set; }
         public int mtu { get; set; }
         public bool enableExInbound { get; set; }
+        public bool enableIPv6Address { get; set; } = true;
     }
 
     [Serializable]

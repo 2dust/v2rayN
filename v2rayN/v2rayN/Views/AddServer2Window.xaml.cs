@@ -51,18 +51,6 @@ namespace v2rayN.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtRemarks.Focus();
-        }
-
-        private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (ViewModel?.IsModified == true)
-            {
-                this.DialogResult = true;
-            }
-            else
-            {
-                this.Close();
-            }
-        }
+        }         
     }
 }

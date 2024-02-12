@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     internal static class StringEx
     {
@@ -79,6 +79,16 @@ namespace v2rayN.Base
             }
 
             return char.ToUpper(value[0]) + value.Substring(1);
+        }
+
+        public static string AppendQuotes(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            return $"\"{value}\"";
         }
     }
 }

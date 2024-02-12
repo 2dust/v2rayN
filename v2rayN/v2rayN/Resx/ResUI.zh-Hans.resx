@@ -532,9 +532,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服务统计数据</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>测试服务器延迟Ping(多选) (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>测试服务器真连接延迟(多选) (Ctrl+R)</value>
   </data>
@@ -1149,5 +1146,47 @@
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>前置代理别名</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>落地代理別名</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>请确保别名存在并唯一</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>启用额外监听端口</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>启用IPv6</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>添加[Wireguard]服务器</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved(2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address(Ip,Ipv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>混淆密码(obfs password)</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain 或 IP 或 进程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>自动滚动到末尾</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>真连接测试地址</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>更新订阅时只判断别名已存在否</value>
   </data>
 </root>

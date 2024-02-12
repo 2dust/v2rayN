@@ -1,6 +1,4 @@
-﻿using v2rayN.Base;
-
-namespace v2rayN.Tool
+﻿namespace v2rayN
 {
     public class SemanticVersion
     {

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Intrinsics.X86;
-using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -12,8 +11,14 @@ namespace v2rayN.Handler
 
         public static LazyConfig Instance => _instance.Value;
 
+        private int _statePort;
+        public int StatePort { get => _statePort; }
+        private Job _processJob  = new();
+
         public LazyConfig()
         {
+            _statePort = Utils.GetFreePort();
+
             SqliteHelper.Instance.CreateTable<SubItem>();
             SqliteHelper.Instance.CreateTable<ProfileItem>();
             SqliteHelper.Instance.CreateTable<ServerStatItem>();
@@ -63,6 +68,15 @@ namespace v2rayN.Handler
             }
             return localPort;
         }
+        
+        public void AddProcess(IntPtr processHandle)
+        {
+            _processJob.AddProcess(processHandle);
+        }
+
+        #endregion Config
+
+        #region SqliteHelper
 
         public List<SubItem> SubItems()
         {
@@ -130,6 +144,15 @@ namespace v2rayN.Handler
             return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
         }
 
+        public ProfileItem? GetProfileItemViaRemarks(string remarks)
+        {
+            if (Utils.IsNullOrEmpty(remarks))
+            {
+                return null;
+            }
+            return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.remarks == remarks);
+        }
+
         public List<RoutingItem> RoutingItems()
         {
             return SqliteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToList();
@@ -150,21 +173,24 @@ namespace v2rayN.Handler
             return SqliteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
         }
 
-        #endregion Config
+        #endregion SqliteHelper
 
         #region Core Type
 
         public List<string> GetShadowsocksSecuritys(ProfileItem profileItem)
         {
-            if (GetCoreType(profileItem, EConfigType.Shadowsocks) == ECoreType.v2fly)
+            var coreType = GetCoreType(profileItem, EConfigType.Shadowsocks);
+            switch (coreType)
             {
-                return Global.SsSecuritys;
-            }
-            if (GetCoreType(profileItem, EConfigType.Shadowsocks) == ECoreType.Xray)
-            {
-                return Global.SsSecuritysInXray;
-            }
+                case ECoreType.v2fly:
+                    return Global.SsSecuritys;
 
+                case ECoreType.Xray:
+                    return Global.SsSecuritysInXray;
+
+                case ECoreType.sing_box:
+                    return Global.SsSecuritysInSingbox;
+            }
             return Global.SsSecuritysInSagerNet;
         }
 
@@ -268,7 +294,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.Xray,
                 coreExes = new List<string> { "xray", "wxray" },
-                arguments = "",
+                arguments = "run {0}",
                 coreUrl = Global.XrayCoreUrl,
                 coreReleaseApiUrl = Global.XrayCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                 coreDownloadUrl32 = Global.XrayCoreUrl + "/download/{0}/Xray-windows-{1}.zip",
@@ -355,7 +381,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
-                arguments = "run{0}",
+                arguments = "run {0} --disable-color",
                 coreUrl = Global.SingboxCoreUrl,
                 redirectInfo = true,
                 coreReleaseApiUrl = Global.SingboxCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),

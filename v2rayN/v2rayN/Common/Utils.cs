@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NLog;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -16,13 +14,10 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using v2rayN.Base;
-using v2rayN.Mode;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
@@ -53,7 +48,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return result;
         }
@@ -71,109 +66,9 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return null;
-        }
-
-        /// <summary>
-        /// 反序列化成对象
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="strJson"></param>
-        /// <returns></returns>
-        public static T? FromJson<T>(string? strJson)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(strJson))
-                {
-                    return default;
-                }
-                return JsonConvert.DeserializeObject<T>(strJson);
-            }
-            catch
-            {
-                return default;
-            }
-        }
-
-        /// <summary>
-        /// 序列化成Json
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static string ToJson(object? obj, bool indented = true)
-        {
-            string result = string.Empty;
-            try
-            {
-                if (obj == null)
-                {
-                    return result;
-                }
-                if (indented)
-                {
-                    result = JsonConvert.SerializeObject(obj,
-                                           Formatting.Indented,
-                                           new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                }
-                else
-                {
-                    result = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 保存成json文件
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static int ToJsonFile(object? obj, string filePath, bool nullValue = true)
-        {
-            int result;
-            try
-            {
-                using StreamWriter file = File.CreateText(filePath);
-                JsonSerializer serializer;
-                if (nullValue)
-                {
-                    serializer = new JsonSerializer() { Formatting = Formatting.Indented };
-                }
-                else
-                {
-                    serializer = new JsonSerializer() { Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore };
-                }
-
-                serializer.Serialize(file, obj);
-                result = 0;
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-                result = -1;
-            }
-            return result;
-        }
-
-        public static JObject? ParseJson(string strJson)
-        {
-            try
-            {
-                return JObject.Parse(strJson);
-            }
-            catch (Exception ex)
-            {
-                //SaveLog(ex.Message, ex);
-                return null;
-            }
         }
 
         #endregion 资源Json操作
@@ -204,7 +99,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return string.Empty;
             }
         }
@@ -223,7 +118,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return new List<string>();
             }
         }
@@ -244,7 +139,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return new List<string>();
             }
         }
@@ -263,7 +158,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog("Base64Encode", ex);
+                Logging.SaveLog("Base64Encode", ex);
                 return string.Empty;
             }
         }
@@ -277,7 +172,7 @@ namespace v2rayN
         {
             try
             {
-                plainText = plainText.TrimEx()
+                plainText = plainText.Trim()
                   .Replace(Environment.NewLine, "")
                   .Replace("\n", "")
                   .Replace("\r", "")
@@ -295,7 +190,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog("Base64Decode", ex);
+                Logging.SaveLog("Base64Decode", ex);
                 return string.Empty;
             }
         }
@@ -305,13 +200,13 @@ namespace v2rayN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static int ToInt(object obj)
+        public static int ToInt(object? obj)
         {
             try
             {
-                return Convert.ToInt32(obj);
+                return Convert.ToInt32(obj ?? string.Empty);
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 //SaveLog(ex.Message, ex);
                 return 0;
@@ -324,7 +219,7 @@ namespace v2rayN
             {
                 return Convert.ToBoolean(obj);
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 //SaveLog(ex.Message, ex);
                 return false;
@@ -337,7 +232,7 @@ namespace v2rayN
             {
                 return obj?.ToString() ?? string.Empty;
             }
-            catch (Exception ex)
+            catch// (Exception ex)
             {
                 //SaveLog(ex.Message, ex);
                 return string.Empty;
@@ -407,7 +302,33 @@ namespace v2rayN
 
         public static string UrlDecode(string url)
         {
-            return HttpUtility.UrlDecode(url);
+            return Uri.UnescapeDataString(url);
+            //return HttpUtility.UrlDecode(url);
+        }
+
+        public static NameValueCollection ParseQueryString(string query)
+        {
+            var result = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
+            if (IsNullOrEmpty(query))
+            {
+                return result;
+            }
+
+            var parts = query[1..].Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                var keyValue = part.Split(['=']);
+                if (keyValue.Length != 2)
+                {
+                    continue;
+                }
+                var key = Uri.UnescapeDataString(keyValue[0]);
+                var val = Uri.UnescapeDataString(keyValue[1]);
+
+                result.Add(key, val);
+            }
+
+            return result;
         }
 
         public static string GetMD5(string str)
@@ -492,7 +413,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return false;
             }
         }
@@ -591,215 +512,6 @@ namespace v2rayN
 
         #endregion 数据检查
 
-        #region 开机自动启动
-
-        /// <summary>
-        /// 开机自动启动
-        /// </summary>
-        /// <param name="run"></param>
-        /// <returns></returns>
-        public static void SetAutoRun(bool run)
-        {
-            try
-            {
-                var autoRunName = $"{Global.AutoRunName}_{GetMD5(StartupPath())}";
-
-                //delete first
-                RegWriteValue(Global.AutoRunRegPath, autoRunName, "");
-                if (IsAdministrator())
-                {
-                    AutoStart(autoRunName, "", "");
-                }
-
-                if (run)
-                {
-                    string exePath = $"\"{GetExePath()}\"";
-                    if (IsAdministrator())
-                    {
-                        AutoStart(autoRunName, exePath, "");
-                    }
-                    else
-                    {
-                        RegWriteValue(Global.AutoRunRegPath, autoRunName, exePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 是否已经设置开机自动启动
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsAutoRun()
-        {
-            try
-            {
-                //clear
-                if (!RegReadValue(Global.AutoRunRegPath, Global.AutoRunName, "").IsNullOrEmpty())
-                {
-                    RegWriteValue(Global.AutoRunRegPath, Global.AutoRunName, "");
-                }
-
-                string value = RegReadValue(Global.AutoRunRegPath, Global.AutoRunName, "");
-                string exePath = GetExePath();
-                if (value == exePath || value == $"\"{exePath}\"")
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 获取启动了应用程序的可执行文件的路径
-        /// </summary>
-        /// <returns></returns>
-        public static string GetPath(string fileName)
-        {
-            string startupPath = StartupPath();
-            if (IsNullOrEmpty(fileName))
-            {
-                return startupPath;
-            }
-            return Path.Combine(startupPath, fileName);
-        }
-
-        /// <summary>
-        /// 获取启动了应用程序的可执行文件的路径及文件名
-        /// </summary>
-        /// <returns></returns>
-        public static string GetExePath()
-        {
-            return Environment.ProcessPath;
-        }
-
-        public static string StartupPath()
-        {
-            return AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        public static string? RegReadValue(string path, string name, string def)
-        {
-            RegistryKey? regKey = null;
-            try
-            {
-                regKey = Registry.CurrentUser.OpenSubKey(path, false);
-                string? value = regKey?.GetValue(name) as string;
-                if (IsNullOrEmpty(value))
-                {
-                    return def;
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-            finally
-            {
-                regKey?.Close();
-            }
-            return def;
-        }
-
-        public static void RegWriteValue(string path, string name, object value)
-        {
-            RegistryKey? regKey = null;
-            try
-            {
-                regKey = Registry.CurrentUser.CreateSubKey(path);
-                if (IsNullOrEmpty(value.ToString()))
-                {
-                    regKey?.DeleteValue(name, false);
-                }
-                else
-                {
-                    regKey?.SetValue(name, value);
-                }
-            }
-            catch (Exception ex)
-            {
-                SaveLog(ex.Message, ex);
-            }
-            finally
-            {
-                regKey?.Close();
-            }
-        }
-
-        /// <summary>
-        /// 判断.Net Framework的Release是否符合
-        /// (.Net Framework 版本在4.0及以上)
-        /// </summary>
-        /// <param name="release">需要的版本4.6.2=394802;4.8=528040</param>
-        /// <returns></returns>
-        public static bool CheckForDotNetVersion(int release = 528040)
-        {
-            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using RegistryKey? ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey);
-            if (ndpKey?.GetValue("Release") != null)
-            {
-                return (int)ndpKey.GetValue("Release") >= release;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Auto Start via TaskService
-        /// </summary>
-        /// <param name="taskName"></param>
-        /// <param name="fileName"></param>
-        /// <param name="description"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void AutoStart(string taskName, string fileName, string description)
-        {
-            if (string.IsNullOrEmpty(taskName))
-            {
-                return;
-            }
-            string TaskName = taskName;
-            var logonUser = WindowsIdentity.GetCurrent().Name;
-            string taskDescription = description;
-            string deamonFileName = fileName;
-
-            using var taskService = new TaskService();
-            var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
-            foreach (var t in tasks)
-            {
-                taskService.RootFolder.DeleteTask(t.Name);
-            }
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-
-            var task = taskService.NewTask();
-            task.RegistrationInfo.Description = taskDescription;
-            task.Settings.DisallowStartIfOnBatteries = false;
-            task.Settings.StopIfGoingOnBatteries = false;
-            task.Settings.RunOnlyIfIdle = false;
-            task.Settings.IdleSettings.StopOnIdleEnd = false;
-            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
-            task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(10) });
-            task.Principal.RunLevel = TaskRunLevel.Highest;
-            task.Actions.Add(new ExecAction(deamonFileName));
-
-            taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
-        }
-
-        #endregion 开机自动启动
-
         #region 测速
 
         /// <summary>
@@ -859,9 +571,31 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return inUse;
+        }
+
+        public static int GetFreePort()
+        {
+            try
+            {
+                int defaultPort = 9090;
+                if (!Utils.PortInUse(defaultPort))
+                {
+                    return defaultPort;
+                }
+
+                TcpListener l = new(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+                return port;
+            }
+            catch
+            {
+            }
+            return 69090;
         }
 
         #endregion 测速
@@ -880,43 +614,20 @@ namespace v2rayN
                 if (blFull)
                 {
                     return string.Format("v2rayN - V{0} - {1}",
-                            FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
+                            FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString(),
                             File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
                 }
                 else
                 {
                     return string.Format("v2rayN/{0}",
-                        FileVersionInfo.GetVersionInfo(location).FileVersion.ToString());
+                        FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString());
                 }
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return string.Empty;
             }
-        }
-
-        /// <summary>
-        /// DeepCopy
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static T DeepCopy<T>(T obj)
-        {
-            return FromJson<T>(ToJson(obj, false))!;
-
-            //            object retval;
-            //            MemoryStream ms = new();
-            //#pragma warning disable SYSLIB0011 // 类型或成员已过时
-            //            BinaryFormatter bf = new();
-            //#pragma warning restore SYSLIB0011 // 类型或成员已过时
-            //                                  //序列化成流
-            //            bf.Serialize(ms, obj);
-            //            ms.Seek(0, SeekOrigin.Begin);
-            //            //反序列化成对象
-            //            retval = bf.Deserialize(ms);
-            //            return (T)retval;
         }
 
         /// <summary>
@@ -937,7 +648,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return strData;
         }
@@ -976,7 +687,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return string.Empty;
         }
@@ -996,7 +707,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return false;
             }
         }
@@ -1036,7 +747,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -1057,11 +768,69 @@ namespace v2rayN
             return value is int i && i > 0;
         }
 
+        /// <summary>
+        /// 获取系统hosts
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetSystemHosts()
+        {
+            var systemHosts = new Dictionary<string, string>();
+            var hostfile = @"C:\Windows\System32\drivers\etc\hosts";
+            try
+            {
+                if (File.Exists(hostfile))
+                {
+                    var hosts = File.ReadAllText(hostfile).Replace("\r", "");
+                    var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var host in hostsList)
+                    {
+                        if (host.StartsWith("#")) continue;
+                        var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (hostItem.Length < 2) continue;
+                        systemHosts.Add(hostItem[1], hostItem[0]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            return systemHosts;
+        }
+
         #endregion 杂项
 
         #region TempPath
 
-        // return path to store temporary files
+        /// <summary>
+        /// 获取启动了应用程序的可执行文件的路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetPath(string fileName)
+        {
+            string startupPath = StartupPath();
+            if (IsNullOrEmpty(fileName))
+            {
+                return startupPath;
+            }
+            return Path.Combine(startupPath, fileName);
+        }
+
+        /// <summary>
+        /// 获取启动了应用程序的可执行文件的路径及文件名
+        /// </summary>
+        /// <returns></returns>
+        public static string GetExePath()
+        {
+            return Environment.ProcessPath ?? string.Empty;
+        }
+
+        public static string StartupPath()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         public static string GetTempPath(string filename = "")
         {
             string _tempPath = Path.Combine(StartupPath(), "guiTemps");
@@ -1115,7 +884,7 @@ namespace v2rayN
             }
         }
 
-        public static string GetBinPath(string filename, ECoreType? coreType = null)
+        public static string GetBinPath(string filename, string? coreType = null)
         {
             string _tempPath = Path.Combine(StartupPath(), "bin");
             if (!Directory.Exists(_tempPath))
@@ -1176,33 +945,6 @@ namespace v2rayN
 
         #endregion TempPath
 
-        #region Log
-
-        public static void SaveLog(string strContent)
-        {
-            if (LogManager.IsLoggingEnabled())
-            {
-                var logger = LogManager.GetLogger("Log1");
-                logger.Info(strContent);
-            }
-        }
-
-        public static void SaveLog(string strTitle, Exception ex)
-        {
-            if (LogManager.IsLoggingEnabled())
-            {
-                var logger = LogManager.GetLogger("Log2");
-                logger.Debug($"{strTitle},{ex.Message}");
-                logger.Debug(ex.StackTrace);
-                if (ex?.InnerException != null)
-                {
-                    logger.Error(ex.InnerException);
-                }
-            }
-        }
-
-        #endregion Log
-
         #region scan screen
 
         public static string ScanScreen(float dpiX, float dpiY)
@@ -1248,7 +990,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return string.Empty;
         }
@@ -1262,6 +1004,171 @@ namespace v2rayN
         }
 
         #endregion scan screen
+
+        #region 开机自动启动等
+
+        /// <summary>
+        /// 开机自动启动
+        /// </summary>
+        /// <param name="run"></param>
+        /// <returns></returns>
+        public static void SetAutoRun(string AutoRunRegPath, string AutoRunName, bool run)
+        {
+            try
+            {
+                var autoRunName = $"{AutoRunName}_{GetMD5(StartupPath())}";
+
+                //delete first
+                RegWriteValue(AutoRunRegPath, autoRunName, "");
+                if (IsAdministrator())
+                {
+                    AutoStart(autoRunName, "", "");
+                }
+
+                if (run)
+                {
+                    string exePath = $"\"{GetExePath()}\"";
+                    if (IsAdministrator())
+                    {
+                        AutoStart(autoRunName, exePath, "");
+                    }
+                    else
+                    {
+                        RegWriteValue(AutoRunRegPath, autoRunName, exePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+        }
+
+        public static string? RegReadValue(string path, string name, string def)
+        {
+            RegistryKey? regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.OpenSubKey(path, false);
+                string? value = regKey?.GetValue(name) as string;
+                if (IsNullOrEmpty(value))
+                {
+                    return def;
+                }
+                else
+                {
+                    return value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+            return def;
+        }
+
+        public static void RegWriteValue(string path, string name, object value)
+        {
+            RegistryKey? regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.CreateSubKey(path);
+                if (IsNullOrEmpty(value.ToString()))
+                {
+                    regKey?.DeleteValue(name, false);
+                }
+                else
+                {
+                    regKey?.SetValue(name, value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
+        }
+
+        /// <summary>
+        /// Auto Start via TaskService
+        /// </summary>
+        /// <param name="taskName"></param>
+        /// <param name="fileName"></param>
+        /// <param name="description"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void AutoStart(string taskName, string fileName, string description)
+        {
+            if (string.IsNullOrEmpty(taskName))
+            {
+                return;
+            }
+            string TaskName = taskName;
+            var logonUser = WindowsIdentity.GetCurrent().Name;
+            string taskDescription = description;
+            string deamonFileName = fileName;
+
+            using var taskService = new TaskService();
+            var tasks = taskService.RootFolder.GetTasks(new Regex(TaskName));
+            foreach (var t in tasks)
+            {
+                taskService.RootFolder.DeleteTask(t.Name);
+            }
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            var task = taskService.NewTask();
+            task.RegistrationInfo.Description = taskDescription;
+            task.Settings.DisallowStartIfOnBatteries = false;
+            task.Settings.StopIfGoingOnBatteries = false;
+            task.Settings.RunOnlyIfIdle = false;
+            task.Settings.IdleSettings.StopOnIdleEnd = false;
+            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+            task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(10) });
+            task.Principal.RunLevel = TaskRunLevel.Highest;
+            task.Actions.Add(new ExecAction(deamonFileName));
+
+            taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
+        }
+
+        public static void RemoveTunDevice()
+        {
+            try
+            {
+                string pnputilPath = @"C:\Windows\System32\pnputil.exe";
+                string arg = $" /remove-device /deviceid \"wintun\"";
+
+                // Try to remove the device
+                Process proc = new()
+                {
+                    StartInfo = new()
+                    {
+                        FileName = pnputilPath,
+                        Arguments = arg,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                proc.Start();
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+            catch
+            {
+            }
+        }
+
+        #endregion 开机自动启动等
 
         #region Windows API
 

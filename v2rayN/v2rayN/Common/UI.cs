@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32;
+using System.Windows;
 
 namespace v2rayN
 {
@@ -19,6 +20,25 @@ namespace v2rayN
         public static MessageBoxResult ShowYesNo(string msg)
         {
             return MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+        }
+
+        public static bool? OpenFileDialog(out string fileName, string filter)
+        {
+            fileName = string.Empty;
+
+            var fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = filter
+            };
+
+            if (fileDialog.ShowDialog() != true)
+            {
+                return false;
+            }
+            fileName = fileDialog.FileName;
+
+            return true;
         }
     }
 }

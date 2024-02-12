@@ -35,11 +35,11 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = Utils.ToJson(singboxConfig);
+                        content = JsonUtils.Serialize(singboxConfig);
                     }
                     else
                     {
-                        Utils.ToJsonFile(singboxConfig, fileName, false);
+                        JsonUtils.ToFile(singboxConfig, fileName, false);
                     }
                 }
                 else
@@ -51,17 +51,17 @@ namespace v2rayN.Handler
                     }
                     if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = Utils.ToJson(v2rayConfig);
+                        content = JsonUtils.Serialize(v2rayConfig);
                     }
                     else
                     {
-                        Utils.ToJsonFile(v2rayConfig, fileName, false);
+                        JsonUtils.ToFile(v2rayConfig, fileName, false);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("GenerateClientConfig", ex);
+                Logging.SaveLog("GenerateClientConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
@@ -143,17 +143,32 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("GenerateClientCustomConfig", ex);
+                Logging.SaveLog("GenerateClientCustomConfig", ex);
                 msg = ResUI.FailedGenDefaultConfiguration;
                 return -1;
             }
             return 0;
         }
 
-        public static string GenerateClientSpeedtestConfigString(Config config, List<ServerTestItem> selecteds, out string msg)
+        public static int GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType, out string msg)
         {
-            var coreConfigV2ray = new CoreConfigV2ray(config);
-            return coreConfigV2ray.GenerateClientSpeedtestConfigString(selecteds, out msg);
+            if (coreType == ECoreType.sing_box)
+            {
+                if ((new CoreConfigSingbox(config)).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+                JsonUtils.ToFile(singboxConfig, fileName, false);
+            }
+            else
+            {
+                if ((new CoreConfigV2ray(config)).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+                JsonUtils.ToFile(v2rayConfig, fileName, false);
+            }
+            return 0;
         }
     }
 }

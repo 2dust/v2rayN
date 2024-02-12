@@ -2,7 +2,7 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace v2rayN.Tool
+namespace v2rayN
 {
     public static class FileManager
     {
@@ -15,7 +15,7 @@ namespace v2rayN.Tool
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return false;
         }
@@ -30,7 +30,7 @@ namespace v2rayN.Tool
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -49,7 +49,7 @@ namespace v2rayN.Tool
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 throw;
             }
         }
@@ -75,13 +75,13 @@ namespace v2rayN.Tool
                     }
                     catch (IOException ex)
                     {
-                        Utils.SaveLog(ex.Message, ex);
+                        Logging.SaveLog(ex.Message, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return false;
             }
             return true;

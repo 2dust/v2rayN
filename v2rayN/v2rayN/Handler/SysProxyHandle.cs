@@ -50,7 +50,7 @@ namespace v2rayN.Handler
                 }
                 if (type == ESysProxyType.ForcedChange)
                 {
-                    var strExceptions = $"{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                    var strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
 
                     var strProxy = string.Empty;
                     if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
@@ -87,7 +87,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
             return true;
         }

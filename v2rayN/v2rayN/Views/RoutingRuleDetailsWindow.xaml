@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
@@ -36,6 +35,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock
                 Grid.Row="0"
@@ -52,6 +52,13 @@
                 Margin="4"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="4"
+                HorizontalAlignment="Left"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -68,6 +75,16 @@
                 Margin="4"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="4"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}">
+                <Hyperlink Click="linkRuleobjectDoc_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
+                </Hyperlink>
+            </TextBlock>
 
             <TextBlock
                 Grid.Row="2"
@@ -115,36 +132,22 @@
                 HorizontalAlignment="Left" />
 
             <TextBlock
-                Grid.Row="5"
-                Grid.Column="0"
-                Margin="4"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}">
-                <Hyperlink Click="linkRuleobjectDoc_Click">
-                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock
-                Grid.Row="5"
-                Grid.Column="1"
+                Grid.Row="4"
+                Grid.Column="2"
                 Margin="4"
                 HorizontalAlignment="Left"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRoutingTips}" />
         </Grid>
 
-        <Grid
+        <StackPanel
             Margin="8"
-            HorizontalAlignment="Center"
-            DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="600" />
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
+            HorizontalAlignment="Right"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
             <StackPanel
-                Grid.Column="0"
-                HorizontalAlignment="Left"
+                Width="600"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <CheckBox x:Name="chkAutoSort">
                     <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.TbAutoSort}" />
@@ -152,20 +155,19 @@
             </StackPanel>
             <Button
                 x:Name="btnSave"
-                Grid.Column="1"
-                Margin="4"
+                Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 Cursor="Hand"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Grid.Column="2"
-                Margin="4"
+                Width="100"
+                Margin="8,0"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
                 Style="{StaticResource DefButton}" />
-        </Grid>
+        </StackPanel>
 
         <Grid Margin="{StaticResource SettingItemMargin}">
             <Grid.ColumnDefinitions>

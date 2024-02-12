@@ -9,6 +9,7 @@
         VLESS = 5,
         Trojan = 6,
         Hysteria2 = 7,
-        Tuic = 8
+        Tuic = 8,
+        Wireguard = 9
     }
 }

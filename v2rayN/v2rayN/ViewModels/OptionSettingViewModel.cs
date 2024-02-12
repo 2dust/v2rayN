@@ -56,6 +56,7 @@ namespace v2rayN.ViewModels
         [Reactive] public bool KeepOlderDedupl { get; set; }
         [Reactive] public bool IgnoreGeoUpdateCore { get; set; }
         [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
+        [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
@@ -66,6 +67,7 @@ namespace v2rayN.ViewModels
         [Reactive] public string currentFontFamily { get; set; }
         [Reactive] public int SpeedTestTimeout { get; set; }
         [Reactive] public string SpeedTestUrl { get; set; }
+        [Reactive] public string SpeedPingTestUrl { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
         [Reactive] public string SubConvertUrl { get; set; }
 
@@ -83,6 +85,8 @@ namespace v2rayN.ViewModels
         [Reactive] public bool TunStrictRoute { get; set; }
         [Reactive] public string TunStack { get; set; }
         [Reactive] public int TunMtu { get; set; }
+        [Reactive] public bool TunEnableExInbound { get; set; }
+        [Reactive] public bool TunEnableIPv6Address { get; set; }
 
         #endregion Tun mode
 
@@ -147,6 +151,7 @@ namespace v2rayN.ViewModels
             KeepOlderDedupl = _config.guiItem.keepOlderDedupl;
             IgnoreGeoUpdateCore = _config.guiItem.ignoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
+            EnableUpdateSubOnlyRemarksExist = _config.uiItem.enableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.guiItem.enableSecurityProtocolTls13;
             AutoHideStartup = _config.uiItem.autoHideStartup;
             EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
@@ -157,6 +162,7 @@ namespace v2rayN.ViewModels
             currentFontFamily = _config.uiItem.currentFontFamily;
             SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
             SpeedTestUrl = _config.speedTestItem.speedTestUrl;
+            SpeedPingTestUrl = _config.speedTestItem.speedPingTestUrl;
             EnableHWA = _config.guiItem.enableHWA;
             SubConvertUrl = _config.constItem.subConvertUrl;
 
@@ -174,6 +180,8 @@ namespace v2rayN.ViewModels
             TunStrictRoute = _config.tunModeItem.strictRoute;
             TunStack = _config.tunModeItem.stack;
             TunMtu = _config.tunModeItem.mtu;
+            TunEnableExInbound = _config.tunModeItem.enableExInbound;
+            TunEnableIPv6Address = _config.tunModeItem.enableIPv6Address;
 
             #endregion Tun mode
 
@@ -292,12 +300,13 @@ namespace v2rayN.ViewModels
             //_config.kcpItem.congestion = Kcpcongestion;
 
             //UI
-            Utils.SetAutoRun(AutoRun);
+            Utils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
             _config.guiItem.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
+            _config.uiItem.enableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.guiItem.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.uiItem.autoHideStartup = AutoHideStartup;
             _config.guiItem.autoUpdateInterval = autoUpdateInterval;
@@ -308,6 +317,7 @@ namespace v2rayN.ViewModels
             _config.uiItem.currentFontFamily = currentFontFamily;
             _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
             _config.speedTestItem.speedTestUrl = SpeedTestUrl;
+            _config.speedTestItem.speedPingTestUrl = SpeedPingTestUrl;
             _config.guiItem.enableHWA = EnableHWA;
             _config.constItem.subConvertUrl = SubConvertUrl;
 
@@ -319,6 +329,8 @@ namespace v2rayN.ViewModels
             _config.tunModeItem.strictRoute = TunStrictRoute;
             _config.tunModeItem.stack = TunStack;
             _config.tunModeItem.mtu = TunMtu;
+            _config.tunModeItem.enableExInbound = TunEnableExInbound;
+            _config.tunModeItem.enableIPv6Address = TunEnableIPv6Address;
 
             //coreType
             SaveCoreType();
@@ -366,8 +378,7 @@ namespace v2rayN.ViewModels
                         type = CoreType6;
                         break;
 
-                    case 7:
-                    case 8:
+                    default:
                         continue;
                 }
                 item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);

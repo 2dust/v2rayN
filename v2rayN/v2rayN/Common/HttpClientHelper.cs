@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     /// <summary>
     /// </summary>
@@ -35,7 +35,7 @@ namespace v2rayN.Base
 
         public async Task PutAsync(string url, Dictionary<string, string> headers)
         {
-            var jsonContent = Utils.ToJson(headers);
+            var jsonContent = JsonUtils.Serialize(headers);
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             var result = await httpClient.PutAsync(url, content);

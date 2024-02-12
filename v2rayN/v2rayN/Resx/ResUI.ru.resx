@@ -532,9 +532,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Очистить всю статистику</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>Тест на задержку сервера (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Тест на реальную задержку сервера (Ctrl+R)</value>
   </data>

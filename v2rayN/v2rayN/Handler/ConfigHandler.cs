@@ -1,9 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
-using v2rayN.Base;
 using v2rayN.Mode;
-using v2rayN.Tool;
 
 namespace v2rayN.Handler
 {
@@ -29,13 +27,13 @@ namespace v2rayN.Handler
             if (!Utils.IsNullOrEmpty(result))
             {
                 //转成Json
-                config = Utils.FromJson<Config>(result);
+                config = JsonUtils.Deserialize<Config>(result);
             }
             else
             {
                 if (File.Exists(Utils.GetConfigPath(configRes)))
                 {
-                    Utils.SaveLog("LoadConfig Exception");
+                    Logging.SaveLog("LoadConfig Exception");
                     return -1;
                 }
             }
@@ -234,7 +232,7 @@ namespace v2rayN.Handler
                     //save temp file
                     var resPath = Utils.GetConfigPath(configRes);
                     var tempPath = $"{resPath}_temp";
-                    if (Utils.ToJsonFile(config, tempPath) != 0)
+                    if (JsonUtils.ToFile(config, tempPath) != 0)
                     {
                         return;
                     }
@@ -248,26 +246,26 @@ namespace v2rayN.Handler
                 }
                 catch (Exception ex)
                 {
-                    Utils.SaveLog("ToJsonFile", ex);
+                    Logging.SaveLog("ToJsonFile", ex);
                 }
             }
         }
 
         public static int ImportOldGuiConfig(Config config, string fileName)
         {
-            string result = Utils.LoadResource(fileName);
+            var result = Utils.LoadResource(fileName);
             if (Utils.IsNullOrEmpty(result))
             {
                 return -1;
             }
 
-            var configOld = Utils.FromJson<ConfigOld>(result);
+            var configOld = JsonUtils.Deserialize<ConfigOld>(result);
             if (configOld == null)
             {
                 return -1;
             }
 
-            var subItem = Utils.FromJson<List<SubItem>>(Utils.ToJson(configOld.subItem));
+            var subItem = JsonUtils.Deserialize<List<SubItem>>(JsonUtils.Serialize(configOld.subItem));
             foreach (var it in subItem)
             {
                 if (Utils.IsNullOrEmpty(it.id))
@@ -277,7 +275,7 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(it);
             }
 
-            var profileItems = Utils.FromJson<List<ProfileItem>>(Utils.ToJson(configOld.vmess));
+            var profileItems = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(configOld.vmess));
             foreach (var it in profileItems)
             {
                 if (Utils.IsNullOrEmpty(it.indexId))
@@ -293,13 +291,13 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                var routing = Utils.FromJson<RoutingItem>(Utils.ToJson(it));
+                var routing = JsonUtils.Deserialize<RoutingItem>(JsonUtils.Serialize(it));
                 foreach (var it2 in it.rules)
                 {
                     it2.id = Utils.GetGUID(false);
                 }
                 routing.ruleNum = it.rules.Count;
-                routing.ruleSet = Utils.ToJson(it.rules, false);
+                routing.ruleSet = JsonUtils.Serialize(it.rules, false);
 
                 if (Utils.IsNullOrEmpty(routing.id))
                 {
@@ -308,7 +306,7 @@ namespace v2rayN.Handler
                 SqliteHelper.Instance.Replace(routing);
             }
 
-            config = Utils.FromJson<Config>(Utils.ToJson(configOld));
+            config = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(configOld));
 
             if (config.coreBasicItem == null)
             {
@@ -424,7 +422,7 @@ namespace v2rayN.Handler
                     continue;
                 }
 
-                ProfileItem profileItem = Utils.DeepCopy(item);
+                ProfileItem profileItem = JsonUtils.DeepCopy(item);
                 profileItem.indexId = string.Empty;
                 profileItem.remarks = $"{item.remarks}-clone";
 
@@ -595,7 +593,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
                 return -1;
             }
 
@@ -715,6 +713,7 @@ namespace v2rayN.Handler
 
             profileItem.address = profileItem.address.TrimEx();
             profileItem.id = profileItem.id.TrimEx();
+            profileItem.path = profileItem.path.TrimEx();
             profileItem.network = string.Empty;
 
             if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
@@ -770,6 +769,38 @@ namespace v2rayN.Handler
             return 0;
         }
 
+        /// <summary>
+        /// Add or edit server
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="profileItem"></param>
+        /// <returns></returns>
+        public static int AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
+        {
+            profileItem.configType = EConfigType.Wireguard;
+            profileItem.coreType = ECoreType.sing_box;
+
+            profileItem.address = profileItem.address.TrimEx();
+            profileItem.id = profileItem.id.TrimEx();
+            profileItem.publicKey = profileItem.publicKey.TrimEx();
+            profileItem.path = profileItem.path.TrimEx();
+            profileItem.requestHost = profileItem.requestHost.TrimEx();
+            profileItem.network = string.Empty;
+            if (profileItem.shortId.IsNullOrEmpty())
+            {
+                profileItem.shortId = Global.TunMtus.FirstOrDefault();
+            }
+
+            if (profileItem.id.IsNullOrEmpty())
+            {
+                return -1;
+            }
+
+            AddServerCommon(config, profileItem, toFile);
+
+            return 0;
+        }
+
         public static int SortServers(Config config, string subId, string colName, bool asc)
         {
             var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
@@ -804,7 +835,6 @@ namespace v2rayN.Handler
                 case EServerColName.remarks:
                 case EServerColName.address:
                 case EServerColName.port:
-                case EServerColName.security:
                 case EServerColName.network:
                 case EServerColName.streamSecurity:
                     propertyName = name.ToString();
@@ -1007,7 +1037,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog("Remove Item", ex);
+                Logging.SaveLog("Remove Item", ex);
             }
 
             return 0;
@@ -1059,8 +1089,8 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                ProfileItem profileItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
-                if (profileItem == null)
+                var profileItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
+                if (profileItem is null)
                 {
                     continue;
                 }
@@ -1068,7 +1098,8 @@ namespace v2rayN.Handler
                 //exist sub items
                 if (isSub && !Utils.IsNullOrEmpty(subid))
                 {
-                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub && CompareProfileItem(t, profileItem, true));
+                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub
+                                                && config.uiItem.enableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
                         //Check for duplicate indexId
@@ -1097,36 +1128,19 @@ namespace v2rayN.Handler
                 }
                 profileItem.subid = subid;
                 profileItem.isSub = isSub;
-                var addStatus = -1;
 
-                if (profileItem.configType == EConfigType.VMess)
+                var addStatus = profileItem.configType switch
                 {
-                    addStatus = AddServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Shadowsocks)
-                {
-                    addStatus = AddShadowsocksServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Socks)
-                {
-                    addStatus = AddSocksServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Trojan)
-                {
-                    addStatus = AddTrojanServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.VLESS)
-                {
-                    addStatus = AddVlessServer(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Hysteria2)
-                {
-                    addStatus = AddHysteria2Server(config, profileItem, false);
-                }
-                else if (profileItem.configType == EConfigType.Tuic)
-                {
-                    addStatus = AddTuicServer(config, profileItem, false);
-                }
+                    EConfigType.VMess => AddServer(config, profileItem, false),
+                    EConfigType.Shadowsocks => AddShadowsocksServer(config, profileItem, false),
+                    EConfigType.Socks => AddSocksServer(config, profileItem, false),
+                    EConfigType.Trojan => AddTrojanServer(config, profileItem, false),
+                    EConfigType.VLESS => AddVlessServer(config, profileItem, false),
+                    EConfigType.Hysteria2 => AddHysteria2Server(config, profileItem, false),
+                    EConfigType.Tuic => AddTuicServer(config, profileItem, false),
+                    EConfigType.Wireguard => AddWireguardServer(config, profileItem, false),
+                    _ => -1,
+                };
 
                 if (addStatus == 0)
                 {
@@ -1163,7 +1177,7 @@ namespace v2rayN.Handler
 
             ProfileItem profileItem = new();
             //Is v2ray configuration
-            V2rayConfig? v2rayConfig = Utils.FromJson<V2rayConfig>(clipboardData);
+            V2rayConfig? v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(clipboardData);
             if (v2rayConfig?.inbounds?.Count > 0
                 && v2rayConfig.outbounds?.Count > 0)
             {
@@ -1254,10 +1268,10 @@ namespace v2rayN.Handler
             }
 
             //SsSIP008
-            var lstSsServer = Utils.FromJson<List<SsServer>>(clipboardData);
+            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(clipboardData);
             if (lstSsServer?.Count <= 0)
             {
-                var ssSIP008 = Utils.FromJson<SsSIP008>(clipboardData);
+                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(clipboardData);
                 if (ssSIP008?.servers?.Count > 0)
                 {
                     lstSsServer = ssSIP008.servers;
@@ -1469,7 +1483,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            var lstRules = Utils.FromJson<List<RulesItem>>(clipboardData);
+            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
             if (lstRules == null)
             {
                 return -1;
@@ -1480,7 +1494,7 @@ namespace v2rayN.Handler
                 item.id = Utils.GetGUID(false);
             }
             routingItem.ruleNum = lstRules.Count;
-            routingItem.ruleSet = Utils.ToJson(lstRules, false);
+            routingItem.ruleSet = JsonUtils.Serialize(lstRules, false);
 
             if (Utils.IsNullOrEmpty(routingItem.id))
             {
@@ -1519,7 +1533,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        var item = Utils.DeepCopy(rules[index]);
+                        var item = JsonUtils.DeepCopy(rules[index]);
                         rules.RemoveAt(index);
                         rules.Insert(0, item);
 
@@ -1531,7 +1545,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        var item = Utils.DeepCopy(rules[index]);
+                        var item = JsonUtils.DeepCopy(rules[index]);
                         rules.RemoveAt(index);
                         rules.Insert(index - 1, item);
 
@@ -1544,7 +1558,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        var item = Utils.DeepCopy(rules[index]);
+                        var item = JsonUtils.DeepCopy(rules[index]);
                         rules.RemoveAt(index);
                         rules.Insert(index + 1, item);
 
@@ -1556,7 +1570,7 @@ namespace v2rayN.Handler
                         {
                             return 0;
                         }
-                        var item = Utils.DeepCopy(rules[index]);
+                        var item = JsonUtils.DeepCopy(rules[index]);
                         rules.RemoveAt(index);
                         rules.Add(item);
 
@@ -1565,7 +1579,7 @@ namespace v2rayN.Handler
                 case EMove.Position:
                     {
                         var removeItem = rules[index];
-                        var item = Utils.DeepCopy(rules[index]);
+                        var item = JsonUtils.DeepCopy(rules[index]);
                         rules.Insert(pos, item);
                         rules.Remove(removeItem);
                         break;

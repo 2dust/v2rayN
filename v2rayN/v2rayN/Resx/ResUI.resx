@@ -532,9 +532,6 @@
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
-  <data name="menuPingServer" xml:space="preserve">
-    <value>Test servers ping (Ctrl+P)</value>
-  </data>
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Test servers real delay (Ctrl+R)</value>
   </data>
@@ -1097,7 +1094,7 @@
     <value>More urls, separated by commas;Subscription conversion will be invalid</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
-    <value>{0}:{1}/s↑ | {2}/s↓</value>
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval(minutes)</value>
@@ -1139,7 +1136,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Trojan] server</value>
+    <value>Add [Hysteria2] server</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria Max bandwidth (Up/Dw)</value>
@@ -1152,5 +1149,47 @@
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Previous proxy remakrs</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Next proxy remarks</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Please make sure the remarks exists and is unique</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>Enable additional Inbound</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>Enable IPv6 Address</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>Add [Wireguard] server</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved(2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address(Ip,Ipv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>obfs password</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Auto ScrollToEnd</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Speed Ping Test Url</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>Updating subscription, only determine remarks exists</value>
   </data>
 </root>

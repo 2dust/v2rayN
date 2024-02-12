@@ -27,7 +27,7 @@ namespace v2rayN.Handler
 
             try
             {
-                url = $"ws://{Global.Loopback}:{Global.StatePort}/traffic";
+                url = $"ws://{Global.Loopback}:{LazyConfig.Instance.StatePort}/traffic";
 
                 if (webSocket == null)
                 {
@@ -51,7 +51,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Utils.SaveLog(ex.Message, ex);
+                Logging.SaveLog(ex.Message, ex);
             }
         }
 
@@ -113,7 +113,7 @@ namespace v2rayN.Handler
             up = 0; down = 0;
             try
             {
-                var trafficItem = Utils.FromJson<TrafficItem>(source);
+                var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
                 if (trafficItem != null)
                 {
                     up = trafficItem.up;

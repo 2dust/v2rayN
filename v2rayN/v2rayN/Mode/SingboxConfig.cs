@@ -72,7 +72,7 @@
         public string? domain_strategy { get; set; }
         public string interface_name { get; set; }
         public string inet4_address { get; set; }
-        public string inet6_address { get; set; }
+        public string? inet6_address { get; set; }
         public int? mtu { get; set; }
         public bool? auto_route { get; set; }
         public bool? strict_route { get; set; }
@@ -105,17 +105,23 @@
         public int? recv_window_conn { get; set; }
         public int? recv_window { get; set; }
         public bool? disable_mtu_discovery { get; set; }
-        public string detour { get; set; }
+        public string? detour { get; set; }
         public string method { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public string congestion_control { get; set; }
         public string? version { get; set; }
         public string? network { get; set; }
-        public string packet_encoding { get; set; }
+        public string? packet_encoding { get; set; }
+        public string[]? local_address { get; set; }
+        public string? private_key { get; set; }
+        public string? peer_public_key { get; set; }
+        public int[]? reserved { get; set; }
+        public int? mtu { get; set; }
         public Tls4Sbox tls { get; set; }
         public Multiplex4Sbox multiplex { get; set; }
         public Transport4Sbox transport { get; set; }
+        public HyObfs4Sbox obfs { get; set; }
     }
 
     public class Tls4Sbox
@@ -169,6 +175,12 @@
         public string? Host { get; set; }
     }
 
+    public class HyObfs4Sbox
+    {
+        public string? type { get; set; }
+        public string? password { get; set; }
+    }
+
     public class Server4Sbox
     {
         public string tag { get; set; }
@@ -180,8 +192,9 @@
 
     public class Experimental4Sbox
     {
-        public V2ray_Api4Sbox v2ray_api { get; set; }
-        public Clash_Api4Sbox clash_api { get; set; }
+        public CacheFile4Sbox? cache_file { get; set; }
+        public V2ray_Api4Sbox? v2ray_api { get; set; }
+        public Clash_Api4Sbox? clash_api { get; set; }
     }
 
     public class V2ray_Api4Sbox
@@ -192,8 +205,8 @@
 
     public class Clash_Api4Sbox
     {
-        public string external_controller { get; set; }
-        public bool store_selected { get; set; }
+        public string? external_controller { get; set; }
+        public bool? store_selected { get; set; }
     }
 
     public class Stats4Sbox
@@ -209,5 +222,13 @@
         public bool enabled { get; set; }
         public string inet4_range { get; set; }
         public string inet6_range { get; set; }
+    }
+
+    public class CacheFile4Sbox
+    {
+        public bool enabled { get; set; }
+        public string? path { get; set; }
+        public string? cache_id { get; set; }
+        public bool? store_fakeip { get; set; }
     }
 }

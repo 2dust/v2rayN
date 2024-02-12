@@ -2,7 +2,6 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 using v2rayN.Resx;
@@ -140,6 +139,16 @@ namespace v2rayN.Views
                         cmbHeaderType8.Items.Add(it);
                     });
                     break;
+
+                case EConfigType.Wireguard:
+                    gridWireguard.Visibility = Visibility.Visible;
+
+                    sepa2.Visibility = Visibility.Collapsed;
+                    gridTransport.Visibility = Visibility.Collapsed;
+                    gridTls.Visibility = Visibility.Collapsed;
+                    cmbCoreType.IsEnabled = false;
+
+                    break;
             }
 
             gridTlsMore.Visibility = Visibility.Hidden;
@@ -182,12 +191,21 @@ namespace v2rayN.Views
 
                     case EConfigType.Hysteria2:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId7.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath7.Text).DisposeWith(disposables);
                         break;
 
                     case EConfigType.Tuic:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId8.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.txtSecurity8.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.headerType, v => v.cmbHeaderType8.Text).DisposeWith(disposables);
+                        break;
+
+                    case EConfigType.Wireguard:
+                        this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId9.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.publicKey, v => v.txtPublicKey9.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath9.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.requestHost, v => v.txtRequestHost9.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.shortId, v => v.txtShortId9.Text).DisposeWith(disposables);
                         break;
                 }
                 this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);
@@ -332,11 +350,6 @@ namespace v2rayN.Views
                     labHeaderType.Visibility = Visibility.Hidden;
                     break;
             }
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -2,7 +2,6 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
-using v2rayN.Base;
 using v2rayN.Handler;
 using v2rayN.Mode;
 
@@ -10,9 +9,9 @@ namespace v2rayN.Views
 {
     public partial class MsgView
     {
-        private static Config _config;
+        private static Config? _config;
 
-        private string lastMsgFilter;
+        private string lastMsgFilter = string.Empty;
         private bool lastMsgFilterNotAvailable;
 
         public MsgView()
@@ -66,6 +65,11 @@ namespace v2rayN.Views
             lastMsgFilter = MsgFilter;
 
             ShowMsg(msg);
+
+            if (togScrollToEnd.IsChecked ?? true)
+            {
+                txtMsg.ScrollToEnd();
+            }
         }
 
         private void ShowMsg(string msg)
@@ -79,7 +83,6 @@ namespace v2rayN.Views
             {
                 this.txtMsg.AppendText(Environment.NewLine);
             }
-            txtMsg.ScrollToEnd();
         }
 
         public void ClearMsg()

@@ -30,18 +30,36 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <DockPanel Margin="8">
+        <StackPanel
+            Margin="4"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand"
+                Style="{StaticResource DefButton}" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand"
+                IsCancel="true"
+                Style="{StaticResource DefButton}" />
+        </StackPanel>
+        <ScrollViewer
+            materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
 
-    <ScrollViewer
-        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True"
-        HorizontalScrollBarVisibility="Auto"
-        VerticalScrollBarVisibility="Auto">
-        <Grid Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -54,7 +72,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="400" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
@@ -77,7 +95,6 @@
                     x:Name="txtRemarks"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Width="400"
                     Margin="4"
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
@@ -95,7 +112,6 @@
                     x:Name="txtUrl"
                     Grid.Row="2"
                     Grid.Column="1"
-                    Width="400"
                     Margin="4"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
@@ -135,51 +151,37 @@
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.LvEnabled}" />
-                <ToggleButton
-                    x:Name="togEnable"
+
+                <DockPanel
                     Grid.Row="3"
                     Grid.Column="1"
-                    Margin="4"
-                    HorizontalAlignment="Left" />
+                    Margin="4">
+                    <ToggleButton
+                        x:Name="togEnable"
+                        Margin="4"
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Left" />
 
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Margin="4"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
-                <TextBox
-                    x:Name="txtAutoUpdateInterval"
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Width="400"
-                    Margin="4"
-                    VerticalAlignment="Top"
-                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    <TextBox
+                        x:Name="txtAutoUpdateInterval"
+                        Width="200"
+                        Margin="4"
+                        VerticalAlignment="Top"
+                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
+                        AcceptsReturn="True"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MyOutlinedTextBox}" />
+
+                    <TextBlock
+                        Margin="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                </DockPanel>
 
                 <TextBlock
                     Grid.Row="5"
-                    Grid.Column="0"
-                    Margin="4"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.LvUserAgent}" />
-                <TextBox
-                    x:Name="txtUserAgent"
-                    Grid.Row="5"
-                    Grid.Column="1"
-                    Width="400"
-                    Margin="4"
-                    VerticalAlignment="Top"
-                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}"
-                    TextWrapping="Wrap" />
-
-                <TextBlock
-                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="4"
                     VerticalAlignment="Center"
@@ -187,9 +189,8 @@
                     Text="{x:Static resx:ResUI.LvFilter}" />
                 <TextBox
                     x:Name="txtFilter"
-                    Grid.Row="6"
+                    Grid.Row="5"
                     Grid.Column="1"
-                    Width="400"
                     Margin="4"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
@@ -197,7 +198,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
-                    Grid.Row="7"
+                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="4"
                     VerticalAlignment="Center"
@@ -205,13 +206,29 @@
                     Text="{x:Static resx:ResUI.LvConvertTarget}" />
                 <ComboBox
                     x:Name="cmbConvertTarget"
-                    Grid.Row="7"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Margin="4"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvConvertTargetTip}"
-                    FontSize="{DynamicResource StdFontSize}"
                     MaxDropDownHeight="1000"
-                    Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                    Style="{StaticResource MyOutlinedTextComboBox}" />
+
+                <TextBlock
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvUserAgent}" />
+                <TextBox
+                    x:Name="txtUserAgent"
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Margin="4"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    TextWrapping="Wrap" />
 
                 <TextBlock
                     Grid.Row="8"
@@ -224,37 +241,47 @@
                     x:Name="txtSort"
                     Grid.Row="8"
                     Grid.Column="1"
-                    Width="400"
+                    Width="100"
                     Margin="4"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
-            </Grid>
-            <Grid
-                Grid.Row="1"
-                Margin="8"
-                HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="200" />
-                </Grid.ColumnDefinitions>
-                <Button
-                    x:Name="btnSave"
+
+                <TextBlock
+                    Grid.Row="9"
                     Grid.Column="0"
                     Margin="4"
-                    Content="{x:Static resx:ResUI.TbConfirm}"
-                    Cursor="Hand"
-                    Style="{StaticResource DefButton}" />
-                <Button
-                    x:Name="btnCancel"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvPrevProfile}" />
+                <TextBox
+                    x:Name="txtPrevProfile"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Margin="4"
-                    Click="btnCancel_Click"
-                    Content="{x:Static resx:ResUI.TbCancel}"
-                    Cursor="Hand"
-                    IsCancel="true"
-                    Style="{StaticResource DefButton}" />
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}" />
+
+                <TextBlock
+                    Grid.Row="10"
+                    Grid.Column="0"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvNextProfile}" />
+                <TextBox
+                    x:Name="txtNextProfile"
+                    Grid.Row="10"
+                    Grid.Column="1"
+                    Margin="4"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}" />
             </Grid>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </DockPanel>
 </reactiveui:ReactiveWindow>

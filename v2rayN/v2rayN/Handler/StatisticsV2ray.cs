@@ -8,8 +8,8 @@ namespace v2rayN.Handler
     internal class StatisticsV2ray
     {
         private Mode.Config _config;
-        private GrpcChannel _channel;
-        private StatsService.StatsServiceClient _client;
+        private GrpcChannel? _channel;
+        private StatsService.StatsServiceClient? _client;
         private bool _exitFlag;
         private Action<ServerSpeedItem> _updateFunc;
 
@@ -26,10 +26,17 @@ namespace v2rayN.Handler
 
         private void GrpcInit()
         {
-            if (_channel == null)
+            if (_channel is null)
             {
-                _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{Global.StatePort}");
-                _client = new StatsService.StatsServiceClient(_channel);
+                try
+                {
+                    _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{LazyConfig.Instance.StatePort}");
+                    _client = new StatsService.StatsServiceClient(_channel);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog(ex.Message, ex);
+                }
             }
         }
 
@@ -44,7 +51,7 @@ namespace v2rayN.Handler
             {
                 try
                 {
-                    if (_channel.State == ConnectivityState.Ready)
+                    if (_channel?.State == ConnectivityState.Ready)
                     {
                         QueryStatsResponse? res = null;
                         try

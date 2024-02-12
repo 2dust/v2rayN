@@ -24,28 +24,26 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel Margin="8">
-        <Grid HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
+        <StackPanel
+            Margin="4"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Grid.Column="0"
-                Margin="4"
+                Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 Cursor="Hand"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Grid.Column="1"
-                Margin="4"
-                Click="btnCancel_Click"
+                Width="100"
+                Margin="8,0"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
                 Style="{StaticResource DefButton}" />
-        </Grid>
+        </StackPanel>
 
         <TabControl HorizontalContentAlignment="Left">
 

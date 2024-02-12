@@ -70,7 +70,7 @@ namespace v2rayN.Views
 
         private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KELsit, EGlobalHotkey eg)
         {
-            return Utils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
+            return JsonUtils.DeepCopy(KELsit.Find((it) => it.eGlobalHotkey == eg) ?? new()
             {
                 eGlobalHotkey = eg,
                 Control = false,
@@ -121,11 +121,6 @@ namespace v2rayN.Views
             {
                 UI.ShowWarning(ResUI.OperationFailed);
             }
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)

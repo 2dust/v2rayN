@@ -34,6 +34,12 @@
                 Left="8"
                 Right="8"
                 Top="8" />
+            <Thickness
+                x:Key="OutlinedTextBoxDefaultPadding"
+                Bottom="12"
+                Left="16"
+                Right="12"
+                Top="12" />
             <Style
                 x:Key="ModuleTitle"
                 BasedOn="{StaticResource MaterialDesignTextBlock}"
@@ -129,6 +135,7 @@
                 BasedOn="{StaticResource MaterialDesignOutlinedTextBox}"
                 TargetType="{x:Type TextBox}">
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+                <Setter Property="Padding" Value="{StaticResource OutlinedTextBoxDefaultPadding}" />
             </Style>
             <Style
                 x:Key="MyGroupBox"
@@ -141,6 +148,13 @@
                 BasedOn="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBoxItem}"
                 TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Margin" Value="-2,0" />
+            </Style>
+            <Style
+                x:Key="MyOutlinedTextComboBox"
+                BasedOn="{StaticResource MaterialDesignOutlinedComboBox}"
+                TargetType="{x:Type ComboBox}">
+                <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+                <Setter Property="Padding" Value="{StaticResource OutlinedTextBoxDefaultPadding}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

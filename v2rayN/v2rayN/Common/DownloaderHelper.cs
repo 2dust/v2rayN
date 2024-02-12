@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 
-namespace v2rayN.Base
+namespace v2rayN
 {
     internal class DownloaderHelper
     {
