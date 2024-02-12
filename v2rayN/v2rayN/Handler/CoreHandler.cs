@@ -154,7 +154,9 @@ namespace v2rayN.Handler
             }
         }
 
-        private string CoreFindexe(CoreInfo coreInfo)
+        #region Private
+
+        private string CoreFindExe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
             foreach (string name in coreInfo.coreExes)
@@ -233,52 +235,11 @@ namespace v2rayN.Handler
             ShowMsg(false, configPath);
             try
             {
-                var coreInfo = LazyConfig.Instance.GetCoreInfo(ECoreType.Xray);
-                string fileName = CoreFindexe(coreInfo);
-                if (fileName == "") return -1;
-
-                Process p = new()
+                var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+                var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true, ShowMsg);
+                if (proc is null)
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = fileName,
-                        Arguments = "-config stdin:",
-                        WorkingDirectory = Utils.GetConfigPath(),
-                        UseShellExecute = false,
-                        RedirectStandardInput = true,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        CreateNoWindow = true,
-                        StandardOutputEncoding = Encoding.UTF8,
-                        StandardErrorEncoding = Encoding.UTF8
-                    }
-                };
-                p.OutputDataReceived += (sender, e) =>
-                {
-                    if (!String.IsNullOrEmpty(e.Data))
-                    {
-                        string msg = e.Data + Environment.NewLine;
-                        ShowMsg(false, msg);
-                    }
-                };
-                p.ErrorDataReceived += (sender, e) =>
-                {
-                    if (!string.IsNullOrEmpty(e.Data))
-                    {
-                        string msg = e.Data + Environment.NewLine;
-                        ShowMsg(false, msg);
-                    }
-                };
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-
-                p.StandardInput.Write(configStr);
-                p.StandardInput.Close();
-
-                if (p.WaitForExit(1000))
-                {
-                    throw new Exception(p.StandardError.ReadToEnd());
+                    return -1;
                 }
 
                 return proc.Id;
@@ -325,6 +286,8 @@ namespace v2rayN.Handler
                         StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
                     }
                 };
+                var startUpErrorMessage = new StringBuilder();
+                var startUpSuccessful = false;
                 if (displayLog)
                 {
                     proc.OutputDataReceived += (sender, e) =>
@@ -341,6 +304,11 @@ namespace v2rayN.Handler
                         {
                             string msg = e.Data + Environment.NewLine;
                             update(false, msg);
+
+                            if (!startUpSuccessful)
+                            {
+                                startUpErrorMessage.Append(msg);
+                            }
                         }
                     };
                 }
@@ -354,7 +322,11 @@ namespace v2rayN.Handler
                 if (proc.WaitForExit(1000))
                 {
                     proc.CancelErrorRead();
-                    throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
+                    throw new Exception(displayLog ? startUpErrorMessage.ToString() : "启动进程失败并退出 (Failed to start the process and exited)");
+                }
+                else
+                {
+                    startUpSuccessful = true;
                 }
 
                 LazyConfig.Instance.AddProcess(proc.Handle);
