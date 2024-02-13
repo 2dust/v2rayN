@@ -69,7 +69,7 @@ namespace v2rayN.Handler
                         }
                     }
                     await Task.Delay(1000);
-                    await _channel.ConnectAsync();
+                    if (_channel != null) await _channel.ConnectAsync();
                 }
                 catch
                 {
