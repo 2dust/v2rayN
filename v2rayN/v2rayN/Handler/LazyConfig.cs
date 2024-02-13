@@ -11,14 +11,24 @@ namespace v2rayN.Handler
 
         public static LazyConfig Instance => _instance.Value;
 
-        private int _statePort;
-        public int StatePort { get => _statePort; }
-        private Job _processJob  = new();
+        private int? _statePort;
+        public int StatePort
+        {
+            get
+            {
+                if (_statePort is null)
+                {
+                    _statePort = Utils.GetFreePort();
+                }
+
+                return _statePort.Value;
+            }
+        }
+
+        private Job _processJob = new();
 
         public LazyConfig()
         {
-            _statePort = Utils.GetFreePort();
-
             SqliteHelper.Instance.CreateTable<SubItem>();
             SqliteHelper.Instance.CreateTable<ProfileItem>();
             SqliteHelper.Instance.CreateTable<ServerStatItem>();
@@ -68,7 +78,7 @@ namespace v2rayN.Handler
             }
             return localPort;
         }
-        
+
         public void AddProcess(IntPtr processHandle)
         {
             _processJob.AddProcess(processHandle);
