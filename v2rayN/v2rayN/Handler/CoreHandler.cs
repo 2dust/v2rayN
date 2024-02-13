@@ -156,7 +156,7 @@ namespace v2rayN.Handler
 
         #region Private
 
-        private string CoreFindexe(CoreInfo coreInfo)
+        private string CoreFindExe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
             foreach (string name in coreInfo.coreExes)
@@ -266,7 +266,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                string fileName = CoreFindexe(coreInfo);
+                string fileName = CoreFindExe(coreInfo);
                 if (Utils.IsNullOrEmpty(fileName))
                 {
                     return null;
@@ -286,6 +286,8 @@ namespace v2rayN.Handler
                         StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
                     }
                 };
+                var startUpErrorMessage = new StringBuilder();
+                var startUpSuccessful = false;
                 if (displayLog)
                 {
                     proc.OutputDataReceived += (sender, e) =>
@@ -302,6 +304,11 @@ namespace v2rayN.Handler
                         {
                             string msg = e.Data + Environment.NewLine;
                             update(false, msg);
+
+                            if (!startUpSuccessful)
+                            {
+                                startUpErrorMessage.Append(msg);
+                            }
                         }
                     };
                 }
@@ -314,7 +321,12 @@ namespace v2rayN.Handler
 
                 if (proc.WaitForExit(1000))
                 {
-                    throw new Exception(displayLog ? proc.StandardError.ReadToEnd() : "启动进程失败并退出 (Failed to start the process and exited)");
+                    proc.CancelErrorRead();
+                    throw new Exception(displayLog ? startUpErrorMessage.ToString() : "启动进程失败并退出 (Failed to start the process and exited)");
+                }
+                else
+                {
+                    startUpSuccessful = true;
                 }
 
                 LazyConfig.Instance.AddProcess(proc.Handle);
