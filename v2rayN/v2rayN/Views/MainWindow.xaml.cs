@@ -512,8 +512,8 @@ namespace v2rayN.Views
 
         private void StorageUI()
         {
-            _config.uiItem.mainWidth = this.Width;
-            _config.uiItem.mainHeight = this.Height;
+            _config.uiItem.mainWidth = Utils.ToInt(this.Width);
+            _config.uiItem.mainHeight = Utils.ToInt(this.Height);
 
             List<ColumnItem> lvColumnItem = new();
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
@@ -522,7 +522,7 @@ namespace v2rayN.Views
                 lvColumnItem.Add(new()
                 {
                     Name = item2.ExName,
-                    Width = item2.Visibility == Visibility.Visible ? Convert.ToInt32(item2.ActualWidth) : -1,
+                    Width = item2.Visibility == Visibility.Visible ? Utils.ToInt(item2.ActualWidth) : -1,
                     Index = item2.DisplayIndex
                 });
             }

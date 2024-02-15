@@ -170,7 +170,7 @@ namespace v2rayN.Handler
                 {
                     if (_config.tunModeItem.mtu <= 0)
                     {
-                        _config.tunModeItem.mtu = Convert.ToInt32(Global.TunMtus[0]);
+                        _config.tunModeItem.mtu = Utils.ToInt(Global.TunMtus[0]);
                     }
                     if (Utils.IsNullOrEmpty(_config.tunModeItem.stack))
                     {
@@ -294,8 +294,6 @@ namespace v2rayN.Handler
 
                     outbound.up_mbps = _config.hysteriaItem.up_mbps > 0 ? _config.hysteriaItem.up_mbps : null;
                     outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
-
-                    GenOutboundMux(node, outbound);
                 }
                 else if (node.configType == EConfigType.Tuic)
                 {
@@ -304,8 +302,6 @@ namespace v2rayN.Handler
                     outbound.uuid = node.id;
                     outbound.password = node.security;
                     outbound.congestion_control = node.headerType;
-
-                    GenOutboundMux(node, outbound);
                 }
                 else if (node.configType == EConfigType.Wireguard)
                 {
@@ -316,7 +312,6 @@ namespace v2rayN.Handler
                     outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
                     outbound.local_address = [.. Utils.String2List(node.requestHost)];
                     outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
-                    GenOutboundMux(node, outbound);
                 }
 
                 GenOutboundTls(node, outbound);
@@ -339,11 +334,8 @@ namespace v2rayN.Handler
                 //    var mux = new Multiplex4Sbox()
                 //    {
                 //        enabled = true,
-                //        protocol = _config.mux4Sbox.protocol,
-                //        max_connections = _config.mux4Sbox.max_connections,
-                //        min_streams = _config.mux4Sbox.min_streams,
-                //        max_streams = _config.mux4Sbox.max_streams,
-                //        padding = _config.mux4Sbox.padding
+                //        protocol = _config.mux4SboxItem.protocol,
+                //        max_connections = _config.mux4SboxItem.max_connections,
                 //    };
                 //    outbound.multiplex = mux;
                 //}

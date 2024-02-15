@@ -139,9 +139,6 @@
         public bool enabled { get; set; }
         public string protocol { get; set; }
         public int max_connections { get; set; }
-        public int min_streams { get; set; }
-        public int max_streams { get; set; }
-        public bool padding { get; set; }
     }
 
     public class Utls4Sbox

@@ -187,10 +187,7 @@ namespace v2rayN.Handler
                 config.mux4SboxItem = new()
                 {
                     protocol = Global.SingboxMuxs[0],
-                    max_connections = 4,
-                    min_streams = 4,
-                    max_streams = 0,
-                    padding = true
+                    max_connections = 4
                 };
             }
 
