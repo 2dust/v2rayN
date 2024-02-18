@@ -13,7 +13,7 @@ namespace v2rayN
             FileTarget fileTarget = new();
             config.AddTarget("file", fileTarget);
             fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
-            fileTarget.FileName = Utils.GetLogPath("${shortdate}.txt");
+            fileTarget.FileName = Utile.GetLogPath("${shortdate}.txt");
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
             LogManager.Configuration = config;
         }
@@ -33,7 +33,7 @@ namespace v2rayN
                 try
                 {
                     var now = DateTime.Now.AddMonths(-1);
-                    var dir = Utils.GetLogPath();
+                    var dir = Utile.GetLogPath();
                     var files = Directory.GetFiles(dir, "*.txt");
                     foreach (var filePath in files)
                     {

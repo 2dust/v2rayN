@@ -1,6 +1,6 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -113,7 +113,7 @@ namespace v2rayN.Handler
             up = 0; down = 0;
             try
             {
-                var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
+                var trafficItem = JsonUtile.Deserialize<TrafficItem>(source);
                 if (trafficItem != null)
                 {
                     up = trafficItem.up;

@@ -15,7 +15,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 using v2rayN.Views;
 
@@ -265,7 +265,7 @@ namespace v2rayN.ViewModels
             SelectedMoveToGroup = new();
             SelectedRouting = new();
             SelectedServer = new();
-            if (_config.tunModeItem.enableTun && Utils.IsAdministrator())
+            if (_config.tunModeItem.enableTun && Utile.IsAdministrator())
             {
                 EnableTun = true;
             }
@@ -641,8 +641,8 @@ namespace v2rayN.ViewModels
                         return;
                     }
 
-                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utile.HumanFy(update.proxyUp), Utile.HumanFy(update.proxyDown));
+                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utile.HumanFy(update.directUp), Utile.HumanFy(update.directDown));
 
                     if (update.proxyUp + update.proxyDown > 0)
                     {
@@ -652,20 +652,20 @@ namespace v2rayN.ViewModels
                             var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
                             if (item != null)
                             {
-                                item.todayDown = Utils.HumanFy(update.todayDown);
-                                item.todayUp = Utils.HumanFy(update.todayUp);
-                                item.totalDown = Utils.HumanFy(update.totalDown);
-                                item.totalUp = Utils.HumanFy(update.totalUp);
+                                item.todayDown = Utile.HumanFy(update.todayDown);
+                                item.todayUp = Utile.HumanFy(update.todayUp);
+                                item.totalDown = Utile.HumanFy(update.totalDown);
+                                item.totalUp = Utile.HumanFy(update.totalUp);
 
                                 if (SelectedProfile?.indexId == item.indexId)
                                 {
-                                    var temp = JsonUtils.DeepCopy(item);
+                                    var temp = JsonUtile.DeepCopy(item);
                                     _profileItems.Replace(item, temp);
                                     SelectedProfile = temp;
                                 }
                                 else
                                 {
-                                    _profileItems.Replace(item, JsonUtils.DeepCopy(item));
+                                    _profileItems.Replace(item, JsonUtile.DeepCopy(item));
                                 }
                             }
                         }
@@ -688,7 +688,7 @@ namespace v2rayN.ViewModels
 
         private void SetTestResult(string indexId, string delay, string speed)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (Utile.IsNullOrEmpty(indexId))
             {
                 _noticeHandler?.SendMessage(delay, true);
                 _noticeHandler?.Enqueue(delay);
@@ -697,17 +697,17 @@ namespace v2rayN.ViewModels
             var item = _profileItems.Where(it => it.indexId == indexId).FirstOrDefault();
             if (item != null)
             {
-                if (!Utils.IsNullOrEmpty(delay))
+                if (!Utile.IsNullOrEmpty(delay))
                 {
                     int.TryParse(delay, out int temp);
                     item.delay = temp;
                     item.delayVal = $"{delay} {Global.DelayUnit}";
                 }
-                if (!Utils.IsNullOrEmpty(speed))
+                if (!Utile.IsNullOrEmpty(speed))
                 {
                     item.speedVal = $"{speed} {Global.SpeedUnit}";
                 }
-                _profileItems.Replace(item, JsonUtils.DeepCopy(item));
+                _profileItems.Replace(item, JsonUtile.DeepCopy(item));
             }
         }
 
@@ -797,7 +797,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             _serverFilter = ServerFilter;
-            if (Utils.IsNullOrEmpty(_serverFilter))
+            if (Utile.IsNullOrEmpty(_serverFilter))
             {
                 RefreshServers();
             }
@@ -837,12 +837,12 @@ namespace v2rayN.ViewModels
                             delay = t33 == null ? 0 : t33.delay,
                             delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
                             speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
-                            todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
-                            todayUp = t22 == null ? "" : Utils.HumanFy(t22.todayUp),
-                            totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
-                            totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
+                            todayDown = t22 == null ? "" : Utile.HumanFy(t22.todayDown),
+                            todayUp = t22 == null ? "" : Utile.HumanFy(t22.todayUp),
+                            totalDown = t22 == null ? "" : Utile.HumanFy(t22.totalDown),
+                            totalUp = t22 == null ? "" : Utile.HumanFy(t22.totalUp)
                         }).OrderBy(t => t.sort).ToList();
-            _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel));
+            _lstProfile = JsonUtile.Deserialize<List<ProfileItem>>(JsonUtile.Serialize(lstModel));
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -947,7 +947,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                lstSelecteds = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(orderProfiles));
+                lstSelecteds = JsonUtile.Deserialize<List<ProfileItem>>(JsonUtile.Serialize(orderProfiles));
             }
 
             return 0;
@@ -967,7 +967,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
+                if (Utile.IsNullOrEmpty(SelectedProfile?.indexId))
                 {
                     return;
                 }
@@ -1000,7 +1000,7 @@ namespace v2rayN.ViewModels
 
         public void AddServerViaClipboard()
         {
-            var clipboardData = Utils.GetClipboardData();
+            var clipboardData = Utile.GetClipboardData();
             int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _subId, false);
             if (ret > 0)
             {
@@ -1014,15 +1014,15 @@ namespace v2rayN.ViewModels
         {
             ShowHideWindow(false);
 
-            var dpiXY = Utils.GetDpiXY(Application.Current.MainWindow);
+            var dpiXY = Utile.GetDpiXY(Application.Current.MainWindow);
             string result = await Task.Run(() =>
             {
-                return Utils.ScanScreen(dpiXY.Item1, dpiXY.Item2);
+                return Utile.ScanScreen(dpiXY.Item1, dpiXY.Item2);
             });
 
             ShowHideWindow(true);
 
-            if (Utils.IsNullOrEmpty(result))
+            if (Utile.IsNullOrEmpty(result))
             {
                 _noticeHandler?.Enqueue(ResUI.NoValidQRcodeFound);
             }
@@ -1084,7 +1084,7 @@ namespace v2rayN.ViewModels
 
         public void SetDefaultServer()
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
+            if (Utile.IsNullOrEmpty(SelectedProfile?.indexId))
             {
                 return;
             }
@@ -1093,7 +1093,7 @@ namespace v2rayN.ViewModels
 
         private void SetDefaultServer(string indexId)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (Utile.IsNullOrEmpty(indexId))
             {
                 return;
             }
@@ -1125,7 +1125,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (Utils.IsNullOrEmpty(SelectedServer.ID))
+            if (Utile.IsNullOrEmpty(SelectedServer.ID))
             {
                 return;
             }
@@ -1141,7 +1141,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             var url = ShareHandler.GetShareUrl(item);
-            if (Utils.IsNullOrEmpty(url))
+            if (Utile.IsNullOrEmpty(url))
             {
                 return;
             }
@@ -1157,7 +1157,7 @@ namespace v2rayN.ViewModels
 
         public void SortServer(string colName)
         {
-            if (Utils.IsNullOrEmpty(colName))
+            if (Utile.IsNullOrEmpty(colName))
             {
                 return;
             }
@@ -1282,7 +1282,7 @@ namespace v2rayN.ViewModels
             foreach (var it in lstSelecteds)
             {
                 string url = ShareHandler.GetShareUrl(it);
-                if (Utils.IsNullOrEmpty(url))
+                if (Utile.IsNullOrEmpty(url))
                 {
                     continue;
                 }
@@ -1291,7 +1291,7 @@ namespace v2rayN.ViewModels
             }
             if (sb.Length > 0)
             {
-                Utils.SetClipboardData(sb.ToString());
+                Utile.SetClipboardData(sb.ToString());
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }
         }
@@ -1307,7 +1307,7 @@ namespace v2rayN.ViewModels
             foreach (var it in lstSelecteds)
             {
                 string? url = ShareHandler.GetShareUrl(it);
-                if (Utils.IsNullOrEmpty(url))
+                if (Utile.IsNullOrEmpty(url))
                 {
                     continue;
                 }
@@ -1316,7 +1316,7 @@ namespace v2rayN.ViewModels
             }
             if (sb.Length > 0)
             {
-                Utils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
+                Utile.SetClipboardData(Utile.Base64Encode(sb.ToString()));
                 _noticeHandler?.SendMessage(ResUI.BatchExportSubscriptionSuccessfully);
             }
         }
@@ -1403,8 +1403,8 @@ namespace v2rayN.ViewModels
             {
                 UseShellExecute = true,
                 Arguments = Global.RebootAs,
-                WorkingDirectory = Utils.StartupPath(),
-                FileName = Utils.GetExePath().AppendQuotes(),
+                WorkingDirectory = Utile.StartupPath(),
+                FileName = Utile.GetExePath().AppendQuotes(),
                 Verb = "runas",
             };
             try
@@ -1422,7 +1422,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (Utils.IsNullOrEmpty(fileName))
+            if (Utile.IsNullOrEmpty(fileName))
             {
                 return;
             }
@@ -1468,8 +1468,8 @@ namespace v2rayN.ViewModels
                 {
                     CloseV2ray();
 
-                    string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(msg));
-                    string toPath = Utils.GetBinPath("", type.ToString());
+                    string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(msg));
+                    string toPath = Utile.GetBinPath("", type.ToString());
 
                     FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
 
@@ -1562,7 +1562,7 @@ namespace v2rayN.ViewModels
                 BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
                 BlSystemProxyPac = (type == ESysProxyType.Pac);
 
-                InboundDisplayStaus();
+                InboundDisplayStatus();
 
                 if (blChange)
                 {
@@ -1643,7 +1643,7 @@ namespace v2rayN.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !Utils.IsAdministrator())
+                if (EnableTun && !Utile.IsAdministrator())
                 {
                     _config.tunModeItem.enableTun = false;
                     RebootAsAdmin();
@@ -1676,7 +1676,7 @@ namespace v2rayN.ViewModels
                 Application.Current.MainWindow.Hide();
                 //Application.Current.MainWindow.ShowInTaskbar = false;
                 //IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
-                //Utils.RegWriteValue(Global.MyRegPath, Utils.WindowHwndKey, Convert.ToString((long)windowHandle));
+                //Utile.RegWriteValue(Global.MyRegPath, Utile.WindowHwndKey, Convert.ToString((long)windowHandle));
             }
             _showInTaskbar = bl;
         }
@@ -1685,7 +1685,7 @@ namespace v2rayN.ViewModels
         {
             if (FollowSystemTheme)
             {
-                ModifyTheme(!Utils.IsLightTheme());
+                ModifyTheme(!Utile.IsLightTheme());
             }
             else
             {
@@ -1743,7 +1743,7 @@ namespace v2rayN.ViewModels
                             ConfigHandler.SaveConfig(_config);
                             if (FollowSystemTheme)
                             {
-                                ModifyTheme(!Utils.IsLightTheme());
+                                ModifyTheme(!Utile.IsLightTheme());
                             }
                             else
                             {
@@ -1795,7 +1795,7 @@ namespace v2rayN.ViewModels
              y => y != null && !y.IsNullOrEmpty())
                 .Subscribe(c =>
                 {
-                    if (!Utils.IsNullOrEmpty(CurrentLanguage))
+                    if (!Utile.IsNullOrEmpty(CurrentLanguage))
                     {
                         _config.uiItem.currentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
@@ -1804,7 +1804,7 @@ namespace v2rayN.ViewModels
                 });
         }
 
-        public void InboundDisplayStaus()
+        public void InboundDisplayStatus()
         {
             StringBuilder sb = new();
             sb.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(Global.InboundSocks)}]");
@@ -1847,7 +1847,7 @@ namespace v2rayN.ViewModels
             theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
             _paletteHelper.SetTheme(theme);
 
-            Utils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+            Utile.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
         }
 
         public void ChangePrimaryColor(System.Windows.Media.Color color)

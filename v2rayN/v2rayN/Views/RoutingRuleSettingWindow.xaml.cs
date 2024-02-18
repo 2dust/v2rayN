@@ -2,7 +2,7 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -30,12 +30,12 @@ namespace v2rayN.Views
             lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
 
             ViewModel = new RoutingRuleSettingViewModel(routingItem, this);
-            Global.DomainStrategys.ForEach(it =>
+            Global.DomainStrategies.ForEach(it =>
             {
                 cmbdomainStrategy.Items.Add(it);
             });
             cmbdomainStrategy.Items.Add(string.Empty);
-            Global.DomainStrategys4Singbox.ForEach(it =>
+            Global.DomainStrategies4Singbox.ForEach(it =>
             {
                 cmbdomainStrategy4Singbox.Items.Add(it);
             });

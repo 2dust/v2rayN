@@ -4,7 +4,7 @@ using Splat;
 using System.Reactive;
 using System.Windows;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
@@ -192,7 +192,7 @@ namespace v2rayN.ViewModels
                 SaveSetting();
             });
 
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void InitCoreType()
@@ -249,19 +249,19 @@ namespace v2rayN.ViewModels
 
         private void SaveSetting()
         {
-            if (Utils.IsNullOrEmpty(localPort.ToString()) || !Utils.IsNumberic(localPort.ToString())
+            if (Utile.IsNullOrEmpty(localPort.ToString()) || !Utile.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
             {
                 UI.Show(ResUI.FillLocalListeningPort);
                 return;
             }
 
-            //if (Utils.IsNullOrEmpty(Kcpmtu.ToString()) || !Utils.IsNumberic(Kcpmtu.ToString())
-            //       || Utils.IsNullOrEmpty(Kcptti.ToString()) || !Utils.IsNumberic(Kcptti.ToString())
-            //       || Utils.IsNullOrEmpty(KcpuplinkCapacity.ToString()) || !Utils.IsNumberic(KcpuplinkCapacity.ToString())
-            //       || Utils.IsNullOrEmpty(KcpdownlinkCapacity.ToString()) || !Utils.IsNumberic(KcpdownlinkCapacity.ToString())
-            //       || Utils.IsNullOrEmpty(KcpreadBufferSize.ToString()) || !Utils.IsNumberic(KcpreadBufferSize.ToString())
-            //       || Utils.IsNullOrEmpty(KcpwriteBufferSize.ToString()) || !Utils.IsNumberic(KcpwriteBufferSize.ToString()))
+            //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
+            //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
+            //       || Utile.IsNullOrEmpty(KcpuplinkCapacity.ToString()) || !Utile.IsNumeric(KcpuplinkCapacity.ToString())
+            //       || Utile.IsNullOrEmpty(KcpdownlinkCapacity.ToString()) || !Utile.IsNumeric(KcpdownlinkCapacity.ToString())
+            //       || Utile.IsNullOrEmpty(KcpreadBufferSize.ToString()) || !Utile.IsNumeric(KcpreadBufferSize.ToString())
+            //       || Utile.IsNullOrEmpty(KcpwriteBufferSize.ToString()) || !Utile.IsNumeric(KcpwriteBufferSize.ToString()))
             //{
             //    UI.Show(ResUI.FillKcpParameters);
             //    return;
@@ -300,7 +300,7 @@ namespace v2rayN.ViewModels
             //_config.kcpItem.congestion = Kcpcongestion;
 
             //UI
-            Utils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
+            Utile.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;

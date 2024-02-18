@@ -1,5 +1,5 @@
 ﻿using PacLib;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -53,7 +53,7 @@ namespace v2rayN.Handler
                     var strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
 
                     var strProxy = string.Empty;
-                    if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
+                    if (Utile.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
                     {
                         strProxy = $"{Global.Loopback}:{port}";
                     }
@@ -75,7 +75,7 @@ namespace v2rayN.Handler
                 }
                 else if (type == ESysProxyType.Pac)
                 {
-                    PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+                    PacHandler.Start(Utile.GetConfigPath(), port, portPac);
                     var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
                     ProxySetting.SetProxy(strProxy, "", 4); // use pac script url for auto-config proxy
                 }
@@ -97,7 +97,7 @@ namespace v2rayN.Handler
             try
             {
                 //TODO To be verified
-                Utils.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
+                Utile.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
             }
             catch
             {
