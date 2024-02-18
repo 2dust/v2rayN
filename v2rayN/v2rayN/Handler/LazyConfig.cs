@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Intrinsics.X86;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -7,7 +7,7 @@ namespace v2rayN.Handler
     {
         private static readonly Lazy<LazyConfig> _instance = new(() => new());
         private Config _config;
-        private List<CoreInfo> coreInfos;
+        private List<CoreInfo> coreInfo;
 
         public static LazyConfig Instance => _instance.Value;
 
@@ -18,7 +18,7 @@ namespace v2rayN.Handler
             {
                 if (_statePort is null)
                 {
-                    _statePort = Utils.GetFreePort();
+                    _statePort = Utile.GetFreePort();
                 }
 
                 return _statePort.Value;
@@ -29,12 +29,12 @@ namespace v2rayN.Handler
 
         public LazyConfig()
         {
-            SqliteHelper.Instance.CreateTable<SubItem>();
-            SqliteHelper.Instance.CreateTable<ProfileItem>();
-            SqliteHelper.Instance.CreateTable<ServerStatItem>();
-            SqliteHelper.Instance.CreateTable<RoutingItem>();
-            SqliteHelper.Instance.CreateTable<ProfileExItem>();
-            SqliteHelper.Instance.CreateTable<DNSItem>();
+            SQLiteHelper.Instance.CreateTable<SubItem>();
+            SQLiteHelper.Instance.CreateTable<ProfileItem>();
+            SQLiteHelper.Instance.CreateTable<ServerStatItem>();
+            SQLiteHelper.Instance.CreateTable<RoutingItem>();
+            SQLiteHelper.Instance.CreateTable<ProfileExItem>();
+            SQLiteHelper.Instance.CreateTable<DNSItem>();
         }
 
         #region Config
@@ -90,35 +90,35 @@ namespace v2rayN.Handler
 
         public List<SubItem> SubItems()
         {
-            return SqliteHelper.Instance.Table<SubItem>().ToList();
+            return SQLiteHelper.Instance.Table<SubItem>().ToList();
         }
 
         public SubItem GetSubItem(string subid)
         {
-            return SqliteHelper.Instance.Table<SubItem>().FirstOrDefault(t => t.id == subid);
+            return SQLiteHelper.Instance.Table<SubItem>().FirstOrDefault(t => t.id == subid);
         }
 
         public List<ProfileItem> ProfileItems(string subid)
         {
-            if (Utils.IsNullOrEmpty(subid))
+            if (Utile.IsNullOrEmpty(subid))
             {
-                return SqliteHelper.Instance.Table<ProfileItem>().ToList();
+                return SQLiteHelper.Instance.Table<ProfileItem>().ToList();
             }
             else
             {
-                return SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).ToList();
+                return SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).ToList();
             }
         }
 
-        public List<string> ProfileItemIndexs(string subid)
+        public List<string> ProfileItemIndexes(string subid)
         {
-            if (Utils.IsNullOrEmpty(subid))
+            if (Utile.IsNullOrEmpty(subid))
             {
-                return SqliteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).ToList();
+                return SQLiteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).ToList();
             }
             else
             {
-                return SqliteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).Select(t => t.indexId).ToList();
+                return SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).Select(t => t.indexId).ToList();
             }
         }
 
@@ -129,11 +129,11 @@ namespace v2rayN.Handler
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";
-            if (!Utils.IsNullOrEmpty(subid))
+            if (!Utile.IsNullOrEmpty(subid))
             {
                 sql += $" and a.subid = '{subid}'";
             }
-            if (!Utils.IsNullOrEmpty(filter))
+            if (!Utile.IsNullOrEmpty(filter))
             {
                 if (filter.Contains('\''))
                 {
@@ -142,66 +142,66 @@ namespace v2rayN.Handler
                 sql += String.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
             }
 
-            return SqliteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
+            return SQLiteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
         }
 
         public ProfileItem? GetProfileItem(string indexId)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (Utile.IsNullOrEmpty(indexId))
             {
                 return null;
             }
-            return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
+            return SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
         }
 
         public ProfileItem? GetProfileItemViaRemarks(string remarks)
         {
-            if (Utils.IsNullOrEmpty(remarks))
+            if (Utile.IsNullOrEmpty(remarks))
             {
                 return null;
             }
-            return SqliteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.remarks == remarks);
+            return SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.remarks == remarks);
         }
 
         public List<RoutingItem> RoutingItems()
         {
-            return SqliteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToList();
+            return SQLiteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToList();
         }
 
         public RoutingItem GetRoutingItem(string id)
         {
-            return SqliteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == false && it.id == id);
+            return SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == false && it.id == id);
         }
 
         public List<DNSItem> DNSItems()
         {
-            return SqliteHelper.Instance.Table<DNSItem>().ToList();
+            return SQLiteHelper.Instance.Table<DNSItem>().ToList();
         }
 
         public DNSItem GetDNSItem(ECoreType eCoreType)
         {
-            return SqliteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
+            return SQLiteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
         }
 
         #endregion SqliteHelper
 
         #region Core Type
 
-        public List<string> GetShadowsocksSecuritys(ProfileItem profileItem)
+        public List<string> GetShadowsocksSecurities(ProfileItem profileItem)
         {
             var coreType = GetCoreType(profileItem, EConfigType.Shadowsocks);
             switch (coreType)
             {
                 case ECoreType.v2fly:
-                    return Global.SsSecuritys;
+                    return Global.SsSecurities;
 
                 case ECoreType.Xray:
-                    return Global.SsSecuritysInXray;
+                    return Global.SsSecuritiesInXray;
 
                 case ECoreType.sing_box:
-                    return Global.SsSecuritysInSingbox;
+                    return Global.SsSecuritiesInSingbox;
             }
-            return Global.SsSecuritysInSagerNet;
+            return Global.SsSecuritiesInSagerNet;
         }
 
         public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
@@ -225,27 +225,27 @@ namespace v2rayN.Handler
 
         public CoreInfo? GetCoreInfo(ECoreType coreType)
         {
-            if (coreInfos == null)
+            if (coreInfo == null)
             {
                 InitCoreInfo();
             }
-            return coreInfos!.FirstOrDefault(t => t.coreType == coreType);
+            return coreInfo!.FirstOrDefault(t => t.coreType == coreType);
         }
 
-        public List<CoreInfo> GetCoreInfos()
+        public List<CoreInfo> GetCoreInfo()
         {
-            if (coreInfos == null)
+            if (coreInfo == null)
             {
                 InitCoreInfo();
             }
-            return coreInfos!;
+            return coreInfo!;
         }
 
         private void InitCoreInfo()
         {
-            coreInfos = new(16);
+            coreInfo = new(16);
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.v2rayN,
                 coreUrl = Global.NUrl,
@@ -255,7 +255,7 @@ namespace v2rayN.Handler
                 coreDownloadUrlArm64 = Global.NUrl + "/download/{0}/v2rayN-arm64.zip"
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.v2fly,
                 coreExes = new List<string> { "wv2ray", "v2ray" },
@@ -270,7 +270,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.SagerNet,
                 coreExes = new List<string> { "SagerNet", "v2ray" },
@@ -285,7 +285,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.v2fly_v5,
                 coreExes = new List<string> { "v2ray" },
@@ -300,7 +300,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.Xray,
                 coreExes = new List<string> { "xray", "wxray" },
@@ -315,7 +315,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.clash,
                 coreExes = new List<string> { "clash-windows-amd64-v3", "clash-windows-amd64", "clash-windows-386", "clash" },
@@ -330,7 +330,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.clash_meta,
                 coreExes = new List<string> { "Clash.Meta-windows-amd64-compatible", "Clash.Meta-windows-amd64", "Clash.Meta-windows-386", "Clash.Meta", "clash" },
@@ -345,7 +345,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.mihomo,
                 coreExes = new List<string> { $"mihomo-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-windows-386", "mihomo", "clash" },
@@ -356,7 +356,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.hysteria,
                 coreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },
@@ -369,7 +369,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.naiveproxy,
                 coreExes = new List<string> { "naiveproxy", "naive" },
@@ -378,7 +378,7 @@ namespace v2rayN.Handler
                 redirectInfo = false,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.tuic,
                 coreExes = new List<string> { "tuic-client", "tuic" },
@@ -387,7 +387,7 @@ namespace v2rayN.Handler
                 redirectInfo = true,
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.sing_box,
                 coreExes = new List<string> { "sing-box-client", "sing-box" },
@@ -402,7 +402,7 @@ namespace v2rayN.Handler
                 versionArg = "version",
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.juicity,
                 coreExes = new List<string> { "juicity-client", "juicity" },
@@ -410,7 +410,7 @@ namespace v2rayN.Handler
                 coreUrl = Global.JuicityCoreUrl
             });
 
-            coreInfos.Add(new CoreInfo
+            coreInfo.Add(new CoreInfo
             {
                 coreType = ECoreType.hysteria2,
                 coreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },

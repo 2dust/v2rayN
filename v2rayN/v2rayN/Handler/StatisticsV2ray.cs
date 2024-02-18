@@ -1,19 +1,19 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
 using ProtosLib.Statistics;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
     internal class StatisticsV2ray
     {
-        private Mode.Config _config;
+        private Model.Config _config;
         private GrpcChannel? _channel;
         private StatsService.StatsServiceClient? _client;
         private bool _exitFlag;
         private Action<ServerSpeedItem> _updateFunc;
 
-        public StatisticsV2ray(Mode.Config config, Action<ServerSpeedItem> update)
+        public StatisticsV2ray(Model.Config config, Action<ServerSpeedItem> update)
         {
             _config = config;
             _updateFunc = update;

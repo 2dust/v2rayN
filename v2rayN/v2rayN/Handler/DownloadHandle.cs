@@ -33,7 +33,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utile.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -65,7 +65,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utile.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
@@ -77,7 +77,7 @@ namespace v2rayN.Handler
                 var webProxy = GetWebProxy(blProxy);
                 await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                     url,
-                    Utils.GetTempPath(Utils.GetDownloadFileName(url)),
+                    Utile.GetTempPath(Utile.GetDownloadFileName(url)),
                     progress,
                     downloadTimeout);
             }
@@ -95,7 +95,7 @@ namespace v2rayN.Handler
 
         public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
-            Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+            Utile.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -120,7 +120,7 @@ namespace v2rayN.Handler
             try
             {
                 var result1 = await DownloadStringAsync(url, blProxy, userAgent);
-                if (!Utils.IsNullOrEmpty(result1))
+                if (!Utile.IsNullOrEmpty(result1))
                 {
                     return result1;
                 }
@@ -138,7 +138,7 @@ namespace v2rayN.Handler
             try
             {
                 var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent);
-                if (!Utils.IsNullOrEmpty(result2))
+                if (!Utile.IsNullOrEmpty(result2))
                 {
                     return result2;
                 }
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
                 using var wc = new WebClient();
                 wc.Proxy = GetWebProxy(blProxy);
                 var result3 = await wc.DownloadStringTaskAsync(url);
-                if (!Utils.IsNullOrEmpty(result3))
+                if (!Utile.IsNullOrEmpty(result3))
                 {
                     return result3;
                 }
@@ -184,7 +184,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utile.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
                 var webProxy = GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
@@ -192,17 +192,17 @@ namespace v2rayN.Handler
                     UseProxy = webProxy != null
                 });
 
-                if (Utils.IsNullOrEmpty(userAgent))
+                if (Utile.IsNullOrEmpty(userAgent))
                 {
-                    userAgent = Utils.GetVersion(false);
+                    userAgent = Utile.GetVersion(false);
                 }
                 client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
 
                 Uri uri = new(url);
                 //Authorization Header
-                if (!Utils.IsNullOrEmpty(uri.UserInfo))
+                if (!Utile.IsNullOrEmpty(uri.UserInfo))
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utile.Base64Encode(uri.UserInfo));
                 }
 
                 using var cts = new CancellationTokenSource();
@@ -229,13 +229,13 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utile.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
 
                 var webProxy = GetWebProxy(blProxy);
 
-                if (Utils.IsNullOrEmpty(userAgent))
+                if (Utile.IsNullOrEmpty(userAgent))
                 {
-                    userAgent = Utils.GetVersion(false);
+                    userAgent = Utile.GetVersion(false);
                 }
                 var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
                 return result;
@@ -300,7 +300,7 @@ namespace v2rayN.Handler
             }
             catch //(Exception ex)
             {
-                //Utils.SaveLog(ex.Message, ex);
+                //Utile.SaveLog(ex.Message, ex);
             }
             return responseTime;
         }

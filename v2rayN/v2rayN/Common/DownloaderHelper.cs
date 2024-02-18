@@ -19,9 +19,9 @@ namespace v2rayN
             Uri uri = new(url);
             //Authorization Header
             var headers = new WebHeaderCollection();
-            if (!Utils.IsNullOrEmpty(uri.UserInfo))
+            if (!Utile.IsNullOrEmpty(uri.UserInfo))
             {
-                headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
+                headers.Add(HttpRequestHeader.Authorization, "Basic " + Utile.Base64Encode(uri.UserInfo));
             }
 
             var downloadOpt = new DownloadConfiguration()

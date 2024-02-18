@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler
@@ -26,7 +26,7 @@ namespace v2rayN.Handler
                 }
 
                 //Load from local file
-                var fileName = Utils.GetPath($"NotifyIcon{index + 1}.ico");
+                var fileName = Utile.GetPath($"NotifyIcon{index + 1}.ico");
                 if (File.Exists(fileName))
                 {
                     return new Icon(fileName);
@@ -78,7 +78,7 @@ namespace v2rayN.Handler
                 }
 
                 var item = ConfigHandler.GetDefaultRouting(config);
-                if (item == null || Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
+                if (item == null || Utile.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
                 {
                     return null;
                 }
@@ -140,7 +140,7 @@ namespace v2rayN.Handler
                 return;
             }
             string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
+            if (Utile.IsNullOrEmpty(fileName))
             {
                 return;
             }

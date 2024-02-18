@@ -6,7 +6,7 @@ using System.IO;
 using System.Reactive;
 using System.Windows;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
@@ -36,7 +36,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = JsonUtils.DeepCopy(profileItem);
+                SelectedSource = JsonUtile.DeepCopy(profileItem);
             }
 
             _view = view;
@@ -56,19 +56,19 @@ namespace v2rayN.ViewModels
                 SaveServer();
             });
 
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void SaveServer()
         {
             string remarks = SelectedSource.remarks;
-            if (Utils.IsNullOrEmpty(remarks))
+            if (Utile.IsNullOrEmpty(remarks))
             {
                 UI.Show(ResUI.PleaseFillRemarks);
                 return;
             }
 
-            if (Utils.IsNullOrEmpty(SelectedSource.address))
+            if (Utile.IsNullOrEmpty(SelectedSource.address))
             {
                 UI.Show(ResUI.FillServerAddressCustom);
                 return;
@@ -108,7 +108,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (Utils.IsNullOrEmpty(fileName))
+            if (Utile.IsNullOrEmpty(fileName))
             {
                 return;
             }
@@ -119,9 +119,9 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedCustomServer);
-                if (!Utils.IsNullOrEmpty(item.indexId))
+                if (!Utile.IsNullOrEmpty(item.indexId))
                 {
-                    SelectedSource = JsonUtils.DeepCopy(item);
+                    SelectedSource = JsonUtile.DeepCopy(item);
                 }
                 IsModified = true;
             }
@@ -134,16 +134,16 @@ namespace v2rayN.ViewModels
         private void EditServer()
         {
             var address = SelectedSource.address;
-            if (Utils.IsNullOrEmpty(address))
+            if (Utile.IsNullOrEmpty(address))
             {
                 UI.Show(ResUI.FillServerAddressCustom);
                 return;
             }
 
-            address = Utils.GetConfigPath(address);
+            address = Utile.GetConfigPath(address);
             if (File.Exists(address))
             {
-                Utils.ProcessStart(address);
+                Utile.ProcessStart(address);
             }
             else
             {

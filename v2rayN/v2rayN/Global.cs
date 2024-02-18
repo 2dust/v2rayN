@@ -1,4 +1,4 @@
-﻿using v2rayN.Mode;
+﻿using v2rayN.Model;
 
 namespace v2rayN
 {
@@ -35,8 +35,8 @@ namespace v2rayN
         public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
-        public const string V2raySampleHttprequestFileName = "v2rayN.Sample.SampleHttprequest";
-        public const string V2raySampleHttpresponseFileName = "v2rayN.Sample.SampleHttpresponse";
+        public const string V2raySampleHttpRequestFileName = "v2rayN.Sample.SampleHttpRequest";
+        public const string V2raySampleHttpResponseFileName = "v2rayN.Sample.SampleHttpResponse";
         public const string V2raySampleInbound = "v2rayN.Sample.SampleInbound";
         public const string V2raySampleOutbound = "v2rayN.Sample.SampleOutbound";
         public const string SingboxSampleOutbound = "v2rayN.Sample.SingboxSampleOutbound";
@@ -62,7 +62,7 @@ namespace v2rayN
         public const string InboundHttp2 = "http2";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPITagName = "api";
-        public const string InboundAPIProtocal = "dokodemo-door";
+        public const string InboundAPIProtocol = "dokodemo-door";
         public const string HttpProtocol = "http://";
         public const string HttpsProtocol = "https://";
 
@@ -74,8 +74,8 @@ namespace v2rayN
         public const string CustomIconName = "v2rayN.ico";
         public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
         public const string RoutingRuleComma = "<COMMA>";
-        public const string GrpcgunMode = "gun";
-        public const string GrpcmultiMode = "multi";
+        public const string GrpcGunMode = "gun";
+        public const string GrpcMultiMode = "multi";
         public const int MaxPort = 65536;
         public const string CommandClearMsg = "CommandClearMsg";
         public const string DelayUnit = "";
@@ -122,7 +122,7 @@ namespace v2rayN
             @"https://www.google.com/generate_204",
         };
 
-        public static readonly Dictionary<string, string> UserAgentTxts = new()
+        public static readonly Dictionary<string, string> UserAgentTexts = new()
         {
             {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
             {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
@@ -157,23 +157,23 @@ namespace v2rayN
             {EConfigType.Wireguard,"wireguard"}
         };
 
-        public static readonly List<string> VmessSecuritys = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
-        public static readonly List<string> SsSecuritys = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
-        public static readonly List<string> SsSecuritysInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
-        public static readonly List<string> SsSecuritysInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
-        public static readonly List<string> SsSecuritysInSingbox = new() { "aes-256-gcm", "aes-192-gcm", "aes-128-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "rc4-md5", "chacha20-ietf", "xchacha20" };
+        public static readonly List<string> VmessSecurities = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };
+        public static readonly List<string> SsSecurities = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "none", "plain" };
+        public static readonly List<string> SsSecuritiesInSagerNet = new() { "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-gcm", "aes-192-gcm", "aes-256-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "rc4", "rc4-md5", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "aes-128-cfb8", "aes-192-cfb8", "aes-256-cfb8", "aes-128-ofb", "aes-192-ofb", "aes-256-ofb", "bf-cfb", "cast5-cfb", "des-cfb", "idea-cfb", "rc2-cfb", "seed-cfb", "camellia-128-cfb", "camellia-192-cfb", "camellia-256-cfb", "camellia-128-cfb8", "camellia-192-cfb8", "camellia-256-cfb8", "salsa20", "chacha20", "chacha20-ietf", "xchacha20" };
+        public static readonly List<string> SsSecuritiesInXray = new() { "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305", "chacha20-ietf-poly1305", "xchacha20-poly1305", "xchacha20-ietf-poly1305", "none", "plain", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305" };
+        public static readonly List<string> SsSecuritiesInSingbox = new() { "aes-256-gcm", "aes-192-gcm", "aes-128-gcm", "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305", "none", "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm", "2022-blake3-chacha20-poly1305", "aes-128-ctr", "aes-192-ctr", "aes-256-ctr", "aes-128-cfb", "aes-192-cfb", "aes-256-cfb", "rc4-md5", "chacha20-ietf", "xchacha20" };
         public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "h2", "quic", "grpc" };
         public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
         public static readonly List<string> CoreTypes = new() { "v2fly", "SagerNet", "Xray", "sing_box" };
         public static readonly List<string> CoreTypes4VLESS = new() { "Xray", "sing_box" };
-        public static readonly List<string> DomainStrategys = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
-        public static readonly List<string> DomainStrategys4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
+        public static readonly List<string> DomainStrategies = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
+        public static readonly List<string> DomainStrategies4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
         public static readonly List<string> DomainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> Fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
         public static readonly List<string> UserAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
 
-        public static readonly List<string> AllowInsecures = new() { "true", "false", "" };
+        public static readonly List<string> AllowInsecure = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
         public static readonly List<string> Alpns = new() { "h3", "h2", "http/1.1", "h3,h2,http/1.1", "h3,h2", "h2,http/1.1", "" };

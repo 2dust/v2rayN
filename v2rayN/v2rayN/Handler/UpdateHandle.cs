@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler
@@ -47,15 +47,15 @@ namespace v2rayN.Handler
 
                     try
                     {
-                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
-                        fileName = Utils.UrlEncode(fileName);
+                        string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(url));
+                        fileName = Utile.UrlEncode(fileName);
                         Process process = new()
                         {
                             StartInfo = new ProcessStartInfo
                             {
                                 FileName = "v2rayUpgrade.exe",
                                 Arguments = fileName.AppendQuotes(),                                
-                                WorkingDirectory = Utils.StartupPath()
+                                WorkingDirectory = Utile.StartupPath()
                             }
                         };
                         process.Start();
@@ -179,7 +179,7 @@ namespace v2rayN.Handler
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
                     string hashCode = $"{item.remarks}->";
-                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (!Utils.IsNullOrEmpty(subId) && item.id != subId))
+                    if (Utile.IsNullOrEmpty(id) || Utile.IsNullOrEmpty(url) || (!Utile.IsNullOrEmpty(subId) && item.id != subId))
                     {
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                         continue;
@@ -203,12 +203,12 @@ namespace v2rayN.Handler
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                     //one url
-                    url = Utils.GetPunycode(url);
+                    url = Utile.GetPunycode(url);
                     //convert
-                    if (!Utils.IsNullOrEmpty(item.convertTarget))
+                    if (!Utile.IsNullOrEmpty(item.convertTarget))
                     {
                         var subConvertUrl = string.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
-                        url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
+                        url = string.Format(subConvertUrl!, Utile.UrlEncode(url));
                         if (!url.Contains("target="))
                         {
                             url += string.Format("&target={0}", item.convertTarget);
@@ -219,17 +219,17 @@ namespace v2rayN.Handler
                         }
                     }
                     var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
-                    if (blProxy && Utils.IsNullOrEmpty(result))
+                    if (blProxy && Utile.IsNullOrEmpty(result))
                     {
                         result = await downloadHandle.TryDownloadString(url, false, userAgent);
                     }
 
                     //more url
-                    if (Utils.IsNullOrEmpty(item.convertTarget) && !Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
+                    if (Utile.IsNullOrEmpty(item.convertTarget) && !Utile.IsNullOrEmpty(item.moreUrl.TrimEx()))
                     {
-                        if (!Utils.IsNullOrEmpty(result) && Utils.IsBase64String(result!))
+                        if (!Utile.IsNullOrEmpty(result) && Utile.IsBase64String(result!))
                         {
-                            result = Utils.Base64Decode(result);
+                            result = Utile.Base64Decode(result);
                         }
 
                         var lstUrl = new List<string>
@@ -238,22 +238,22 @@ namespace v2rayN.Handler
                         };
                         foreach (var it in lstUrl)
                         {
-                            var url2 = Utils.GetPunycode(it);
-                            if (Utils.IsNullOrEmpty(url2))
+                            var url2 = Utile.GetPunycode(it);
+                            if (Utile.IsNullOrEmpty(url2))
                             {
                                 continue;
                             }
 
                             var result2 = await downloadHandle.TryDownloadString(url2, blProxy, userAgent);
-                            if (blProxy && Utils.IsNullOrEmpty(result2))
+                            if (blProxy && Utile.IsNullOrEmpty(result2))
                             {
                                 result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
                             }
-                            if (!Utils.IsNullOrEmpty(result2))
+                            if (!Utile.IsNullOrEmpty(result2))
                             {
-                                if (Utils.IsBase64String(result2!))
+                                if (Utile.IsBase64String(result2!))
                                 {
-                                    result += Utils.Base64Decode(result2);
+                                    result += Utile.Base64Decode(result2);
                                 }
                                 else
                                 {
@@ -263,7 +263,7 @@ namespace v2rayN.Handler
                         }
                     }
 
-                    if (Utils.IsNullOrEmpty(result))
+                    if (Utile.IsNullOrEmpty(result))
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
                     }
@@ -325,7 +325,7 @@ namespace v2rayN.Handler
                 string url = coreInfo.coreReleaseApiUrl;
 
                 var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
-                if (!Utils.IsNullOrEmpty(result))
+                if (!Utile.IsNullOrEmpty(result))
                 {
                     responseHandler(type, result, preRelease);
                 }
@@ -354,7 +354,7 @@ namespace v2rayN.Handler
                 foreach (string name in coreInfo.coreExes)
                 {
                     string vName = $"{name}.exe";
-                    vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
+                    vName = Utile.GetBinPath(vName, coreInfo.coreType.ToString());
                     if (File.Exists(vName))
                     {
                         filePath = vName;
@@ -372,7 +372,7 @@ namespace v2rayN.Handler
                 using Process p = new();
                 p.StartInfo.FileName = filePath.AppendQuotes();
                 p.StartInfo.Arguments = coreInfo.versionArg;
-                p.StartInfo.WorkingDirectory = Utils.StartupPath();
+                p.StartInfo.WorkingDirectory = Utile.StartupPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -413,7 +413,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
+                var gitHubReleases = JsonUtile.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
                 var gitHubRelease = preRelease ? gitHubReleases!.First() : gitHubReleases!.First(r => r.Prerelease == false);
                 var version = new SemanticVersion(gitHubRelease!.TagName);
                 var body = gitHubRelease!.Body;
@@ -496,7 +496,7 @@ namespace v2rayN.Handler
                         }
                     case ECoreType.v2rayN:
                         {
-                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString());
+                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utile.GetExePath()).FileVersion.ToString());
                             message = string.Format(ResUI.IsLatestN, type, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -568,15 +568,15 @@ namespace v2rayN.Handler
 
                     try
                     {
-                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
                             //Global.coreTypes.ForEach(it =>
                             //{
-                            //    string targetPath = Utils.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
+                            //    string targetPath = Utile.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
                             //    File.Copy(fileName, targetPath, true);
                             //});
-                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
+                            string targetPath = Utile.GetBinPath($"{geoName}.dat");
                             File.Copy(fileName, targetPath, true);
 
                             File.Delete(fileName);
@@ -621,10 +621,10 @@ namespace v2rayN.Handler
                             coreHandler?.CoreStop();
                             await Task.Delay(3000);
                         }
-                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
-                            string targetPath = Utils.GetConfigPath($"{geoName}.db");
+                            string targetPath = Utile.GetConfigPath($"{geoName}.db");
                             File.Copy(fileName, targetPath, true);
 
                             File.Delete(fileName);

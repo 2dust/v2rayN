@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN
 {
@@ -27,11 +27,11 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var exePathKey = Utils.GetMD5(Utils.GetExePath());
+            var exePathKey = Utile.GetMD5(Utile.GetExePath());
 
-            var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
+            var rebootAs = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
-            if (!rebootas && !bCreatedNew)
+            if (!rebootAs && !bCreatedNew)
             {
                 ProgramStarted.Set();
                 Current.Shutdown();
@@ -42,7 +42,7 @@ namespace v2rayN
             Logging.Setup();
             Init();
             Logging.LoggingEnabled(_config.guiItem.enableLog);
-            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Logging.SaveLog($"v2rayN start up | {Utile.GetVersion()} | {Utile.GetExePath()}");
             Logging.ClearLogs();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
