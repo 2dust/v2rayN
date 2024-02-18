@@ -54,7 +54,7 @@ namespace v2rayN.Handler
                             StartInfo = new ProcessStartInfo
                             {
                                 FileName = "v2rayUpgrade.exe",
-                                Arguments = fileName.AppendQuotes(),                                
+                                Arguments = fileName.AppendQuotes(),
                                 WorkingDirectory = Utile.StartupPath()
                             }
                         };
@@ -392,6 +392,7 @@ namespace v2rayN.Handler
 
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
+                    case ECoreType.mihomo:
                         version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
                         break;
 
@@ -453,6 +454,7 @@ namespace v2rayN.Handler
                         }
                     case ECoreType.clash:
                     case ECoreType.clash_meta:
+                    case ECoreType.mihomo:
                         {
                             curVersion = getCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion);
