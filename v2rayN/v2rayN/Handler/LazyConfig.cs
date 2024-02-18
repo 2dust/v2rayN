@@ -12,6 +12,7 @@ namespace v2rayN.Handler
         public static LazyConfig Instance => _instance.Value;
 
         private int? _statePort;
+
         public int StatePort
         {
             get
@@ -349,7 +350,7 @@ namespace v2rayN.Handler
             {
                 coreType = ECoreType.mihomo,
                 coreExes = new List<string> { $"mihomo-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-windows-386", "mihomo", "clash" },
-                arguments = "-f config.yaml",
+                arguments = "-f config.json",
                 coreUrl = Global.MihomoCoreUrl,
                 coreReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                 match = "Mihomo",
