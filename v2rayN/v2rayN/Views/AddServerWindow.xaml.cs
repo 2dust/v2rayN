@@ -3,7 +3,7 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 using v2rayN.ViewModels;
 
@@ -60,7 +60,7 @@ namespace v2rayN.Views
                 cmbFingerprint.Items.Add(it);
                 cmbFingerprint2.Items.Add(it);
             });
-            Global.AllowInsecures.ForEach(it =>
+            Global.AllowInsecure.ForEach(it =>
             {
                 cmbAllowInsecure.Items.Add(it);
             });
@@ -73,7 +73,7 @@ namespace v2rayN.Views
             {
                 case EConfigType.VMess:
                     gridVMess.Visibility = Visibility.Visible;
-                    Global.VmessSecuritys.ForEach(it =>
+                    Global.VmessSecurities.ForEach(it =>
                     {
                         cmbSecurity.Items.Add(it);
                     });
@@ -85,7 +85,7 @@ namespace v2rayN.Views
 
                 case EConfigType.Shadowsocks:
                     gridSs.Visibility = Visibility.Visible;
-                    LazyConfig.Instance.GetShadowsocksSecuritys(profileItem).ForEach(it =>
+                    LazyConfig.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
                     {
                         cmbSecurity3.Items.Add(it);
                     });
@@ -265,7 +265,7 @@ namespace v2rayN.Views
         private void btnGUID_Click(object sender, RoutedEventArgs e)
         {
             txtId.Text =
-            txtId5.Text = Utils.GetGUID();
+            txtId5.Text = Utile.GetGUID();
         }
 
         private void SetHeaderType()
@@ -273,7 +273,7 @@ namespace v2rayN.Views
             cmbHeaderType.Items.Clear();
 
             var network = cmbNetwork.SelectedItem.ToString();
-            if (Utils.IsNullOrEmpty(network))
+            if (Utile.IsNullOrEmpty(network))
             {
                 cmbHeaderType.Items.Add(Global.None);
                 return;
@@ -294,8 +294,8 @@ namespace v2rayN.Views
             }
             else if (network == "grpc")
             {
-                cmbHeaderType.Items.Add(Global.GrpcgunMode);
-                cmbHeaderType.Items.Add(Global.GrpcmultiMode);
+                cmbHeaderType.Items.Add(Global.GrpcGunMode);
+                cmbHeaderType.Items.Add(Global.GrpcMultiMode);
             }
             else
             {
@@ -307,7 +307,7 @@ namespace v2rayN.Views
         private void SetTips()
         {
             var network = cmbNetwork.SelectedItem.ToString();
-            if (Utils.IsNullOrEmpty(network))
+            if (Utile.IsNullOrEmpty(network))
             {
                 network = Global.DefaultNetwork;
             }

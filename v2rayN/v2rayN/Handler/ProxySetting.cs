@@ -26,7 +26,7 @@ namespace v2rayN.Handler
         ///     PROXY_TYPE_AUTO_DETECT      = 0x00000008  // use autoproxy detection
         /// </param>
         /// <exception cref="ApplicationException">Error message with win32 error code</exception>
-        /// <returns>true: one of connnection is successfully updated proxy settings</returns>
+        /// <returns>true: one of connection is successfully updated proxy settings</returns>
         public static bool SetProxy(string? strProxy, string? exceptions, int type)
         {
             // set proxy for LAN
@@ -51,7 +51,7 @@ namespace v2rayN.Handler
             }
             else if (type is 2 or 4) // named proxy or autoproxy script URL
             {
-                optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
+                optionCount = Utile.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
 
             int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
@@ -67,7 +67,7 @@ namespace v2rayN.Handler
                 m_Option = PerConnOption.INTERNET_PER_CONN_AUTOCONFIG_URL;
             }
 
-            //int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
+            //int optionCount = Utile.IsNullOrEmpty(strProxy) ? 1 : (Utile.IsNullOrEmpty(exceptions) ? 2 : 3);
             InternetConnectionOption[] options = new InternetConnectionOption[optionCount];
             // USE a proxy server ...
             options[0].m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;

@@ -11,7 +11,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using v2rayN.Base;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 using v2rayN.ViewModels;
 using Point = System.Windows.Point;
@@ -139,7 +139,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportOldGuiConfigCmd, v => v.menuImportOldGuiConfig).DisposeWith(disposables);
 
-                //checkupdate
+                //check update
                 this.BindCommand(ViewModel, vm => vm.CheckUpdateNCmd, v => v.menuCheckUpdateN).DisposeWith(disposables);
                 //this.BindCommand(ViewModel, vm => vm.CheckUpdateV2flyCoreCmd, v => v.menuCheckUpdateV2flyCore).DisposeWith(disposables);
                 //this.BindCommand(ViewModel, vm => vm.CheckUpdateSagerNetCoreCmd, v => v.menuCheckUpdateSagerNetCore).DisposeWith(disposables);
@@ -210,8 +210,8 @@ namespace v2rayN.Views
             RestoreUI();
             AddHelpMenuItem();
 
-            var IsAdministrator = Utils.IsAdministrator();
-            this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            var IsAdministrator = Utile.IsAdministrator();
+            this.Title = $"{Utile.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             //if (_config.uiItem.autoHideStartup)
             //{
@@ -234,7 +234,7 @@ namespace v2rayN.Views
                     {
                         if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
                         {
-                            ViewModel?.ModifyTheme(!Utils.IsLightTheme());
+                            ViewModel?.ModifyTheme(!Utile.IsLightTheme());
                         }
                     }
                 }
@@ -417,7 +417,7 @@ namespace v2rayN.Views
 
         private void menuPromotion_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+            Utile.ProcessStart($"{Utile.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
 
         private void txtRunningInfoDisplay_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -427,7 +427,7 @@ namespace v2rayN.Views
 
         private void menuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
+            Utile.ProcessStart(Utile.GetBinPath("EnableLoopback.exe"));
         }
 
         private void BtnAutofitColumnWidth_Click(object sender, RoutedEventArgs e)
@@ -512,8 +512,8 @@ namespace v2rayN.Views
 
         private void StorageUI()
         {
-            _config.uiItem.mainWidth = Utils.ToInt(this.Width);
-            _config.uiItem.mainHeight = Utils.ToInt(this.Height);
+            _config.uiItem.mainWidth = Utile.ToInt(this.Width);
+            _config.uiItem.mainHeight = Utile.ToInt(this.Height);
 
             List<ColumnItem> lvColumnItem = new();
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
@@ -522,7 +522,7 @@ namespace v2rayN.Views
                 lvColumnItem.Add(new()
                 {
                     Name = item2.ExName,
-                    Width = item2.Visibility == Visibility.Visible ? Utils.ToInt(item2.ActualWidth) : -1,
+                    Width = item2.Visibility == Visibility.Visible ? Utile.ToInt(item2.ActualWidth) : -1,
                     Index = item2.DisplayIndex
                 });
             }
@@ -534,8 +534,8 @@ namespace v2rayN.Views
 
         private void AddHelpMenuItem()
         {
-            var coreInfos = LazyConfig.Instance.GetCoreInfos();
-            foreach (var it in coreInfos
+            var coreInfo = LazyConfig.Instance.GetCoreInfo();
+            foreach (var it in coreInfo
                 .Where(t => t.coreType != ECoreType.v2fly
                             && t.coreType != ECoreType.clash
                             && t.coreType != ECoreType.clash_meta
@@ -555,7 +555,7 @@ namespace v2rayN.Views
         {
             if (sender is MenuItem item)
             {
-                Utils.ProcessStart(item.Tag.ToString());
+                Utile.ProcessStart(item.Tag.ToString());
             }
         }
 
@@ -573,7 +573,7 @@ namespace v2rayN.Views
         /// <typeparam name="T"></typeparam>
         /// <param name="current"></param>
         /// <returns></returns>
-        private static T? FindAnchestor<T>(DependencyObject current) where T : DependencyObject
+        private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
             do
             {
@@ -605,7 +605,7 @@ namespace v2rayN.Views
             {
                 // Get the dragged Item
                 if (sender is not DataGrid listView) return;
-                var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
+                var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null) return;           // Abort
                                                             // Find the data behind the ListViewItem
                 ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
@@ -631,7 +631,7 @@ namespace v2rayN.Views
             {
                 // Get the drop Item destination
                 if (sender is not DataGrid listView) return;
-                var listViewItem = FindAnchestor<DataGridRow>((DependencyObject)e.OriginalSource);
+                var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null)
                 {
                     // Abort

@@ -4,7 +4,7 @@ using Splat;
 using System.Reactive;
 using System.Windows;
 using v2rayN.Handler;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
@@ -43,7 +43,7 @@ namespace v2rayN.ViewModels
 
             if (rulesItem.id.IsNullOrEmpty())
             {
-                rulesItem.id = Utils.GetGUID(false);
+                rulesItem.id = Utile.GetGUID(false);
                 rulesItem.outboundTag = Global.ProxyTag;
                 rulesItem.enabled = true;
                 SelectedSource = rulesItem;
@@ -53,35 +53,35 @@ namespace v2rayN.ViewModels
                 SelectedSource = rulesItem;
             }
 
-            Domain = Utils.List2String(SelectedSource.domain, true);
-            IP = Utils.List2String(SelectedSource.ip, true);
-            Process = Utils.List2String(SelectedSource.process, true);
+            Domain = Utile.List2String(SelectedSource.domain, true);
+            IP = Utile.List2String(SelectedSource.ip, true);
+            Process = Utile.List2String(SelectedSource.process, true);
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
                 SaveRules();
             });
 
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void SaveRules()
         {
-            Domain = Utils.Convert2Comma(Domain);
-            IP = Utils.Convert2Comma(IP);
-            Process = Utils.Convert2Comma(Process);
+            Domain = Utile.Convert2Comma(Domain);
+            IP = Utile.Convert2Comma(IP);
+            Process = Utile.Convert2Comma(Process);
 
             if (AutoSort)
             {
-                SelectedSource.domain = Utils.String2ListSorted(Domain);
-                SelectedSource.ip = Utils.String2ListSorted(IP);
-                SelectedSource.process = Utils.String2ListSorted(Process);
+                SelectedSource.domain = Utile.String2ListSorted(Domain);
+                SelectedSource.ip = Utile.String2ListSorted(IP);
+                SelectedSource.process = Utile.String2ListSorted(Process);
             }
             else
             {
-                SelectedSource.domain = Utils.String2List(Domain);
-                SelectedSource.ip = Utils.String2List(IP);
-                SelectedSource.process = Utils.String2List(Process);
+                SelectedSource.domain = Utile.String2List(Domain);
+                SelectedSource.ip = Utile.String2List(IP);
+                SelectedSource.process = Utile.String2List(Process);
             }
             SelectedSource.protocol = ProtocolItems?.ToList();
             SelectedSource.inboundTag = InboundTagItems?.ToList();
@@ -90,7 +90,7 @@ namespace v2rayN.ViewModels
               || SelectedSource.ip?.Count > 0
               || SelectedSource.protocol?.Count > 0
               || SelectedSource.process?.Count > 0
-              || !Utils.IsNullOrEmpty(SelectedSource.port);
+              || !Utile.IsNullOrEmpty(SelectedSource.port);
 
             if (!hasRule)
             {

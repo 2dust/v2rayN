@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -48,7 +48,7 @@ namespace v2rayN.Handler
 
         public void ClearAllServerStatistics()
         {
-            SqliteHelper.Instance.Execute($"delete from ServerStatItem ");
+            SQLiteHelper.Instance.Execute($"delete from ServerStatItem ");
             _serverStatItem = null;
             _lstServerStat = new();
         }
@@ -57,7 +57,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                SqliteHelper.Instance.UpdateAll(_lstServerStat);
+                SQLiteHelper.Instance.UpdateAll(_lstServerStat);
             }
             catch (Exception ex)
             {
@@ -67,12 +67,12 @@ namespace v2rayN.Handler
 
         private void Init()
         {
-            SqliteHelper.Instance.Execute($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
+            SQLiteHelper.Instance.Execute($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
 
             long ticks = DateTime.Now.Date.Ticks;
-            SqliteHelper.Instance.Execute($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
+            SQLiteHelper.Instance.Execute($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
-            _lstServerStat = SqliteHelper.Instance.Table<ServerStatItem>().ToList();
+            _lstServerStat = SQLiteHelper.Instance.Table<ServerStatItem>().ToList();
         }
 
         private void UpdateServerStat(ServerSpeedItem server)
@@ -121,7 +121,7 @@ namespace v2rayN.Handler
                         todayDown = 0,
                         dateNow = ticks
                     };
-                    SqliteHelper.Instance.Replace(_serverStatItem);
+                    SQLiteHelper.Instance.Replace(_serverStatItem);
                     _lstServerStat.Add(_serverStatItem);
                 }
             }
@@ -139,7 +139,7 @@ namespace v2rayN.Handler
             try
             {
                 int defaultPort = 9090;
-                if (!Utils.PortInUse(defaultPort))
+                if (!Utile.PortInUse(defaultPort))
                 {
                     return defaultPort;
                 }

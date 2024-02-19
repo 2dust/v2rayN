@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using v2rayN.Mode;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler
@@ -326,7 +326,7 @@ namespace v2rayN.Handler
         private async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
         {
             int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
-            //string output = Utils.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
+            //string output = Utile.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
             return FormatOut(responseTime, Global.DelayUnit);
         }
 

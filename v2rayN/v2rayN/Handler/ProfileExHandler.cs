@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Reactive.Linq;
-using v2rayN.Mode;
+using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -19,9 +19,9 @@ namespace v2rayN.Handler
 
         private void Init()
         {
-            SqliteHelper.Instance.Execute($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
+            SQLiteHelper.Instance.Execute($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
-            _lstProfileEx = new(SqliteHelper.Instance.Table<ProfileExItem>());
+            _lstProfileEx = new(SQLiteHelper.Instance.Table<ProfileExItem>());
 
             Task.Run(async () =>
             {
@@ -34,7 +34,7 @@ namespace v2rayN.Handler
                         var item = _lstProfileEx.FirstOrDefault(t => t.indexId == id);
                         if (item is not null)
                         {
-                            SqliteHelper.Instance.Replace(item);
+                            SQLiteHelper.Instance.Replace(item);
                         }
                     }
                     await Task.Delay(1000 * 60);
@@ -44,7 +44,7 @@ namespace v2rayN.Handler
 
         private void IndexIdEnqueue(string indexId)
         {
-            if (!Utils.IsNullOrEmpty(indexId) && !_queIndexIds.Contains(indexId))
+            if (!Utile.IsNullOrEmpty(indexId) && !_queIndexIds.Contains(indexId))
             {
                 _queIndexIds.Enqueue(indexId);
             }
@@ -65,7 +65,7 @@ namespace v2rayN.Handler
 
         public void ClearAll()
         {
-            SqliteHelper.Instance.Execute($"delete from ProfileExItem ");
+            SQLiteHelper.Instance.Execute($"delete from ProfileExItem ");
             _lstProfileEx = new();
         }
 
@@ -75,9 +75,9 @@ namespace v2rayN.Handler
             {
                 //foreach (var item in _lstProfileEx)
                 //{
-                //    SqliteHelper.Instance.Replace(item);
+                //    SQLiteHelper.Instance.Replace(item);
                 //}
-                SqliteHelper.Instance.UpdateAll(_lstProfileEx);
+                SQLiteHelper.Instance.UpdateAll(_lstProfileEx);
             }
             catch (Exception ex)
             {
