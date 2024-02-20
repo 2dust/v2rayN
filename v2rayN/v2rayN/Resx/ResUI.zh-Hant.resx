@@ -130,7 +130,7 @@
     <value>配置格式不正確</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意,自訂配置完全依賴您自己的配置，不能使用所有設定功能。如需使用系統代理請手動修改監聽埠。</value>
+    <value>注意，自訂配置完全依賴您自己的配置，不能使用所有設定功能。如需使用系統代理請手動修改監聽埠。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
@@ -265,7 +265,7 @@
     <value>更新Core成功！正在重啟服務...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>非VMess或ss協定</value>
+    <value>非VMess或SS協定</value>
   </data>
   <data name="NonVmessService" xml:space="preserve">
     <value>非標準服務，此功能無效</value>
@@ -334,13 +334,13 @@
     <value>別名</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>可選位址(Url)</value>
+    <value>可選位址(URL)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>數量</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>請填寫Url</value>
+    <value>請填寫URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>是否追加規則?選擇是則追加,選擇否則取代</value>
@@ -382,22 +382,22 @@
     <value>*QUIC 加密方式</value>
   </data>
   <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*tcp偽裝類型</value>
+    <value>*TCP偽裝類型</value>
   </data>
   <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*kcp偽裝類型</value>
+    <value>*KCP偽裝類型</value>
   </data>
   <data name="TransportHeaderTypeTip3" xml:space="preserve">
     <value>*QUIC偽裝類型</value>
   </data>
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*grpc 模式</value>
+    <value>*GRPC 模式</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
   </data>
   <data name="TransportPathTip5" xml:space="preserve">
-    <value>*Kcp seed</value>
+    <value>*KCP seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
     <value>註冊全域快速鍵 {0} 失敗,原因 {1}</value>
@@ -445,7 +445,7 @@
     <value>全域快速鍵設定</value>
   </data>
   <data name="menuHelp" xml:space="preserve">
-    <value>幫助</value>
+    <value>說明</value>
   </data>
   <data name="menuOptionSetting" xml:space="preserve">
     <value>參數設定</value>
@@ -493,7 +493,7 @@
     <value>不改變系統代理</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>Pac模式</value>
+    <value>PAC模式</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
     <value>自動配置系統代理</value>
@@ -625,13 +625,13 @@
     <value>位址(address)</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>跳過證書驗證(allowInsecure)</value>
+    <value>跳過憑證驗證(allowinsecure)</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
-    <value>Alpn</value>
+    <value>ALPN</value>
   </data>
   <data name="TbAlterId" xml:space="preserve">
-    <value>額外ID(alterId)</value>
+    <value>額外ID(alterid)</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Fingerprint</value>
@@ -667,7 +667,7 @@
     <value>傳輸層安全(TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*預設tcp,選錯會無法連接</value>
+    <value>*預設TCP,選錯會無法連接</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core類型</value>
@@ -697,7 +697,7 @@
     <value>加密方式(encryption)</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
-    <value>Socks埠</value>
+    <value>SOCKS埠</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
     <value>* 自訂配置的Socks埠值，可不設定；當設定此值後，將使用sing-box額外啟動一個前置Socks服務，提供分流和速度顯示等功能</value>
@@ -734,13 +734,13 @@
     <value>Core類型設定</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>預設跳過證書驗證(allowInsecure)</value>
+    <value>預設跳過憑證驗證(allowinsecure)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>自動調整伺服器列寬在更新訂閱後</value>
+    <value>在更新訂閱後自動調整伺服器列寬</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>檢查Pre-Release更新(請謹慎啟用)</value>
@@ -752,10 +752,10 @@
     <value>例外. 對於下列字元開頭的位址不使用代理配置檔案:使用分號(;)分隔</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>本機http監聽埠</value>
+    <value>本機HTTP監聽埠</value>
   </data>
   <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>更新Core時忽略Geo文件</value>
+    <value>更新Core時忽略Geo檔案</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>去重時保留序號較小的項</value>
@@ -785,7 +785,7 @@
     <value>開啟流量探測</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>本機socks監聽埠</value>
+    <value>本機SOCKS監聽埠</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>開機啟動(可能會不成功)</value>
@@ -833,7 +833,7 @@
     <value>自動配置系統代理</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
-    <value>Pac模式</value>
+    <value>PAC模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
     <value>分享伺服器 (Ctrl+F)</value>
@@ -848,13 +848,13 @@
     <value>以管理員身份執行</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>下移至底 (B)</value>
+    <value>下移至底部 (B)</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
     <value>下移 (D)</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>上移至頂 (T)</value>
+    <value>上移至頂部 (T)</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
     <value>上移 (U)</value>
@@ -917,7 +917,7 @@
     <value>從文件中匯入規則</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>從訂閱Url中匯入規則</value>
+    <value>從訂閱URL中匯入規則</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
     <value>規則集設定</value>
@@ -980,13 +980,13 @@
     <value>匯入舊的配置檔案guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>啟用Tun模式</value>
+    <value>啟用TUN模式</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>為區域網路開啟新的埠</value>
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
-    <value>Tun模式設定</value>
+    <value>TUN模式設定</value>
   </data>
   <data name="TbSettingsTunModeDirectIP" xml:space="preserve">
     <value>直連的IP CIDR，用逗號(,)分隔</value>
@@ -1028,7 +1028,7 @@
     <value>使用者代理(User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>僅對tcp/http、ws協定生效</value>
+    <value>僅對TCP/HTTP、WS協定生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>目前字型(需重啟)</value>
@@ -1037,7 +1037,7 @@
     <value>複製字型TTF/TTC文件到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http埠=socks埠+1</value>
+    <value>HTTP埠=SOCKS埠+1</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理員權限設定此項，在啟動後獲得管理員權限</value>
@@ -1058,7 +1058,7 @@
     <value>測速單個超時值</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>測速文件位址</value>
+    <value>測速檔案位址</value>
   </data>
   <data name="TbSettingsTunModeDNS" xml:space="preserve">
     <value>DNS物件，例如 {"servers":[]}</value>
@@ -1124,7 +1124,7 @@
     <value>sing-box Mux 多路復用協定</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>行程名全稱 (Tun模式)</value>
+    <value>行程名全稱 (TUN模式)</value>
   </data>
   <data name="TbRoutingRuleDomain" xml:space="preserve">
     <value>Domain</value>
@@ -1151,7 +1151,7 @@
     <value>啟用IPv6</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain 或 IP 或 进程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
+    <value>(Domain 或 IP 或 行程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
     <value>自动滚动到末尾</value>
@@ -1160,6 +1160,6 @@
     <value>真連接測試地址</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>更新订阅时只判断别名已存在否</value>
+    <value>更新訂閱時只判斷別名是否存在</value>
   </data>
 </root>

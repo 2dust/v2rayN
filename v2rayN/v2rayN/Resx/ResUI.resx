@@ -335,13 +335,13 @@
     <value>Remarks</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>Url(Optional)</value>
+    <value>URL(Optional)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>Count</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Please fill in the Url</value>
+    <value>Please fill in the URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
@@ -365,7 +365,7 @@
     <value>*h2 path</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
-    <value>*QUIC key/Kcp seed</value>
+    <value>*QUIC key/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
     <value>*grpc serviceName</value>
@@ -398,7 +398,7 @@
     <value>TLS</value>
   </data>
   <data name="TransportPathTip5" xml:space="preserve">
-    <value>*Kcp seed</value>
+    <value>*kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
     <value>Global hotkey {0} registered failed, reason {1}</value>
@@ -443,13 +443,13 @@
     <value>Exit</value>
   </data>
   <data name="menuGlobalHotkeySetting" xml:space="preserve">
-    <value>GlobalHotkeySetting</value>
+    <value>Global Hotkey Setting</value>
   </data>
   <data name="menuHelp" xml:space="preserve">
     <value>Help</value>
   </data>
   <data name="menuOptionSetting" xml:space="preserve">
-    <value>OptionSetting</value>
+    <value>Option Setting</value>
   </data>
   <data name="menuPromotion" xml:space="preserve">
     <value>Promotion</value>
@@ -458,7 +458,7 @@
     <value>Reload</value>
   </data>
   <data name="menuRoutingSetting" xml:space="preserve">
-    <value>RoutingSetting</value>
+    <value>Routing Setting</value>
   </data>
   <data name="menuServers" xml:space="preserve">
     <value>Servers</value>
@@ -476,7 +476,7 @@
     <value>Subscription group</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
-    <value>Subscription group Settings</value>
+    <value>Subscription group settings</value>
   </data>
   <data name="menuSubUpdate" xml:space="preserve">
     <value>Update subscription without proxy</value>
@@ -509,7 +509,7 @@
     <value>Follow System Theme</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>Language(Restart)</value>
+    <value>Language (Restart)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>Import bulk URL from clipboard (Ctrl+V)</value>
@@ -629,10 +629,10 @@
     <value>AllowInsecure</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
-    <value>Alpn</value>
+    <value>ALPN</value>
   </data>
   <data name="TbAlterId" xml:space="preserve">
-    <value>AlterId</value>
+    <value>AlterID</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Fingerprint</value>
@@ -752,7 +752,7 @@
     <value>Exception. Do not use proxy server for addresses beginning with,Use semicolon (;)</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>Http Port</value>
+    <value>HTTP Port</value>
   </data>
   <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
     <value>Ignore Geo files when updating core</value>
@@ -785,7 +785,7 @@
     <value>Turn on Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Socks Port</value>
+    <value>SOCKS Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Start on boot</value>
@@ -794,7 +794,7 @@
     <value>Enable Statistics (Require restart)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
-    <value>Subscription conversion Url</value>
+    <value>Subscription conversion URL</value>
   </data>
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>System proxy settings</value>
@@ -818,7 +818,7 @@
     <value>Display GUI</value>
   </data>
   <data name="TbGlobalHotkeySetting" xml:space="preserve">
-    <value>GlobalHotkey Settings</value>
+    <value>Global Hotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
     <value>Set directly by pressing the keyboard, Take effect after restart</value>
@@ -842,10 +842,10 @@
     <value>Routing</value>
   </data>
   <data name="NotRunAsAdmin" xml:space="preserve">
-    <value>Not Run As Admin</value>
+    <value>Not run as Admin</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
-    <value>Run As Admin</value>
+    <value>Run as Admin</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
     <value>Move to bottom (B)</value>
@@ -917,7 +917,7 @@
     <value>Import Rules From File</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>Import Rules From Sub Url</value>
+    <value>Import Rules From Subscription URL</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
     <value>Rule Settings</value>
@@ -977,7 +977,7 @@
     <value>Display Log</value>
   </data>
   <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>Import old config guiNConfig</value>
+    <value>Import old config (guiNConfig)</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Enable Tun</value>
@@ -1037,13 +1037,13 @@
     <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http port=socks port+1</value>
+    <value>HTTP port=SOCKS port+1</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Set this with admin privileges, get admin privileges after startup</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
-    <value>FontSize</value>
+    <value>Font Size</value>
   </data>
   <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
     <value>Proxy IP CIDR, separated by commas (,)</value>
@@ -1058,7 +1058,7 @@
     <value>SpeedTest Single Timeout Value</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>SpeedTest Url</value>
+    <value>SpeedTest URL</value>
   </data>
   <data name="TbSettingsTunModeDNS" xml:space="preserve">
     <value>DNS object, e.g. {"servers":[]}</value>
@@ -1088,7 +1088,7 @@
     <value>Updates are not enabled, skip this subscription</value>
   </data>
   <data name="menuRebootAsAdmin" xml:space="preserve">
-    <value>Reboot as administrator</value>
+    <value>Restart as Administrator</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
     <value>More urls, separated by commas;Subscription conversion will be invalid</value>
@@ -1187,7 +1187,7 @@
     <value>Auto ScrollToEnd</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>Speed Ping Test Url</value>
+    <value>Speed Ping Test URL</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
     <value>Updating subscription, only determine remarks exists</value>
