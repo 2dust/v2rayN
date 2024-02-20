@@ -29,22 +29,22 @@ namespace v2rayN
 
         public static IOrderedQueryable<T> OrderByInternal<T, TProp>(IQueryable<T> query, PropertyInfo memberProperty)
         {//public
-            return query.OrderBy(_GetLamba<T, TProp>(memberProperty));
+            return query.OrderBy(_GetLambda<T, TProp>(memberProperty));
         }
 
         public static IOrderedQueryable<T> OrderByDescendingInternal<T, TProp>(IQueryable<T> query, PropertyInfo memberProperty)
         {//public
-            return query.OrderByDescending(_GetLamba<T, TProp>(memberProperty));
+            return query.OrderByDescending(_GetLambda<T, TProp>(memberProperty));
         }
 
-        private static Expression<Func<T, TProp>> _GetLamba<T, TProp>(PropertyInfo memberProperty)
+        private static Expression<Func<T, TProp>> _GetLambda<T, TProp>(PropertyInfo memberProperty)
         {
             if (memberProperty.PropertyType != typeof(TProp)) throw new Exception();
 
             var thisArg = Expression.Parameter(typeof(T));
-            var lamba = Expression.Lambda<Func<T, TProp>>(Expression.Property(thisArg, memberProperty), thisArg);
+            var lambda = Expression.Lambda<Func<T, TProp>>(Expression.Property(thisArg, memberProperty), thisArg);
 
-            return lamba;
+            return lambda;
         }
     }
 }

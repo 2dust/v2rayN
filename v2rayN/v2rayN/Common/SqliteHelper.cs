@@ -3,19 +3,19 @@ using System.Collections;
 
 namespace v2rayN
 {
-    public sealed class SqliteHelper
+    public sealed class SQLiteHelper
     {
-        private static readonly Lazy<SqliteHelper> _instance = new(() => new());
-        public static SqliteHelper Instance => _instance.Value;
+        private static readonly Lazy<SQLiteHelper> _instance = new(() => new());
+        public static SQLiteHelper Instance => _instance.Value;
         private string _connstr;
         private SQLiteConnection _db;
         private SQLiteAsyncConnection _dbAsync;
         private static readonly object objLock = new();
         public readonly string _configDB = "guiNDB.db";
 
-        public SqliteHelper()
+        public SQLiteHelper()
         {
-            _connstr = Utils.GetConfigPath(_configDB);
+            _connstr = Utile.GetConfigPath(_configDB);
             _db = new SQLiteConnection(_connstr, false);
             _dbAsync = new SQLiteAsyncConnection(_connstr, false);
         }
@@ -51,7 +51,7 @@ namespace v2rayN
             }
         }
 
-        public async Task<int> Replacesync(object model)
+        public async Task<int> ReplaceAsync(object model)
         {
             return await _dbAsync.InsertOrReplaceAsync(model);
         }

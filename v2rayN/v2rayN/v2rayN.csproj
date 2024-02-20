@@ -55,10 +55,10 @@
         <EmbeddedResource Include="Sample\SampleClientConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleHttprequest">
+        <EmbeddedResource Include="Sample\SampleHttpRequest">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleHttpresponse">
+        <EmbeddedResource Include="Sample\SampleHttpResponse">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>  
         <EmbeddedResource Include="Sample\SampleInbound">

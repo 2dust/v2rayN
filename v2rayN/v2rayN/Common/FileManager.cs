@@ -20,7 +20,7 @@ namespace v2rayN
             return false;
         }
 
-        public static void UncompressFile(string fileName, byte[] content)
+        public static void UncompressedFile(string fileName, byte[] content)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace v2rayN
                     }
                     try
                     {
-                        if (!Utils.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
+                        if (!Utile.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
                         {
                             continue;
                         }
