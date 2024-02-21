@@ -325,7 +325,10 @@ namespace v2rayN
                 var key = Uri.UnescapeDataString(keyValue[0]);
                 var val = Uri.UnescapeDataString(keyValue[1]);
 
-                result.Add(key, val);
+                if (result[key] is null)
+                {
+                    result.Add(key, val);
+                }
             }
 
             return result;

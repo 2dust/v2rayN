@@ -956,13 +956,21 @@ namespace v2rayN.Handler
 
             if (!Utile.IsNullOrEmpty(profileItem.streamSecurity))
             {
-                if (Utile.IsNullOrEmpty(profileItem.allowInsecure))
+                if (profileItem.streamSecurity != Global.StreamSecurity
+                     && profileItem.streamSecurity != Global.StreamSecurityReality)
                 {
-                    profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
+                    profileItem.streamSecurity = string.Empty;
                 }
-                if (Utile.IsNullOrEmpty(profileItem.fingerprint) && profileItem.streamSecurity == Global.StreamSecurityReality)
+                else
                 {
-                    profileItem.fingerprint = config.coreBasicItem.defFingerprint;
+                    if (Utile.IsNullOrEmpty(profileItem.allowInsecure))
+                    {
+                        profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
+                    }
+                    if (Utile.IsNullOrEmpty(profileItem.fingerprint) && profileItem.streamSecurity == Global.StreamSecurityReality)
+                    {
+                        profileItem.fingerprint = config.coreBasicItem.defFingerprint;
+                    }
                 }
             }
 
