@@ -494,7 +494,7 @@
     <value>Do not change system proxy</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>Pac Mode</value>
+    <value>PAC mode</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
     <value>Set system proxy</value>
@@ -575,22 +575,22 @@
     <value>Add [VMess] server</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>Select All (Ctrl+A)</value>
+    <value>Select all (Ctrl+A)</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
-    <value>Clear All</value>
+    <value>Clear all</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
     <value>Copy (Ctrl+C)</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
-    <value>Copy All</value>
+    <value>Copy all</value>
   </data>
   <data name="menuMsgViewFilter" xml:space="preserve">
     <value>Set message filters</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Select All (Ctrl+A)</value>
+    <value>Select all (Ctrl+A)</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>Add</value>
@@ -821,7 +821,7 @@
     <value>Global Hotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Set directly by pressing the keyboard, Take effect after restart</value>
+    <value>Set directly by pressing the keyboard, take effect after restart</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>Do not change system proxy</value>
@@ -833,7 +833,7 @@
     <value>Set system proxy</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
-    <value>Pac Mode</value>
+    <value>PAC mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
     <value>Share Server (Ctrl+F)</value>
@@ -923,7 +923,7 @@
     <value>Rule Settings</value>
   </data>
   <data name="menuRuleAdd" xml:space="preserve">
-    <value>Rule Add</value>
+    <value>Add Rule</value>
   </data>
   <data name="menuRuleExportSelected" xml:space="preserve">
     <value>Export Selected Rules</value>
@@ -932,7 +932,7 @@
     <value>Rule List</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Remove Rules (Delete)</value>
+    <value>Remove Rule (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>RoutingRuleDetailsSetting</value>
