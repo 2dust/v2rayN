@@ -214,10 +214,10 @@
     <value>今日上傳</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
-    <value>縂下載</value>
+    <value>總下載</value>
   </data>
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
-    <value>縂上傳</value>
+    <value>總上傳</value>
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>傳輸協定</value>
@@ -950,10 +950,10 @@
     <value>普通分組此處請留空</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
-    <value>路由設定改變</value>
+    <value>路由設定已改變</value>
   </data>
   <data name="TipChangeSystemProxy" xml:space="preserve">
-    <value>系統代理設定改變</value>
+    <value>系統代理設定已改變</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>RouteOnly</value>
