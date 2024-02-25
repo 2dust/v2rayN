@@ -18,7 +18,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
             _config = LazyConfig.Instance.GetConfig();
-            MessageBus.Current.Listen<string>("MsgView").Subscribe(x => DelegateAppendText(x));
+            MessageBus.Current.Listen<string>(Global.CommandSendMsgView).Subscribe(x => DelegateAppendText(x));
             Global.PresetMsgFilters.ForEach(it =>
             {
                 cmbMsgFilter.Items.Add(it);

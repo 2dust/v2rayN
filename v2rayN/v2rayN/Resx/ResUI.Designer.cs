@@ -916,7 +916,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Clear All 的本地化字符串。
+        ///   查找类似 Clear all 的本地化字符串。
         /// </summary>
         public static string menuMsgViewClear {
             get {
@@ -934,7 +934,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Copy All 的本地化字符串。
+        ///   查找类似 Copy all 的本地化字符串。
         /// </summary>
         public static string menuMsgViewCopyAll {
             get {
@@ -952,7 +952,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Select All (Ctrl+A) 的本地化字符串。
+        ///   查找类似 Select all (Ctrl+A) 的本地化字符串。
         /// </summary>
         public static string menuMsgViewSelectAll {
             get {
@@ -1123,7 +1123,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Rule Add 的本地化字符串。
+        ///   查找类似 Add Rule 的本地化字符串。
         /// </summary>
         public static string menuRuleAdd {
             get {
@@ -1150,7 +1150,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Remove Rules (Delete) 的本地化字符串。
+        ///   查找类似 Remove Rule (Delete) 的本地化字符串。
         /// </summary>
         public static string menuRuleRemove {
             get {
@@ -1159,7 +1159,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Select All (Ctrl+A) 的本地化字符串。
+        ///   查找类似 Select all (Ctrl+A) 的本地化字符串。
         /// </summary>
         public static string menuSelectAll {
             get {
@@ -1339,7 +1339,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Pac Mode 的本地化字符串。
+        ///   查找类似 PAC mode 的本地化字符串。
         /// </summary>
         public static string menuSystemProxyPac {
             get {
@@ -1780,7 +1780,16 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Waiting for testing...... 的本地化字符串。
+        ///   查找类似 Test terminating... 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingStop {
+            get {
+                return ResourceManager.GetString("SpeedtestingStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Waiting for testing (press ESC to terminate)... 的本地化字符串。
         /// </summary>
         public static string SpeedtestingWait {
             get {
@@ -2078,7 +2087,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set directly by pressing the keyboard, Take effect after restart 的本地化字符串。
+        ///   查找类似 Set directly by pressing the keyboard, take effect after restart 的本地化字符串。
         /// </summary>
         public static string TbGlobalHotkeySettingTip {
             get {
@@ -3086,7 +3095,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Pac Mode 的本地化字符串。
+        ///   查找类似 PAC mode 的本地化字符串。
         /// </summary>
         public static string TbSystemProxyPac {
             get {

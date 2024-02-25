@@ -356,6 +356,10 @@ namespace v2rayN.Views
                 {
                     ViewModel?.Reload();
                 }
+                else if (e.Key == Key.Escape)
+                {
+                    MessageBus.Current.SendMessage("true", Global.CommandStopSpeedTest);
+                }
             }
         }
 
@@ -475,10 +479,10 @@ namespace v2rayN.Views
 
             var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
             var displayIndex = 0;
-            foreach(var item in lvColumnItem)
+            foreach (var item in lvColumnItem)
             {
-                foreach (MyDGTextColumn item2 in lstProfiles.Columns) 
-                { 
+                foreach (MyDGTextColumn item2 in lstProfiles.Columns)
+                {
                     if (item2.ExName == item.Name)
                     {
                         if (item.Width < 0)

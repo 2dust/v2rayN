@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using ReactiveUI;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using v2rayN.Model;
@@ -213,8 +214,24 @@ namespace v2rayN.Handler
 
             DownloadHandle downloadHandle = new();
 
+            var exitLoop = false;
+            MessageBus.Current.Listen<string>(Global.CommandStopSpeedTest)
+                .Subscribe(x =>
+                {
+                    if (!exitLoop)
+                    {
+                        UpdateFunc("", ResUI.SpeedtestingStop);
+                    }
+                    exitLoop = true;
+                });
+
             foreach (var it in _selecteds)
             {
+                if (exitLoop)
+                {
+                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                    continue;
+                }
                 if (!it.allowTest)
                 {
                     continue;
@@ -270,8 +287,25 @@ namespace v2rayN.Handler
 
             DownloadHandle downloadHandle = new();
 
+            var exitLoop = false;
+            MessageBus.Current.Listen<string>(Global.CommandStopSpeedTest)
+                .Subscribe(x =>
+                {
+                    if (!exitLoop)
+                    {
+                        UpdateFunc("", ResUI.SpeedtestingStop);
+                    }
+                    exitLoop = true;
+                });
+
             foreach (var it in _selecteds)
             {
+                if (exitLoop)
+                {
+                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                    continue;
+                }
+
                 if (!it.allowTest)
                 {
                     continue;

@@ -1079,7 +1079,7 @@
     <value>Enable hardware acceleration(Require restart)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Waiting for testing......</value>
+    <value>Waiting for testing (press ESC to terminate)...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
@@ -1191,5 +1191,8 @@
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
     <value>Updating subscription, only determine remarks exists</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>Test terminating...</value>
   </data>
 </root>

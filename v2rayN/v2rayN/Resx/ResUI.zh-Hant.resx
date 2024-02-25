@@ -1079,7 +1079,7 @@
     <value>啟用硬體加速(需重啟)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待測試中......</value>
+    <value>等待测试中（按ESC终止）...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>當有異常斷流時請關閉</value>
@@ -1161,5 +1161,8 @@
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
     <value>更新訂閱時只判斷別名是否存在</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>測試終止中...</value>
   </data>
 </root>

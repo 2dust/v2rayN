@@ -21,13 +21,13 @@ namespace v2rayN.Handler
 
         public void SendMessage(string msg)
         {
-            MessageBus.Current.SendMessage(msg, "MsgView");
+            MessageBus.Current.SendMessage(msg, Global.CommandSendMsgView);
         }
 
         public void SendMessage(string msg, bool time)
         {
             msg = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {msg}";
-            MessageBus.Current.SendMessage(msg, "MsgView");
+            MessageBus.Current.SendMessage(msg, Global.CommandSendMsgView);
         }
     }
 }
