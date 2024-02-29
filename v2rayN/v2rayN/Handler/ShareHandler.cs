@@ -686,13 +686,13 @@ namespace v2rayN.Handler
             if (queryParameters["plugin"] != null)
             {
                 //obfs-host exists
-                var obfsHost = queryParameters["plugin"].Split(';').FirstOrDefault(t => t.Contains("obfs-host"));
+                var obfsHost = queryParameters["plugin"]?.Split(';').FirstOrDefault(t => t.Contains("obfs-host"));
                 if (queryParameters["plugin"].Contains("obfs=http") && !Utile.IsNullOrEmpty(obfsHost))
                 {
-                    obfsHost = obfsHost.Replace("obfs-host=", "");
+                    obfsHost = obfsHost?.Replace("obfs-host=", "");
                     server.network = Global.DefaultNetwork;
                     server.headerType = Global.TcpHeaderHttp;
-                    server.requestHost = obfsHost;
+                    server.requestHost = obfsHost ?? "";
                 }
                 else
                 {

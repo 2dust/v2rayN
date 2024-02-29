@@ -118,6 +118,8 @@
         public string? peer_public_key { get; set; }
         public int[]? reserved { get; set; }
         public int? mtu { get; set; }
+        public string? plugin { get; set; }
+        public string? plugin_opts { get; set; }
         public Tls4Sbox tls { get; set; }
         public Multiplex4Sbox multiplex { get; set; }
         public Transport4Sbox transport { get; set; }
