@@ -150,9 +150,9 @@ namespace v2rayN.Handler
             }
             else
             {
-                dicQuery.Add("encryption", "none");
+                dicQuery.Add("encryption", Global.None);
             }
-            GetStdTransport(item, "none", ref dicQuery);
+            GetStdTransport(item, Global.None, ref dicQuery);
             string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
             url = string.Format("{0}@{1}:{2}",
@@ -315,7 +315,7 @@ namespace v2rayN.Handler
             switch (item.network)
             {
                 case "tcp":
-                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : "none");
+                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     if (!Utile.IsNullOrEmpty(item.requestHost))
                     {
                         dicQuery.Add("host", Utile.UrlEncode(item.requestHost));
@@ -323,7 +323,7 @@ namespace v2rayN.Handler
                     break;
 
                 case "kcp":
-                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : "none");
+                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     if (!Utile.IsNullOrEmpty(item.path))
                     {
                         dicQuery.Add("seed", Utile.UrlEncode(item.path));
@@ -355,7 +355,7 @@ namespace v2rayN.Handler
                     break;
 
                 case "quic":
-                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : "none");
+                    dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     dicQuery.Add("quicSecurity", Utile.UrlEncode(item.requestHost));
                     dicQuery.Add("key", Utile.UrlEncode(item.path));
                     break;
@@ -600,12 +600,12 @@ namespace v2rayN.Handler
             switch (i.network)
             {
                 case "tcp":
-                    string t1 = query["type"] ?? "none";
+                    string t1 = query["type"] ?? Global.None;
                     i.headerType = t1;
                     break;
 
                 case "kcp":
-                    i.headerType = query["type"] ?? "none";
+                    i.headerType = query["type"] ?? Global.None;
                     break;
 
                 case "ws":
@@ -625,9 +625,9 @@ namespace v2rayN.Handler
                     break;
 
                 case "quic":
-                    string s = query["security"] ?? "none";
+                    string s = query["security"] ?? Global.None;
                     string k = query["key"] ?? "";
-                    string t3 = query["type"] ?? "none";
+                    string t3 = query["type"] ?? Global.None;
                     i.headerType = t3;
                     i.requestHost = Utile.UrlDecode(s);
                     i.path = k;
@@ -844,7 +844,7 @@ namespace v2rayN.Handler
             ProfileItem item = new()
             {
                 configType = EConfigType.VLESS,
-                security = "none"
+                security = Global.None
             };
 
             Uri url = new(result);
@@ -855,7 +855,7 @@ namespace v2rayN.Handler
             item.id = Utile.UrlDecode(url.UserInfo);
 
             var query = Utile.ParseQueryString(url.Query);
-            item.security = query["encryption"] ?? "none";
+            item.security = query["encryption"] ?? Global.None;
             item.streamSecurity = query["security"] ?? "";
             ResolveStdTransport(query, ref item);
 
@@ -949,13 +949,13 @@ namespace v2rayN.Handler
             switch (item.network)
             {
                 case "tcp":
-                    item.headerType = query["headerType"] ?? "none";
+                    item.headerType = query["headerType"] ?? Global.None;
                     item.requestHost = Utile.UrlDecode(query["host"] ?? "");
 
                     break;
 
                 case "kcp":
-                    item.headerType = query["headerType"] ?? "none";
+                    item.headerType = query["headerType"] ?? Global.None;
                     item.path = Utile.UrlDecode(query["seed"] ?? "");
                     break;
 
@@ -972,8 +972,8 @@ namespace v2rayN.Handler
                     break;
 
                 case "quic":
-                    item.headerType = query["headerType"] ?? "none";
-                    item.requestHost = query["quicSecurity"] ?? "none";
+                    item.headerType = query["headerType"] ?? Global.None;
+                    item.requestHost = query["quicSecurity"] ?? Global.None;
                     item.path = Utile.UrlDecode(query["key"] ?? "");
                     break;
 

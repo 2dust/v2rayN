@@ -88,7 +88,7 @@ namespace v2rayN.Handler
                     default:
                         break;
                 }
-                if (_config.coreBasicItem.loglevel == "none")
+                if (_config.coreBasicItem.loglevel == Global.None)
                 {
                     singboxConfig.log.disabled = true;
                 }
@@ -235,7 +235,7 @@ namespace v2rayN.Handler
                 {
                     outbound.type = Global.ProtocolTypes[EConfigType.Shadowsocks];
 
-                    outbound.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : "none";
+                    outbound.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : Global.None;
                     outbound.password = node.id;
 
                     GenOutboundMux(node, outbound);

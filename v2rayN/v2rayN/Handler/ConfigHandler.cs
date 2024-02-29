@@ -920,9 +920,9 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
-            if (!Utile.IsNullOrEmpty(profileItem.security) && profileItem.security != "none")
+            if (!Utile.IsNullOrEmpty(profileItem.security) && profileItem.security != Global.None)
             {
-                profileItem.security = "none";
+                profileItem.security = Global.None;
             }
 
             AddServerCommon(config, profileItem, toFile);
