@@ -579,11 +579,10 @@ namespace v2rayN
             return inUse;
         }
 
-        public static int GetFreePort()
+        public static int GetFreePort(int defaultPort = 9090)
         {
             try
             {
-                int defaultPort = 9090;
                 if (!Utile.PortInUse(defaultPort))
                 {
                     return defaultPort;
@@ -598,7 +597,7 @@ namespace v2rayN
             catch
             {
             }
-            return 69090;
+            return 59090;
         }
 
         #endregion 测速
