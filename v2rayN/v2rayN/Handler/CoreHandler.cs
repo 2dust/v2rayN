@@ -349,7 +349,7 @@ namespace v2rayN.Handler
             }
             try
             {
-                proc.CloseMainWindow();
+                proc.Kill();
                 proc.WaitForExit(100);
                 if (!proc.HasExited)
                 {
