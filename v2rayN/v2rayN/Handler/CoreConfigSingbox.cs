@@ -238,14 +238,6 @@ namespace v2rayN.Handler
                     outbound.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : Global.None;
                     outbound.password = node.id;
 
-                    if (node.network == Global.DefaultNetwork
-                        && node.headerType == Global.TcpHeaderHttp
-                        && node.requestHost.IsNullOrEmpty() == false)
-                    {
-                        outbound.plugin = "obfs-local";
-                        outbound.plugin_opts = $"obfs=http;obfs-host={node.requestHost};";
-                    }
-
                     GenOutboundMux(node, outbound);
                 }
                 else if (node.configType == EConfigType.Socks)
@@ -417,6 +409,24 @@ namespace v2rayN.Handler
                         transport.type = "http";
                         transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
                         transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
+                        break;
+
+                    case "tcp":   //http
+                        if (node.headerType == Global.TcpHeaderHttp)
+                        {
+                            if (node.configType == EConfigType.Shadowsocks)
+                            {
+                                outbound.plugin = "obfs-local";
+                                outbound.plugin_opts = $"obfs=http;obfs-host={node.requestHost};";
+                            }
+                            else
+                            {
+                                transport.type = "http";
+                                transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
+                                transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
+                            }
+                        }
+
                         break;
 
                     case "ws":
