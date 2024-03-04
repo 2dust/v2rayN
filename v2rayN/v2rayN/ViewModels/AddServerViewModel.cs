@@ -51,32 +51,32 @@ namespace v2rayN.ViewModels
         {
             if (Utile.IsNullOrEmpty(SelectedSource.remarks))
             {
-                UI.Show(ResUI.PleaseFillRemarks);
+                _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
             if (Utile.IsNullOrEmpty(SelectedSource.address))
             {
-                UI.Show(ResUI.FillServerAddress);
+                _noticeHandler?.Enqueue(ResUI.FillServerAddress);
                 return;
             }
             var port = SelectedSource.port.ToString();
             if (Utile.IsNullOrEmpty(port) || !Utile.IsNumeric(port)
                 || SelectedSource.port <= 0 || SelectedSource.port >= Global.MaxPort)
             {
-                UI.Show(ResUI.FillCorrectServerPort);
+                _noticeHandler?.Enqueue(ResUI.FillCorrectServerPort);
                 return;
             }
             if (SelectedSource.configType == EConfigType.Shadowsocks)
             {
                 if (Utile.IsNullOrEmpty(SelectedSource.id))
                 {
-                    UI.Show(ResUI.FillPassword);
+                    _noticeHandler?.Enqueue(ResUI.FillPassword);
                     return;
                 }
                 if (Utile.IsNullOrEmpty(SelectedSource.security))
                 {
-                    UI.Show(ResUI.PleaseSelectEncryption);
+                    _noticeHandler?.Enqueue(ResUI.PleaseSelectEncryption);
                     return;
                 }
             }
@@ -84,7 +84,7 @@ namespace v2rayN.ViewModels
             {
                 if (Utile.IsNullOrEmpty(SelectedSource.id))
                 {
-                    UI.Show(ResUI.FillUUID);
+                    _noticeHandler?.Enqueue(ResUI.FillUUID);
                     return;
                 }
             }
@@ -143,7 +143,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                UI.Show(ResUI.OperationFailed);
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
             }
         }
     }

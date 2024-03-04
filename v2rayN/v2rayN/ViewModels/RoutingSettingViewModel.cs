@@ -214,7 +214,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                UI.ShowWarning(ResUI.OperationFailed);
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
             }
         }
 
@@ -229,7 +229,7 @@ namespace v2rayN.ViewModels
             BlockDomain = "geosite:category-ads-all";
 
             //_noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            UI.Show(ResUI.OperationSuccess);
+            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
         }
 
         public void RoutingAdvancedEdit(bool blNew)
@@ -259,7 +259,7 @@ namespace v2rayN.ViewModels
         {
             if (SelectedSource is null || SelectedSource.remarks.IsNullOrEmpty())
             {
-                UI.Show(ResUI.PleaseSelectRules);
+                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
             if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
@@ -284,7 +284,7 @@ namespace v2rayN.ViewModels
             var item = LazyConfig.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)
             {
-                UI.Show(ResUI.PleaseSelectRules);
+                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
 

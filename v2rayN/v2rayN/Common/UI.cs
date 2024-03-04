@@ -12,11 +12,6 @@ namespace v2rayN
             MessageBox.Show(msg, caption, MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
         }
 
-        public static void ShowWarning(string msg)
-        {
-            MessageBox.Show(msg, caption, MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
-        }
-
         public static MessageBoxResult ShowYesNo(string msg)
         {
             return MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);

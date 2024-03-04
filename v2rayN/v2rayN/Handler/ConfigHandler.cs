@@ -1186,7 +1186,7 @@ namespace v2rayN.Handler
 
             ProfileItem profileItem = new();
             //Is v2ray configuration
-            V2rayConfig? v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(clipboardData);
+            var v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(clipboardData);
             if (v2rayConfig?.inbounds?.Count > 0
                 && v2rayConfig.outbounds?.Count > 0)
             {

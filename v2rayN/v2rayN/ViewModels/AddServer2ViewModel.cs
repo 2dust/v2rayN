@@ -64,13 +64,13 @@ namespace v2rayN.ViewModels
             string remarks = SelectedSource.remarks;
             if (Utile.IsNullOrEmpty(remarks))
             {
-                UI.Show(ResUI.PleaseFillRemarks);
+                _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
             if (Utile.IsNullOrEmpty(SelectedSource.address))
             {
-                UI.Show(ResUI.FillServerAddressCustom);
+                _noticeHandler?.Enqueue(ResUI.FillServerAddressCustom);
                 return;
             }
 
@@ -95,13 +95,13 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                UI.Show(ResUI.OperationFailed);
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
             }
         }
 
         private void BrowseServer()
         {
-            //UI.Show(ResUI.CustomServerTips);
+            //_noticeHandler?.Enqueue(ResUI.CustomServerTips);
 
             if (UI.OpenFileDialog(out string fileName,
                 "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
@@ -127,7 +127,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                UI.ShowWarning(ResUI.FailedImportedCustomServer);
+                _noticeHandler?.Enqueue(ResUI.FailedImportedCustomServer);
             }
         }
 
@@ -136,7 +136,7 @@ namespace v2rayN.ViewModels
             var address = SelectedSource.address;
             if (Utile.IsNullOrEmpty(address))
             {
-                UI.Show(ResUI.FillServerAddressCustom);
+                _noticeHandler?.Enqueue(ResUI.FillServerAddressCustom);
                 return;
             }
 

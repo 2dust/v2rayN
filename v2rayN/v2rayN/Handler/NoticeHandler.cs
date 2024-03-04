@@ -29,5 +29,11 @@ namespace v2rayN.Handler
             msg = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {msg}";
             MessageBus.Current.SendMessage(msg, Global.CommandSendMsgView);
         }
+
+        public void SendMessageAndEnqueue(string msg)
+        {
+            _snackbarMessageQueue?.Enqueue(msg);
+            MessageBus.Current.SendMessage(msg, Global.CommandSendMsgView);
+        }
     }
 }

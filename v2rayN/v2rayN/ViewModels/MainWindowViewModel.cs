@@ -1434,11 +1434,11 @@ namespace v2rayN.ViewModels
                 InitSubscriptionView();
                 RefreshServers();
                 Reload();
-                UI.Show(ResUI.OperationSuccess);
+                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
             }
             else
             {
-                _noticeHandler.Enqueue(ResUI.OperationFailed);
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
             }
         }
 

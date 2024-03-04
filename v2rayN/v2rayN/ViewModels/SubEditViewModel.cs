@@ -48,7 +48,7 @@ namespace v2rayN.ViewModels
             string remarks = SelectedSource.remarks;
             if (string.IsNullOrEmpty(remarks))
             {
-                UI.Show(ResUI.PleaseFillRemarks);
+                _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 

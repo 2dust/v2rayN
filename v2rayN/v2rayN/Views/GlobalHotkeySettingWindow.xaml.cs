@@ -119,7 +119,7 @@ namespace v2rayN.Views
             }
             else
             {
-                UI.ShowWarning(ResUI.OperationFailed);
+                UI.Show(ResUI.OperationFailed);
             }
         }
 

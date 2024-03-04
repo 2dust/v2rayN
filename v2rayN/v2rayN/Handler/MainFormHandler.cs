@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Splat;
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -125,7 +126,7 @@ namespace v2rayN.Handler
             }
             if (item.configType == EConfigType.Custom)
             {
-                UI.Show(ResUI.NonVmessService);
+                Locator.Current.GetService<NoticeHandler>()?.Enqueue(ResUI.NonVmessService);
                 return;
             }
 
@@ -146,11 +147,12 @@ namespace v2rayN.Handler
             }
             if (CoreConfigHandler.GenerateClientConfig(item, fileName, out string msg, out string content) != 0)
             {
-                UI.Show(msg);
+                Locator.Current.GetService<NoticeHandler>()?.Enqueue(msg);
             }
             else
             {
-                UI.ShowWarning(string.Format(ResUI.SaveClientConfigurationIn, fileName));
+                msg = string.Format(ResUI.SaveClientConfigurationIn, fileName);
+                Locator.Current.GetService<NoticeHandler>()?.SendMessageAndEnqueue(msg);
             }
         }
 

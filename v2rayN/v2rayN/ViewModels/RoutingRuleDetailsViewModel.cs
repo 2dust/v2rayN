@@ -94,7 +94,7 @@ namespace v2rayN.ViewModels
 
             if (!hasRule)
             {
-                UI.ShowWarning(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Port/Protocol/Domain/IP/Process"));
+                _noticeHandler?.Enqueue(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Port/Protocol/Domain/IP/Process"));
                 return;
             }
             //_noticeHandler?.Enqueue(ResUI.OperationSuccess);

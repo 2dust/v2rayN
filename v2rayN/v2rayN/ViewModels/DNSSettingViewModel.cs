@@ -71,7 +71,7 @@ namespace v2rayN.ViewModels
                 {
                     if (normalDNS.Contains("{") || normalDNS.Contains("}"))
                     {
-                        UI.Show(ResUI.FillCorrectDNSText);
+                        _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
                         return;
                     }
                 }
@@ -81,7 +81,7 @@ namespace v2rayN.ViewModels
                 var obj2 = JsonUtile.Deserialize<Dns4Sbox>(normalDNS2);
                 if (obj2 == null)
                 {
-                    UI.Show(ResUI.FillCorrectDNSText);
+                    _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }
@@ -90,7 +90,7 @@ namespace v2rayN.ViewModels
                 var obj2 = JsonUtile.Deserialize<Dns4Sbox>(tunDNS2);
                 if (obj2 == null)
                 {
-                    UI.Show(ResUI.FillCorrectDNSText);
+                    _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }

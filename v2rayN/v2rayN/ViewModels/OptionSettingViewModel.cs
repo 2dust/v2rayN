@@ -252,7 +252,7 @@ namespace v2rayN.ViewModels
             if (Utile.IsNullOrEmpty(localPort.ToString()) || !Utile.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
             {
-                UI.Show(ResUI.FillLocalListeningPort);
+                _noticeHandler?.Enqueue(ResUI.FillLocalListeningPort);
                 return;
             }
 
@@ -263,7 +263,7 @@ namespace v2rayN.ViewModels
             //       || Utile.IsNullOrEmpty(KcpreadBufferSize.ToString()) || !Utile.IsNumeric(KcpreadBufferSize.ToString())
             //       || Utile.IsNullOrEmpty(KcpwriteBufferSize.ToString()) || !Utile.IsNumeric(KcpwriteBufferSize.ToString()))
             //{
-            //    UI.Show(ResUI.FillKcpParameters);
+            //    _noticeHandler?.Enqueue(ResUI.FillKcpParameters);
             //    return;
             //}
 
@@ -342,7 +342,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                UI.ShowWarning(ResUI.OperationFailed);
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
             }
         }
 
