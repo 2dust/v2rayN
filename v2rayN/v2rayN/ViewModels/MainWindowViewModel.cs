@@ -610,6 +610,10 @@ namespace v2rayN.ViewModels
         private void UpdateHandler(bool notify, string msg)
         {
             _noticeHandler?.SendMessage(msg);
+            if (notify)
+            {
+                _noticeHandler?.Enqueue(msg);
+            }
         }
 
         private void UpdateTaskHandler(bool success, string msg)

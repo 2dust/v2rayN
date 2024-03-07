@@ -195,7 +195,7 @@ namespace v2rayN.Handler
             var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.configType != EConfigType.Custom || node.displayLog;
-            var proc = RunProcess(node, coreInfo, "", displayLog, ShowMsg);
+            var proc = RunProcess(node, coreInfo, "", displayLog);
             if (proc is null)
             {
                 return;
@@ -218,7 +218,7 @@ namespace v2rayN.Handler
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
                         var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
-                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true, ShowMsg);
+                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -236,7 +236,7 @@ namespace v2rayN.Handler
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
-                var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true, ShowMsg);
+                var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true);
                 if (proc is null)
                 {
                     return -1;
@@ -253,16 +253,16 @@ namespace v2rayN.Handler
             }
         }
 
-        private void ShowMsg(bool updateToTrayTooltip, string msg)
+        private void ShowMsg(bool notify, string msg)
         {
-            _updateFunc(updateToTrayTooltip, msg);
+            _updateFunc(notify, msg);
         }
 
         #endregion Private
 
         #region Process
 
-        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog, Action<bool, string> update)
+        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog)
         {
             try
             {
@@ -295,7 +295,7 @@ namespace v2rayN.Handler
                         if (!string.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
-                            update(false, msg);
+                            ShowMsg(false, msg);
                         }
                     };
                     proc.ErrorDataReceived += (sender, e) =>
@@ -303,7 +303,7 @@ namespace v2rayN.Handler
                         if (!string.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
-                            update(false, msg);
+                            ShowMsg(false, msg);
 
                             if (!startUpSuccessful)
                             {
@@ -336,7 +336,7 @@ namespace v2rayN.Handler
             {
                 Logging.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
-                update(true, msg);
+                ShowMsg(true, msg);
                 return null;
             }
         }
