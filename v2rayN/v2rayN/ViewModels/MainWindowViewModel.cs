@@ -1466,7 +1466,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.SendMessage(msg);
                 if (success)
                 {
-                    CloseV2ray();
+                    CloseCore();
 
                     string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(msg));
                     string toPath = Utile.GetBinPath("", type.ToString());
@@ -1495,13 +1495,13 @@ namespace v2rayN.ViewModels
 
         #endregion CheckUpdate
 
-        #region v2ray job
+        #region core job
 
         public void Reload()
         {
             BlReloadEnabled = false;
 
-            LoadV2ray().ContinueWith(task =>
+            LoadCore().ContinueWith(task =>
             {
                 TestServerAvailability();
 
@@ -1512,7 +1512,7 @@ namespace v2rayN.ViewModels
             });
         }
 
-        private async Task LoadV2ray()
+        private async Task LoadCore()
         {
             await Task.Run(() =>
             {
@@ -1524,7 +1524,7 @@ namespace v2rayN.ViewModels
             });
         }
 
-        private void CloseV2ray()
+        private void CloseCore()
         {
             ConfigHandler.SaveConfig(_config, false);
 
@@ -1533,7 +1533,7 @@ namespace v2rayN.ViewModels
             _coreHandler.CoreStop();
         }
 
-        #endregion v2ray job
+        #endregion core job
 
         #region System proxy and Routings
 

@@ -368,7 +368,7 @@ namespace v2rayN
             try
             {
                 Uri uri = new(url);
-                if (uri.Host == uri.IdnHost)
+                if (uri.Host == uri.IdnHost || uri.Host == $"[{uri.IdnHost}]")
                 {
                     return url;
                 }
