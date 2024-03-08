@@ -426,6 +426,10 @@ namespace v2rayN.Handler
                                 transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
                             }
                         }
+                        else
+                        {
+                            transport = null;
+                        }
 
                         break;
 

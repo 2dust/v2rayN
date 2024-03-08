@@ -15,7 +15,7 @@
         public bool? disabled { get; set; }
         public string level { get; set; }
         public string output { get; set; }
-        public bool timestamp { get; set; }
+        public bool? timestamp { get; set; }
     }
 
     public class Dns4Sbox
@@ -120,10 +120,10 @@
         public int? mtu { get; set; }
         public string? plugin { get; set; }
         public string? plugin_opts { get; set; }
-        public Tls4Sbox tls { get; set; }
-        public Multiplex4Sbox multiplex { get; set; }
-        public Transport4Sbox transport { get; set; }
-        public HyObfs4Sbox obfs { get; set; }
+        public Tls4Sbox? tls { get; set; }
+        public Multiplex4Sbox? multiplex { get; set; }
+        public Transport4Sbox? transport { get; set; }
+        public HyObfs4Sbox? obfs { get; set; }
     }
 
     public class Tls4Sbox
