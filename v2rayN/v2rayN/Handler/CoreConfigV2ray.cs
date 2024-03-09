@@ -764,7 +764,7 @@ namespace v2rayN.Handler
         {
             if (_config.guiItem.enableStatistics)
             {
-                string tag = Global.InboundAPITagName;
+                string tag = EInboundProtocol.api.ToString();
                 API4Ray apiObj = new();
                 Policy4Ray policyObj = new();
                 SystemPolicy4Ray policySystemSetting = new();

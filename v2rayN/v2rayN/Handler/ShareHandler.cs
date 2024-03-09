@@ -587,7 +587,7 @@ namespace v2rayN.Handler
             }
             switch (i.streamSecurity)
             {
-                case "tls":
+                case Global.StreamSecurity:
                     break;
 
                 default:

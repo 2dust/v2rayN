@@ -8,9 +8,6 @@ namespace v2rayN
 
         public const string GithubUrl = "https://github.com";
         public const string GithubApiUrl = "https://api.github.com/repos";
-        public const string V2rayWebsiteUrl = @"https://www.v2fly.org/";
-        public const string AboutUrl = @"https://github.com/2dust/v2rayN";
-        public const string UpdateUrl = AboutUrl + @"/releases";
         public const string V2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
         public const string XrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
         public const string SagerNetCoreUrl = "https://github.com/SagerNet/v2ray-core/releases";
@@ -23,7 +20,6 @@ namespace v2rayN
         public const string TuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
         public const string SingboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
         public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-        public const string SingboxGeoUrl = "https://github.com/soffchen/sing-{0}/releases/latest/download/{0}.db";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string JuicityCoreUrl = "https://github.com/juicity/juicity/releases";
         public const string CustomRoutingListUrl = @"https://raw.githubusercontent.com/2dust/v2rayCustomRoutingList/master/";
@@ -57,16 +53,13 @@ namespace v2rayN
         public const string StreamSecurity = "tls";
         public const string StreamSecurityReality = "reality";
         public const string Loopback = "127.0.0.1";
-        public const string InboundAPITagName = "api";
         public const string InboundAPIProtocol = "dokodemo-door";
         public const string HttpProtocol = "http://";
         public const string HttpsProtocol = "https://";
 
         public const string UserEMail = "t@t.tt";
-        public const string MyRegPath = "Software\\v2rayNGUI";
         public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
         public const string AutoRunName = "v2rayNAutoRun";
-        public const string MyRegKeyLanguage = "CurrentLanguage";
         public const string CustomIconName = "v2rayN.ico";
         public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
         public const string RoutingRuleComma = "<COMMA>";

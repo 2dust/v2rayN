@@ -51,18 +51,18 @@ namespace v2rayN.Handler
         public System.Windows.Media.ImageSource GetAppIcon(Config config)
         {
             int index = 1;
-            switch ((int)config.sysProxyType)
+            switch (config.sysProxyType)
             {
-                case 0:
+                case ESysProxyType.ForcedClear:
                     index = 1;
                     break;
 
-                case 1:
-                case 3:
+                case ESysProxyType.ForcedChange:
+                case ESysProxyType.Pac:
                     index = 2;
                     break;
 
-                case 2:
+                case ESysProxyType.Unchanged:
                     index = 3;
                     break;
             }
