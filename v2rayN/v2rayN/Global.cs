@@ -56,10 +56,6 @@ namespace v2rayN
         public const string BlockTag = "block";
         public const string StreamSecurity = "tls";
         public const string StreamSecurityReality = "reality";
-        public const string InboundSocks = "socks";
-        public const string InboundHttp = "http";
-        public const string InboundSocks2 = "socks2";
-        public const string InboundHttp2 = "http2";
         public const string Loopback = "127.0.0.1";
         public const string InboundAPITagName = "api";
         public const string InboundAPIProtocol = "dokodemo-door";

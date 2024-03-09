@@ -61,7 +61,7 @@ namespace v2rayN.Handler
                 config.inbound = new List<InItem>();
                 InItem inItem = new()
                 {
-                    protocol = Global.InboundSocks,
+                    protocol = EInboundProtocol.socks.ToString(),
                     localPort = 10808,
                     udpEnabled = true,
                     sniffingEnabled = true,
@@ -75,7 +75,7 @@ namespace v2rayN.Handler
             {
                 if (config.inbound.Count > 0)
                 {
-                    config.inbound[0].protocol = Global.InboundSocks;
+                    config.inbound[0].protocol = EInboundProtocol.socks.ToString();
                 }
             }
             if (config.routingBasicItem == null)

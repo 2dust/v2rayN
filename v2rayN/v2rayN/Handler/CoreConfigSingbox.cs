@@ -115,8 +115,8 @@ namespace v2rayN.Handler
                 {
                     var inbound = new Inbound4Sbox()
                     {
-                        type = Global.InboundSocks,
-                        tag = Global.InboundSocks,
+                        type = EInboundProtocol.socks.ToString(),
+                        tag = EInboundProtocol.socks.ToString(),
                         listen = Global.Loopback,
                     };
                     singboxConfig.inbounds.Add(inbound);
@@ -136,18 +136,18 @@ namespace v2rayN.Handler
                     }
 
                     //http
-                    var inbound2 = GetInbound(inbound, Global.InboundHttp, 1, false);
+                    var inbound2 = GetInbound(inbound, EInboundProtocol.http, false);
                     singboxConfig.inbounds.Add(inbound2);
 
                     if (_config.inbound[0].allowLANConn)
                     {
                         if (_config.inbound[0].newPort4LAN)
                         {
-                            var inbound3 = GetInbound(inbound, Global.InboundSocks2, 2, true);
+                            var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
                             inbound3.listen = "::";
                             singboxConfig.inbounds.Add(inbound3);
 
-                            var inbound4 = GetInbound(inbound, Global.InboundHttp2, 3, false);
+                            var inbound4 = GetInbound(inbound, EInboundProtocol.http2, false);
                             inbound4.listen = "::";
                             singboxConfig.inbounds.Add(inbound4);
 
@@ -198,12 +198,12 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private Inbound4Sbox GetInbound(Inbound4Sbox inItem, string tag, int offset, bool bSocks)
+        private Inbound4Sbox GetInbound(Inbound4Sbox inItem, EInboundProtocol protocol, bool bSocks)
         {
             var inbound = JsonUtile.DeepCopy(inItem);
-            inbound.tag = tag;
-            inbound.listen_port = inItem.listen_port + offset;
-            inbound.type = bSocks ? Global.InboundSocks : Global.InboundHttp;
+            inbound.tag = protocol.ToString();
+            inbound.listen_port = inItem.listen_port + (int)protocol;
+            inbound.type = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
             return inbound;
         }
 
@@ -933,9 +933,9 @@ namespace v2rayN.Handler
                     {
                         listen = Global.Loopback,
                         listen_port = port,
-                        type = Global.InboundHttp
+                        type = EInboundProtocol.http.ToString(),
                     };
-                    inbound.tag = Global.InboundHttp + inbound.listen_port.ToString();
+                    inbound.tag = inbound.type + inbound.listen_port.ToString();
                     singboxConfig.inbounds.Add(inbound);
 
                     //outbound
