@@ -7,7 +7,7 @@
         socks2,
         http2,
         pac,
-        api = 11,
+        api,
         speedtest = 21
     }
 }
