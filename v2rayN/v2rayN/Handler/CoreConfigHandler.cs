@@ -132,8 +132,8 @@ namespace v2rayN.Handler
                                 fileContent.RemoveAt(indexPort);
                             }
 
-                            fileContent.Add($"port: {LazyConfig.Instance.GetLocalPort(Global.InboundHttp)}");
-                            fileContent.Add($"socks-port: {LazyConfig.Instance.GetLocalPort(Global.InboundSocks)}");
+                            fileContent.Add($"port: {LazyConfig.Instance.GetLocalPort(EInboundProtocol.http)}");
+                            fileContent.Add($"socks-port: {LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)}");
                             break;
                     }
                     File.WriteAllLines(fileName, fileContent);

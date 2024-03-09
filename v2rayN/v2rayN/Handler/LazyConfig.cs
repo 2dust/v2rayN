@@ -19,7 +19,7 @@ namespace v2rayN.Handler
             {
                 if (_statePort is null)
                 {
-                    _statePort = Utile.GetFreePort(GetLocalPort(Global.InboundAPITagName));
+                    _statePort = Utile.GetFreePort(GetLocalPort(EInboundProtocol.api));
                 }
 
                 return _statePort.Value;
@@ -50,20 +50,10 @@ namespace v2rayN.Handler
             return _config;
         }
 
-        public int GetLocalPort(string protocol)
+        public int GetLocalPort(EInboundProtocol protocol)
         {
-            var localPort = _config.inbound.FirstOrDefault(t => t.protocol == Global.InboundSocks)?.localPort ?? 10808;
-            return protocol.ToLower() switch
-            {
-                Global.InboundSocks => localPort,
-                Global.InboundHttp => localPort + 1,
-                Global.InboundSocks2 => localPort + 2,
-                Global.InboundHttp2 => localPort + 3,
-                "pac" => localPort + 4,
-                Global.InboundAPITagName => localPort + 11,
-                "speedtest" => localPort + 21,
-                _ => localPort,
-            };
+            var localPort = _config.inbound.FirstOrDefault(t => t.protocol == nameof(EInboundProtocol.socks))?.localPort ?? 10808;
+            return localPort + (int)protocol;
         }
 
         public void AddProcess(IntPtr processHandle)

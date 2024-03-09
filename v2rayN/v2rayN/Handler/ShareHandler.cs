@@ -310,11 +310,11 @@ namespace v2rayN.Handler
                 dicQuery.Add("spx", Utile.UrlEncode(item.spiderX));
             }
 
-            dicQuery.Add("type", !Utile.IsNullOrEmpty(item.network) ? item.network : "tcp");
+            dicQuery.Add("type", !Utile.IsNullOrEmpty(item.network) ? item.network : nameof(ETransport.tcp));
 
             switch (item.network)
             {
-                case "tcp":
+                case nameof(ETransport.tcp):
                     dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     if (!Utile.IsNullOrEmpty(item.requestHost))
                     {
@@ -322,7 +322,7 @@ namespace v2rayN.Handler
                     }
                     break;
 
-                case "kcp":
+                case nameof(ETransport.kcp):
                     dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     if (!Utile.IsNullOrEmpty(item.path))
                     {
@@ -330,7 +330,7 @@ namespace v2rayN.Handler
                     }
                     break;
 
-                case "ws":
+                case nameof(ETransport.ws):
                     if (!Utile.IsNullOrEmpty(item.requestHost))
                     {
                         dicQuery.Add("host", Utile.UrlEncode(item.requestHost));
@@ -341,9 +341,9 @@ namespace v2rayN.Handler
                     }
                     break;
 
-                case "http":
-                case "h2":
-                    dicQuery["type"] = "http";
+                case nameof(ETransport.http):
+                case nameof(ETransport.h2):
+                    dicQuery["type"] = nameof(ETransport.http);
                     if (!Utile.IsNullOrEmpty(item.requestHost))
                     {
                         dicQuery.Add("host", Utile.UrlEncode(item.requestHost));
@@ -354,13 +354,13 @@ namespace v2rayN.Handler
                     }
                     break;
 
-                case "quic":
+                case nameof(ETransport.quic):
                     dicQuery.Add("headerType", !Utile.IsNullOrEmpty(item.headerType) ? item.headerType : Global.None);
                     dicQuery.Add("quicSecurity", Utile.UrlEncode(item.requestHost));
                     dicQuery.Add("key", Utile.UrlEncode(item.path));
                     break;
 
-                case "grpc":
+                case nameof(ETransport.grpc):
                     if (!Utile.IsNullOrEmpty(item.path))
                     {
                         dicQuery.Add("serviceName", Utile.UrlEncode(item.path));
@@ -599,32 +599,32 @@ namespace v2rayN.Handler
             i.network = m.Groups["network"].Value;
             switch (i.network)
             {
-                case "tcp":
+                case nameof(ETransport.tcp):
                     string t1 = query["type"] ?? Global.None;
                     i.headerType = t1;
                     break;
 
-                case "kcp":
+                case nameof(ETransport.kcp):
                     i.headerType = query["type"] ?? Global.None;
                     break;
 
-                case "ws":
+                case nameof(ETransport.ws):
                     string p1 = query["path"] ?? "/";
                     string h1 = query["host"] ?? "";
                     i.requestHost = Utile.UrlDecode(h1);
                     i.path = p1;
                     break;
 
-                case "http":
-                case "h2":
-                    i.network = "h2";
+                case nameof(ETransport.http):
+                case nameof(ETransport.h2):
+                    i.network = nameof(ETransport.h2);
                     string p2 = query["path"] ?? "/";
                     string h2 = query["host"] ?? "";
                     i.requestHost = Utile.UrlDecode(h2);
                     i.path = p2;
                     break;
 
-                case "quic":
+                case nameof(ETransport.quic):
                     string s = query["security"] ?? Global.None;
                     string k = query["key"] ?? "";
                     string t3 = query["type"] ?? Global.None;
@@ -945,39 +945,39 @@ namespace v2rayN.Handler
             item.shortId = Utile.UrlDecode(query["sid"] ?? "");
             item.spiderX = Utile.UrlDecode(query["spx"] ?? "");
 
-            item.network = query["type"] ?? "tcp";
+            item.network = query["type"] ?? nameof(ETransport.tcp);
             switch (item.network)
             {
-                case "tcp":
+                case nameof(ETransport.tcp):
                     item.headerType = query["headerType"] ?? Global.None;
                     item.requestHost = Utile.UrlDecode(query["host"] ?? "");
 
                     break;
 
-                case "kcp":
+                case nameof(ETransport.kcp):
                     item.headerType = query["headerType"] ?? Global.None;
                     item.path = Utile.UrlDecode(query["seed"] ?? "");
                     break;
 
-                case "ws":
+                case nameof(ETransport.ws):
                     item.requestHost = Utile.UrlDecode(query["host"] ?? "");
                     item.path = Utile.UrlDecode(query["path"] ?? "/");
                     break;
 
-                case "http":
-                case "h2":
-                    item.network = "h2";
+                case nameof(ETransport.http):
+                case nameof(ETransport.h2):
+                    item.network = nameof(ETransport.h2);
                     item.requestHost = Utile.UrlDecode(query["host"] ?? "");
                     item.path = Utile.UrlDecode(query["path"] ?? "/");
                     break;
 
-                case "quic":
+                case nameof(ETransport.quic):
                     item.headerType = query["headerType"] ?? Global.None;
                     item.requestHost = query["quicSecurity"] ?? Global.None;
                     item.path = Utile.UrlDecode(query["key"] ?? "");
                     break;
 
-                case "grpc":
+                case nameof(ETransport.grpc):
                     item.path = Utile.UrlDecode(query["serviceName"] ?? "");
                     item.headerType = Utile.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
                     break;

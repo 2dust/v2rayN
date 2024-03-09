@@ -1811,7 +1811,7 @@ namespace v2rayN.ViewModels
         public void InboundDisplayStaus()
         {
             StringBuilder sb = new();
-            sb.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(Global.InboundSocks)}]");
+            sb.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)}]");
             sb.Append(" | ");
             //if (_config.sysProxyType == ESysProxyType.ForcedChange)
             //{
@@ -1819,7 +1819,7 @@ namespace v2rayN.ViewModels
             //}
             //else
             //{
-            sb.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(Global.InboundHttp)}]");
+            sb.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.http)}]");
             //}
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
@@ -1828,9 +1828,9 @@ namespace v2rayN.ViewModels
                 if (_config.inbound[0].newPort4LAN)
                 {
                     StringBuilder sb2 = new();
-                    sb2.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(Global.InboundSocks2)}]");
+                    sb2.Append($"[{Global.InboundSocks}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks2)}]");
                     sb2.Append(" | ");
-                    sb2.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(Global.InboundHttp2)}]");
+                    sb2.Append($"[{Global.InboundHttp}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.http2)}]");
                     InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
                 }
                 else

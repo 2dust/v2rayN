@@ -284,7 +284,7 @@ namespace v2rayN.Views
                 cmbHeaderType.Items.Add(Global.None);
                 cmbHeaderType.Items.Add(Global.TcpHeaderHttp);
             }
-            else if (network is "kcp" or "quic")
+            else if (network is nameof(ETransport.kcp) or nameof(ETransport.quic))
             {
                 cmbHeaderType.Items.Add(Global.None);
                 Global.KcpHeaderTypes.ForEach(it =>
@@ -292,7 +292,7 @@ namespace v2rayN.Views
                     cmbHeaderType.Items.Add(it);
                 });
             }
-            else if (network == "grpc")
+            else if (network == nameof(ETransport.grpc))
             {
                 cmbHeaderType.Items.Add(Global.GrpcGunMode);
                 cmbHeaderType.Items.Add(Global.GrpcMultiMode);
@@ -318,33 +318,33 @@ namespace v2rayN.Views
 
             switch (network)
             {
-                case Global.DefaultNetwork:
+                case nameof(ETransport.tcp):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip1;
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip1;
                     break;
 
-                case "kcp":
+                case nameof(ETransport.kcp):
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip2;
                     tipPath.Text = ResUI.TransportPathTip5;
                     break;
 
-                case "ws":
+                case nameof(ETransport.ws):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
                     break;
 
-                case "h2":
+                case nameof(ETransport.h2):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip3;
                     tipPath.Text = ResUI.TransportPathTip2;
                     break;
 
-                case "quic":
+                case nameof(ETransport.quic):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip4;
                     tipPath.Text = ResUI.TransportPathTip3;
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip3;
                     break;
 
-                case "grpc":
+                case nameof(ETransport.grpc):
                     tipPath.Text = ResUI.TransportPathTip4;
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip4;
                     labHeaderType.Visibility = Visibility.Hidden;

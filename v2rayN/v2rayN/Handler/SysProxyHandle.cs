@@ -41,9 +41,9 @@ namespace v2rayN.Handler
 
             try
             {
-                int port = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
-                int portSocks = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
-                int portPac = LazyConfig.Instance.GetLocalPort(ESysProxyType.Pac.ToString());
+                int port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.http);
+                int portSocks = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
+                int portPac = LazyConfig.Instance.GetLocalPort(EInboundProtocol.pac);
                 if (port <= 0)
                 {
                     return false;

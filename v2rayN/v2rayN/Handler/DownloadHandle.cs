@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
+using v2rayN.Model;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler
@@ -311,7 +312,7 @@ namespace v2rayN.Handler
             {
                 return null;
             }
-            var httpPort = LazyConfig.Instance.GetLocalPort(Global.InboundHttp);
+            var httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.http);
             if (!SocketCheck(Global.Loopback, httpPort))
             {
                 return null;

@@ -121,7 +121,7 @@ namespace v2rayN.Handler
                     };
                     singboxConfig.inbounds.Add(inbound);
 
-                    inbound.listen_port = LazyConfig.Instance.GetLocalPort(Global.InboundSocks);
+                    inbound.listen_port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
                     inbound.sniff = _config.inbound[0].sniffingEnabled;
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
                     inbound.domain_strategy = Utile.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
@@ -405,13 +405,13 @@ namespace v2rayN.Handler
 
                 switch (node.GetNetwork())
                 {
-                    case "h2":
-                        transport.type = "http";
+                    case nameof(ETransport.h2):
+                        transport.type = nameof(ETransport.http);
                         transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
                         transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
                         break;
 
-                    case "tcp":   //http
+                    case nameof(ETransport.tcp):   //http
                         if (node.headerType == Global.TcpHeaderHttp)
                         {
                             if (node.configType == EConfigType.Shadowsocks)
@@ -421,7 +421,7 @@ namespace v2rayN.Handler
                             }
                             else
                             {
-                                transport.type = "http";
+                                transport.type = nameof(ETransport.http);
                                 transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
                                 transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
                             }
@@ -433,8 +433,8 @@ namespace v2rayN.Handler
 
                         break;
 
-                    case "ws":
-                        transport.type = "ws";
+                    case nameof(ETransport.ws):
+                        transport.type = nameof(ETransport.ws);
                         transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
                         if (!Utile.IsNullOrEmpty(node.requestHost))
                         {
@@ -445,12 +445,12 @@ namespace v2rayN.Handler
                         }
                         break;
 
-                    case "quic":
-                        transport.type = "quic";
+                    case nameof(ETransport.quic):
+                        transport.type = nameof(ETransport.quic);
                         break;
 
-                    case "grpc":
-                        transport.type = "grpc";
+                    case nameof(ETransport.grpc):
+                        transport.type = nameof(ETransport.grpc);
                         transport.service_name = node.path;
                         transport.idle_timeout = _config.grpcItem.idle_timeout.ToString("##s");
                         transport.ping_timeout = _config.grpcItem.health_check_timeout.ToString("##s");
@@ -881,7 +881,7 @@ namespace v2rayN.Handler
                 singboxConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
                 singboxConfig.outbounds.RemoveAt(0);
 
-                int httpPort = LazyConfig.Instance.GetLocalPort("speedtest");
+                int httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
