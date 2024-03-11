@@ -873,7 +873,7 @@ namespace v2rayN.Handler
                 }
 
                 GenLog(singboxConfig);
-                GenDns(new(), singboxConfig);
+                //GenDns(new(), singboxConfig);
                 singboxConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
                 singboxConfig.outbounds.RemoveAt(0);
 
