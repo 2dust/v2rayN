@@ -466,7 +466,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Previous proxy remakrs 的本地化字符串。
+        ///   查找类似 Previous proxy remarks 的本地化字符串。
         /// </summary>
         public static string LvPrevProfile {
             get {
