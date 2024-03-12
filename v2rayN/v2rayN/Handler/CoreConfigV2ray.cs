@@ -607,6 +607,21 @@ namespace v2rayN.Handler
                         streamSettings.wsSettings = wsSettings;
 
                         break;
+                    //httpupgrade
+                    case nameof(ETransport.httpupgrade):
+                        HttpupgradeSettings4Ray httpupgradeSettings = new();
+
+                        if (!string.IsNullOrWhiteSpace(node.path))
+                        {
+                            httpupgradeSettings.path = node.path;
+                        }
+                        if (!string.IsNullOrWhiteSpace(host))
+                        {
+                            httpupgradeSettings.host = host;
+                        }
+                        streamSettings.httpupgradeSettings = httpupgradeSettings;
+
+                        break;
                     //h2
                     case nameof(ETransport.h2):
                         HttpSettings4Ray httpSettings = new();

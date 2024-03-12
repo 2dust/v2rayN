@@ -159,7 +159,7 @@
     public class Transport4Sbox
     {
         public string? type { get; set; }
-        public List<string>? host { get; set; }
+        public object? host { get; set; }
         public string? path { get; set; }
         public Headers4Sbox? headers { get; set; }
 

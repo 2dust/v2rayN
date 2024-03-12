@@ -331,6 +331,7 @@ namespace v2rayN.Handler
                     break;
 
                 case nameof(ETransport.ws):
+                case nameof(ETransport.httpupgrade):
                     if (!Utile.IsNullOrEmpty(item.requestHost))
                     {
                         dicQuery.Add("host", Utile.UrlEncode(item.requestHost));
@@ -609,6 +610,7 @@ namespace v2rayN.Handler
                     break;
 
                 case nameof(ETransport.ws):
+                case nameof(ETransport.httpupgrade):
                     string p1 = query["path"] ?? "/";
                     string h1 = query["host"] ?? "";
                     i.requestHost = Utile.UrlDecode(h1);
@@ -960,6 +962,7 @@ namespace v2rayN.Handler
                     break;
 
                 case nameof(ETransport.ws):
+                case nameof(ETransport.httpupgrade):
                     item.requestHost = Utile.UrlDecode(query["host"] ?? "");
                     item.path = Utile.UrlDecode(query["path"] ?? "/");
                     break;

@@ -3203,7 +3203,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws path 的本地化字符串。
+        ///   查找类似 *ws/httpupgrade path 的本地化字符串。
         /// </summary>
         public static string TransportPathTip1 {
             get {
@@ -3257,7 +3257,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws host 的本地化字符串。
+        ///   查找类似 *ws/httpupgrade host 的本地化字符串。
         /// </summary>
         public static string TransportRequestHostTip2 {
             get {

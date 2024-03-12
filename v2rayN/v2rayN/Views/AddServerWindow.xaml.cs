@@ -279,7 +279,7 @@ namespace v2rayN.Views
                 return;
             }
 
-            if (network == Global.DefaultNetwork)
+            if (network == nameof(ETransport.tcp))
             {
                 cmbHeaderType.Items.Add(Global.None);
                 cmbHeaderType.Items.Add(Global.TcpHeaderHttp);
@@ -329,6 +329,7 @@ namespace v2rayN.Views
                     break;
 
                 case nameof(ETransport.ws):
+                case nameof(ETransport.httpupgrade):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
                     break;

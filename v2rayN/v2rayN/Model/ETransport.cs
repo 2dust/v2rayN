@@ -5,6 +5,7 @@
         tcp,
         kcp,
         ws,
+        httpupgrade,
         h2,
         http,
         quic,

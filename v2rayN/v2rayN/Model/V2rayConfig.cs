@@ -432,6 +432,11 @@ namespace v2rayN.Model
         public WsSettings4Ray wsSettings { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public HttpupgradeSettings4Ray? httpupgradeSettings { get; set; }
+
+        /// <summary>
         /// h2传输额外设置
         /// </summary>
         public HttpSettings4Ray httpSettings { get; set; }
@@ -581,6 +586,20 @@ namespace v2rayN.Model
         /// </summary>
         [JsonPropertyName("User-Agent")]
         public string UserAgent { get; set; }
+    }
+    
+
+    public class HttpupgradeSettings4Ray
+    {
+        /// <summary>
+        ///
+        /// </summary>
+        public string? path { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public string? host { get; set; }
     }
 
     public class HttpSettings4Ray
