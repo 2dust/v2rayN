@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using v2rayN.Model;
+﻿using v2rayN.Model;
 
 namespace v2rayN.Handler
 {
@@ -132,6 +130,6 @@ namespace v2rayN.Handler
                 _serverStatItem.todayDown = 0;
                 _serverStatItem.dateNow = ticks;
             }
-        }        
+        }
     }
 }

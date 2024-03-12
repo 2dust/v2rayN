@@ -69,7 +69,6 @@ namespace v2rayN.Handler
                 };
 
                 config.inbound.Add(inItem);
-                 
             }
             else
             {

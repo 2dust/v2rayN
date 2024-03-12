@@ -51,6 +51,6 @@ namespace v2rayN.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtRemarks.Focus();
-        }         
+        }
     }
 }
