@@ -270,7 +270,7 @@ namespace v2rayN.Handler
                     else
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
-                        if (result!.Length < 99)
+                        if (result?.Length < 99)
                         {
                             _updateFunc(false, $"{hashCode}{result}");
                         }
@@ -415,9 +415,9 @@ namespace v2rayN.Handler
             try
             {
                 var gitHubReleases = JsonUtile.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
-                var gitHubRelease = preRelease ? gitHubReleases!.First() : gitHubReleases!.First(r => r.Prerelease == false);
-                var version = new SemanticVersion(gitHubRelease!.TagName);
-                var body = gitHubRelease!.Body;
+                var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
+                var version = new SemanticVersion(gitHubRelease?.TagName!);
+                var body = gitHubRelease?.Body;
 
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 

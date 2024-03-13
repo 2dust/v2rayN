@@ -76,13 +76,13 @@ namespace v2rayN
                     //if (progressPercentage != percent && percent % 10 == 0)
                     {
                         progressPercentage = percent;
-                        progress!.Report(percent);
+                        progress?.Report(percent);
                     }
                 }
             }
             if (canReportProgress)
             {
-                progress!.Report(101);
+                progress?.Report(101);
             }
         }
 

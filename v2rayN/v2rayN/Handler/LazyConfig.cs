@@ -206,7 +206,7 @@ namespace v2rayN.Handler
             {
                 InitCoreInfo();
             }
-            return coreInfo!.FirstOrDefault(t => t.coreType == coreType);
+            return coreInfo?.FirstOrDefault(t => t.coreType == coreType);
         }
 
         public List<CoreInfo> GetCoreInfo()
