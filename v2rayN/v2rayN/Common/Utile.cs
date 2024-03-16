@@ -1136,7 +1136,7 @@ namespace v2rayN
             task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
             task.Triggers.Add(new LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(10) });
             task.Principal.RunLevel = TaskRunLevel.Highest;
-            task.Actions.Add(new ExecAction(deamonFileName));
+            task.Actions.Add(new ExecAction(deamonFileName, null, Path.GetDirectoryName(deamonFileName)));
 
             taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
         }
