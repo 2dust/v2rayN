@@ -8,6 +8,11 @@ namespace v2rayN.Model
     public class V2rayConfig
     {
         /// <summary>
+        /// Remarks
+        /// </summary>
+        public String remarks { get; set; }
+
+        /// <summary>
         /// 日志配置
         /// </summary>
         public Log4Ray log { get; set; }
@@ -397,6 +402,8 @@ namespace v2rayN.Model
         public List<string> domain { get; set; }
 
         public List<string> protocol { get; set; }
+        
+        public string network { get; set; }
     }
 
     public class StreamSettings4Ray

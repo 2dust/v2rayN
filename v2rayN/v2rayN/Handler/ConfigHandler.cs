@@ -1176,8 +1176,60 @@ namespace v2rayN.Handler
                 }
                 return false;
             }
-
+            
             ProfileItem profileItem = new();
+
+            //Is v2ray array configuration
+            var v2rayArrayConfig = JsonUtile.Deserialize<V2rayConfig[]>(clipboardData);
+            if (v2rayArrayConfig != null && v2rayArrayConfig.Length > 0)
+            {
+                if (isSub && !Utile.IsNullOrEmpty(subid))
+                {
+                    RemoveServerViaSubid(config, subid, isSub);
+                }
+                profileItem = new();
+                int count = 0;
+                foreach (var v2rayJson in v2rayArrayConfig)
+                {
+                    if (v2rayJson?.inbounds?.Count > 0 && v2rayJson.outbounds?.Count > 0)
+                    {
+                        var fileName = Utile.GetTempPath($"{Utile.GetGUID(false)}.json");
+                        var v2rayConfigString = JsonUtile.Serialize(v2rayJson);
+                        File.WriteAllText(fileName, v2rayConfigString);
+
+                        profileItem.coreType = ECoreType.Xray;
+                        profileItem.address = fileName;
+                        profileItem.remarks = Utile.IsNullOrEmpty(v2rayJson.remarks) ? "v2ray_custom" : v2rayJson.remarks;
+
+                        Outbounds4Ray firstOutbound = v2rayJson.outbounds[0];
+                        if (firstOutbound?.settings.servers?.Count > 0) {
+                            profileItem.port = firstOutbound.settings.servers?[0].port ?? 0;
+                        } else if (firstOutbound?.settings.vnext?.Count > 0) {
+                            profileItem.port = firstOutbound.settings.vnext?[0].port ?? 0;
+                        }
+                        if (firstOutbound?.streamSettings != null) {
+                            profileItem.network = firstOutbound.streamSettings.network;
+                            profileItem.streamSecurity = firstOutbound.streamSettings.security;
+                        }
+
+                        profileItem.indexId = count.ToString();
+                        profileItem.subid = subid;
+                        profileItem.isSub = isSub;
+
+                        if (Utile.IsNullOrEmpty(profileItem.address))
+                        {
+                            continue;
+                        }
+
+                        if (AddCustomServer(config, profileItem, true) == 0)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            }
+
             //Is v2ray configuration
             var v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(clipboardData);
             if (v2rayConfig?.inbounds?.Count > 0
@@ -1188,7 +1240,18 @@ namespace v2rayN.Handler
 
                 profileItem.coreType = ECoreType.Xray;
                 profileItem.address = fileName;
-                profileItem.remarks = "v2ray_custom";
+                profileItem.remarks = Utile.IsNullOrEmpty(v2rayConfig.remarks) ? "v2ray_custom" : v2rayConfig.remarks;
+
+                Outbounds4Ray firstOutbound = v2rayConfig.outbounds[0];
+                if (firstOutbound?.settings.servers?.Count > 0) {
+                    profileItem.port = firstOutbound.settings.servers?[0].port ?? 0;
+                } else if (firstOutbound?.settings.vnext?.Count > 0) {
+                    profileItem.port = firstOutbound.settings.vnext?[0].port ?? 0;
+                }
+                if (firstOutbound?.streamSettings != null) {
+                    profileItem.network = firstOutbound.streamSettings.network;
+                    profileItem.streamSecurity = firstOutbound.streamSettings.security;
+                }
             }
             //Is Clash configuration
             else if (Contains(clipboardData, "port", "socks-port", "proxies"))
