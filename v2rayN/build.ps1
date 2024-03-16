@@ -10,7 +10,7 @@ Write-Host 'Building'
 dotnet publish `
 	.\v2rayN\v2rayN.csproj `
 	-c Release `
-	--self-contained false `
+	--self-contained true `
 	-p:PublishReadyToRun=true `
 	-p:PublishSingleFile=true `
 	-o $OutputPath
@@ -18,7 +18,7 @@ dotnet publish `
 dotnet publish `
 	.\v2rayUpgrade\v2rayUpgrade.csproj `
 	-c Release `
-	--self-contained false `
+	--self-contained true `
 	-p:PublishReadyToRun=true `
 	-p:PublishSingleFile=true `
 	-o $OutputPath
