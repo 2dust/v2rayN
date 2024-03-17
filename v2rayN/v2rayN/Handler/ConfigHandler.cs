@@ -1176,7 +1176,7 @@ namespace v2rayN.Handler
                 }
                 return false;
             }
-            
+
             ProfileItem profileItem = new();
 
             //Is v2ray array configuration

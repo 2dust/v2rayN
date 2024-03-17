@@ -253,6 +253,29 @@ namespace v2rayN.Model
         ///
         /// </summary>
         public int? userLevel { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public FreedomFragment4Ray? fragment { get; set; }
+    }
+
+    public class FreedomFragment4Ray
+    {
+        /// <summary>
+        /// Packets
+        /// </summary>
+        public string packets { get; set; }
+
+        /// <summary>
+        /// Length
+        /// </summary>
+        public string length { get; set; }
+
+        /// <summary>
+        /// Interval
+        /// </summary>
+        public string interval { get; set; }
     }
 
     public class VnextItem4Ray
@@ -664,6 +687,19 @@ namespace v2rayN.Model
 
     public class Sockopt4Ray
     {
+        /// <summary>
+        /// Dialer Proxy
+        /// </summary>
         public string? dialerProxy { get; set; }
+
+        /// <summary>
+        /// TCP keep-alive idle time
+        /// </summary>
+        public int? tcpKeepAliveIdle { get; set; }
+
+        /// <summary>
+        /// TCP no delay option
+        /// </summary>
+        public bool? TcpNoDelay { get; set; }
     }
 }
