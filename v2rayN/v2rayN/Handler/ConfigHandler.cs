@@ -1177,6 +1177,46 @@ namespace v2rayN.Handler
                 return false;
             }
 
+            //Is v2ray array configuration
+            var configObjects = JsonUtile.Deserialize<Object[]>(clipboardData);
+            if (configObjects != null && configObjects.Length > 0)
+            {
+                if (isSub && !Utile.IsNullOrEmpty(subid))
+                {
+                    RemoveServerViaSubid(config, subid, isSub);
+                }
+
+                int count = 0;
+                foreach (var configObject in configObjects)
+                {
+                    var objectString = JsonUtile.Serialize(configObject);
+                    var v2rayCon = JsonUtile.Deserialize<V2rayConfig>(objectString);
+                    if (v2rayCon?.inbounds?.Count > 0 && v2rayCon.outbounds?.Count > 0)
+                    {
+                        var fileName = Utile.GetTempPath($"{Utile.GetGUID(false)}.json");
+                        File.WriteAllText(fileName, objectString);
+
+                        var profileIt = new ProfileItem
+                        {
+                            coreType = ECoreType.Xray,
+                            address = fileName,
+                            remarks = v2rayCon.remarks ?? "v2ray_custom",
+                            subid = subid,
+                            isSub = isSub
+                        };
+
+                        if (AddCustomServer(config, profileIt, true) == 0)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                if (count > 0)
+                {
+                    return count;
+                }
+            }
+
             ProfileItem profileItem = new();
             //Is v2ray configuration
             var v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(clipboardData);
@@ -1188,7 +1228,7 @@ namespace v2rayN.Handler
 
                 profileItem.coreType = ECoreType.Xray;
                 profileItem.address = fileName;
-                profileItem.remarks = "v2ray_custom";
+                profileItem.remarks = v2rayConfig.remarks ?? "v2ray_custom";
             }
             //Is Clash configuration
             else if (Contains(clipboardData, "port", "socks-port", "proxies"))

@@ -8,6 +8,11 @@ namespace v2rayN.Model
     public class V2rayConfig
     {
         /// <summary>
+        /// Properties that do not belong to Ray
+        /// </summary>
+        public string? remarks { get; set; }
+
+        /// <summary>
         /// 日志配置
         /// </summary>
         public Log4Ray log { get; set; }
