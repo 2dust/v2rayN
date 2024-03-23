@@ -1180,8 +1180,8 @@ namespace v2rayN.Handler
             ProfileItem profileItem = new();
 
             //Is v2ray array configuration
-            var v2rayArrayConfig = JsonUtile.Deserialize<V2rayConfig[]>(clipboardData);
-            if (v2rayArrayConfig != null && v2rayArrayConfig.Length > 0)
+            var configObjects = JsonUtile.Deserialize<Object[]>(clipboardData);
+            if (configObjects != null && configObjects.Length > 0)
             {
                 if (isSub && !Utile.IsNullOrEmpty(subid))
                 {
@@ -1189,13 +1189,14 @@ namespace v2rayN.Handler
                 }
                 profileItem = new();
                 int count = 0;
-                foreach (var v2rayJson in v2rayArrayConfig)
+                foreach (var configObject in configObjects)
                 {
+                    var objectString = JsonUtile.Serialize(configObject);
+                    var v2rayJson = JsonUtile.Deserialize<V2rayConfig>(objectString);
                     if (v2rayJson?.inbounds?.Count > 0 && v2rayJson.outbounds?.Count > 0)
                     {
                         var fileName = Utile.GetTempPath($"{Utile.GetGUID(false)}.json");
-                        var v2rayConfigString = JsonUtile.Serialize(v2rayJson);
-                        File.WriteAllText(fileName, v2rayConfigString);
+                        File.WriteAllText(fileName, objectString);
 
                         profileItem.coreType = ECoreType.Xray;
                         profileItem.address = fileName;
