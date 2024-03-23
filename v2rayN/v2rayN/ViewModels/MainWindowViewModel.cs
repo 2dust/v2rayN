@@ -1179,7 +1179,7 @@ namespace v2rayN.ViewModels
         public void TestServerAvailability()
         {
             var item = ConfigHandler.GetDefaultServer(_config);
-            if (item == null || item.configType == EConfigType.Custom)
+            if (item == null)
             {
                 return;
             }

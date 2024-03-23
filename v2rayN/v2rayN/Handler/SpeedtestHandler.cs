@@ -30,10 +30,6 @@ namespace v2rayN.Handler
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
-                if (it.configType == EConfigType.Custom)
-                {
-                    continue;
-                }
                 if (it.port <= 0)
                 {
                     continue;
@@ -97,10 +93,6 @@ namespace v2rayN.Handler
                 List<Task> tasks = [];
                 foreach (var it in _selecteds)
                 {
-                    if (it.configType == EConfigType.Custom)
-                    {
-                        continue;
-                    }
                     tasks.Add(Task.Run(() =>
                     {
                         try
@@ -151,10 +143,6 @@ namespace v2rayN.Handler
                 foreach (var it in _selecteds)
                 {
                     if (!it.allowTest)
-                    {
-                        continue;
-                    }
-                    if (it.configType == EConfigType.Custom)
                     {
                         continue;
                     }
@@ -236,10 +224,6 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-                if (it.configType == EConfigType.Custom)
-                {
-                    continue;
-                }
                 //if (it.delay < 0)
                 //{
                 //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
@@ -307,10 +291,6 @@ namespace v2rayN.Handler
                 }
 
                 if (!it.allowTest)
-                {
-                    continue;
-                }
-                if (it.configType == EConfigType.Custom)
                 {
                     continue;
                 }

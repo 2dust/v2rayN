@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
+using System.Windows;
 using v2rayN.Model;
 using v2rayN.Resx;
 
@@ -942,10 +943,6 @@ namespace v2rayN.Handler
 
                 foreach (var it in selecteds)
                 {
-                    if (it.configType == EConfigType.Custom)
-                    {
-                        continue;
-                    }
                     if (it.port <= 0)
                     {
                         continue;
@@ -1013,7 +1010,38 @@ namespace v2rayN.Handler
                     }
 
                     var outbound = JsonUtile.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(item, outbound);
+
+                    if (it.configType == EConfigType.Custom)
+                    {
+                        var fileContent = Utile.LoadResource(Utile.GetConfigPath(it.address));
+                        if (fileContent == null)
+                        {
+                            continue;
+                        }
+                        var fileConfig = JsonUtile.Deserialize<V2rayConfig>(fileContent);
+                        var fileOutbounds = fileConfig.outbounds;
+                        if (fileOutbounds.Count == 0)
+                        {
+                            continue;
+                        }
+                        outbound = fileOutbounds[0];
+                        var outboundDialerProxy = outbound.streamSettings?.sockopt?.dialerProxy;
+                        if (outboundDialerProxy != null)
+                        {
+                            foreach (var otherOutbound in fileOutbounds)
+                            {
+                                if (otherOutbound.tag == outboundDialerProxy)
+                                {
+                                    otherOutbound.tag = "dialer" + inbound.port.ToString();
+                                    outbound.streamSettings.sockopt.dialerProxy = otherOutbound.tag;
+                                    v2rayConfig.outbounds.Add(otherOutbound);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        GenOutbound(item, outbound);
+                    }
                     outbound.tag = Global.ProxyTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(outbound);
 
