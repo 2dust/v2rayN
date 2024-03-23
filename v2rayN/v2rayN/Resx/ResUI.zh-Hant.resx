@@ -1165,4 +1165,7 @@
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>測試終止中...</value>
   </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>*grpc Authority</value>
+  </data>
 </root>

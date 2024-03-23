@@ -533,11 +533,11 @@ namespace v2rayN.Handler
                         alpn = node.GetAlpn(),
                         fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint
                     };
-                    if (!string.IsNullOrWhiteSpace(sni))
+                    if (!Utile.IsNullOrEmpty(sni))
                     {
                         tlsSettings.serverName = sni;
                     }
-                    else if (!string.IsNullOrWhiteSpace(host))
+                    else if (!Utile.IsNullOrEmpty(host))
                     {
                         tlsSettings.serverName = Utile.String2List(host)[0];
                     }
@@ -592,15 +592,15 @@ namespace v2rayN.Handler
                         WsSettings4Ray wsSettings = new();
                         wsSettings.headers = new Headers4Ray();
                         string path = node.path;
-                        if (!string.IsNullOrWhiteSpace(host))
+                        if (!Utile.IsNullOrEmpty(host))
                         {
                             wsSettings.headers.Host = host;
                         }
-                        if (!string.IsNullOrWhiteSpace(path))
+                        if (!Utile.IsNullOrEmpty(path))
                         {
                             wsSettings.path = path;
                         }
-                        if (!string.IsNullOrWhiteSpace(useragent))
+                        if (!Utile.IsNullOrEmpty(useragent))
                         {
                             wsSettings.headers.UserAgent = useragent;
                         }
@@ -611,11 +611,11 @@ namespace v2rayN.Handler
                     case nameof(ETransport.httpupgrade):
                         HttpupgradeSettings4Ray httpupgradeSettings = new();
 
-                        if (!string.IsNullOrWhiteSpace(node.path))
+                        if (!Utile.IsNullOrEmpty(node.path))
                         {
                             httpupgradeSettings.path = node.path;
                         }
-                        if (!string.IsNullOrWhiteSpace(host))
+                        if (!Utile.IsNullOrEmpty(host))
                         {
                             httpupgradeSettings.host = host;
                         }
@@ -626,7 +626,7 @@ namespace v2rayN.Handler
                     case nameof(ETransport.h2):
                         HttpSettings4Ray httpSettings = new();
 
-                        if (!string.IsNullOrWhiteSpace(host))
+                        if (!Utile.IsNullOrEmpty(host))
                         {
                             httpSettings.host = Utile.String2List(host);
                         }
@@ -649,7 +649,7 @@ namespace v2rayN.Handler
                         streamSettings.quicSettings = quicsettings;
                         if (node.streamSecurity == Global.StreamSecurity)
                         {
-                            if (!string.IsNullOrWhiteSpace(sni))
+                            if (!Utile.IsNullOrEmpty(sni))
                             {
                                 streamSettings.tlsSettings.serverName = sni;
                             }
@@ -663,6 +663,7 @@ namespace v2rayN.Handler
                     case nameof(ETransport.grpc):
                         GrpcSettings4Ray grpcSettings = new()
                         {
+                            authority = Utile.IsNullOrEmpty(host) ? null : host,
                             serviceName = node.path,
                             multiMode = (node.headerType == Global.GrpcMultiMode),
                             idle_timeout = _config.grpcItem.idle_timeout,
@@ -721,13 +722,13 @@ namespace v2rayN.Handler
                 var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
                 var normalDNS = item?.normalDNS;
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
-                if (string.IsNullOrWhiteSpace(normalDNS))
+                if (Utile.IsNullOrEmpty(normalDNS))
                 {
                     normalDNS = "1.1.1.1,8.8.8.8";
                 }
 
                 //Outbound Freedom domainStrategy
-                if (!string.IsNullOrWhiteSpace(domainStrategy4Freedom))
+                if (!Utile.IsNullOrEmpty(domainStrategy4Freedom))
                 {
                     var outbound = v2rayConfig.outbounds[1];
                     outbound.settings.domainStrategy = domainStrategy4Freedom;

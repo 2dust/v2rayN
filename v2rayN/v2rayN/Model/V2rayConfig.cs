@@ -639,7 +639,8 @@ namespace v2rayN.Model
 
     public class GrpcSettings4Ray
     {
-        public string serviceName { get; set; }
+        public string? authority { get; set; }
+        public string? serviceName { get; set; }
         public bool multiMode { get; set; }
         public int idle_timeout { get; set; }
         public int health_check_timeout { get; set; }

@@ -364,6 +364,7 @@ namespace v2rayN.Handler
                 case nameof(ETransport.grpc):
                     if (!Utile.IsNullOrEmpty(item.path))
                     {
+                        dicQuery.Add("authority", Utile.UrlEncode(item.requestHost));
                         dicQuery.Add("serviceName", Utile.UrlEncode(item.path));
                         if (item.headerType is Global.GrpcGunMode or Global.GrpcMultiMode)
                         {
@@ -592,7 +593,7 @@ namespace v2rayN.Handler
                     break;
 
                 default:
-                    if (!string.IsNullOrWhiteSpace(i.streamSecurity))
+                    if (!Utile.IsNullOrEmpty(i.streamSecurity))
                         return null;
                     break;
             }
@@ -981,6 +982,7 @@ namespace v2rayN.Handler
                     break;
 
                 case nameof(ETransport.grpc):
+                    item.requestHost = Utile.UrlDecode(query["authority"] ?? ""); 
                     item.path = Utile.UrlDecode(query["serviceName"] ?? "");
                     item.headerType = Utile.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
                     break;

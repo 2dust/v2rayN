@@ -346,6 +346,7 @@ namespace v2rayN.Views
                     break;
 
                 case nameof(ETransport.grpc):
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip5;
                     tipPath.Text = ResUI.TransportPathTip4;
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip4;
                     labHeaderType.Visibility = Visibility.Hidden;

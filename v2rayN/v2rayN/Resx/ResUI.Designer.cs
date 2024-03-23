@@ -3284,6 +3284,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 *grpc Authority 的本地化字符串。
+        /// </summary>
+        public static string TransportRequestHostTip5 {
+            get {
+                return ResourceManager.GetString("TransportRequestHostTip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Ungrouped 的本地化字符串。
         /// </summary>
         public static string UngroupedServers {
