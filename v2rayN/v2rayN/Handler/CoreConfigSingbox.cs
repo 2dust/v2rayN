@@ -972,6 +972,13 @@ namespace v2rayN.Handler
                     singboxConfig.route.rules.Add(rule);
                 }
 
+                GenDns(new(), singboxConfig);
+                var dnsServer = singboxConfig.dns?.servers.FirstOrDefault();
+                if (dnsServer != null)
+                {
+                    dnsServer.detour = singboxConfig.route.rules.LastOrDefault()?.outbound;
+                }
+
                 //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
                 return 0;
             }
