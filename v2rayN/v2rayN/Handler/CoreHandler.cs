@@ -292,7 +292,7 @@ namespace v2rayN.Handler
                 {
                     proc.OutputDataReceived += (sender, e) =>
                     {
-                        if (!string.IsNullOrEmpty(e.Data))
+                        if (!Utile.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
@@ -300,7 +300,7 @@ namespace v2rayN.Handler
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
-                        if (!string.IsNullOrEmpty(e.Data))
+                        if (!Utile.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);

@@ -46,7 +46,7 @@ namespace v2rayN.ViewModels
         private void SaveSub()
         {
             string remarks = SelectedSource.remarks;
-            if (string.IsNullOrEmpty(remarks))
+            if (Utile.IsNullOrEmpty(remarks))
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;

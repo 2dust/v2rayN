@@ -207,7 +207,7 @@ namespace v2rayN.Handler
                     //convert
                     if (!Utile.IsNullOrEmpty(item.convertTarget))
                     {
-                        var subConvertUrl = string.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
+                        var subConvertUrl = Utile.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
                         url = string.Format(subConvertUrl!, Utile.UrlEncode(url));
                         if (!url.Contains("target="))
                         {

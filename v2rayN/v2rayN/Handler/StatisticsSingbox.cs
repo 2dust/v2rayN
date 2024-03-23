@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                         while (!res.CloseStatus.HasValue)
                         {
                             var result = Encoding.UTF8.GetString(buffer, 0, res.Count);
-                            if (!string.IsNullOrEmpty(result))
+                            if (!Utile.IsNullOrEmpty(result))
                             {
                                 ParseOutput(result, out ulong up, out ulong down);
 

@@ -11,7 +11,7 @@ namespace v2rayN
 
         public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
         {
-            if (string.IsNullOrEmpty(url))
+            if (Utile.IsNullOrEmpty(url))
             {
                 return null;
             }
@@ -57,7 +57,7 @@ namespace v2rayN
 
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
         {
-            if (string.IsNullOrEmpty(url))
+            if (Utile.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -120,11 +120,11 @@ namespace v2rayN
 
         public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
         {
-            if (string.IsNullOrEmpty(url))
+            if (Utile.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
-            if (string.IsNullOrEmpty(fileName))
+            if (Utile.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentNullException(nameof(fileName));
             }

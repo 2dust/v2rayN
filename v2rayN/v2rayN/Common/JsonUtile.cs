@@ -28,7 +28,7 @@ namespace v2rayN
         {
             try
             {
-                if (string.IsNullOrEmpty(strJson))
+                if (string.IsNullOrWhiteSpace(strJson))
                 {
                     return default;
                 }
@@ -49,7 +49,7 @@ namespace v2rayN
         {
             try
             {
-                if (string.IsNullOrEmpty(strJson))
+                if (string.IsNullOrWhiteSpace(strJson))
                 {
                     return null;
                 }

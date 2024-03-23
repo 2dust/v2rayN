@@ -48,7 +48,7 @@ namespace v2rayN.Views
 
             var MsgFilter = cmbMsgFilter.Text.TrimEx();
             if (MsgFilter != lastMsgFilter) lastMsgFilterNotAvailable = false;
-            if (!string.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
+            if (!Utile.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
             {
                 try
                 {

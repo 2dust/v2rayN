@@ -354,11 +354,11 @@ namespace v2rayN.Handler
                 if (node.streamSecurity == Global.StreamSecurityReality || node.streamSecurity == Global.StreamSecurity)
                 {
                     var server_name = string.Empty;
-                    if (!string.IsNullOrWhiteSpace(node.sni))
+                    if (!Utile.IsNullOrEmpty(node.sni))
                     {
                         server_name = node.sni;
                     }
-                    else if (!string.IsNullOrWhiteSpace(node.requestHost))
+                    else if (!Utile.IsNullOrEmpty(node.requestHost))
                     {
                         server_name = Utile.String2List(node.requestHost)[0];
                     }
@@ -761,7 +761,7 @@ namespace v2rayN.Handler
                 {
                     var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
                     var tunDNS = item?.tunDNS;
-                    if (string.IsNullOrWhiteSpace(tunDNS))
+                    if (Utile.IsNullOrEmpty(tunDNS))
                     {
                         tunDNS = Utile.GetEmbedText(Global.TunSingboxDNSFileName);
                     }
@@ -771,7 +771,7 @@ namespace v2rayN.Handler
                 {
                     var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
                     var normalDNS = item?.normalDNS;
-                    if (string.IsNullOrWhiteSpace(normalDNS))
+                    if (Utile.IsNullOrEmpty(normalDNS))
                     {
                         normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
                     }
