@@ -67,7 +67,7 @@ namespace v2rayN
                     }
                     try
                     {
-                        if (!Utile.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
+                        if (!Utils.IsNullOrEmpty(ignoredName) && entry.Name.Contains(ignoredName))
                         {
                             continue;
                         }

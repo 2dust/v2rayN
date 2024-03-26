@@ -126,7 +126,7 @@ namespace v2rayN.ViewModels
                 SaveRouting();
             });
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         #region locked
@@ -136,15 +136,15 @@ namespace v2rayN.ViewModels
             _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
             if (_lockedItem != null)
             {
-                _lockedRules = JsonUtile.Deserialize<List<RulesItem>>(_lockedItem.ruleSet);
-                ProxyDomain = Utile.List2String(_lockedRules[0].domain, true);
-                ProxyIP = Utile.List2String(_lockedRules[0].ip, true);
+                _lockedRules = JsonUtils.Deserialize<List<RulesItem>>(_lockedItem.ruleSet);
+                ProxyDomain = Utils.List2String(_lockedRules[0].domain, true);
+                ProxyIP = Utils.List2String(_lockedRules[0].ip, true);
 
-                DirectDomain = Utile.List2String(_lockedRules[1].domain, true);
-                DirectIP = Utile.List2String(_lockedRules[1].ip, true);
+                DirectDomain = Utils.List2String(_lockedRules[1].domain, true);
+                DirectIP = Utils.List2String(_lockedRules[1].ip, true);
 
-                BlockDomain = Utile.List2String(_lockedRules[2].domain, true);
-                BlockIP = Utile.List2String(_lockedRules[2].ip, true);
+                BlockDomain = Utils.List2String(_lockedRules[2].domain, true);
+                BlockIP = Utils.List2String(_lockedRules[2].ip, true);
             }
         }
 
@@ -152,16 +152,16 @@ namespace v2rayN.ViewModels
         {
             if (_lockedItem != null)
             {
-                _lockedRules[0].domain = Utile.String2List(Utile.Convert2Comma(ProxyDomain.TrimEx()));
-                _lockedRules[0].ip = Utile.String2List(Utile.Convert2Comma(ProxyIP.TrimEx()));
+                _lockedRules[0].domain = Utils.String2List(Utils.Convert2Comma(ProxyDomain.TrimEx()));
+                _lockedRules[0].ip = Utils.String2List(Utils.Convert2Comma(ProxyIP.TrimEx()));
 
-                _lockedRules[1].domain = Utile.String2List(Utile.Convert2Comma(DirectDomain.TrimEx()));
-                _lockedRules[1].ip = Utile.String2List(Utile.Convert2Comma(DirectIP.TrimEx()));
+                _lockedRules[1].domain = Utils.String2List(Utils.Convert2Comma(DirectDomain.TrimEx()));
+                _lockedRules[1].ip = Utils.String2List(Utils.Convert2Comma(DirectIP.TrimEx()));
 
-                _lockedRules[2].domain = Utile.String2List(Utile.Convert2Comma(BlockDomain.TrimEx()));
-                _lockedRules[2].ip = Utile.String2List(Utile.Convert2Comma(BlockIP.TrimEx()));
+                _lockedRules[2].domain = Utils.String2List(Utils.Convert2Comma(BlockDomain.TrimEx()));
+                _lockedRules[2].ip = Utils.String2List(Utils.Convert2Comma(BlockIP.TrimEx()));
 
-                _lockedItem.ruleSet = JsonUtile.Serialize(_lockedRules, false);
+                _lockedItem.ruleSet = JsonUtils.Serialize(_lockedRules, false);
 
                 ConfigHandler.SaveRoutingItem(_config, _lockedItem);
             }

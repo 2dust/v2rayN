@@ -23,19 +23,19 @@ namespace v2rayN
 
         public async Task<string?> GetAsync(string url)
         {
-            if (Utile.IsNullOrEmpty(url)) return null;
+            if (Utils.IsNullOrEmpty(url)) return null;
             return await httpClient.GetStringAsync(url);
         }
 
         public async Task<string?> GetAsync(HttpClient client, string url, CancellationToken token = default)
         {
-            if (Utile.IsNullOrEmpty(url)) return null;
+            if (Utils.IsNullOrEmpty(url)) return null;
             return await client.GetStringAsync(url, token);
         }
 
         public async Task PutAsync(string url, Dictionary<string, string> headers)
         {
-            var jsonContent = JsonUtile.Serialize(headers);
+            var jsonContent = JsonUtils.Serialize(headers);
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             var result = await httpClient.PutAsync(url, content);
@@ -88,7 +88,7 @@ namespace v2rayN
 
         public async Task DownloadDataAsync4Speed(HttpClient client, string url, IProgress<string> progress, CancellationToken token = default)
         {
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }

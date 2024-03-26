@@ -60,19 +60,19 @@ namespace v2rayN.Model
 
         public List<string> GetAlpn()
         {
-            if (Utile.IsNullOrEmpty(alpn))
+            if (Utils.IsNullOrEmpty(alpn))
             {
                 return null;
             }
             else
             {
-                return Utile.String2List(alpn);
+                return Utils.String2List(alpn);
             }
         }
 
         public string GetNetwork()
         {
-            if (Utile.IsNullOrEmpty(network) || !Global.Networks.Contains(network))
+            if (Utils.IsNullOrEmpty(network) || !Global.Networks.Contains(network))
             {
                 return Global.DefaultNetwork;
             }

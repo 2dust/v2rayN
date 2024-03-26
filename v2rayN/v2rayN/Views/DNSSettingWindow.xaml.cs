@@ -51,12 +51,12 @@ namespace v2rayN.Views
 
         private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utile.ProcessStart("https://www.v2fly.org/config/dns.html#dnsobject");
+            Utils.ProcessStart("https://www.v2fly.org/config/dns.html#dnsobject");
         }
 
         private void linkDnsSingboxObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utile.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
+            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
         }
     }
 }

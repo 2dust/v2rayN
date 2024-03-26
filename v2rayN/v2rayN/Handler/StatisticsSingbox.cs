@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                         while (!res.CloseStatus.HasValue)
                         {
                             var result = Encoding.UTF8.GetString(buffer, 0, res.Count);
-                            if (!Utile.IsNullOrEmpty(result))
+                            if (!Utils.IsNullOrEmpty(result))
                             {
                                 ParseOutput(result, out ulong up, out ulong down);
 
@@ -113,7 +113,7 @@ namespace v2rayN.Handler
             up = 0; down = 0;
             try
             {
-                var trafficItem = JsonUtile.Deserialize<TrafficItem>(source);
+                var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
                 if (trafficItem != null)
                 {
                     up = trafficItem.up;

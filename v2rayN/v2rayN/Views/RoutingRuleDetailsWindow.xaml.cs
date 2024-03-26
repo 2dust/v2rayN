@@ -83,7 +83,7 @@ namespace v2rayN.Views
 
         private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utile.ProcessStart("https://www.v2fly.org/config/routing.html#ruleobject");
+            Utils.ProcessStart("https://www.v2fly.org/config/routing.html#ruleobject");
         }
     }
 }

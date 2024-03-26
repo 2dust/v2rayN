@@ -53,7 +53,7 @@ namespace v2rayN.Handler
                     var strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
 
                     var strProxy = string.Empty;
-                    if (Utile.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
+                    if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
                     {
                         strProxy = $"{Global.Loopback}:{port}";
                     }
@@ -75,7 +75,7 @@ namespace v2rayN.Handler
                 }
                 else if (type == ESysProxyType.Pac)
                 {
-                    PacHandler.Start(Utile.GetConfigPath(), port, portPac);
+                    PacHandler.Start(Utils.GetConfigPath(), port, portPac);
                     var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
                     ProxySetting.SetProxy(strProxy, "", 4); // use pac script url for auto-config proxy
                 }
@@ -97,7 +97,7 @@ namespace v2rayN.Handler
             try
             {
                 //TODO To be verified
-                Utile.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
+                Utils.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
             }
             catch
             {

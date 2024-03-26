@@ -48,7 +48,7 @@ namespace v2rayN.Views
 
             var MsgFilter = cmbMsgFilter.Text.TrimEx();
             if (MsgFilter != lastMsgFilter) lastMsgFilterNotAvailable = false;
-            if (!Utile.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
+            if (!Utils.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
             {
                 try
                 {
@@ -99,13 +99,13 @@ namespace v2rayN.Views
         private void menuMsgViewCopy_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var data = txtMsg.SelectedText.TrimEx();
-            Utile.SetClipboardData(data);
+            Utils.SetClipboardData(data);
         }
 
         private void menuMsgViewCopyAll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var data = txtMsg.Text;
-            Utile.SetClipboardData(data);
+            Utils.SetClipboardData(data);
         }
 
         private void menuMsgViewClear_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -58,7 +58,7 @@ namespace v2rayN.ViewModels
             else
             {
                 SelectedRouting = routingItem;
-                _rules = JsonUtile.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
+                _rules = JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
             }
 
             RefreshRulesItems();
@@ -115,7 +115,7 @@ namespace v2rayN.ViewModels
                 SaveRouting();
             });
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         public void RefreshRulesItems()
@@ -129,10 +129,10 @@ namespace v2rayN.ViewModels
                     id = item.id,
                     outboundTag = item.outboundTag,
                     port = item.port,
-                    protocols = Utile.List2String(item.protocol),
-                    inboundTags = Utile.List2String(item.inboundTag),
-                    domains = Utile.List2String(item.domain),
-                    ips = Utile.List2String(item.ip),
+                    protocols = Utils.List2String(item.protocol),
+                    inboundTags = Utils.List2String(item.inboundTag),
+                    domains = Utils.List2String(item.domain),
+                    ips = Utils.List2String(item.ip),
                     enabled = item.enabled,
                 };
                 _rulesItems.Add(it);
@@ -207,7 +207,7 @@ namespace v2rayN.ViewModels
             }
             if (lst.Count > 0)
             {
-                Utile.SetClipboardData(JsonUtile.Serialize(lst));
+                Utils.SetClipboardData(JsonUtils.Serialize(lst));
                 //_noticeHandler?.Enqueue(ResUI.OperationSuccess"));
             }
         }
@@ -235,7 +235,7 @@ namespace v2rayN.ViewModels
         private void SaveRouting()
         {
             string remarks = SelectedRouting.remarks;
-            if (Utile.IsNullOrEmpty(remarks))
+            if (Utils.IsNullOrEmpty(remarks))
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
@@ -243,10 +243,10 @@ namespace v2rayN.ViewModels
             var item = SelectedRouting;
             foreach (var it in _rules)
             {
-                it.id = Utile.GetGUID(false);
+                it.id = Utils.GetGUID(false);
             }
             item.ruleNum = _rules.Count;
-            item.ruleSet = JsonUtile.Serialize(_rules, false);
+            item.ruleSet = JsonUtils.Serialize(_rules, false);
 
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
@@ -268,13 +268,13 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (Utile.IsNullOrEmpty(fileName))
+            if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }
 
-            string result = Utile.LoadResource(fileName);
-            if (Utile.IsNullOrEmpty(result))
+            string result = Utils.LoadResource(fileName);
+            if (Utils.IsNullOrEmpty(result))
             {
                 return;
             }
@@ -288,7 +288,7 @@ namespace v2rayN.ViewModels
 
         private void ImportRulesFromClipboard()
         {
-            string clipboardData = Utile.GetClipboardData();
+            string clipboardData = Utils.GetClipboardData();
             if (AddBatchRoutingRules(SelectedRouting, clipboardData) == 0)
             {
                 RefreshRulesItems();
@@ -299,7 +299,7 @@ namespace v2rayN.ViewModels
         private async Task ImportRulesFromUrl()
         {
             var url = SelectedRouting.url;
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 _noticeHandler?.Enqueue(ResUI.MsgNeedUrl);
                 return;
@@ -324,18 +324,18 @@ namespace v2rayN.ViewModels
             {
                 blReplace = true;
             }
-            if (Utile.IsNullOrEmpty(clipboardData))
+            if (Utils.IsNullOrEmpty(clipboardData))
             {
                 return -1;
             }
-            var lstRules = JsonUtile.Deserialize<List<RulesItem>>(clipboardData);
+            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
             if (lstRules == null)
             {
                 return -1;
             }
             foreach (var rule in lstRules)
             {
-                rule.id = Utile.GetGUID(false);
+                rule.id = Utils.GetGUID(false);
             }
 
             if (blReplace)

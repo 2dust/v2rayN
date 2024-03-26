@@ -51,7 +51,7 @@ namespace v2rayN.Handler
             }
             else if (type is 2 or 4) // named proxy or autoproxy script URL
             {
-                optionCount = Utile.IsNullOrEmpty(exceptions) ? 2 : 3;
+                optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
 
             int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;

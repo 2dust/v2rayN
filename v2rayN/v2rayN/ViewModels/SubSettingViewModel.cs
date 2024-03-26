@@ -62,7 +62,7 @@ namespace v2rayN.ViewModels
                 SubShare();
             }, canEditRemove);
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         public void RefreshSubItems()
@@ -112,7 +112,7 @@ namespace v2rayN.ViewModels
 
         private async void SubShare()
         {
-            if (Utile.IsNullOrEmpty(SelectedSource?.url))
+            if (Utils.IsNullOrEmpty(SelectedSource?.url))
             {
                 return;
             }

@@ -36,7 +36,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = JsonUtile.DeepCopy(profileItem);
+                SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
 
             SaveCmd = ReactiveCommand.Create(() =>
@@ -44,24 +44,24 @@ namespace v2rayN.ViewModels
                 SaveServer();
             });
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void SaveServer()
         {
-            if (Utile.IsNullOrEmpty(SelectedSource.remarks))
+            if (Utils.IsNullOrEmpty(SelectedSource.remarks))
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
-            if (Utile.IsNullOrEmpty(SelectedSource.address))
+            if (Utils.IsNullOrEmpty(SelectedSource.address))
             {
                 _noticeHandler?.Enqueue(ResUI.FillServerAddress);
                 return;
             }
             var port = SelectedSource.port.ToString();
-            if (Utile.IsNullOrEmpty(port) || !Utile.IsNumeric(port)
+            if (Utils.IsNullOrEmpty(port) || !Utils.IsNumeric(port)
                 || SelectedSource.port <= 0 || SelectedSource.port >= Global.MaxPort)
             {
                 _noticeHandler?.Enqueue(ResUI.FillCorrectServerPort);
@@ -69,12 +69,12 @@ namespace v2rayN.ViewModels
             }
             if (SelectedSource.configType == EConfigType.Shadowsocks)
             {
-                if (Utile.IsNullOrEmpty(SelectedSource.id))
+                if (Utils.IsNullOrEmpty(SelectedSource.id))
                 {
                     _noticeHandler?.Enqueue(ResUI.FillPassword);
                     return;
                 }
-                if (Utile.IsNullOrEmpty(SelectedSource.security))
+                if (Utils.IsNullOrEmpty(SelectedSource.security))
                 {
                     _noticeHandler?.Enqueue(ResUI.PleaseSelectEncryption);
                     return;
@@ -82,7 +82,7 @@ namespace v2rayN.ViewModels
             }
             if (SelectedSource.configType != EConfigType.Socks)
             {
-                if (Utile.IsNullOrEmpty(SelectedSource.id))
+                if (Utils.IsNullOrEmpty(SelectedSource.id))
                 {
                     _noticeHandler?.Enqueue(ResUI.FillUUID);
                     return;

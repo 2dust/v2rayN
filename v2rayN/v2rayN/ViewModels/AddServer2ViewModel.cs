@@ -36,7 +36,7 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                SelectedSource = JsonUtile.DeepCopy(profileItem);
+                SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
 
             _view = view;
@@ -56,19 +56,19 @@ namespace v2rayN.ViewModels
                 SaveServer();
             });
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void SaveServer()
         {
             string remarks = SelectedSource.remarks;
-            if (Utile.IsNullOrEmpty(remarks))
+            if (Utils.IsNullOrEmpty(remarks))
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
-            if (Utile.IsNullOrEmpty(SelectedSource.address))
+            if (Utils.IsNullOrEmpty(SelectedSource.address))
             {
                 _noticeHandler?.Enqueue(ResUI.FillServerAddressCustom);
                 return;
@@ -108,7 +108,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (Utile.IsNullOrEmpty(fileName))
+            if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }
@@ -119,9 +119,9 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedCustomServer);
-                if (!Utile.IsNullOrEmpty(item.indexId))
+                if (!Utils.IsNullOrEmpty(item.indexId))
                 {
-                    SelectedSource = JsonUtile.DeepCopy(item);
+                    SelectedSource = JsonUtils.DeepCopy(item);
                 }
                 IsModified = true;
             }
@@ -134,16 +134,16 @@ namespace v2rayN.ViewModels
         private void EditServer()
         {
             var address = SelectedSource.address;
-            if (Utile.IsNullOrEmpty(address))
+            if (Utils.IsNullOrEmpty(address))
             {
                 _noticeHandler?.Enqueue(ResUI.FillServerAddressCustom);
                 return;
             }
 
-            address = Utile.GetConfigPath(address);
+            address = Utils.GetConfigPath(address);
             if (File.Exists(address))
             {
-                Utile.ProcessStart(address);
+                Utils.ProcessStart(address);
             }
             else
             {

@@ -15,7 +15,7 @@ namespace v2rayN
 
         public SQLiteHelper()
         {
-            _connstr = Utile.GetConfigPath(_configDB);
+            _connstr = Utils.GetConfigPath(_configDB);
             _db = new SQLiteConnection(_connstr, false);
             _dbAsync = new SQLiteAsyncConnection(_connstr, false);
         }

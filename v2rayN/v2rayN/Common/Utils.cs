@@ -25,7 +25,7 @@ using ZXing.Windows.Compatibility;
 
 namespace v2rayN
 {
-    internal class Utile
+    internal class Utils
     {
         #region 资源Json操作
 
@@ -361,7 +361,7 @@ namespace v2rayN
         /// <returns></returns>
         public static string GetPunycode(string url)
         {
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 return url;
             }
@@ -391,7 +391,7 @@ namespace v2rayN
 
         public static string Convert2Comma(string text)
         {
-            if (Utile.IsNullOrEmpty(text))
+            if (Utils.IsNullOrEmpty(text))
             {
                 return text;
             }
@@ -583,7 +583,7 @@ namespace v2rayN
         {
             try
             {
-                if (!Utile.PortInUse(defaultPort))
+                if (!Utils.PortInUse(defaultPort))
                 {
                     return defaultPort;
                 }
@@ -840,7 +840,7 @@ namespace v2rayN
             {
                 Directory.CreateDirectory(_tempPath);
             }
-            if (Utile.IsNullOrEmpty(filename))
+            if (Utils.IsNullOrEmpty(filename))
             {
                 return _tempPath;
             }
@@ -876,7 +876,7 @@ namespace v2rayN
             {
                 Directory.CreateDirectory(_tempPath);
             }
-            if (Utile.IsNullOrEmpty(filename))
+            if (Utils.IsNullOrEmpty(filename))
             {
                 return _tempPath;
             }
@@ -901,7 +901,7 @@ namespace v2rayN
                     Directory.CreateDirectory(_tempPath);
                 }
             }
-            if (Utile.IsNullOrEmpty(filename))
+            if (Utils.IsNullOrEmpty(filename))
             {
                 return _tempPath;
             }
@@ -918,7 +918,7 @@ namespace v2rayN
             {
                 Directory.CreateDirectory(_tempPath);
             }
-            if (Utile.IsNullOrEmpty(filename))
+            if (Utils.IsNullOrEmpty(filename))
             {
                 return _tempPath;
             }
@@ -935,7 +935,7 @@ namespace v2rayN
             {
                 Directory.CreateDirectory(_tempPath);
             }
-            if (Utile.IsNullOrEmpty(filename))
+            if (Utils.IsNullOrEmpty(filename))
             {
                 return _tempPath;
             }
@@ -1107,7 +1107,7 @@ namespace v2rayN
         /// <exception cref="ArgumentNullException"></exception>
         public static void AutoStart(string taskName, string fileName, string description)
         {
-            if (Utile.IsNullOrEmpty(taskName))
+            if (Utils.IsNullOrEmpty(taskName))
             {
                 return;
             }
@@ -1122,7 +1122,7 @@ namespace v2rayN
             {
                 taskService.RootFolder.DeleteTask(t.Name);
             }
-            if (Utile.IsNullOrEmpty(fileName))
+            if (Utils.IsNullOrEmpty(fileName))
             {
                 return;
             }

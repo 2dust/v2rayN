@@ -33,13 +33,13 @@ namespace v2rayN.Handler
                     {
                         return -1;
                     }
-                    if (Utile.IsNullOrEmpty(fileName))
+                    if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = JsonUtile.Serialize(singboxConfig);
+                        content = JsonUtils.Serialize(singboxConfig);
                     }
                     else
                     {
-                        JsonUtile.ToFile(singboxConfig, fileName, false);
+                        JsonUtils.ToFile(singboxConfig, fileName, false);
                     }
                 }
                 else
@@ -49,13 +49,13 @@ namespace v2rayN.Handler
                     {
                         return -1;
                     }
-                    if (Utile.IsNullOrEmpty(fileName))
+                    if (Utils.IsNullOrEmpty(fileName))
                     {
-                        content = JsonUtile.Serialize(v2rayConfig);
+                        content = JsonUtils.Serialize(v2rayConfig);
                     }
                     else
                     {
-                        JsonUtile.ToFile(v2rayConfig, fileName, false);
+                        JsonUtils.ToFile(v2rayConfig, fileName, false);
                     }
                 }
             }
@@ -87,7 +87,7 @@ namespace v2rayN.Handler
                 string addressFileName = node.address;
                 if (!File.Exists(addressFileName))
                 {
-                    addressFileName = Utile.GetConfigPath(addressFileName);
+                    addressFileName = Utils.GetConfigPath(addressFileName);
                 }
                 if (!File.Exists(addressFileName))
                 {
@@ -158,7 +158,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-                JsonUtile.ToFile(singboxConfig, fileName, false);
+                JsonUtils.ToFile(singboxConfig, fileName, false);
             }
             else
             {
@@ -166,7 +166,7 @@ namespace v2rayN.Handler
                 {
                     return -1;
                 }
-                JsonUtile.ToFile(v2rayConfig, fileName, false);
+                JsonUtils.ToFile(v2rayConfig, fileName, false);
             }
             return 0;
         }

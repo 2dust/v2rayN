@@ -27,7 +27,7 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var exePathKey = Utile.GetMD5(Utile.GetExePath());
+            var exePathKey = Utils.GetMD5(Utils.GetExePath());
 
             var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
@@ -41,7 +41,7 @@ namespace v2rayN
             Logging.Setup();
             Init();
             Logging.LoggingEnabled(_config.guiItem.enableLog);
-            Logging.SaveLog($"v2rayN start up | {Utile.GetVersion()} | {Utile.GetExePath()}");
+            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.ClearLogs();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);

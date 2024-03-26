@@ -47,15 +47,15 @@ namespace v2rayN.Handler
 
                     try
                     {
-                        string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(url));
-                        fileName = Utile.UrlEncode(fileName);
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                        fileName = Utils.UrlEncode(fileName);
                         Process process = new()
                         {
                             StartInfo = new ProcessStartInfo
                             {
                                 FileName = "v2rayUpgrade.exe",
                                 Arguments = fileName.AppendQuotes(),
-                                WorkingDirectory = Utile.StartupPath()
+                                WorkingDirectory = Utils.StartupPath()
                             }
                         };
                         process.Start();
@@ -179,7 +179,7 @@ namespace v2rayN.Handler
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
                     string hashCode = $"{item.remarks}->";
-                    if (Utile.IsNullOrEmpty(id) || Utile.IsNullOrEmpty(url) || (!Utile.IsNullOrEmpty(subId) && item.id != subId))
+                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (!Utils.IsNullOrEmpty(subId) && item.id != subId))
                     {
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                         continue;
@@ -203,12 +203,12 @@ namespace v2rayN.Handler
                     _updateFunc(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                     //one url
-                    url = Utile.GetPunycode(url);
+                    url = Utils.GetPunycode(url);
                     //convert
-                    if (!Utile.IsNullOrEmpty(item.convertTarget))
+                    if (!Utils.IsNullOrEmpty(item.convertTarget))
                     {
-                        var subConvertUrl = Utile.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
-                        url = string.Format(subConvertUrl!, Utile.UrlEncode(url));
+                        var subConvertUrl = Utils.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
+                        url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
                         if (!url.Contains("target="))
                         {
                             url += string.Format("&target={0}", item.convertTarget);
@@ -219,17 +219,17 @@ namespace v2rayN.Handler
                         }
                     }
                     var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
-                    if (blProxy && Utile.IsNullOrEmpty(result))
+                    if (blProxy && Utils.IsNullOrEmpty(result))
                     {
                         result = await downloadHandle.TryDownloadString(url, false, userAgent);
                     }
 
                     //more url
-                    if (Utile.IsNullOrEmpty(item.convertTarget) && !Utile.IsNullOrEmpty(item.moreUrl.TrimEx()))
+                    if (Utils.IsNullOrEmpty(item.convertTarget) && !Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
                     {
-                        if (!Utile.IsNullOrEmpty(result) && Utile.IsBase64String(result!))
+                        if (!Utils.IsNullOrEmpty(result) && Utils.IsBase64String(result!))
                         {
-                            result = Utile.Base64Decode(result);
+                            result = Utils.Base64Decode(result);
                         }
 
                         var lstUrl = new List<string>
@@ -238,22 +238,22 @@ namespace v2rayN.Handler
                         };
                         foreach (var it in lstUrl)
                         {
-                            var url2 = Utile.GetPunycode(it);
-                            if (Utile.IsNullOrEmpty(url2))
+                            var url2 = Utils.GetPunycode(it);
+                            if (Utils.IsNullOrEmpty(url2))
                             {
                                 continue;
                             }
 
                             var result2 = await downloadHandle.TryDownloadString(url2, blProxy, userAgent);
-                            if (blProxy && Utile.IsNullOrEmpty(result2))
+                            if (blProxy && Utils.IsNullOrEmpty(result2))
                             {
                                 result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
                             }
-                            if (!Utile.IsNullOrEmpty(result2))
+                            if (!Utils.IsNullOrEmpty(result2))
                             {
-                                if (Utile.IsBase64String(result2!))
+                                if (Utils.IsBase64String(result2!))
                                 {
-                                    result += Utile.Base64Decode(result2);
+                                    result += Utils.Base64Decode(result2);
                                 }
                                 else
                                 {
@@ -263,7 +263,7 @@ namespace v2rayN.Handler
                         }
                     }
 
-                    if (Utile.IsNullOrEmpty(result))
+                    if (Utils.IsNullOrEmpty(result))
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
                     }
@@ -325,7 +325,7 @@ namespace v2rayN.Handler
                 string url = coreInfo.coreReleaseApiUrl;
 
                 var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
-                if (!Utile.IsNullOrEmpty(result))
+                if (!Utils.IsNullOrEmpty(result))
                 {
                     responseHandler(type, result, preRelease);
                 }
@@ -354,7 +354,7 @@ namespace v2rayN.Handler
                 foreach (string name in coreInfo.coreExes)
                 {
                     string vName = $"{name}.exe";
-                    vName = Utile.GetBinPath(vName, coreInfo.coreType.ToString());
+                    vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
                     if (File.Exists(vName))
                     {
                         filePath = vName;
@@ -372,7 +372,7 @@ namespace v2rayN.Handler
                 using Process p = new();
                 p.StartInfo.FileName = filePath.AppendQuotes();
                 p.StartInfo.Arguments = coreInfo.versionArg;
-                p.StartInfo.WorkingDirectory = Utile.StartupPath();
+                p.StartInfo.WorkingDirectory = Utils.StartupPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -414,7 +414,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var gitHubReleases = JsonUtile.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
+                var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
                 var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
                 var version = new SemanticVersion(gitHubRelease?.TagName!);
                 var body = gitHubRelease?.Body;
@@ -498,7 +498,7 @@ namespace v2rayN.Handler
                         }
                     case ECoreType.v2rayN:
                         {
-                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utile.GetExePath()).FileVersion.ToString());
+                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString());
                             message = string.Format(ResUI.IsLatestN, type, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -570,7 +570,7 @@ namespace v2rayN.Handler
 
                     try
                     {
-                        string fileName = Utile.GetTempPath(Utile.GetDownloadFileName(url));
+                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
                             //Global.coreTypes.ForEach(it =>
@@ -578,7 +578,7 @@ namespace v2rayN.Handler
                             //    string targetPath = Utile.GetBinPath($"{geoName}.dat", (ECoreType)Enum.Parse(typeof(ECoreType), it));
                             //    File.Copy(fileName, targetPath, true);
                             //});
-                            string targetPath = Utile.GetBinPath($"{geoName}.dat");
+                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
                             File.Copy(fileName, targetPath, true);
 
                             File.Delete(fileName);

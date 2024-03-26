@@ -28,14 +28,14 @@ namespace v2rayN.Handler
 
                 msg = ResUI.InitialConfiguration;
 
-                string result = Utile.GetEmbedText(Global.V2raySampleClient);
-                if (Utile.IsNullOrEmpty(result))
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                if (Utils.IsNullOrEmpty(result))
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return -1;
                 }
 
-                v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(result);
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -77,8 +77,8 @@ namespace v2rayN.Handler
                 {
                     var dtNow = DateTime.Now;
                     v2rayConfig.log.loglevel = _config.coreBasicItem.loglevel;
-                    v2rayConfig.log.access = Utile.GetLogPath($"Vaccess_{dtNow:yyyy-MM-dd}.txt");
-                    v2rayConfig.log.error = Utile.GetLogPath($"Verror_{dtNow:yyyy-MM-dd}.txt");
+                    v2rayConfig.log.access = Utils.GetLogPath($"Vaccess_{dtNow:yyyy-MM-dd}.txt");
+                    v2rayConfig.log.error = Utils.GetLogPath($"Verror_{dtNow:yyyy-MM-dd}.txt");
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace v2rayN.Handler
                         v2rayConfig.inbounds.Add(inbound4);
 
                         //auth
-                        if (!Utile.IsNullOrEmpty(_config.inbound[0].user) && !Utile.IsNullOrEmpty(_config.inbound[0].pass))
+                        if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
                         {
                             inbound3.settings.auth = "password";
                             inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.inbound[0].user, pass = _config.inbound[0].pass } };
@@ -145,13 +145,13 @@ namespace v2rayN.Handler
 
         private Inbounds4Ray? GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
         {
-            string result = Utile.GetEmbedText(Global.V2raySampleInbound);
-            if (Utile.IsNullOrEmpty(result))
+            string result = Utils.GetEmbedText(Global.V2raySampleInbound);
+            if (Utils.IsNullOrEmpty(result))
             {
                 return null;
             }
 
-            var inbound = JsonUtile.Deserialize<Inbounds4Ray>(result);
+            var inbound = JsonUtils.Deserialize<Inbounds4Ray>(result);
             if (inbound == null)
             {
                 return null;
@@ -173,23 +173,23 @@ namespace v2rayN.Handler
                 if (v2rayConfig.routing?.rules != null)
                 {
                     v2rayConfig.routing.domainStrategy = _config.routingBasicItem.domainStrategy;
-                    v2rayConfig.routing.domainMatcher = Utile.IsNullOrEmpty(_config.routingBasicItem.domainMatcher) ? null : _config.routingBasicItem.domainMatcher;
+                    v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(_config.routingBasicItem.domainMatcher) ? null : _config.routingBasicItem.domainMatcher;
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
                         var routing = ConfigHandler.GetDefaultRouting(_config);
                         if (routing != null)
                         {
-                            if (!Utile.IsNullOrEmpty(routing.domainStrategy))
+                            if (!Utils.IsNullOrEmpty(routing.domainStrategy))
                             {
                                 v2rayConfig.routing.domainStrategy = routing.domainStrategy;
                             }
-                            var rules = JsonUtile.Deserialize<List<RulesItem>>(routing.ruleSet);
+                            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
                             foreach (var item in rules)
                             {
                                 if (item.enabled)
                                 {
-                                    var item2 = JsonUtile.Deserialize<RulesItem4Ray>(JsonUtile.Serialize(item));
+                                    var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                     GenRoutingUserRule(item2, v2rayConfig);
                                 }
                             }
@@ -200,10 +200,10 @@ namespace v2rayN.Handler
                         var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                         if (lockedItem != null)
                         {
-                            var rules = JsonUtile.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
+                            var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
                             foreach (var item in rules)
                             {
-                                var item2 = JsonUtile.Deserialize<RulesItem4Ray>(JsonUtile.Serialize(item));
+                                var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                 GenRoutingUserRule(item2, v2rayConfig);
                             }
                         }
@@ -225,7 +225,7 @@ namespace v2rayN.Handler
                 {
                     return 0;
                 }
-                if (Utile.IsNullOrEmpty(rules.port))
+                if (Utils.IsNullOrEmpty(rules.port))
                 {
                     rules.port = null;
                 }
@@ -249,7 +249,7 @@ namespace v2rayN.Handler
                 var hasDomainIp = false;
                 if (rules.domain?.Count > 0)
                 {
-                    var it = JsonUtile.DeepCopy(rules);
+                    var it = JsonUtils.DeepCopy(rules);
                     it.ip = null;
                     it.type = "field";
                     for (int k = it.domain.Count - 1; k >= 0; k--)
@@ -265,7 +265,7 @@ namespace v2rayN.Handler
                 }
                 if (rules.ip?.Count > 0)
                 {
-                    var it = JsonUtile.DeepCopy(rules);
+                    var it = JsonUtils.DeepCopy(rules);
                     it.domain = null;
                     it.type = "field";
                     v2rayConfig.routing.rules.Add(it);
@@ -273,12 +273,12 @@ namespace v2rayN.Handler
                 }
                 if (!hasDomainIp)
                 {
-                    if (!Utile.IsNullOrEmpty(rules.port)
+                    if (!Utils.IsNullOrEmpty(rules.port)
                         || (rules.protocol?.Count > 0)
                         || (rules.inboundTag?.Count > 0)
                         )
                     {
-                        var it = JsonUtile.DeepCopy(rules);
+                        var it = JsonUtils.DeepCopy(rules);
                         it.type = "field";
                         v2rayConfig.routing.rules.Add(it);
                     }
@@ -380,8 +380,8 @@ namespace v2rayN.Handler
                     serversItem.method = null;
                     serversItem.password = null;
 
-                    if (!Utile.IsNullOrEmpty(node.security)
-                        && !Utile.IsNullOrEmpty(node.id))
+                    if (!Utils.IsNullOrEmpty(node.security)
+                        && !Utils.IsNullOrEmpty(node.id))
                     {
                         SocksUsersItem4Ray socksUsersItem = new()
                         {
@@ -432,14 +432,14 @@ namespace v2rayN.Handler
                     if (node.streamSecurity == Global.StreamSecurityReality
                         || node.streamSecurity == Global.StreamSecurity)
                     {
-                        if (!Utile.IsNullOrEmpty(node.flow))
+                        if (!Utils.IsNullOrEmpty(node.flow))
                         {
                             usersItem.flow = node.flow;
 
                             GenOutboundMux(node, outbound, false);
                         }
                     }
-                    if (node.streamSecurity == Global.StreamSecurityReality && Utile.IsNullOrEmpty(node.flow))
+                    if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
                     {
                         GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                     }
@@ -529,17 +529,17 @@ namespace v2rayN.Handler
 
                     TlsSettings4Ray tlsSettings = new()
                     {
-                        allowInsecure = Utile.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
+                        allowInsecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                         fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint
                     };
-                    if (!Utile.IsNullOrEmpty(sni))
+                    if (!Utils.IsNullOrEmpty(sni))
                     {
                         tlsSettings.serverName = sni;
                     }
-                    else if (!Utile.IsNullOrEmpty(host))
+                    else if (!Utils.IsNullOrEmpty(host))
                     {
-                        tlsSettings.serverName = Utile.String2List(host)[0];
+                        tlsSettings.serverName = Utils.String2List(host)[0];
                     }
                     streamSettings.tlsSettings = tlsSettings;
                 }
@@ -581,7 +581,7 @@ namespace v2rayN.Handler
                         {
                             type = node.headerType
                         };
-                        if (!Utile.IsNullOrEmpty(node.path))
+                        if (!Utils.IsNullOrEmpty(node.path))
                         {
                             kcpSettings.seed = node.path;
                         }
@@ -592,15 +592,15 @@ namespace v2rayN.Handler
                         WsSettings4Ray wsSettings = new();
                         wsSettings.headers = new Headers4Ray();
                         string path = node.path;
-                        if (!Utile.IsNullOrEmpty(host))
+                        if (!Utils.IsNullOrEmpty(host))
                         {
                             wsSettings.headers.Host = host;
                         }
-                        if (!Utile.IsNullOrEmpty(path))
+                        if (!Utils.IsNullOrEmpty(path))
                         {
                             wsSettings.path = path;
                         }
-                        if (!Utile.IsNullOrEmpty(useragent))
+                        if (!Utils.IsNullOrEmpty(useragent))
                         {
                             wsSettings.headers.UserAgent = useragent;
                         }
@@ -611,11 +611,11 @@ namespace v2rayN.Handler
                     case nameof(ETransport.httpupgrade):
                         HttpupgradeSettings4Ray httpupgradeSettings = new();
 
-                        if (!Utile.IsNullOrEmpty(node.path))
+                        if (!Utils.IsNullOrEmpty(node.path))
                         {
                             httpupgradeSettings.path = node.path;
                         }
-                        if (!Utile.IsNullOrEmpty(host))
+                        if (!Utils.IsNullOrEmpty(host))
                         {
                             httpupgradeSettings.host = host;
                         }
@@ -626,9 +626,9 @@ namespace v2rayN.Handler
                     case nameof(ETransport.h2):
                         HttpSettings4Ray httpSettings = new();
 
-                        if (!Utile.IsNullOrEmpty(host))
+                        if (!Utils.IsNullOrEmpty(host))
                         {
-                            httpSettings.host = Utile.String2List(host);
+                            httpSettings.host = Utils.String2List(host);
                         }
                         httpSettings.path = node.path;
 
@@ -649,7 +649,7 @@ namespace v2rayN.Handler
                         streamSettings.quicSettings = quicsettings;
                         if (node.streamSecurity == Global.StreamSecurity)
                         {
-                            if (!Utile.IsNullOrEmpty(sni))
+                            if (!Utils.IsNullOrEmpty(sni))
                             {
                                 streamSettings.tlsSettings.serverName = sni;
                             }
@@ -663,7 +663,7 @@ namespace v2rayN.Handler
                     case nameof(ETransport.grpc):
                         GrpcSettings4Ray grpcSettings = new()
                         {
-                            authority = Utile.IsNullOrEmpty(host) ? null : host,
+                            authority = Utils.IsNullOrEmpty(host) ? null : host,
                             serviceName = node.path,
                             multiMode = (node.headerType == Global.GrpcMultiMode),
                             idle_timeout = _config.grpcItem.idle_timeout,
@@ -687,7 +687,7 @@ namespace v2rayN.Handler
                             };
 
                             //request Host
-                            string request = Utile.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                            string request = Utils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
                             string[] arrHost = host.Split(',');
                             string host2 = string.Join("\",\"", arrHost);
                             request = request.Replace("$requestHost$", $"\"{host2}\"");
@@ -695,13 +695,13 @@ namespace v2rayN.Handler
                             request = request.Replace("$requestUserAgent$", $"\"{useragent}\"");
                             //Path
                             string pathHttp = @"/";
-                            if (!Utile.IsNullOrEmpty(node.path))
+                            if (!Utils.IsNullOrEmpty(node.path))
                             {
                                 string[] arrPath = node.path.Split(',');
                                 pathHttp = string.Join("\",\"", arrPath);
                             }
                             request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
-                            tcpSettings.header.request = JsonUtile.Deserialize<object>(request);
+                            tcpSettings.header.request = JsonUtils.Deserialize<object>(request);
 
                             streamSettings.tcpSettings = tcpSettings;
                         }
@@ -722,20 +722,20 @@ namespace v2rayN.Handler
                 var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
                 var normalDNS = item?.normalDNS;
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
-                if (Utile.IsNullOrEmpty(normalDNS))
+                if (Utils.IsNullOrEmpty(normalDNS))
                 {
                     normalDNS = "1.1.1.1,8.8.8.8";
                 }
 
                 //Outbound Freedom domainStrategy
-                if (!Utile.IsNullOrEmpty(domainStrategy4Freedom))
+                if (!Utils.IsNullOrEmpty(domainStrategy4Freedom))
                 {
                     var outbound = v2rayConfig.outbounds[1];
                     outbound.settings.domainStrategy = domainStrategy4Freedom;
                     outbound.settings.userLevel = 0;
                 }
 
-                var obj = JsonUtile.ParseJson(normalDNS);
+                var obj = JsonUtils.ParseJson(normalDNS);
                 if (obj is null)
                 {
                     List<string> servers = [];
@@ -744,14 +744,14 @@ namespace v2rayN.Handler
                     {
                         servers.Add(str);
                     }
-                    obj = JsonUtile.ParseJson("{}");
-                    obj["servers"] = JsonUtile.SerializeToNode(servers);
+                    obj = JsonUtils.ParseJson("{}");
+                    obj["servers"] = JsonUtils.SerializeToNode(servers);
                 }
 
                 // 追加至 dns 设置
                 if (item.useSystemHosts)
                 {
-                    var systemHosts = Utile.GetSystemHosts();
+                    var systemHosts = Utils.GetSystemHosts();
                     if (systemHosts.Count > 0)
                     {
                         var normalHost = obj["hosts"];
@@ -842,7 +842,7 @@ namespace v2rayN.Handler
 
                 //current proxy
                 var outbound = v2rayConfig.outbounds[0];
-                var txtOutbound = Utile.GetEmbedText(Global.V2raySampleOutbound);
+                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
 
                 //Previous proxy
                 var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);
@@ -852,7 +852,7 @@ namespace v2rayN.Handler
                     && prevNode.configType != EConfigType.Tuic
                     && prevNode.configType != EConfigType.Wireguard)
                 {
-                    var prevOutbound = JsonUtile.Deserialize<Outbounds4Ray>(txtOutbound);
+                    var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
                     v2rayConfig.outbounds.Add(prevOutbound);
@@ -871,7 +871,7 @@ namespace v2rayN.Handler
                     && nextNode.configType != EConfigType.Tuic
                     && nextNode.configType != EConfigType.Wireguard)
                 {
-                    var nextOutbound = JsonUtile.Deserialize<Outbounds4Ray>(txtOutbound);
+                    var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
                     v2rayConfig.outbounds.Insert(0, nextOutbound);
@@ -908,15 +908,15 @@ namespace v2rayN.Handler
 
                 msg = ResUI.InitialConfiguration;
 
-                string result = Utile.GetEmbedText(Global.V2raySampleClient);
-                string txtOutbound = Utile.GetEmbedText(Global.V2raySampleOutbound);
-                if (Utile.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return -1;
                 }
 
-                v2rayConfig = JsonUtile.Deserialize<V2rayConfig>(result);
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -954,7 +954,7 @@ namespace v2rayN.Handler
                     if (it.configType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
-                        if (item2 is null || Utile.IsNullOrEmpty(item2.id) || !Utile.IsGuidByParse(item2.id))
+                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
                         {
                             continue;
                         }
@@ -1013,7 +1013,7 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    var outbound = JsonUtile.Deserialize<Outbounds4Ray>(txtOutbound);
+                    var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(item, outbound);
                     outbound.tag = Global.ProxyTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(outbound);

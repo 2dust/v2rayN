@@ -12,9 +12,9 @@ namespace v2rayN.Converters
             try
             {
                 var fontFamily = LazyConfig.Instance.GetConfig().uiItem.currentFontFamily;
-                if (!Utile.IsNullOrEmpty(fontFamily))
+                if (!Utils.IsNullOrEmpty(fontFamily))
                 {
-                    var fontPath = Utile.GetFontsPath();
+                    var fontPath = Utils.GetFontsPath();
                     MyFont = new FontFamily(new Uri(@$"file:///{fontPath}\"), $"./#{fontFamily}");
                 }
             }

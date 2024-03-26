@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace v2rayN
 {
-    internal class JsonUtile
+    internal class JsonUtils
     {
         /// <summary>
         /// DeepCopy

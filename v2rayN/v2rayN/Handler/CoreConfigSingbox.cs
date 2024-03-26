@@ -28,14 +28,14 @@ namespace v2rayN.Handler
 
                 msg = ResUI.InitialConfiguration;
 
-                string result = Utile.GetEmbedText(Global.SingboxSampleClient);
-                if (Utile.IsNullOrEmpty(result))
+                string result = Utils.GetEmbedText(Global.SingboxSampleClient);
+                if (Utils.IsNullOrEmpty(result))
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return -1;
                 }
 
-                singboxConfig = JsonUtile.Deserialize<SingboxConfig>(result);
+                singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
                 if (singboxConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -95,7 +95,7 @@ namespace v2rayN.Handler
                 if (_config.coreBasicItem.logEnabled)
                 {
                     var dtNow = DateTime.Now;
-                    singboxConfig.log.output = Utile.GetLogPath($"sbox_{dtNow:yyyy-MM-dd}.txt");
+                    singboxConfig.log.output = Utils.GetLogPath($"sbox_{dtNow:yyyy-MM-dd}.txt");
                 }
             }
             catch (Exception ex)
@@ -124,12 +124,12 @@ namespace v2rayN.Handler
                     inbound.listen_port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
                     inbound.sniff = _config.inbound[0].sniffingEnabled;
                     inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
-                    inbound.domain_strategy = Utile.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
+                    inbound.domain_strategy = Utils.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
                         var routing = ConfigHandler.GetDefaultRouting(_config);
-                        if (!Utile.IsNullOrEmpty(routing.domainStrategy4Singbox))
+                        if (!Utils.IsNullOrEmpty(routing.domainStrategy4Singbox))
                         {
                             inbound.domain_strategy = routing.domainStrategy4Singbox;
                         }
@@ -152,7 +152,7 @@ namespace v2rayN.Handler
                             singboxConfig.inbounds.Add(inbound4);
 
                             //auth
-                            if (!Utile.IsNullOrEmpty(_config.inbound[0].user) && !Utile.IsNullOrEmpty(_config.inbound[0].pass))
+                            if (!Utils.IsNullOrEmpty(_config.inbound[0].user) && !Utils.IsNullOrEmpty(_config.inbound[0].pass))
                             {
                                 inbound3.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
                                 inbound4.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
@@ -170,14 +170,14 @@ namespace v2rayN.Handler
                 {
                     if (_config.tunModeItem.mtu <= 0)
                     {
-                        _config.tunModeItem.mtu = Utile.ToInt(Global.TunMtus[0]);
+                        _config.tunModeItem.mtu = Utils.ToInt(Global.TunMtus[0]);
                     }
-                    if (Utile.IsNullOrEmpty(_config.tunModeItem.stack))
+                    if (Utils.IsNullOrEmpty(_config.tunModeItem.stack))
                     {
                         _config.tunModeItem.stack = Global.TunStacks[0];
                     }
 
-                    var tunInbound = JsonUtile.Deserialize<Inbound4Sbox>(Utile.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
+                    var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
                     tunInbound.mtu = _config.tunModeItem.mtu;
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
@@ -200,7 +200,7 @@ namespace v2rayN.Handler
 
         private Inbound4Sbox GetInbound(Inbound4Sbox inItem, EInboundProtocol protocol, bool bSocks)
         {
-            var inbound = JsonUtile.DeepCopy(inItem);
+            var inbound = JsonUtils.DeepCopy(inItem);
             inbound.tag = protocol.ToString();
             inbound.listen_port = inItem.listen_port + (int)protocol;
             inbound.type = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
@@ -245,8 +245,8 @@ namespace v2rayN.Handler
                     outbound.type = Global.ProtocolTypes[EConfigType.Socks];
 
                     outbound.version = "5";
-                    if (!Utile.IsNullOrEmpty(node.security)
-                      && !Utile.IsNullOrEmpty(node.id))
+                    if (!Utils.IsNullOrEmpty(node.security)
+                      && !Utils.IsNullOrEmpty(node.id))
                     {
                         outbound.username = node.security;
                         outbound.password = node.id;
@@ -260,7 +260,7 @@ namespace v2rayN.Handler
 
                     outbound.packet_encoding = "xudp";
 
-                    if (Utile.IsNullOrEmpty(node.flow))
+                    if (Utils.IsNullOrEmpty(node.flow))
                     {
                         GenOutboundMux(node, outbound);
                     }
@@ -283,7 +283,7 @@ namespace v2rayN.Handler
 
                     outbound.password = node.id;
 
-                    if (!Utile.IsNullOrEmpty(node.path))
+                    if (!Utils.IsNullOrEmpty(node.path))
                     {
                         outbound.obfs = new()
                         {
@@ -309,9 +309,9 @@ namespace v2rayN.Handler
 
                     outbound.private_key = node.id;
                     outbound.peer_public_key = node.publicKey;
-                    outbound.reserved = Utile.String2List(node.path).Select(int.Parse).ToArray();
-                    outbound.local_address = [.. Utile.String2List(node.requestHost)];
-                    outbound.mtu = Utile.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
+                    outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
+                    outbound.local_address = [.. Utils.String2List(node.requestHost)];
+                    outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
                 }
 
                 GenOutboundTls(node, outbound);
@@ -354,22 +354,22 @@ namespace v2rayN.Handler
                 if (node.streamSecurity == Global.StreamSecurityReality || node.streamSecurity == Global.StreamSecurity)
                 {
                     var server_name = string.Empty;
-                    if (!Utile.IsNullOrEmpty(node.sni))
+                    if (!Utils.IsNullOrEmpty(node.sni))
                     {
                         server_name = node.sni;
                     }
-                    else if (!Utile.IsNullOrEmpty(node.requestHost))
+                    else if (!Utils.IsNullOrEmpty(node.requestHost))
                     {
-                        server_name = Utile.String2List(node.requestHost)[0];
+                        server_name = Utils.String2List(node.requestHost)[0];
                     }
                     var tls = new Tls4Sbox()
                     {
                         enabled = true,
                         server_name = server_name,
-                        insecure = Utile.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
+                        insecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                     };
-                    if (!Utile.IsNullOrEmpty(node.fingerprint))
+                    if (!Utils.IsNullOrEmpty(node.fingerprint))
                     {
                         tls.utls = new Utls4Sbox()
                         {
@@ -407,8 +407,8 @@ namespace v2rayN.Handler
                 {
                     case nameof(ETransport.h2):
                         transport.type = nameof(ETransport.http);
-                        transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
-                        transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
+                        transport.host = Utils.IsNullOrEmpty(node.requestHost) ? null : Utils.String2List(node.requestHost);
+                        transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
                         break;
 
                     case nameof(ETransport.tcp):   //http
@@ -422,16 +422,16 @@ namespace v2rayN.Handler
                             else
                             {
                                 transport.type = nameof(ETransport.http);
-                                transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : Utile.String2List(node.requestHost);
-                                transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
+                                transport.host = Utils.IsNullOrEmpty(node.requestHost) ? null : Utils.String2List(node.requestHost);
+                                transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
                             }
                         }
                         break;
 
                     case nameof(ETransport.ws):
                         transport.type = nameof(ETransport.ws);
-                        transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
-                        if (!Utile.IsNullOrEmpty(node.requestHost))
+                        transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
+                        if (!Utils.IsNullOrEmpty(node.requestHost))
                         {
                             transport.headers = new()
                             {
@@ -442,8 +442,8 @@ namespace v2rayN.Handler
 
                     case nameof(ETransport.httpupgrade):
                         transport.type = nameof(ETransport.httpupgrade);
-                        transport.path = Utile.IsNullOrEmpty(node.path) ? null : node.path;
-                        transport.host = Utile.IsNullOrEmpty(node.requestHost) ? null : node.requestHost;
+                        transport.path = Utils.IsNullOrEmpty(node.path) ? null : node.path;
+                        transport.host = Utils.IsNullOrEmpty(node.requestHost) ? null : node.requestHost;
 
                         break;
 
@@ -490,14 +490,14 @@ namespace v2rayN.Handler
 
                 //current proxy
                 var outbound = singboxConfig.outbounds[0];
-                var txtOutbound = Utile.GetEmbedText(Global.SingboxSampleOutbound);
+                var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
 
                 //Previous proxy
                 var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile!);
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom)
                 {
-                    var prevOutbound = JsonUtile.Deserialize<Outbound4Sbox>(txtOutbound);
+                    var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
                     singboxConfig.outbounds.Add(prevOutbound);
@@ -510,7 +510,7 @@ namespace v2rayN.Handler
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom)
                 {
-                    var nextOutbound = JsonUtile.Deserialize<Outbound4Sbox>(txtOutbound);
+                    var nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
                     singboxConfig.outbounds.Insert(0, nextOutbound);
@@ -535,7 +535,7 @@ namespace v2rayN.Handler
                 {
                     singboxConfig.route.auto_detect_interface = true;
 
-                    var tunRules = JsonUtile.Deserialize<List<Rule4Sbox>>(Utile.GetEmbedText(Global.TunSingboxRulesFileName));
+                    var tunRules = JsonUtils.Deserialize<List<Rule4Sbox>>(Utils.GetEmbedText(Global.TunSingboxRulesFileName));
                     singboxConfig.route.rules.AddRange(tunRules);
 
                     GenRoutingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe);
@@ -558,7 +558,7 @@ namespace v2rayN.Handler
                     var routing = ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
                     {
-                        var rules = JsonUtile.Deserialize<List<RulesItem>>(routing.ruleSet);
+                        var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
                         foreach (var item in rules!)
                         {
                             if (item.enabled)
@@ -573,7 +573,7 @@ namespace v2rayN.Handler
                     var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
                     if (lockedItem != null)
                     {
-                        var rules = JsonUtile.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
+                        var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
                         foreach (var item in rules!)
                         {
                             GenRoutingUserRule(item, singboxConfig.route.rules);
@@ -628,7 +628,7 @@ namespace v2rayN.Handler
                     outbound = item.outboundTag,
                 };
 
-                if (!Utile.IsNullOrEmpty(item.port))
+                if (!Utils.IsNullOrEmpty(item.port))
                 {
                     if (item.port.Contains("-"))
                     {
@@ -636,7 +636,7 @@ namespace v2rayN.Handler
                     }
                     else
                     {
-                        rule.port = new List<int> { Utile.ToInt(item.port) };
+                        rule.port = new List<int> { Utils.ToInt(item.port) };
                     }
                 }
                 if (item.protocol?.Count > 0)
@@ -647,8 +647,8 @@ namespace v2rayN.Handler
                 {
                     rule.inbound = item.inboundTag;
                 }
-                var rule2 = JsonUtile.DeepCopy(rule);
-                var rule3 = JsonUtile.DeepCopy(rule);
+                var rule2 = JsonUtils.DeepCopy(rule);
+                var rule3 = JsonUtils.DeepCopy(rule);
 
                 var hasDomainIp = false;
                 if (item.domain?.Count > 0)
@@ -761,22 +761,22 @@ namespace v2rayN.Handler
                 {
                     var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
                     var tunDNS = item?.tunDNS;
-                    if (Utile.IsNullOrEmpty(tunDNS))
+                    if (Utils.IsNullOrEmpty(tunDNS))
                     {
-                        tunDNS = Utile.GetEmbedText(Global.TunSingboxDNSFileName);
+                        tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
                     }
-                    dns4Sbox = JsonUtile.Deserialize<Dns4Sbox>(tunDNS);
+                    dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(tunDNS);
                 }
                 else
                 {
                     var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
                     var normalDNS = item?.normalDNS;
-                    if (Utile.IsNullOrEmpty(normalDNS))
+                    if (Utils.IsNullOrEmpty(normalDNS))
                     {
                         normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
                     }
 
-                    dns4Sbox = JsonUtile.Deserialize<Dns4Sbox>(normalDNS);
+                    dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(normalDNS);
                 }
                 if (dns4Sbox is null)
                 {
@@ -852,15 +852,15 @@ namespace v2rayN.Handler
 
                 msg = ResUI.InitialConfiguration;
 
-                string result = Utile.GetEmbedText(Global.SingboxSampleClient);
-                string txtOutbound = Utile.GetEmbedText(Global.SingboxSampleOutbound);
-                if (Utile.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                string result = Utils.GetEmbedText(Global.SingboxSampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return -1;
                 }
 
-                singboxConfig = JsonUtile.Deserialize<SingboxConfig>(result);
+                singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
                 if (singboxConfig == null)
                 {
                     msg = ResUI.FailedGenDefaultConfiguration;
@@ -899,7 +899,7 @@ namespace v2rayN.Handler
                     if (it.configType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
-                        if (item2 is null || Utile.IsNullOrEmpty(item2.id) || !Utile.IsGuidByParse(item2.id))
+                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
                         {
                             continue;
                         }
@@ -958,7 +958,7 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    var outbound = JsonUtile.Deserialize<Outbound4Sbox>(txtOutbound);
+                    var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     GenOutbound(item, outbound);
                     outbound.tag = Global.ProxyTag + inbound.listen_port.ToString();
                     singboxConfig.outbounds.Add(outbound);

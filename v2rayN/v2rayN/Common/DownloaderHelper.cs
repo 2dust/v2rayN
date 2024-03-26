@@ -11,7 +11,7 @@ namespace v2rayN
 
         public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
         {
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 return null;
             }
@@ -19,9 +19,9 @@ namespace v2rayN
             Uri uri = new(url);
             //Authorization Header
             var headers = new WebHeaderCollection();
-            if (!Utile.IsNullOrEmpty(uri.UserInfo))
+            if (!Utils.IsNullOrEmpty(uri.UserInfo))
             {
-                headers.Add(HttpRequestHeader.Authorization, "Basic " + Utile.Base64Encode(uri.UserInfo));
+                headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
             }
 
             var downloadOpt = new DownloadConfiguration()
@@ -57,7 +57,7 @@ namespace v2rayN
 
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
         {
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -120,11 +120,11 @@ namespace v2rayN
 
         public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
         {
-            if (Utile.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
-            if (Utile.IsNullOrEmpty(fileName))
+            if (Utils.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentNullException(nameof(fileName));
             }

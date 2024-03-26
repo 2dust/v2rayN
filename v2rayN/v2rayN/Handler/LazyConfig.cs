@@ -19,7 +19,7 @@ namespace v2rayN.Handler
             {
                 if (_statePort is null)
                 {
-                    _statePort = Utile.GetFreePort(GetLocalPort(EInboundProtocol.api));
+                    _statePort = Utils.GetFreePort(GetLocalPort(EInboundProtocol.api));
                 }
 
                 return _statePort.Value;
@@ -77,7 +77,7 @@ namespace v2rayN.Handler
 
         public List<ProfileItem> ProfileItems(string subid)
         {
-            if (Utile.IsNullOrEmpty(subid))
+            if (Utils.IsNullOrEmpty(subid))
             {
                 return SQLiteHelper.Instance.Table<ProfileItem>().ToList();
             }
@@ -89,7 +89,7 @@ namespace v2rayN.Handler
 
         public List<string> ProfileItemIndexes(string subid)
         {
-            if (Utile.IsNullOrEmpty(subid))
+            if (Utils.IsNullOrEmpty(subid))
             {
                 return SQLiteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).ToList();
             }
@@ -106,11 +106,11 @@ namespace v2rayN.Handler
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";
-            if (!Utile.IsNullOrEmpty(subid))
+            if (!Utils.IsNullOrEmpty(subid))
             {
                 sql += $" and a.subid = '{subid}'";
             }
-            if (!Utile.IsNullOrEmpty(filter))
+            if (!Utils.IsNullOrEmpty(filter))
             {
                 if (filter.Contains('\''))
                 {
@@ -124,7 +124,7 @@ namespace v2rayN.Handler
 
         public ProfileItem? GetProfileItem(string indexId)
         {
-            if (Utile.IsNullOrEmpty(indexId))
+            if (Utils.IsNullOrEmpty(indexId))
             {
                 return null;
             }
@@ -133,7 +133,7 @@ namespace v2rayN.Handler
 
         public ProfileItem? GetProfileItemViaRemarks(string remarks)
         {
-            if (Utile.IsNullOrEmpty(remarks))
+            if (Utils.IsNullOrEmpty(remarks))
             {
                 return null;
             }

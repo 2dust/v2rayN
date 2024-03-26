@@ -96,13 +96,13 @@ namespace v2rayN.Views
                 var files = new List<string>();
                 foreach (var pattern in searchPatterns)
                 {
-                    files.AddRange(Directory.GetFiles(Utile.GetFontsPath(), pattern));
+                    files.AddRange(Directory.GetFiles(Utils.GetFontsPath(), pattern));
                 }
                 var culture = _config.uiItem.currentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var ttf in files)
                 {
-                    var families = Fonts.GetFontFamilies(Utile.GetFontsPath(ttf));
+                    var families = Fonts.GetFontFamilies(Utils.GetFontsPath(ttf));
                     foreach (FontFamily family in families)
                     {
                         var typefaces = family.GetTypefaces();
@@ -115,10 +115,10 @@ namespace v2rayN.Views
                             //    continue;
                             //}
                             var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
-                            if (Utile.IsNullOrEmpty(fontFamily))
+                            if (Utils.IsNullOrEmpty(fontFamily))
                             {
                                 fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture2)];
-                                if (Utile.IsNullOrEmpty(fontFamily))
+                                if (Utils.IsNullOrEmpty(fontFamily))
                                 {
                                     continue;
                                 }

@@ -22,8 +22,8 @@ namespace v2rayN.Handler
             _config = config;
             _updateFunc = update;
 
-            Environment.SetEnvironmentVariable("v2ray.location.asset", Utile.GetBinPath(""), EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("xray.location.asset", Utile.GetBinPath(""), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("v2ray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
         public void LoadCore()
@@ -35,7 +35,7 @@ namespace v2rayN.Handler
                 return;
             }
 
-            string fileName = Utile.GetConfigPath(Global.CoreConfigFileName);
+            string fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
             {
                 ShowMsg(false, msg);
@@ -48,7 +48,7 @@ namespace v2rayN.Handler
                 if (_config.tunModeItem.enableTun)
                 {
                     Thread.Sleep(1000);
-                    Utile.RemoveTunDevice();
+                    Utils.RemoveTunDevice();
                 }
 
                 CoreStart(node);
@@ -77,7 +77,7 @@ namespace v2rayN.Handler
         {
             int pid = -1;
             var coreType = selecteds.Exists(t => t.configType == EConfigType.Hysteria2 || t.configType == EConfigType.Tuic || t.configType == EConfigType.Wireguard) ? ECoreType.sing_box : ECoreType.Xray;
-            string configPath = Utile.GetConfigPath(Global.CoreSpeedtestConfigFileName);
+            string configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType, out string msg) != 0)
             {
                 ShowMsg(false, msg);
@@ -126,7 +126,7 @@ namespace v2rayN.Handler
                             foreach (Process p in existing)
                             {
                                 string? path = p.MainModule?.FileName;
-                                if (path == $"{Utile.GetBinPath(vName, it.coreType.ToString())}.exe")
+                                if (path == $"{Utils.GetBinPath(vName, it.coreType.ToString())}.exe")
                                 {
                                     KillProcess(p);
                                 }
@@ -162,16 +162,16 @@ namespace v2rayN.Handler
             foreach (string name in coreInfo.coreExes)
             {
                 string vName = $"{name}.exe";
-                vName = Utile.GetBinPath(vName, coreInfo.coreType.ToString());
+                vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
                 if (File.Exists(vName))
                 {
                     fileName = vName;
                     break;
                 }
             }
-            if (Utile.IsNullOrEmpty(fileName))
+            if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utile.GetBinPath("", coreInfo.coreType.ToString()), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType.ToString()), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
                 Logging.SaveLog(msg);
                 ShowMsg(false, msg);
             }
@@ -214,7 +214,7 @@ namespace v2rayN.Handler
                         address = Global.Loopback,
                         port = node.preSocksPort
                     };
-                    string fileName2 = Utile.GetConfigPath(Global.CorePreConfigFileName);
+                    string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
                         var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
@@ -267,7 +267,7 @@ namespace v2rayN.Handler
             try
             {
                 string fileName = CoreFindExe(coreInfo);
-                if (Utile.IsNullOrEmpty(fileName))
+                if (Utils.IsNullOrEmpty(fileName))
                 {
                     return null;
                 }
@@ -277,7 +277,7 @@ namespace v2rayN.Handler
                     {
                         FileName = fileName,
                         Arguments = string.Format(coreInfo.arguments, configPath),
-                        WorkingDirectory = Utile.GetConfigPath(),
+                        WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = displayLog,
                         RedirectStandardError = displayLog,
@@ -292,7 +292,7 @@ namespace v2rayN.Handler
                 {
                     proc.OutputDataReceived += (sender, e) =>
                     {
-                        if (!Utile.IsNullOrEmpty(e.Data))
+                        if (!Utils.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
@@ -300,7 +300,7 @@ namespace v2rayN.Handler
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
-                        if (!Utile.IsNullOrEmpty(e.Data))
+                        if (!Utils.IsNullOrEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);

@@ -192,7 +192,7 @@ namespace v2rayN.ViewModels
                 SaveSetting();
             });
 
-            Utile.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
         }
 
         private void InitCoreType()
@@ -249,7 +249,7 @@ namespace v2rayN.ViewModels
 
         private void SaveSetting()
         {
-            if (Utile.IsNullOrEmpty(localPort.ToString()) || !Utile.IsNumeric(localPort.ToString())
+            if (Utils.IsNullOrEmpty(localPort.ToString()) || !Utils.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
             {
                 _noticeHandler?.Enqueue(ResUI.FillLocalListeningPort);
@@ -300,7 +300,7 @@ namespace v2rayN.ViewModels
             //_config.kcpItem.congestion = Kcpcongestion;
 
             //UI
-            Utile.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
+            Utils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, AutoRun);
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
