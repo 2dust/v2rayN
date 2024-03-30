@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Threading;
 using v2rayN.Handler;
 using v2rayN.Model;
@@ -80,6 +81,13 @@ namespace v2rayN
         private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Logging.SaveLog("OnExit");
+            base.OnExit(e);
+            Process.GetCurrentProcess().Kill();
         }
     }
 }
