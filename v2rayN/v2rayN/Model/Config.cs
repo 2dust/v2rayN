@@ -14,6 +14,8 @@
         public string systemProxyExceptions { get; set; }
         public string systemProxyAdvancedProtocol { get; set; }
 
+        public ECoreType runningCoreType { get; set; }
+
         #endregion property
 
         #region other entities

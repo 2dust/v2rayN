@@ -192,6 +192,7 @@ namespace v2rayN.Handler
             {
                 coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
             }
+            _config.runningCoreType = coreType;
             var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.configType != EConfigType.Custom || node.displayLog;
@@ -214,6 +215,7 @@ namespace v2rayN.Handler
                         address = Global.Loopback,
                         port = node.preSocksPort
                     };
+                    _config.runningCoreType = ECoreType.sing_box;
                     string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {

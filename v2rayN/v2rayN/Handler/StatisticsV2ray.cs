@@ -51,6 +51,10 @@ namespace v2rayN.Handler
             {
                 try
                 {
+                    if (!(_config.runningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5 or ECoreType.SagerNet))
+                    {
+                        continue;
+                    }
                     if (_channel?.State == ConnectivityState.Ready)
                     {
                         QueryStatsResponse? res = null;

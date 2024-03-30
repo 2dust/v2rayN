@@ -63,6 +63,10 @@ namespace v2rayN.Handler
             {
                 try
                 {
+                    if (!(_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo))
+                    {
+                        continue;
+                    }
                     if (webSocket != null)
                     {
                         if (webSocket.State == WebSocketState.Aborted
