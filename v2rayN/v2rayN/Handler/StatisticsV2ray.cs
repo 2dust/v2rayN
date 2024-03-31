@@ -49,6 +49,7 @@ namespace v2rayN.Handler
         {
             while (!_exitFlag)
             {
+                await Task.Delay(1000);
                 try
                 {
                     if (!(_config.runningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5 or ECoreType.SagerNet))
@@ -60,7 +61,8 @@ namespace v2rayN.Handler
                         QueryStatsResponse? res = null;
                         try
                         {
-                            res = await _client.QueryStatsAsync(new QueryStatsRequest() { Pattern = "", Reset = true });
+                            if (_client != null)
+                                res = await _client.QueryStatsAsync(new QueryStatsRequest() { Pattern = "", Reset = true });
                         }
                         catch
                         {
@@ -72,8 +74,8 @@ namespace v2rayN.Handler
                             _updateFunc(server);
                         }
                     }
-                    await Task.Delay(1000);
-                    if (_channel != null) await _channel.ConnectAsync();
+                    if (_channel != null)
+                        await _channel.ConnectAsync();
                 }
                 catch
                 {
