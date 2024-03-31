@@ -1,5 +1,5 @@
 ﻿using PacLib;
-using v2rayN.Model;
+using v2rayN.Models;
 
 namespace v2rayN.Handler
 {

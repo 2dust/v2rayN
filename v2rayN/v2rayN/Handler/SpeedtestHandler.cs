@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using v2rayN.Model;
+using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler

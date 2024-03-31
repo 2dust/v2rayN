@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using v2rayN.Model;
+using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.Handler

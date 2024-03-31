@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Intrinsics.X86;
-using v2rayN.Model;
+using v2rayN.Models;
 
 namespace v2rayN.Handler
 {
