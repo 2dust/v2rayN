@@ -700,7 +700,7 @@
     <value>SOCKS埠</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* 自訂配置的Socks埠值，可不設定；當設定此值後，將使用sing-box額外啟動一個前置Socks服務，提供分流和速度顯示等功能</value>
+    <value>* 自訂配置的Socks埠值，可不設定；當設定此值後，將使用Xray/sing-box(Tun)額外啟動一個前置Socks服務，提供分流和速度顯示等功能</value>
   </data>
   <!--********************************************-->
   <data name="TbBrowse" xml:space="preserve">

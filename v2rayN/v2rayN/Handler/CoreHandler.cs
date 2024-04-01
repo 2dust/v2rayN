@@ -208,18 +208,19 @@ namespace v2rayN.Handler
             {
                 if ((node.configType == EConfigType.Custom && node.preSocksPort > 0))
                 {
+                    var preCoreType = _config.tunModeItem.enableTun ? ECoreType.sing_box : ECoreType.Xray;
                     var itemSocks = new ProfileItem()
                     {
-                        coreType = ECoreType.sing_box,
+                        coreType = preCoreType,
                         configType = EConfigType.Socks,
                         address = Global.Loopback,
                         port = node.preSocksPort
                     };
-                    _config.runningCoreType = ECoreType.sing_box;
+                    _config.runningCoreType = preCoreType;
                     string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
-                        var coreInfo2 = LazyConfig.Instance.GetCoreInfo(ECoreType.sing_box);
+                        var coreInfo2 = LazyConfig.Instance.GetCoreInfo(preCoreType);
                         var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
                         if (proc2 is not null)
                         {

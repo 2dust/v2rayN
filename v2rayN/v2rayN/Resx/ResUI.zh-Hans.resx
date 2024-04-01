@@ -701,7 +701,7 @@
     <value>Socks端口</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* 自定义配置的Socks端口值，可不设置；当设置此值后，将使用sing-box额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
+    <value>* 自定义配置的Socks端口值，可不设置；当设置此值后，将使用Xray/sing-box(Tun)额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>浏览</value>
