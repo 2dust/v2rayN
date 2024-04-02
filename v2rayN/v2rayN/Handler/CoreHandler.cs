@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Text;
 using v2rayN.Models;
 using v2rayN.Resx;
+using Windows.ApplicationModel.Store.LicenseManagement;
 
 namespace v2rayN.Handler
 {
@@ -16,61 +17,57 @@ namespace v2rayN.Handler
         private Process? _process;
         private Process? _processPre;
         private Action<bool, string> _updateFunc;
+        private bool isLoading;
+        private List<AutoResetEvent> loadResetEvents; 
 
         public CoreHandler(Config config, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
+            loadResetEvents = new();
 
             Environment.SetEnvironmentVariable("v2ray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
-        public void LoadCore()
-        {
+        public void LoadCore(bool isForce = false)
+        {                      
+            List<AutoResetEvent> executingResetEvents;
+            lock (loadResetEvents)
+            {
+                if (isForce && isLoading)
+                {
+                    var loadResetEvent = new AutoResetEvent(false);
+                    lock (loadResetEvents) loadResetEvents.Add(loadResetEvent);
+                    loadResetEvent.WaitOne();
+                    return;
+                }
+                isLoading = true;
+                executingResetEvents = new(loadResetEvents);
+                loadResetEvents.Clear();               
+            }            
             var node = ConfigHandler.GetDefaultServer(_config);
-            if (node == null)
-            {
-                ShowMsg(false, ResUI.CheckServerSettings);
-                return;
-            }
-
             string fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
-            if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
+            var result = CoreConfigHandler.GenerateClientConfig(node!, fileName, out string msg, out string content);
+            ShowMsg(false, msg);
+            if(result == 0)
             {
-                ShowMsg(false, msg);
-            }
-            else
-            {
-                ShowMsg(false, msg);
-                ShowMsg(true, $"{node.GetSummary()}");
+                ShowMsg(true, $"{node!.GetSummary()}");
                 CoreStop();
-                if (_config.tunModeItem.enableTun)
-                {
-                    Thread.Sleep(1000);
-                    Utils.RemoveTunDevice();
-                }
-
+                Utils.RemoveTunDevice();
                 CoreStart(node);
-
-                //In tun mode, do a delay check and restart the core
-                if (_config.tunModeItem.enableTun)
-                {
-                    Observable.Range(1, 1)
-                    .Delay(TimeSpan.FromSeconds(15))
-                    .Subscribe(x =>
-                    {
-                        {
-                            if (_process == null || _process.HasExited)
-                            {
-                                CoreStart(node);
-                                ShowMsg(false, "Tun mode restart the core once");
-                                Logging.SaveLog("Tun mode restart the core once");
-                            }
-                        }
-                    });
-                }
             }
+            executingResetEvents.ForEach(result => result.Set());
+            lock(loadResetEvents)
+            {
+                if(loadResetEvents.Count > 0)
+                {
+                    Task.Run(() => LoadCore(true));
+                    return;
+                }
+                isLoading = false;
+            }
+            
         }
 
         public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
