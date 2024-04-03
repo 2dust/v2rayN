@@ -653,22 +653,30 @@ namespace v2rayN.Handler
                 var hasDomainIp = false;
                 if (item.domain?.Count > 0)
                 {
+                    var countDomain = 0;
                     foreach (var it in item.domain)
                     {
-                        ParseV2Domain(it, rule);
+                        if (ParseV2Domain(it, rule)) countDomain++;
                     }
-                    rules.Add(rule);
-                    hasDomainIp = true;
+                    if (countDomain > 0)
+                    {
+                        rules.Add(rule);
+                        hasDomainIp = true;
+                    }
                 }
 
                 if (item.ip?.Count > 0)
                 {
+                    var countIp = 0;
                     foreach (var it in item.ip)
                     {
-                        ParseV2Address(it, rule2);
+                        if (ParseV2Address(it, rule2)) countIp++;
                     }
-                    rules.Add(rule2);
-                    hasDomainIp = true;
+                    if (countIp > 0)
+                    {
+                        rules.Add(rule2);
+                        hasDomainIp = true;
+                    }
                 }
 
                 if (_config.tunModeItem.enableTun && item.process?.Count > 0)
@@ -678,7 +686,8 @@ namespace v2rayN.Handler
                     hasDomainIp = true;
                 }
 
-                if (!hasDomainIp)
+                if (!hasDomainIp
+                    && (rule.port != null || rule.port_range != null || rule.protocol != null || rule.inbound != null))
                 {
                     rules.Add(rule);
                 }
@@ -690,11 +699,11 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private void ParseV2Domain(string domain, Rule4Sbox rule)
+        private bool ParseV2Domain(string domain, Rule4Sbox rule)
         {
             if (domain.StartsWith("#") || domain.StartsWith("ext:") || domain.StartsWith("ext-domain:"))
             {
-                return;
+                return false;
             }
             else if (domain.StartsWith("geosite:"))
             {
@@ -728,17 +737,18 @@ namespace v2rayN.Handler
                 rule.domain_keyword ??= [];
                 rule.domain_keyword?.Add(domain);
             }
+            return true;
         }
 
-        private void ParseV2Address(string address, Rule4Sbox rule)
+        private bool ParseV2Address(string address, Rule4Sbox rule)
         {
             if (address.StartsWith("ext:") || address.StartsWith("ext-ip:"))
             {
-                return;
+                return false;
             }
             else if (address.StartsWith("geoip:!"))
             {
-                return;
+                return false;
             }
             else if (address.StartsWith("geoip:"))
             {
@@ -750,6 +760,7 @@ namespace v2rayN.Handler
                 if (rule.ip_cidr is null) { rule.ip_cidr = new(); }
                 rule.ip_cidr?.Add(address);
             }
+            return true;
         }
 
         private int GenDns(ProfileItem node, SingboxConfig singboxConfig)
