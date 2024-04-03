@@ -48,7 +48,15 @@ namespace v2rayN.Handler
                 if (_config.tunModeItem.enableTun)
                 {
                     Thread.Sleep(1000);
-                    Utils.RemoveTunDevice();
+                    try
+                    {
+                        NetAdapterSettings.RemoveHiddenAdapter("singbox_tun");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.SaveLog(ex.Message, ex);
+                    }
+
                 }
 
                 CoreStart(node);
