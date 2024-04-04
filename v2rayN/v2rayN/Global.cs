@@ -43,6 +43,7 @@ namespace v2rayN
         public const string DNSV2rayNormalFileName = "v2rayN.Sample.dns_v2ray_normal";
         public const string DNSSingboxNormalFileName = "v2rayN.Sample.dns_singbox_normal";
 
+        public const string DefaultSingboxTunDeviceName = "tun_singbox";
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";
         public const string TcpHeaderHttp = "http";
