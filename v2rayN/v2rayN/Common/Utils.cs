@@ -1186,6 +1186,7 @@ namespace v2rayN
                 if (success && size == instanceIdSize && instanceId.ToString() == deviceInstanceId)
                 {
                     isRemoved = SetupAPI.SetupDiRemoveDevice(devs, ref devInfo);
+                    break;
                 }
             }
             SetupAPI.SetupDiDestroyDeviceInfoList(devs);
