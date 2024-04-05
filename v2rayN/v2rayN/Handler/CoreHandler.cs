@@ -31,21 +31,24 @@ namespace v2rayN.Handler
         }
 
         public void LoadCore(bool isForce = false)
-        {                      
-            List<AutoResetEvent> executingResetEvents;
+        {
+            AutoResetEvent? loadResetEvent = default;
+            List<AutoResetEvent>? executingResetEvents = default;
             lock (loadResetEvents)
             {
-                if (isForce && isLoading)
+                if (!isForce && isLoading)
                 {
-                    var loadResetEvent = new AutoResetEvent(false);
-                    lock (loadResetEvents) loadResetEvents.Add(loadResetEvent);
-                    loadResetEvent.WaitOne();
-                    return;
+                    loadResetEvent = new AutoResetEvent(false);
+                    loadResetEvents.Add(loadResetEvent);
                 }
-                isLoading = true;
-                executingResetEvents = new(loadResetEvents);
-                loadResetEvents.Clear();               
-            }            
+                else
+                {
+                    isLoading = true;
+                    executingResetEvents = new(loadResetEvents);
+                    loadResetEvents.Clear();
+                }                              
+            }
+            if (loadResetEvent?.WaitOne() == true) return;
             var node = ConfigHandler.GetDefaultServer(_config);
             string fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             var result = CoreConfigHandler.GenerateClientConfig(node!, fileName, out string msg, out string content);
@@ -57,7 +60,7 @@ namespace v2rayN.Handler
                 Utils.RemoveDeviceForPnputil(Utils.GetSingboxTunDeviceInstanceId(Global.DefaultSingboxTunDeviceName));
                 CoreStart(node);
             }
-            executingResetEvents.ForEach(result => result.Set());
+            executingResetEvents?.ForEach(result => result.Set());
             lock(loadResetEvents)
             {
                 if(loadResetEvents.Count > 0)
