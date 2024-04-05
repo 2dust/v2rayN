@@ -3,11 +3,13 @@
     {
       "tag": "remote",
       "address": "tcp://8.8.8.8",
+      "strategy": "ipv4_only",
       "detour": "proxy"
     },
     {
       "tag": "local",
       "address": "223.5.5.5",
+      "strategy": "ipv4_only",
       "detour": "direct"
     },
     {
@@ -18,18 +20,15 @@
   "rules": [
     {
       "geosite": [
-        "cn"
+        "geolocation-!cn"
       ],
-      "server": "local",
-      "disable_cache": true
+      "server": "remote"
     },
     {
       "geosite": [
         "category-ads-all"
       ],
-      "server": "block",
-      "disable_cache": true
+      "server": "block"
     }
-  ],
-  "strategy": "ipv4_only"
+  ]
 }
