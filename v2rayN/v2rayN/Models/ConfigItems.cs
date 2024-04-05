@@ -122,7 +122,7 @@ namespace v2rayN.Models
         public int currentFontSize { get; set; }
         public bool enableDragDropSort { get; set; }
         public bool doubleClick2Activate { get; set; }
-        public bool autoHideStartup { get; set; } = true;
+        public bool autoHideStartup { get; set; }
         public string mainMsgFilter { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
     }
