@@ -54,7 +54,7 @@ namespace v2rayN.Handler
             {
                 ShowMsg(true, $"{node!.GetSummary()}");
                 CoreStop();
-                Utils.RemoveDeviceByDevIstId(Utils.GetSingboxTunDeviceInstanceId(Global.DefaultSingboxTunDeviceName));
+                Utils.RemoveDeviceForPnputil(Utils.GetSingboxTunDeviceInstanceId(Global.DefaultSingboxTunDeviceName));
                 CoreStart(node);
             }
             executingResetEvents.ForEach(result => result.Set());

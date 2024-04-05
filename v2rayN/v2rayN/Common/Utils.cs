@@ -22,7 +22,6 @@ using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.Windows.Compatibility;
-using Vanara.PInvoke;
 
 namespace v2rayN
 {
@@ -1142,12 +1141,12 @@ namespace v2rayN
             taskService.RootFolder.RegisterTaskDefinition(TaskName, task);
         }
 
-        public static void RemoveTunDevice()
+        public static void RemoveDeviceForPnputil(string removeArg)
         {
             try
             {
                 string pnputilPath = @"C:\Windows\System32\pnputil.exe";
-                string arg = $" /remove-device /deviceid \"wintun\"";
+                string arg = $" /remove-device " + removeArg;
 
                 // Try to remove the device
                 Process proc = new()
@@ -1169,29 +1168,6 @@ namespace v2rayN
             catch
             {
             }
-        }
-
-        public static bool RemoveDeviceByDevIstId(string deviceInstanceId)
-        {
-            var isRemoved = false;
-            var devs = SetupAPI.SetupDiGetClassDevs(SetupAPI.GUID_DEVCLASS_NET, null, HWND.NULL, SetupAPI.DIGCF.DIGCF_PROFILE);
-            var instanceIdSize = deviceInstanceId.Length + 1;
-            var devInfo = new SetupAPI.SP_DEVINFO_DATA() { cbSize = (uint)Marshal.SizeOf<SetupAPI.SP_DEVINFO_DATA>() };
-            var instanceId = new StringBuilder(instanceIdSize);
-            uint index = 0;
-
-            while (SetupAPI.SetupDiEnumDeviceInfo(devs, index++, ref devInfo))
-            {
-                var success = SetupAPI.SetupDiGetDeviceInstanceId(devs, devInfo, instanceId, (uint)instanceIdSize, out uint size);
-                if (success && size == instanceIdSize && instanceId.ToString() == deviceInstanceId)
-                {
-                    isRemoved = SetupAPI.SetupDiRemoveDevice(devs, ref devInfo);
-                    break;
-                }
-            }
-            SetupAPI.SetupDiDestroyDeviceInfoList(devs);
-
-            return isRemoved;
         }
 
         public static string GetSingboxTunDeviceInstanceId(string deviceName)
