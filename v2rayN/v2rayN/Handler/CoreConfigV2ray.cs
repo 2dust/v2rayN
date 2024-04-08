@@ -834,6 +834,33 @@ namespace v2rayN.Handler
 
         private int GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
         {
+            //fragment proxy
+            if (_config.coreBasicItem.enableFragment
+                && !Utils.IsNullOrEmpty(v2rayConfig.outbounds[0].streamSettings?.security))
+            {
+                var fragmentOutbound = new Outbounds4Ray
+                {
+                    protocol = "freedom",
+                    tag = $"{Global.ProxyTag}3",
+                    settings = new()
+                    {
+                        fragment = new()
+                        {
+                            packets = "tlshello",
+                            length = "100-200",
+                            interval = "10-20"
+                        }
+                    }
+                };
+
+                v2rayConfig.outbounds.Add(fragmentOutbound);
+                v2rayConfig.outbounds[0].streamSettings.sockopt = new()
+                {
+                    dialerProxy = fragmentOutbound.tag
+                };
+                return 0;
+            }
+
             if (node.subid.IsNullOrEmpty())
             {
                 return 0;

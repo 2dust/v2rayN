@@ -1171,4 +1171,10 @@
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>新增[Http]伺服器</value>
   </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>啟用分片（Fragment）</value>
+  </data>
+  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
+    <value>使用Xray且非Tun模式啟用，和分組前置代理衝突</value>
+  </data>
 </root>

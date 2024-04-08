@@ -34,6 +34,7 @@ namespace v2rayN.ViewModels
         [Reactive] public string mux4SboxProtocol { get; set; }
         [Reactive] public int hyUpMbps { get; set; }
         [Reactive] public int hyDownMbps { get; set; }
+        [Reactive] public bool enableFragment { get; set; }
 
         #endregion Core
 
@@ -129,6 +130,7 @@ namespace v2rayN.ViewModels
             mux4SboxProtocol = _config.mux4SboxItem.protocol;
             hyUpMbps = _config.hysteriaItem.up_mbps;
             hyDownMbps = _config.hysteriaItem.down_mbps;
+            enableFragment = _config.coreBasicItem.enableFragment;
 
             #endregion Core
 
@@ -289,6 +291,7 @@ namespace v2rayN.ViewModels
             _config.mux4SboxItem.protocol = mux4SboxProtocol;
             _config.hysteriaItem.up_mbps = hyUpMbps;
             _config.hysteriaItem.down_mbps = hyDownMbps;
+            _config.coreBasicItem.enableFragment = enableFragment;
 
             //Kcp
             //_config.kcpItem.mtu = Kcpmtu;

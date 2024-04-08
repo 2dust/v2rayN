@@ -67,6 +67,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -333,6 +334,26 @@
                                 materialDesign:HintAssist.Hint="Down"
                                 Style="{StaticResource DefTextBox}" />
                         </StackPanel>
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableFragment}" />
+                        <ToggleButton
+                            x:Name="togenableFragment"
+                            Grid.Row="16"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="3"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

@@ -2636,6 +2636,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable fragment 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableFragment {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Use Xray and enable non-Tun mode, which conflicts with the group previous proxy 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableFragmentTips {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableFragmentTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable hardware acceleration(Require restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableHWA {

@@ -253,6 +253,8 @@ namespace v2rayN.Models
         ///
         /// </summary>
         public int? userLevel { get; set; }
+
+        public FragmentItem4Ray? fragment { get; set; }
     }
 
     public class VnextItem4Ray
@@ -664,5 +666,12 @@ namespace v2rayN.Models
     public class Sockopt4Ray
     {
         public string? dialerProxy { get; set; }
+    }
+
+    public class FragmentItem4Ray
+    {
+        public string? packets { get; set; }
+        public string? length { get; set; }
+        public string? interval { get; set; }
     }
 }

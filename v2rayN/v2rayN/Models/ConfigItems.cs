@@ -31,6 +31,8 @@ namespace v2rayN.Models
         /// 默认用户代理
         /// </summary>
         public string defUserAgent { get; set; }
+
+        public bool enableFragment { get; set; }
     }
 
     [Serializable]
