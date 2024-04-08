@@ -213,105 +213,111 @@ namespace v2rayN.Handler
             {
                 outbound.server = node.address;
                 outbound.server_port = node.port;
+                outbound.type = Global.ProtocolTypes[node.configType];
 
-                if (node.configType == EConfigType.VMess)
+                switch (node.configType)
                 {
-                    outbound.type = Global.ProtocolTypes[EConfigType.VMess];
-
-                    outbound.uuid = node.id;
-                    outbound.alter_id = node.alterId;
-                    if (Global.VmessSecurities.Contains(node.security))
-                    {
-                        outbound.security = node.security;
-                    }
-                    else
-                    {
-                        outbound.security = Global.DefaultSecurity;
-                    }
-
-                    GenOutboundMux(node, outbound);
-                }
-                else if (node.configType == EConfigType.Shadowsocks)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Shadowsocks];
-
-                    outbound.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : Global.None;
-                    outbound.password = node.id;
-
-                    GenOutboundMux(node, outbound);
-                }
-                else if (node.configType == EConfigType.Socks)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Socks];
-
-                    outbound.version = "5";
-                    if (!Utils.IsNullOrEmpty(node.security)
-                      && !Utils.IsNullOrEmpty(node.id))
-                    {
-                        outbound.username = node.security;
-                        outbound.password = node.id;
-                    }
-                }
-                else if (node.configType == EConfigType.VLESS)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.VLESS];
-
-                    outbound.uuid = node.id;
-
-                    outbound.packet_encoding = "xudp";
-
-                    if (Utils.IsNullOrEmpty(node.flow))
-                    {
-                        GenOutboundMux(node, outbound);
-                    }
-                    else
-                    {
-                        outbound.flow = node.flow;
-                    }
-                }
-                else if (node.configType == EConfigType.Trojan)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Trojan];
-
-                    outbound.password = node.id;
-
-                    GenOutboundMux(node, outbound);
-                }
-                else if (node.configType == EConfigType.Hysteria2)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Hysteria2];
-
-                    outbound.password = node.id;
-
-                    if (!Utils.IsNullOrEmpty(node.path))
-                    {
-                        outbound.obfs = new()
+                    case EConfigType.VMess:
                         {
-                            type = "salamander",
-                            password = node.path.TrimEx(),
-                        };
-                    }
+                            outbound.uuid = node.id;
+                            outbound.alter_id = node.alterId;
+                            if (Global.VmessSecurities.Contains(node.security))
+                            {
+                                outbound.security = node.security;
+                            }
+                            else
+                            {
+                                outbound.security = Global.DefaultSecurity;
+                            }
 
-                    outbound.up_mbps = _config.hysteriaItem.up_mbps > 0 ? _config.hysteriaItem.up_mbps : null;
-                    outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
-                }
-                else if (node.configType == EConfigType.Tuic)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Tuic];
+                            GenOutboundMux(node, outbound);
+                            break;
+                        }
+                    case EConfigType.Shadowsocks:
+                        {
+                            outbound.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : Global.None;
+                            outbound.password = node.id;
 
-                    outbound.uuid = node.id;
-                    outbound.password = node.security;
-                    outbound.congestion_control = node.headerType;
-                }
-                else if (node.configType == EConfigType.Wireguard)
-                {
-                    outbound.type = Global.ProtocolTypes[EConfigType.Wireguard];
+                            GenOutboundMux(node, outbound);
+                            break;
+                        }
+                    case EConfigType.Socks:
+                        {
+                            outbound.version = "5";
+                            if (!Utils.IsNullOrEmpty(node.security)
+                              && !Utils.IsNullOrEmpty(node.id))
+                            {
+                                outbound.username = node.security;
+                                outbound.password = node.id;
+                            }
+                            break;
+                        }
+                    case EConfigType.Http:
+                        {
+                            if (!Utils.IsNullOrEmpty(node.security)
+                              && !Utils.IsNullOrEmpty(node.id))
+                            {
+                                outbound.username = node.security;
+                                outbound.password = node.id;
+                            }
+                            break;
+                        }
+                    case EConfigType.VLESS:
+                        {
+                            outbound.uuid = node.id;
 
-                    outbound.private_key = node.id;
-                    outbound.peer_public_key = node.publicKey;
-                    outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
-                    outbound.local_address = [.. Utils.String2List(node.requestHost)];
-                    outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
+                            outbound.packet_encoding = "xudp";
+
+                            if (Utils.IsNullOrEmpty(node.flow))
+                            {
+                                GenOutboundMux(node, outbound);
+                            }
+                            else
+                            {
+                                outbound.flow = node.flow;
+                            }
+                            break;
+                        }
+                    case EConfigType.Trojan:
+                        {
+                            outbound.password = node.id;
+
+                            GenOutboundMux(node, outbound);
+                            break;
+                        }
+                    case EConfigType.Hysteria2:
+                        {
+                            outbound.password = node.id;
+
+                            if (!Utils.IsNullOrEmpty(node.path))
+                            {
+                                outbound.obfs = new()
+                                {
+                                    type = "salamander",
+                                    password = node.path.TrimEx(),
+                                };
+                            }
+
+                            outbound.up_mbps = _config.hysteriaItem.up_mbps > 0 ? _config.hysteriaItem.up_mbps : null;
+                            outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
+                            break;
+                        }
+                    case EConfigType.Tuic:
+                        {
+                            outbound.uuid = node.id;
+                            outbound.password = node.security;
+                            outbound.congestion_control = node.headerType;
+                            break;
+                        }
+                    case EConfigType.Wireguard:
+                        {
+                            outbound.private_key = node.id;
+                            outbound.peer_public_key = node.publicKey;
+                            outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
+                            outbound.local_address = [.. Utils.String2List(node.requestHost)];
+                            outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
+                            break;
+                        }
                 }
 
                 GenOutboundTls(node, outbound);

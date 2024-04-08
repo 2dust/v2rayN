@@ -1195,4 +1195,7 @@
   <data name="TransportRequestHostTip5" xml:space="preserve">
     <value>*grpc Authority</value>
   </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>添加[Http]服务器</value>
+  </data>
 </root>

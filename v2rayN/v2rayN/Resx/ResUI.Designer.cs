@@ -619,6 +619,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add [Http] server 的本地化字符串。
+        /// </summary>
+        public static string menuAddHttpServer {
+            get {
+                return ResourceManager.GetString("menuAddHttpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add [Hysteria2] server 的本地化字符串。
         /// </summary>
         public static string menuAddHysteria2Server {

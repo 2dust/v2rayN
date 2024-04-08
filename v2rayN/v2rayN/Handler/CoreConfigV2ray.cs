@@ -295,182 +295,188 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (node.configType == EConfigType.VMess)
+                switch (node.configType)
                 {
-                    VnextItem4Ray vnextItem;
-                    if (outbound.settings.vnext.Count <= 0)
-                    {
-                        vnextItem = new VnextItem4Ray();
-                        outbound.settings.vnext.Add(vnextItem);
-                    }
-                    else
-                    {
-                        vnextItem = outbound.settings.vnext[0];
-                    }
-                    vnextItem.address = node.address;
-                    vnextItem.port = node.port;
-
-                    UsersItem4Ray usersItem;
-                    if (vnextItem.users.Count <= 0)
-                    {
-                        usersItem = new UsersItem4Ray();
-                        vnextItem.users.Add(usersItem);
-                    }
-                    else
-                    {
-                        usersItem = vnextItem.users[0];
-                    }
-                    //远程服务器用户ID
-                    usersItem.id = node.id;
-                    usersItem.alterId = node.alterId;
-                    usersItem.email = Global.UserEMail;
-                    if (Global.VmessSecurities.Contains(node.security))
-                    {
-                        usersItem.security = node.security;
-                    }
-                    else
-                    {
-                        usersItem.security = Global.DefaultSecurity;
-                    }
-
-                    GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-
-                    outbound.protocol = Global.ProtocolTypes[EConfigType.VMess];
-                    outbound.settings.servers = null;
-                }
-                else if (node.configType == EConfigType.Shadowsocks)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.password = node.id;
-                    serversItem.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : "none";
-
-                    serversItem.ota = false;
-                    serversItem.level = 1;
-
-                    GenOutboundMux(node, outbound, false);
-
-                    outbound.protocol = Global.ProtocolTypes[EConfigType.Shadowsocks];
-                    outbound.settings.vnext = null;
-                }
-                else if (node.configType == EConfigType.Socks)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.method = null;
-                    serversItem.password = null;
-
-                    if (!Utils.IsNullOrEmpty(node.security)
-                        && !Utils.IsNullOrEmpty(node.id))
-                    {
-                        SocksUsersItem4Ray socksUsersItem = new()
+                    case EConfigType.VMess:
                         {
-                            user = node.security,
-                            pass = node.id,
-                            level = 1
-                        };
+                            VnextItem4Ray vnextItem;
+                            if (outbound.settings.vnext.Count <= 0)
+                            {
+                                vnextItem = new VnextItem4Ray();
+                                outbound.settings.vnext.Add(vnextItem);
+                            }
+                            else
+                            {
+                                vnextItem = outbound.settings.vnext[0];
+                            }
+                            vnextItem.address = node.address;
+                            vnextItem.port = node.port;
 
-                        serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
-                    }
+                            UsersItem4Ray usersItem;
+                            if (vnextItem.users.Count <= 0)
+                            {
+                                usersItem = new UsersItem4Ray();
+                                vnextItem.users.Add(usersItem);
+                            }
+                            else
+                            {
+                                usersItem = vnextItem.users[0];
+                            }
+                            //远程服务器用户ID
+                            usersItem.id = node.id;
+                            usersItem.alterId = node.alterId;
+                            usersItem.email = Global.UserEMail;
+                            if (Global.VmessSecurities.Contains(node.security))
+                            {
+                                usersItem.security = node.security;
+                            }
+                            else
+                            {
+                                usersItem.security = Global.DefaultSecurity;
+                            }
 
-                    GenOutboundMux(node, outbound, false);
+                            GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
-                    outbound.protocol = Global.ProtocolTypes[EConfigType.Socks];
-                    outbound.settings.vnext = null;
-                }
-                else if (node.configType == EConfigType.VLESS)
-                {
-                    VnextItem4Ray vnextItem;
-                    if (outbound.settings.vnext.Count <= 0)
-                    {
-                        vnextItem = new VnextItem4Ray();
-                        outbound.settings.vnext.Add(vnextItem);
-                    }
-                    else
-                    {
-                        vnextItem = outbound.settings.vnext[0];
-                    }
-                    vnextItem.address = node.address;
-                    vnextItem.port = node.port;
-
-                    UsersItem4Ray usersItem;
-                    if (vnextItem.users.Count <= 0)
-                    {
-                        usersItem = new UsersItem4Ray();
-                        vnextItem.users.Add(usersItem);
-                    }
-                    else
-                    {
-                        usersItem = vnextItem.users[0];
-                    }
-                    usersItem.id = node.id;
-                    usersItem.email = Global.UserEMail;
-                    usersItem.encryption = node.security;
-
-                    GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-
-                    if (node.streamSecurity == Global.StreamSecurityReality
-                        || node.streamSecurity == Global.StreamSecurity)
-                    {
-                        if (!Utils.IsNullOrEmpty(node.flow))
+                            outbound.settings.servers = null;
+                            break;
+                        }
+                    case EConfigType.Shadowsocks:
                         {
-                            usersItem.flow = node.flow;
+                            ServersItem4Ray serversItem;
+                            if (outbound.settings.servers.Count <= 0)
+                            {
+                                serversItem = new ServersItem4Ray();
+                                outbound.settings.servers.Add(serversItem);
+                            }
+                            else
+                            {
+                                serversItem = outbound.settings.servers[0];
+                            }
+                            serversItem.address = node.address;
+                            serversItem.port = node.port;
+                            serversItem.password = node.id;
+                            serversItem.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : "none";
+
+                            serversItem.ota = false;
+                            serversItem.level = 1;
 
                             GenOutboundMux(node, outbound, false);
+
+                            outbound.settings.vnext = null;
+                            break;
                         }
-                    }
-                    if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
-                    {
-                        GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
-                    }
+                    case EConfigType.Socks:
+                    case EConfigType.Http:
+                        {
+                            ServersItem4Ray serversItem;
+                            if (outbound.settings.servers.Count <= 0)
+                            {
+                                serversItem = new ServersItem4Ray();
+                                outbound.settings.servers.Add(serversItem);
+                            }
+                            else
+                            {
+                                serversItem = outbound.settings.servers[0];
+                            }
+                            serversItem.address = node.address;
+                            serversItem.port = node.port;
+                            serversItem.method = null;
+                            serversItem.password = null;
 
-                    outbound.protocol = Global.ProtocolTypes[EConfigType.VLESS];
-                    outbound.settings.servers = null;
+                            if (!Utils.IsNullOrEmpty(node.security)
+                                && !Utils.IsNullOrEmpty(node.id))
+                            {
+                                SocksUsersItem4Ray socksUsersItem = new()
+                                {
+                                    user = node.security,
+                                    pass = node.id,
+                                    level = 1
+                                };
+
+                                serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
+                            }
+
+                            GenOutboundMux(node, outbound, false);
+
+                            outbound.settings.vnext = null;
+                            break;
+                        }
+                    case EConfigType.VLESS:
+                        {
+                            VnextItem4Ray vnextItem;
+                            if (outbound.settings.vnext?.Count <= 0)
+                            {
+                                vnextItem = new VnextItem4Ray();
+                                outbound.settings.vnext.Add(vnextItem);
+                            }
+                            else
+                            {
+                                vnextItem = outbound.settings.vnext[0];
+                            }
+                            vnextItem.address = node.address;
+                            vnextItem.port = node.port;
+
+                            UsersItem4Ray usersItem;
+                            if (vnextItem.users.Count <= 0)
+                            {
+                                usersItem = new UsersItem4Ray();
+                                vnextItem.users.Add(usersItem);
+                            }
+                            else
+                            {
+                                usersItem = vnextItem.users[0];
+                            }
+                            usersItem.id = node.id;
+                            usersItem.email = Global.UserEMail;
+                            usersItem.encryption = node.security;
+
+                            GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+
+                            if (node.streamSecurity == Global.StreamSecurityReality
+                                || node.streamSecurity == Global.StreamSecurity)
+                            {
+                                if (!Utils.IsNullOrEmpty(node.flow))
+                                {
+                                    usersItem.flow = node.flow;
+
+                                    GenOutboundMux(node, outbound, false);
+                                }
+                            }
+                            if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
+                            {
+                                GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                            }
+
+                            outbound.settings.servers = null;
+                            break;
+                        }
+                    case EConfigType.Trojan:
+                        {
+                            ServersItem4Ray serversItem;
+                            if (outbound.settings.servers.Count <= 0)
+                            {
+                                serversItem = new ServersItem4Ray();
+                                outbound.settings.servers.Add(serversItem);
+                            }
+                            else
+                            {
+                                serversItem = outbound.settings.servers[0];
+                            }
+                            serversItem.address = node.address;
+                            serversItem.port = node.port;
+                            serversItem.password = node.id;
+
+                            serversItem.ota = false;
+                            serversItem.level = 1;
+
+                            GenOutboundMux(node, outbound, false);
+
+                            outbound.settings.vnext = null;
+                            break;
+                        }
                 }
-                else if (node.configType == EConfigType.Trojan)
-                {
-                    ServersItem4Ray serversItem;
-                    if (outbound.settings.servers.Count <= 0)
-                    {
-                        serversItem = new ServersItem4Ray();
-                        outbound.settings.servers.Add(serversItem);
-                    }
-                    else
-                    {
-                        serversItem = outbound.settings.servers[0];
-                    }
-                    serversItem.address = node.address;
-                    serversItem.port = node.port;
-                    serversItem.password = node.id;
 
-                    serversItem.ota = false;
-                    serversItem.level = 1;
-
-                    GenOutboundMux(node, outbound, false);
-
-                    outbound.protocol = Global.ProtocolTypes[EConfigType.Trojan];
-                    outbound.settings.vnext = null;
-                }
+                outbound.protocol = Global.ProtocolTypes[node.configType];
                 GenBoundStreamSettings(node, outbound.streamSettings);
             }
             catch (Exception ex)

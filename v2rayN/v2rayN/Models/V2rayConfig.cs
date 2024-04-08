@@ -232,7 +232,7 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public List<VnextItem4Ray> vnext { get; set; }
+        public List<VnextItem4Ray>? vnext { get; set; }
 
         /// <summary>
         ///
@@ -288,17 +288,17 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public string method { get; set; }
+        public string? method { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public bool ota { get; set; }
+        public bool? ota { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string password { get; set; }
+        public string? password { get; set; }
 
         /// <summary>
         ///
@@ -308,7 +308,7 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public int level { get; set; }
+        public int? level { get; set; }
 
         /// <summary>
         /// trojan
@@ -336,7 +336,7 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public int level { get; set; }
+        public int? level { get; set; }
     }
 
     public class Mux4Ray

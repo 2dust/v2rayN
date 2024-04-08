@@ -670,6 +670,23 @@ namespace v2rayN.Handler
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
+        public static int AddHttpServer(Config config, ProfileItem profileItem, bool toFile = true)
+        {
+            profileItem.configType = EConfigType.Http;
+
+            profileItem.address = profileItem.address.TrimEx();
+
+            AddServerCommon(config, profileItem, toFile);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Add or edit server
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="profileItem"></param>
+        /// <returns></returns>
         public static int AddTrojanServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.Trojan;

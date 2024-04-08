@@ -92,6 +92,7 @@ namespace v2rayN.Views
                     break;
 
                 case EConfigType.Socks:
+                case EConfigType.Http:
                     gridSocks.Visibility = Visibility.Visible;
                     break;
 
@@ -174,6 +175,7 @@ namespace v2rayN.Views
                         break;
 
                     case EConfigType.Socks:
+                    case EConfigType.Http:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId4.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.txtSecurity4.Text).DisposeWith(disposables);
                         break;

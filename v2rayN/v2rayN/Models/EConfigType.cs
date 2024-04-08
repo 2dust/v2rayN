@@ -10,6 +10,7 @@
         Trojan = 6,
         Hysteria2 = 7,
         Tuic = 8,
-        Wireguard = 9
+        Wireguard = 9,
+        Http = 10
     }
 }

@@ -86,6 +86,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> AddVlessServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddShadowsocksServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddSocksServerCmd { get; }
+        public ReactiveCommand<Unit, Unit> AddHttpServerCmd { get; }        
         public ReactiveCommand<Unit, Unit> AddTrojanServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddTuicServerCmd { get; }
@@ -332,6 +333,10 @@ namespace v2rayN.ViewModels
             AddSocksServerCmd = ReactiveCommand.Create(() =>
             {
                 EditServer(true, EConfigType.Socks);
+            });
+            AddHttpServerCmd = ReactiveCommand.Create(() =>
+            {
+                EditServer(true, EConfigType.Http);
             });
             AddTrojanServerCmd = ReactiveCommand.Create(() =>
             {

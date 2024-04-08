@@ -142,7 +142,8 @@ namespace v2rayN
         {
             {EConfigType.VMess,"vmess"},
             {EConfigType.Shadowsocks,"shadowsocks"},
-            {EConfigType.Socks,"socks"},
+            {EConfigType.Socks,"socks"}, 
+            {EConfigType.Http,"http"},
             {EConfigType.VLESS,"vless"},
             {EConfigType.Trojan,"trojan"},
             {EConfigType.Hysteria2,"hysteria2"},
