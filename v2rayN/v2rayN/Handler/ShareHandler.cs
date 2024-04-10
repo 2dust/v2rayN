@@ -982,7 +982,7 @@ namespace v2rayN.Handler
                     break;
 
                 case nameof(ETransport.grpc):
-                    item.requestHost = Utils.UrlDecode(query["authority"] ?? ""); 
+                    item.requestHost = Utils.UrlDecode(query["authority"] ?? "");
                     item.path = Utils.UrlDecode(query["serviceName"] ?? "");
                     item.headerType = Utils.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
                     break;

@@ -60,7 +60,7 @@
         public List<string>? geoip { get; set; }
         public List<string>? ip_cidr { get; set; }
         public List<string>? source_ip_cidr { get; set; }
-        public List<string>? process_name { get; set; }      
+        public List<string>? process_name { get; set; }
         public List<string>? rule_set { get; set; }
     }
 
@@ -241,5 +241,4 @@
         public string? url { get; set; }
         public string? download_detour { get; set; }
     }
-
 }

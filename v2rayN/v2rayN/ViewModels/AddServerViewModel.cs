@@ -80,7 +80,7 @@ namespace v2rayN.ViewModels
                     return;
                 }
             }
-            if (SelectedSource.configType != EConfigType.Socks 
+            if (SelectedSource.configType != EConfigType.Socks
                 && SelectedSource.configType != EConfigType.Http)
             {
                 if (Utils.IsNullOrEmpty(SelectedSource.id))
