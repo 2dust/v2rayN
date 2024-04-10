@@ -15,7 +15,8 @@
   {
     "outboundTag": "direct",
     "domain": [
-      "geosite:cn"
+      "geosite:cn",
+      "geosite:geolocation-cn"
     ]
   },
   {
