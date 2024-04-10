@@ -730,7 +730,7 @@ namespace v2rayN.Handler
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
                 if (Utils.IsNullOrEmpty(normalDNS))
                 {
-                    normalDNS = "1.1.1.1,8.8.8.8";
+                    normalDNS = Utils.GetEmbedText(Global.DNSV2rayNormalFileName);
                 }
 
                 //Outbound Freedom domainStrategy

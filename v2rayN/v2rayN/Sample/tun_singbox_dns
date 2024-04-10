@@ -19,14 +19,14 @@
   ],
   "rules": [
     {
-      "geosite": [
-        "geolocation-!cn"
+      "rule_set": [
+        "geosite-geolocation-!cn"
       ],
       "server": "remote"
     },
     {
-      "geosite": [
-        "category-ads-all"
+      "rule_set": [
+        "geosite-category-ads-all"
       ],
       "server": "block"
     }

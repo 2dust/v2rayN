@@ -56,6 +56,8 @@ namespace v2rayN.Handler
 
                 GenStatistic(singboxConfig);
 
+                ConvertGeo2Ruleset(singboxConfig);
+
                 msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
             catch (Exception ex)
@@ -653,6 +655,7 @@ namespace v2rayN.Handler
                 {
                     rule.inbound = item.inboundTag;
                 }
+                var rule1 = JsonUtils.DeepCopy(rule);
                 var rule2 = JsonUtils.DeepCopy(rule);
                 var rule3 = JsonUtils.DeepCopy(rule);
 
@@ -662,11 +665,11 @@ namespace v2rayN.Handler
                     var countDomain = 0;
                     foreach (var it in item.domain)
                     {
-                        if (ParseV2Domain(it, rule)) countDomain++;
+                        if (ParseV2Domain(it, rule1)) countDomain++;
                     }
                     if (countDomain > 0)
                     {
-                        rules.Add(rule);
+                        rules.Add(rule1);
                         hasDomainIp = true;
                     }
                 }
@@ -756,6 +759,10 @@ namespace v2rayN.Handler
             {
                 return false;
             }
+            else if (address.Equals("geoip:private"))
+            {
+                rule.ip_is_private = true;
+            }
             else if (address.StartsWith("geoip:"))
             {
                 if (rule.geoip is null) { rule.geoip = new(); }
@@ -773,28 +780,18 @@ namespace v2rayN.Handler
         {
             try
             {
-                Dns4Sbox? dns4Sbox;
+                var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+                var strDNS = string.Empty;
                 if (_config.tunModeItem.enableTun)
                 {
-                    var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
-                    var tunDNS = item?.tunDNS;
-                    if (Utils.IsNullOrEmpty(tunDNS))
-                    {
-                        tunDNS = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
-                    }
-                    dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(tunDNS);
+                    strDNS = Utils.IsNullOrEmpty(item?.tunDNS) ? Utils.GetEmbedText(Global.TunSingboxDNSFileName) : item?.tunDNS;
                 }
                 else
                 {
-                    var item = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
-                    var normalDNS = item?.normalDNS;
-                    if (Utils.IsNullOrEmpty(normalDNS))
-                    {
-                        normalDNS = "{\"servers\":[{\"address\":\"tcp://8.8.8.8\"}]}";
-                    }
-
-                    dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(normalDNS);
+                    strDNS = Utils.IsNullOrEmpty(item?.normalDNS) ? Utils.GetEmbedText(Global.DNSSingboxNormalFileName) : item?.normalDNS;
                 }
+
+                var dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(strDNS);
                 if (dns4Sbox is null)
                 {
                     return 0;
@@ -831,10 +828,10 @@ namespace v2rayN.Handler
             {
                 singboxConfig.experimental = new Experimental4Sbox()
                 {
-                    //cache_file = new CacheFile4Sbox()
-                    //{
-                    //    enabled = true
-                    //},
+                    cache_file = new CacheFile4Sbox()
+                    {
+                        enabled = true
+                    },
                     //v2ray_api = new V2ray_Api4Sbox()
                     //{
                     //    listen = $"{Global.Loopback}:{Global.StatePort}",
@@ -849,6 +846,59 @@ namespace v2rayN.Handler
                     }
                 };
             }
+            return 0;
+        }
+
+        private int ConvertGeo2Ruleset(SingboxConfig singboxConfig)
+        {
+            var geosite = "geosite";
+            var geoip = "geoip";
+            var ruleSets = new List<string>();
+
+            //convert route geosite & geoip to ruleset
+            foreach (var rule in singboxConfig.route.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
+            {
+                rule.rule_set = rule?.geosite?.Select(t => $"{geosite}-{t}").ToList();
+                rule.geosite = null;
+                ruleSets.AddRange(rule.rule_set);
+            }
+            foreach (var rule in singboxConfig.route.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
+            {
+                rule.rule_set = rule?.geoip?.Select(t => $"{geoip}-{t}").ToList();
+                rule.geoip = null;
+                ruleSets.AddRange(rule.rule_set);
+            }
+
+            //convert dns geosite & geoip to ruleset
+            foreach (var rule in singboxConfig.dns?.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
+            {
+                rule.rule_set = rule?.geosite?.Select(t => $"{geosite}-{t}").ToList();
+                rule.geosite = null;
+            }
+            foreach (var rule in singboxConfig.dns?.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
+            {
+                rule.rule_set = rule?.geoip?.Select(t => $"{geoip}-{t}").ToList();
+                rule.geoip = null;
+            }
+            foreach (var dnsRule in singboxConfig.dns?.rules.Where(t => t.rule_set?.Count > 0).ToList() ?? [])
+            {
+                ruleSets.AddRange(dnsRule.rule_set);
+            }
+
+            //Add ruleset srs
+            singboxConfig.route.rule_set = [];
+            foreach (var item in new HashSet<string>(ruleSets))
+            {
+                singboxConfig.route.rule_set.Add(new()
+                {
+                    type = "remote",
+                    format = "binary",
+                    tag = item,
+                    url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
+                    download_detour = Global.ProxyTag
+                });
+            }
+
             return 0;
         }
 
