@@ -1045,6 +1045,12 @@ namespace v2rayN.Handler
                 {
                     dnsServer.detour = singboxConfig.route.rules.LastOrDefault()?.outbound;
                 }
+                var dnsRule = singboxConfig.dns?.rules.Where(t => t.outbound != null).FirstOrDefault();
+                if (dnsRule != null)
+                {
+                    singboxConfig.dns.rules = [];
+                    singboxConfig.dns.rules.Add(dnsRule);
+                }
 
                 //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
                 return 0;
