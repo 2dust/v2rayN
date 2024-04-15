@@ -1780,5 +1780,44 @@ namespace v2rayN.Handler
         }
 
         #endregion DNS
-    }
+
+        #region Sing Geo RuleSets
+
+        public static int InitBuiltinSingGeoRuleSets(Config config)
+        {
+            var item = LazyConfig.Instance.GetSingGeoRuleSets();
+            if (item is not null && item.rules != "")
+            {
+                return 0;
+            }
+            var item2 = new SingGeoRuleSet()
+            {
+                id = Utils.GetGUID(false),
+                remarks = "sing-box",
+                rules = Utils.GetEmbedText(Global.SingboxGeoRuleSetsFileName),
+            };
+            return SaveSingGeoRuleSet(config, item2);
+        }
+
+        public static int SaveSingGeoRuleSet(Config config, SingGeoRuleSet item)
+        {
+            if (Utils.IsNullOrEmpty(item.id))
+            {
+                item.id = Utils.GetGUID(false);
+            }
+            if (SQLiteHelper.Instance.Replace(item) > 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        public static SingGeoRuleSet? GetDefaultSingGeoRuleSet(Config config)
+        {
+            return LazyConfig.Instance.GetSingGeoRuleSets();
+        }
+        #endregion
+        }
 }

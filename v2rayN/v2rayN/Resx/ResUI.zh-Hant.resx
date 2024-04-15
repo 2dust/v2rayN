@@ -1177,4 +1177,16 @@
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>使用Xray且非Tun模式啟用，和分組前置代理衝突</value>
   </data>
+  <data name="TbSingGeoRuleSetDoc" xml:space="preserve">
+    <value>請填寫規則集結構，單擊以查看文檔</value>
+  </data>
+  <data name="TbSettingsSingGeoRuleSets" xml:space="preserve">
+    <value>Sing-Box Geo Ruleset JSON（數組）</value>
+  </data>
+  <data name="TbRoutingTabRuleSet" xml:space="preserve">
+    <value>Sing-Box Geo規則集</value>
+  </data>
+  <data name="TbSettingSingGeoImportDefRuleSets" xml:space="preserve">
+    <value>單擊此處以導入默認地理規則集</value>
+  </data>
 </root>

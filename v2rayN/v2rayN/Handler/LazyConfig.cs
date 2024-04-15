@@ -36,6 +36,7 @@ namespace v2rayN.Handler
             SQLiteHelper.Instance.CreateTable<RoutingItem>();
             SQLiteHelper.Instance.CreateTable<ProfileExItem>();
             SQLiteHelper.Instance.CreateTable<DNSItem>();
+            SQLiteHelper.Instance.CreateTable<SingGeoRuleSet>();
         }
 
         #region Config
@@ -158,6 +159,11 @@ namespace v2rayN.Handler
         public DNSItem GetDNSItem(ECoreType eCoreType)
         {
             return SQLiteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
+        }
+
+        public SingGeoRuleSet? GetSingGeoRuleSets()
+        {
+            return SQLiteHelper.Instance.Table<SingGeoRuleSet>().FirstOrDefault();
         }
 
         #endregion SqliteHelper

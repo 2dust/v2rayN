@@ -30,6 +30,9 @@
 	
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
+        <EmbeddedResource Include="Sample\singbox_geo_rulesets">
+	        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>      
         <EmbeddedResource Include="Sample\SingboxSampleOutbound" />       
         <EmbeddedResource Include="Sample\SingboxSampleClientConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>

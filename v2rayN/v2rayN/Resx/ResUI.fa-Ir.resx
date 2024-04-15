@@ -1003,4 +1003,10 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
+  <data name="TbRoutingTabRuleSet" xml:space="preserve">
+    <value>لیست مجموعه فایل های Geo برای Sing-box</value>
+  </data>
+  <data name="TbSettingSingGeoImportDefRuleSets" xml:space="preserve">
+    <value>برای وارد کردن مجموعه قوانین Geo کلیک کنید</value>
+  </data>
 </root>

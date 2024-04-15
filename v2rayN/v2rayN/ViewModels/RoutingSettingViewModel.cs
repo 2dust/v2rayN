@@ -62,11 +62,15 @@ namespace v2rayN.ViewModels
         [Reactive]
         public string BlockIP { get; set; }
 
+        [Reactive] 
+        public string SingGeoRuleSets { get; set; }
+
         public ReactiveCommand<Unit, Unit> RoutingBasicImportRulesCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
+        public ReactiveCommand<Unit, Unit> RoutingImportSingGeoDefRuleSetsCmd { get; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public bool IsModified { get; set; }
@@ -81,6 +85,7 @@ namespace v2rayN.ViewModels
             SelectedSource = new();
 
             ConfigHandler.InitBuiltinRouting(_config);
+            ConfigHandler.InitBuiltinSingGeoRuleSets(_config);
 
             enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
             domainStrategy = _config.routingBasicItem.domainStrategy;
@@ -88,6 +93,8 @@ namespace v2rayN.ViewModels
             domainStrategy4Singbox = _config.routingBasicItem.domainStrategy4Singbox;
 
             RefreshRoutingItems();
+            var geoRulesets = LazyConfig.Instance.GetSingGeoRuleSets();
+            if (geoRulesets != null) SingGeoRuleSets = geoRulesets.rules;
 
             BindingLockedData();
 
@@ -119,6 +126,11 @@ namespace v2rayN.ViewModels
             RoutingAdvancedImportRulesCmd = ReactiveCommand.Create(() =>
             {
                 RoutingAdvancedImportRules();
+            });
+
+            RoutingImportSingGeoDefRuleSetsCmd = ReactiveCommand.Create(() =>
+            {
+                SingGeoRuleSets = Utils.GetEmbedText(Global.SingboxGeoRuleSetsFileName);
             });
 
             SaveCmd = ReactiveCommand.Create(() =>
@@ -164,6 +176,13 @@ namespace v2rayN.ViewModels
                 _lockedItem.ruleSet = JsonUtils.Serialize(_lockedRules, false);
 
                 ConfigHandler.SaveRoutingItem(_config, _lockedItem);
+            }
+
+            var ruleSet = ConfigHandler.GetDefaultSingGeoRuleSet(_config);
+            if (ruleSet != null)
+            {
+                ruleSet.rules = SingGeoRuleSets;
+                ConfigHandler.SaveSingGeoRuleSet(_config, ruleSet);
             }
         }
 

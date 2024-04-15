@@ -1207,4 +1207,16 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Enable fragment</value>
   </data>
+  <data name="TbRoutingTabRuleSet" xml:space="preserve">
+    <value>Sing-box Geo RuleSets</value>
+  </data>
+  <data name="TbSettingsSingGeoRuleSets" xml:space="preserve">
+    <value>Sing-box Geo RuleSet JSON (Array)</value>
+  </data>
+  <data name="TbSettingSingGeoImportDefRuleSets" xml:space="preserve">
+    <value>Click here to import default geo ruleset(s)</value>
+  </data>
+  <data name="TbSingGeoRuleSetDoc" xml:space="preserve">
+    <value>Please fill in RuleSet structure, click to view the document</value>
+  </data>
 </root>

@@ -43,6 +43,7 @@ namespace v2rayN
         public const string TunSingboxRulesFileName = "v2rayN.Sample.tun_singbox_rules";
         public const string DNSV2rayNormalFileName = "v2rayN.Sample.dns_v2ray_normal";
         public const string DNSSingboxNormalFileName = "v2rayN.Sample.dns_singbox_normal";
+        public const string SingboxGeoRuleSetsFileName = "v2rayN.Sample.singbox_geo_rulesets";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";

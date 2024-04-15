@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Net.NetworkInformation;
 using v2rayN.Models;
 using v2rayN.Resx;
@@ -55,6 +56,8 @@ namespace v2rayN.Handler
                 GenDns(node, singboxConfig);
 
                 GenStatistic(singboxConfig);
+
+                GenGeoRuleSetFromJson(singboxConfig);
 
                 ConvertGeo2Ruleset(singboxConfig);
 
@@ -886,9 +889,20 @@ namespace v2rayN.Handler
             }
 
             //Add ruleset srs
-            singboxConfig.route.rule_set = [];
+            if (singboxConfig.route.rule_set is null) singboxConfig.route.rule_set = new();
             foreach (var item in new HashSet<string>(ruleSets))
             {
+                var exists = false;
+                foreach (var ruleSetItem in singboxConfig.route.rule_set)
+                {
+                    if (ruleSetItem?.url?.EndsWith(item + ".srs", true, CultureInfo.InvariantCulture) ?? false)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) continue;
                 singboxConfig.route.rule_set.Add(new()
                 {
                     type = "remote",
@@ -898,7 +912,27 @@ namespace v2rayN.Handler
                     download_detour = Global.ProxyTag
                 });
             }
+            return 0;
+        }
 
+        private int GenGeoRuleSetFromJson(SingboxConfig singboxConfig)
+        {
+            var gr = LazyConfig.Instance.GetSingGeoRuleSets();
+            if (gr == null) return -1;
+            var rules = gr.rules;
+            if (gr.rules.Length == 0) return -1;
+            var parsedRules = JsonUtils.Deserialize<List<Ruleset4Sbox>>(rules);
+            if (parsedRules is null) return -1;
+            // manipulate and set defaults
+            for (int i = 0; i < parsedRules.Count; i++)
+            {
+                if (string.IsNullOrEmpty(parsedRules[i].download_detour)) parsedRules[i].download_detour = "proxy";
+                if (string.IsNullOrEmpty(parsedRules[i].format)) parsedRules[i].format = "binary";
+                if (string.IsNullOrEmpty(parsedRules[i].type)) parsedRules[i].type = "remote";
+            }
+
+            if (singboxConfig.route.rule_set is null) singboxConfig.route.rule_set = new();
+            singboxConfig.route.rule_set.AddRange(parsedRules);
             return 0;
         }
 

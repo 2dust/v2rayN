@@ -581,6 +581,7 @@ namespace v2rayN.ViewModels
         {
             ConfigHandler.InitBuiltinRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
+            ConfigHandler.InitBuiltinSingGeoRuleSets(_config);
             _coreHandler = new CoreHandler(_config, UpdateHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => _coreHandler, typeof(CoreHandler));
 
@@ -1389,6 +1390,7 @@ namespace v2rayN.ViewModels
             if (ret == true)
             {
                 ConfigHandler.InitBuiltinRouting(_config);
+                ConfigHandler.InitBuiltinSingGeoRuleSets(_config);
                 RefreshRoutingsMenu();
                 //RefreshServers();
                 Reload();

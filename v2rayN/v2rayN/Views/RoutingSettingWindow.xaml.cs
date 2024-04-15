@@ -60,6 +60,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.DirectIP, v => v.txtDirectIP.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.BlockDomain, v => v.txtBlockDomain.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.BlockIP, v => v.txtBlockIP.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SingGeoRuleSets, v => v.txtSingGeoRuleSets.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SingGeoRuleSets, v => v.txtSingGeoRuleSets2.Text).DisposeWith(disposables);
 
                 this.OneWayBind(ViewModel, vm => vm.enableRoutingBasic, v => v.menuRoutingBasic.Visibility).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.enableRoutingAdvanced, v => v.menuRoutingAdvanced.Visibility).DisposeWith(disposables);
@@ -73,6 +75,8 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedSetDefaultCmd, v => v.menuRoutingAdvancedSetDefault).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.RoutingImportSingGeoDefRuleSetsCmd, v => v.btnImportDefSingGeoRuleSets).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.RoutingImportSingGeoDefRuleSetsCmd, v => v.btnImportDefSingGeoRuleSets2).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
@@ -145,6 +149,11 @@ namespace v2rayN.Views
             {
                 this.Close();
             }
+        }
+
+        private void linkSingGeoRuleSetDoc_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.ProcessStart("https://sing-box.sagernet.org/configuration/rule-set/");
         }
     }
 }
