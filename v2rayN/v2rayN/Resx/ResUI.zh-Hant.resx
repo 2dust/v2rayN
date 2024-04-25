@@ -1177,4 +1177,7 @@
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>使用Xray且非Tun模式啟用，和分組前置代理衝突</value>
   </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>啟用sing-box（規則集文件）的緩存文件</value>
+  </data>
 </root>

@@ -7,7 +7,7 @@
         public List<Inbound4Sbox> inbounds { get; set; }
         public List<Outbound4Sbox> outbounds { get; set; }
         public Route4Sbox route { get; set; }
-        public Experimental4Sbox experimental { get; set; }
+        public Experimental4Sbox? experimental { get; set; }
     }
 
     public class Log4Sbox
