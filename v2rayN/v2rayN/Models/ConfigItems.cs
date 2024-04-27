@@ -34,7 +34,7 @@ namespace v2rayN.Models
 
         public bool enableFragment { get; set; }
 
-        public bool enableCacheFile4Sbox { get; set; }
+        public bool enableCacheFile4Sbox { get; set; } = true;
     }
 
     [Serializable]

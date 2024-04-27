@@ -51,7 +51,6 @@ namespace v2rayN.Handler
                     logEnabled = false,
                     loglevel = "warning",
                     muxEnabled = false,
-                    enableCacheFile4Sbox = false,
                 };
             }
 
@@ -180,7 +179,7 @@ namespace v2rayN.Handler
                 config.mux4SboxItem = new()
                 {
                     protocol = Global.SingboxMuxs[0],
-                    max_connections = 4
+                    max_connections = 8
                 };
             }
 
@@ -305,7 +304,6 @@ namespace v2rayN.Handler
                     logEnabled = configOld.logEnabled,
                     loglevel = configOld.loglevel,
                     muxEnabled = configOld.muxEnabled,
-                    enableCacheFile4Sbox = false,
                 };
             }
 
