@@ -33,6 +33,8 @@ namespace v2rayN.Models
         public string defUserAgent { get; set; }
 
         public bool enableFragment { get; set; }
+
+        public bool enableCacheFile4Sbox { get; set; }
     }
 
     [Serializable]

@@ -32,6 +32,7 @@ namespace v2rayN.ViewModels
         [Reactive] public string defFingerprint { get; set; }
         [Reactive] public string defUserAgent { get; set; }
         [Reactive] public string mux4SboxProtocol { get; set; }
+        [Reactive] public bool enableCacheFile4Sbox { get; set; }
         [Reactive] public int hyUpMbps { get; set; }
         [Reactive] public int hyDownMbps { get; set; }
         [Reactive] public bool enableFragment { get; set; }
@@ -128,6 +129,7 @@ namespace v2rayN.ViewModels
             defFingerprint = _config.coreBasicItem.defFingerprint;
             defUserAgent = _config.coreBasicItem.defUserAgent;
             mux4SboxProtocol = _config.mux4SboxItem.protocol;
+            enableCacheFile4Sbox = _config.coreBasicItem.enableCacheFile4Sbox;
             hyUpMbps = _config.hysteriaItem.up_mbps;
             hyDownMbps = _config.hysteriaItem.down_mbps;
             enableFragment = _config.coreBasicItem.enableFragment;
@@ -289,6 +291,7 @@ namespace v2rayN.ViewModels
             _config.coreBasicItem.defFingerprint = defFingerprint;
             _config.coreBasicItem.defUserAgent = defUserAgent;
             _config.mux4SboxItem.protocol = mux4SboxProtocol;
+            _config.coreBasicItem.enableCacheFile4Sbox = enableCacheFile4Sbox;
             _config.hysteriaItem.up_mbps = hyUpMbps;
             _config.hysteriaItem.down_mbps = hyDownMbps;
             _config.coreBasicItem.enableFragment = enableFragment;

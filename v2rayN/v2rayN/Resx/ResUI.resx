@@ -1207,4 +1207,7 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Enable fragment</value>
   </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>Enable cache file for sing-box (ruleset files)</value>
+  </data>
 </root>

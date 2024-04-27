@@ -68,6 +68,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -314,10 +315,24 @@
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableCacheFile4Sbox}" />
+                        <ToggleButton
+                            x:Name="togenableCacheFile4Sbox"
+                            Grid.Row="15"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}" />
 
                         <StackPanel
-                            Grid.Row="15"
+                            Grid.Row="16"
                             Grid.Column="1"
                             Orientation="Horizontal">
 
@@ -336,7 +351,7 @@
                         </StackPanel>
 
                         <TextBlock
-                            Grid.Row="16"
+                            Grid.Row="17"
                             Grid.Column="0"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
@@ -344,12 +359,12 @@
                             Text="{x:Static resx:ResUI.TbSettingsEnableFragment}" />
                         <ToggleButton
                             x:Name="togenableFragment"
-                            Grid.Row="16"
+                            Grid.Row="17"
                             Grid.Column="1"
                             Margin="{StaticResource SettingItemMargin}"
                             HorizontalAlignment="Left" />
                         <TextBlock
-                            Grid.Row="16"
+                            Grid.Row="17"
                             Grid.Column="3"
                             Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource ToolbarTextBlock}"

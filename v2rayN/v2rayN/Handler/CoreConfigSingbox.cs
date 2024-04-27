@@ -54,7 +54,7 @@ namespace v2rayN.Handler
 
                 GenDns(node, singboxConfig);
 
-                GenStatistic(singboxConfig);
+                GenExperimental(singboxConfig);
 
                 ConvertGeo2Ruleset(singboxConfig);
 
@@ -822,30 +822,66 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        private int GenStatistic(SingboxConfig singboxConfig)
+        private int GenExperimentalStatistic(SingboxConfig singboxConfig)
         {
             if (_config.guiItem.enableStatistics)
             {
-                singboxConfig.experimental = new Experimental4Sbox()
+                singboxConfig.experimental ??= new Experimental4Sbox();
+                singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
                 {
-                    cache_file = new CacheFile4Sbox()
-                    {
-                        enabled = true
-                    },
-                    //v2ray_api = new V2ray_Api4Sbox()
-                    //{
-                    //    listen = $"{Global.Loopback}:{Global.StatePort}",
-                    //    stats = new Stats4Sbox()
-                    //    {
-                    //        enabled = true,
-                    //    }
-                    //},
-                    clash_api = new Clash_Api4Sbox()
-                    {
-                        external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort}",
-                    }
+                    external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort}",
+                };
+                // singboxConfig.experimental.v2ray_api = new V2ray_Api4Sbox()
+                // {
+                //     listen = $"{Global.Loopback}:{Global.StatePort}",
+                //     stats = new Stats4Sbox()
+                //     {
+                //         enabled = true,
+                //     }
+                // };
+                // singboxConfig.experimental = new Experimental4Sbox()
+                // {
+                //     cache_file = new CacheFile4Sbox()
+                //     {
+                //         enabled = true
+                //     },
+                //     //v2ray_api = new V2ray_Api4Sbox()
+                //     //{
+                //     //    listen = $"{Global.Loopback}:{Global.StatePort}",
+                //     //    stats = new Stats4Sbox()
+                //     //    {
+                //     //        enabled = true,
+                //     //    }
+                //     //},
+                //     clash_api = new Clash_Api4Sbox()
+                //     {
+                //         external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort}",
+                //     }
+                // };
+            }
+            return 0;
+        }
+
+        private int GenExperimentalCacheFile(SingboxConfig singboxConfig)
+        {
+            if (_config.coreBasicItem.enableCacheFile4Sbox)
+            {
+                singboxConfig.experimental ??= new Experimental4Sbox();
+                singboxConfig.experimental.cache_file = new CacheFile4Sbox()
+                {
+                    enabled = true
                 };
             }
+
+            return 0;
+        }
+
+        private int GenExperimental(SingboxConfig singboxConfig)
+        {
+            var r = GenExperimentalStatistic(singboxConfig);
+            if (r != 0) return r;
+            r = GenExperimentalCacheFile(singboxConfig);
+            if (r != 0) return r;
             return 0;
         }
 

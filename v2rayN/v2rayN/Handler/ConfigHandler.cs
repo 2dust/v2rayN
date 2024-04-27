@@ -50,8 +50,8 @@ namespace v2rayN.Handler
                 {
                     logEnabled = false,
                     loglevel = "warning",
-
                     muxEnabled = false,
+                    enableCacheFile4Sbox = false,
                 };
             }
 
@@ -305,6 +305,7 @@ namespace v2rayN.Handler
                     logEnabled = configOld.logEnabled,
                     loglevel = configOld.loglevel,
                     muxEnabled = configOld.muxEnabled,
+                    enableCacheFile4Sbox = false,
                 };
             }
 
