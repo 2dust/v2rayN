@@ -539,24 +539,38 @@ namespace v2rayN.Handler
         {
             try
             {
+                var dnsOutbound = "dns_out";
+                if (!_config.inbound[0].sniffingEnabled)
+                {
+                    singboxConfig.route.rules.Add(new()
+                    {
+                        port = [53],
+                        network = "udp",
+                        outbound = dnsOutbound
+                    });
+                }
+
                 if (_config.tunModeItem.enableTun)
                 {
                     singboxConfig.route.auto_detect_interface = true;
 
                     var tunRules = JsonUtils.Deserialize<List<Rule4Sbox>>(Utils.GetEmbedText(Global.TunSingboxRulesFileName));
-                    singboxConfig.route.rules.AddRange(tunRules);
+                    if (tunRules != null)
+                    {
+                        singboxConfig.route.rules.AddRange(tunRules);
+                    }
 
                     GenRoutingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe);
                     singboxConfig.route.rules.Add(new()
                     {
                         port = new() { 53 },
-                        outbound = "dns_out",
+                        outbound = dnsOutbound,
                         process_name = lstDnsExe
                     });
 
                     singboxConfig.route.rules.Add(new()
                     {
-                        outbound = "direct",
+                        outbound = Global.DirectTag,
                         process_name = lstDirectExe
                     });
                 }
@@ -805,7 +819,7 @@ namespace v2rayN.Handler
                 {
                     tag = "local_local",
                     address = "223.5.5.5",
-                    detour = "direct"
+                    detour = Global.DirectTag,
                 });
                 dns4Sbox.rules.Add(new()
                 {
