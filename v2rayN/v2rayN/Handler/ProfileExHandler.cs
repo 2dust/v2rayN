@@ -12,7 +12,7 @@ namespace v2rayN.Handler
         public ConcurrentBag<ProfileExItem> ProfileExs => _lstProfileEx;
         public static ProfileExHandler Instance => _instance.Value;
 
-        public ProfileExHandler()
+        private ProfileExHandler()
         {
             Init();
 
