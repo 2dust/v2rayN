@@ -15,6 +15,7 @@ namespace v2rayN.Models
         public bool enabled { get; set; } = true;
         public bool locked { get; set; }
         public string customIcon { get; set; }
+        public string customRulesetPath4Singbox { get; set; }
         public string domainStrategy { get; set; }
         public string domainStrategy4Singbox { get; set; }
         public int sort { get; set; }

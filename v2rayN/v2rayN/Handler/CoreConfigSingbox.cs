@@ -895,18 +895,45 @@ namespace v2rayN.Handler
                 ruleSets.AddRange(dnsRule.rule_set);
             }
 
+            //load custom ruleset file
+            List<Ruleset4Sbox> customRulesets = [];
+            if (_config.routingBasicItem.enableRoutingAdvanced)
+            {
+                var routing = ConfigHandler.GetDefaultRouting(_config);
+                if (!Utils.IsNullOrEmpty(routing.customRulesetPath4Singbox))
+                {
+                    var result = Utils.LoadResource(routing.customRulesetPath4Singbox);
+                    if (!Utils.IsNullOrEmpty(result))
+                    {
+                        customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
+                            .Where(t => t.tag != null)
+                            .Where(t => t.type != null)
+                            .Where(t => t.format != null)
+                            .ToList();
+                    }
+                }
+            }
+
             //Add ruleset srs
             singboxConfig.route.rule_set = [];
             foreach (var item in new HashSet<string>(ruleSets))
             {
-                singboxConfig.route.rule_set.Add(new()
+                var customRuleset = customRulesets.FirstOrDefault(t => t.tag != null && t.tag.Equals(item));
+                if (customRuleset != null)
                 {
-                    type = "remote",
-                    format = "binary",
-                    tag = item,
-                    url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
-                    download_detour = Global.ProxyTag
-                });
+                    singboxConfig.route.rule_set.Add(customRuleset);
+                }
+                else
+                {
+                    singboxConfig.route.rule_set.Add(new()
+                    {
+                        type = "remote",
+                        format = "binary",
+                        tag = item,
+                        url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
+                        download_detour = Global.ProxyTag
+                    });
+                }
             }
 
             return 0;

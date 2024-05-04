@@ -1210,4 +1210,7 @@
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Enable cache file for sing-box (ruleset files)</value>
   </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>Custom the rule-set of sing-box</value>
+  </data>
 </root>

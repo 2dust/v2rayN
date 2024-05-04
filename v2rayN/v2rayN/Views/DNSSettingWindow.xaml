@@ -88,6 +88,7 @@
                             Style="{StaticResource ToolbarTextBlock}">
                             <Hyperlink Click="linkDnsObjectDoc_Click">
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />
+                                <materialDesign:PackIcon Kind="Link" />
                             </Hyperlink>
                         </TextBlock>
                         <Button
@@ -120,6 +121,7 @@
                             Style="{StaticResource ToolbarTextBlock}">
                             <Hyperlink Click="linkDnsSingboxObjectDoc_Click">
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsSingboxObjectDoc}" />
+                                <materialDesign:PackIcon Kind="Link" />
                             </Hyperlink>
                         </TextBlock>
                         <Button

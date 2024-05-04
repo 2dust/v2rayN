@@ -51,6 +51,7 @@ namespace v2rayN.Views
 
                 this.Bind(ViewModel, vm => vm.SelectedRouting.url, v => v.txtUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.customIcon, v => v.txtCustomIcon.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedRouting.customRulesetPath4Singbox, v => v.txtCustomRulesetPath4Singbox.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.sort, v => v.txtSort.Text).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.RuleAddCmd, v => v.menuRuleAdd).DisposeWith(disposables);
@@ -128,7 +129,7 @@ namespace v2rayN.Views
             lstRules.SelectAll();
         }
 
-        private void btnBrowse_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void btnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (UI.OpenFileDialog(out string fileName,
                 "PNG,ICO|*.png;*.ico") != true)
@@ -137,6 +138,22 @@ namespace v2rayN.Views
             }
 
             txtCustomIcon.Text = fileName;
+        }
+
+        private void btnBrowseCustomRulesetPath4Singbox_Click(object sender, RoutedEventArgs e)
+        {
+            if (UI.OpenFileDialog(out string fileName,
+                  "Config|*.json|All|*.*") != true)
+            {
+                return;
+            }
+
+            txtCustomRulesetPath4Singbox.Text = fileName;
+        }
+
+        private void linkCustomRulesetPath4Singbox(object sender, RoutedEventArgs e)
+        {
+            Utils.ProcessStart("https://github.com/2dust/v2rayCustomRoutingList/blob/master/singbox_custom_ruleset_example.json");
         }
     }
 }

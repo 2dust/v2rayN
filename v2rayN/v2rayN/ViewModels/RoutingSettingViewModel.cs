@@ -192,6 +192,7 @@ namespace v2rayN.ViewModels
                     remarks = item.remarks,
                     url = item.url,
                     customIcon = item.customIcon,
+                    customRulesetPath4Singbox = item.customRulesetPath4Singbox,
                     sort = item.sort,
                 };
                 _routingItems.Add(it);

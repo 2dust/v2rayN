@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
@@ -83,6 +84,7 @@
                 Style="{StaticResource ToolbarTextBlock}">
                 <Hyperlink Click="linkRuleobjectDoc_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
+                    <materialDesign:PackIcon Kind="Link" />
                 </Hyperlink>
             </TextBlock>
 

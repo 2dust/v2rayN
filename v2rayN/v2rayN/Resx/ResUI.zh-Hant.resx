@@ -1180,4 +1180,7 @@
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>啟用sing-box（規則集文件）的緩存文件</value>
   </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>自訂sing-box rule-set</value>
+  </data>
 </root>

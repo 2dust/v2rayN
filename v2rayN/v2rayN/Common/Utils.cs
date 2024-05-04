@@ -57,11 +57,14 @@ namespace v2rayN
         /// 取得存储资源
         /// </summary>
         /// <returns></returns>
-        public static string? LoadResource(string res)
+        public static string? LoadResource(string? res)
         {
             try
             {
-                if (!File.Exists(res)) return null;
+                if (!File.Exists(res))
+                {
+                    return null;
+                }
                 return File.ReadAllText(res);
             }
             catch (Exception ex)
