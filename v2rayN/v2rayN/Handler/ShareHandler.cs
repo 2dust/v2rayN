@@ -264,7 +264,21 @@ namespace v2rayN.Handler
 
         private static string GetIpv6(string address)
         {
-            return Utils.IsIpv6(address) ? $"[{address}]" : address;
+            if (Utils.IsIpv6(address))
+            {
+                if (address.StartsWith('[') && address.EndsWith(']'))
+                {
+                    return address;
+                }
+                else
+                {
+                    return $"[{address}]";
+                }
+            }
+            else
+            {
+                return address;
+            }
         }
 
         private static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
