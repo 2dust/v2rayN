@@ -266,19 +266,10 @@ namespace v2rayN.Handler
         {
             if (Utils.IsIpv6(address))
             {
-                if (address.StartsWith('[') && address.EndsWith(']'))
-                {
-                    return address;
-                }
-                else
-                {
-                    return $"[{address}]";
-                }
+                // 检查地址是否已经被方括号包围，如果没有，则添加方括号
+                return address.StartsWith('[') && address.EndsWith(']') ? address : $"[{address}]";
             }
-            else
-            {
-                return address;
-            }
+            return address;  // 如果不是IPv6地址，直接返回原地址
         }
 
         private static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
