@@ -17,7 +17,7 @@
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
-                Foreground="{DynamicResource PrimaryHueLightBrush}"
+                Foreground="{DynamicResource MaterialDesign.Brush.Primary.Light}"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.MsgInformationTitle}" />
             <ComboBox

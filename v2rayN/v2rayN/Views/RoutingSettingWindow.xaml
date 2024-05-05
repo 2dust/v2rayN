@@ -201,9 +201,9 @@
                             <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding isActive}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
                                         <Setter Property="Foreground" Value="Black" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

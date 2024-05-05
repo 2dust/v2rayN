@@ -1847,7 +1847,7 @@ namespace v2rayN.ViewModels
         {
             var theme = _paletteHelper.GetTheme();
 
-            theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
+            theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
             _paletteHelper.SetTheme(theme);
 
             Utils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);

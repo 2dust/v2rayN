@@ -13,7 +13,7 @@
                     BaseTheme="Light"
                     PrimaryColor="Blue"
                     SecondaryColor="Lime" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <system:Double x:Key="MenuItemHeight">26</system:Double>
             <system:Double x:Key="StdFontSize">12</system:Double>
@@ -72,10 +72,10 @@
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="true">
-                        <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
                     </Trigger>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
