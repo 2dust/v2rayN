@@ -1210,4 +1210,7 @@
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>自定义sing-box rule-set</value>
   </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>操作成功。请点击设置菜单重启应用。</value>
+  </data>
 </root>

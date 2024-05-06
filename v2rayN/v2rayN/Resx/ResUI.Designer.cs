@@ -1582,6 +1582,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Successful operation. Click the settings menu to reboot the app. 的本地化字符串。
+        /// </summary>
+        public static string NeedRebootTips {
+            get {
+                return ResourceManager.GetString("NeedRebootTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Non-VMess or ss protocol 的本地化字符串。
         /// </summary>
         public static string NonvmessOrssProtocol {

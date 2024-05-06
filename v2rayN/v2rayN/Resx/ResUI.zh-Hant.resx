@@ -1183,4 +1183,7 @@
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>自訂sing-box rule-set</value>
   </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>操作成功。 請點選設定選單重啟應用程式。</value>
+  </data>
 </root>

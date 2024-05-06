@@ -1213,4 +1213,7 @@
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>Custom the rule-set of sing-box</value>
   </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>Successful operation. Click the settings menu to reboot the app.</value>
+  </data>
 </root>
