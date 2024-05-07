@@ -126,7 +126,7 @@ namespace v2rayN.ViewModels
                 SaveRouting();
             });
 
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         #region locked

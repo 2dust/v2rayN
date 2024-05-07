@@ -15,6 +15,7 @@
     Title="v2rayN"
     Width="900"
     Height="700"
+    MinWidth="900"
     x:TypeArguments="vms:MainWindowViewModel"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"

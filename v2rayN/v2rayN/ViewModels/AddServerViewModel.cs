@@ -44,7 +44,7 @@ namespace v2rayN.ViewModels
                 SaveServer();
             });
 
-            Utils.SetDarkBorder(view, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void SaveServer()

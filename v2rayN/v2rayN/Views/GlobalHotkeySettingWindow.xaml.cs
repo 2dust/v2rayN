@@ -39,7 +39,7 @@ namespace v2rayN.Views
 
             HotkeyHandler.Instance.IsPause = true;
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
-            Utils.SetDarkBorder(this, _config.uiItem.colorModeDark);
+            Utils.SetDarkBorder(this, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
             InitData();
         }
 
