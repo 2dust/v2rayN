@@ -1216,4 +1216,7 @@
   <data name="NeedRebootTips" xml:space="preserve">
     <value>Successful operation. Click the settings menu to reboot the app.</value>
   </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Open the storage location</value>
+  </data>
 </root>

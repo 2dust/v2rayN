@@ -744,11 +744,11 @@ namespace v2rayN
             return Guid.TryParse(strSrc, out Guid g);
         }
 
-        public static void ProcessStart(string fileName)
+        public static void ProcessStart(string fileName, string arguments = "")
         {
             try
             {
-                Process.Start(new ProcessStartInfo(fileName) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
             }
             catch (Exception ex)
             {

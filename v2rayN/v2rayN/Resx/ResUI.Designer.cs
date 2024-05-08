@@ -979,6 +979,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Open the storage location 的本地化字符串。
+        /// </summary>
+        public static string menuOpenTheFileLocation {
+            get {
+                return ResourceManager.GetString("menuOpenTheFileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Option Setting 的本地化字符串。
         /// </summary>
         public static string menuOptionSetting {

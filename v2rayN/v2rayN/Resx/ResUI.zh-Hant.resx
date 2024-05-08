@@ -1186,4 +1186,7 @@
   <data name="NeedRebootTips" xml:space="preserve">
     <value>操作成功。 請點選設定選單重啟應用程式。</value>
   </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>打開儲存所在的位置</value>
+  </data>
 </root>

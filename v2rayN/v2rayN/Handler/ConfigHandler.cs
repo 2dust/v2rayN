@@ -240,103 +240,103 @@ namespace v2rayN.Handler
             }
         }
 
-        public static int ImportOldGuiConfig(Config config, string fileName)
-        {
-            var result = Utils.LoadResource(fileName);
-            if (Utils.IsNullOrEmpty(result))
-            {
-                return -1;
-            }
+        //public static int ImportOldGuiConfig(Config config, string fileName)
+        //{
+        //    var result = Utils.LoadResource(fileName);
+        //    if (Utils.IsNullOrEmpty(result))
+        //    {
+        //        return -1;
+        //    }
 
-            var configOld = JsonUtils.Deserialize<ConfigOld>(result);
-            if (configOld == null)
-            {
-                return -1;
-            }
+        //    var configOld = JsonUtils.Deserialize<ConfigOld>(result);
+        //    if (configOld == null)
+        //    {
+        //        return -1;
+        //    }
 
-            var subItem = JsonUtils.Deserialize<List<SubItem>>(JsonUtils.Serialize(configOld.subItem));
-            foreach (var it in subItem)
-            {
-                if (Utils.IsNullOrEmpty(it.id))
-                {
-                    it.id = Utils.GetGUID(false);
-                }
-                SQLiteHelper.Instance.Replace(it);
-            }
+        //    var subItem = JsonUtils.Deserialize<List<SubItem>>(JsonUtils.Serialize(configOld.subItem));
+        //    foreach (var it in subItem)
+        //    {
+        //        if (Utils.IsNullOrEmpty(it.id))
+        //        {
+        //            it.id = Utils.GetGUID(false);
+        //        }
+        //        SQLiteHelper.Instance.Replace(it);
+        //    }
 
-            var profileItems = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(configOld.vmess));
-            foreach (var it in profileItems)
-            {
-                if (Utils.IsNullOrEmpty(it.indexId))
-                {
-                    it.indexId = Utils.GetGUID(false);
-                }
-                SQLiteHelper.Instance.Replace(it);
-            }
+        //    var profileItems = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(configOld.vmess));
+        //    foreach (var it in profileItems)
+        //    {
+        //        if (Utils.IsNullOrEmpty(it.indexId))
+        //        {
+        //            it.indexId = Utils.GetGUID(false);
+        //        }
+        //        SQLiteHelper.Instance.Replace(it);
+        //    }
 
-            foreach (var it in configOld.routings)
-            {
-                if (it.locked)
-                {
-                    continue;
-                }
-                var routing = JsonUtils.Deserialize<RoutingItem>(JsonUtils.Serialize(it));
-                foreach (var it2 in it.rules)
-                {
-                    it2.id = Utils.GetGUID(false);
-                }
-                routing.ruleNum = it.rules.Count;
-                routing.ruleSet = JsonUtils.Serialize(it.rules, false);
+        //    foreach (var it in configOld.routings)
+        //    {
+        //        if (it.locked)
+        //        {
+        //            continue;
+        //        }
+        //        var routing = JsonUtils.Deserialize<RoutingItem>(JsonUtils.Serialize(it));
+        //        foreach (var it2 in it.rules)
+        //        {
+        //            it2.id = Utils.GetGUID(false);
+        //        }
+        //        routing.ruleNum = it.rules.Count;
+        //        routing.ruleSet = JsonUtils.Serialize(it.rules, false);
 
-                if (Utils.IsNullOrEmpty(routing.id))
-                {
-                    routing.id = Utils.GetGUID(false);
-                }
-                SQLiteHelper.Instance.Replace(routing);
-            }
+        //        if (Utils.IsNullOrEmpty(routing.id))
+        //        {
+        //            routing.id = Utils.GetGUID(false);
+        //        }
+        //        SQLiteHelper.Instance.Replace(routing);
+        //    }
 
-            config = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(configOld));
+        //    config = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(configOld));
 
-            if (config.coreBasicItem == null)
-            {
-                config.coreBasicItem = new()
-                {
-                    logEnabled = configOld.logEnabled,
-                    loglevel = configOld.loglevel,
-                    muxEnabled = configOld.muxEnabled,
-                };
-            }
+        //    if (config.coreBasicItem == null)
+        //    {
+        //        config.coreBasicItem = new()
+        //        {
+        //            logEnabled = configOld.logEnabled,
+        //            loglevel = configOld.loglevel,
+        //            muxEnabled = configOld.muxEnabled,
+        //        };
+        //    }
 
-            if (config.routingBasicItem == null)
-            {
-                config.routingBasicItem = new()
-                {
-                    enableRoutingAdvanced = configOld.enableRoutingAdvanced,
-                    domainStrategy = configOld.domainStrategy
-                };
-            }
+        //    if (config.routingBasicItem == null)
+        //    {
+        //        config.routingBasicItem = new()
+        //        {
+        //            enableRoutingAdvanced = configOld.enableRoutingAdvanced,
+        //            domainStrategy = configOld.domainStrategy
+        //        };
+        //    }
 
-            if (config.guiItem == null)
-            {
-                config.guiItem = new()
-                {
-                    enableStatistics = configOld.enableStatistics,
-                    keepOlderDedupl = configOld.keepOlderDedupl,
-                    ignoreGeoUpdateCore = configOld.ignoreGeoUpdateCore,
-                    autoUpdateInterval = configOld.autoUpdateInterval,
-                    checkPreReleaseUpdate = configOld.checkPreReleaseUpdate,
-                    enableSecurityProtocolTls13 = configOld.enableSecurityProtocolTls13,
-                    trayMenuServersLimit = configOld.trayMenuServersLimit,
-                };
-            }
+        //    if (config.guiItem == null)
+        //    {
+        //        config.guiItem = new()
+        //        {
+        //            enableStatistics = configOld.enableStatistics,
+        //            keepOlderDedupl = configOld.keepOlderDedupl,
+        //            ignoreGeoUpdateCore = configOld.ignoreGeoUpdateCore,
+        //            autoUpdateInterval = configOld.autoUpdateInterval,
+        //            checkPreReleaseUpdate = configOld.checkPreReleaseUpdate,
+        //            enableSecurityProtocolTls13 = configOld.enableSecurityProtocolTls13,
+        //            trayMenuServersLimit = configOld.trayMenuServersLimit,
+        //        };
+        //    }
 
-            GetDefaultServer(config);
-            GetDefaultRouting(config);
-            SaveConfig(config);
-            LoadConfig(ref config);
+        //    GetDefaultServer(config);
+        //    GetDefaultRouting(config);
+        //    SaveConfig(config);
+        //    LoadConfig(ref config);
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
         #endregion ConfigHandler
 
