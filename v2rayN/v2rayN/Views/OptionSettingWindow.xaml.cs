@@ -30,7 +30,7 @@ namespace v2rayN.Views
 
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
-            var lstFonts = GetFonts(Utils.GetFontsPath());
+
 
             ViewModel = new OptionSettingViewModel(this);
 
@@ -90,8 +90,7 @@ namespace v2rayN.Views
                 cmbSubConvertUrl.Items.Add(it);
             });
 
-            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-            cmbcurrentFontFamily.Items.Add(string.Empty);
+            LoadFontsAsync();  //If there are many font files, opening the OptionSettingWindow will noticeably lag. The font loading logic can be changed to execute asynchronously.
 
             this.WhenActivated(disposables =>
             {
@@ -212,6 +211,35 @@ namespace v2rayN.Views
                 Logging.SaveLog("fill fonts error", ex);
             }
             return lstFonts;
+        }
+
+        private async void LoadFontsAsync()
+        {
+            try
+            {
+                await Task.Run(() => {
+                    return GetFonts(Utils.GetFontsPath());
+                }).ContinueWith(t => {
+                    if (t.Exception == null)
+                    {
+                        Dispatcher.Invoke(() => {
+                            foreach (var font in t.Result)
+                            {
+                                cmbcurrentFontFamily.Items.Add(font);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        // 处理异常
+                        Logging.SaveLog("fill fonts error", t.Exception);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("Async font loading error", ex);
+            }
         }
     }
 }
