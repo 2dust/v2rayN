@@ -481,7 +481,7 @@ namespace v2rayN
         /// 验证Domain地址是否合法
         /// </summary>
         /// <param name="domain"></param>
-        public static bool IsDomain(string domain)
+        public static bool IsDomain(string? domain)
         {
             //如果为空
             if (IsNullOrEmpty(domain))
