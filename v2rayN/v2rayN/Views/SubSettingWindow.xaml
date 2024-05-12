@@ -23,7 +23,10 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <materialDesign:DialogHost Identifier="SubDialog" Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
+    <materialDesign:DialogHost
+        materialDesign:TransitionAssist.DisableTransitions="True"
+        Identifier="SubDialog"
+        Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
         <DockPanel>
             <ToolBarTray DockPanel.Dock="Top">
                 <ToolBar

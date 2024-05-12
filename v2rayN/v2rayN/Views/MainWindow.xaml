@@ -38,6 +38,7 @@
 
     <materialDesign:DialogHost
         Identifier="RootDialog"
+        materialDesign:TransitionAssist.DisableTransitions="True"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}"
         Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
         <Grid>
