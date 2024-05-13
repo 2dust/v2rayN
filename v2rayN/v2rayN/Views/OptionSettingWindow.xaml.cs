@@ -91,6 +91,7 @@ namespace v2rayN.Views
             });
 
             LoadFontsAsync();  //If there are many font files, opening the OptionSettingWindow will noticeably lag. The font loading logic can be changed to execute asynchronously.
+            cmbcurrentFontFamily.Items.Add(string.Empty);
 
             this.WhenActivated(disposables =>
             {
