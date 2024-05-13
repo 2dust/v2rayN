@@ -30,5 +30,6 @@
       ],
       "server": "block"
     }
-  ]
+  ],
+  "final": "local"
 }

@@ -95,7 +95,7 @@
     {
         public string type { get; set; }
         public string tag { get; set; }
-        public string server { get; set; }
+        public string? server { get; set; }
         public int? server_port { get; set; }
         public string uuid { get; set; }
         public string security { get; set; }

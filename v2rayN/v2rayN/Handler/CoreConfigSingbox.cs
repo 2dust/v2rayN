@@ -810,29 +810,43 @@ namespace v2rayN.Handler
                 {
                     return 0;
                 }
-                //Add the dns of the remote server domain
-                if (dns4Sbox.rules is null)
-                {
-                    dns4Sbox.rules = new();
-                }
-                dns4Sbox.servers.Add(new()
-                {
-                    tag = "local_local",
-                    address = "223.5.5.5",
-                    detour = Global.DirectTag,
-                });
-                dns4Sbox.rules.Add(new()
-                {
-                    server = "local_local",
-                    outbound = "any"
-                });
-
                 singboxConfig.dns = dns4Sbox;
+
+                GenDnsDomains(singboxConfig);
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+            return 0;
+        }
+
+        private int GenDnsDomains(SingboxConfig singboxConfig)
+        {
+            var dns4Sbox = singboxConfig.dns ?? new();
+            dns4Sbox.servers ??= [];
+            dns4Sbox.rules ??= [];
+
+            var lstDomain = singboxConfig.outbounds
+                           .Where(t => !Utils.IsNullOrEmpty(t.server) && Utils.IsDomain(t.server))
+                           .Select(t => t.server)
+                           .ToList();
+            if (lstDomain != null && lstDomain.Count > 0)
+            {
+                var tag = "local_local";
+                dns4Sbox.servers.Insert(0, new()
+                {
+                    tag = tag,
+                    address = "223.5.5.5",
+                    detour = Global.DirectTag,
+                });
+                dns4Sbox.rules.Insert(0, new()
+                {
+                    server = tag,
+                    domain = lstDomain
+                });
+            }
+            singboxConfig.dns = dns4Sbox;
             return 0;
         }
 
@@ -1076,18 +1090,18 @@ namespace v2rayN.Handler
                     singboxConfig.route.rules.Add(rule);
                 }
 
-                GenDns(new(), singboxConfig);
-                var dnsServer = singboxConfig.dns?.servers.FirstOrDefault();
-                if (dnsServer != null)
-                {
-                    dnsServer.detour = singboxConfig.route.rules.LastOrDefault()?.outbound;
-                }
-                var dnsRule = singboxConfig.dns?.rules.Where(t => t.outbound != null).FirstOrDefault();
-                if (dnsRule != null)
-                {
-                    singboxConfig.dns.rules = [];
-                    singboxConfig.dns.rules.Add(dnsRule);
-                }
+                GenDnsDomains(singboxConfig);
+                //var dnsServer = singboxConfig.dns?.servers.FirstOrDefault();
+                //if (dnsServer != null)
+                //{
+                //    dnsServer.detour = singboxConfig.route.rules.LastOrDefault()?.outbound;
+                //}
+                //var dnsRule = singboxConfig.dns?.rules.Where(t => t.outbound != null).FirstOrDefault();
+                //if (dnsRule != null)
+                //{
+                //    singboxConfig.dns.rules = [];
+                //    singboxConfig.dns.rules.Add(dnsRule);
+                //}
 
                 //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
                 return 0;

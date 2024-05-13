@@ -1026,10 +1026,10 @@ namespace v2rayN.ViewModels
         {
             ShowHideWindow(false);
 
-            var dpiXY = Utils.GetDpiXY(Application.Current.MainWindow);
+            var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
             string result = await Task.Run(() =>
             {
-                return Utils.ScanScreen(dpiXY.Item1, dpiXY.Item2);
+                return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
             });
 
             ShowHideWindow(true);
