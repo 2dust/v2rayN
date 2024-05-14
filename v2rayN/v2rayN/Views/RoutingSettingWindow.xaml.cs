@@ -127,7 +127,7 @@ namespace v2rayN.Views
 
         private void linkdomainStrategy_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://www.v2fly.org/config/routing.html");
+            Utils.ProcessStart("https://xtls.github.io/config/routing.html");
         }
 
         private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)

@@ -111,7 +111,8 @@ namespace v2rayN.Handler
         {
             try
             {
-                singboxConfig.inbounds.Clear();
+                var listen = "::";
+                singboxConfig.inbounds = [];
 
                 if (!_config.tunModeItem.enableTun || (_config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound))
                 {
@@ -146,11 +147,11 @@ namespace v2rayN.Handler
                         if (_config.inbound[0].newPort4LAN)
                         {
                             var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
-                            inbound3.listen = "::";
+                            inbound3.listen = listen;
                             singboxConfig.inbounds.Add(inbound3);
 
                             var inbound4 = GetInbound(inbound, EInboundProtocol.http2, false);
-                            inbound4.listen = "::";
+                            inbound4.listen = listen;
                             singboxConfig.inbounds.Add(inbound4);
 
                             //auth
@@ -162,8 +163,8 @@ namespace v2rayN.Handler
                         }
                         else
                         {
-                            inbound.listen = "::";
-                            inbound2.listen = "::";
+                            inbound.listen = listen;
+                            inbound2.listen = listen;
                         }
                     }
                 }

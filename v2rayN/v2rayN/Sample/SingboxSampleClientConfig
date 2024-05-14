@@ -3,14 +3,7 @@
 		"level": "debug",
 		"timestamp": true
 	},
-	"inbounds": [
-		{
-			"type": "socks",
-			"tag": "socks",
-			"listen": "127.0.0.1",
-			"listen_port": 10000
-		}
-	],
+	"inbounds": [],
 	"outbounds": [
 		{
 			"type": "vless",

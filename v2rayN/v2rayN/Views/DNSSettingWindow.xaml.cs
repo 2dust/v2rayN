@@ -51,7 +51,7 @@ namespace v2rayN.Views
 
         private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://www.v2fly.org/config/dns.html#dnsobject");
+            Utils.ProcessStart("https://xtls.github.io/config/dns.html#dnsobject");
         }
 
         private void linkDnsSingboxObjectDoc_Click(object sender, RoutedEventArgs e)

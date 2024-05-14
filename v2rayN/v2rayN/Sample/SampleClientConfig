@@ -4,56 +4,7 @@
 		"error": "Verror.log",
 		"loglevel": "warning"
 	},
-	"inbounds": [{
-			"tag": "tag1",
-			"port": 10808,
-			"protocol": "socks",
-			"listen": "127.0.0.1",
-			"settings": {
-				"auth": "noauth",
-				"udp": true
-			},
-			"sniffing": {
-				"enabled": true,
-				"destOverride": [
-					"http",
-					"tls"
-				]
-			}
-		},
-		{
-			"tag": "tag2",
-			"port": 10809,
-			"protocol": "http",
-			"listen": "127.0.0.1",
-			"settings": {
-				"allowTransparent": false
-			},
-			"sniffing": {
-				"enabled": true,
-				"destOverride": [
-					"http",
-					"tls"
-				]
-			}
-		},
-		{
-			"tag": "tag3",
-			"port": 10809,
-			"protocol": "http",
-			"listen": "127.0.0.1",
-			"settings": {
-				"allowTransparent": false
-			},
-			"sniffing": {
-				"enabled": true,
-				"destOverride": [
-					"http",
-					"tls"
-				]
-			}
-		}
-	],
+	"inbounds": [],
 	"outbounds": [{
 			"tag": "proxy",
 			"protocol": "vmess",
