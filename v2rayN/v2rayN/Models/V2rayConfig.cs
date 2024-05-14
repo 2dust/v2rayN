@@ -195,7 +195,7 @@ namespace v2rayN.Models
     public class Sniffing4Ray
     {
         public bool enabled { get; set; }
-        public List<string> destOverride { get; set; }
+        public List<string>? destOverride { get; set; }
         public bool routeOnly { get; set; }
     }
 

@@ -20,6 +20,7 @@ namespace v2rayN.ViewModels
         [Reactive] public int localPort { get; set; }
         [Reactive] public bool udpEnabled { get; set; }
         [Reactive] public bool sniffingEnabled { get; set; }
+        public IList<string> destOverride { get; set; }
         [Reactive] public bool routeOnly { get; set; }
         [Reactive] public bool allowLANConn { get; set; }
         [Reactive] public bool newPort4LAN { get; set; }
@@ -279,6 +280,7 @@ namespace v2rayN.ViewModels
             _config.inbound[0].localPort = localPort;
             _config.inbound[0].udpEnabled = udpEnabled;
             _config.inbound[0].sniffingEnabled = sniffingEnabled;
+            _config.inbound[0].destOverride = destOverride?.ToList();
             _config.inbound[0].routeOnly = routeOnly;
             _config.inbound[0].allowLANConn = allowLANConn;
             _config.inbound[0].newPort4LAN = newPort4LAN;

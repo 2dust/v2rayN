@@ -47,8 +47,8 @@ namespace v2rayN.Models
         public bool udpEnabled { get; set; }
 
         public bool sniffingEnabled { get; set; } = true;
+        public List<string>? destOverride { get; set; } = ["http", "tls"];
         public bool routeOnly { get; set; }
-
         public bool allowLANConn { get; set; }
 
         public bool newPort4LAN { get; set; }

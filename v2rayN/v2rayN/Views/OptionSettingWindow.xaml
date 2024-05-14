@@ -119,12 +119,22 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSniffingEnabled}" />
-                        <ToggleButton
-                            x:Name="togsniffingEnabled"
+                        <StackPanel
                             Grid.Row="2"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal">
+                            <ToggleButton
+                                x:Name="togsniffingEnabled"
+                                Margin="{StaticResource SettingItemMargin}"
+                                HorizontalAlignment="Left" />
+                            <ListBox
+                                x:Name="clbdestOverride"
+                                Margin="4"
+                                HorizontalAlignment="Left"
+                                FontSize="{DynamicResource StdFontSize}"
+                                Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
+                        </StackPanel>
 
                         <TextBlock
                             Grid.Row="3"

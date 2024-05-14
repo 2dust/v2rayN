@@ -34,6 +34,15 @@ namespace v2rayN.Views
 
             ViewModel = new OptionSettingViewModel(this);
 
+            clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
+            Global.destOverrideProtocols.ForEach(it =>
+            {
+                clbdestOverride.Items.Add(it);
+            });
+            _config.inbound[0].destOverride?.ForEach(it =>
+            {
+                clbdestOverride.SelectedItems.Add(it);
+            });            
             Global.IEProxyProtocols.ForEach(it =>
             {
                 cmbsystemProxyAdvancedProtocol.Items.Add(it);
@@ -212,6 +221,11 @@ namespace v2rayN.Views
                 Logging.SaveLog("fill fonts error", ex);
             }
             return lstFonts;
+        }
+
+        private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
     }
 }

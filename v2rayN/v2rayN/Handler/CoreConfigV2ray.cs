@@ -162,6 +162,7 @@ namespace v2rayN.Handler
             inbound.protocol = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
             inbound.settings.udp = inItem.udpEnabled;
             inbound.sniffing.enabled = inItem.sniffingEnabled;
+            inbound.sniffing.destOverride = inItem.destOverride;
             inbound.sniffing.routeOnly = inItem.routeOnly;
 
             return inbound;
