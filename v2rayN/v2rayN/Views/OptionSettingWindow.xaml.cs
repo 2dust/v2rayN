@@ -30,7 +30,6 @@ namespace v2rayN.Views
 
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
-            var lstFonts = GetFonts(Utils.GetFontsPath());
 
             ViewModel = new OptionSettingViewModel(this);
 
@@ -42,7 +41,7 @@ namespace v2rayN.Views
             _config.inbound[0].destOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
-            });            
+            });
             Global.IEProxyProtocols.ForEach(it =>
             {
                 cmbsystemProxyAdvancedProtocol.Items.Add(it);
@@ -99,8 +98,7 @@ namespace v2rayN.Views
                 cmbSubConvertUrl.Items.Add(it);
             });
 
-            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-            cmbcurrentFontFamily.Items.Add(string.Empty);
+            cmbcurrentFontFamily.Items.Add("默认字体");
 
             this.WhenActivated(disposables =>
             {
@@ -147,7 +145,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.AutoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.TrayMenuServersLimit, v => v.txttrayMenuServersLimit.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
+                // this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
+                LoadFontsAsync(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
@@ -226,6 +225,26 @@ namespace v2rayN.Views
         private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
+        }
+
+        private async void LoadFontsAsync(CompositeDisposable disposables)
+        {
+            try
+            {
+                var fonts = await Task.Run(() => GetFonts(Utils.GetFontsPath()));
+                Dispatcher.Invoke(() =>
+                {
+                    foreach (var font in fonts)
+                    {
+                        cmbcurrentFontFamily.Items.Add(font);
+                    }
+                    this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
+                });
+            }
+            catch (Exception e)
+            {
+                Logging.SaveLog("Async font loading error", e);
+            }
         }
     }
 }
