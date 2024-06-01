@@ -84,7 +84,7 @@ namespace v2rayN.Handler
                     File.Delete(fileName);
                 }
 
-                string addressFileName = node.address;
+                string addressFileName = node.jsonFileAddress ?? "";
                 if (!File.Exists(addressFileName))
                 {
                     addressFileName = Utils.GetConfigPath(addressFileName);
