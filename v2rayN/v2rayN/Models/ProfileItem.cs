@@ -11,6 +11,7 @@ namespace v2rayN.Models
             configType = EConfigType.VMess;
             configVersion = 2;
             address = string.Empty;
+            jsonFileAddress = null;
             port = 0;
             id = string.Empty;
             alterId = 0;
@@ -98,6 +99,11 @@ namespace v2rayN.Models
         /// 远程服务器地址
         /// </summary>
         public string address { get; set; }
+        
+        /// <summary>
+        /// 远程服务器地址
+        /// </summary>
+        public string? jsonFileAddress { get; set; }
 
         /// <summary>
         /// 远程服务器端口

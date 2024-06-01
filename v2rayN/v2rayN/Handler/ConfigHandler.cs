@@ -563,7 +563,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddCustomServer(Config config, ProfileItem profileItem, bool blDelete)
         {
-            var fileName = profileItem.address;
+            var fileName = profileItem.jsonFileAddress;
             if (!File.Exists(fileName))
             {
                 return -1;
@@ -586,7 +586,8 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            profileItem.address = newFileName;
+            profileItem.address = profileItem.address.TrimEx();
+            profileItem.jsonFileAddress = newFileName;
             profileItem.configType = EConfigType.Custom;
             if (Utils.IsNullOrEmpty(profileItem.remarks))
             {
@@ -1207,7 +1208,7 @@ namespace v2rayN.Handler
                 {
                     var objectString = JsonUtils.Serialize(configObject);
                     var v2rayCon = JsonUtils.Deserialize<V2rayConfig>(objectString);
-                    if (v2rayCon?.inbounds?.Count > 0 && v2rayCon.outbounds?.Count > 0)
+                    if (v2rayCon?.inbounds.Count > 0 && v2rayCon.outbounds.Count > 0)
                     {
                         var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
                         File.WriteAllText(fileName, objectString);
@@ -1215,7 +1216,10 @@ namespace v2rayN.Handler
                         var profileIt = new ProfileItem
                         {
                             coreType = ECoreType.Xray,
-                            address = fileName,
+                            jsonFileAddress = fileName,
+                            address = GetCustomConfigAddress(v2rayCon) ?? "",
+                            port = GetCustomConfigPort(v2rayCon) ?? 0,
+                            network = v2rayCon.outbounds.FirstOrDefault()?.streamSettings.network ?? "",
                             remarks = v2rayCon.remarks ?? "v2ray_custom",
                             subid = subid,
                             isSub = isSub
@@ -1311,6 +1315,18 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+        }
+
+        private static string? GetCustomConfigAddress(V2rayConfig v2RayConfig)
+        {
+            var outboundSettings = v2RayConfig.outbounds.FirstOrDefault()?.settings;
+            return outboundSettings?.vnext != null ? outboundSettings.vnext.FirstOrDefault()?.address : outboundSettings?.servers.FirstOrDefault()?.address;
+        }
+        
+        private static int? GetCustomConfigPort(V2rayConfig v2RayConfig)
+        {
+            var outboundSettings = v2RayConfig.outbounds.FirstOrDefault()?.settings;
+            return outboundSettings?.vnext != null ? outboundSettings.vnext.FirstOrDefault()?.port : outboundSettings?.servers.FirstOrDefault()?.port;
         }
 
         private static int AddBatchServers4SsSIP008(Config config, string clipboardData, string subid, bool isSub, List<ProfileItem> lstOriSub)
