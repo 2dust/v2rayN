@@ -105,9 +105,12 @@ namespace v2rayN
         /// <param name="filePath"></param>
         /// <param name="nullValue"></param>
         /// <returns></returns>
-        public static int ToFile(object? obj, string filePath, bool nullValue = true)
+        public static int ToFile(object? obj, string? filePath, bool nullValue = true)
         {
-            int result;
+            if (filePath is null)
+            {
+                return -1;
+            }
             try
             {
                 using FileStream file = File.Create(filePath);
@@ -119,14 +122,13 @@ namespace v2rayN
                 };
 
                 JsonSerializer.Serialize(file, obj, options);
-                result = 0;
+                return 0;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                result = -1;
+                return -1;
             }
-            return result;
         }
     }
 }

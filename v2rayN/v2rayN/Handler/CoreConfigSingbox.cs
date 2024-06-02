@@ -25,6 +25,11 @@ namespace v2rayN.Handler
                     msg = ResUI.CheckServerSettings;
                     return -1;
                 }
+                if (node.GetNetwork() == nameof(ETransport.kcp))
+                {
+                    msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                    return -1;
+                }
 
                 msg = ResUI.InitialConfiguration;
 
