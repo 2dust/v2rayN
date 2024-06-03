@@ -1,4 +1,4 @@
-﻿namespace v2rayN.Models
+﻿namespace v2rayN.Enums
 {
     public enum ESysProxyType
     {

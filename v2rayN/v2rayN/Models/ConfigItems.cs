@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using v2rayN.Enums;
 
 namespace v2rayN.Models
 {

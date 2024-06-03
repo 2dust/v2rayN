@@ -1,4 +1,6 @@
-﻿namespace v2rayN.Models
+﻿using v2rayN.Enums;
+
+namespace v2rayN.Models
 {
     /// <summary>
     /// 本软件配置文件实体类

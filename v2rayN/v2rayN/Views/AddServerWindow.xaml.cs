@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;

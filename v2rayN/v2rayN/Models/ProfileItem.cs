@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using v2rayN.Enums;
 
 namespace v2rayN.Models
 {

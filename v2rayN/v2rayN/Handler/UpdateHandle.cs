@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 
@@ -299,9 +300,6 @@ namespace v2rayN.Handler
             {
                 await UpdateGeoFile("geosite", _config, update);
                 await UpdateGeoFile("geoip", _config, update);
-
-                //await UpdateGeoFile4Singbox("geosite", _config, false, update);
-                //await UpdateGeoFile4Singbox("geoip", _config, true, update);
             });
         }
 
@@ -327,7 +325,7 @@ namespace v2rayN.Handler
                 var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
                 if (!Utils.IsNullOrEmpty(result))
                 {
-                    responseHandler(type, result, preRelease);
+                    ResponseHandler(type, result, preRelease);
                 }
                 else
                 {
@@ -345,7 +343,7 @@ namespace v2rayN.Handler
         /// <summary>
         /// 获取V2RayCore版本
         /// </summary>
-        private SemanticVersion getCoreVersion(ECoreType type)
+        private SemanticVersion GetCoreVersion(ECoreType type)
         {
             try
             {
@@ -410,7 +408,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private void responseHandler(ECoreType type, string gitHubReleaseApi, bool preRelease)
+        private void ResponseHandler(ECoreType type, string gitHubReleaseApi, bool preRelease)
         {
             try
             {
@@ -431,7 +429,7 @@ namespace v2rayN.Handler
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
                         {
-                            curVersion = getCoreVersion(type);
+                            curVersion = GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             string osBit = "64";
                             switch (RuntimeInformation.ProcessArchitecture)
@@ -456,7 +454,7 @@ namespace v2rayN.Handler
                     case ECoreType.clash_meta:
                     case ECoreType.mihomo:
                         {
-                            curVersion = getCoreVersion(type);
+                            curVersion = GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion);
                             switch (RuntimeInformation.ProcessArchitecture)
                             {
@@ -477,7 +475,7 @@ namespace v2rayN.Handler
                         }
                     case ECoreType.sing_box:
                         {
-                            curVersion = getCoreVersion(type);
+                            curVersion = GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             switch (RuntimeInformation.ProcessArchitecture)
                             {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reactive.Linq;
 using System.Text;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 

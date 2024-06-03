@@ -1,4 +1,5 @@
 ﻿using PacLib;
+using v2rayN.Enums;
 using v2rayN.Models;
 
 namespace v2rayN.Handler

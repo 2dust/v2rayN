@@ -1,4 +1,6 @@
-﻿namespace v2rayN.Models
+﻿using v2rayN.Enums;
+
+namespace v2rayN.Models
 {
     [Serializable]
     internal class ServerTestItem

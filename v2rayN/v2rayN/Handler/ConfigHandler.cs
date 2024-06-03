@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
+using v2rayN.Enums;
 using v2rayN.Models;
 
 namespace v2rayN.Handler

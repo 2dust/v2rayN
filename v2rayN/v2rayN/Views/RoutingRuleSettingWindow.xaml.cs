@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.ViewModels;
 
