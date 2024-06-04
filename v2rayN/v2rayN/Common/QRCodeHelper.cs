@@ -1,13 +1,13 @@
 ﻿using QRCoder;
 using QRCoder.Xaml;
 using System.Drawing;
-using System.Windows.Interop;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.Windows.Compatibility;
-using ZXing;
 
 namespace v2rayN
 {

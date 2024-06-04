@@ -3,7 +3,7 @@ using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 
-namespace v2rayN.Handler
+namespace v2rayN.Handler.CoreConfig
 {
     /// <summary>
     /// Core configuration file processing class
@@ -155,7 +155,7 @@ namespace v2rayN.Handler
         {
             if (coreType == ECoreType.sing_box)
             {
-                if ((new CoreConfigSingbox(config)).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                if (new CoreConfigSingbox(config).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
                 {
                     return -1;
                 }
@@ -163,7 +163,7 @@ namespace v2rayN.Handler
             }
             else
             {
-                if ((new CoreConfigV2ray(config)).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                if (new CoreConfigV2ray(config).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
                 {
                     return -1;
                 }

@@ -290,7 +290,7 @@ namespace v2rayN.ViewModels
 
         private void ImportRulesFromClipboard()
         {
-            string clipboardData = Utils.GetClipboardData();
+            var clipboardData = Utils.GetClipboardData();
             if (AddBatchRoutingRules(SelectedRouting, clipboardData) == 0)
             {
                 RefreshRulesItems();

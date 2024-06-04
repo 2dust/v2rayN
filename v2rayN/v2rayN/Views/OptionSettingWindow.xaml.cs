@@ -42,7 +42,7 @@ namespace v2rayN.Views
             _config.inbound[0].destOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
-            });            
+            });
             Global.IEProxyProtocols.ForEach(it =>
             {
                 cmbsystemProxyAdvancedProtocol.Items.Add(it);

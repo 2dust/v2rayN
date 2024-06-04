@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using v2rayN.Enums;
+using v2rayN.Handler.Fmt;
 using v2rayN.Models;
 
 namespace v2rayN.Handler
@@ -1070,12 +1071,12 @@ namespace v2rayN.Handler
         /// 批量添加服务器
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="clipboardData"></param>
+        /// <param name="strData"></param>
         /// <param name="subid"></param>
         /// <returns>成功导入的数量</returns>
-        private static int AddBatchServers(Config config, string clipboardData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static int AddBatchServers(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
         {
-            if (Utils.IsNullOrEmpty(clipboardData))
+            if (Utils.IsNullOrEmpty(strData))
             {
                 return -1;
             }
@@ -1092,7 +1093,7 @@ namespace v2rayN.Handler
             //Check for duplicate indexId
             List<string>? lstDbIndexId = null;
             List<ProfileItem> lstAdd = new();
-            var arrData = clipboardData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty());
+            var arrData = strData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty());
             if (isSub)
             {
                 arrData = arrData.Distinct();
@@ -1108,7 +1109,7 @@ namespace v2rayN.Handler
                     }
                     continue;
                 }
-                var profileItem = ShareHandler.ImportFromClipboardConfig(str, out string msg);
+                var profileItem = FmtHandler.ResolveConfig(str, out string msg);
                 if (profileItem is null)
                 {
                     continue;
@@ -1177,9 +1178,9 @@ namespace v2rayN.Handler
             return countServers;
         }
 
-        private static int AddBatchServers4Custom(Config config, string clipboardData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static int AddBatchServers4Custom(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
         {
-            if (Utils.IsNullOrEmpty(clipboardData))
+            if (Utils.IsNullOrEmpty(strData))
             {
                 return -1;
             }
@@ -1195,7 +1196,7 @@ namespace v2rayN.Handler
             }
 
             //Is v2ray array configuration
-            var configObjects = JsonUtils.Deserialize<Object[]>(clipboardData);
+            var configObjects = JsonUtils.Deserialize<Object[]>(strData);
             if (configObjects != null && configObjects.Length > 0)
             {
                 if (isSub && !Utils.IsNullOrEmpty(subid))
@@ -1236,42 +1237,42 @@ namespace v2rayN.Handler
 
             ProfileItem profileItem = new();
             //Is v2ray configuration
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(clipboardData);
+            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(strData);
             if (v2rayConfig?.inbounds?.Count > 0
                 && v2rayConfig.outbounds?.Count > 0)
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, clipboardData);
+                File.WriteAllText(fileName, strData);
 
                 profileItem.coreType = ECoreType.Xray;
                 profileItem.address = fileName;
                 profileItem.remarks = v2rayConfig.remarks ?? "v2ray_custom";
             }
             //Is Clash configuration
-            else if (Contains(clipboardData, "port", "socks-port", "proxies"))
+            else if (Contains(strData, "port", "socks-port", "proxies"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.yaml");
-                File.WriteAllText(fileName, clipboardData);
+                File.WriteAllText(fileName, strData);
 
                 profileItem.coreType = ECoreType.mihomo;
                 profileItem.address = fileName;
                 profileItem.remarks = "clash_custom";
             }
             //Is hysteria configuration
-            else if (Contains(clipboardData, "server", "up", "down", "listen", "<html>", "<body>"))
+            else if (Contains(strData, "server", "up", "down", "listen", "<html>", "<body>"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, clipboardData);
+                File.WriteAllText(fileName, strData);
 
                 profileItem.coreType = ECoreType.hysteria;
                 profileItem.address = fileName;
                 profileItem.remarks = "hysteria_custom";
             }
             //Is naiveproxy configuration
-            else if (Contains(clipboardData, "listen", "proxy", "<html>", "<body>"))
+            else if (Contains(strData, "listen", "proxy", "<html>", "<body>"))
             {
                 var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, clipboardData);
+                File.WriteAllText(fileName, strData);
 
                 profileItem.coreType = ECoreType.naiveproxy;
                 profileItem.address = fileName;
@@ -1282,7 +1283,7 @@ namespace v2rayN.Handler
             {
                 return -1;
                 //var fileName = Utile.GetTempPath($"{Utile.GetGUID(false)}.txt");
-                //File.WriteAllText(fileName, clipboardData);
+                //File.WriteAllText(fileName, strData);
 
                 //profileItem.address = fileName;
                 //profileItem.remarks = "other_custom";
@@ -1314,9 +1315,9 @@ namespace v2rayN.Handler
             }
         }
 
-        private static int AddBatchServers4SsSIP008(Config config, string clipboardData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static int AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
         {
-            if (Utils.IsNullOrEmpty(clipboardData))
+            if (Utils.IsNullOrEmpty(strData))
             {
                 return -1;
             }
@@ -1327,10 +1328,10 @@ namespace v2rayN.Handler
             }
 
             //SsSIP008
-            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(clipboardData);
+            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(strData);
             if (lstSsServer?.Count <= 0)
             {
-                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(clipboardData);
+                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(strData);
                 if (ssSIP008?.servers?.Count > 0)
                 {
                     lstSsServer = ssSIP008.servers;
@@ -1365,7 +1366,7 @@ namespace v2rayN.Handler
             return -1;
         }
 
-        public static int AddBatchServers(Config config, string clipboardData, string subid, bool isSub)
+        public static int AddBatchServers(Config config, string strData, string subid, bool isSub)
         {
             List<ProfileItem>? lstOriSub = null;
             if (isSub && !Utils.IsNullOrEmpty(subid))
@@ -1374,28 +1375,28 @@ namespace v2rayN.Handler
             }
 
             var counter = 0;
-            if (Utils.IsBase64String(clipboardData))
+            if (Utils.IsBase64String(strData))
             {
-                counter = AddBatchServers(config, Utils.Base64Decode(clipboardData), subid, isSub, lstOriSub);
+                counter = AddBatchServers(config, Utils.Base64Decode(strData), subid, isSub, lstOriSub);
             }
             if (counter < 1)
             {
-                counter = AddBatchServers(config, clipboardData, subid, isSub, lstOriSub);
+                counter = AddBatchServers(config, strData, subid, isSub, lstOriSub);
             }
             if (counter < 1)
             {
-                counter = AddBatchServers(config, Utils.Base64Decode(clipboardData), subid, isSub, lstOriSub);
+                counter = AddBatchServers(config, Utils.Base64Decode(strData), subid, isSub, lstOriSub);
             }
 
             if (counter < 1)
             {
-                counter = AddBatchServers4SsSIP008(config, clipboardData, subid, isSub, lstOriSub);
+                counter = AddBatchServers4SsSIP008(config, strData, subid, isSub, lstOriSub);
             }
 
             //maybe other sub
             if (counter < 1)
             {
-                counter = AddBatchServers4Custom(config, clipboardData, subid, isSub, lstOriSub);
+                counter = AddBatchServers4Custom(config, strData, subid, isSub, lstOriSub);
             }
 
             return counter;
@@ -1533,16 +1534,16 @@ namespace v2rayN.Handler
         /// AddBatchRoutingRules
         /// </summary>
         /// <param name="config"></param>
-        /// <param name="clipboardData"></param>
+        /// <param name="strData"></param>
         /// <returns></returns>
-        public static int AddBatchRoutingRules(ref RoutingItem routingItem, string clipboardData)
+        public static int AddBatchRoutingRules(ref RoutingItem routingItem, string strData)
         {
-            if (Utils.IsNullOrEmpty(clipboardData))
+            if (Utils.IsNullOrEmpty(strData))
             {
                 return -1;
             }
 
-            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
+            var lstRules = JsonUtils.Deserialize<List<RulesItem>>(strData);
             if (lstRules == null)
             {
                 return -1;

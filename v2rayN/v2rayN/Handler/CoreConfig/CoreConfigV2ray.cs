@@ -4,7 +4,7 @@ using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 
-namespace v2rayN.Handler
+namespace v2rayN.Handler.CoreConfig
 {
     internal class CoreConfigV2ray
     {
@@ -277,8 +277,8 @@ namespace v2rayN.Handler
                 if (!hasDomainIp)
                 {
                     if (!Utils.IsNullOrEmpty(rules.port)
-                        || (rules.protocol?.Count > 0)
-                        || (rules.inboundTag?.Count > 0)
+                        || rules.protocol?.Count > 0
+                        || rules.inboundTag?.Count > 0
                         )
                     {
                         var it = JsonUtils.DeepCopy(rules);
@@ -674,7 +674,7 @@ namespace v2rayN.Handler
                         {
                             authority = Utils.IsNullOrEmpty(host) ? null : host,
                             serviceName = node.path,
-                            multiMode = (node.headerType == Global.GrpcMultiMode),
+                            multiMode = node.headerType == Global.GrpcMultiMode,
                             idle_timeout = _config.grpcItem.idle_timeout,
                             health_check_timeout = _config.grpcItem.health_check_timeout,
                             permit_without_stream = _config.grpcItem.permit_without_stream,

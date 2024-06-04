@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Media;
 using v2rayN.Enums;
 using v2rayN.Handler;
+using v2rayN.Handler.Fmt;
 using v2rayN.Models;
 using v2rayN.Resx;
 using v2rayN.Views;
@@ -1153,7 +1154,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
-            var url = ShareHandler.GetShareUrl(item);
+            var url = FmtHandler.GetShareUri(item);
             if (Utils.IsNullOrEmpty(url))
             {
                 return;
@@ -1294,7 +1295,7 @@ namespace v2rayN.ViewModels
             StringBuilder sb = new();
             foreach (var it in lstSelecteds)
             {
-                string url = ShareHandler.GetShareUrl(it);
+                string url = FmtHandler.GetShareUri(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -1319,7 +1320,7 @@ namespace v2rayN.ViewModels
             StringBuilder sb = new();
             foreach (var it in lstSelecteds)
             {
-                string? url = ShareHandler.GetShareUrl(it);
+                string? url = FmtHandler.GetShareUri(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
