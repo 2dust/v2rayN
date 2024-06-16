@@ -11,6 +11,7 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
+    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="v2rayN"
     Width="900"
@@ -413,7 +414,7 @@
                         Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding remarks}" />
+                                <emoji:TextBlock Text="{Binding remarks}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -513,13 +514,12 @@
                                 Width="150"
                                 Margin="8,0"
                                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                DisplayMemberPath="remarks"
                                 FontSize="{DynamicResource StdFontSize}"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                         </StackPanel>
 
                         <StackPanel Margin="8,0" VerticalAlignment="Center">
-                            <TextBlock
+                            <emoji:TextBlock
                                 x:Name="txtRunningServerDisplay"
                                 PreviewMouseDown="txtRunningInfoDisplay_MouseDoubleClick"
                                 Style="{StaticResource StatusbarItem}" />
@@ -619,9 +619,14 @@
                                                     x:Name="cmbMoveToGroup"
                                                     Width="200"
                                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
-                                                    DisplayMemberPath="remarks"
                                                     FontSize="{DynamicResource StdFontSize}"
-                                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                                    Style="{StaticResource MaterialDesignFilledComboBox}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <emoji:TextBlock Text="{Binding remarks}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
                                             </DockPanel>
                                         </MenuItem.Header>
                                     </MenuItem>
@@ -840,9 +845,14 @@
                                         x:Name="cmbRoutings"
                                         MaxWidth="300"
                                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                        DisplayMemberPath="remarks"
                                         FontSize="{DynamicResource StdFontSize}"
-                                        Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                        Style="{StaticResource MaterialDesignFilledComboBox}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <emoji:TextBlock Text="{Binding remarks}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </DockPanel>
                             </MenuItem.Header>
                         </MenuItem>
