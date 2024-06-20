@@ -841,13 +841,13 @@ namespace v2rayN.Handler.CoreConfig
             if (lstDomain != null && lstDomain.Count > 0)
             {
                 var tag = "local_local";
-                dns4Sbox.servers.Insert(0, new()
+                dns4Sbox.servers.Add(new()
                 {
                     tag = tag,
                     address = "223.5.5.5",
                     detour = Global.DirectTag,
                 });
-                dns4Sbox.rules.Insert(0, new()
+                dns4Sbox.rules.Add(new()
                 {
                     server = tag,
                     domain = lstDomain
