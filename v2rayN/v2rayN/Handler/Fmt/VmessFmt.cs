@@ -156,6 +156,7 @@ namespace v2rayN.Handler.Fmt
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
+                case nameof(ETransport.splithttp):
                     string p1 = query["path"] ?? "/";
                     string h1 = query["host"] ?? "";
                     item.requestHost = Utils.UrlDecode(h1);

@@ -565,6 +565,7 @@ namespace v2rayN.Handler.CoreConfig
                         publicKey = node.publicKey,
                         shortId = node.shortId,
                         spiderX = node.spiderX,
+                        show = false,
                     };
 
                     streamSettings.realitySettings = realitySettings;
@@ -629,6 +630,25 @@ namespace v2rayN.Handler.CoreConfig
                             httpupgradeSettings.host = host;
                         }
                         streamSettings.httpupgradeSettings = httpupgradeSettings;
+
+                        break;
+                    //splithttp
+                    case nameof(ETransport.splithttp):
+                        SplithttpSettings4Ray splithttpSettings = new()
+                        {
+                            maxUploadSize = 1000000,
+                            maxConcurrentUploads = 10
+                        };
+
+                        if (!Utils.IsNullOrEmpty(node.path))
+                        {
+                            splithttpSettings.path = node.path;
+                        }
+                        if (!Utils.IsNullOrEmpty(host))
+                        {
+                            splithttpSettings.host = host;
+                        }
+                        streamSettings.splithttpSettings = splithttpSettings;
 
                         break;
                     //h2

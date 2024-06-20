@@ -81,6 +81,7 @@ namespace v2rayN.Handler.Fmt
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
+                case nameof(ETransport.splithttp):
                     if (!Utils.IsNullOrEmpty(item.requestHost))
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
@@ -152,6 +153,7 @@ namespace v2rayN.Handler.Fmt
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
+                case nameof(ETransport.splithttp):
                     item.requestHost = Utils.UrlDecode(query["host"] ?? "");
                     item.path = Utils.UrlDecode(query["path"] ?? "/");
                     break;

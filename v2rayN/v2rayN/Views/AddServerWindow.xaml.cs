@@ -333,6 +333,7 @@ namespace v2rayN.Views
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
+                case nameof(ETransport.splithttp):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
                     break;

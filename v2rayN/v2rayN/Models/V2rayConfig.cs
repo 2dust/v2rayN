@@ -421,22 +421,22 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public TlsSettings4Ray tlsSettings { get; set; }
+        public TlsSettings4Ray? tlsSettings { get; set; }
 
         /// <summary>
         /// Tcp传输额外设置
         /// </summary>
-        public TcpSettings4Ray tcpSettings { get; set; }
+        public TcpSettings4Ray? tcpSettings { get; set; }
 
         /// <summary>
         /// Kcp传输额外设置
         /// </summary>
-        public KcpSettings4Ray kcpSettings { get; set; }
+        public KcpSettings4Ray? kcpSettings { get; set; }
 
         /// <summary>
         /// ws传输额外设置
         /// </summary>
-        public WsSettings4Ray wsSettings { get; set; }
+        public WsSettings4Ray? wsSettings { get; set; }
 
         /// <summary>
         ///
@@ -444,24 +444,29 @@ namespace v2rayN.Models
         public HttpupgradeSettings4Ray? httpupgradeSettings { get; set; }
 
         /// <summary>
+        ///
+        /// </summary>
+        public SplithttpSettings4Ray? splithttpSettings { get; set; }
+
+        /// <summary>
         /// h2传输额外设置
         /// </summary>
-        public HttpSettings4Ray httpSettings { get; set; }
+        public HttpSettings4Ray? httpSettings { get; set; }
 
         /// <summary>
         /// QUIC
         /// </summary>
-        public QuicSettings4Ray quicSettings { get; set; }
+        public QuicSettings4Ray? quicSettings { get; set; }
 
         /// <summary>
         /// VLESS only
         /// </summary>
-        public TlsSettings4Ray realitySettings { get; set; }
+        public TlsSettings4Ray? realitySettings { get; set; }
 
         /// <summary>
         /// grpc
         /// </summary>
-        public GrpcSettings4Ray grpcSettings { get; set; }
+        public GrpcSettings4Ray? grpcSettings { get; set; }
 
         /// <summary>
         /// sockopt
@@ -488,7 +493,7 @@ namespace v2rayN.Models
 
         public string? fingerprint { get; set; }
 
-        public bool? show { get; set; } = false;
+        public bool? show { get; set; }
         public string? publicKey { get; set; }
         public string? shortId { get; set; }
         public string? spiderX { get; set; }
@@ -606,6 +611,17 @@ namespace v2rayN.Models
         ///
         /// </summary>
         public string? host { get; set; }
+    }
+
+    public class SplithttpSettings4Ray
+    {
+        public string? path { get; set; }
+
+        public string? host { get; set; }
+
+        public int? maxUploadSize { get; set; }
+
+        public int? maxConcurrentUploads { get; set; }
     }
 
     public class HttpSettings4Ray

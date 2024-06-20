@@ -26,7 +26,7 @@ namespace v2rayN.Handler.CoreConfig
                     msg = ResUI.CheckServerSettings;
                     return -1;
                 }
-                if (node.GetNetwork() == nameof(ETransport.kcp))
+                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.splithttp))
                 {
                     msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
                     return -1;
