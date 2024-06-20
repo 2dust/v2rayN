@@ -87,6 +87,8 @@ namespace v2rayN.Handler
         private void ParseOutput(Google.Protobuf.Collections.RepeatedField<Stat> source, out ServerSpeedItem server)
         {
             server = new();
+            long aggregateProxyUp = 0;
+            long aggregateProxyDown = 0;
             try
             {
                 foreach (Stat stat in source)
@@ -101,15 +103,15 @@ namespace v2rayN.Handler
                     name = nStr[1];
                     type = nStr[3];
 
-                    if (name == Global.ProxyTag)
+                    if (name.StartsWith(Global.ProxyTag))
                     {
                         if (type == "uplink")
                         {
-                            server.proxyUp = value;
+                            aggregateProxyUp += value;
                         }
                         else if (type == "downlink")
                         {
-                            server.proxyDown = value;
+                            aggregateProxyDown += value;
                         }
                     }
                     else if (name == Global.DirectTag)
@@ -124,6 +126,8 @@ namespace v2rayN.Handler
                         }
                     }
                 }
+                server.proxyUp = aggregateProxyUp;
+                server.proxyDown = aggregateProxyDown;
             }
             catch
             {
