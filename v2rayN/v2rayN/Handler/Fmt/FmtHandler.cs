@@ -32,7 +32,6 @@ namespace v2rayN.Handler.Fmt
             }
         }
 
-
         public static ProfileItem? ResolveConfig(string config, out string msg)
         {
             msg = ResUI.ConfigurationFormatIncorrect;

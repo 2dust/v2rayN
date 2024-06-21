@@ -146,5 +146,38 @@ namespace v2rayN.Handler.Fmt
 
             return item;
         }
+
+        public static List<ProfileItem>? ResolveSip008(string result)
+        {
+            //SsSIP008
+            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(result);
+            if (lstSsServer?.Count <= 0)
+            {
+                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(result);
+                if (ssSIP008?.servers?.Count > 0)
+                {
+                    lstSsServer = ssSIP008.servers;
+                }
+            }
+
+            if (lstSsServer?.Count > 0)
+            {
+                List<ProfileItem> lst = [];
+                foreach (var it in lstSsServer)
+                {
+                    var ssItem = new ProfileItem()
+                    {
+                        remarks = it.remarks,
+                        security = it.method,
+                        id = it.password,
+                        address = it.server,
+                        port = Utils.ToInt(it.server_port)
+                    };
+                    lst.Add(ssItem);
+                }
+                return lst;
+            }
+            return null;
+        }
     }
 }

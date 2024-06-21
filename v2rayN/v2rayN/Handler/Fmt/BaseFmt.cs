@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.IO;
 using v2rayN.Enums;
 using v2rayN.Models;
 
@@ -181,6 +182,22 @@ namespace v2rayN.Handler.Fmt
                     break;
             }
             return 0;
+        }
+
+        protected static bool Contains(string str, params string[] s)
+        {
+            foreach (var item in s)
+            {
+                if (str.Contains(item, StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
+
+        protected static string WriteAllText(string strData, string ext = "json")
+        {
+            var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.{ext}");
+            File.WriteAllText(fileName, strData);
+            return fileName;
         }
     }
 }

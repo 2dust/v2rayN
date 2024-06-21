@@ -64,5 +64,41 @@ namespace v2rayN.Handler.Fmt
             url = $"{Global.ProtocolShares[EConfigType.Hysteria2]}{url}/{query}{remark}";
             return url;
         }
+
+        public static ProfileItem? ResolveFull(string strData, string? subRemarks)
+        {
+            if (Contains(strData, "server", "up", "down", "listen", "<html>", "<body>"))
+            {
+                var fileName = WriteAllText(strData);
+
+                var profileItem = new ProfileItem
+                {
+                    coreType = ECoreType.hysteria,
+                    address = fileName,
+                    remarks = subRemarks ?? "hysteria_custom"
+                };
+                return profileItem;
+            }
+
+            return null;
+        }
+
+        public static ProfileItem? ResolveFull2(string strData, string? subRemarks)
+        {
+            if (Contains(strData, "server", "auth", "up", "down", "listen"))
+            {
+                var fileName = WriteAllText(strData);
+
+                var profileItem = new ProfileItem
+                {
+                    coreType = ECoreType.hysteria2,
+                    address = fileName,
+                    remarks = subRemarks ?? "hysteria2_custom"
+                };
+                return profileItem;
+            }
+
+            return null;
+        }
     }
 }

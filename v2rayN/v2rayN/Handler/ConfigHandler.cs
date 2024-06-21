@@ -1184,49 +1184,33 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
+            var subRemarks = LazyConfig.Instance.GetSubItem(subid)?.remarks;
 
-            //判断str是否包含s的任意一个字符串
-            static bool Contains(string str, params string[] s)
+            List<ProfileItem>? lstProfiles = null;
+            //Is sing-box array configuration
+            if (lstProfiles is null || lstProfiles.Count <= 0)
             {
-                foreach (var item in s)
-                {
-                    if (str.Contains(item, StringComparison.OrdinalIgnoreCase)) return true;
-                }
-                return false;
+                lstProfiles = SingboxFmt.ResolveFullArray(strData, subRemarks);
             }
-
             //Is v2ray array configuration
-            var configObjects = JsonUtils.Deserialize<Object[]>(strData);
-            if (configObjects != null && configObjects.Length > 0)
+            if (lstProfiles is null || lstProfiles.Count <= 0)
+            {
+                lstProfiles = V2rayFmt.ResolveFullArray(strData, subRemarks);
+            }
+            if (lstProfiles != null && lstProfiles.Count > 0)
             {
                 if (isSub && !Utils.IsNullOrEmpty(subid))
                 {
                     RemoveServerViaSubid(config, subid, isSub);
                 }
-
                 int count = 0;
-                foreach (var configObject in configObjects)
+                foreach (var it in lstProfiles)
                 {
-                    var objectString = JsonUtils.Serialize(configObject);
-                    var v2rayCon = JsonUtils.Deserialize<V2rayConfig>(objectString);
-                    if (v2rayCon?.inbounds?.Count > 0 && v2rayCon.outbounds?.Count > 0)
+                    it.subid = subid;
+                    it.isSub = isSub;
+                    if (AddCustomServer(config, it, true) == 0)
                     {
-                        var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                        File.WriteAllText(fileName, objectString);
-
-                        var profileIt = new ProfileItem
-                        {
-                            coreType = ECoreType.Xray,
-                            address = fileName,
-                            remarks = v2rayCon.remarks ?? "v2ray_custom",
-                            subid = subid,
-                            isSub = isSub
-                        };
-
-                        if (AddCustomServer(config, profileIt, true) == 0)
-                        {
-                            count++;
-                        }
+                        count++;
                     }
                 }
                 if (count > 0)
@@ -1235,58 +1219,39 @@ namespace v2rayN.Handler
                 }
             }
 
-            ProfileItem profileItem = new();
-            //Is v2ray configuration
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(strData);
-            if (v2rayConfig?.inbounds?.Count > 0
-                && v2rayConfig.outbounds?.Count > 0)
+            ProfileItem? profileItem = null;
+            //Is sing-box configuration
+            if (profileItem is null)
             {
-                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, strData);
-
-                profileItem.coreType = ECoreType.Xray;
-                profileItem.address = fileName;
-                profileItem.remarks = v2rayConfig.remarks ?? "v2ray_custom";
+                profileItem = SingboxFmt.ResolveFull(strData, subRemarks);
+            }
+            //Is v2ray configuration
+            if (profileItem is null)
+            {
+                profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
             }
             //Is Clash configuration
-            else if (Contains(strData, "port", "socks-port", "proxies"))
+            if (profileItem is null)
             {
-                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.yaml");
-                File.WriteAllText(fileName, strData);
-
-                profileItem.coreType = ECoreType.mihomo;
-                profileItem.address = fileName;
-                profileItem.remarks = "clash_custom";
+                profileItem = ClashFmt.ResolveFull(strData, subRemarks);
             }
             //Is hysteria configuration
-            else if (Contains(strData, "server", "up", "down", "listen", "<html>", "<body>"))
+            if (profileItem is null)
             {
-                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, strData);
-
-                profileItem.coreType = ECoreType.hysteria;
-                profileItem.address = fileName;
-                profileItem.remarks = "hysteria_custom";
+                profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
+            }
+            if (profileItem is null)
+            {
+                profileItem = Hysteria2Fmt.ResolveFull(strData, subRemarks);
             }
             //Is naiveproxy configuration
-            else if (Contains(strData, "listen", "proxy", "<html>", "<body>"))
+            if (profileItem is null)
             {
-                var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.json");
-                File.WriteAllText(fileName, strData);
-
-                profileItem.coreType = ECoreType.naiveproxy;
-                profileItem.address = fileName;
-                profileItem.remarks = "naiveproxy_custom";
+                profileItem = NaiveproxyFmt.ResolveFull(strData, subRemarks);
             }
-            //Is Other configuration
-            else
+            if (profileItem is null || Utils.IsNullOrEmpty(profileItem.address))
             {
                 return -1;
-                //var fileName = Utile.GetTempPath($"{Utile.GetGUID(false)}.txt");
-                //File.WriteAllText(fileName, strData);
-
-                //profileItem.address = fileName;
-                //profileItem.remarks = "other_custom";
             }
 
             if (isSub && !Utils.IsNullOrEmpty(subid))
@@ -1299,12 +1264,6 @@ namespace v2rayN.Handler
             }
             profileItem.subid = subid;
             profileItem.isSub = isSub;
-
-            if (Utils.IsNullOrEmpty(profileItem.address))
-            {
-                return -1;
-            }
-
             if (AddCustomServer(config, profileItem, true) == 0)
             {
                 return 1;
@@ -1327,31 +1286,12 @@ namespace v2rayN.Handler
                 RemoveServerViaSubid(config, subid, isSub);
             }
 
-            //SsSIP008
-            var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(strData);
-            if (lstSsServer?.Count <= 0)
-            {
-                var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(strData);
-                if (ssSIP008?.servers?.Count > 0)
-                {
-                    lstSsServer = ssSIP008.servers;
-                }
-            }
-
+            var lstSsServer = ShadowsocksFmt.ResolveSip008(strData);
             if (lstSsServer?.Count > 0)
             {
                 int counter = 0;
-                foreach (var it in lstSsServer)
+                foreach (var ssItem in lstSsServer)
                 {
-                    var ssItem = new ProfileItem()
-                    {
-                        subid = subid,
-                        remarks = it.remarks,
-                        security = it.method,
-                        id = it.password,
-                        address = it.server,
-                        port = Utils.ToInt(it.server_port)
-                    };
                     ssItem.subid = subid;
                     ssItem.isSub = isSub;
                     if (AddShadowsocksServer(config, ssItem) == 0)
