@@ -58,10 +58,12 @@ namespace v2rayN
                 Environment.Exit(0);
                 return;
             }
-            //if (RuntimeInformation.ProcessArchitecture != Architecture.X86 && RuntimeInformation.ProcessArchitecture != Architecture.X64)
-            //{
-            //    _config.guiItem.enableStatistics = false;
-            //}
+
+            //Under Win10
+            if (Environment.OSVersion.Version.Major < 10)
+            {
+                Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.Process);
+            }
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
