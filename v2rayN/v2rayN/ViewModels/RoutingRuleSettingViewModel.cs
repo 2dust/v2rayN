@@ -130,6 +130,7 @@ namespace v2rayN.ViewModels
                     id = item.id,
                     outboundTag = item.outboundTag,
                     port = item.port,
+                    network = item.network,
                     protocols = Utils.List2String(item.protocol),
                     inboundTags = Utils.List2String(item.inboundTag),
                     domains = Utils.List2String(item.domain),

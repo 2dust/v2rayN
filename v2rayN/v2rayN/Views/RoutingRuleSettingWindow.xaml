@@ -302,7 +302,7 @@
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            Width="120"
+                            Width="110"
                             Binding="{Binding outboundTag}"
                             Header="outboundTag" />
                         <DataGridTextColumn
@@ -310,7 +310,7 @@
                             Binding="{Binding port}"
                             Header="port" />
                         <DataGridTextColumn
-                            Width="100"
+                            Width="80"
                             Binding="{Binding protocols}"
                             Header="protocol" />
                         <DataGridTextColumn
@@ -318,11 +318,15 @@
                             Binding="{Binding inboundTags}"
                             Header="inboundTag" />
                         <DataGridTextColumn
-                            Width="220"
+                            Width="90"
+                            Binding="{Binding network}"
+                            Header="network" />
+                        <DataGridTextColumn
+                            Width="190"
                             Binding="{Binding domains}"
                             Header="domain" />
                         <DataGridTextColumn
-                            Width="220"
+                            Width="190"
                             Binding="{Binding ips}"
                             Header="ip" />
                         <DataGridTextColumn

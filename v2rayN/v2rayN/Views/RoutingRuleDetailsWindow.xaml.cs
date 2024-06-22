@@ -39,6 +39,10 @@ namespace v2rayN.Views
             {
                 clbInboundTag.Items.Add(it);
             });
+            Global.RuleNetworks.ForEach(it =>
+            {
+                cmbNetwork.Items.Add(it);
+            });
 
             if (!rulesItem.id.IsNullOrEmpty())
             {
@@ -56,6 +60,7 @@ namespace v2rayN.Views
             {
                 this.Bind(ViewModel, vm => vm.SelectedSource.outboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.port, v => v.txtPort.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.enabled, v => v.togEnabled.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.Domain, v => v.txtDomain.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.IP, v => v.txtIP.Text).DisposeWith(disposables);

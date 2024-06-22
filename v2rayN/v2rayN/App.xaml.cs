@@ -62,7 +62,7 @@ namespace v2rayN
             //Under Win10
             if (Environment.OSVersion.Version.Major < 10)
             {
-                Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.Process);
+                Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.User);
             }
         }
 

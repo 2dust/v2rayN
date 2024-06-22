@@ -48,7 +48,7 @@
         public List<string>? protocol { get; set; }
         public string? type { get; set; }
         public string? mode { get; set; }
-        public string? network { get; set; }
+        public List<string>? network { get; set; }
         public bool? ip_is_private { get; set; }
         public List<int>? port { get; set; }
         public List<string>? port_range { get; set; }

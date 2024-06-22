@@ -552,7 +552,7 @@ namespace v2rayN.Handler.CoreConfig
                     singboxConfig.route.rules.Add(new()
                     {
                         port = [53],
-                        network = "udp",
+                        network = ["udp"],
                         outbound = dnsOutbound
                     });
                 }
@@ -667,6 +667,10 @@ namespace v2rayN.Handler.CoreConfig
                     {
                         rule.port = new List<int> { Utils.ToInt(item.port) };
                     }
+                }
+                if (!Utils.IsNullOrEmpty(item.network))
+                {
+                    rule.network = Utils.String2List(item.network);
                 }
                 if (item.protocol?.Count > 0)
                 {

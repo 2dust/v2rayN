@@ -79,7 +79,7 @@ namespace v2rayN
         /// </summary>
         /// <param name="lst"></param>
         /// <returns></returns>
-        public static string List2String(List<string> lst, bool wrap = false)
+        public static string List2String(List<string>? lst, bool wrap = false)
         {
             try
             {
