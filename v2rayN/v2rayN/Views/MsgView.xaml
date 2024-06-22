@@ -1,88 +1,76 @@
-<UserControl
-    x:Class="v2rayN.Views.MsgView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:v2rayN.Resx"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+<UserControl x:Class="v2rayN.Views.MsgView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:v2rayN.Resx"
+             xmlns:wpfEmoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
     <DockPanel Margin="2">
-        <StackPanel
-            VerticalAlignment="Center"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-            <ComboBox
-                x:Name="cmbMsgFilter"
-                Width="200"
-                Margin="8,0"
-                materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                IsEditable="True"
-                Style="{StaticResource DefComboBox}"
-                TextBoxBase.TextChanged="cmbMsgFilter_TextChanged" />
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
-            <ToggleButton
-                x:Name="togAutoRefresh"
-                Margin="8,0"
-                HorizontalAlignment="Left"
-                IsChecked="True" />
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
-            <ToggleButton
-                x:Name="togScrollToEnd"
-                Margin="8,0"
-                HorizontalAlignment="Left"
-                IsChecked="True" />
+        <StackPanel VerticalAlignment="Center"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal">
+            <TextBlock Margin="8,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource ToolbarTextBlock}"
+                       Text="{x:Static resx:ResUI.MsgInformationTitle}" />
+            <ComboBox x:Name="cmbMsgFilter"
+                      Width="200"
+                      Margin="8,0"
+                      materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
+                      materialDesign:TextFieldAssist.HasClearButton="True"
+                      IsEditable="True"
+                      Style="{StaticResource DefComboBox}"
+                      TextBoxBase.TextChanged="cmbMsgFilter_TextChanged" />
+            <TextBlock Margin="8,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource ToolbarTextBlock}"
+                       Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleButton x:Name="togAutoRefresh"
+                          Margin="8,0"
+                          HorizontalAlignment="Left"
+                          IsChecked="True" />
+            <TextBlock Margin="8,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource ToolbarTextBlock}"
+                       Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+            <ToggleButton x:Name="togScrollToEnd"
+                          Margin="8,0"
+                          HorizontalAlignment="Left"
+                          IsChecked="True" />
         </StackPanel>
-        <TextBox
-            Name="txtMsg"
-            BorderThickness="0"
-            FontSize="{DynamicResource StdFontSizeMsg}"
-            HorizontalScrollBarVisibility="Auto"
-            IsReadOnly="True"
-            IsReadOnlyCaretVisible="True"
-            TextAlignment="Left"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Visible">
-            <TextBox.ContextMenu>
+        <wpfEmoji:TextBox x:Name="txtMsg"
+                          BorderThickness="0"
+                          FontSize="{DynamicResource StdFontSizeMsg}"
+                          HorizontalScrollBarVisibility="Auto"
+                          IsReadOnly="True"
+                          IsReadOnlyCaretVisible="True"
+                          TextAlignment="Left"
+                          TextWrapping="Wrap"
+                          VerticalScrollBarVisibility="Visible">
+            <wpfEmoji:TextBox.ContextMenu>
                 <ContextMenu Style="{StaticResource DefContextMenu}">
                     <MenuItem
-                        x:Name="menuMsgViewSelectAll"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewSelectAll_Click"
-                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                              Click="menuMsgViewSelectAll_Click"
+                              Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
                     <MenuItem
-                        x:Name="menuMsgViewCopy"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewCopy_Click"
-                        Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                              Click="menuMsgViewCopy_Click"
+                              Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
                     <MenuItem
-                        x:Name="menuMsgViewCopyAll"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewCopyAll_Click"
-                        Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
+                              Click="menuMsgViewCopyAll_Click"
+                              Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
                     <MenuItem
-                        x:Name="menuMsgViewClear"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewClear_Click"
-                        Header="{x:Static resx:ResUI.menuMsgViewClear}" />
+                              Click="menuMsgViewClear_Click"
+                              Header="{x:Static resx:ResUI.menuMsgViewClear}" />
                 </ContextMenu>
-            </TextBox.ContextMenu>
-        </TextBox>
+            </wpfEmoji:TextBox.ContextMenu>
+        </wpfEmoji:TextBox>
     </DockPanel>
 </UserControl>

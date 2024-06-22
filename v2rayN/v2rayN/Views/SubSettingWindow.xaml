@@ -9,6 +9,7 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
+    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="800"
     Height="600"
@@ -101,10 +102,15 @@
                 IsReadOnly="True"
                 Style="{StaticResource DefDataGrid}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn
+                    <DataGridTemplateColumn
                         Width="120"
-                        Binding="{Binding remarks}"
-                        Header="{x:Static resx:ResUI.LvRemarks}" />
+                        Header="{x:Static resx:ResUI.LvRemarks}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <emoji:TextBlock Text="{Binding remarks}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn
                         Width="150"
                         Binding="{Binding url}"
