@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Web;
 using v2rayN.Enums;
 using v2rayN.Handler.Fmt;
 using v2rayN.Models;
@@ -1355,15 +1356,19 @@ namespace v2rayN.Handler
         public static int AddSubItem(Config config, string url)
         {
             //already exists
-            if (SQLiteHelper.Instance.Table<SubItem>().Where(e => e.url == url).Count() > 0)
+            if (SQLiteHelper.Instance.Table<SubItem>().Any(e => e.url == url))
             {
                 return 0;
             }
 
+            var uri = new Uri(url);
+            var queryVars = HttpUtility.ParseQueryString(uri.Query);
+            string remarks = queryVars["remarks"] ?? "import_sub";
+
             SubItem subItem = new()
             {
                 id = string.Empty,
-                remarks = "import_sub",
+                remarks = remarks,
                 url = url
             };
 
