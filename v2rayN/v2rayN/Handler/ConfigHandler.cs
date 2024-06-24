@@ -1615,7 +1615,7 @@ namespace v2rayN.Handler
 
         public static int InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
         {
-            var ver = "V2-";
+            var ver = "V3-";
             var items = LazyConfig.Instance.RoutingItems();
             if (blImportAdvancedRules || items.Where(t => t.remarks.StartsWith(ver)).ToList().Count <= 0)
             {

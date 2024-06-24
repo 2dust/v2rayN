@@ -120,7 +120,8 @@ namespace v2rayN.Handler.CoreConfig
                 var listen = "::";
                 singboxConfig.inbounds = [];
 
-                if (!_config.tunModeItem.enableTun || _config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound)
+                if (!_config.tunModeItem.enableTun
+                    || (_config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound && _config.runningCoreType == ECoreType.sing_box))
                 {
                     var inbound = new Inbound4Sbox()
                     {
@@ -191,7 +192,7 @@ namespace v2rayN.Handler.CoreConfig
                     tunInbound.strict_route = _config.tunModeItem.strictRoute;
                     tunInbound.stack = _config.tunModeItem.stack;
                     tunInbound.sniff = _config.inbound[0].sniffingEnabled;
-                    tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
+                    //tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
                     if (_config.tunModeItem.enableIPv6Address == false)
                     {
                         tunInbound.inet6_address = null;
@@ -844,12 +845,14 @@ namespace v2rayN.Handler.CoreConfig
                            .ToList();
             if (lstDomain != null && lstDomain.Count > 0)
             {
+                //var strategy = dns4Sbox.servers.Where(t => !Utils.IsNullOrEmpty(t.strategy)).Select(t => t.strategy).FirstOrDefault();
                 var tag = "local_local";
                 dns4Sbox.servers.Add(new()
                 {
                     tag = tag,
                     address = "223.5.5.5",
                     detour = Global.DirectTag,
+                    //strategy = strategy
                 });
                 dns4Sbox.rules.Add(new()
                 {
@@ -868,7 +871,7 @@ namespace v2rayN.Handler.CoreConfig
                 singboxConfig.experimental ??= new Experimental4Sbox();
                 singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
                 {
-                    external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort}",
+                    external_controller = $"{Global.Loopback}:{LazyConfig.Instance.StatePort2}",
                 };
             }
 
@@ -950,12 +953,14 @@ namespace v2rayN.Handler.CoreConfig
                 }
                 else
                 {
+                    var geo = item.Split('-').FirstOrDefault() ?? geosite;
+                    var value = item.Split('-').LastOrDefault();
                     singboxConfig.route.rule_set.Add(new()
                     {
                         type = "remote",
                         format = "binary",
                         tag = item,
-                        url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
+                        url = string.Format(geo.Equals(geosite) ? Global.SingboxRulesetUrlGeosite : Global.SingboxRulesetUrlGeoip, value),
                         download_detour = Global.ProxyTag
                     });
                 }

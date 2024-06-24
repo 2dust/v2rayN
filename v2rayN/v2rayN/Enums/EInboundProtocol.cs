@@ -8,6 +8,7 @@
         http2,
         pac,
         api,
+        api2,
         speedtest = 21
     }
 }

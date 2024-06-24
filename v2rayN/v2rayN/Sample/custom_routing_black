@@ -16,7 +16,22 @@
 
     "domain": [
       "geosite:geolocation-!cn",
-      "geosite:greatfire"      
+      "geosite:greatfire"
+    ]
+  },
+  {
+    "outboundTag": "proxy",
+    "ip": [
+      "1.0.0.1",
+      "1.1.1.1",
+      "8.8.8.8",
+      "8.8.4.4",
+      "geoip:facebook",
+      "geoip:fastly",
+      "geoip:google",
+      "geoip:netflix",
+      "geoip:telegram",
+      "geoip:twitter"
     ]
   },
   {

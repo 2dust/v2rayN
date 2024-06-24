@@ -13,17 +13,23 @@ namespace v2rayN.Handler
         public static LazyConfig Instance => _instance.Value;
 
         private int? _statePort;
+        private int? _statePort2;
 
         public int StatePort
         {
             get
             {
-                if (_statePort is null)
-                {
-                    _statePort = Utils.GetFreePort(GetLocalPort(EInboundProtocol.api));
-                }
-
+                _statePort ??= Utils.GetFreePort(GetLocalPort(EInboundProtocol.api));
                 return _statePort.Value;
+            }
+        }
+
+        public int StatePort2
+        {
+            get
+            {
+                _statePort2 ??= Utils.GetFreePort(GetLocalPort(EInboundProtocol.api2));
+                return _statePort2.Value;
             }
         }
 

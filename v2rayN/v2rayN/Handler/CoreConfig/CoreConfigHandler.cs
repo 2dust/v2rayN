@@ -27,7 +27,7 @@ namespace v2rayN.Handler.CoreConfig
                 {
                     return GenerateClientCustomConfig(node, fileName, out msg);
                 }
-                else if (config.tunModeItem.enableTun || LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
+                else if (LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
                 {
                     var configGenSingbox = new CoreConfigSingbox(config);
                     if (configGenSingbox.GenerateClientConfigContent(node, out SingboxConfig? singboxConfig, out msg) != 0)
