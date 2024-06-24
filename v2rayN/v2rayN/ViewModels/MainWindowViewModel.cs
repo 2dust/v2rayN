@@ -150,18 +150,10 @@ namespace v2rayN.ViewModels
 
         //CheckUpdate
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
-
-        //public ReactiveCommand<Unit, Unit> CheckUpdateV2flyCoreCmd { get; }
-
-        //public ReactiveCommand<Unit, Unit> CheckUpdateSagerNetCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
-
-        //public ReactiveCommand<Unit, Unit> CheckUpdateClashCoreCmd { get; }
-        //public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
+        public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateSingBoxCoreCmd { get; }
-
         public ReactiveCommand<Unit, Unit> CheckUpdateGeoCmd { get; }
-
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
         [Reactive]
@@ -520,29 +512,17 @@ namespace v2rayN.ViewModels
             {
                 CheckUpdateN();
             });
-            //CheckUpdateV2flyCoreCmd = ReactiveCommand.Create(() =>
-            //{
-            //    CheckUpdateCore(ECoreType.v2fly_v5);
-            //});
-            //CheckUpdateSagerNetCoreCmd = ReactiveCommand.Create(() =>
-            //{
-            //    CheckUpdateCore(ECoreType.SagerNet);
-            //});
             CheckUpdateXrayCoreCmd = ReactiveCommand.Create(() =>
             {
-                CheckUpdateCore(ECoreType.Xray);
+                CheckUpdateCore(ECoreType.Xray, null);
             });
-            //CheckUpdateClashCoreCmd = ReactiveCommand.Create(() =>
-            //{
-            //    CheckUpdateCore(ECoreType.clash);
-            //});
-            //CheckUpdateClashMetaCoreCmd = ReactiveCommand.Create(() =>
-            //{
-            //    CheckUpdateCore(ECoreType.clash_meta);
-            //});
+            CheckUpdateClashMetaCoreCmd = ReactiveCommand.Create(() =>
+            {
+                CheckUpdateCore(ECoreType.mihomo, false);
+            });
             CheckUpdateSingBoxCoreCmd = ReactiveCommand.Create(() =>
             {
-                CheckUpdateCore(ECoreType.sing_box);
+                CheckUpdateCore(ECoreType.sing_box, null);
             });
             CheckUpdateGeoCmd = ReactiveCommand.Create(() =>
             {
@@ -1473,7 +1453,7 @@ namespace v2rayN.ViewModels
             (new UpdateHandle()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
-        private void CheckUpdateCore(ECoreType type)
+        private void CheckUpdateCore(ECoreType type, bool? preRelease)
         {
             void _updateUI(bool success, string msg)
             {
@@ -1499,7 +1479,7 @@ namespace v2rayN.ViewModels
                     }
                 }
             }
-            (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
+            (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, preRelease ?? _config.guiItem.checkPreReleaseUpdate);
         }
 
         private void CheckUpdateGeo()

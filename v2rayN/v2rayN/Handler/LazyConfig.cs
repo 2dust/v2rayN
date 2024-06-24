@@ -336,7 +336,11 @@ namespace v2rayN.Handler
                 arguments = "-f config.json",
                 coreUrl = Global.MihomoCoreUrl,
                 coreReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                coreDownloadUrl32 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-386-{0}.zip",
+                coreDownloadUrl64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-amd64-compatible-{0}.zip",
+                coreDownloadUrlArm64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-arm64-{0}.zip",
                 match = "Mihomo",
+                versionArg = "-v",
                 redirectInfo = true,
             });
 

@@ -37,8 +37,8 @@
     </Window.Resources>
 
     <materialDesign:DialogHost
-        Identifier="RootDialog"
         materialDesign:TransitionAssist.DisableTransitions="True"
+        Identifier="RootDialog"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}"
         Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
         <Grid>
@@ -231,28 +231,14 @@
                                     x:Name="menuCheckUpdateN"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="V2rayN" />
-                                <!--<MenuItem
-                                    x:Name="menuCheckUpdateV2flyCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="V2fly v5 Core" />
-                              <MenuItem
-                                    x:Name="menuCheckUpdateSagerNetCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="SagerNet Core" />-->
                                 <MenuItem
                                     x:Name="menuCheckUpdateXrayCore"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="Xray Core" />
-                                <!--<Separator Margin="-40,5" />
                                 <MenuItem
-                                    x:Name="menuCheckUpdateClashCore"
+                                    x:Name="menuCheckUpdateMihomoCore"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="Clash Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateClashMetaCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Clash.Meta Core" />
-                                <Separator Margin="-40,5" />-->
+                                    Header="Mihomo Core" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateSingBoxCore"
                                     Height="{StaticResource MenuItemHeight}"

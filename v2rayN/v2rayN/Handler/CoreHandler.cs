@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Reactive.Linq;
 using System.Text;
 using v2rayN.Enums;
 using v2rayN.Handler.CoreConfig;
