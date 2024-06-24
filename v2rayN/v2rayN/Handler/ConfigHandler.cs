@@ -1360,17 +1360,22 @@ namespace v2rayN.Handler
             {
                 return 0;
             }
-
-            var uri = new Uri(url);
-            var queryVars = HttpUtility.ParseQueryString(uri.Query);
-            string remarks = queryVars["remarks"] ?? "import_sub";
-
             SubItem subItem = new()
             {
                 id = string.Empty,
-                remarks = remarks,
                 url = url
             };
+
+            try
+            {
+                var uri = new Uri(url);
+                var queryVars = HttpUtility.ParseQueryString(uri.Query);
+                subItem.remarks = queryVars["remarks"] ?? "import_sub";
+            }
+            catch (UriFormatException)
+            {
+                return 0;
+            }
 
             return AddSubItem(config, subItem);
         }
