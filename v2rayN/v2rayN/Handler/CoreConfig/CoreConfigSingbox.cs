@@ -953,14 +953,14 @@ namespace v2rayN.Handler.CoreConfig
                 }
                 else
                 {
-                    var geo = item.Split('-').FirstOrDefault() ?? geosite;
-                    var value = item.Split('-').LastOrDefault();
                     singboxConfig.route.rule_set.Add(new()
                     {
                         type = "remote",
                         format = "binary",
                         tag = item,
-                        url = string.Format(geo.Equals(geosite) ? Global.SingboxRulesetUrlGeosite : Global.SingboxRulesetUrlGeoip, value),
+                        url = item.StartsWith(geosite) ?
+                                string.Format(Global.SingboxRulesetUrlGeosite, item) :
+                                string.Format(Global.SingboxRulesetUrlGeoip, item.Replace($"{geoip}-", "")),
                         download_detour = Global.ProxyTag
                     });
                 }
