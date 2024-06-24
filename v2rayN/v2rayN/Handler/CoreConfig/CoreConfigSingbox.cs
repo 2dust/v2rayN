@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Data;
+using System.Net;
 using System.Net.NetworkInformation;
 using v2rayN.Enums;
 using v2rayN.Models;
@@ -889,6 +890,10 @@ namespace v2rayN.Handler.CoreConfig
 
         private int ConvertGeo2Ruleset(SingboxConfig singboxConfig)
         {
+            static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
+            {
+                if (rule_set != null) ruleSets.AddRange(rule_set);
+            }
             var geosite = "geosite";
             var geoip = "geoip";
             var ruleSets = new List<string>();
@@ -898,13 +903,13 @@ namespace v2rayN.Handler.CoreConfig
             {
                 rule.rule_set = rule?.geosite?.Select(t => $"{geosite}-{t}").ToList();
                 rule.geosite = null;
-                ruleSets.AddRange(rule.rule_set);
+                AddRuleSets(ruleSets, rule.rule_set);
             }
             foreach (var rule in singboxConfig.route.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
             {
                 rule.rule_set = rule?.geoip?.Select(t => $"{geoip}-{t}").ToList();
                 rule.geoip = null;
-                ruleSets.AddRange(rule.rule_set);
+                AddRuleSets(ruleSets, rule.rule_set);
             }
 
             //convert dns geosite & geoip to ruleset
@@ -920,7 +925,15 @@ namespace v2rayN.Handler.CoreConfig
             }
             foreach (var dnsRule in singboxConfig.dns?.rules.Where(t => t.rule_set?.Count > 0).ToList() ?? [])
             {
-                ruleSets.AddRange(dnsRule.rule_set);
+                AddRuleSets(ruleSets, dnsRule.rule_set);
+            }
+            //rules in rules
+            foreach (var item in singboxConfig.dns?.rules.Where(t => t.rules?.Count > 0).Select(t => t.rules).ToList() ?? [])
+            {
+                foreach (var item2 in item ?? [])
+                {
+                    AddRuleSets(ruleSets, item2.rule_set);
+                }
             }
 
             //load custom ruleset file
@@ -946,6 +959,7 @@ namespace v2rayN.Handler.CoreConfig
             singboxConfig.route.rule_set = [];
             foreach (var item in new HashSet<string>(ruleSets))
             {
+                if (Utils.IsNullOrEmpty(item)) { continue; }
                 var customRuleset = customRulesets.FirstOrDefault(t => t.tag != null && t.tag.Equals(item));
                 if (customRuleset != null)
                 {
