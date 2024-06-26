@@ -370,6 +370,12 @@ namespace v2rayN.Models
         public List<string> servers { get; set; }
     }
 
+    public class DnsServer4Ray
+    {
+        public string? address { get; set; }
+        public List<string>? domains { get; set; }
+    }
+
     public class Routing4Ray
     {
         /// <summary>
@@ -380,7 +386,7 @@ namespace v2rayN.Models
         /// <summary>
         ///
         /// </summary>
-        public string domainMatcher { get; set; }
+        public string? domainMatcher { get; set; }
 
         /// <summary>
         ///

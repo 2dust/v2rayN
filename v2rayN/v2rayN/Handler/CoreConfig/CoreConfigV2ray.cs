@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
+using System.Text.Json.Nodes;
 using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
@@ -53,7 +54,7 @@ namespace v2rayN.Handler.CoreConfig
 
                 GenMoreOutbounds(node, v2rayConfig);
 
-                GenDns(v2rayConfig);
+                GenDns(node, v2rayConfig);
 
                 GenStatistic(v2rayConfig);
 
@@ -748,7 +749,7 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDns(V2rayConfig v2rayConfig)
+        private int GenDns(ProfileItem node, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -800,11 +801,31 @@ namespace v2rayN.Handler.CoreConfig
                     }
                 }
 
+                GenDnsDomains(node, obj);
+
                 v2rayConfig.dns = obj;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
+            }
+            return 0;
+        }
+
+        private int GenDnsDomains(ProfileItem node, JsonNode dns)
+        {
+            var servers = dns["servers"];
+            if (servers != null)
+            {
+                if (Utils.IsDomain(node.address))
+                {
+                    var dnsServer = new DnsServer4Ray()
+                    {
+                        address = "223.5.5.5",
+                        domains = [node.address]
+                    };
+                    servers.AsArray().Insert(0, JsonUtils.SerializeToNode(dnsServer));
+                }
             }
             return 0;
         }
