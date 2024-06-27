@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 
@@ -21,6 +22,22 @@ namespace v2rayN
 
         private HttpClientHelper(HttpClient httpClient) => this.httpClient = httpClient;
 
+        public async Task<string?> TryGetAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return null;
+
+            try
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<string?> GetAsync(string url)
         {
             if (Utils.IsNullOrEmpty(url)) return null;
@@ -39,6 +56,21 @@ namespace v2rayN
             var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             var result = await httpClient.PutAsync(url, content);
+        }
+
+        public async Task PatchAsync(string url, Dictionary<string, string> headers)
+        {
+            var myContent = JsonUtils.Serialize(headers);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            await httpClient.PatchAsync(url, byteContent);
+        }
+
+        public async Task DeleteAsync(string url)
+        {
+            await httpClient.DeleteAsync(url);
         }
 
         public static async Task DownloadFileAsync(HttpClient client, string url, string fileName, IProgress<double>? progress, CancellationToken token = default)

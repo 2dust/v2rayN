@@ -1219,4 +1219,82 @@
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>Open the storage location</value>
   </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Chain</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Download Speed</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>Download Traffic</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>Upload Speed</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>Upload Traffic</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>Connections</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>Close Connection</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>Close All Connection</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>Proxies</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>Rule mode</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Direct</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>Do not change</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>Rule</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>All Node Latency Test</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Part Node Latency Test</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Refresh Proxies (F5)</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Select active node (Enter)</value>
+  </data>
 </root>

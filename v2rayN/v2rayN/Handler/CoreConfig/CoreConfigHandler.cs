@@ -25,7 +25,15 @@ namespace v2rayN.Handler.CoreConfig
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)
                 {
-                    return GenerateClientCustomConfig(node, fileName, out msg);
+                    if (node.coreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo)
+                    {
+                        var configGenClash = new CoreConfigClash(config);
+                        return configGenClash.GenerateClientConfig(node, fileName, out msg);
+                    }
+                    else
+                    {
+                        return GenerateClientCustomConfig(node, fileName, out msg);
+                    }
                 }
                 else if (LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
                 {

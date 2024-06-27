@@ -1502,7 +1502,7 @@ namespace v2rayN.ViewModels
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
                     BlReloadEnabled = true;
-                }));
+                })); 
             });
         }
 
@@ -1515,7 +1515,7 @@ namespace v2rayN.ViewModels
                 //ConfigHandler.SaveConfig(_config, false);
 
                 ChangeSystemProxyStatus(_config.sysProxyType, false);
-            });
+            }); 
         }
 
         private void CloseCore()
@@ -1775,6 +1775,7 @@ namespace v2rayN.ViewModels
                           Application.Current.Resources["StdFontSize1"] = size + 1;
                           Application.Current.Resources["StdFontSize2"] = size + 2;
                           Application.Current.Resources["StdFontSizeMsg"] = size - 1;
+                          Application.Current.Resources["StdFontSize-1"] = size - 1;
 
                           ConfigHandler.SaveConfig(_config);
                       }

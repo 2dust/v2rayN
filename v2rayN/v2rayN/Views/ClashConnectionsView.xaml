@@ -1,0 +1,124 @@
+<reactiveui:ReactiveUserControl
+    x:Class="v2rayN.Views.ClashConnectionsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:v2rayN.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveui="http://reactiveui.net"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="vms:ClashConnectionsViewModel"
+    mc:Ignorable="d">
+    <DockPanel Margin="8">
+        <StackPanel
+            Margin="8,0,8,8"
+            HorizontalAlignment="Left"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <TextBlock Style="{StaticResource ModuleTitle}" Text="{x:Static resx:ResUI.TbConnections}" />
+            <materialDesign:Chip
+                x:Name="chipCount"
+                Height="20"
+                IsEnabled="False"
+                Style="{StaticResource ListItemChip}" />
+        </StackPanel>
+        <ToolBarTray Margin="0,8,0,8" DockPanel.Dock="Top">
+            <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
+                <Button Width="1" Visibility="Hidden">
+                    <materialDesign:PackIcon
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Kind="ContentSave" />
+                </Button>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbSorting}" />
+                <ComboBox
+                    x:Name="cmbSorting"
+                    Width="100"
+                    Margin="8"
+                    Style="{StaticResource DefComboBox}">
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpSpeed}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownSpeed}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpTraffic}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownTraffic}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingTime}" />
+                    <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingHost}" />
+                </ComboBox>
+                <Separator />
+                <Button x:Name="btnConnectionCloseAll" ToolTip="{x:Static resx:ResUI.menuConnectionCloseAll}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="Close" />
+                        <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuConnectionCloseAll}" />
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+                <ToggleButton
+                    x:Name="togAutoRefresh"
+                    Margin="8"
+                    HorizontalAlignment="Left" />
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid
+            x:Name="lstConnections"
+            AutoGenerateColumns="False"
+            BorderThickness="1"
+            CanUserAddRows="False"
+            CanUserResizeRows="False"
+            CanUserSortColumns="False"
+            EnableRowVirtualization="True"
+            GridLinesVisibility="All"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            Style="{StaticResource DefDataGrid}">
+            <DataGrid.ContextMenu>
+                <ContextMenu Style="{StaticResource DefContextMenu}">
+                    <MenuItem x:Name="menuConnectionClose" Header="{x:Static resx:ResUI.menuConnectionClose}" />
+                    <MenuItem x:Name="menuConnectionCloseAll" Header="{x:Static resx:ResUI.menuConnectionCloseAll}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="300"
+                    Binding="{Binding host}"
+                    Header="{x:Static resx:ResUI.TbSortingHost}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding network}"
+                    Header="{x:Static resx:ResUI.TbSortingNetwork}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding type}"
+                    Header="{x:Static resx:ResUI.TbSortingType}" />
+                <DataGridTextColumn
+                    Width="200"
+                    Binding="{Binding chain}"
+                    Header="{x:Static resx:ResUI.TbSortingChain}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding uploadTraffic}"
+                    Header="{x:Static resx:ResUI.TbSortingUpTraffic}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding downloadTraffic}"
+                    Header="{x:Static resx:ResUI.TbSortingDownTraffic}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding elapsed}"
+                    Header="{x:Static resx:ResUI.TbSortingTime}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</reactiveui:ReactiveUserControl>

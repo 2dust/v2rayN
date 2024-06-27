@@ -1006,4 +1006,70 @@
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>فعال کردن کش فایل مجموعه قوانین برای sing-box</value>
   </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>مرتب سازی</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>تاخیر</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>سرعت دانلود</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>ترافیک دانلود</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>زمان</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>سرعت اپلود</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>ترافیک آپلود</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>اتصالات</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>بستن اتصال</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>تمام اتصالات را ببندید</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>پروکسی</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>نوع قانون</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Direct</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>تغییر نده</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>قانون</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>All Node Latency Test</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Part Node Latency Test</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Refresh Proxies (F5)</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Select active node (Enter)</value>
+  </data>
 </root>

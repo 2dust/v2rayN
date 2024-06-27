@@ -754,6 +754,24 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Close Connection 的本地化字符串。
+        /// </summary>
+        public static string menuConnectionClose {
+            get {
+                return ResourceManager.GetString("menuConnectionClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close All Connection 的本地化字符串。
+        /// </summary>
+        public static string menuConnectionCloseAll {
+            get {
+                return ResourceManager.GetString("menuConnectionCloseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clone selected server 的本地化字符串。
         /// </summary>
         public static string menuCopyServer {
@@ -880,6 +898,42 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Direct 的本地化字符串。
+        /// </summary>
+        public static string menuModeDirect {
+            get {
+                return ResourceManager.GetString("menuModeDirect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global 的本地化字符串。
+        /// </summary>
+        public static string menuModeGlobal {
+            get {
+                return ResourceManager.GetString("menuModeGlobal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Do not change 的本地化字符串。
+        /// </summary>
+        public static string menuModeNothing {
+            get {
+                return ResourceManager.GetString("menuModeNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule 的本地化字符串。
+        /// </summary>
+        public static string menuModeRule {
+            get {
+                return ResourceManager.GetString("menuModeRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Move to bottom (B) 的本地化字符串。
         /// </summary>
         public static string menuMoveBottom {
@@ -1002,6 +1056,42 @@ namespace v2rayN.Resx {
         public static string menuPromotion {
             get {
                 return ResourceManager.GetString("menuPromotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 All Node Latency Test 的本地化字符串。
+        /// </summary>
+        public static string menuProxiesDelaytest {
+            get {
+                return ResourceManager.GetString("menuProxiesDelaytest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Part Node Latency Test 的本地化字符串。
+        /// </summary>
+        public static string menuProxiesDelaytestPart {
+            get {
+                return ResourceManager.GetString("menuProxiesDelaytestPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Refresh Proxies (F5) 的本地化字符串。
+        /// </summary>
+        public static string menuProxiesReload {
+            get {
+                return ResourceManager.GetString("menuProxiesReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select active node (Enter) 的本地化字符串。
+        /// </summary>
+        public static string menuProxiesSelectActivity {
+            get {
+                return ResourceManager.GetString("menuProxiesSelectActivity", resourceCulture);
             }
         }
         
@@ -1173,6 +1263,15 @@ namespace v2rayN.Resx {
         public static string menuRuleList {
             get {
                 return ResourceManager.GetString("menuRuleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule mode 的本地化字符串。
+        /// </summary>
+        public static string menuRulemode {
+            get {
+                return ResourceManager.GetString("menuRulemode", resourceCulture);
             }
         }
         
@@ -1997,6 +2096,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Connections 的本地化字符串。
+        /// </summary>
+        public static string TbConnections {
+            get {
+                return ResourceManager.GetString("TbConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Core Type 的本地化字符串。
         /// </summary>
         public static string TbCoreType {
@@ -2263,6 +2371,15 @@ namespace v2rayN.Resx {
         public static string TbPrivateKey {
             get {
                 return ResourceManager.GetString("TbPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxies 的本地化字符串。
+        /// </summary>
+        public static string TbProxies {
+            get {
+                return ResourceManager.GetString("TbProxies", resourceCulture);
             }
         }
         
@@ -3136,6 +3253,123 @@ namespace v2rayN.Resx {
         public static string TbSNI {
             get {
                 return ResourceManager.GetString("TbSNI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sorting 的本地化字符串。
+        /// </summary>
+        public static string TbSorting {
+            get {
+                return ResourceManager.GetString("TbSorting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Chain 的本地化字符串。
+        /// </summary>
+        public static string TbSortingChain {
+            get {
+                return ResourceManager.GetString("TbSortingChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default 的本地化字符串。
+        /// </summary>
+        public static string TbSortingDefault {
+            get {
+                return ResourceManager.GetString("TbSortingDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delay 的本地化字符串。
+        /// </summary>
+        public static string TbSortingDelay {
+            get {
+                return ResourceManager.GetString("TbSortingDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download Speed 的本地化字符串。
+        /// </summary>
+        public static string TbSortingDownSpeed {
+            get {
+                return ResourceManager.GetString("TbSortingDownSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download Traffic 的本地化字符串。
+        /// </summary>
+        public static string TbSortingDownTraffic {
+            get {
+                return ResourceManager.GetString("TbSortingDownTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Host 的本地化字符串。
+        /// </summary>
+        public static string TbSortingHost {
+            get {
+                return ResourceManager.GetString("TbSortingHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Name 的本地化字符串。
+        /// </summary>
+        public static string TbSortingName {
+            get {
+                return ResourceManager.GetString("TbSortingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Network 的本地化字符串。
+        /// </summary>
+        public static string TbSortingNetwork {
+            get {
+                return ResourceManager.GetString("TbSortingNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Time 的本地化字符串。
+        /// </summary>
+        public static string TbSortingTime {
+            get {
+                return ResourceManager.GetString("TbSortingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        public static string TbSortingType {
+            get {
+                return ResourceManager.GetString("TbSortingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upload Speed 的本地化字符串。
+        /// </summary>
+        public static string TbSortingUpSpeed {
+            get {
+                return ResourceManager.GetString("TbSortingUpSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upload Traffic 的本地化字符串。
+        /// </summary>
+        public static string TbSortingUpTraffic {
+            get {
+                return ResourceManager.GetString("TbSortingUpTraffic", resourceCulture);
             }
         }
         

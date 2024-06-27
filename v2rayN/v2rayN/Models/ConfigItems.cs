@@ -211,4 +211,16 @@ namespace v2rayN.Models
         public int up_mbps { get; set; }
         public int down_mbps { get; set; }
     }
+
+    [Serializable]
+    public class ClashUIItem
+    {
+        public ERuleMode ruleMode { get; set; }
+        public int proxiesSorting { get; set; }
+        public bool proxiesAutoRefresh { get; set; }
+        public int AutoDelayTestInterval { get; set; } = 10;
+        public int connectionsSorting { get; set; }
+        public bool connectionsAutoRefresh { get; set; }
+
+    }
 }

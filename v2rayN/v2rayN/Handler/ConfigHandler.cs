@@ -194,6 +194,7 @@ namespace v2rayN.Handler
                     down_mbps = 100
                 };
             }
+            config.clashUIItem ??= new();
 
             LazyConfig.Instance.SetConfig(config);
             return 0;

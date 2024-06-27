@@ -183,6 +183,10 @@ namespace v2rayN
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
         public static readonly List<string> TuicCongestionControls = new() { "cubic", "new_reno", "bbr" };
 
+        public static readonly List<string> allowSelectType = new List<string> { "selector", "urltest", "loadbalance", "fallback" };
+        public static readonly List<string> notAllowTestType = new List<string> { "selector", "urltest", "direct", "reject", "compatible", "pass", "loadbalance", "fallback" };
+        public static readonly List<string> proxyVehicleType = new List<string> { "file", "http" };
+
         #endregion const
     }
 }
