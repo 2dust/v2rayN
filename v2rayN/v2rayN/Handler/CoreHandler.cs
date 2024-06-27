@@ -218,6 +218,7 @@ namespace v2rayN.Handler
                         coreType = preCoreType,
                         configType = EConfigType.Socks,
                         address = Global.Loopback,
+                        sni = node.address, //Tun2SocksAddress
                         port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)
                     };
                 }

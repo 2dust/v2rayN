@@ -825,7 +825,7 @@ namespace v2rayN.Handler.CoreConfig
                 }
                 singboxConfig.dns = dns4Sbox;
 
-                GenDnsDomains(singboxConfig);
+                GenDnsDomains(node, singboxConfig);
             }
             catch (Exception ex)
             {
@@ -834,11 +834,20 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDnsDomains(SingboxConfig singboxConfig)
+        private int GenDnsDomains(ProfileItem? node, SingboxConfig singboxConfig)
         {
             var dns4Sbox = singboxConfig.dns ?? new();
             dns4Sbox.servers ??= [];
             dns4Sbox.rules ??= [];
+
+            var tag = "local_local";
+            dns4Sbox.servers.Add(new()
+            {
+                tag = tag,
+                address = "223.5.5.5",
+                detour = Global.DirectTag,
+                //strategy = strategy
+            });
 
             var lstDomain = singboxConfig.outbounds
                            .Where(t => !Utils.IsNullOrEmpty(t.server) && Utils.IsDomain(t.server))
@@ -846,21 +855,23 @@ namespace v2rayN.Handler.CoreConfig
                            .ToList();
             if (lstDomain != null && lstDomain.Count > 0)
             {
-                //var strategy = dns4Sbox.servers.Where(t => !Utils.IsNullOrEmpty(t.strategy)).Select(t => t.strategy).FirstOrDefault();
-                var tag = "local_local";
-                dns4Sbox.servers.Add(new()
-                {
-                    tag = tag,
-                    address = "223.5.5.5",
-                    detour = Global.DirectTag,
-                    //strategy = strategy
-                });
-                dns4Sbox.rules.Add(new()
+                dns4Sbox.rules.Insert(0, new()
                 {
                     server = tag,
                     domain = lstDomain
                 });
             }
+
+            //Tun2SocksAddress
+            if (_config.tunModeItem.enableTun && node?.configType == EConfigType.Socks && Utils.IsDomain(node?.sni))
+            {
+                dns4Sbox.rules.Insert(0, new()
+                {
+                    server = tag,
+                    domain = [node?.sni]
+                });
+            }
+
             singboxConfig.dns = dns4Sbox;
             return 0;
         }
@@ -1120,7 +1131,7 @@ namespace v2rayN.Handler.CoreConfig
                     singboxConfig.route.rules.Add(rule);
                 }
 
-                GenDnsDomains(singboxConfig);
+                GenDnsDomains(null, singboxConfig);
                 //var dnsServer = singboxConfig.dns?.servers.FirstOrDefault();
                 //if (dnsServer != null)
                 //{
