@@ -46,6 +46,7 @@ namespace v2rayN.Views
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
             btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
             txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;
+            btnShowCalshUI.Click += BtnShowCalshUI_Click;
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
@@ -205,6 +206,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowCalshUI, v => v.btnShowCalshUI.Visibility).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowCalshUI, v => v.tabClashUI.Visibility).DisposeWith(disposables);
             });
 
             RestoreUI();
@@ -453,6 +456,27 @@ namespace v2rayN.Views
             {
                 ViewModel?.RefreshServers();
             }
+        }
+
+        private bool blShowClashUI = false;
+
+        private void BtnShowCalshUI_Click(object sender, RoutedEventArgs e)
+        {
+            if (blShowClashUI)
+            {
+                tabClashUI.Visibility = Visibility.Hidden;
+                tabClashUI.Width = 0;
+            }
+            else
+            {
+                tabClashUI.Visibility = Visibility.Visible;
+                if (tabClashUI.Content is null)
+                {
+                    tabClashUI.Content = new ClashProxiesView();
+                }
+                tabClashUI.Width = this.ActualWidth * 5 / 6;
+            }
+            blShowClashUI = !blShowClashUI;
         }
 
         #endregion Event

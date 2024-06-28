@@ -20,13 +20,7 @@
         <converters:DelayColorConverter x:Key="DelayColorConverter" />
     </UserControl.Resources>
 
-    <DockPanel Margin="8">
-        <TextBlock
-            Margin="8,0,8,8"
-            DockPanel.Dock="Top"
-            Style="{StaticResource ModuleTitle}"
-            Text="{x:Static resx:ResUI.TbProxies}" />
-
+    <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar
                 HorizontalAlignment="Center"

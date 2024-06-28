@@ -10,7 +10,6 @@ namespace v2rayN.Handler
 
         private Dictionary<String, ProxiesItem> _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
-        public bool ShowInTaskbar { get; set; } = true;
 
         public void SetProxies(Dictionary<String, ProxiesItem> proxies)
         {

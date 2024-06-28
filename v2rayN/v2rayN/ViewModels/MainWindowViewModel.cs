@@ -243,6 +243,9 @@ namespace v2rayN.ViewModels
         [Reactive]
         public string CurrentLanguage { get; set; }
 
+        [Reactive]
+        public bool ShowCalshUI { get; set; }
+
         #endregion UI
 
         #region Init
@@ -569,6 +572,7 @@ namespace v2rayN.ViewModels
             AutoHideStartup();
 
             _showInTaskbar = true;
+            _config.clashUIItem.showInTaskbar = _showInTaskbar;
         }
 
         private void Init()
@@ -1509,7 +1513,12 @@ namespace v2rayN.ViewModels
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
                     BlReloadEnabled = true;
+                    ShowCalshUI = (_config.runningCoreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
+                    if (ShowCalshUI) {
+                        Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
+                    }
                 }));
+                
             });
         }
 
@@ -1680,6 +1689,7 @@ namespace v2rayN.ViewModels
                 //Utile.RegWriteValue(Global.MyRegPath, Utile.WindowHwndKey, Convert.ToString((long)windowHandle));
             }
             _showInTaskbar = bl;
+            _config.clashUIItem.showInTaskbar = _showInTaskbar;
         }
 
         private void RestoreUI()

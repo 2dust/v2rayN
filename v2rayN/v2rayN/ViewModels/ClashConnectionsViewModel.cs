@@ -36,11 +36,8 @@ namespace v2rayN.ViewModels
         [Reactive]
         public bool AutoRefresh { get; set; }
 
-        private int AutoRefreshInterval;
-
         public ClashConnectionsViewModel()
         {
-            AutoRefreshInterval = 10;
             SortingSelected = _config.clashUIItem.connectionsSorting;
             AutoRefresh = _config.clashUIItem.connectionsAutoRefresh;
 
@@ -87,15 +84,26 @@ namespace v2rayN.ViewModels
 
         private void Init()
         {
-            Observable.Interval(TimeSpan.FromSeconds(AutoRefreshInterval))
-                .Subscribe(x =>
-                {
-                    if (!(AutoRefresh && ClashApiHandler.Instance.ShowInTaskbar))
-                    {
-                        return;
-                    }
-                    GetClashConnections();
-                });
+            var lastTime = DateTime.Now;
+
+            Observable.Interval(TimeSpan.FromSeconds(10))
+              .Subscribe(x =>
+              {
+                  if (!(AutoRefresh && _config.clashUIItem.showInTaskbar))
+                  {
+                      return;
+                  }
+                  var dtNow = DateTime.Now;
+                  if (_config.clashUIItem.connectionsRefreshInterval > 0)
+                  {
+                      if ((dtNow - lastTime).Minutes % _config.clashUIItem.connectionsRefreshInterval == 0)
+                      {
+                          GetClashConnections();
+                          lastTime = dtNow;
+                      }
+                      Thread.Sleep(1000);
+                  }
+              });
         }
 
         private void GetClashConnections()

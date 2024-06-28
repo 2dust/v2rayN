@@ -434,8 +434,8 @@ namespace v2rayN.ViewModels
                         var dicResult = JsonUtils.Deserialize<Dictionary<string, object>>(result);
                         if (dicResult != null && dicResult.ContainsKey("delay"))
                         {
-                            detail.delay = Convert.ToInt32(dicResult["delay"]);
-                            detail.delayName = $"{dicResult["delay"]}ms";
+                            detail.delay = Convert.ToInt32(dicResult["delay"].ToString());
+                            detail.delayName = $"{detail.delay}ms";
                         }
                         else if (dicResult != null && dicResult.ContainsKey("message"))
                         {
@@ -459,27 +459,26 @@ namespace v2rayN.ViewModels
 
         public void DelayTestTask()
         {
-            var autoDelayTestTime = DateTime.Now;
+            var lastTime = DateTime.Now;
 
             Observable.Interval(TimeSpan.FromSeconds(60))
               .Subscribe(x =>
               {
-                  if (!(AutoRefresh && ClashApiHandler.Instance.ShowInTaskbar))
+                  if (!(AutoRefresh && _config.clashUIItem.showInTaskbar))
                   {
                       return;
                   }
                   var dtNow = DateTime.Now;
-
-                  if (_config.clashUIItem.AutoDelayTestInterval > 0)
+                  if (_config.clashUIItem.proxiesAutoDelayTestInterval > 0)
                   {
-                      if ((dtNow - autoDelayTestTime).Minutes % _config.clashUIItem.AutoDelayTestInterval == 0)
+                      if ((dtNow - lastTime).Minutes % _config.clashUIItem.proxiesAutoDelayTestInterval == 0)
                       {
                           ProxiesDelayTest();
-                          autoDelayTestTime = dtNow;
+                          lastTime = dtNow;
                       }
                       Thread.Sleep(1000);
                   }
-              });
+              });    
         }
 
         #endregion task

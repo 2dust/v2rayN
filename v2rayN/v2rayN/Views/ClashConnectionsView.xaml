@@ -13,19 +13,7 @@
     d:DesignWidth="800"
     x:TypeArguments="vms:ClashConnectionsViewModel"
     mc:Ignorable="d">
-    <DockPanel Margin="8">
-        <StackPanel
-            Margin="8,0,8,8"
-            HorizontalAlignment="Left"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
-            <TextBlock Style="{StaticResource ModuleTitle}" Text="{x:Static resx:ResUI.TbConnections}" />
-            <materialDesign:Chip
-                x:Name="chipCount"
-                Height="20"
-                IsEnabled="False"
-                Style="{StaticResource ListItemChip}" />
-        </StackPanel>
+    <DockPanel>
         <ToolBarTray Margin="0,8,0,8" DockPanel.Dock="Top">
             <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
                 <Button Width="1" Visibility="Hidden">

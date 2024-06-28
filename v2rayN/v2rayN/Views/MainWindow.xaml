@@ -437,6 +437,14 @@
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Style="{StaticResource DefTextBox}" />
+                    <Button
+                        x:Name="btnShowCalshUI"
+                        Width="30"
+                        Height="30"
+                        Margin="20,0"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="EyeOutline" />
+                    </Button>
                 </WrapPanel>
 
                 <materialDesign:ColorZone
@@ -524,237 +532,240 @@
                         <RowDefinition Height="10" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    <DataGrid
-                        x:Name="lstProfiles"
-                        Grid.Row="0"
-                        materialDesign:DataGridAssist.CellPadding="2,2"
-                        AutoGenerateColumns="False"
-                        BorderThickness="1"
-                        CanUserAddRows="False"
-                        CanUserResizeRows="False"
-                        CanUserSortColumns="False"
-                        EnableRowVirtualization="True"
-                        Focusable="True"
-                        GridLinesVisibility="All"
-                        HeadersVisibility="All"
-                        IsReadOnly="True"
-                        RowHeaderWidth="40"
-                        Style="{StaticResource DefDataGrid}">
-                        <DataGrid.InputBindings>
-                            <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />
-                            <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+V" />
-                            <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Delete" />
-                            <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Enter" />
-                        </DataGrid.InputBindings>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu Style="{StaticResource DefContextMenu}">
-                                <MenuItem
-                                    x:Name="menuEditServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuEditServer}" />
-                                <MenuItem
-                                    x:Name="menuSetDefaultServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
-                                <MenuItem
-                                    x:Name="menuRemoveServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRemoveServer}" />
-                                <MenuItem
-                                    x:Name="menuRemoveDuplicateServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
-                                <MenuItem
-                                    x:Name="menuCopyServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuCopyServer}" />
-                                <MenuItem
-                                    x:Name="menuShareServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuShareServer}" />
-                                <Separator />
-                                <MenuItem
-                                    x:Name="menuMixedTestServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMixedTestServer}" />
-                                <MenuItem
-                                    x:Name="menuTcpingServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuTcpingServer}" />
-                                <MenuItem
-                                    x:Name="menuRealPingServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRealPingServer}" />
-                                <MenuItem
-                                    x:Name="menuSpeedServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                                <MenuItem
-                                    x:Name="menuSortServerResult"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSortServerResult}" />
-                                <Separator />
-                                <MenuItem
-                                    x:Name="menuMoveToGroup"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuMoveToGroup}">
-                                    <MenuItem Height="Auto">
-                                        <MenuItem.Header>
-                                            <DockPanel>
-                                                <ComboBox
-                                                    x:Name="cmbMoveToGroup"
-                                                    Width="200"
-                                                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
-                                                    DisplayMemberPath="remarks"
-                                                    FontSize="{DynamicResource StdFontSize}"
-                                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
-                                            </DockPanel>
-                                        </MenuItem.Header>
+                    <DockPanel Grid.Row="0">
+                        <ContentControl x:Name="tabClashUI" DockPanel.Dock="Right" />
+                        <DataGrid
+                            x:Name="lstProfiles"
+                            materialDesign:DataGridAssist.CellPadding="2,2"
+                            AutoGenerateColumns="False"
+                            BorderThickness="1"
+                            CanUserAddRows="False"
+                            CanUserResizeRows="False"
+                            CanUserSortColumns="False"
+                            EnableRowVirtualization="True"
+                            Focusable="True"
+                            GridLinesVisibility="All"
+                            HeadersVisibility="All"
+                            IsReadOnly="True"
+                            RowHeaderWidth="40"
+                            Style="{StaticResource DefDataGrid}">
+                            <DataGrid.InputBindings>
+                                <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />
+                                <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+V" />
+                                <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Delete" />
+                                <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Enter" />
+                            </DataGrid.InputBindings>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu Style="{StaticResource DefContextMenu}">
+                                    <MenuItem
+                                        x:Name="menuEditServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuEditServer}" />
+                                    <MenuItem
+                                        x:Name="menuSetDefaultServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                                    <MenuItem
+                                        x:Name="menuRemoveServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuRemoveServer}" />
+                                    <MenuItem
+                                        x:Name="menuRemoveDuplicateServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
+                                    <MenuItem
+                                        x:Name="menuCopyServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuCopyServer}" />
+                                    <MenuItem
+                                        x:Name="menuShareServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuShareServer}" />
+                                    <Separator />
+                                    <MenuItem
+                                        x:Name="menuMixedTestServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMixedTestServer}" />
+                                    <MenuItem
+                                        x:Name="menuTcpingServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuTcpingServer}" />
+                                    <MenuItem
+                                        x:Name="menuRealPingServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuRealPingServer}" />
+                                    <MenuItem
+                                        x:Name="menuSpeedServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuSpeedServer}" />
+                                    <MenuItem
+                                        x:Name="menuSortServerResult"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                                    <Separator />
+                                    <MenuItem
+                                        x:Name="menuMoveToGroup"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuMoveToGroup}">
+                                        <MenuItem Height="Auto">
+                                            <MenuItem.Header>
+                                                <DockPanel>
+                                                    <ComboBox
+                                                        x:Name="cmbMoveToGroup"
+                                                        Width="200"
+                                                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
+                                                        DisplayMemberPath="remarks"
+                                                        FontSize="{DynamicResource StdFontSize}"
+                                                        Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                                </DockPanel>
+                                            </MenuItem.Header>
+                                        </MenuItem>
                                     </MenuItem>
-                                </MenuItem>
-                                <MenuItem Header="{x:Static resx:ResUI.menuMoveTo}">
+                                    <MenuItem Header="{x:Static resx:ResUI.menuMoveTo}">
+                                        <MenuItem
+                                            x:Name="menuMoveTop"
+                                            Height="{StaticResource MenuItemHeight}"
+                                            Header="{x:Static resx:ResUI.menuMoveTop}" />
+                                        <MenuItem
+                                            x:Name="menuMoveUp"
+                                            Height="{StaticResource MenuItemHeight}"
+                                            Header="{x:Static resx:ResUI.menuMoveUp}" />
+                                        <MenuItem
+                                            x:Name="menuMoveDown"
+                                            Height="{StaticResource MenuItemHeight}"
+                                            Header="{x:Static resx:ResUI.menuMoveDown}" />
+                                        <MenuItem
+                                            x:Name="menuMoveBottom"
+                                            Height="{StaticResource MenuItemHeight}"
+                                            Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                                    </MenuItem>
                                     <MenuItem
-                                        x:Name="menuMoveTop"
+                                        x:Name="menuSelectAll"
                                         Height="{StaticResource MenuItemHeight}"
-                                        Header="{x:Static resx:ResUI.menuMoveTop}" />
+                                        Click="menuSelectAll_Click"
+                                        Header="{x:Static resx:ResUI.menuSelectAll}" />
+                                    <Separator />
                                     <MenuItem
-                                        x:Name="menuMoveUp"
+                                        x:Name="menuExport2ClientConfig"
                                         Height="{StaticResource MenuItemHeight}"
-                                        Header="{x:Static resx:ResUI.menuMoveUp}" />
+                                        Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
                                     <MenuItem
-                                        x:Name="menuMoveDown"
+                                        x:Name="menuExport2ShareUrl"
                                         Height="{StaticResource MenuItemHeight}"
-                                        Header="{x:Static resx:ResUI.menuMoveDown}" />
+                                        Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
                                     <MenuItem
-                                        x:Name="menuMoveBottom"
+                                        x:Name="menuExport2SubContent"
                                         Height="{StaticResource MenuItemHeight}"
-                                        Header="{x:Static resx:ResUI.menuMoveBottom}" />
-                                </MenuItem>
-                                <MenuItem
-                                    x:Name="menuSelectAll"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Click="menuSelectAll_Click"
-                                    Header="{x:Static resx:ResUI.menuSelectAll}" />
-                                <Separator />
-                                <MenuItem
-                                    x:Name="menuExport2ClientConfig"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
-                                <MenuItem
-                                    x:Name="menuExport2ShareUrl"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
-                                <MenuItem
-                                    x:Name="menuExport2SubContent"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuExport2SubContent}" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.Resources>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
-                                <EventSetter Event="MouseDoubleClick" Handler="LstProfiles_MouseDoubleClick" />
-                            </Style>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
-                                <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
-                            </Style>
+                                        Header="{x:Static resx:ResUI.menuExport2SubContent}" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Resources>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
+                                    <EventSetter Event="MouseDoubleClick" Handler="LstProfiles_MouseDoubleClick" />
+                                </Style>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
+                                </Style>
 
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding isActive}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
-                                        <Setter Property="Foreground" Value="Black" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
 
-                            <base:MyDGTextColumn
-                                Width="80"
-                                Binding="{Binding configType}"
-                                ExName="configType"
-                                Header="{x:Static resx:ResUI.LvServiceType}" />
-                            <base:MyDGTextColumn
-                                Width="150"
-                                Binding="{Binding remarks}"
-                                ExName="remarks"
-                                Header="{x:Static resx:ResUI.LvRemarks}" />
-                            <base:MyDGTextColumn
-                                Width="120"
-                                Binding="{Binding address}"
-                                ExName="address"
-                                Header="{x:Static resx:ResUI.LvAddress}" />
-                            <base:MyDGTextColumn
-                                Width="60"
-                                Binding="{Binding port}"
-                                ExName="port"
-                                Header="{x:Static resx:ResUI.LvPort}" />
-                            <base:MyDGTextColumn
-                                Width="100"
-                                Binding="{Binding network}"
-                                ExName="network"
-                                Header="{x:Static resx:ResUI.LvTransportProtocol}" />
-                            <base:MyDGTextColumn
-                                Width="100"
-                                Binding="{Binding streamSecurity}"
-                                ExName="streamSecurity"
-                                Header="{x:Static resx:ResUI.LvTLS}" />
-                            <base:MyDGTextColumn
-                                Width="100"
-                                Binding="{Binding subRemarks}"
-                                ExName="subRemarks"
-                                Header="{x:Static resx:ResUI.LvSubscription}" />
-                            <base:MyDGTextColumn
-                                Width="100"
-                                Binding="{Binding delayVal}"
-                                ExName="delayVal"
-                                Header="{x:Static resx:ResUI.LvTestDelay}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Right" />
-                                        <Setter Property="Foreground" Value="{Binding delay, Converter={StaticResource DelayColorConverter}}" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </base:MyDGTextColumn>
-                            <base:MyDGTextColumn
-                                Width="100"
-                                Binding="{Binding speedVal}"
-                                ExName="speedVal"
-                                Header="{x:Static resx:ResUI.LvTestSpeed}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Right" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </base:MyDGTextColumn>
+                                <base:MyDGTextColumn
+                                    Width="80"
+                                    Binding="{Binding configType}"
+                                    ExName="configType"
+                                    Header="{x:Static resx:ResUI.LvServiceType}" />
+                                <base:MyDGTextColumn
+                                    Width="150"
+                                    Binding="{Binding remarks}"
+                                    ExName="remarks"
+                                    Header="{x:Static resx:ResUI.LvRemarks}" />
+                                <base:MyDGTextColumn
+                                    Width="120"
+                                    Binding="{Binding address}"
+                                    ExName="address"
+                                    Header="{x:Static resx:ResUI.LvAddress}" />
+                                <base:MyDGTextColumn
+                                    Width="60"
+                                    Binding="{Binding port}"
+                                    ExName="port"
+                                    Header="{x:Static resx:ResUI.LvPort}" />
+                                <base:MyDGTextColumn
+                                    Width="100"
+                                    Binding="{Binding network}"
+                                    ExName="network"
+                                    Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                                <base:MyDGTextColumn
+                                    Width="100"
+                                    Binding="{Binding streamSecurity}"
+                                    ExName="streamSecurity"
+                                    Header="{x:Static resx:ResUI.LvTLS}" />
+                                <base:MyDGTextColumn
+                                    Width="100"
+                                    Binding="{Binding subRemarks}"
+                                    ExName="subRemarks"
+                                    Header="{x:Static resx:ResUI.LvSubscription}" />
+                                <base:MyDGTextColumn
+                                    Width="100"
+                                    Binding="{Binding delayVal}"
+                                    ExName="delayVal"
+                                    Header="{x:Static resx:ResUI.LvTestDelay}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Setter Property="Foreground" Value="{Binding delay, Converter={StaticResource DelayColorConverter}}" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </base:MyDGTextColumn>
+                                <base:MyDGTextColumn
+                                    Width="100"
+                                    Binding="{Binding speedVal}"
+                                    ExName="speedVal"
+                                    Header="{x:Static resx:ResUI.LvTestSpeed}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </base:MyDGTextColumn>
 
-                            <base:MyDGTextColumn
-                                x:Name="colTodayUp"
-                                Width="100"
-                                Binding="{Binding todayUp}"
-                                ExName="todayUp"
-                                Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
-                            <base:MyDGTextColumn
-                                x:Name="colTodayDown"
-                                Width="100"
-                                Binding="{Binding todayDown}"
-                                ExName="todayDown"
-                                Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
-                            <base:MyDGTextColumn
-                                x:Name="colTotalUp"
-                                Width="100"
-                                Binding="{Binding totalUp}"
-                                ExName="totalUp"
-                                Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
-                            <base:MyDGTextColumn
-                                x:Name="colTotalDown"
-                                Width="100"
-                                Binding="{Binding totalDown}"
-                                ExName="totalDown"
-                                Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                                <base:MyDGTextColumn
+                                    x:Name="colTodayUp"
+                                    Width="100"
+                                    Binding="{Binding todayUp}"
+                                    ExName="todayUp"
+                                    Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
+                                <base:MyDGTextColumn
+                                    x:Name="colTodayDown"
+                                    Width="100"
+                                    Binding="{Binding todayDown}"
+                                    ExName="todayDown"
+                                    Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
+                                <base:MyDGTextColumn
+                                    x:Name="colTotalUp"
+                                    Width="100"
+                                    Binding="{Binding totalUp}"
+                                    ExName="totalUp"
+                                    Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
+                                <base:MyDGTextColumn
+                                    x:Name="colTotalDown"
+                                    Width="100"
+                                    Binding="{Binding totalDown}"
+                                    ExName="totalDown"
+                                    Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                     <local:MsgView Grid.Row="2" />
                     <materialDesign:Snackbar
