@@ -31,6 +31,8 @@
 	
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
+        <EmbeddedResource Include="Sample\clash_mixin_yaml" />       
+        <EmbeddedResource Include="Sample\clash_tun_yaml" />       
         <EmbeddedResource Include="Sample\SingboxSampleOutbound" />       
         <EmbeddedResource Include="Sample\SingboxSampleClientConfig">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>

@@ -82,7 +82,8 @@ namespace v2rayN.Handler.CoreConfig
                 //socks-port
                 fileContent["socks-port"] = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
                 //log-level
-                fileContent["log-level"] = _config.coreBasicItem.loglevel;
+                fileContent["log-level"] = GetLogLevel(_config.coreBasicItem.loglevel);
+
                 //external-controller
                 fileContent["external-controller"] = $"{Global.Loopback}:{LazyConfig.Instance.StatePort2}";
                 //allow-lan
@@ -97,7 +98,7 @@ namespace v2rayN.Handler.CoreConfig
                 }
 
                 //ipv6
-                //fileContent["ipv6"] = _config.EnableIpv6;
+                fileContent["ipv6"] = _config.clashUIItem.enableIPv6;
 
                 //mode
                 if (!fileContent.ContainsKey("mode"))
@@ -112,27 +113,27 @@ namespace v2rayN.Handler.CoreConfig
                     }
                 }
 
-                ////enable tun mode
-                //if (config.EnableTun)
-                //{
-                //    string tun = Utils.GetEmbedText(Global.SampleTun);
-                //    if (!string.IsNullOrEmpty(tun))
-                //    {
-                //        var tunContent = Utils.FromYaml<Dictionary<string, object>>(tun);
-                //        if (tunContent != null)
-                //            fileContent["tun"] = tunContent["tun"];
-                //    }
-                //}
+                //enable tun mode
+                if (_config.tunModeItem.enableTun)
+                {
+                    string tun = Utils.GetEmbedText(Global.ClashTunYaml);
+                    if (!string.IsNullOrEmpty(tun))
+                    {
+                        var tunContent = YamlUtils.FromYaml<Dictionary<string, object>>(tun);
+                        if (tunContent != null)
+                            fileContent["tun"] = tunContent["tun"];
+                    }
+                }
 
                 //Mixin
-                //try
-                //{
-                //    MixinContent(fileContent, config, node);
-                //}
-                //catch (Exception ex)
-                //{
-                //    Logging.SaveLog("GenerateClientConfigClash-Mixin", ex);
-                //}
+                try
+                {
+                    MixinContent(fileContent, node);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog("GenerateClientConfigClash-Mixin", ex);
+                }
 
                 var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
                 File.WriteAllText(fileName, txtFileNew);
@@ -156,49 +157,48 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        //private static void MixinContent(Dictionary<string, object> fileContent, Config config, ProfileItem node)
-        //{
-        //    if (!config.EnableMixinContent)
-        //    {
-        //        return;
-        //    }
+        private void MixinContent(Dictionary<string, object> fileContent, ProfileItem node)
+        {
+            //if (!_config.clashUIItem.enableMixinContent)
+            //{
+            //    return;
+            //}
 
-        //    var path = Utils.GetConfigPath(Global.mixinConfigFileName);
-        //    if (!File.Exists(path))
-        //    {
-        //        return;
-        //    }
+            var path = Utils.GetConfigPath(Global.ClashMixinConfigFileName);
+            if (!File.Exists(path))
+            {
+                return;
+            }
 
-        //    var txtFile = File.ReadAllText(Utils.GetConfigPath(Global.mixinConfigFileName));
-        //    //txtFile = txtFile.Replace("!<str>", "");
+            var txtFile = File.ReadAllText(Utils.GetConfigPath(Global.ClashMixinConfigFileName));
 
-        //    var mixinContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
-        //    if (mixinContent == null)
-        //    {
-        //        return;
-        //    }
-        //    foreach (var item in mixinContent)
-        //    {
-        //        if (!config.EnableTun && item.Key == "tun")
-        //        {
-        //            continue;
-        //        }
+            var mixinContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
+            if (mixinContent == null)
+            {
+                return;
+            }
+            foreach (var item in mixinContent)
+            {
+                if (!_config.tunModeItem.enableTun && item.Key == "tun")
+                {
+                    continue;
+                }
 
-        //        if (item.Key.StartsWith("prepend-")
-        //            || item.Key.StartsWith("append-")
-        //            || item.Key.StartsWith("removed-"))
-        //        {
-        //            ModifyContentMerge(fileContent, item.Key, item.Value);
-        //        }
-        //        else
-        //        {
-        //            fileContent[item.Key] = item.Value;
-        //        }
-        //    }
-        //    return;
-        //}
+                if (item.Key.StartsWith("prepend-")
+                    || item.Key.StartsWith("append-")
+                    || item.Key.StartsWith("removed-"))
+                {
+                    ModifyContentMerge(fileContent, item.Key, item.Value);
+                }
+                else
+                {
+                    fileContent[item.Key] = item.Value;
+                }
+            }
+            return;
+        }
 
-        private static void ModifyContentMerge(Dictionary<string, object> fileContent, string key, object value)
+        private void ModifyContentMerge(Dictionary<string, object> fileContent, string key, object value)
         {
             bool blPrepend = false;
             bool blRemoved = false;
@@ -253,6 +253,18 @@ namespace v2rayN.Handler.CoreConfig
                 {
                     lstOri.Add(item);
                 }
+            }
+        }
+
+        private string GetLogLevel(string level)
+        {
+            if (level == "none")
+            {
+                return "silent";
+            }
+            else
+            {
+                return level;
             }
         }
     }

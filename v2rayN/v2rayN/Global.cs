@@ -31,6 +31,7 @@ namespace v2rayN
         public const string CoreConfigFileName = "config.json";
         public const string CorePreConfigFileName = "configPre.json";
         public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
+        public const string ClashMixinConfigFileName = "Mixin.yaml";
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
         public const string V2raySampleHttpRequestFileName = "v2rayN.Sample.SampleHttpRequest";
@@ -44,6 +45,8 @@ namespace v2rayN
         public const string TunSingboxRulesFileName = "v2rayN.Sample.tun_singbox_rules";
         public const string DNSV2rayNormalFileName = "v2rayN.Sample.dns_v2ray_normal";
         public const string DNSSingboxNormalFileName = "v2rayN.Sample.dns_singbox_normal";
+        public const string ClashMixinYaml = "v2rayN.Sample.clash_mixin_yaml";
+        public const string ClashTunYaml = "v2rayN.Sample.clash_tun_yaml";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";
