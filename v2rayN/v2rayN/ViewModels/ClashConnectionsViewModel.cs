@@ -2,7 +2,6 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
@@ -14,11 +13,6 @@ namespace v2rayN.ViewModels
     public class ClashConnectionsViewModel : ReactiveObject
     {
         private static Config _config;
-
-        static ClashConnectionsViewModel()
-        {
-            _config = LazyConfig.Instance.GetConfig();
-        }
 
         private IObservableCollection<ClashConnectionModel> _connectionItems = new ObservableCollectionExtended<ClashConnectionModel>();
 
@@ -38,6 +32,7 @@ namespace v2rayN.ViewModels
 
         public ClashConnectionsViewModel()
         {
+            _config = LazyConfig.Instance.GetConfig();
             SortingSelected = _config.clashUIItem.connectionsSorting;
             AutoRefresh = _config.clashUIItem.connectionsAutoRefresh;
 
