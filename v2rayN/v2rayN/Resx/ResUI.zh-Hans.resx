@@ -1037,7 +1037,7 @@
     <value>拷贝字体TTF/TTC文件到目录guiFonts，重启设置</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http端口=socks端口+1；Pac端口=socks端口+4；API端口=socks端口+5；</value>
+    <value>http端口= +1；Pac端口= +4；*ray API端口= +5；mihomo API端口= +6；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理员权限设置此项，在启动后获得管理员权限</value>

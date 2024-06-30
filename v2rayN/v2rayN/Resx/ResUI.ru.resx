@@ -1042,9 +1042,6 @@
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
     <value>Скопируйте файл шрифта TTF/TTC в каталог guiFonts, перезапустите настройки</value>
   </data>
-  <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>HTTP port=socks port+1</value>
-  </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Установите это с правами администратора</value>
   </data>

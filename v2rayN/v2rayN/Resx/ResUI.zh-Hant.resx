@@ -1037,7 +1037,7 @@
     <value>複製字型TTF/TTC文件到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>HTTP埠=SOCKS埠+1</value>
+    <value>http端口= +1；Pac端口= +4；*ray API端口= +5；mihomo API端口= +6；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理員權限設定此項，在啟動後獲得管理員權限</value>

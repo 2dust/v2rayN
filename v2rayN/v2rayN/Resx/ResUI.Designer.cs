@@ -3032,7 +3032,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 HTTP port=SOCKS port+1;Pac port=SOCKS port+4;API port=SOCKS port+5; 的本地化字符串。
+        ///   查找类似 http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6; 的本地化字符串。
         /// </summary>
         public static string TbSettingsSocksPortTip {
             get {
