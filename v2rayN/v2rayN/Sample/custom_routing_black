@@ -15,7 +15,7 @@
     "outboundTag": "proxy",
 
     "domain": [
-      "geosite:geolocation-!cn",
+      "geosite:gfw",
       "geosite:greatfire"
     ]
   },

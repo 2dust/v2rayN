@@ -983,9 +983,7 @@ namespace v2rayN.Handler.CoreConfig
                         type = "remote",
                         format = "binary",
                         tag = item,
-                        url = item.StartsWith(geosite) ?
-                                string.Format(Global.SingboxRulesetUrlGeosite, item) :
-                                string.Format(Global.SingboxRulesetUrlGeoip, item.Replace($"{geoip}-", "")),
+                        url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),                       
                         download_detour = Global.ProxyTag
                     });
                 }
