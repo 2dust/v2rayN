@@ -43,6 +43,7 @@ namespace v2rayN
             Init();
             Logging.LoggingEnabled(_config.guiItem.enableLog);
             Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
             Logging.ClearLogs();
 
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);

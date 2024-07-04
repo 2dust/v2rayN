@@ -29,15 +29,23 @@ namespace v2rayN.Handler
         /// <returns>true: one of connection is successfully updated proxy settings</returns>
         public static bool SetProxy(string? strProxy, string? exceptions, int type)
         {
-            // set proxy for LAN
-            bool result = SetConnectionProxy(null, strProxy, exceptions, type);
-            // set proxy for dial up connections
-            var connections = EnumerateRasEntries();
-            foreach (var connection in connections)
+            try
             {
-                result |= SetConnectionProxy(connection, strProxy, exceptions, type);
+                // set proxy for LAN
+                bool result = SetConnectionProxy(null, strProxy, exceptions, type);
+                // set proxy for dial up connections
+                var connections = EnumerateRasEntries();
+                foreach (var connection in connections)
+                {
+                    result |= SetConnectionProxy(connection, strProxy, exceptions, type);
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                return false;
+            }
         }
 
         private static bool SetConnectionProxy(string? connectionName, string? strProxy, string? exceptions, int type)

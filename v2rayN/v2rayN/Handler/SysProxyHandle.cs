@@ -6,30 +6,7 @@ namespace v2rayN.Handler
 {
     public static class SysProxyHandle
     {
-        //private const string _userWininetConfigFile = "user-wininet.json";
-
-        //private static string _queryStr;
-
-        // In general, this won't change
-        // format:
-        //  <flags><CR-LF>
-        //  <proxy-server><CR-LF>
-        //  <bypass-list><CR-LF>
-        //  <pac-url>
-
-        private enum RET_ERRORS : int
-        {
-            RET_NO_ERROR = 0,
-            INVALID_FORMAT = 1,
-            NO_PERMISSION = 2,
-            SYSCALL_FAILED = 3,
-            NO_MEMORY = 4,
-            INVAILD_OPTION_COUNT = 5,
-        };
-
-        static SysProxyHandle()
-        {
-        }
+        private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
 
         public static bool UpdateSysProxy(Config config, bool forceDisable)
         {
@@ -65,11 +42,17 @@ namespace v2rayN.Handler
                             .Replace("{http_port}", port.ToString())
                             .Replace("{socks_port}", portSocks.ToString());
                     }
-                    ProxySetting.SetProxy(strProxy, strExceptions, 2); // set a named proxy
+                    if (!ProxySetting.SetProxy(strProxy, strExceptions, 2))
+                    {
+                        SetProxy(strProxy, strExceptions, 2);
+                    }
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
-                    ProxySetting.UnsetProxy(); // set to no proxy
+                    if (!ProxySetting.UnsetProxy())
+                    {
+                        UnsetProxy();
+                    }
                 }
                 else if (type == ESysProxyType.Unchanged)
                 {
@@ -78,7 +61,10 @@ namespace v2rayN.Handler
                 {
                     PacHandler.Start(Utils.GetConfigPath(), port, portPac);
                     var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
-                    ProxySetting.SetProxy(strProxy, "", 4); // use pac script url for auto-config proxy
+                    if (!ProxySetting.SetProxy(strProxy, "", 4))
+                    {
+                        SetProxy(strProxy, "", 4);
+                    }
                 }
 
                 if (type != ESysProxyType.Pac)
@@ -95,14 +81,38 @@ namespace v2rayN.Handler
 
         public static void ResetIEProxy4WindowsShutDown()
         {
-            try
+            SetProxy(null, null, 1);
+        }
+
+        private static void UnsetProxy()
+        {
+            SetProxy(null, null, 1);
+        }
+
+        private static bool SetProxy(string? strProxy, string? exceptions, int type)
+        {
+            if (type == 1)
             {
-                //TODO To be verified
-                Utils.RegWriteValue(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", "ProxyEnable", 0);
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
-            catch
+            if (type == 2)
             {
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 1);
+                Utils.RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
+            else if (type == 4)
+            {
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
+            }
+            return true;
         }
     }
 }
