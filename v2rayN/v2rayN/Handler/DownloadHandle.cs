@@ -297,7 +297,7 @@ namespace v2rayN.Handler
                 });
                 await client.GetAsync(url, cts.Token);
 
-                responseTime = timer.Elapsed.Milliseconds;
+                responseTime = (int)timer.Elapsed.TotalMilliseconds;
             }
             catch //(Exception ex)
             {

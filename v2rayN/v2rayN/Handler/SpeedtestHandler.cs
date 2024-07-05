@@ -389,7 +389,7 @@ namespace v2rayN.Handler
                 clientSocket.EndConnect(result);
 
                 timer.Stop();
-                responseTime = timer.Elapsed.Milliseconds;
+                responseTime = (int)timer.Elapsed.TotalMilliseconds;
             }
             catch (Exception ex)
             {
