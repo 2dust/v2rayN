@@ -7,6 +7,11 @@
   },
   {
     "outboundTag": "block",
+    "port": "443",
+    "network": "udp"
+  },
+  {
+    "outboundTag": "block",
     "domain": [
       "geosite:category-ads-all"
     ]

@@ -147,6 +147,7 @@ namespace v2rayN.ViewModels
         public void ProxiesReload()
         {
             GetClashProxies(true);
+            ProxiesDelayTest();
         }
 
         public void ProxiesClear()
