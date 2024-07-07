@@ -31,7 +31,7 @@ namespace v2rayN.Views
 
         private void DelegateAppendText(string msg)
         {
-            Dispatcher.BeginInvoke(AppendText, DispatcherPriority.Send, msg);
+            Dispatcher.BeginInvoke(AppendText, DispatcherPriority.ApplicationIdle, msg);
         }
 
         public void AppendText(string msg)
