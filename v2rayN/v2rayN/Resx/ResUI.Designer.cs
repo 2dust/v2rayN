@@ -2735,6 +2735,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Default domain strategy for outbound 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDomainStrategy4Out {
+            get {
+                return ResourceManager.GetString("TbSettingsDomainStrategy4Out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Double-click server make active 的本地化字符串。
         /// </summary>
         public static string TbSettingsDoubleClick2Activate {

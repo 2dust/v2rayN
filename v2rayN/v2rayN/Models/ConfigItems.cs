@@ -169,7 +169,7 @@ namespace v2rayN.Models
         public string stack { get; set; }
         public int mtu { get; set; }
         public bool enableExInbound { get; set; }
-        public bool enableIPv6Address { get; set; } = true;
+        public bool enableIPv6Address { get; set; }
     }
 
     [Serializable]

@@ -132,6 +132,19 @@
                             Style="{StaticResource DefButton}" />
                     </StackPanel>
 
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Out}" />
+                        <ComboBox
+                            x:Name="cmbdomainStrategy4Out"
+                            Width="200"
+                            Margin="{StaticResource SettingItemMargin}"
+                            Style="{StaticResource DefComboBox}" />
+                    </StackPanel>
+
                     <Grid Margin="{StaticResource SettingItemMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />

@@ -1294,4 +1294,7 @@
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>设为活动节点 (Enter)</value>
   </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Outbound默认解析策略</value>
+  </data>
 </root>

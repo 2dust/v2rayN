@@ -172,6 +172,7 @@ namespace v2rayN
 
         public static readonly List<string> AllowInsecure = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
+        public static readonly List<string> SingboxDomainStrategy4Out = new() { "ipv4_only", "prefer_ipv4", "prefer_ipv6", "ipv6_only", "" };
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
         public static readonly List<string> Alpns = new() { "h3", "h2", "http/1.1", "h3,h2,http/1.1", "h3,h2", "h2,http/1.1", "" };
         public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };

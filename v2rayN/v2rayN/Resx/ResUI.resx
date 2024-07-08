@@ -1297,4 +1297,7 @@
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>Select active node (Enter)</value>
   </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Default domain strategy for outbound</value>
+  </data>
 </root>
