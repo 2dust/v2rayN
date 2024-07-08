@@ -1,10 +1,38 @@
 ﻿using System.Runtime.InteropServices;
-using static v2rayN.Handler.ProxySetting.InternetConnectionOption;
+using static v2rayN.Common.ProxySetting.InternetConnectionOption;
 
-namespace v2rayN.Handler
+namespace v2rayN.Common
 {
     internal class ProxySetting
     {
+        private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
+
+        private static bool SetProxyFallback(string? strProxy, string? exceptions, int type)
+        {
+            if (type == 1)
+            {
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+            }
+            if (type == 2)
+            {
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 1);
+                Utils.RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+            }
+            else if (type == 4)
+            {
+                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                Utils.RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
+            }
+            return true;
+        }
+
         /// <summary>
         // set to use no proxy
         /// </summary>
@@ -43,6 +71,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
+                SetProxyFallback(strProxy, exceptions, type);
                 Logging.SaveLog(ex.Message, ex);
                 return false;
             }
@@ -102,25 +131,25 @@ namespace v2rayN.Handler
             }
             else
             {
-                list.szConnection = IntPtr.Zero;
+                list.szConnection = nint.Zero;
             }
             list.dwOptionCount = options.Length;
             list.dwOptionError = 0;
 
             int optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
             // make a pointer out of all that ...
-            IntPtr optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length); // !! remember to deallocate memory 4
+            nint optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length); // !! remember to deallocate memory 4
             // copy the array over into that spot in memory ...
             for (int i = 0; i < options.Length; ++i)
             {
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    IntPtr opt = new(optionsPtr.ToInt64() + (i * optSize));
+                    nint opt = new(optionsPtr.ToInt64() + i * optSize);
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
                 else
                 {
-                    IntPtr opt = new(optionsPtr.ToInt32() + (i * optSize));
+                    nint opt = new(optionsPtr.ToInt32() + i * optSize);
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
             }
@@ -128,11 +157,11 @@ namespace v2rayN.Handler
             list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
-            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem(list.dwSize); // !! remember to deallocate memory 5
+            nint ipcoListPtr = Marshal.AllocCoTaskMem(list.dwSize); // !! remember to deallocate memory 5
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
-            bool isSuccess = NativeMethods.InternetSetOption(IntPtr.Zero,
+            bool isSuccess = NativeMethods.InternetSetOption(nint.Zero,
                InternetOption.INTERNET_OPTION_PER_CONNECTION_OPTION,
                ipcoListPtr, list.dwSize);
             int returnvalue = 0; // ERROR_SUCCESS
@@ -143,12 +172,12 @@ namespace v2rayN.Handler
             else
             {
                 // Notify the system that the registry settings have been changed and cause them to be refreshed
-                NativeMethods.InternetSetOption(IntPtr.Zero, InternetOption.INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
-                NativeMethods.InternetSetOption(IntPtr.Zero, InternetOption.INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
+                NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_SETTINGS_CHANGED, nint.Zero, 0);
+                NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_REFRESH, nint.Zero, 0);
             }
 
             // FREE the data ASAP
-            if (list.szConnection != IntPtr.Zero) Marshal.FreeHGlobal(list.szConnection); // release mem 3
+            if (list.szConnection != nint.Zero) Marshal.FreeHGlobal(list.szConnection); // release mem 3
             if (optionCount > 1)
             {
                 Marshal.FreeHGlobal(options[1].m_Value.m_StringPtr); // release mem 1
@@ -212,12 +241,12 @@ namespace v2rayN.Handler
         public struct InternetPerConnOptionList
         {
             public int dwSize;               // size of the INTERNET_PER_CONN_OPTION_LIST struct
-            public IntPtr szConnection;         // connection name to set/query options
+            public nint szConnection;         // connection name to set/query options
             public int dwOptionCount;        // number of options to set/query
             public int dwOptionError;           // on error, which option failed
 
             //[MarshalAs(UnmanagedType.)]
-            public IntPtr options;
+            public nint options;
         };
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -244,7 +273,7 @@ namespace v2rayN.Handler
                 public int m_Int;
 
                 [FieldOffset(0)]
-                public IntPtr m_StringPtr;
+                public nint m_StringPtr;
             }
 
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -316,7 +345,7 @@ namespace v2rayN.Handler
         {
             [DllImport("WinInet.dll", SetLastError = true, CharSet = CharSet.Auto)]
             [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool InternetSetOption(IntPtr hInternet, InternetOption dwOption, IntPtr lpBuffer, int dwBufferLength);
+            public static extern bool InternetSetOption(nint hInternet, InternetOption dwOption, nint lpBuffer, int dwBufferLength);
 
             [DllImport("Rasapi32.dll", CharSet = CharSet.Auto)]
             public static extern uint RasEnumEntries(

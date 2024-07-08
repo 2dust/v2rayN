@@ -11,7 +11,7 @@ namespace v2rayN.Converters
 
             if (delay <= 0)
                 return new SolidColorBrush(Colors.Red);
-            if (delay <= 200)
+            if (delay <= 500)
                 return new SolidColorBrush(Colors.Green);
             else
                 return new SolidColorBrush(Colors.IndianRed);

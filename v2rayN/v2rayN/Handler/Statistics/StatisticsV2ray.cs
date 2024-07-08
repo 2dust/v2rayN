@@ -4,7 +4,7 @@ using ProtosLib.Statistics;
 using v2rayN.Enums;
 using v2rayN.Models;
 
-namespace v2rayN.Handler
+namespace v2rayN.Handler.Statistics
 {
     internal class StatisticsV2ray
     {
