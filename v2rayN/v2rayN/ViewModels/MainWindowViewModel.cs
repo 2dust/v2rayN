@@ -613,6 +613,10 @@ namespace v2rayN.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
+            if (!_showInTaskbar)
+            {
+                return;
+            }
             _noticeHandler?.SendMessage(msg);
             if (notify)
             {
