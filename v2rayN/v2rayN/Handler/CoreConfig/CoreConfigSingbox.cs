@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using v2rayN.Enums;
@@ -966,27 +967,41 @@ namespace v2rayN.Handler.CoreConfig
                 }
             }
 
+            //Local srs files address
+            var localSrss = Utils.GetBinPath("srss");
+
             //Add ruleset srs
             singboxConfig.route.rule_set = [];
             foreach (var item in new HashSet<string>(ruleSets))
             {
                 if (Utils.IsNullOrEmpty(item)) { continue; }
                 var customRuleset = customRulesets.FirstOrDefault(t => t.tag != null && t.tag.Equals(item));
-                if (customRuleset != null)
+                if (customRuleset is null)
                 {
-                    singboxConfig.route.rule_set.Add(customRuleset);
-                }
-                else
-                {
-                    singboxConfig.route.rule_set.Add(new()
+                    var pathSrs = Path.Combine(localSrss, $"{item}.srs");
+                    if (File.Exists(pathSrs))
                     {
-                        type = "remote",
-                        format = "binary",
-                        tag = item,
-                        url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),                       
-                        download_detour = Global.ProxyTag
-                    });
+                        customRuleset = new()
+                        {
+                            type = "local",
+                            format = "binary",
+                            tag = item,
+                            path = pathSrs
+                        };
+                    }
+                    else
+                    {
+                        customRuleset = new()
+                        {
+                            type = "remote",
+                            format = "binary",
+                            tag = item,
+                            url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
+                            download_detour = Global.ProxyTag
+                        };
+                    }
                 }
+                singboxConfig.route.rule_set.Add(customRuleset);
             }
 
             return 0;
