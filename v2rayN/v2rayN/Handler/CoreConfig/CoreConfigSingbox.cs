@@ -847,7 +847,7 @@ namespace v2rayN.Handler.CoreConfig
                 tag = tag,
                 address = "223.5.5.5",
                 detour = Global.DirectTag,
-                strategy = strategy
+                strategy = Utils.IsNullOrEmpty(strategy) ? null : strategy,
             });
 
             var lstDomain = singboxConfig.outbounds

@@ -137,6 +137,7 @@ namespace v2rayN.Handler.Fmt
             item.publicKey = Utils.UrlDecode(query["pbk"] ?? "");
             item.shortId = Utils.UrlDecode(query["sid"] ?? "");
             item.spiderX = Utils.UrlDecode(query["spx"] ?? "");
+            item.allowInsecure = (query["allowInsecure"] ?? "") == "1" ? "true" : "";
 
             item.network = query["type"] ?? nameof(ETransport.tcp);
             switch (item.network)
