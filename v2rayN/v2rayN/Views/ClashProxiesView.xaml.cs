@@ -1,8 +1,8 @@
-using v2rayN.ViewModels;
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
 using System.Windows.Input;
+using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {

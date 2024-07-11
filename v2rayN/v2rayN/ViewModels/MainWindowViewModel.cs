@@ -151,6 +151,7 @@ namespace v2rayN.ViewModels
 
         //CheckUpdate
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
+
         public ReactiveCommand<Unit, Unit> CheckUpdateXrayCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateClashMetaCoreCmd { get; }
         public ReactiveCommand<Unit, Unit> CheckUpdateSingBoxCoreCmd { get; }
@@ -1519,11 +1520,11 @@ namespace v2rayN.ViewModels
                 {
                     BlReloadEnabled = true;
                     ShowCalshUI = (_config.runningCoreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
-                    if (ShowCalshUI) {
+                    if (ShowCalshUI)
+                    {
                         Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
                     }
                 }));
-                
             });
         }
 

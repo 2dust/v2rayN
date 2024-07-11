@@ -1,6 +1,6 @@
-using v2rayN.ViewModels;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {

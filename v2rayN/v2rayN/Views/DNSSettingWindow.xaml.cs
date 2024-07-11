@@ -38,7 +38,6 @@ namespace v2rayN.Views
             {
                 cmbdomainStrategy4Out.Items.Add(it);
             });
-            
 
             this.WhenActivated(disposables =>
             {

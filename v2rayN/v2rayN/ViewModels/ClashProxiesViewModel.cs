@@ -167,7 +167,7 @@ namespace v2rayN.ViewModels
         public void ProxiesDelayTest()
         {
             ProxiesDelayTest(true);
-        } 
+        }
 
         #region proxy function
 
@@ -337,7 +337,7 @@ namespace v2rayN.ViewModels
 
         private ProxiesItem? TryGetProxy(string name)
         {
-            if(proxies is null) 
+            if (proxies is null)
                 return null;
             proxies.TryGetValue(name, out ProxiesItem proxy2);
             if (proxy2 != null)
@@ -479,7 +479,7 @@ namespace v2rayN.ViewModels
                       }
                       Thread.Sleep(1000);
                   }
-              });    
+              });
         }
 
         #endregion task

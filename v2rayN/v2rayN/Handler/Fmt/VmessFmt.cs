@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using v2rayN.Enums;
+﻿using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
 
@@ -7,17 +6,13 @@ namespace v2rayN.Handler.Fmt
 {
     internal class VmessFmt : BaseFmt
     {
-        private static readonly Regex StdVmessUserInfo = new(
-            @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$", RegexOptions.Compiled);
-
         public static ProfileItem? Resolve(string str, out string msg)
         {
             msg = ResUI.ConfigurationFormatIncorrect;
             ProfileItem? item;
-            int indexSplit = str.IndexOf("?");
-            if (indexSplit > 0)
+            if (str.IndexOf('?') > 0 && str.IndexOf('&') > 0)
             {
-                item = ResolveStdVmess(str) ?? ResolveVmess4Kitsunebi(str);
+                item = ResolveStdVmess(str);
             }
             else
             {
@@ -107,7 +102,7 @@ namespace v2rayN.Handler.Fmt
             return item;
         }
 
-        private static ProfileItem? ResolveStdVmess(string result)
+        public static ProfileItem? ResolveStdVmess(string str)
         {
             ProfileItem item = new()
             {
@@ -115,113 +110,15 @@ namespace v2rayN.Handler.Fmt
                 security = "auto"
             };
 
-            Uri u = new(result);
+            Uri url = new(str);
 
-            item.address = u.IdnHost;
-            item.port = u.Port;
-            item.remarks = u.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            var query = Utils.ParseQueryString(u.Query);
+            item.address = url.IdnHost;
+            item.port = url.Port;
+            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.id = Utils.UrlDecode(url.UserInfo);
 
-            var m = StdVmessUserInfo.Match(u.UserInfo);
-            if (!m.Success) return null;
-
-            item.id = m.Groups["id"].Value;
-
-            if (m.Groups["streamSecurity"].Success)
-            {
-                item.streamSecurity = m.Groups["streamSecurity"].Value;
-            }
-            switch (item.streamSecurity)
-            {
-                case Global.StreamSecurity:
-                    break;
-
-                default:
-                    if (!Utils.IsNullOrEmpty(item.streamSecurity))
-                        return null;
-                    break;
-            }
-
-            item.network = m.Groups["network"].Value;
-            switch (item.network)
-            {
-                case nameof(ETransport.tcp):
-                    string t1 = query["type"] ?? Global.None;
-                    item.headerType = t1;
-                    break;
-
-                case nameof(ETransport.kcp):
-                    item.headerType = query["type"] ?? Global.None;
-                    break;
-
-                case nameof(ETransport.ws):
-                case nameof(ETransport.httpupgrade):
-                case nameof(ETransport.splithttp):
-                    string p1 = query["path"] ?? "/";
-                    string h1 = query["host"] ?? "";
-                    item.requestHost = Utils.UrlDecode(h1);
-                    item.path = p1;
-                    break;
-
-                case nameof(ETransport.http):
-                case nameof(ETransport.h2):
-                    item.network = nameof(ETransport.h2);
-                    string p2 = query["path"] ?? "/";
-                    string h2 = query["host"] ?? "";
-                    item.requestHost = Utils.UrlDecode(h2);
-                    item.path = p2;
-                    break;
-
-                case nameof(ETransport.quic):
-                    string s = query["security"] ?? Global.None;
-                    string k = query["key"] ?? "";
-                    string t3 = query["type"] ?? Global.None;
-                    item.headerType = t3;
-                    item.requestHost = Utils.UrlDecode(s);
-                    item.path = k;
-                    break;
-
-                default:
-                    return null;
-            }
-
-            return item;
-        }
-
-        private static ProfileItem? ResolveVmess4Kitsunebi(string result)
-        {
-            ProfileItem item = new()
-            {
-                configType = EConfigType.VMess
-            };
-            result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
-            int indexSplit = result.IndexOf("?");
-            if (indexSplit > 0)
-            {
-                result = result[..indexSplit];
-            }
-            result = Utils.Base64Decode(result);
-
-            string[] arr1 = result.Split('@');
-            if (arr1.Length != 2)
-            {
-                return null;
-            }
-            string[] arr21 = arr1[0].Split(':');
-            string[] arr22 = arr1[1].Split(':');
-            if (arr21.Length != 2 || arr22.Length != 2)
-            {
-                return null;
-            }
-
-            item.address = arr22[0];
-            item.port = Utils.ToInt(arr22[1]);
-            item.security = arr21[0];
-            item.id = arr21[1];
-
-            item.network = Global.DefaultNetwork;
-            item.headerType = Global.None;
-            item.remarks = "Alien";
+            var query = Utils.ParseQueryString(url.Query);
+            ResolveStdTransport(query, ref item);
 
             return item;
         }

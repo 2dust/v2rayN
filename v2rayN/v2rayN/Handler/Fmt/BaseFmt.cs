@@ -59,6 +59,10 @@ namespace v2rayN.Handler.Fmt
             {
                 dicQuery.Add("spx", Utils.UrlEncode(item.spiderX));
             }
+            if (item.allowInsecure.Equals("true"))
+            {
+                dicQuery.Add("allowInsecure", "1");
+            }
 
             dicQuery.Add("type", !Utils.IsNullOrEmpty(item.network) ? item.network : nameof(ETransport.tcp));
 

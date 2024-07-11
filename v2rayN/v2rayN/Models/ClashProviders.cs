@@ -1,6 +1,4 @@
-﻿
-
-using static v2rayN.Models.ClashProxies;
+﻿using static v2rayN.Models.ClashProxies;
 
 namespace v2rayN.Models
 {
