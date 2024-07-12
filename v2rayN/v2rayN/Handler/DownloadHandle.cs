@@ -286,8 +286,6 @@ namespace v2rayN.Handler
             int responseTime = -1;
             try
             {
-                Stopwatch timer = Stopwatch.StartNew();
-
                 using var cts = new CancellationTokenSource();
                 cts.CancelAfter(TimeSpan.FromSeconds(downloadTimeout));
                 using var client = new HttpClient(new SocketsHttpHandler()
@@ -295,8 +293,12 @@ namespace v2rayN.Handler
                     Proxy = webProxy,
                     UseProxy = webProxy != null
                 });
+
+                var timer = Stopwatch.StartNew();
+
                 await client.GetAsync(url, cts.Token);
 
+                timer.Stop();
                 responseTime = (int)timer.Elapsed.TotalMilliseconds;
             }
             catch //(Exception ex)

@@ -377,13 +377,12 @@ namespace v2rayN.Handler
                     ipAddress = ipHostInfo.AddressList[0];
                 }
 
-                Stopwatch timer = new();
-                timer.Start();
+                var timer = Stopwatch.StartNew();
 
                 IPEndPoint endPoint = new(ipAddress, port);
                 using Socket clientSocket = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-                IAsyncResult result = clientSocket.BeginConnect(endPoint, null, null);
+                var result = clientSocket.BeginConnect(endPoint, null, null);
                 if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
                     throw new TimeoutException("connect timeout (5s): " + url);
                 clientSocket.EndConnect(result);
