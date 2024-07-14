@@ -113,41 +113,6 @@ namespace v2rayN.Handler.CoreConfig
                     return -1;
                 }
 
-                //overwrite port
-                if (node.preSocksPort <= 0)
-                {
-                    var fileContent = File.ReadAllLines(fileName).ToList();
-                    var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
-                    switch (coreType)
-                    {
-                        case ECoreType.v2fly:
-                        case ECoreType.SagerNet:
-                        case ECoreType.Xray:
-                        case ECoreType.v2fly_v5:
-                            break;
-
-                        case ECoreType.clash:
-                        case ECoreType.clash_meta:
-                        case ECoreType.mihomo:
-                            //remove the original
-                            var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
-                            if (indexPort >= 0)
-                            {
-                                fileContent.RemoveAt(indexPort);
-                            }
-                            indexPort = fileContent.FindIndex(t => t.Contains("socks-port:"));
-                            if (indexPort >= 0)
-                            {
-                                fileContent.RemoveAt(indexPort);
-                            }
-
-                            fileContent.Add($"port: {LazyConfig.Instance.GetLocalPort(EInboundProtocol.http)}");
-                            fileContent.Add($"socks-port: {LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)}");
-                            break;
-                    }
-                    File.WriteAllLines(fileName, fileContent);
-                }
-
                 msg = string.Format(ResUI.SuccessfulConfiguration, "");
             }
             catch (Exception ex)
