@@ -16,6 +16,8 @@ namespace v2rayN.Handler.CoreConfig
             _config = config;
         }
 
+        #region public gen function
+
         public int GenerateClientConfigContent(ProfileItem node, out V2rayConfig? v2rayConfig, out string msg)
         {
             v2rayConfig = null;
@@ -68,6 +70,152 @@ namespace v2rayN.Handler.CoreConfig
             }
             return 0;
         }
+
+        public int GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
+        {
+            v2rayConfig = null;
+            try
+            {
+                if (_config == null)
+                {
+                    msg = ResUI.CheckServerSettings;
+                    return -1;
+                }
+
+                msg = ResUI.InitialConfiguration;
+
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                {
+                    msg = ResUI.FailedGetDefaultConfiguration;
+                    return -1;
+                }
+
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+                if (v2rayConfig == null)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+                List<IPEndPoint> lstIpEndPoints = new();
+                List<TcpConnectionInformation> lstTcpConns = new();
+                try
+                {
+                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
+                    lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog(ex.Message, ex);
+                }
+
+                GenLog(v2rayConfig);
+                v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
+                v2rayConfig.outbounds.RemoveAt(0);
+
+                int httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.speedtest);
+
+                foreach (var it in selecteds)
+                {
+                    if (it.configType == EConfigType.Custom)
+                    {
+                        continue;
+                    }
+                    if (it.port <= 0)
+                    {
+                        continue;
+                    }
+                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
+                    {
+                        var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
+                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
+                        {
+                            continue;
+                        }
+                    }
+
+                    //find unused port
+                    var port = httpPort;
+                    for (int k = httpPort; k < Global.MaxPort; k++)
+                    {
+                        if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
+                        {
+                            continue;
+                        }
+                        if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
+                        {
+                            continue;
+                        }
+                        //found
+                        port = k;
+                        httpPort = port + 1;
+                        break;
+                    }
+
+                    //Port In Used
+                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
+                    {
+                        continue;
+                    }
+                    it.port = port;
+                    it.allowTest = true;
+
+                    //inbound
+                    Inbounds4Ray inbound = new()
+                    {
+                        listen = Global.Loopback,
+                        port = port,
+                        protocol = EInboundProtocol.http.ToString(),
+                    };
+                    inbound.tag = inbound.protocol + inbound.port.ToString();
+                    v2rayConfig.inbounds.Add(inbound);
+
+                    //outbound
+                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    if (item is null)
+                    {
+                        continue;
+                    }
+                    if (item.configType == EConfigType.Shadowsocks
+                        && !Global.SsSecuritiesInXray.Contains(item.security))
+                    {
+                        continue;
+                    }
+                    if (item.configType == EConfigType.VLESS
+                     && !Global.Flows.Contains(item.flow))
+                    {
+                        continue;
+                    }
+
+                    var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                    GenOutbound(item, outbound);
+                    outbound.tag = Global.ProxyTag + inbound.port.ToString();
+                    v2rayConfig.outbounds.Add(outbound);
+
+                    //rule
+                    RulesItem4Ray rule = new()
+                    {
+                        inboundTag = new List<string> { inbound.tag },
+                        outboundTag = outbound.tag,
+                        type = "field"
+                    };
+                    v2rayConfig.routing.rules.Add(rule);
+                }
+
+                //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                msg = ResUI.FailedGenDefaultConfiguration;
+                return -1;
+            }
+        }
+
+        #endregion public gen function
 
         #region private gen function
 
@@ -973,153 +1121,5 @@ namespace v2rayN.Handler.CoreConfig
         }
 
         #endregion private gen function
-
-        #region Gen speedtest config
-
-        public int GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
-        {
-            v2rayConfig = null;
-            try
-            {
-                if (_config == null)
-                {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
-                }
-
-                msg = ResUI.InitialConfiguration;
-
-                string result = Utils.GetEmbedText(Global.V2raySampleClient);
-                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
-                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
-                {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
-                }
-
-                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-                if (v2rayConfig == null)
-                {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
-                }
-                List<IPEndPoint> lstIpEndPoints = new();
-                List<TcpConnectionInformation> lstTcpConns = new();
-                try
-                {
-                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
-                    lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
-                    lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
-                }
-                catch (Exception ex)
-                {
-                    Logging.SaveLog(ex.Message, ex);
-                }
-
-                GenLog(v2rayConfig);
-                v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
-                v2rayConfig.outbounds.RemoveAt(0);
-
-                int httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.speedtest);
-
-                foreach (var it in selecteds)
-                {
-                    if (it.configType == EConfigType.Custom)
-                    {
-                        continue;
-                    }
-                    if (it.port <= 0)
-                    {
-                        continue;
-                    }
-                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
-                    {
-                        var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
-                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
-                        {
-                            continue;
-                        }
-                    }
-
-                    //find unused port
-                    var port = httpPort;
-                    for (int k = httpPort; k < Global.MaxPort; k++)
-                    {
-                        if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
-                        {
-                            continue;
-                        }
-                        if (lstTcpConns?.FindIndex(_it => _it.LocalEndPoint.Port == k) >= 0)
-                        {
-                            continue;
-                        }
-                        //found
-                        port = k;
-                        httpPort = port + 1;
-                        break;
-                    }
-
-                    //Port In Used
-                    if (lstIpEndPoints?.FindIndex(_it => _it.Port == port) >= 0)
-                    {
-                        continue;
-                    }
-                    it.port = port;
-                    it.allowTest = true;
-
-                    //inbound
-                    Inbounds4Ray inbound = new()
-                    {
-                        listen = Global.Loopback,
-                        port = port,
-                        protocol = EInboundProtocol.http.ToString(),
-                    };
-                    inbound.tag = inbound.protocol + inbound.port.ToString();
-                    v2rayConfig.inbounds.Add(inbound);
-
-                    //outbound
-                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
-                    if (item is null)
-                    {
-                        continue;
-                    }
-                    if (item.configType == EConfigType.Shadowsocks
-                        && !Global.SsSecuritiesInXray.Contains(item.security))
-                    {
-                        continue;
-                    }
-                    if (item.configType == EConfigType.VLESS
-                     && !Global.Flows.Contains(item.flow))
-                    {
-                        continue;
-                    }
-
-                    var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(item, outbound);
-                    outbound.tag = Global.ProxyTag + inbound.port.ToString();
-                    v2rayConfig.outbounds.Add(outbound);
-
-                    //rule
-                    RulesItem4Ray rule = new()
-                    {
-                        inboundTag = new List<string> { inbound.tag },
-                        outboundTag = outbound.tag,
-                        type = "field"
-                    };
-                    v2rayConfig.routing.rules.Add(rule);
-                }
-
-                //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                msg = ResUI.FailedGenDefaultConfiguration;
-                return -1;
-            }
-        }
-
-        #endregion Gen speedtest config
     }
 }

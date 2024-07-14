@@ -28,7 +28,12 @@ namespace v2rayN.Handler.CoreConfig
                     if (node.coreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo)
                     {
                         var configGenClash = new CoreConfigClash(config);
-                        return configGenClash.GenerateClientConfig(node, fileName, out msg);
+                        return configGenClash.GenerateClientCustomConfig(node, fileName, out msg);
+                    }
+                    if (node.coreType is ECoreType.sing_box)
+                    {
+                        var configGenSingbox = new CoreConfigSingbox(config);
+                        return configGenSingbox.GenerateClientCustomConfig(node, fileName, out msg);
                     }
                     else
                     {

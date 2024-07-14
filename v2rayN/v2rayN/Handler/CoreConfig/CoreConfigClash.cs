@@ -25,7 +25,7 @@ namespace v2rayN.Handler.CoreConfig
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public int GenerateClientConfig(ProfileItem node, string? fileName, out string msg)
+        public int GenerateClientCustomConfig(ProfileItem node, string? fileName, out string msg)
         {
             if (node == null || fileName is null)
             {

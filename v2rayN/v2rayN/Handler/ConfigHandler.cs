@@ -1081,7 +1081,7 @@ namespace v2rayN.Handler
                 return -1;
             }
 
-            var profileItem = LazyConfig.Instance.GetProfileItem(config.indexId) ?? new();
+            var profileItem = LazyConfig.Instance.GetProfileItem(indexId) ?? new();
             profileItem.indexId = indexId;
             profileItem.remarks = "Multi-server Config";
             profileItem.address = Global.CoreMultipleLoadConfigFileName;

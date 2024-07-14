@@ -26,13 +26,23 @@
                 VerticalAlignment="Center"
                 ClipToBounds="True"
                 Style="{StaticResource MaterialDesignToolBar}">
-                <Button x:Name="menuReload">
+                <Button x:Name="menuProxiesReload">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon
                             Margin="0,0,8,0"
                             VerticalAlignment="Center"
                             Kind="Reload" />
                         <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuProxiesReload}" />
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button x:Name="menuProxiesDelaytest">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Kind="LightningBolt" />
+                        <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuProxiesDelaytest}" />
                     </StackPanel>
                 </Button>
                 <Separator />
@@ -85,12 +95,6 @@
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 Style="{StaticResource MaterialDesignListView}">
-                <ListView.ContextMenu>
-                    <ContextMenu Style="{StaticResource DefContextMenu}">
-                        <MenuItem x:Name="menuProxiesReload" Header="{x:Static resx:ResUI.menuProxiesReload}" />
-                        <MenuItem x:Name="menuProxiesDelaytest" Header="{x:Static resx:ResUI.menuProxiesDelaytest}" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -98,20 +102,23 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="200" Padding="0">
+                        <Border
+                            Width="160"
+                            Margin="4,0"
+                            Padding="0">
                             <DockPanel>
                                 <Grid Grid.Column="0" Margin="4">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource ListItemTitle}" Text="{Binding name}" />
+                                    <DockPanel Grid.Row="0">
                                         <TextBlock
-                                            Margin="8,0,0,0"
+                                            DockPanel.Dock="Right"
                                             Style="{StaticResource ListItemSubTitle}"
                                             Text="{Binding type}" />
-                                    </StackPanel>
+                                        <TextBlock Style="{StaticResource ListItemTitle}" Text="{Binding name}" />
+                                    </DockPanel>
                                     <TextBlock
                                         Grid.Row="1"
                                         Style="{StaticResource ListItemSubTitle}"

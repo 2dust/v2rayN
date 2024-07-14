@@ -1283,7 +1283,7 @@
     <value>规则</value>
   </data>
   <data name="menuProxiesDelaytest" xml:space="preserve">
-    <value>全部节点延迟测试</value>
+    <value>延迟测试</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
     <value>当前部分节点延迟测试</value>
