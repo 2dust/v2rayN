@@ -50,6 +50,7 @@
         public bool? ip_is_private { get; set; }
         public string? client_subnet { get; set; }
         public bool? invert { get; set; }
+        public string? clash_mode { get; set; }
         public List<string>? inbound { get; set; }
         public List<string>? protocol { get; set; }
         public List<string>? network { get; set; }

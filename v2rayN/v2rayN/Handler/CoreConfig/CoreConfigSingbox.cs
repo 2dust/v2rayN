@@ -903,6 +903,17 @@ namespace v2rayN.Handler.CoreConfig
                     });
                 }
 
+                singboxConfig.route.rules.Insert(0, new()
+                {
+                    outbound = Global.DirectTag,
+                    clash_mode = ERuleMode.Direct.ToString()
+                });
+                singboxConfig.route.rules.Insert(0, new()
+                {
+                    outbound = Global.ProxyTag,
+                    clash_mode = ERuleMode.Global.ToString()
+                });
+
                 if (_config.tunModeItem.enableTun)
                 {
                     singboxConfig.route.auto_detect_interface = true;
@@ -1191,6 +1202,16 @@ namespace v2rayN.Handler.CoreConfig
                 address = "223.5.5.5",
                 detour = Global.DirectTag,
                 strategy = Utils.IsNullOrEmpty(strategy) ? null : strategy,
+            });
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = tag,
+                clash_mode = ERuleMode.Direct.ToString()
+            });
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
+                clash_mode = ERuleMode.Global.ToString()
             });
 
             var lstDomain = singboxConfig.outbounds
