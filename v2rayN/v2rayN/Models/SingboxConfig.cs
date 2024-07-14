@@ -130,6 +130,8 @@
         public Multiplex4Sbox? multiplex { get; set; }
         public Transport4Sbox? transport { get; set; }
         public HyObfs4Sbox? obfs { get; set; }
+        public List<string>? outbounds { get; set; }
+        public bool? interrupt_exist_connections { get; set; }
     }
 
     public class Tls4Sbox

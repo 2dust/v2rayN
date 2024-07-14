@@ -144,5 +144,16 @@ namespace v2rayN.Handler.CoreConfig
             }
             return 0;
         }
+
+        public static int GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, out string msg)
+        {
+            if (new CoreConfigSingbox(config).GenerateClientMultipleLoadConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+            {
+                return -1;
+            }
+            JsonUtils.ToFile(singboxConfig, fileName, false);
+
+            return 0;
+        }
     }
 }

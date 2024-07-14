@@ -1292,12 +1292,15 @@
     <value>Part Node Latency Test</value>
   </data>
   <data name="menuProxiesReload" xml:space="preserve">
-    <value>Refresh Proxies (F5)</value>
+    <value>Refresh Proxies</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>Select active node (Enter)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Default domain strategy for outbound</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-server set to active</value>
   </data>
 </root>

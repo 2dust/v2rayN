@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using v2rayN.Enums;
+using v2rayN.Handler.CoreConfig;
 using v2rayN.Handler.Fmt;
 using v2rayN.Models;
 
@@ -1061,6 +1062,33 @@ namespace v2rayN.Handler
             {
                 Logging.SaveLog("Remove Item", ex);
             }
+
+            return 0;
+        }
+
+        public static int AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, out string indexId)
+        {
+            indexId = Utils.GetMD5(Global.CoreMultipleLoadConfigFileName);
+            string configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
+            if (CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, out string msg) != 0)
+            {
+                return -1;
+            }
+
+            var fileName = configPath;
+            if (!File.Exists(fileName))
+            {
+                return -1;
+            }
+
+            var profileItem = LazyConfig.Instance.GetProfileItem(config.indexId) ?? new();
+            profileItem.indexId = indexId;
+            profileItem.remarks = "Multi-server Config";
+            profileItem.address = Global.CoreMultipleLoadConfigFileName;
+            profileItem.configType = EConfigType.Custom;
+            profileItem.coreType = ECoreType.sing_box;
+
+            AddServerCommon(config, profileItem, true);
 
             return 0;
         }

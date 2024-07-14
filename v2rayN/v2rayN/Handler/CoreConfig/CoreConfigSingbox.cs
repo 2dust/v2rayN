@@ -804,7 +804,7 @@ namespace v2rayN.Handler.CoreConfig
             return true;
         }
 
-        private int GenDns(ProfileItem node, SingboxConfig singboxConfig)
+        private int GenDns(ProfileItem? node, SingboxConfig singboxConfig)
         {
             try
             {
@@ -853,6 +853,7 @@ namespace v2rayN.Handler.CoreConfig
             var lstDomain = singboxConfig.outbounds
                            .Where(t => !Utils.IsNullOrEmpty(t.server) && Utils.IsDomain(t.server))
                            .Select(t => t.server)
+                           .Distinct()
                            .ToList();
             if (lstDomain != null && lstDomain.Count > 0)
             {
@@ -1169,5 +1170,123 @@ namespace v2rayN.Handler.CoreConfig
         }
 
         #endregion Gen speedtest config
+
+        #region Gen Multiple Load config
+
+        public int GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, out SingboxConfig? singboxConfig, out string msg)
+        {
+            singboxConfig = null;
+            try
+            {
+                if (_config == null)
+                {
+                    msg = ResUI.CheckServerSettings;
+                    return -1;
+                }
+
+                msg = ResUI.InitialConfiguration;
+
+                string result = Utils.GetEmbedText(Global.SingboxSampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                {
+                    msg = ResUI.FailedGetDefaultConfiguration;
+                    return -1;
+                }
+
+                singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
+                if (singboxConfig == null)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+
+                GenLog(singboxConfig);
+                GenInbounds(singboxConfig);
+                GenRouting(singboxConfig);
+                GenExperimental(singboxConfig);
+                singboxConfig.outbounds.RemoveAt(0);
+
+                var tagProxy = new List<string>();
+                foreach (var it in selecteds)
+                {
+                    if (it.configType == EConfigType.Custom)
+                    {
+                        continue;
+                    }
+                    if (it.port <= 0)
+                    {
+                        continue;
+                    }
+                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    if (item is null)
+                    {
+                        continue;
+                    }
+                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
+                    {
+                        if (Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
+                        {
+                            continue;
+                        }
+                    }
+                    if (item.configType == EConfigType.Shadowsocks
+                      && !Global.SsSecuritiesInSingbox.Contains(item.security))
+                    {
+                        continue;
+                    }
+                    if (item.configType == EConfigType.VLESS && !Global.Flows.Contains(item.flow))
+                    {
+                        continue;
+                    }
+
+                    //outbound
+                    var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                    GenOutbound(item, outbound);
+                    outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
+                    singboxConfig.outbounds.Add(outbound);
+                    tagProxy.Add(outbound.tag);
+                }
+                if (tagProxy.Count <= 0)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+
+                GenDns(null, singboxConfig);
+                ConvertGeo2Ruleset(singboxConfig);
+
+                //add urltest outbound
+                var outUrltest = new Outbound4Sbox
+                {
+                    type = "urltest",
+                    tag = $"{Global.ProxyTag}-auto",
+                    outbounds = tagProxy,
+                    interrupt_exist_connections = false,
+                };
+                singboxConfig.outbounds.Add(outUrltest);
+
+                //add selector outbound
+                var outSelector = new Outbound4Sbox
+                {
+                    type = "selector",
+                    tag = Global.ProxyTag,
+                    outbounds = JsonUtils.DeepCopy(tagProxy),
+                    interrupt_exist_connections = false,
+                };
+                outSelector.outbounds.Insert(0, outUrltest.tag);
+                singboxConfig.outbounds.Add(outSelector);
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                msg = ResUI.FailedGenDefaultConfiguration;
+                return -1;
+            }
+        }
+
+        #endregion Gen Multiple config
     }
 }

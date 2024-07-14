@@ -581,6 +581,10 @@
                                         x:Name="menuShareServer"
                                         Height="{StaticResource MenuItemHeight}"
                                         Header="{x:Static resx:ResUI.menuShareServer}" />
+                                    <MenuItem
+                                        x:Name="menuSetDefaultMultipleServer"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}" />
                                     <Separator />
                                     <MenuItem
                                         x:Name="menuMixedTestServer"

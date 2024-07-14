@@ -106,6 +106,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
         public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerCmd { get; }
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -397,6 +398,10 @@ namespace v2rayN.ViewModels
             ShareServerCmd = ReactiveCommand.Create(() =>
             {
                 ShareServer();
+            }, canEditRemove);
+            SetDefaultMultipleServerCmd = ReactiveCommand.Create(() =>
+            {
+                SetDefaultMultipleServer();
             }, canEditRemove);
             //servers move
             MoveTopCmd = ReactiveCommand.Create(() =>
@@ -1166,6 +1171,28 @@ namespace v2rayN.ViewModels
             await DialogHost.Show(dialog, "RootDialog");
         }
 
+        private void SetDefaultMultipleServer()
+        {
+            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
+            {
+                return;
+            }
+
+            if (ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, out string indexId) != 0)
+            {
+                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                return;
+            }
+            if (indexId == _config.indexId)
+            {
+                Reload();
+            }
+            else
+            {
+                SetDefaultServer(indexId);
+            }
+        }
+
         public void SortServer(string colName)
         {
             if (Utils.IsNullOrEmpty(colName))
@@ -1519,7 +1546,7 @@ namespace v2rayN.ViewModels
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
                     BlReloadEnabled = true;
-                    ShowCalshUI = (_config.runningCoreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
+                    ShowCalshUI = (_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
                     if (ShowCalshUI)
                     {
                         Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
@@ -1532,7 +1559,8 @@ namespace v2rayN.ViewModels
         {
             await Task.Run(() =>
             {
-                _coreHandler.LoadCore();
+                var node = ConfigHandler.GetDefaultServer(_config);
+                _coreHandler.LoadCore(node);
 
                 //ConfigHandler.SaveConfig(_config, false);
 

@@ -1066,9 +1066,6 @@
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
     <value>Part Node Latency Test</value>
   </data>
-  <data name="menuProxiesReload" xml:space="preserve">
-    <value>Refresh Proxies (F5)</value>
-  </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>Select active node (Enter)</value>
   </data>

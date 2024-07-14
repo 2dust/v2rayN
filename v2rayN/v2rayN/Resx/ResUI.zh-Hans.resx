@@ -1289,12 +1289,15 @@
     <value>当前部分节点延迟测试</value>
   </data>
   <data name="menuProxiesReload" xml:space="preserve">
-    <value>刷新 (F5)</value>
+    <value>刷新</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>设为活动节点 (Enter)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Outbound默认解析策略</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>多服务器设为活动(多选)</value>
   </data>
 </root>

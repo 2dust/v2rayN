@@ -1078,7 +1078,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Refresh Proxies (F5) 的本地化字符串。
+        ///   查找类似 Refresh Proxies 的本地化字符串。
         /// </summary>
         public static string menuProxiesReload {
             get {
@@ -1299,6 +1299,15 @@ namespace v2rayN.Resx {
         public static string menuServers {
             get {
                 return ResourceManager.GetString("menuServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-server set to active 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServer {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServer", resourceCulture);
             }
         }
         

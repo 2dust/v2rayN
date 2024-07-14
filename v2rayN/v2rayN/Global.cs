@@ -30,6 +30,7 @@ namespace v2rayN
         public const string CoreConfigFileName = "config.json";
         public const string CorePreConfigFileName = "configPre.json";
         public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
+        public const string CoreMultipleLoadConfigFileName = "configMultipleLoad.json";
         public const string ClashMixinConfigFileName = "Mixin.yaml";
         public const string V2raySampleClient = "v2rayN.Sample.SampleClientConfig";
         public const string SingboxSampleClient = "v2rayN.Sample.SingboxSampleClientConfig";
