@@ -12,7 +12,7 @@ namespace v2rayN.Handler
             _snackbarMessageQueue = snackbarMessageQueue ?? throw new ArgumentNullException(nameof(snackbarMessageQueue));
         }
 
-        public void Enqueue(string content)
+        public void Enqueue(string? content)
         {
             if (content.IsNullOrEmpty())
             {
@@ -21,18 +21,26 @@ namespace v2rayN.Handler
             _snackbarMessageQueue?.Enqueue(content);
         }
 
-        public void SendMessage(string msg)
+        public void SendMessage(string? content)
         {
-            MessageBus.Current.SendMessage(msg, Global.CommandSendMsgView);
+            if (content.IsNullOrEmpty())
+            {
+                return;
+            }
+            MessageBus.Current.SendMessage(content, Global.CommandSendMsgView);
         }
 
-        public void SendMessage(string msg, bool time)
+        public void SendMessage(string? content, bool time)
         {
-            msg = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {msg}";
-            SendMessage(msg);
+            if (content.IsNullOrEmpty())
+            {
+                return;
+            }
+            content = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {content}";
+            SendMessage(content);
         }
 
-        public void SendMessageAndEnqueue(string msg)
+        public void SendMessageAndEnqueue(string? msg)
         {
             Enqueue(msg);
             SendMessage(msg);
