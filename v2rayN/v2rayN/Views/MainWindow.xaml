@@ -657,10 +657,6 @@
                                         x:Name="menuExport2ShareUrl"
                                         Height="{StaticResource MenuItemHeight}"
                                         Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
-                                    <MenuItem
-                                        x:Name="menuExport2SubContent"
-                                        Height="{StaticResource MenuItemHeight}"
-                                        Header="{x:Static resx:ResUI.menuExport2SubContent}" />
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Resources>

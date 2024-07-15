@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
-    <value>Batch export subscription to clipboard successfully</value>
-  </data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Batch export share URL to clipboard successfully</value>
   </data>
@@ -159,9 +156,6 @@
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>Please fill in the correct format server port</value>
   </data>
-  <data name="FillKcpParameters" xml:space="preserve">
-    <value>Please fill in the KCP parameters correctly</value>
-  </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>Please fill in the local listening port</value>
   </data>
@@ -174,14 +168,8 @@
   <data name="FillUUID" xml:space="preserve">
     <value>Please fill in the user ID</value>
   </data>
-  <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value>Is not the correct client configuration file, please check</value>
-  </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>Is not the correct configuration, please check</value>
-  </data>
-  <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value>Is not the correct server configuration file, please check</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
@@ -266,9 +254,6 @@
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
     <value>Non-VMess or ss protocol</value>
-  </data>
-  <data name="NonVmessService" xml:space="preserve">
-    <value>Non-standard service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
@@ -415,14 +400,8 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Please browse to import server configuration</value>
   </data>
-  <data name="SystemProxy" xml:space="preserve">
-    <value>System proxy</value>
-  </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Testing...</value>
-  </data>
-  <data name="TooManyServersTip" xml:space="preserve">
-    <value>Too many servers, please open the main interface</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
     <value>LAN</value>
@@ -544,17 +523,11 @@
   <data name="menuTcpingServer" xml:space="preserve">
     <value>Test servers with tcping (Ctrl+O)</value>
   </data>
-  <data name="menuTestMe" xml:space="preserve">
-    <value>Test current service status</value>
-  </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Export selected server for client configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Export share URLs to clipboard (Ctrl+C)</value>
-  </data>
-  <data name="menuExport2SubContent" xml:space="preserve">
-    <value>Export subscription (base64) share to clipboard</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Add a custom configuration server</value>
@@ -585,9 +558,6 @@
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>Copy all</value>
-  </data>
-  <data name="menuMsgViewFilter" xml:space="preserve">
-    <value>Set message filters</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
     <value>Select all (Ctrl+A)</value>
@@ -988,20 +958,8 @@
   <data name="TbSettingsTunMode" xml:space="preserve">
     <value>TunMode settings</value>
   </data>
-  <data name="TbSettingsTunModeDirectIP" xml:space="preserve">
-    <value>Direct IP CIDR, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeDirectProcess" xml:space="preserve">
-    <value>Direct Process name, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>Show console</value>
-  </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>Move to group</value>
-  </data>
-  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
-    <value>Custom Template</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Enable Server Drag Drop Sort(Require restart)</value>
@@ -1045,23 +1003,11 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>Font Size</value>
   </data>
-  <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
-    <value>Proxy IP CIDR, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeProxyProcess" xml:space="preserve">
-    <value>Proxy Process name, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
-    <value>Bypass Mode</value>
-  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>SpeedTest Single Timeout Value</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>SpeedTest URL</value>
-  </data>
-  <data name="TbSettingsTunModeDNS" xml:space="preserve">
-    <value>DNS object, e.g. {"servers":[]}</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>

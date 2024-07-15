@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
-    <value>批次匯出訂閱內容至剪貼簿成功</value>
-  </data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>批次匯出分享URL至剪貼簿成功</value>
   </data>
@@ -159,9 +156,6 @@
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>請填寫正確格式伺服器埠</value>
   </data>
-  <data name="FillKcpParameters" xml:space="preserve">
-    <value>請正確填寫KCP參數</value>
-  </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>請填寫本機監聽埠</value>
   </data>
@@ -174,14 +168,8 @@
   <data name="FillUUID" xml:space="preserve">
     <value>請填寫使用者ID</value>
   </data>
-  <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value>不是正確的用戶端配置檔案，請檢查</value>
-  </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>不是正確的配置，請檢查</value>
-  </data>
-  <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value>不是正確的服務端配置檔案，請檢查</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>初始化配置</value>
@@ -266,9 +254,6 @@
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
     <value>非VMess或SS協定</value>
-  </data>
-  <data name="NonVmessService" xml:space="preserve">
-    <value>非標準服務，此功能無效</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>在資料夾 ({0}) 下未找到Core文件 (檔案名:{1})，請下載後放入資料夾、，下載網址: {2}</value>
@@ -414,14 +399,8 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>請瀏覽匯入伺服器配置</value>
   </data>
-  <data name="SystemProxy" xml:space="preserve">
-    <value>系統代理</value>
-  </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>測試中...</value>
-  </data>
-  <data name="TooManyServersTip" xml:space="preserve">
-    <value>伺服器太多，請打開主介面操作</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
     <value>區域網路</value>
@@ -543,17 +522,11 @@
   <data name="menuTcpingServer" xml:space="preserve">
     <value>測試伺服器延遲Tcping(多選) (Ctrl+O)</value>
   </data>
-  <data name="menuTestMe" xml:space="preserve">
-    <value>測試目前服務狀態</value>
-  </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>匯出所選伺服器為用戶端配置</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>批次匯出分享URL至剪貼簿(多選) (Ctrl+C)</value>
-  </data>
-  <data name="menuExport2SubContent" xml:space="preserve">
-    <value>批次匯出訂閱內容至剪貼簿(多選)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>新增自訂配置伺服器</value>
@@ -584,9 +557,6 @@
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>複製所有</value>
-  </data>
-  <data name="menuMsgViewFilter" xml:space="preserve">
-    <value>設定資訊過濾器</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
     <value>全選 (Ctrl+A)</value>
@@ -988,20 +958,8 @@
   <data name="TbSettingsTunMode" xml:space="preserve">
     <value>TUN模式設定</value>
   </data>
-  <data name="TbSettingsTunModeDirectIP" xml:space="preserve">
-    <value>直連的IP CIDR，用逗號(,)分隔</value>
-  </data>
-  <data name="TbSettingsTunModeDirectProcess" xml:space="preserve">
-    <value>直連的行程名，用逗號(,)分隔</value>
-  </data>
-  <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>顯示控制台</value>
-  </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>移至訂閱分組</value>
-  </data>
-  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
-    <value>自訂配置模板</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>啟動伺服器拖放排序(需重啟)</value>
@@ -1045,23 +1003,11 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>字型大小</value>
   </data>
-  <data name="TbSettingsTunModeProxyIP" xml:space="preserve">
-    <value>代理的IP CIDR，用逗號(,)分隔</value>
-  </data>
-  <data name="TbSettingsTunModeProxyProcess" xml:space="preserve">
-    <value>代理的行程名，用逗號(,)分隔</value>
-  </data>
-  <data name="TbSettingsTunModeBypassMode" xml:space="preserve">
-    <value>繞行模式</value>
-  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>測速單個超時值</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>測速檔案位址</value>
-  </data>
-  <data name="TbSettingsTunModeDNS" xml:space="preserve">
-    <value>DNS物件，例如 {"servers":[]}</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>移至上下</value>

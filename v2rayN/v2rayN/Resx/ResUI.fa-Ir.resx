@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
-    <value>صادرات دسته ای محتوای اشتراک به کلیپ بورد با موفقیت انجام شد</value>
-  </data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Batch export share URL to clipboard successfully</value>
   </data>
@@ -159,9 +156,6 @@
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>لطفا فرمت صحیح پورت سرور را پر کنید</value>
   </data>
-  <data name="FillKcpParameters" xml:space="preserve">
-    <value>لطفاً پارامترهای KCP را به درستی پر کنید</value>
-  </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>لطفاً پورت گوش دادن محلی را پر کنید</value>
   </data>
@@ -174,14 +168,8 @@
   <data name="FillUUID" xml:space="preserve">
     <value>لطفا شناسه کاربری را وارد کنید</value>
   </data>
-  <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value>فایل پیکربندی مشتری صحیح نیست، لطفا بررسی کنید</value>
-  </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>پیکربندی درستی نیست، لطفا بررسی کنید</value>
-  </data>
-  <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value>فایل پیکربندی سرور صحیح نیست، لطفا بررسی کنید</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>پیکربندی اولیه</value>
@@ -266,9 +254,6 @@
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
     <value>Non-VMess or ss protocol</value>
-  </data>
-  <data name="NonVmessService" xml:space="preserve">
-    <value> non-standard service, this feature is invalid</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
@@ -415,14 +400,8 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Please browse to import server configuration</value>
   </data>
-  <data name="SystemProxy" xml:space="preserve">
-    <value>پروکسی سیستم</value>
-  </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>درحال تست کردن...</value>
-  </data>
-  <data name="TooManyServersTip" xml:space="preserve">
-    <value>تعداد سرورها خیلی زیاد است، لطفا رابط اصلی را باز کنید</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
     <value>LAN</value>
@@ -541,17 +520,11 @@
   <data name="menuTcpingServer" xml:space="preserve">
     <value>تست سرورها با tcping (Ctrl+O)</value>
   </data>
-  <data name="menuTestMe" xml:space="preserve">
-    <value>وضعیت سرویس فعلی را تست کنید</value>
-  </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>سرور انتخابی را برای پیکربندی کلاینت صادر کنید</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>URL های اشتراک گذاری را به کلیپ بورد صادر کنید (Ctrl+C)</value>
-  </data>
-  <data name="menuExport2SubContent" xml:space="preserve">
-    <value>اشتراک (base64) را به کلیپ بورد صادر کنید</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>یک سرور پیکربندی سفارشی اضافه شود</value>
@@ -582,9 +555,6 @@
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>کپی همه</value>
-  </data>
-  <data name="menuMsgViewFilter" xml:space="preserve">
-    <value>فیلترهای پیام را تنظیم کنید</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
     <value>انتخاب همه (Ctrl+A)</value>
@@ -984,15 +954,6 @@
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
     <value>تنظیمات TunMode</value>
-  </data>
-  <data name="TbSettingsTunModeDirectIP" xml:space="preserve">
-    <value>Direct IP CIDR, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeDirectProcess" xml:space="preserve">
-    <value>Direct Process name, separated by commas (,)</value>
-  </data>
-  <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>نمایش کنسول</value>
   </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
     <value>User-Agent</value>

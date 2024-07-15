@@ -127,7 +127,6 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
 
         public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
-        public ReactiveCommand<Unit, Unit> Export2SubContentCmd { get; }
 
         //Subscription
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
@@ -450,10 +449,6 @@ namespace v2rayN.ViewModels
             Export2ShareUrlCmd = ReactiveCommand.Create(() =>
             {
                 Export2ShareUrl();
-            }, canEditRemove);
-            Export2SubContentCmd = ReactiveCommand.Create(() =>
-            {
-                Export2SubContent();
             }, canEditRemove);
 
             //Subscription
@@ -1319,7 +1314,7 @@ namespace v2rayN.ViewModels
             StringBuilder sb = new();
             foreach (var it in lstSelecteds)
             {
-                string url = FmtHandler.GetShareUri(it);
+                var url = FmtHandler.GetShareUri(it);
                 if (Utils.IsNullOrEmpty(url))
                 {
                     continue;
@@ -1331,31 +1326,6 @@ namespace v2rayN.ViewModels
             {
                 Utils.SetClipboardData(sb.ToString());
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
-            }
-        }
-
-        private void Export2SubContent()
-        {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
-            {
-                return;
-            }
-
-            StringBuilder sb = new();
-            foreach (var it in lstSelecteds)
-            {
-                string? url = FmtHandler.GetShareUri(it);
-                if (Utils.IsNullOrEmpty(url))
-                {
-                    continue;
-                }
-                sb.Append(url);
-                sb.AppendLine();
-            }
-            if (sb.Length > 0)
-            {
-                Utils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
-                _noticeHandler?.SendMessage(ResUI.BatchExportSubscriptionSuccessfully);
             }
         }
 

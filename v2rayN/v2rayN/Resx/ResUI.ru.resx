@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BatchExportSubscriptionSuccessfully" xml:space="preserve">
-    <value>Экспортирование подписок в буфер обмена успешно завершено</value>
-  </data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Экспортирование URL в буфер обмена успешно завершено</value>
   </data>
@@ -159,9 +156,6 @@
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>Пожалуйста, укажите порт сервера в правильном формате</value>
   </data>
-  <data name="FillKcpParameters" xml:space="preserve">
-    <value>Пожалуйста, заполните параметры KCP корректно</value>
-  </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>Пожалуйста, укажите локальный порт прослушивания</value>
   </data>
@@ -174,14 +168,8 @@
   <data name="FillUUID" xml:space="preserve">
     <value>Пожалуйста, заполните идентификатор пользователя</value>
   </data>
-  <data name="IncorrectClientConfiguration" xml:space="preserve">
-    <value>Некорректный файл конфигурации клиента, пожалуйста, проверьте</value>
-  </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>Некорректная конфигурация, пожалуйста, проверьте</value>
-  </data>
-  <data name="IncorrectServerConfiguration" xml:space="preserve">
-    <value>Некорректный файл конфигурации сервера, пожалуйста, проверьте</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Исходная конфигурация</value>
@@ -266,9 +254,6 @@
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
     <value>Не является протоколом Vmess или SS</value>
-  </data>
-  <data name="NonVmessService" xml:space="preserve">
-    <value> нестандартный сервис, эта функция недействительна</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>Файл Core (имя файла: {1}) не найден в папке ({0}), загрузите и поместите его в папку, адрес загрузки: {2}</value>
@@ -415,14 +400,8 @@
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Пожалуйста, просмотрите, чтобы импортировать конфигурацию сервера</value>
   </data>
-  <data name="SystemProxy" xml:space="preserve">
-    <value>Системный прокси</value>
-  </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Тестирование...</value>
-  </data>
-  <data name="TooManyServersTip" xml:space="preserve">
-    <value>Слишком много серверов, пожалуйста, откройте главный интерфейс</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
     <value>LAN</value>
@@ -544,17 +523,11 @@
   <data name="menuTcpingServer" xml:space="preserve">
     <value>Тест задержки с tcping (Ctrl+O)</value>
   </data>
-  <data name="menuTestMe" xml:space="preserve">
-    <value>Проверить текущий статус службы</value>
-  </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Экспортировать выбранный сервер для клиента</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Экспорт URL-адресов общего доступа в буфер обмена (Ctrl+C)</value>
-  </data>
-  <data name="menuExport2SubContent" xml:space="preserve">
-    <value>Экспортировать ссылку-подписку (base64) в буфер обмена</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Добавить сервер пользовательской конфигурации</value>
@@ -585,9 +558,6 @@
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>Скопировать все</value>
-  </data>
-  <data name="menuMsgViewFilter" xml:space="preserve">
-    <value>Установить фильтры сообщений</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
     <value>Выбрать все (Ctrl+A)</value>
@@ -994,20 +964,8 @@
   <data name="TbSettingsTunMode" xml:space="preserve">
     <value>Настройки TunMode</value>
   </data>
-  <data name="TbSettingsTunModeDirectIP" xml:space="preserve">
-    <value>Прямой IP CIDR, разделенный запятыми (,)</value>
-  </data>
-  <data name="TbSettingsTunModeDirectProcess" xml:space="preserve">
-    <value>Имя процесса, разделенное запятыми (,)</value>
-  </data>
-  <data name="TbSettingsTunModeShowWindow" xml:space="preserve">
-    <value>Показать консоль</value>
-  </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>Перейти в группу</value>
-  </data>
-  <data name="TbSettingsTunModeCustomTemplate" xml:space="preserve">
-    <value>Пользовательский шаблон</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Включить сортировку перетаскиванием сервера (требуется перезагрузка)</value>

@@ -126,11 +126,6 @@ namespace v2rayN.Handler
             {
                 return;
             }
-            if (item.configType == EConfigType.Custom)
-            {
-                Locator.Current.GetService<NoticeHandler>()?.Enqueue(ResUI.NonVmessService);
-                return;
-            }
 
             SaveFileDialog fileDialog = new()
             {
