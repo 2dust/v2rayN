@@ -10,15 +10,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel Margin="2">
-        <StackPanel
+        <WrapPanel
+            Margin="8"
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.MsgInformationTitle}" />
+
             <ComboBox
                 x:Name="cmbMsgFilter"
                 Width="200"
@@ -28,6 +25,24 @@
                 IsEditable="True"
                 Style="{StaticResource DefComboBox}"
                 TextBoxBase.TextChanged="cmbMsgFilter_TextChanged" />
+            <Button
+                x:Name="btnCopy"
+                Width="30"
+                Height="30"
+                Margin="8,0"
+                Click="menuMsgViewCopyAll_Click"
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
+            </Button>
+            <Button
+                x:Name="btnClear"
+                Width="30"
+                Height="30"
+                Margin="8,0"
+                Click="menuMsgViewClear_Click"
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
+            </Button>
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
@@ -48,7 +63,7 @@
                 Margin="8,0"
                 HorizontalAlignment="Left"
                 IsChecked="True" />
-        </StackPanel>
+        </WrapPanel>
         <TextBox
             Name="txtMsg"
             BorderThickness="0"

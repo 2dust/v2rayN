@@ -2,6 +2,9 @@
 using Splat;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using v2rayN.Enums;
 using v2rayN.Handler.CoreConfig;
@@ -222,6 +225,28 @@ namespace v2rayN.Handler
             HotkeyHandler.Instance.UpdateViewEvent += update;
             HotkeyHandler.Instance.HotkeyTriggerEvent += handler;
             HotkeyHandler.Instance.Load();
+        }
+
+        public void RegisterSystemColorSet(Config config, Window window, Action<bool> update)
+        {
+            var helper = new WindowInteropHelper(window);
+            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
+            hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            {
+                if (config.uiItem.followSystemTheme)
+                {
+                    const int WM_SETTINGCHANGE = 0x001A;
+                    if (msg == WM_SETTINGCHANGE)
+                    {
+                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
+                        {
+                            update(!Utils.IsLightTheme());                            
+                        }
+                    }
+                }
+
+                return IntPtr.Zero;
+            });
         }
     }
 }

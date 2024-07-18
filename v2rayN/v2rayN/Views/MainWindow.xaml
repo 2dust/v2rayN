@@ -326,8 +326,7 @@
                                         x:Name="togDarkMode"
                                         Grid.Row="0"
                                         Grid.Column="1"
-                                        Margin="8"
-                                        IsEnabled="{Binding ElementName=followSystemTheme, Path=IsChecked, Converter={StaticResource InverseBooleanConverter}}" />
+                                        Margin="8" />
 
                                     <TextBlock
                                         Grid.Row="1"

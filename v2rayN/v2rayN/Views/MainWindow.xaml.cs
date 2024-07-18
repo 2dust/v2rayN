@@ -2,7 +2,6 @@
 using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -141,9 +140,6 @@ namespace v2rayN.Views
                 this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashUI.Visibility).DisposeWith(disposables);
             });
 
-            RestoreUI();
-            AddHelpMenuItem();
-
             var IsAdministrator = Utils.IsAdministrator();
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
@@ -152,36 +148,14 @@ namespace v2rayN.Views
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
 
-            var helper = new WindowInteropHelper(this);
-            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
-            hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
-            {
-                if (_config.uiItem.followSystemTheme)
-                {
-                    const int WM_SETTINGCHANGE = 0x001A;
-                    if (msg == WM_SETTINGCHANGE)
-                    {
-                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                        {
-                            ViewModel?.ModifyTheme(!Utils.IsLightTheme());
-                        }
-                    }
-                }
+            MainFormHandler.Instance.RegisterSystemColorSet(_config, this, (bool bl) => { ViewModel?.ModifyTheme(bl); });
 
-                return IntPtr.Zero;
-            });
-            if (tabProfiles.Content is null)
-            {
-                tabProfiles.Content = new ProfilesView();
-            }
-            if (tabMsgView.Content is null)
-            {
-                tabMsgView.Content = new MsgView();
-            }
-            if (tabClashUI.Content is null)
-            {
-                tabClashUI.Content = new ClashProxiesView();
-            }
+            tabProfiles.Content ??= new ProfilesView();
+            tabMsgView.Content ??= new MsgView();
+            tabClashUI.Content ??= new ClashProxiesView();
+
+            RestoreUI();
+            AddHelpMenuItem();
         }
 
         #region Event
