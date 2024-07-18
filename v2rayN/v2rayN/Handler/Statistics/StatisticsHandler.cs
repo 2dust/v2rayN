@@ -4,6 +4,9 @@ namespace v2rayN.Handler.Statistics
 {
     internal class StatisticsHandler
     {
+        private static readonly Lazy<StatisticsHandler> instance = new(() => new());
+        public static StatisticsHandler Instance => instance.Value;
+
         private Config _config;
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
@@ -12,20 +15,17 @@ namespace v2rayN.Handler.Statistics
         private StatisticsSingbox? _statisticsSingbox;
 
         public List<ServerStatItem> ServerStat => _lstServerStat;
-        public bool Enable { get; set; }
 
-        public StatisticsHandler(Config config, Action<ServerSpeedItem> update)
+        public void Init(Config config, Action<ServerSpeedItem> update)
         {
             _config = config;
-            Enable = config.guiItem.enableStatistics;
-            if (!Enable)
+            _updateFunc = update;
+            if (!config.guiItem.enableStatistics)
             {
                 return;
             }
 
-            _updateFunc = update;
-
-            Init();
+            InitData();
 
             _statisticsV2Ray = new StatisticsV2ray(config, UpdateServerStat);
             _statisticsSingbox = new StatisticsSingbox(config, UpdateServerStat);
@@ -55,7 +55,10 @@ namespace v2rayN.Handler.Statistics
         {
             try
             {
-                SQLiteHelper.Instance.UpdateAll(_lstServerStat);
+                if (_lstServerStat != null)
+                {
+                    SQLiteHelper.Instance.UpdateAll(_lstServerStat);
+                }
             }
             catch (Exception ex)
             {
@@ -63,7 +66,7 @@ namespace v2rayN.Handler.Statistics
             }
         }
 
-        private void Init()
+        private void InitData()
         {
             SQLiteHelper.Instance.Execute($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
 

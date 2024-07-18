@@ -1,7 +1,7 @@
 ﻿namespace v2rayN.Models
 {
     [Serializable]
-    internal class ServerSpeedItem : ServerStatItem
+    public class ServerSpeedItem : ServerStatItem
     {
         public long proxyUp
         {

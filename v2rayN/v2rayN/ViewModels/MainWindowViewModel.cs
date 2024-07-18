@@ -16,7 +16,6 @@ using System.Windows;
 using System.Windows.Media;
 using v2rayN.Enums;
 using v2rayN.Handler;
-using v2rayN.Handler.Fmt;
 using v2rayN.Handler.Statistics;
 using v2rayN.Models;
 using v2rayN.Resx;
@@ -29,26 +28,15 @@ namespace v2rayN.ViewModels
         #region private prop
 
         private CoreHandler _coreHandler;
-        private StatisticsHandler _statistics;
-        private List<ProfileItem> _lstProfile;
-        private string _subId = string.Empty;
-        private string _serverFilter = string.Empty;
         private static Config _config;
         private NoticeHandler? _noticeHandler;
         private readonly PaletteHelper _paletteHelper = new();
-        private Dictionary<string, bool> _dicHeaderSort = new();
         private Action<EViewAction> _updateView;
         private bool _showInTaskbar;
 
         #endregion private prop
 
         #region ObservableCollection
-
-        private IObservableCollection<ProfileItemModel> _profileItems = new ObservableCollectionExtended<ProfileItemModel>();
-        public IObservableCollection<ProfileItemModel> ProfileItems => _profileItems;
-
-        private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
-        public IObservableCollection<SubItem> SubItems => _subItems;
 
         private IObservableCollection<RoutingItem> _routingItems = new ObservableCollectionExtended<RoutingItem>();
         public IObservableCollection<RoutingItem> RoutingItems => _routingItems;
@@ -57,24 +45,10 @@ namespace v2rayN.ViewModels
         public IObservableCollection<ComboItem> Servers => _servers;
 
         [Reactive]
-        public ProfileItemModel SelectedProfile { get; set; }
-
-        public IList<ProfileItemModel> SelectedProfiles { get; set; }
-
-        [Reactive]
-        public SubItem SelectedSub { get; set; }
-
-        [Reactive]
-        public SubItem SelectedMoveToGroup { get; set; }
-
-        [Reactive]
         public RoutingItem SelectedRouting { get; set; }
 
         [Reactive]
         public ComboItem SelectedServer { get; set; }
-
-        [Reactive]
-        public string ServerFilter { get; set; }
 
         [Reactive]
         public bool BlServers { get; set; }
@@ -98,41 +72,9 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
 
-        //servers delete
-        public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
-
-        public ReactiveCommand<Unit, Unit> RemoveServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> RemoveDuplicateServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerCmd { get; }
-
-        //servers move
-        public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
-
-        public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
-        public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-        public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
-
-        //servers ping
-        public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
-
-        public ReactiveCommand<Unit, Unit> TcpingServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
-
-        //servers export
-        public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
-
-        public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
-
         //Subscription
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
 
-        public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
-        public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
         public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
@@ -147,7 +89,6 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
         public ReactiveCommand<Unit, Unit> OpenTheFileLocationCmd { get; }
-        //public ReactiveCommand<Unit, Unit> ImportOldGuiConfigCmd { get; }
 
         //CheckUpdate
         public ReactiveCommand<Unit, Unit> CheckUpdateNCmd { get; }
@@ -168,9 +109,6 @@ namespace v2rayN.ViewModels
 
         [Reactive]
         public ImageSource AppIcon { get; set; }
-
-        //[Reactive]
-        //public bool BlShowTrayTip { get; set; }
 
         #endregion Menu
 
@@ -246,7 +184,7 @@ namespace v2rayN.ViewModels
         public string CurrentLanguage { get; set; }
 
         [Reactive]
-        public bool ShowCalshUI { get; set; }
+        public bool ShowClashUI { get; set; }
 
         #endregion UI
 
@@ -257,13 +195,12 @@ namespace v2rayN.ViewModels
             _updateView = updateView;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
-            Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(snackbarMessageQueue), typeof(NoticeHandler));
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+            _noticeHandler = new NoticeHandler(snackbarMessageQueue);
+            Locator.CurrentMutable.RegisterLazySingleton(() => _noticeHandler, typeof(NoticeHandler));
             _config = LazyConfig.Instance.GetConfig();
 
-            SelectedProfile = new();
-            SelectedSub = new();
-            SelectedMoveToGroup = new();
+            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => RefreshServersBiz());
+
             SelectedRouting = new();
             SelectedServer = new();
             if (_config.tunModeItem.enableTun)
@@ -277,26 +214,12 @@ namespace v2rayN.ViewModels
                     _config.tunModeItem.enableTun = EnableTun = false;
                 }
             }
-            _subId = _config.subIndexId;
 
             Init();
             BindingUI();
             RestoreUI();
 
             #region WhenAnyValue && ReactiveCommand
-
-            var canEditRemove = this.WhenAnyValue(
-               x => x.SelectedProfile,
-               selectedSource => selectedSource != null && !selectedSource.indexId.IsNullOrEmpty());
-
-            this.WhenAnyValue(
-                x => x.SelectedSub,
-                y => y != null && !y.remarks.IsNullOrEmpty() && _subId != y.id)
-                    .Subscribe(c => SubSelectedChanged(c));
-            this.WhenAnyValue(
-                 x => x.SelectedMoveToGroup,
-                 y => y != null && !y.remarks.IsNullOrEmpty())
-                     .Subscribe(c => MoveToGroup(c));
 
             this.WhenAnyValue(
                 x => x.SelectedRouting,
@@ -307,11 +230,6 @@ namespace v2rayN.ViewModels
               x => x.SelectedServer,
               y => y != null && !y.Text.IsNullOrEmpty())
                   .Subscribe(c => ServerSelectedChanged(c));
-
-            this.WhenAnyValue(
-              x => x.ServerFilter,
-              y => y != null && _serverFilter != y)
-                  .Subscribe(c => ServerFilterChanged(c));
 
             SystemProxySelected = (int)_config.sysProxyType;
             this.WhenAnyValue(
@@ -327,43 +245,43 @@ namespace v2rayN.ViewModels
             //servers
             AddVmessServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.VMess);
+                AddServer(true, EConfigType.VMess);
             });
             AddVlessServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.VLESS);
+                AddServer(true, EConfigType.VLESS);
             });
             AddShadowsocksServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Shadowsocks);
+                AddServer(true, EConfigType.Shadowsocks);
             });
             AddSocksServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Socks);
+                AddServer(true, EConfigType.Socks);
             });
             AddHttpServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Http);
+                AddServer(true, EConfigType.Http);
             });
             AddTrojanServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Trojan);
+                AddServer(true, EConfigType.Trojan);
             });
             AddHysteria2ServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Hysteria2);
+                AddServer(true, EConfigType.Hysteria2);
             });
             AddTuicServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Tuic);
+                AddServer(true, EConfigType.Tuic);
             });
             AddWireguardServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Wireguard);
+                AddServer(true, EConfigType.Wireguard);
             });
             AddCustomServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(true, EConfigType.Custom);
+                AddServer(true, EConfigType.Custom);
             });
             AddServerViaClipboardCmd = ReactiveCommand.Create(() =>
             {
@@ -373,97 +291,13 @@ namespace v2rayN.ViewModels
             {
                 return ScanScreenTaskAsync();
             });
-            //servers delete
-            EditServerCmd = ReactiveCommand.Create(() =>
-            {
-                EditServer(false, EConfigType.Custom);
-            }, canEditRemove);
-            RemoveServerCmd = ReactiveCommand.Create(() =>
-            {
-                RemoveServer();
-            }, canEditRemove);
-            RemoveDuplicateServerCmd = ReactiveCommand.Create(() =>
-            {
-                RemoveDuplicateServer();
-            });
-            CopyServerCmd = ReactiveCommand.Create(() =>
-            {
-                CopyServer();
-            }, canEditRemove);
-            SetDefaultServerCmd = ReactiveCommand.Create(() =>
-            {
-                SetDefaultServer();
-            }, canEditRemove);
-            ShareServerCmd = ReactiveCommand.Create(() =>
-            {
-                ShareServer();
-            }, canEditRemove);
-            SetDefaultMultipleServerCmd = ReactiveCommand.Create(() =>
-            {
-                SetDefaultMultipleServer();
-            }, canEditRemove);
-            //servers move
-            MoveTopCmd = ReactiveCommand.Create(() =>
-            {
-                MoveServer(EMove.Top);
-            }, canEditRemove);
-            MoveUpCmd = ReactiveCommand.Create(() =>
-            {
-                MoveServer(EMove.Up);
-            }, canEditRemove);
-            MoveDownCmd = ReactiveCommand.Create(() =>
-            {
-                MoveServer(EMove.Down);
-            }, canEditRemove);
-            MoveBottomCmd = ReactiveCommand.Create(() =>
-            {
-                MoveServer(EMove.Bottom);
-            }, canEditRemove);
-
-            //servers ping
-            MixedTestServerCmd = ReactiveCommand.Create(() =>
-            {
-                ServerSpeedtest(ESpeedActionType.Mixedtest);
-            });
-            TcpingServerCmd = ReactiveCommand.Create(() =>
-            {
-                ServerSpeedtest(ESpeedActionType.Tcping);
-            }, canEditRemove);
-            RealPingServerCmd = ReactiveCommand.Create(() =>
-            {
-                ServerSpeedtest(ESpeedActionType.Realping);
-            }, canEditRemove);
-            SpeedServerCmd = ReactiveCommand.Create(() =>
-            {
-                ServerSpeedtest(ESpeedActionType.Speedtest);
-            }, canEditRemove);
-            SortServerResultCmd = ReactiveCommand.Create(() =>
-            {
-                SortServer(EServerColName.delayVal.ToString());
-            });
-            //servers export
-            Export2ClientConfigCmd = ReactiveCommand.Create(() =>
-            {
-                Export2ClientConfig();
-            }, canEditRemove);
-            Export2ShareUrlCmd = ReactiveCommand.Create(() =>
-            {
-                Export2ShareUrl();
-            }, canEditRemove);
 
             //Subscription
             SubSettingCmd = ReactiveCommand.Create(() =>
             {
                 SubSetting();
             });
-            AddSubCmd = ReactiveCommand.Create(() =>
-            {
-                EditSub(true);
-            });
-            EditSubCmd = ReactiveCommand.Create(() =>
-            {
-                EditSub(false);
-            });
+
             SubUpdateCmd = ReactiveCommand.Create(() =>
             {
                 UpdateSubscriptionProcess("", false);
@@ -474,11 +308,11 @@ namespace v2rayN.ViewModels
             });
             SubGroupUpdateCmd = ReactiveCommand.Create(() =>
             {
-                UpdateSubscriptionProcess(_subId, false);
+                UpdateSubscriptionProcess(_config.subIndexId, false);
             });
             SubGroupUpdateViaProxyCmd = ReactiveCommand.Create(() =>
             {
-                UpdateSubscriptionProcess(_subId, true);
+                UpdateSubscriptionProcess(_config.subIndexId, true);
             });
 
             //Setting
@@ -507,17 +341,13 @@ namespace v2rayN.ViewModels
             });
             ClearServerStatisticsCmd = ReactiveCommand.Create(() =>
             {
-                _statistics?.ClearAllServerStatistics();
+                StatisticsHandler.Instance.ClearAllServerStatistics();
                 RefreshServers();
             });
             OpenTheFileLocationCmd = ReactiveCommand.Create(() =>
             {
                 Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
             });
-            //ImportOldGuiConfigCmd = ReactiveCommand.Create(() =>
-            //{
-            //    ImportOldGuiConfig();
-            //});
 
             //CheckUpdate
             CheckUpdateNCmd = ReactiveCommand.Create(() =>
@@ -586,15 +416,14 @@ namespace v2rayN.ViewModels
 
             if (_config.guiItem.enableStatistics)
             {
-                _statistics = new StatisticsHandler(_config, UpdateStatisticsHandler);
+                StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
 
             MainFormHandler.Instance.UpdateTask(_config, UpdateTaskHandler);
             MainFormHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, UpdateTaskHandler);
 
-            InitSubscriptionView();
             RefreshRoutingsMenu();
-            RefreshServers();
+            //RefreshServers();
 
             Reload();
             ChangeSystemProxyStatus(_config.sysProxyType, true);
@@ -647,80 +476,25 @@ namespace v2rayN.ViewModels
         {
             try
             {
+                if (!_showInTaskbar)
+                {
+                    return;
+                }
+
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
-                    if (!_showInTaskbar)
-                    {
-                        return;
-                    }
-
                     SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
                     SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
 
-                    if (update.proxyUp + update.proxyDown > 0)
+                    if ((update.proxyUp + update.proxyDown) > 0 && DateTime.Now.Second % 3 == 0)
                     {
-                        var second = DateTime.Now.Second;
-                        if (second % 3 == 0)
-                        {
-                            var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
-                            if (item != null)
-                            {
-                                item.todayDown = Utils.HumanFy(update.todayDown);
-                                item.todayUp = Utils.HumanFy(update.todayUp);
-                                item.totalDown = Utils.HumanFy(update.totalDown);
-                                item.totalUp = Utils.HumanFy(update.totalUp);
-
-                                if (SelectedProfile?.indexId == item.indexId)
-                                {
-                                    var temp = JsonUtils.DeepCopy(item);
-                                    _profileItems.Replace(item, temp);
-                                    SelectedProfile = temp;
-                                }
-                                else
-                                {
-                                    _profileItems.Replace(item, JsonUtils.DeepCopy(item));
-                                }
-                            }
-                        }
+                        Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
                     }
                 }));
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-            }
-        }
-
-        private void UpdateSpeedtestHandler(string indexId, string delay, string speed)
-        {
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
-            {
-                SetTestResult(indexId, delay, speed);
-            }));
-        }
-
-        private void SetTestResult(string indexId, string delay, string speed)
-        {
-            if (Utils.IsNullOrEmpty(indexId))
-            {
-                _noticeHandler?.SendMessage(delay, true);
-                _noticeHandler?.Enqueue(delay);
-                return;
-            }
-            var item = _profileItems.Where(it => it.indexId == indexId).FirstOrDefault();
-            if (item != null)
-            {
-                if (!Utils.IsNullOrEmpty(delay))
-                {
-                    int.TryParse(delay, out int temp);
-                    item.delay = temp;
-                    item.delayVal = $"{delay} {Global.DelayUnit}";
-                }
-                if (!Utils.IsNullOrEmpty(speed))
-                {
-                    item.speedVal = $"{speed} {Global.SpeedUnit}";
-                }
-                _profileItems.Replace(item, JsonUtils.DeepCopy(item));
             }
         }
 
@@ -758,7 +532,6 @@ namespace v2rayN.ViewModels
 
                 ConfigHandler.SaveConfig(_config);
 
-                //HttpProxyHandle.CloseHttpAgent(config);
                 if (blWindowsShutDown)
                 {
                     SysProxyHandle.ResetIEProxy4WindowsShutDown();
@@ -770,8 +543,8 @@ namespace v2rayN.ViewModels
 
                 ProfileExHandler.Instance.SaveTo();
 
-                _statistics?.SaveTo();
-                _statistics?.Close();
+                StatisticsHandler.Instance.SaveTo();
+                StatisticsHandler.Instance.Close();
 
                 _coreHandler.CoreStop();
                 Logging.SaveLog("MyAppExit End");
@@ -787,91 +560,15 @@ namespace v2rayN.ViewModels
 
         #region Servers && Groups
 
-        private void SubSelectedChanged(bool c)
+        private void RefreshServers()
         {
-            if (!c)
-            {
-                return;
-            }
-            _subId = SelectedSub?.id;
-            _config.subIndexId = _subId;
-
-            RefreshServers();
-
-            _updateView(EViewAction.ProfilesFocus);
+            MessageBus.Current.SendMessage("", Global.CommandRefreshProfiles);
         }
 
-        private void ServerFilterChanged(bool c)
+        private void RefreshServersBiz()
         {
-            if (!c)
-            {
-                return;
-            }
-            _serverFilter = ServerFilter;
-            if (Utils.IsNullOrEmpty(_serverFilter))
-            {
-                RefreshServers();
-            }
-        }
-
-        public void RefreshServers()
-        {
-            List<ProfileItemModel> lstModel = LazyConfig.Instance.ProfileItems(_subId, _serverFilter);
-
-            ConfigHandler.SetDefaultServer(_config, lstModel);
-
-            List<ServerStatItem> lstServerStat = new();
-            if (_statistics != null && _statistics.Enable)
-            {
-                lstServerStat = _statistics.ServerStat;
-            }
-            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
-            lstModel = (from t in lstModel
-                        join t2 in lstServerStat on t.indexId equals t2.indexId into t2b
-                        from t22 in t2b.DefaultIfEmpty()
-                        join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
-                        from t33 in t3b.DefaultIfEmpty()
-                        select new ProfileItemModel
-                        {
-                            indexId = t.indexId,
-                            configType = t.configType,
-                            remarks = t.remarks,
-                            address = t.address,
-                            port = t.port,
-                            security = t.security,
-                            network = t.network,
-                            streamSecurity = t.streamSecurity,
-                            subid = t.subid,
-                            subRemarks = t.subRemarks,
-                            isActive = t.indexId == _config.indexId,
-                            sort = t33 == null ? 0 : t33.sort,
-                            delay = t33 == null ? 0 : t33.delay,
-                            delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
-                            speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
-                            todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
-                            todayUp = t22 == null ? "" : Utils.HumanFy(t22.todayUp),
-                            totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
-                            totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
-                        }).OrderBy(t => t.sort).ToList();
-            _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel));
-
             Application.Current?.Dispatcher.Invoke((Action)(() =>
             {
-                _profileItems.Clear();
-                _profileItems.AddRange(lstModel);
-                if (lstModel.Count > 0)
-                {
-                    var selected = lstModel.FirstOrDefault(t => t.indexId == _config.indexId);
-                    if (selected != null)
-                    {
-                        SelectedProfile = selected;
-                    }
-                    else
-                    {
-                        SelectedProfile = lstModel[0];
-                    }
-                }
-
                 RefreshServersMenu();
 
                 //display running server
@@ -891,17 +588,19 @@ namespace v2rayN.ViewModels
 
         private void RefreshServersMenu()
         {
+            var lstModel = LazyConfig.Instance.ProfileItems(_config.subIndexId, "");
+
             _servers.Clear();
-            if (_lstProfile.Count > _config.guiItem.trayMenuServersLimit)
+            if (lstModel.Count > _config.guiItem.trayMenuServersLimit)
             {
                 BlServers = false;
                 return;
             }
 
             BlServers = true;
-            for (int k = 0; k < _lstProfile.Count; k++)
+            for (int k = 0; k < lstModel.Count; k++)
             {
-                ProfileItem it = _lstProfile[k];
+                ProfileItem it = lstModel[k];
                 string name = it.GetSummary();
 
                 var item = new ComboItem() { ID = it.indexId, Text = name };
@@ -913,83 +612,24 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void InitSubscriptionView()
+        private void RefreshSubscriptions()
         {
-            _subItems.Clear();
-
-            _subItems.Add(new SubItem { remarks = ResUI.AllGroupServers });
-            foreach (var item in LazyConfig.Instance.SubItems().OrderBy(t => t.sort))
-            {
-                _subItems.Add(item);
-            }
-            if (_subId != null && _subItems.FirstOrDefault(t => t.id == _subId) != null)
-            {
-                SelectedSub = _subItems.FirstOrDefault(t => t.id == _subId);
-            }
-            else
-            {
-                SelectedSub = _subItems[0];
-            }
+            Locator.Current.GetService<ProfilesViewModel>()?.RefreshSubscriptions();
         }
 
         #endregion Servers && Groups
 
         #region Add Servers
 
-        private int GetProfileItems(out List<ProfileItem> lstSelecteds, bool latest)
+        public void AddServer(bool blNew, EConfigType eConfigType)
         {
-            lstSelecteds = new List<ProfileItem>();
-            if (SelectedProfiles == null || SelectedProfiles.Count <= 0)
+            ProfileItem item = new()
             {
-                return -1;
-            }
+                subid = _config.subIndexId,
+                configType = eConfigType,
+                isSub = false,
+            };
 
-            var orderProfiles = SelectedProfiles?.OrderBy(t => t.sort);
-            if (latest)
-            {
-                foreach (var profile in orderProfiles)
-                {
-                    var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
-                    if (item is not null)
-                    {
-                        lstSelecteds.Add(item);
-                    }
-                }
-            }
-            else
-            {
-                lstSelecteds = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(orderProfiles));
-            }
-
-            return 0;
-        }
-
-        public void EditServer(bool blNew, EConfigType eConfigType)
-        {
-            ProfileItem item;
-            if (blNew)
-            {
-                item = new()
-                {
-                    subid = _subId,
-                    configType = eConfigType,
-                    isSub = false,
-                };
-            }
-            else
-            {
-                if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
-                {
-                    return;
-                }
-                item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
-                if (item is null)
-                {
-                    _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                    return;
-                }
-                eConfigType = item.configType;
-            }
             bool? ret = false;
             if (eConfigType == EConfigType.Custom)
             {
@@ -1012,10 +652,10 @@ namespace v2rayN.ViewModels
         public void AddServerViaClipboard()
         {
             var clipboardData = Utils.GetClipboardData();
-            int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _subId, false);
+            int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _config.subIndexId, false);
             if (ret > 0)
             {
-                InitSubscriptionView();
+                RefreshSubscriptions();
                 RefreshServers();
                 _noticeHandler?.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
             }
@@ -1039,67 +679,14 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                int ret = ConfigHandler.AddBatchServers(_config, result, _subId, false);
+                int ret = ConfigHandler.AddBatchServers(_config, result, _config.subIndexId, false);
                 if (ret > 0)
                 {
-                    InitSubscriptionView();
+                    RefreshSubscriptions();
                     RefreshServers();
                     _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
                 }
             }
-        }
-
-        public void RemoveServer()
-        {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
-            {
-                return;
-            }
-
-            if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-            {
-                return;
-            }
-            var exists = lstSelecteds.Exists(t => t.indexId == _config.indexId);
-
-            ConfigHandler.RemoveServer(_config, lstSelecteds);
-            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-
-            RefreshServers();
-            if (exists)
-            {
-                Reload();
-            }
-        }
-
-        private void RemoveDuplicateServer()
-        {
-            var tuple = ConfigHandler.DedupServerList(_config, _subId);
-            RefreshServers();
-            Reload();
-            _noticeHandler?.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
-        }
-
-        private void CopyServer()
-        {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
-            {
-                return;
-            }
-            if (ConfigHandler.CopyServer(_config, lstSelecteds) == 0)
-            {
-                RefreshServers();
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            }
-        }
-
-        public void SetDefaultServer()
-        {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
-            {
-                return;
-            }
-            SetDefaultServer(SelectedProfile.indexId);
         }
 
         private void SetDefaultServer(string indexId)
@@ -1143,68 +730,6 @@ namespace v2rayN.ViewModels
             SetDefaultServer(SelectedServer.ID);
         }
 
-        public async void ShareServer()
-        {
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
-            if (item is null)
-            {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                return;
-            }
-            var url = FmtHandler.GetShareUri(item);
-            if (Utils.IsNullOrEmpty(url))
-            {
-                return;
-            }
-            var img = QRCodeHelper.GetQRCode(url);
-            var dialog = new QrcodeView()
-            {
-                imgQrcode = { Source = img },
-                txtContent = { Text = url },
-            };
-
-            await DialogHost.Show(dialog, "RootDialog");
-        }
-
-        private void SetDefaultMultipleServer()
-        {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
-            {
-                return;
-            }
-
-            if (ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, out string indexId) != 0)
-            {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
-                return;
-            }
-            if (indexId == _config.indexId)
-            {
-                Reload();
-            }
-            else
-            {
-                SetDefaultServer(indexId);
-            }
-        }
-
-        public void SortServer(string colName)
-        {
-            if (Utils.IsNullOrEmpty(colName))
-            {
-                return;
-            }
-
-            _dicHeaderSort.TryAdd(colName, true);
-            _dicHeaderSort.TryGetValue(colName, out bool asc);
-            if (ConfigHandler.SortServers(_config, _subId, colName, asc) != 0)
-            {
-                return;
-            }
-            _dicHeaderSort[colName] = !asc;
-            RefreshServers();
-        }
-
         public void TestServerAvailability()
         {
             var item = ConfigHandler.GetDefaultServer(_config);
@@ -1226,109 +751,6 @@ namespace v2rayN.ViewModels
             });
         }
 
-        //move server
-        private void MoveToGroup(bool c)
-        {
-            if (!c)
-            {
-                return;
-            }
-
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
-            {
-                return;
-            }
-
-            ConfigHandler.MoveToGroup(_config, lstSelecteds, SelectedMoveToGroup.id);
-            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-
-            RefreshServers();
-            SelectedMoveToGroup = new();
-            //Reload();
-        }
-
-        public void MoveServer(EMove eMove)
-        {
-            var item = _lstProfile.FirstOrDefault(t => t.indexId == SelectedProfile.indexId);
-            if (item is null)
-            {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                return;
-            }
-
-            int index = _lstProfile.IndexOf(item);
-            if (index < 0)
-            {
-                return;
-            }
-            if (ConfigHandler.MoveServer(_config, ref _lstProfile, index, eMove) == 0)
-            {
-                RefreshServers();
-            }
-        }
-
-        public void MoveServerTo(int startIndex, ProfileItemModel targetItem)
-        {
-            var targetIndex = _profileItems.IndexOf(targetItem);
-            if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
-            {
-                if (ConfigHandler.MoveServer(_config, ref _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
-                {
-                    RefreshServers();
-                }
-            }
-        }
-
-        public void ServerSpeedtest(ESpeedActionType actionType)
-        {
-            if (actionType == ESpeedActionType.Mixedtest)
-            {
-                SelectedProfiles = _profileItems;
-            }
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
-            {
-                return;
-            }
-            //ClearTestResult();
-            new SpeedtestHandler(_config, _coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
-        }
-
-        private void Export2ClientConfig()
-        {
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
-            if (item is null)
-            {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                return;
-            }
-            MainFormHandler.Instance.Export2ClientConfig(item, _config);
-        }
-
-        public void Export2ShareUrl()
-        {
-            if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
-            {
-                return;
-            }
-
-            StringBuilder sb = new();
-            foreach (var it in lstSelecteds)
-            {
-                var url = FmtHandler.GetShareUri(it);
-                if (Utils.IsNullOrEmpty(url))
-                {
-                    continue;
-                }
-                sb.Append(url);
-                sb.AppendLine();
-            }
-            if (sb.Length > 0)
-            {
-                Utils.SetClipboardData(sb.ToString());
-                _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
-            }
-        }
-
         #endregion Add Servers
 
         #region Subscription
@@ -1337,31 +759,7 @@ namespace v2rayN.ViewModels
         {
             if ((new SubSettingWindow()).ShowDialog() == true)
             {
-                InitSubscriptionView();
-                SubSelectedChanged(true);
-            }
-        }
-
-        private void EditSub(bool blNew)
-        {
-            SubItem item;
-            if (blNew)
-            {
-                item = new();
-            }
-            else
-            {
-                item = LazyConfig.Instance.GetSubItem(_subId);
-                if (item is null)
-                {
-                    return;
-                }
-            }
-            var ret = (new SubEditWindow(item)).ShowDialog();
-            if (ret == true)
-            {
-                InitSubscriptionView();
-                SubSelectedChanged(true);
+                RefreshSubscriptions();
             }
         }
 
@@ -1516,8 +914,8 @@ namespace v2rayN.ViewModels
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
                     BlReloadEnabled = true;
-                    ShowCalshUI = (_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
-                    if (ShowCalshUI)
+                    ShowClashUI = (_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
+                    if (ShowClashUI)
                     {
                         Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
                     }
