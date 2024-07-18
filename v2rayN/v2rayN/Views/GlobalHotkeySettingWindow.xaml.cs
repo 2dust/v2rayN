@@ -18,16 +18,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-            // 设置窗口的尺寸不大于屏幕的尺寸
-            if (this.Width > SystemParameters.WorkArea.Width)
-            {
-                this.Width = SystemParameters.WorkArea.Width;
-            }
-            if (this.Height > SystemParameters.WorkArea.Height)
-            {
-                this.Height = SystemParameters.WorkArea.Height;
-            }
-
+         
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
             _config.globalHotkeys ??= new List<KeyEventItem>();

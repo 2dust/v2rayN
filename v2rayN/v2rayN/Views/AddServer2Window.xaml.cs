@@ -13,16 +13,6 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-            // 设置窗口的尺寸不大于屏幕的尺寸
-            if (this.Width > SystemParameters.WorkArea.Width)
-            {
-                this.Width = SystemParameters.WorkArea.Width;
-            }
-            if (this.Height > SystemParameters.WorkArea.Height)
-            {
-                this.Height = SystemParameters.WorkArea.Height;
-            }
-
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
             ViewModel = new AddServer2ViewModel(profileItem, this);
