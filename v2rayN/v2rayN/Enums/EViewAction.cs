@@ -1,8 +1,7 @@
-﻿namespace v2rayN.Enums
+﻿namespace v2rayN.Enums;
+
+public enum EViewAction
 {
-    public enum EViewAction
-    {
-        AdjustMainLvColWidth,
-        ProfilesFocus
-    }
+  AdjustMainLvColWidth,
+  ProfilesFocus
 }

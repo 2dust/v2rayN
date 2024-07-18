@@ -1,10 +1,9 @@
-﻿namespace v2rayN.Enums
+﻿namespace v2rayN.Enums;
+
+public enum ESpeedActionType
 {
-    public enum ESpeedActionType
-    {
-        Tcping,
-        Realping,
-        Speedtest,
-        Mixedtest
-    }
+  Tcping,
+  Realping,
+  Speedtest,
+  Mixedtest
 }

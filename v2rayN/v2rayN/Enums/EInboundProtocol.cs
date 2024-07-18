@@ -1,14 +1,13 @@
-﻿namespace v2rayN.Enums
+﻿namespace v2rayN.Enums;
+
+public enum EInboundProtocol
 {
-    public enum EInboundProtocol
-    {
-        socks = 0,
-        http,
-        socks2,
-        http2,
-        pac,
-        api,
-        api2,
-        speedtest = 21
-    }
+  socks = 0,
+  http,
+  socks2,
+  http2,
+  pac,
+  api,
+  api2,
+  speedtest = 21
 }

@@ -1,15 +1,14 @@
-﻿namespace v2rayN.Enums
+﻿namespace v2rayN.Enums;
+
+public enum ETransport
 {
-    public enum ETransport
-    {
-        tcp,
-        kcp,
-        ws,
-        httpupgrade,
-        splithttp,
-        h2,
-        http,
-        quic,
-        grpc
-    }
+  tcp,
+  kcp,
+  ws,
+  httpupgrade,
+  splithttp,
+  h2,
+  http,
+  quic,
+  grpc
 }

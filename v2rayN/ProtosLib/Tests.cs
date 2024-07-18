@@ -1,13 +1,12 @@
 ﻿using ProtosLib.Statistics;
 
-namespace ProtosLib
-{
-    public class Tests
-    {
-        private StatsService.StatsServiceClient client_;
+namespace ProtosLib;
 
-        public Tests()
-        {
-        }
-    }
+public class Tests
+{
+  private StatsService.StatsServiceClient client_;
+
+  public Tests()
+  {
+  }
 }
