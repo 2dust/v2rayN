@@ -452,7 +452,7 @@
     <value>Update current subscription with proxy</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
-    <value>Subscription group</value>
+    <value>Subscription Group</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
     <value>Subscription group settings</value>
