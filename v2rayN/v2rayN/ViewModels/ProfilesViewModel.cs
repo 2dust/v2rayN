@@ -222,7 +222,6 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
 
             //Subscription
-
             AddSubCmd = ReactiveCommand.Create(() =>
             {
                 EditSub(true);

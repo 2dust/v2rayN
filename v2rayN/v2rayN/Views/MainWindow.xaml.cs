@@ -137,7 +137,9 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashUI.Visibility).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
             });
 
             var IsAdministrator = Utils.IsAdministrator();
@@ -152,7 +154,8 @@ namespace v2rayN.Views
 
             tabProfiles.Content ??= new ProfilesView();
             tabMsgView.Content ??= new MsgView();
-            tabClashUI.Content ??= new ClashProxiesView();
+            tabClashProxies.Content ??= new ClashProxiesView();
+            tabClashConnections.Content ??= new ClashConnectionsView();
 
             RestoreUI();
             AddHelpMenuItem();

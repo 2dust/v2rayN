@@ -5,6 +5,7 @@ using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 
@@ -84,7 +85,7 @@ namespace v2rayN.ViewModels
             Observable.Interval(TimeSpan.FromSeconds(10))
               .Subscribe(x =>
               {
-                  if (!(AutoRefresh && _config.clashUIItem.showInTaskbar))
+                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.clash)))
                   {
                       return;
                   }

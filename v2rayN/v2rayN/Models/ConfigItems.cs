@@ -130,6 +130,7 @@ namespace v2rayN.Models
         public bool autoHideStartup { get; set; }
         public string mainMsgFilter { get; set; }
         public List<ColumnItem> mainColumnItem { get; set; }
+        public bool showInTaskbar { get; set; }
     }
 
     [Serializable]
@@ -216,7 +217,6 @@ namespace v2rayN.Models
     public class ClashUIItem
     {
         public ERuleMode ruleMode { get; set; }
-        public bool showInTaskbar { get; set; }
         public bool enableIPv6 { get; set; }
         public bool enableMixinContent { get; set; }
         public int proxiesSorting { get; set; }

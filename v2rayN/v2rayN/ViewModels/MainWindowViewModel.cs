@@ -186,6 +186,9 @@ namespace v2rayN.ViewModels
         [Reactive]
         public bool ShowClashUI { get; set; }
 
+        [Reactive]
+        public int TabMainSelectedIndex { get; set; }
+
         #endregion UI
 
         #region Init
@@ -404,7 +407,7 @@ namespace v2rayN.ViewModels
             AutoHideStartup();
 
             _showInTaskbar = true;
-            _config.clashUIItem.showInTaskbar = _showInTaskbar;
+            _config.uiItem.showInTaskbar = _showInTaskbar;
         }
 
         private void Init()
@@ -914,11 +917,12 @@ namespace v2rayN.ViewModels
                 Application.Current?.Dispatcher.Invoke((Action)(() =>
                 {
                     BlReloadEnabled = true;
-                    ShowClashUI = (_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo);
+                    ShowClashUI = _config.IsRunningCore(ECoreType.clash);
                     if (ShowClashUI)
                     {
                         Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
                     }
+                    else { TabMainSelectedIndex = 0; }
                 }));
             });
         }
@@ -1091,7 +1095,7 @@ namespace v2rayN.ViewModels
                 //Utile.RegWriteValue(Global.MyRegPath, Utile.WindowHwndKey, Convert.ToString((long)windowHandle));
             }
             _showInTaskbar = bl;
-            _config.clashUIItem.showInTaskbar = _showInTaskbar;
+            _config.uiItem.showInTaskbar = _showInTaskbar;
         }
 
         private void RestoreUI()

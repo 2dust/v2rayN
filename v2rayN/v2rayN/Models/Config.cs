@@ -18,6 +18,19 @@ namespace v2rayN.Models
 
         public ECoreType runningCoreType { get; set; }
 
+        public bool IsRunningCore(ECoreType type)
+        {
+            if (type == ECoreType.Xray && runningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5 or ECoreType.SagerNet)
+            {
+                return true;
+            }
+            if (type == ECoreType.clash && runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo)
+            {
+                return true;
+            }
+            return false;
+        }
+
         #endregion property
 
         #region other entities

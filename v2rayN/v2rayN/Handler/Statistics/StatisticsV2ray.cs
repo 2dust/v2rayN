@@ -53,7 +53,7 @@ namespace v2rayN.Handler.Statistics
                 await Task.Delay(1000);
                 try
                 {
-                    if (!(_config.runningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5 or ECoreType.SagerNet))
+                    if (!(_config.IsRunningCore(ECoreType.Xray)))
                     {
                         continue;
                     }

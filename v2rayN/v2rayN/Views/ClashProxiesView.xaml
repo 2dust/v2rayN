@@ -25,6 +25,37 @@
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
+
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.menuRulemode}" />
+            <ComboBox
+                x:Name="cmbRulemode"
+                Width="80"
+                Margin="8"
+                Style="{StaticResource DefComboBox}">
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeDirect}" />
+            </ComboBox>
+
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbSorting}" />
+            <ComboBox
+                x:Name="cmbSorting"
+                Width="60"
+                Margin="8"
+                Style="{StaticResource DefComboBox}">
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDefault}" />
+            </ComboBox>
+
             <Button
                 x:Name="menuProxiesReload"
                 Width="30"
@@ -42,37 +73,6 @@
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
             </Button>
-
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.menuRulemode}" />
-            <ComboBox
-                x:Name="cmbRulemode"
-                Width="80"
-                Margin="8"
-                Style="{StaticResource DefComboBox}">
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeDirect}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeNothing}" />
-            </ComboBox>
-
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbSorting}" />
-            <ComboBox
-                x:Name="cmbSorting"
-                Width="60"
-                Margin="8"
-                Style="{StaticResource DefComboBox}">
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDefault}" />
-            </ComboBox>
 
             <TextBlock
                 Margin="8,0"

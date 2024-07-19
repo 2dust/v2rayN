@@ -465,7 +465,7 @@ namespace v2rayN.ViewModels
             Observable.Interval(TimeSpan.FromSeconds(60))
               .Subscribe(x =>
               {
-                  if (!(AutoRefresh && _config.clashUIItem.showInTaskbar))
+                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.clash)))
                   {
                       return;
                   }

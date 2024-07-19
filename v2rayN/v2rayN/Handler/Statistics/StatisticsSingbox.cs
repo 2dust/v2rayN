@@ -65,7 +65,7 @@ namespace v2rayN.Handler.Statistics
                 await Task.Delay(1000);
                 try
                 {
-                    if (!(_config.runningCoreType is ECoreType.sing_box or ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo))
+                    if (!(_config.IsRunningCore(ECoreType.clash)))
                     {
                         continue;
                     }
