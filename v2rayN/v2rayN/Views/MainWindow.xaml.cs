@@ -137,9 +137,28 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
+
+                if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+                {
+                    gridMain.Visibility = Visibility.Visible;
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
+                }
+                else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+                {
+                    gridMain1.Visibility = Visibility.Visible;
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(disposables);
+                }
+                else
+                {
+                    gridMain2.Visibility = Visibility.Visible;
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
+                }
             });
 
             var IsAdministrator = Utils.IsAdministrator();
@@ -152,10 +171,27 @@ namespace v2rayN.Views
 
             MainFormHandler.Instance.RegisterSystemColorSet(_config, this, (bool bl) => { ViewModel?.ModifyTheme(bl); });
 
-            tabProfiles.Content ??= new ProfilesView();
-            tabMsgView.Content ??= new MsgView();
-            tabClashProxies.Content ??= new ClashProxiesView();
-            tabClashConnections.Content ??= new ClashConnectionsView();
+            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+            {
+                tabProfiles.Content ??= new ProfilesView();
+                tabMsgView.Content ??= new MsgView();
+                tabClashProxies.Content ??= new ClashProxiesView();
+                tabClashConnections.Content ??= new ClashConnectionsView();
+            }
+            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+            {
+                tabProfiles1.Content ??= new ProfilesView();
+                tabMsgView1.Content ??= new MsgView();
+                tabClashProxies1.Content ??= new ClashProxiesView();
+                tabClashConnections1.Content ??= new ClashConnectionsView();
+            }
+            else
+            {
+                tabProfiles2.Content ??= new ProfilesView();
+                tabMsgView2.Content ??= new MsgView();
+                tabClashProxies2.Content ??= new ClashProxiesView();
+                tabClashConnections2.Content ??= new ClashConnectionsView();
+            }
 
             RestoreUI();
             AddHelpMenuItem();
@@ -248,8 +284,16 @@ namespace v2rayN.Views
             if (Height > maxHeight) Height = maxHeight;
             if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)
             {
-                gridMain.ColumnDefinitions[0].Width = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
-                gridMain.ColumnDefinitions[2].Width = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+                if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+                {
+                    gridMain.ColumnDefinitions[0].Width = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
+                    gridMain.ColumnDefinitions[2].Width = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+                }
+                else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+                {
+                    gridMain1.RowDefinitions[0].Height = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
+                    gridMain1.RowDefinitions[2].Height = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+                }
             }
         }
 
@@ -258,8 +302,16 @@ namespace v2rayN.Views
             _config.uiItem.mainWidth = Utils.ToInt(this.Width);
             _config.uiItem.mainHeight = Utils.ToInt(this.Height);
 
-            _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
-            _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+            {
+                _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
+                _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+            }
+            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+            {
+                _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
+                _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
+            }
         }
 
         private void AddHelpMenuItem()

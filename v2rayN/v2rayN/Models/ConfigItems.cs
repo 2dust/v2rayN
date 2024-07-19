@@ -119,6 +119,7 @@ namespace v2rayN.Models
         public double mainHeight { get; set; }
         public double mainGirdHeight1 { get; set; }
         public double mainGirdHeight2 { get; set; }
+        public EGirdOrientation mainGirdOrientation { get; set; }
         public bool colorModeDark { get; set; }
         public bool followSystemTheme { get; set; }
         public string? colorPrimaryName { get; set; }

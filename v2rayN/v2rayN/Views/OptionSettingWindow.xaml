@@ -528,6 +528,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -829,6 +830,21 @@
                             Margin="{StaticResource SettingItemMargin}"
                             materialDesign:HintAssist.Hint="Convert Url"
                             IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="21"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMainGirdOrientation}" />
+                        <ComboBox
+                            x:Name="cmbMainGirdOrientation"
+                            Grid.Row="21"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource SettingItemMargin}"
                             Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>

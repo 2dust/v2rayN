@@ -74,6 +74,7 @@ namespace v2rayN.ViewModels
         [Reactive] public string SpeedPingTestUrl { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
         [Reactive] public string SubConvertUrl { get; set; }
+        [Reactive] public int MainGirdOrientation { get; set; }
 
         #endregion UI
 
@@ -171,6 +172,7 @@ namespace v2rayN.ViewModels
             SpeedPingTestUrl = _config.speedTestItem.speedPingTestUrl;
             EnableHWA = _config.guiItem.enableHWA;
             SubConvertUrl = _config.constItem.subConvertUrl;
+            MainGirdOrientation = (int)_config.uiItem.mainGirdOrientation;
 
             #endregion UI
 
@@ -333,6 +335,7 @@ namespace v2rayN.ViewModels
             _config.speedTestItem.speedPingTestUrl = SpeedPingTestUrl;
             _config.guiItem.enableHWA = EnableHWA;
             _config.constItem.subConvertUrl = SubConvertUrl;
+            _config.uiItem.mainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;

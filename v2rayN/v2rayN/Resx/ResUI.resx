@@ -1249,4 +1249,7 @@
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
     <value>Multi-server set to active</value>
   </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Main layout orientation(Require restart)</value>
+  </data>
 </root>

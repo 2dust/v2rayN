@@ -2879,6 +2879,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Main layout orientation(Require restart) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMainGirdOrientation {
+            get {
+                return ResourceManager.GetString("TbSettingsMainGirdOrientation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box Mux Protocol 的本地化字符串。
         /// </summary>
         public static string TbSettingsMux4SboxProtocol {

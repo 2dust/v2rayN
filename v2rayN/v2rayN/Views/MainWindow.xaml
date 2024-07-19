@@ -466,28 +466,50 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
 
-                <Grid x:Name="gridMain">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <ContentControl x:Name="tabProfiles" Grid.Column="0" />
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                    <TabControl
-                        x:Name="tabMain"
-                        Grid.Column="2"
-                        HorizontalContentAlignment="Left">
-                        <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
-                        <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
-                        <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
-                    </TabControl>
-
-                    <materialDesign:Snackbar
-                        x:Name="MainSnackbar"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3"
-                        MessageQueue="{materialDesign:MessageQueue}" />
+                <Grid>
+                    <Grid x:Name="gridMain" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <ContentControl x:Name="tabProfiles" Grid.Column="0" />
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <TabControl
+                            x:Name="tabMain"
+                            Grid.Column="2"
+                            HorizontalContentAlignment="Left">
+                            <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                            <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
+                            <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
+                        </TabControl>
+                    </Grid>
+                    <Grid x:Name="gridMain1" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <ContentControl x:Name="tabProfiles1" Grid.Row="0" />
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
+                        <TabControl
+                            x:Name="tabMain1"
+                            Grid.Row="2"
+                            HorizontalContentAlignment="Left">
+                            <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                            <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
+                            <TabItem x:Name="tabClashConnections1" Header="{x:Static resx:ResUI.TbConnections}" />
+                        </TabControl>
+                    </Grid>
+                    <Grid x:Name="gridMain2" Visibility="Collapsed">
+                        <TabControl x:Name="tabMain2" HorizontalContentAlignment="Left">
+                            <TabItem x:Name="tabProfiles2" Header="{x:Static resx:ResUI.menuServers}" />
+                            <TabItem x:Name="tabMsgView2" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                            <TabItem x:Name="tabClashProxies2" Header="{x:Static resx:ResUI.TbProxies}" />
+                            <TabItem x:Name="tabClashConnections2" Header="{x:Static resx:ResUI.TbConnections}" />
+                        </TabControl>
+                    </Grid>
+                    <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
                 </Grid>
             </DockPanel>
             <tb:TaskbarIcon

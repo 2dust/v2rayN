@@ -1246,4 +1246,7 @@
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
     <value>多服务器设为活动(多选)</value>
   </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>主界面布局方向(需重启)</value>
+  </data>
 </root>

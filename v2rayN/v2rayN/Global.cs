@@ -116,6 +116,7 @@ namespace v2rayN
 
         public static readonly List<string> SpeedPingTestUrls = new() {
             @"https://www.google.com/generate_204",
+            @"https://www.gstatic.com/generate_204",
             @"https://www.apple.com/library/test/success.html",
             @"http://www.msftconnecttest.com/connecttest.txt",
         };
