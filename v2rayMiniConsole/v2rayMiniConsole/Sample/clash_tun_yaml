@@ -1,0 +1,7 @@
+tun:
+  enable: true
+  stack: gvisor
+  dns-hijack:
+  - 0.0.0.0:53
+  auto-route: true
+  auto-detect-interface: true
