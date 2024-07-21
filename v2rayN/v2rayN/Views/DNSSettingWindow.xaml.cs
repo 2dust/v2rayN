@@ -15,7 +15,6 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-          
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
 

@@ -27,8 +27,8 @@ namespace v2rayN.Handler
             Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
-        public void LoadCore(ProfileItem? node)        {
-            
+        public void LoadCore(ProfileItem? node)
+        {
             if (node == null)
             {
                 ShowMsg(false, ResUI.CheckServerSettings);

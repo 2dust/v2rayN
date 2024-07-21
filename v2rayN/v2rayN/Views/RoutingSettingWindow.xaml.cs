@@ -13,8 +13,6 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-         
-
             this.Owner = Application.Current.MainWindow;
             this.Closing += RoutingSettingWindow_Closing;
             this.PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;

@@ -240,7 +240,7 @@ namespace v2rayN.Handler
                     {
                         if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
                         {
-                            update(!Utils.IsLightTheme());                            
+                            update(!Utils.IsLightTheme());
                         }
                     }
                 }

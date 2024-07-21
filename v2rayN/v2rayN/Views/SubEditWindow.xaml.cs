@@ -12,8 +12,6 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-           
-
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
 

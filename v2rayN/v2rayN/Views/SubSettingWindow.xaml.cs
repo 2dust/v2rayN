@@ -14,8 +14,6 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-           
-
             this.Owner = Application.Current.MainWindow;
 
             ViewModel = new SubSettingViewModel(this);
