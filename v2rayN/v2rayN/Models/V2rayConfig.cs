@@ -392,6 +392,8 @@ namespace v2rayN.Models
         ///
         /// </summary>
         public List<RulesItem4Ray> rules { get; set; }
+
+        public List<BalancersItem4Ray>? balancers { get; set; }
     }
 
     [Serializable]
@@ -406,11 +408,25 @@ namespace v2rayN.Models
 
         public string? outboundTag { get; set; }
 
+        public string? balancerTag { get; set; }
+
         public List<string>? ip { get; set; }
 
         public List<string>? domain { get; set; }
 
         public List<string>? protocol { get; set; }
+    }
+
+    public class BalancersItem4Ray
+    {
+        public List<string>? selector { get; set; }
+        public BalancersStrategy4Ray? strategy { get; set; }
+        public string? tag { get; set; }
+    }
+
+    public class BalancersStrategy4Ray
+    {
+        public string? type { get; set; }
     }
 
     public class StreamSettings4Ray

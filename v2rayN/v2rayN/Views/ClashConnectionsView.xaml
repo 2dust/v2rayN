@@ -29,7 +29,7 @@
             <ComboBox
                 x:Name="cmbSorting"
                 Width="100"
-                Margin="8"
+                Margin="8,0"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpSpeed}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownSpeed}" />
@@ -55,7 +55,7 @@
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
-                Margin="8"
+                Margin="8,0"
                 HorizontalAlignment="Left" />
         </WrapPanel>
 

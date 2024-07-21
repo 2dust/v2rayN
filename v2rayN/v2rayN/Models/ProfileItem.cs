@@ -49,7 +49,7 @@ namespace v2rayN.Models
             switch (configType)
             {
                 case EConfigType.Custom:
-                    summary += string.Format("{0}", remarks);
+                    summary += string.Format("[{1}]{0}", remarks, coreType.ToString());
                     break;
 
                 default:

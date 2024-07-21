@@ -1249,7 +1249,16 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-server set to active 的本地化字符串。
+        ///   查找类似 Multi-server load balancing 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultLoadBalanceServer {
+            get {
+                return ResourceManager.GetString("menuSetDefaultLoadBalanceServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Server Preferred Latency 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServer {
             get {

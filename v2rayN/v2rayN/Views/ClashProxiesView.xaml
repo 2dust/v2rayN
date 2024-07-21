@@ -34,7 +34,7 @@
             <ComboBox
                 x:Name="cmbRulemode"
                 Width="80"
-                Margin="8"
+                Margin="8,0"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
@@ -49,7 +49,7 @@
             <ComboBox
                 x:Name="cmbSorting"
                 Width="60"
-                Margin="8"
+                Margin="8,0"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
@@ -81,7 +81,7 @@
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
-                Margin="8"
+                Margin="8,0"
                 HorizontalAlignment="Left" />
         </WrapPanel>
         <DockPanel>

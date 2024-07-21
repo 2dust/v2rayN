@@ -74,6 +74,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
         public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultLoadBalanceServerCmd { get; }
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -170,8 +171,13 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
             SetDefaultMultipleServerCmd = ReactiveCommand.Create(() =>
             {
-                SetDefaultMultipleServer();
+                SetDefaultMultipleServer(ECoreType.sing_box);
             }, canEditRemove);
+            SetDefaultLoadBalanceServerCmd = ReactiveCommand.Create(() =>
+            {
+                SetDefaultMultipleServer(ECoreType.Xray);
+            }, canEditRemove);
+
             //servers move
             MoveTopCmd = ReactiveCommand.Create(() =>
             {
@@ -612,14 +618,14 @@ namespace v2rayN.ViewModels
             await DialogHost.Show(dialog, "RootDialog");
         }
 
-        private void SetDefaultMultipleServer()
+        private void SetDefaultMultipleServer(ECoreType coreType)
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
 
-            if (ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, out string indexId) != 0)
+            if (ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, coreType, out string indexId) != 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationFailed);
                 return;

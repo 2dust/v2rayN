@@ -71,6 +71,130 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
+        public int GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
+        {
+            v2rayConfig = null;
+            try
+            {
+                if (_config == null)
+                {
+                    msg = ResUI.CheckServerSettings;
+                    return -1;
+                }
+
+                msg = ResUI.InitialConfiguration;
+
+                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                {
+                    msg = ResUI.FailedGetDefaultConfiguration;
+                    return -1;
+                }
+
+                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+                if (v2rayConfig == null)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+
+                GenLog(v2rayConfig);
+                GenInbounds(v2rayConfig);
+                GenRouting(v2rayConfig);
+                GenDns(null, v2rayConfig);
+                GenStatistic(v2rayConfig);
+                v2rayConfig.outbounds.RemoveAt(0);
+
+                var tagProxy = new List<string>();
+                foreach (var it in selecteds)
+                {
+                    if (it.configType == EConfigType.Custom)
+                    {
+                        continue;
+                    }
+                    if (it.configType is EConfigType.Hysteria2 or EConfigType.Tuic or EConfigType.Wireguard)
+                    {
+                        continue;
+                    }
+                    if (it.port <= 0)
+                    {
+                        continue;
+                    }
+                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    if (item is null)
+                    {
+                        continue;
+                    }
+                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
+                    {
+                        if (Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
+                        {
+                            continue;
+                        }
+                    }
+                    if (item.configType == EConfigType.Shadowsocks
+                      && !Global.SsSecuritiesInSingbox.Contains(item.security))
+                    {
+                        continue;
+                    }
+                    if (item.configType == EConfigType.VLESS && !Global.Flows.Contains(item.flow))
+                    {
+                        continue;
+                    }
+
+                    //outbound
+                    var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                    GenOutbound(item, outbound);
+                    outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
+                    v2rayConfig.outbounds.Add(outbound);
+                    tagProxy.Add(outbound.tag);
+                }
+                if (tagProxy.Count <= 0)
+                {
+                    msg = ResUI.FailedGenDefaultConfiguration;
+                    return -1;
+                }
+
+                //add balancers
+                var balancer = new BalancersItem4Ray
+                {
+                    selector = [Global.ProxyTag],
+                    strategy = new() { type = "roundRobin" },
+                    tag = $"{Global.ProxyTag}-round",
+                };
+                v2rayConfig.routing.balancers = [balancer];
+
+                //add rule
+                var rules = v2rayConfig.routing.rules.Where(t => t.outboundTag == Global.ProxyTag).ToList();
+                if (rules?.Count > 0)
+                {
+                    foreach (var rule in rules)
+                    {
+                        rule.outboundTag = null;
+                        rule.balancerTag = balancer.tag;
+                    }
+                }
+                else
+                {
+                    v2rayConfig.routing.rules.Add(new()
+                    {
+                        network = "tcp,udp",
+                        balancerTag = balancer.tag,
+                        type = "field"
+                    });
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                msg = ResUI.FailedGenDefaultConfiguration;
+                return -1;
+            }
+        }
+
         public int GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
         {
             v2rayConfig = null;
@@ -897,7 +1021,7 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDns(ProfileItem node, V2rayConfig v2rayConfig)
+        private int GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -960,8 +1084,10 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDnsDomains(ProfileItem node, JsonNode dns)
+        private int GenDnsDomains(ProfileItem? node, JsonNode dns)
         {
+            if (node == null)
+            { return 0; }
             var servers = dns["servers"];
             if (servers != null)
             {

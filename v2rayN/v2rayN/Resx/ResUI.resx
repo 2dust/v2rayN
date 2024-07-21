@@ -1247,9 +1247,12 @@
     <value>Default domain strategy for outbound</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-server set to active</value>
+    <value>Multi-Server Preferred Latency</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
     <value>Main layout orientation(Require restart)</value>
+  </data>
+  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
+    <value>Multi-server load balancing</value>
   </data>
 </root>

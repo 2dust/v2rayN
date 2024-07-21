@@ -1066,11 +1066,11 @@ namespace v2rayN.Handler
             return 0;
         }
 
-        public static int AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, out string indexId)
+        public static int AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, out string indexId)
         {
             indexId = Utils.GetMD5(Global.CoreMultipleLoadConfigFileName);
             string configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
-            if (CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, out string msg) != 0)
+            if (CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, out string msg) != 0)
             {
                 return -1;
             }
@@ -1083,10 +1083,10 @@ namespace v2rayN.Handler
 
             var profileItem = LazyConfig.Instance.GetProfileItem(indexId) ?? new();
             profileItem.indexId = indexId;
-            profileItem.remarks = "Multi-server Config";
+            profileItem.remarks = coreType == ECoreType.sing_box ? Resx.ResUI.menuSetDefaultMultipleServer : Resx.ResUI.menuSetDefaultLoadBalanceServer;
             profileItem.address = Global.CoreMultipleLoadConfigFileName;
             profileItem.configType = EConfigType.Custom;
-            profileItem.coreType = ECoreType.sing_box;
+            profileItem.coreType = coreType;
 
             AddServerCommon(config, profileItem, true);
 

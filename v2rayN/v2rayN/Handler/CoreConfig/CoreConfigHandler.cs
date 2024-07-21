@@ -150,13 +150,25 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        public static int GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, out string msg)
+        public static int GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, ECoreType coreType, out string msg)
         {
-            if (new CoreConfigSingbox(config).GenerateClientMultipleLoadConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+            msg = ResUI.CheckServerSettings;
+            if (coreType == ECoreType.sing_box)
             {
-                return -1;
+                if (new CoreConfigSingbox(config).GenerateClientMultipleLoadConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+                JsonUtils.ToFile(singboxConfig, fileName, false);
             }
-            JsonUtils.ToFile(singboxConfig, fileName, false);
+            else if (coreType == ECoreType.Xray)
+            {
+                if (new CoreConfigV2ray(config).GenerateClientMultipleLoadConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                {
+                    return -1;
+                }
+                JsonUtils.ToFile(v2rayConfig, fileName, false);
+            }
 
             return 0;
         }

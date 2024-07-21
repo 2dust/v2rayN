@@ -1244,9 +1244,12 @@
     <value>Outbound默认解析策略</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>多服务器设为活动(多选)</value>
+    <value>多服务器优选延迟 (多选)</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
     <value>主界面布局方向(需重启)</value>
+  </data>
+  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
+    <value>多服务器负载均衡 (多选)</value>
   </data>
 </root>
