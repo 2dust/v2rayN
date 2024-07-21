@@ -294,12 +294,16 @@ namespace v2rayN.Handler
                     UseProxy = webProxy != null
                 });
 
-                var timer = Stopwatch.StartNew();
-
-                await client.GetAsync(url, cts.Token);
-
-                timer.Stop();
-                responseTime = (int)timer.Elapsed.TotalMilliseconds;
+                List<int> oneTime = [];
+                for (int i = 0; i < 2; i++)
+                {
+                    var timer = Stopwatch.StartNew();
+                    await client.GetAsync(url, cts.Token);
+                    timer.Stop();
+                    oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
+                    await Task.Delay(100);
+                }
+                responseTime = oneTime.Where(x => x > 0).OrderBy(x => x).FirstOrDefault();
             }
             catch //(Exception ex)
             {
