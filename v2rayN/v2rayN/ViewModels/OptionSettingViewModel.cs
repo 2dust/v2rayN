@@ -80,6 +80,7 @@ namespace v2rayN.ViewModels
 
         #region System proxy
 
+        [Reactive] public bool notProxyLocalAddress { get; set; }
         [Reactive] public string systemProxyAdvancedProtocol { get; set; }
         [Reactive] public string systemProxyExceptions { get; set; }
 
@@ -178,6 +179,7 @@ namespace v2rayN.ViewModels
 
             #region System proxy
 
+            notProxyLocalAddress = _config.notProxyLocalAddress;
             systemProxyAdvancedProtocol = _config.systemProxyAdvancedProtocol;
             systemProxyExceptions = _config.systemProxyExceptions;
 
@@ -339,6 +341,7 @@ namespace v2rayN.ViewModels
 
             //systemProxy
             _config.systemProxyExceptions = systemProxyExceptions;
+            _config.notProxyLocalAddress = notProxyLocalAddress;
             _config.systemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
 
             //tun mode

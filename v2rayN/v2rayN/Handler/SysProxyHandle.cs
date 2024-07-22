@@ -29,7 +29,11 @@ namespace v2rayN.Handler
                 }
                 if (type == ESysProxyType.ForcedChange)
                 {
-                    var strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                    var strExceptions = "";
+                    if (config.notProxyLocalAddress)
+                    {
+                        strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                    }
 
                     var strProxy = string.Empty;
                     if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))

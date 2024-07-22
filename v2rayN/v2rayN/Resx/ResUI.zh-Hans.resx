@@ -928,6 +928,9 @@
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>RouteOnly</value>
   </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>请勿将代理服务器用于本地（Intranet）地址</value>
+  </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>一键多线程测试延迟和速度 (Ctrl+E)</value>
   </data>

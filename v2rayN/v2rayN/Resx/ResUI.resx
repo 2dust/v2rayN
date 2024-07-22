@@ -928,6 +928,9 @@
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>RouteOnly</value>
   </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Do not use proxy servers for local (intranet) addresses</value>
+  </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>One-click multi test Latency and speed (Ctrl+E)</value>
   </data>
