@@ -934,6 +934,9 @@
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>Только маршрут</value>
   </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Не используйте прокси-серверы для локальных (интранет) адресов</value>
+  </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>Тест задержки и скорости всех серверов (Ctrl+E)</value>
   </data>

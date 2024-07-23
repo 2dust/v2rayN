@@ -855,13 +855,27 @@
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
                         <TextBlock
                             Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsNotProxyLocalAddress}" />
+                        <ToggleButton
+                            x:Name="tognotProxyLocalAddress"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="{StaticResource SettingItemMargin}"
+                            HorizontalAlignment="Left" />
+                        
+                        <TextBlock
+                            Grid.Row="4"
                             Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAdvancedProtocol}" />
                         <ComboBox
                             x:Name="cmbsystemProxyAdvancedProtocol"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             MinWidth="200"
                             Margin="{StaticResource SettingItemMargin}"
                             materialDesign:HintAssist.Hint="Protocol"

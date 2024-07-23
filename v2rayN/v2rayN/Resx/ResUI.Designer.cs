@@ -2958,6 +2958,15 @@ namespace v2rayN.Resx {
                 return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 NotProxyLocalAddress 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsNotProxyLocalAddress {
+            get {
+                return ResourceManager.GetString("TbSettingsNotProxyLocalAddress", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Set Win10 UWP Loopback 的本地化字符串。

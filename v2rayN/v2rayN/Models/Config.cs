@@ -14,6 +14,7 @@ namespace v2rayN.Models
         public string subIndexId { get; set; }
         public ESysProxyType sysProxyType { get; set; }
         public string systemProxyExceptions { get; set; }
+        public bool notProxyLocalAddress { get; set; } = true;
         public string systemProxyAdvancedProtocol { get; set; }
 
         public ECoreType runningCoreType { get; set; }

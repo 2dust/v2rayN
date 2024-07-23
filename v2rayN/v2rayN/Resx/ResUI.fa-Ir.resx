@@ -925,6 +925,9 @@
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>فقط مسیر</value>
   </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>يەرلىك (Intranet) ئادرېسلارغا ۋاكالەتچى مۇلازىمېتىر ئىشلەتمەڭ</value>
+  </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>One-click test Latency and speed (Ctrl+E)</value>
   </data>
