@@ -27,8 +27,8 @@
                 TextBoxBase.TextChanged="cmbMsgFilter_TextChanged" />
             <Button
                 x:Name="btnCopy"
-                Width="30"
-                Height="30"
+                Width="24"
+                Height="24"
                 Margin="8,0"
                 Click="menuMsgViewCopyAll_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
@@ -36,8 +36,8 @@
             </Button>
             <Button
                 x:Name="btnClear"
-                Width="30"
-                Height="30"
+                Width="24"
+                Height="24"
                 Margin="8,0"
                 Click="menuMsgViewClear_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
