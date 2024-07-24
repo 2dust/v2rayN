@@ -20,9 +20,10 @@
   "rules": [
     {
       "rule_set": [
-        "geosite-geolocation-!cn"
+        "geosite-cn",
+        "geosite-geolocation-cn"
       ],
-      "server": "remote"
+      "server": "local"
     },
     {
       "rule_set": [
@@ -31,5 +32,5 @@
       "server": "block"
     }
   ],
-  "final": "local"
+  "final": "remote"
 }
