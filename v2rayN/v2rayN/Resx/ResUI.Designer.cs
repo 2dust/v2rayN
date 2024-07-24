@@ -331,7 +331,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Automatic update interval(minutes) 的本地化字符串。
+        ///   查找类似 Automatic update interval (minutes) 的本地化字符串。
         /// </summary>
         public static string LvAutoUpdateInterval {
             get {
@@ -385,7 +385,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enabled Update 的本地化字符串。
+        ///   查找类似 Enable update 的本地化字符串。
         /// </summary>
         public static string LvEnabled {
             get {
@@ -412,7 +412,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 More urls, separated by commas;Subscription conversion will be invalid 的本地化字符串。
+        ///   查找类似 More URLs, separated by commas; Subscription conversion will be invalid 的本地化字符串。
         /// </summary>
         public static string LvMoreUrl {
             get {
@@ -1258,7 +1258,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server Preferred Latency 的本地化字符串。
+        ///   查找类似 Multi-Server lowest latency 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServer {
             get {
@@ -1357,7 +1357,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Subscription group 的本地化字符串。
+        ///   查找类似 Subscription Group 的本地化字符串。
         /// </summary>
         public static string menuSubscription {
             get {
@@ -1384,7 +1384,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Update subscription without proxy 的本地化字符串。
+        ///   查找类似 Update subscriptions without proxy 的本地化字符串。
         /// </summary>
         public static string menuSubUpdate {
             get {
@@ -1393,7 +1393,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Update subscription with proxy 的本地化字符串。
+        ///   查找类似 Update subscriptions with proxy 的本地化字符串。
         /// </summary>
         public static string menuSubUpdateViaProxy {
             get {
@@ -1609,7 +1609,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Update subscription end 的本地化字符串。
+        ///   查找类似 Update subscriptions end 的本地化字符串。
         /// </summary>
         public static string MsgUpdateSubscriptionEnd {
             get {
@@ -1618,7 +1618,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Update subscription starts 的本地化字符串。
+        ///   查找类似 Update subscriptions start 的本地化字符串。
         /// </summary>
         public static string MsgUpdateSubscriptionStart {
             get {
@@ -1888,7 +1888,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Group please leave blank here 的本地化字符串。
+        ///   查找类似 For group please leave blank here 的本地化字符串。
         /// </summary>
         public static string SubUrlTips {
             get {
@@ -2933,6 +2933,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Do not use proxy servers for local (intranet) addresses 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsNotProxyLocalAddress {
+            get {
+                return ResourceManager.GetString("TbSettingsNotProxyLocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Auth pass 的本地化字符串。
         /// </summary>
         public static string TbSettingsPass {
@@ -2956,15 +2965,6 @@ namespace v2rayN.Resx {
         public static string TbSettingsRouteOnly {
             get {
                 return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 NotProxyLocalAddress 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsNotProxyLocalAddress {
-            get {
-                return ResourceManager.GetString("TbSettingsNotProxyLocalAddress", resourceCulture);
             }
         }
         
