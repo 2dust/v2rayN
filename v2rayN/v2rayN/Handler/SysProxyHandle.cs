@@ -11,7 +11,7 @@ namespace v2rayN.Handler
 
         public static bool UpdateSysProxy(Config config, bool forceDisable)
         {
-            var type = config.sysProxyType;
+            var type = config.systemProxyItem.sysProxyType;
 
             if (forceDisable && type != ESysProxyType.Unchanged)
             {
@@ -30,19 +30,19 @@ namespace v2rayN.Handler
                 if (type == ESysProxyType.ForcedChange)
                 {
                     var strExceptions = "";
-                    if (config.notProxyLocalAddress)
+                    if (config.systemProxyItem.notProxyLocalAddress)
                     {
-                        strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyExceptions}";
+                        strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyItem.systemProxyExceptions}";
                     }
 
                     var strProxy = string.Empty;
-                    if (Utils.IsNullOrEmpty(config.systemProxyAdvancedProtocol))
+                    if (Utils.IsNullOrEmpty(config.systemProxyItem.systemProxyAdvancedProtocol))
                     {
                         strProxy = $"{Global.Loopback}:{port}";
                     }
                     else
                     {
-                        strProxy = config.systemProxyAdvancedProtocol
+                        strProxy = config.systemProxyItem.systemProxyAdvancedProtocol
                             .Replace("{ip}", Global.Loopback)
                             .Replace("{http_port}", port.ToString())
                             .Replace("{socks_port}", portSocks.ToString());

@@ -197,6 +197,15 @@ namespace v2rayN.Handler
             }
             config.clashUIItem ??= new();
 
+            if (config.systemProxyItem == null)
+            {
+                config.systemProxyItem = new()
+                {
+                    systemProxyExceptions = config.systemProxyExceptions,
+                    systemProxyAdvancedProtocol = config.systemProxyAdvancedProtocol,
+                };
+            }
+
             LazyConfig.Instance.SetConfig(config);
             return 0;
         }

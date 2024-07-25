@@ -234,7 +234,7 @@ namespace v2rayN.ViewModels
               y => y != null && !y.Text.IsNullOrEmpty())
                   .Subscribe(c => ServerSelectedChanged(c));
 
-            SystemProxySelected = (int)_config.sysProxyType;
+            SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
             this.WhenAnyValue(
               x => x.SystemProxySelected,
               y => y >= 0)
@@ -429,7 +429,7 @@ namespace v2rayN.ViewModels
             //RefreshServers();
 
             Reload();
-            ChangeSystemProxyStatus(_config.sysProxyType, true);
+            ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, true);
         }
 
         private void OnProgramStarted(object state, bool timeout)
@@ -936,7 +936,7 @@ namespace v2rayN.ViewModels
 
                 //ConfigHandler.SaveConfig(_config, false);
 
-                ChangeSystemProxyStatus(_config.sysProxyType, false);
+                ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, false);
             });
         }
 
@@ -955,21 +955,21 @@ namespace v2rayN.ViewModels
 
         public void SetListenerType(ESysProxyType type)
         {
-            if (_config.sysProxyType == type)
+            if (_config.systemProxyItem.sysProxyType == type)
             {
                 return;
             }
-            _config.sysProxyType = type;
+            _config.systemProxyItem.sysProxyType = type;
             ChangeSystemProxyStatus(type, true);
 
-            SystemProxySelected = (int)_config.sysProxyType;
+            SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
             ConfigHandler.SaveConfig(_config, false);
         }
 
         private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
         {
             SysProxyHandle.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
-            _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.sysProxyType.ToString()}", true);
+            _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
 
             Application.Current?.Dispatcher.Invoke((Action)(() =>
             {
@@ -1046,7 +1046,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (_config.sysProxyType == (ESysProxyType)SystemProxySelected)
+            if (_config.systemProxyItem.sysProxyType == (ESysProxyType)SystemProxySelected)
             {
                 return;
             }
@@ -1223,7 +1223,7 @@ namespace v2rayN.ViewModels
             StringBuilder sb = new();
             sb.Append($"[{EInboundProtocol.socks}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)}]");
             sb.Append(" | ");
-            //if (_config.sysProxyType == ESysProxyType.ForcedChange)
+            //if (_config.systemProxyItem.sysProxyType == ESysProxyType.ForcedChange)
             //{
             //    sb.Append($"[{Global.InboundHttp}({ResUI.SystemProxy}):{LazyConfig.Instance.GetLocalPort(Global.InboundHttp)}]");
             //}

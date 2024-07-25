@@ -22,7 +22,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                int index = (int)config.sysProxyType;
+                int index = (int)config.systemProxyItem.sysProxyType;
 
                 //Load from routing setting
                 var createdIcon = GetNotifyIcon4Routing(config);
@@ -56,7 +56,7 @@ namespace v2rayN.Handler
         public System.Windows.Media.ImageSource GetAppIcon(Config config)
         {
             int index = 1;
-            switch (config.sysProxyType)
+            switch (config.systemProxyItem.sysProxyType)
             {
                 case ESysProxyType.ForcedClear:
                     index = 1;
@@ -90,7 +90,7 @@ namespace v2rayN.Handler
                 }
 
                 Color color = ColorTranslator.FromHtml("#3399CC");
-                int index = (int)config.sysProxyType;
+                int index = (int)config.systemProxyItem.sysProxyType;
                 if (index > 0)
                 {
                     color = (new[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];

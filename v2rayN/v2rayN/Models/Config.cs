@@ -12,9 +12,7 @@ namespace v2rayN.Models
 
         public string indexId { get; set; }
         public string subIndexId { get; set; }
-        public ESysProxyType sysProxyType { get; set; }
         public string systemProxyExceptions { get; set; }
-        public bool notProxyLocalAddress { get; set; } = true;
         public string systemProxyAdvancedProtocol { get; set; }
 
         public ECoreType runningCoreType { get; set; }
@@ -48,6 +46,7 @@ namespace v2rayN.Models
         public Mux4SboxItem mux4SboxItem { get; set; }
         public HysteriaItem hysteriaItem { get; set; }
         public ClashUIItem clashUIItem { get; set; }
+        public SystemProxyItem systemProxyItem { get; set; }
         public List<InItem> inbound { get; set; }
         public List<KeyEventItem> globalHotkeys { get; set; }
         public List<CoreTypeItem> coreTypeItem { get; set; }
