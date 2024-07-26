@@ -1180,7 +1180,7 @@ namespace v2rayN.Handler.CoreConfig
                 }
                 singboxConfig.dns = dns4Sbox;
 
-                GenDnsDomains(node, singboxConfig, item?.domainStrategy4Freedom);
+                GenDnsDomains(node, singboxConfig, item);
             }
             catch (Exception ex)
             {
@@ -1189,7 +1189,7 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDnsDomains(ProfileItem? node, SingboxConfig singboxConfig, string? strategy)
+        private int GenDnsDomains(ProfileItem? node, SingboxConfig singboxConfig, DNSItem? dNSItem)
         {
             var dns4Sbox = singboxConfig.dns ?? new();
             dns4Sbox.servers ??= [];
@@ -1199,9 +1199,9 @@ namespace v2rayN.Handler.CoreConfig
             dns4Sbox.servers.Add(new()
             {
                 tag = tag,
-                address = "223.5.5.5",
+                address = Utils.IsNullOrEmpty(dNSItem?.domainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.domainDNSAddress,
                 detour = Global.DirectTag,
-                strategy = Utils.IsNullOrEmpty(strategy) ? null : strategy,
+                strategy = Utils.IsNullOrEmpty(dNSItem?.domainStrategy4Freedom) ? null : dNSItem?.domainStrategy4Freedom,
             });
             dns4Sbox.rules.Insert(0, new()
             {

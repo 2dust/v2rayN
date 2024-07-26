@@ -18,10 +18,13 @@ namespace v2rayN.ViewModels
 
         [Reactive] public bool useSystemHosts { get; set; }
         [Reactive] public string domainStrategy4Freedom { get; set; }
+        [Reactive] public string domainDNSAddress { get; set; }
         [Reactive] public string normalDNS { get; set; }
+
+        [Reactive] public string domainStrategy4Freedom2 { get; set; }
+        [Reactive] public string domainDNSAddress2 { get; set; }
         [Reactive] public string normalDNS2 { get; set; }
         [Reactive] public string tunDNS2 { get; set; }
-        [Reactive] public string domainStrategy4Freedom2 { get; set; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
@@ -36,12 +39,14 @@ namespace v2rayN.ViewModels
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
             useSystemHosts = item.useSystemHosts;
             domainStrategy4Freedom = item?.domainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress = item?.domainDNSAddress ?? string.Empty;
             normalDNS = item?.normalDNS ?? string.Empty;
 
             var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+            domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress2 = item2?.domainDNSAddress ?? string.Empty;
             normalDNS2 = item2?.normalDNS ?? string.Empty;
             tunDNS2 = item2?.tunDNS ?? string.Empty;
-            domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
@@ -100,14 +105,16 @@ namespace v2rayN.ViewModels
 
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
             item.domainStrategy4Freedom = domainStrategy4Freedom;
+            item.domainDNSAddress = domainDNSAddress;
             item.useSystemHosts = useSystemHosts;
             item.normalDNS = normalDNS;
             ConfigHandler.SaveDNSItems(_config, item);
 
             var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
-            item2.normalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
-            item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2));
             item2.domainStrategy4Freedom = domainStrategy4Freedom2;
+            item2.domainDNSAddress = domainDNSAddress2;
+            item2.normalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
+            item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2));;
             ConfigHandler.SaveDNSItems(_config, item2);
 
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);

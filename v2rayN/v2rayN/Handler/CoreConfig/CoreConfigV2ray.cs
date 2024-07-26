@@ -1073,7 +1073,7 @@ namespace v2rayN.Handler.CoreConfig
                     }
                 }
 
-                GenDnsDomains(node, obj);
+                GenDnsDomains(node, obj, item);
 
                 v2rayConfig.dns = obj;
             }
@@ -1084,7 +1084,7 @@ namespace v2rayN.Handler.CoreConfig
             return 0;
         }
 
-        private int GenDnsDomains(ProfileItem? node, JsonNode dns)
+        private int GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
         {
             if (node == null)
             { return 0; }
@@ -1095,7 +1095,7 @@ namespace v2rayN.Handler.CoreConfig
                 {
                     var dnsServer = new DnsServer4Ray()
                     {
-                        address = "223.5.5.5",
+                        address = Utils.IsNullOrEmpty(dNSItem?.domainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.domainDNSAddress,
                         domains = [node.address]
                     };
                     servers.AsArray().Insert(0, JsonUtils.SerializeToNode(dnsServer));

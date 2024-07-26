@@ -2663,6 +2663,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Outbound DNS address 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDomainDNSAddress {
+            get {
+                return ResourceManager.GetString("TbSettingsDomainDNSAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Outbound Freedom domainStrategy 的本地化字符串。
         /// </summary>
         public static string TbSettingsDomainStrategy4Freedom {

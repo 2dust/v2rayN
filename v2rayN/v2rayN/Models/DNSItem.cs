@@ -16,5 +16,6 @@ namespace v2rayN.Models
         public string? normalDNS { get; set; }
         public string? tunDNS { get; set; }
         public string? domainStrategy4Freedom { get; set; }
+        public string? domainDNSAddress { get; set; }
     }
 }

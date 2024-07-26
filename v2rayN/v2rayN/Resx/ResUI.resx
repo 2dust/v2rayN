@@ -1258,4 +1258,7 @@
   <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
     <value>Multi-server load balancing</value>
   </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Outbound DNS address</value>
+  </data>
 </root>

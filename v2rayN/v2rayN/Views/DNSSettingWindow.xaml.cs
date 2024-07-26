@@ -28,13 +28,24 @@ namespace v2rayN.Views
             {
                 cmbdomainStrategy4Out.Items.Add(it);
             });
+            Global.DomainDNSAddress.ForEach(it =>
+            {
+                cmbdomainDNSAddress.Items.Add(it);
+            });
+            Global.SingboxDomainDNSAddress.ForEach(it =>
+            {
+                cmbdomainDNSAddress2.Items.Add(it);
+            });
 
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.useSystemHosts, v => v.togUseSystemHosts.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.domainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.domainDNSAddress, v => v.cmbdomainDNSAddress.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.normalDNS, v => v.txtnormalDNS.Text).DisposeWith(disposables);
+
                 this.Bind(ViewModel, vm => vm.domainStrategy4Freedom2, v => v.cmbdomainStrategy4Out.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.domainDNSAddress2, v => v.cmbdomainDNSAddress2.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.normalDNS2, v => v.txtnormalDNS2.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.tunDNS2, v => v.txttunDNS2.Text).DisposeWith(disposables);
 

@@ -1255,4 +1255,7 @@
   <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
     <value>多服务器负载均衡 (多选)</value>
   </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Outbound域名解析地址</value>
+  </data>
 </root>

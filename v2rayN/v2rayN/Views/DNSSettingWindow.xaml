@@ -49,33 +49,6 @@
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
                 <DockPanel Margin="{StaticResource SettingItemMargin}">
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Freedom}" />
-                        <ComboBox
-                            x:Name="cmbdomainStrategy4Freedom"
-                            Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
-                            Style="{StaticResource DefComboBox}" />
-                    </StackPanel>
-
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
-                        <ToggleButton
-                            x:Name="togUseSystemHosts"
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
-                            HorizontalAlignment="Left" />
-                    </StackPanel>
-
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock
                             Margin="{StaticResource SettingItemMargin}"
@@ -83,7 +56,7 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsRemoteDNS}" />
                         <TextBlock
-                            Margin="8,0,0,0"
+                            Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}">
                             <Hyperlink Click="linkDnsObjectDoc_Click">
@@ -93,11 +66,52 @@
                         </TextBlock>
                         <Button
                             x:Name="btnImportDefConfig4V2ray"
-                            Margin="8,0,0,0"
+                            Margin="{StaticResource SettingItemMargin}"
                             Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
                     </StackPanel>
+
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource SettingItemMargin}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
+                            <ToggleButton
+                                x:Name="togUseSystemHosts"
+                                Margin="{StaticResource SettingItemMargin}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource SettingItemMargin}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Freedom}" />
+                            <ComboBox
+                                x:Name="cmbdomainStrategy4Freedom"
+                                Width="150"
+                                Margin="{StaticResource SettingItemMargin}"
+                                Style="{StaticResource DefComboBox}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource SettingItemMargin}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}" />
+                            <ComboBox
+                                x:Name="cmbdomainDNSAddress"
+                                Width="150"
+                                Margin="{StaticResource SettingItemMargin}"
+                                IsEditable="True"
+                                Style="{StaticResource DefComboBox}" />
+                        </StackPanel>
+                    </WrapPanel>
 
                     <TextBox
                         x:Name="txtnormalDNS"
@@ -116,7 +130,7 @@
                 <DockPanel Margin="{StaticResource SettingItemMargin}">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock
-                            Margin="8,0,0,0"
+                            Margin="{StaticResource SettingItemMargin}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}">
                             <Hyperlink Click="linkDnsSingboxObjectDoc_Click">
@@ -126,24 +140,40 @@
                         </TextBlock>
                         <Button
                             x:Name="btnImportDefConfig4Singbox"
-                            Margin="8,0,0,0"
+                            Margin="{StaticResource SettingItemMargin}"
                             Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
                             Cursor="Hand"
                             Style="{StaticResource DefButton}" />
                     </StackPanel>
 
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <TextBlock
-                            Margin="{StaticResource SettingItemMargin}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Out}" />
-                        <ComboBox
-                            x:Name="cmbdomainStrategy4Out"
-                            Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
-                            Style="{StaticResource DefComboBox}" />
-                    </StackPanel>
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource SettingItemMargin}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsDomainStrategy4Out}" />
+                            <ComboBox
+                                x:Name="cmbdomainStrategy4Out"
+                                Width="150"
+                                Margin="{StaticResource SettingItemMargin}"
+                                Style="{StaticResource DefComboBox}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource SettingItemMargin}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}" />
+                            <ComboBox
+                                x:Name="cmbdomainDNSAddress2"
+                                Width="150"
+                                Margin="{StaticResource SettingItemMargin}"
+                                IsEditable="True"
+                                Style="{StaticResource DefComboBox}" />
+                        </StackPanel>
+                    </WrapPanel>
 
                     <Grid Margin="{StaticResource SettingItemMargin}">
                         <Grid.ColumnDefinitions>
