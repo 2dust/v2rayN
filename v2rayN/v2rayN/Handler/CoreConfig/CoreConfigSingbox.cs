@@ -393,12 +393,15 @@ namespace v2rayN.Handler.CoreConfig
                 var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(txtFile);
                 if (singboxConfig == null)
                 {
-                    msg = ResUI.FailedConversionConfiguration;
-                    return -1;
+                    //msg = ResUI.FailedConversionConfiguration;
+                    //return -1;
+                    File.Copy(addressFileName, fileName);
                 }
-
-                GenExperimental(singboxConfig);
-                JsonUtils.ToFile(singboxConfig, fileName, false);
+                else
+                {
+                    GenExperimental(singboxConfig);
+                    JsonUtils.ToFile(singboxConfig, fileName, false);
+                }
 
                 //check again
                 if (!File.Exists(fileName))
