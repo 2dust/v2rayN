@@ -399,6 +399,7 @@ namespace v2rayN.Handler.CoreConfig
                 }
                 else
                 {
+                    GenInbounds(singboxConfig);
                     GenExperimental(singboxConfig);
                     JsonUtils.ToFile(singboxConfig, fileName, false);
                 }
