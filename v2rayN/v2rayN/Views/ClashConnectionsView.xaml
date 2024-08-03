@@ -43,7 +43,8 @@
                 Width="24"
                 Height="24"
                 Margin="8,0"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Close" />
             </Button>
 

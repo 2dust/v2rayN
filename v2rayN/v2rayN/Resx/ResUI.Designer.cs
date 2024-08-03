@@ -997,6 +997,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto column width adjustment 的本地化字符串。
+        /// </summary>
+        public static string menuProfileAutofitColumnWidth {
+            get {
+                return ResourceManager.GetString("menuProfileAutofitColumnWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Promotion 的本地化字符串。
         /// </summary>
         public static string menuPromotion {

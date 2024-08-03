@@ -1138,4 +1138,7 @@
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>打開儲存所在的位置</value>
   </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>自動調整列寬</value>
+  </data>
 </root>

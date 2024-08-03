@@ -1258,4 +1258,7 @@
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Outbound域名解析地址</value>
   </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>自动调整列宽</value>
+  </data>
 </root>

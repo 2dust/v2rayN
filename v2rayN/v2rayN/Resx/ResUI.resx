@@ -1261,4 +1261,7 @@
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Outbound DNS address</value>
   </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Auto column width adjustment</value>
+  </data>
 </root>

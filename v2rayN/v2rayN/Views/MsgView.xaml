@@ -31,7 +31,8 @@
                 Height="24"
                 Margin="8,0"
                 Click="menuMsgViewCopyAll_Click"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
             </Button>
             <Button
@@ -40,7 +41,8 @@
                 Height="24"
                 Margin="8,0"
                 Click="menuMsgViewClear_Click"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
             </Button>
             <TextBlock

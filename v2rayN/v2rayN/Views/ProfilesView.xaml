@@ -39,7 +39,8 @@
                     Width="30"
                     Height="30"
                     Margin="4,0"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuSubEdit}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Edit" />
                 </Button>
                 <Button
@@ -47,7 +48,8 @@
                     Width="30"
                     Height="30"
                     Margin="4,0"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuSubAdd}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                 </Button>
 
@@ -56,7 +58,8 @@
                     Width="30"
                     Height="30"
                     Margin="20,0"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
                 </Button>
                 <TextBox

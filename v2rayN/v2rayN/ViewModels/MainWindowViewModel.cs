@@ -1209,11 +1209,12 @@ namespace v2rayN.ViewModels
              y => y != null && !y.IsNullOrEmpty())
                 .Subscribe(c =>
                 {
-                    if (!Utils.IsNullOrEmpty(CurrentLanguage))
+                    if (!Utils.IsNullOrEmpty(CurrentLanguage) && _config.uiItem.currentLanguage != CurrentLanguage)
                     {
                         _config.uiItem.currentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                         ConfigHandler.SaveConfig(_config);
+                        _noticeHandler?.Enqueue(ResUI.NeedRebootTips);
                     }
                 });
         }

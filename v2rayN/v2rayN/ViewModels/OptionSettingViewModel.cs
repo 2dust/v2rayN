@@ -268,7 +268,8 @@ namespace v2rayN.ViewModels
             var needReboot = (EnableStatistics != _config.guiItem.enableStatistics
                             || EnableDragDropSort != _config.uiItem.enableDragDropSort
                             || EnableHWA != _config.guiItem.enableHWA
-                            || CurrentFontFamily != _config.uiItem.currentFontFamily);
+                            || CurrentFontFamily != _config.uiItem.currentFontFamily
+                            || MainGirdOrientation != (int)_config.uiItem.mainGirdOrientation);
 
             //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
             //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
