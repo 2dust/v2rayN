@@ -78,6 +78,7 @@
                 BorderThickness="1"
                 CanUserAddRows="False"
                 CanUserResizeRows="False"
+                CanUserSortColumns="False"
                 EnableRowVirtualization="True"
                 Focusable="True"
                 GridLinesVisibility="All"
