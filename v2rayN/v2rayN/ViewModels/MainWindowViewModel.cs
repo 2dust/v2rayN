@@ -1,7 +1,4 @@
-using DynamicData;
 using DynamicData.Binding;
-using MaterialDesignColors;
-using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -30,7 +27,6 @@ namespace v2rayN.ViewModels
         private CoreHandler _coreHandler;
         private static Config _config;
         private NoticeHandler? _noticeHandler;
-        private readonly PaletteHelper _paletteHelper = new();
         private Action<EViewAction> _updateView;
         private bool _showInTaskbar;
 
@@ -166,24 +162,6 @@ namespace v2rayN.ViewModels
         public bool EnableTun { get; set; }
 
         [Reactive]
-        public bool ColorModeDark { get; set; }
-
-        private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
-        public IObservableCollection<Swatch> Swatches => _swatches;
-
-        [Reactive]
-        public Swatch SelectedSwatch { get; set; }
-
-        [Reactive]
-        public int CurrentFontSize { get; set; }
-
-        [Reactive]
-        public bool FollowSystemTheme { get; set; }
-
-        [Reactive]
-        public string CurrentLanguage { get; set; }
-
-        [Reactive]
         public bool ShowClashUI { get; set; }
 
         [Reactive]
@@ -219,8 +197,6 @@ namespace v2rayN.ViewModels
             }
 
             Init();
-            BindingUI();
-            RestoreUI();
 
             #region WhenAnyValue && ReactiveCommand
 
@@ -824,33 +800,6 @@ namespace v2rayN.ViewModels
             catch { }
         }
 
-        //private void ImportOldGuiConfig()
-        //{
-        //    if (UI.OpenFileDialog(out string fileName,
-        //        "guiNConfig|*.json|All|*.*") != true)
-        //    {
-        //        return;
-        //    }
-        //    if (Utils.IsNullOrEmpty(fileName))
-        //    {
-        //        return;
-        //    }
-
-        //    var ret = ConfigHandler.ImportOldGuiConfig(_config, fileName);
-        //    if (ret == 0)
-        //    {
-        //        RefreshRoutingsMenu();
-        //        InitSubscriptionView();
-        //        RefreshServers();
-        //        Reload();
-        //        _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-        //    }
-        //    else
-        //    {
-        //        _noticeHandler?.Enqueue(ResUI.OperationFailed);
-        //    }
-        //}
-
         #endregion Setting
 
         #region CheckUpdate
@@ -1078,7 +1027,6 @@ namespace v2rayN.ViewModels
             var bl = blShow ?? !_showInTaskbar;
             if (bl)
             {
-                //Application.Current.MainWindow.ShowInTaskbar = true;
                 Application.Current.MainWindow.Show();
                 if (Application.Current.MainWindow.WindowState == WindowState.Minimized)
                 {
@@ -1090,133 +1038,9 @@ namespace v2rayN.ViewModels
             else
             {
                 Application.Current.MainWindow.Hide();
-                //Application.Current.MainWindow.ShowInTaskbar = false;
-                //IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
-                //Utile.RegWriteValue(Global.MyRegPath, Utile.WindowHwndKey, Convert.ToString((long)windowHandle));
             }
             _showInTaskbar = bl;
             _config.uiItem.showInTaskbar = _showInTaskbar;
-        }
-
-        private void RestoreUI()
-        {
-            if (FollowSystemTheme)
-            {
-                ModifyTheme(!Utils.IsLightTheme());
-            }
-            else
-            {
-                ModifyTheme(_config.uiItem.colorModeDark);
-            }
-
-            if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
-            {
-                var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName);
-                if (swatch != null
-                   && swatch.ExemplarHue != null
-                   && swatch.ExemplarHue?.Color != null)
-                {
-                    ChangePrimaryColor(swatch.ExemplarHue.Color);
-                }
-            }
-        }
-
-        private void BindingUI()
-        {
-            ColorModeDark = _config.uiItem.colorModeDark;
-            FollowSystemTheme = _config.uiItem.followSystemTheme;
-            _swatches.AddRange(new SwatchesProvider().Swatches);
-            if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
-            {
-                SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName);
-            }
-            CurrentFontSize = _config.uiItem.currentFontSize;
-            CurrentLanguage = _config.uiItem.currentLanguage;
-
-            this.WhenAnyValue(
-                  x => x.ColorModeDark,
-                  y => y == true)
-                      .Subscribe(c =>
-                      {
-                          if (_config.uiItem.colorModeDark != ColorModeDark)
-                          {
-                              _config.uiItem.colorModeDark = ColorModeDark;
-                              ModifyTheme(ColorModeDark);
-                              ConfigHandler.SaveConfig(_config);
-                          }
-                      });
-
-            this.WhenAnyValue(x => x.FollowSystemTheme,
-                y => y == true)
-                    .Subscribe(c =>
-                    {
-                        if (_config.uiItem.followSystemTheme != FollowSystemTheme)
-                        {
-                            _config.uiItem.followSystemTheme = FollowSystemTheme;
-                            ConfigHandler.SaveConfig(_config);
-                            if (FollowSystemTheme)
-                            {
-                                ModifyTheme(!Utils.IsLightTheme());
-                            }
-                            else
-                            {
-                                ModifyTheme(ColorModeDark);
-                            }
-                        }
-                    });
-
-            this.WhenAnyValue(
-              x => x.SelectedSwatch,
-              y => y != null && !y.Name.IsNullOrEmpty())
-                 .Subscribe(c =>
-                 {
-                     if (SelectedSwatch == null
-                     || SelectedSwatch.Name.IsNullOrEmpty()
-                     || SelectedSwatch.ExemplarHue == null
-                     || SelectedSwatch.ExemplarHue?.Color == null)
-                     {
-                         return;
-                     }
-                     if (_config.uiItem.colorPrimaryName != SelectedSwatch?.Name)
-                     {
-                         _config.uiItem.colorPrimaryName = SelectedSwatch?.Name;
-                         ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
-                         ConfigHandler.SaveConfig(_config);
-                     }
-                 });
-
-            this.WhenAnyValue(
-               x => x.CurrentFontSize,
-               y => y > 0)
-                  .Subscribe(c =>
-                  {
-                      if (CurrentFontSize >= Global.MinFontSize)
-                      {
-                          _config.uiItem.currentFontSize = CurrentFontSize;
-                          double size = (long)CurrentFontSize;
-                          Application.Current.Resources["StdFontSize"] = size;
-                          Application.Current.Resources["StdFontSize1"] = size + 1;
-                          Application.Current.Resources["StdFontSize2"] = size + 2;
-                          Application.Current.Resources["StdFontSizeMsg"] = size - 1;
-                          Application.Current.Resources["StdFontSize-1"] = size - 1;
-
-                          ConfigHandler.SaveConfig(_config);
-                      }
-                  });
-
-            this.WhenAnyValue(
-             x => x.CurrentLanguage,
-             y => y != null && !y.IsNullOrEmpty())
-                .Subscribe(c =>
-                {
-                    if (!Utils.IsNullOrEmpty(CurrentLanguage) && _config.uiItem.currentLanguage != CurrentLanguage)
-                    {
-                        _config.uiItem.currentLanguage = CurrentLanguage;
-                        Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                        ConfigHandler.SaveConfig(_config);
-                        _noticeHandler?.Enqueue(ResUI.NeedRebootTips);
-                    }
-                });
         }
 
         public void InboundDisplayStaus()
@@ -1253,27 +1077,6 @@ namespace v2rayN.ViewModels
             {
                 InboundLanDisplay = $"{ResUI.LabLAN}:None";
             }
-        }
-
-        public void ModifyTheme(bool isDarkTheme)
-        {
-            var theme = _paletteHelper.GetTheme();
-
-            theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
-            _paletteHelper.SetTheme(theme);
-
-            Utils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
-        }
-
-        public void ChangePrimaryColor(System.Windows.Media.Color color)
-        {
-            var theme = _paletteHelper.GetTheme();
-
-            theme.PrimaryLight = new ColorPair(color.Lighten());
-            theme.PrimaryMid = new ColorPair(color);
-            theme.PrimaryDark = new ColorPair(color.Darken());
-
-            _paletteHelper.SetTheme(theme);
         }
 
         private void AutoHideStartup()

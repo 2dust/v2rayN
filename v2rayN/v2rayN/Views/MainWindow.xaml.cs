@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using MaterialDesignThemes.Wpf;
+using ReactiveUI;
 using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
@@ -31,16 +32,6 @@ namespace v2rayN.Views
 
             ViewModel = new MainWindowViewModel(MainSnackbar.MessageQueue, null);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
-
-            for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
-            {
-                cmbCurrentFontSize.Items.Add(i.ToString());
-            }
-
-            Global.Languages.ForEach(it =>
-            {
-                cmbCurrentLanguage.Items.Add(it);
-            });
 
             this.WhenActivated(disposables =>
             {
@@ -130,14 +121,6 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.cmbRoutings2.Visibility).DisposeWith(disposables);
 
-                //UI
-                this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.FollowSystemTheme, v => v.followSystemTheme.IsChecked).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.Swatches, v => v.cmbSwatches.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
-
                 if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
                 {
                     gridMain.Visibility = Visibility.Visible;
@@ -169,8 +152,6 @@ namespace v2rayN.Views
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
 
-            MainFormHandler.Instance.RegisterSystemColorSet(_config, this, (bool bl) => { ViewModel?.ModifyTheme(bl); });
-
             if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
             {
                 tabProfiles.Content ??= new ProfilesView();
@@ -192,6 +173,7 @@ namespace v2rayN.Views
                 tabClashProxies2.Content ??= new ClashProxiesView();
                 tabClashConnections2.Content ??= new ClashConnectionsView();
             }
+            pbTheme.Content ??= new ThemeSettingView();
 
             RestoreUI();
             AddHelpMenuItem();
