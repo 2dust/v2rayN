@@ -439,10 +439,6 @@ namespace v2rayN.ViewModels
                 {
                     Reload();
                 }
-                if (_config.uiItem.enableAutoAdjustMainLvColWidth)
-                {
-                    _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
-                }
             }
         }
 

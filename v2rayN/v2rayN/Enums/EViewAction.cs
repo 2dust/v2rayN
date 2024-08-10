@@ -2,18 +2,18 @@
 {
     public enum EViewAction
     {
-        AdjustMainLvColWidth,
-        ProfilesFocus,
         CloseWindow,
         ShowYesNo,
         AddBatchRoutingRulesYesNo,
+        AdjustMainLvColWidth,
+        ProfilesFocus,
+        ShareSub,
+        ShareServer,
         SubEditWindow,
-        SubShare,
         RoutingRuleSettingWindow,
         RoutingRuleDetailsWindow,
         AddServerWindow,
         AddServer2Window,
-        ShareServer,
         DNSSettingWindow,
         RoutingSettingWindow,
         OptionSettingWindow,

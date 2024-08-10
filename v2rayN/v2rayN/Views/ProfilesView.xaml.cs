@@ -100,14 +100,7 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.AdjustMainLvColWidth)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    AutofitColumnWidth();
-                });
-            }
-            else if (action == EViewAction.ProfilesFocus)
+            if (action == EViewAction.ProfilesFocus)
             {
                 lstProfiles.Focus();
             }

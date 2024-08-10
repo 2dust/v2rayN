@@ -54,15 +54,15 @@ namespace v2rayN.Views
                 if (obj is null) return false;
                 return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
             }
-            else if (action == EViewAction.SubShare)
+            else if (action == EViewAction.ShareSub)
             {
                 if (obj is null) return false;
-                SubShare((string)obj);
+                ShareSub((string)obj);
             }
             return true;
         }
 
-        private async void SubShare(string url)
+        private async void ShareSub(string url)
         {
             if (Utils.IsNullOrEmpty(url))
             {

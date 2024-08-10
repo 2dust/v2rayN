@@ -56,7 +56,7 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
             SubShareCmd = ReactiveCommand.Create(() =>
             {
-                _updateView?.Invoke(EViewAction.SubShare, SelectedSource?.url);
+                _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.url);
             }, canEditRemove);
         }
 
