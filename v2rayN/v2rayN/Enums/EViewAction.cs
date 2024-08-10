@@ -7,5 +7,17 @@
         CloseWindow,
         ShowYesNo,
         AddBatchRoutingRulesYesNo,
+        SubEditWindow,
+        SubShare,
+        RoutingRuleSettingWindow,
+        RoutingRuleDetailsWindow,
+        AddServerWindow,
+        AddServer2Window,
+        ShareServer,
+        DNSSettingWindow,
+        RoutingSettingWindow,
+        OptionSettingWindow,
+        GlobalHotkeySettingWindow,
+        SubSettingWindow,
     }
 }

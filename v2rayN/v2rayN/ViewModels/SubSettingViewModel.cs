@@ -1,6 +1,5 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
-using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -10,7 +9,6 @@ using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
-using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
@@ -30,7 +28,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
         public bool IsModified { get; set; }
 
-        public SubSettingViewModel(Func<EViewAction, bool>? updateView)
+        public SubSettingViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -58,7 +56,7 @@ namespace v2rayN.ViewModels
             }, canEditRemove);
             SubShareCmd = ReactiveCommand.Create(() =>
             {
-                SubShare();
+                _updateView?.Invoke(EViewAction.SubShare, SelectedSource?.url);
             }, canEditRemove);
         }
 
@@ -83,8 +81,7 @@ namespace v2rayN.ViewModels
                     return;
                 }
             }
-            var ret = (new SubEditWindow(item)).ShowDialog();
-            if (ret == true)
+            if (_updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
             {
                 RefreshSubItems();
                 IsModified = true;
@@ -93,7 +90,7 @@ namespace v2rayN.ViewModels
 
         private void DeleteSub()
         {
-            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
             {
                 return;
             }
@@ -105,22 +102,6 @@ namespace v2rayN.ViewModels
             RefreshSubItems();
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
             IsModified = true;
-        }
-
-        private async void SubShare()
-        {
-            if (Utils.IsNullOrEmpty(SelectedSource?.url))
-            {
-                return;
-            }
-            var img = QRCodeHelper.GetQRCode(SelectedSource?.url);
-            var dialog = new QrcodeView()
-            {
-                imgQrcode = { Source = img },
-                txtContent = { Text = SelectedSource?.url },
-            };
-
-            await DialogHost.Show(dialog, "SubDialog");
         }
     }
 }

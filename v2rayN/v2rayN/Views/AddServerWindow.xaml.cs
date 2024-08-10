@@ -224,7 +224,7 @@ namespace v2rayN.Views
             this.Title = $"{profileItem.configType}";
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.CloseWindow)
             {

@@ -70,7 +70,7 @@ namespace v2rayN.Views
             });
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.CloseWindow)
             {
@@ -82,6 +82,11 @@ namespace v2rayN.Views
                 {
                     return false;
                 }
+            }
+            else if (action == EViewAction.RoutingRuleSettingWindow)
+            {
+                if (obj is null) return false;
+                return (new RoutingRuleSettingWindow((RoutingItem)obj)).ShowDialog() ?? false;
             }
             return true;
         }

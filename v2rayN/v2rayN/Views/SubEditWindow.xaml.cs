@@ -41,7 +41,7 @@ namespace v2rayN.Views
             });
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.CloseWindow)
             {

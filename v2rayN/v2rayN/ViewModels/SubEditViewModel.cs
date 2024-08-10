@@ -17,7 +17,7 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public SubEditViewModel(SubItem subItem, Func<EViewAction, bool>? updateView)
+        public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -70,7 +70,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.AddSubItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

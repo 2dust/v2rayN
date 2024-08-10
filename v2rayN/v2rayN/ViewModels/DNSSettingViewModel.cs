@@ -26,7 +26,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCmd { get; }
 
-        public DNSSettingViewModel(Func<EViewAction, bool>? updateView)
+        public DNSSettingViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -112,7 +112,7 @@ namespace v2rayN.ViewModels
             ConfigHandler.SaveDNSItems(_config, item2);
 
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow);
+            _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }
 }

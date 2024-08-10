@@ -8,7 +8,6 @@ using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
-using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
@@ -71,7 +70,7 @@ namespace v2rayN.ViewModels
 
         #endregion Reactive
 
-        public RoutingSettingViewModel(Func<EViewAction, bool>? updateView)
+        public RoutingSettingViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -207,7 +206,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.SaveConfig(_config) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
@@ -244,8 +243,7 @@ namespace v2rayN.ViewModels
                     return;
                 }
             }
-            var ret = (new RoutingRuleSettingWindow(item)).ShowDialog();
-            if (ret == true)
+            if (_updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
             {
                 RefreshRoutingItems();
                 IsModified = true;
@@ -259,7 +257,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
-            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
             {
                 return;
             }

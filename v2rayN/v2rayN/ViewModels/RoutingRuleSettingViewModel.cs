@@ -8,7 +8,6 @@ using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
-using v2rayN.Views;
 using Application = System.Windows.Application;
 
 namespace v2rayN.ViewModels
@@ -41,7 +40,7 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, bool>? updateView)
+        public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -151,8 +150,7 @@ namespace v2rayN.ViewModels
                     return;
                 }
             }
-            var ret = (new RoutingRuleDetailsWindow(item)).ShowDialog();
-            if (ret == true)
+            if (_updateView?.Invoke(EViewAction.RoutingRuleDetailsWindow, item) == true)
             {
                 if (blNew)
                 {
@@ -169,7 +167,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
-            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
             {
                 return;
             }
@@ -249,7 +247,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
@@ -318,7 +316,7 @@ namespace v2rayN.ViewModels
         private int AddBatchRoutingRules(RoutingItem routingItem, string? clipboardData)
         {
             bool blReplace = false;
-            if (_updateView?.Invoke(EViewAction.AddBatchRoutingRulesYesNo) == false)
+            if (_updateView?.Invoke(EViewAction.AddBatchRoutingRulesYesNo, null) == false)
             {
                 blReplace = true;
             }

@@ -105,7 +105,7 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public OptionSettingViewModel(Func<EViewAction, bool>? updateView)
+        public OptionSettingViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -359,7 +359,7 @@ namespace v2rayN.ViewModels
                 {
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
-                _updateView?.Invoke(EViewAction.CloseWindow);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

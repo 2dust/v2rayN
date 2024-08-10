@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using MaterialDesignThemes.Wpf;
+using ReactiveUI;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
@@ -35,7 +36,7 @@ namespace v2rayN.Views
             });
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.CloseWindow)
             {
@@ -48,7 +49,33 @@ namespace v2rayN.Views
                     return false;
                 }
             }
+            else if (action == EViewAction.SubEditWindow)
+            {
+                if (obj is null) return false;
+                return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+            }
+            else if (action == EViewAction.SubShare)
+            {
+                if (obj is null) return false;
+                SubShare((string)obj);
+            }
             return true;
+        }
+
+        private async void SubShare(string url)
+        {
+            if (Utils.IsNullOrEmpty(url))
+            {
+                return;
+            }
+            var img = QRCodeHelper.GetQRCode(url);
+            var dialog = new QrcodeView()
+            {
+                imgQrcode = { Source = img },
+                txtContent = { Text = url },
+            };
+
+            await DialogHost.Show(dialog, "SubDialog");
         }
 
         private void SubSettingWindow_Closing(object? sender, CancelEventArgs e)

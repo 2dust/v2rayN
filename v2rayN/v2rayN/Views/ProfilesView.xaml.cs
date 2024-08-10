@@ -1,3 +1,4 @@
+using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
@@ -97,7 +98,7 @@ namespace v2rayN.Views
             StorageUI();
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.AdjustMainLvColWidth)
             {
@@ -117,8 +118,40 @@ namespace v2rayN.Views
                     return false;
                 }
             }
+            else if (action == EViewAction.AddServerWindow)
+            {
+                if (obj is null) return false;
+                return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+            }
+            else if (action == EViewAction.AddServer2Window)
+            {
+                if (obj is null) return false;
+                return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
+            }
+            else if (action == EViewAction.ShareServer)
+            {
+                if (obj is null) return false;
+                ShareServer((string)obj);
+            }
+            else if (action == EViewAction.SubEditWindow)
+            {
+                if (obj is null) return false;
+                return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+            }
 
             return true;
+        }
+
+        public async void ShareServer(string url)
+        {
+            var img = QRCodeHelper.GetQRCode(url);
+            var dialog = new QrcodeView()
+            {
+                imgQrcode = { Source = img },
+                txtContent = { Text = url },
+            };
+
+            await DialogHost.Show(dialog, "RootDialog");
         }
 
         private void lstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

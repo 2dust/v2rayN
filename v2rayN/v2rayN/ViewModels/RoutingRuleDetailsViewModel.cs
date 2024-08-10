@@ -32,7 +32,7 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, bool>? updateView)
+        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -93,7 +93,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             //_noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow);
+            _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }
 }

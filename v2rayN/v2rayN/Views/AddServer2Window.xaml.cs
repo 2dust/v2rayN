@@ -42,7 +42,7 @@ namespace v2rayN.Views
             Utils.SetDarkBorder(this, LazyConfig.Instance.GetConfig().uiItem.followSystemTheme ? !Utils.IsLightTheme() : LazyConfig.Instance.GetConfig().uiItem.colorModeDark);
         }
 
-        private bool UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             if (action == EViewAction.CloseWindow)
             {

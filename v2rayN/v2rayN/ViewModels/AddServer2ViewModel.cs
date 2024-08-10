@@ -21,7 +21,7 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
         public bool IsModified { get; set; }
 
-        public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, bool>? updateView)
+        public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, bool>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = LazyConfig.Instance.GetConfig();
@@ -84,7 +84,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.EditCustomServer(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

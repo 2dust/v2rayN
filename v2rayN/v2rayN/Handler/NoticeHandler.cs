@@ -5,9 +5,9 @@ namespace v2rayN.Handler
 {
     public class NoticeHandler
     {
-        private readonly ISnackbarMessageQueue _snackbarMessageQueue;
+        private readonly ISnackbarMessageQueue? _snackbarMessageQueue;
 
-        public NoticeHandler(ISnackbarMessageQueue snackbarMessageQueue)
+        public NoticeHandler(ISnackbarMessageQueue? snackbarMessageQueue)
         {
             _snackbarMessageQueue = snackbarMessageQueue ?? throw new ArgumentNullException(nameof(snackbarMessageQueue));
         }
