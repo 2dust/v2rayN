@@ -5,16 +5,15 @@ using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 
 namespace v2rayN.ViewModels
 {
-    public class ClashConnectionsViewModel : ReactiveObject
+    public class ClashConnectionsViewModel : MyReactiveObject
     {
-        private static Config _config;
-
         private IObservableCollection<ClashConnectionModel> _connectionItems = new ObservableCollectionExtended<ClashConnectionModel>();
 
         public IObservableCollection<ClashConnectionModel> ConnectionItems => _connectionItems;

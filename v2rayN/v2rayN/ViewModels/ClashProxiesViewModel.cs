@@ -6,6 +6,7 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
@@ -15,10 +16,8 @@ using static v2rayN.Models.ClashProxies;
 
 namespace v2rayN.ViewModels
 {
-    public class ClashProxiesViewModel : ReactiveObject
+    public class ClashProxiesViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
         private Dictionary<String, ProxiesItem>? proxies;
         private Dictionary<String, ProvidersItem>? providers;
         private int delayTimeout = 99999999;

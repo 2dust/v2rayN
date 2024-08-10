@@ -23,7 +23,7 @@ namespace v2rayN.Views
             _config = LazyConfig.Instance.GetConfig();
             var lstFonts = GetFonts(Utils.GetFontsPath());
 
-            ViewModel = new OptionSettingViewModel(this);
+            ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
             clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
             Global.destOverrideProtocols.ForEach(it =>
@@ -169,6 +169,15 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            return true;
         }
 
         private List<string> GetFonts(string path)

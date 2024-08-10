@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using ReactiveUI;
+﻿using ReactiveUI;
 using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;

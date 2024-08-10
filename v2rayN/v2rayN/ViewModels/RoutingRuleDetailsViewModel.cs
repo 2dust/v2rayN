@@ -2,19 +2,16 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class RoutingRuleDetailsViewModel : ReactiveObject
+    public class RoutingRuleDetailsViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
-
         public IList<string> ProtocolItems { get; set; }
         public IList<string> InboundTagItems { get; set; }
 
@@ -35,11 +32,11 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Window view)
+        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
+            _updateView = updateView;
 
             if (rulesItem.id.IsNullOrEmpty())
             {
@@ -61,8 +58,6 @@ namespace v2rayN.ViewModels
             {
                 SaveRules();
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void SaveRules()
@@ -98,7 +93,7 @@ namespace v2rayN.ViewModels
                 return;
             }
             //_noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _view.DialogResult = true;
+            _updateView?.Invoke(EViewAction.CloseWindow);
         }
     }
 }

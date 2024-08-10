@@ -8,16 +8,14 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive.Linq;
 using System.Windows;
+using v2rayN.Base;
 using v2rayN.Handler;
-using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class ThemeSettingViewModel : ReactiveObject
+    public class ThemeSettingViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
         private readonly PaletteHelper _paletteHelper = new();
 
         [Reactive]

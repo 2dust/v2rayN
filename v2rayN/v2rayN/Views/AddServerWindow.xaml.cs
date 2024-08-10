@@ -21,7 +21,7 @@ namespace v2rayN.Views
             cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;
             cmbStreamSecurity.SelectionChanged += CmbStreamSecurity_SelectionChanged;
 
-            ViewModel = new AddServerViewModel(profileItem, this);
+            ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 
             if (profileItem.configType == EConfigType.VLESS)
             {
@@ -222,6 +222,15 @@ namespace v2rayN.Views
             });
 
             this.Title = $"{profileItem.configType}";
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            return true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

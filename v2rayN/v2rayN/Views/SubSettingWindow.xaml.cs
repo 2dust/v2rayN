@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using v2rayN.Enums;
 using v2rayN.Models;
+using v2rayN.Resx;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -16,7 +18,7 @@ namespace v2rayN.Views
 
             this.Owner = Application.Current.MainWindow;
 
-            ViewModel = new SubSettingViewModel(this);
+            ViewModel = new SubSettingViewModel(UpdateViewHandler);
             this.Closing += SubSettingWindow_Closing;
             lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
             lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
@@ -31,6 +33,22 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            else if (action == EViewAction.ShowYesNo)
+            {
+                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void SubSettingWindow_Closing(object? sender, CancelEventArgs e)

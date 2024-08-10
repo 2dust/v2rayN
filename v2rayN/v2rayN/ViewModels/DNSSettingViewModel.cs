@@ -2,7 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
@@ -10,12 +10,8 @@ using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class DNSSettingViewModel : ReactiveObject
+    public class DNSSettingViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
-
         [Reactive] public bool useSystemHosts { get; set; }
         [Reactive] public string domainStrategy4Freedom { get; set; }
         [Reactive] public string domainDNSAddress { get; set; }
@@ -30,11 +26,11 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCmd { get; }
 
-        public DNSSettingViewModel(Window view)
+        public DNSSettingViewModel(Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
+            _updateView = updateView;
 
             var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
             useSystemHosts = item.useSystemHosts;
@@ -63,8 +59,6 @@ namespace v2rayN.ViewModels
                 normalDNS2 = Utils.GetEmbedText(Global.DNSSingboxNormalFileName);
                 tunDNS2 = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void SaveSetting()
@@ -114,11 +108,11 @@ namespace v2rayN.ViewModels
             item2.domainStrategy4Freedom = domainStrategy4Freedom2;
             item2.domainDNSAddress = domainDNSAddress2;
             item2.normalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
-            item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2));;
+            item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2)); ;
             ConfigHandler.SaveDNSItems(_config, item2);
 
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _view.DialogResult = true;
+            _updateView?.Invoke(EViewAction.CloseWindow);
         }
     }
 }

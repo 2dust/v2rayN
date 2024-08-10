@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.ViewModels;
 
@@ -15,7 +16,7 @@ namespace v2rayN.Views
             this.Owner = Application.Current.MainWindow;
             this.Loaded += Window_Loaded;
 
-            ViewModel = new SubEditViewModel(subItem, this);
+            ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
             Global.SubConvertTargets.ForEach(it =>
             {
@@ -38,6 +39,15 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            return true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

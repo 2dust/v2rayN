@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Handler.Statistics;
@@ -20,14 +21,12 @@ using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : MyReactiveObject
     {
         #region private prop
 
         private CoreHandler _coreHandler;
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Action<EViewAction> _updateView;
+
         private bool _showInTaskbar;
 
         #endregion private prop
@@ -171,15 +170,14 @@ namespace v2rayN.ViewModels
 
         #region Init
 
-        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Action<EViewAction> updateView)
+        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue, Func<EViewAction, bool>? updateView)
         {
-            _updateView = updateView;
-            ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
-
-            _noticeHandler = new NoticeHandler(snackbarMessageQueue);
-            Locator.CurrentMutable.RegisterLazySingleton(() => _noticeHandler, typeof(NoticeHandler));
             _config = LazyConfig.Instance.GetConfig();
-
+            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+            _updateView = updateView;
+            
+            ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
+            Locator.CurrentMutable.RegisterLazySingleton(() => _noticeHandler, typeof(NoticeHandler));
             MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => RefreshServersBiz());
 
             SelectedRouting = new();

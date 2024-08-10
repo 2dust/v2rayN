@@ -10,6 +10,7 @@ using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
+using v2rayN.Resx;
 using v2rayN.ViewModels;
 using Point = System.Windows.Point;
 
@@ -96,7 +97,7 @@ namespace v2rayN.Views
             StorageUI();
         }
 
-        private void UpdateViewHandler(EViewAction action)
+        private bool UpdateViewHandler(EViewAction action)
         {
             if (action == EViewAction.AdjustMainLvColWidth)
             {
@@ -109,6 +110,15 @@ namespace v2rayN.Views
             {
                 lstProfiles.Focus();
             }
+            else if (action == EViewAction.ShowYesNo)
+            {
+                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void lstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

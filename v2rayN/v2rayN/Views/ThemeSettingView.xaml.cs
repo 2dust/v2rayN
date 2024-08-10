@@ -1,8 +1,5 @@
 ﻿using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
-using System.Windows.Input;
-using v2rayN.Handler;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -35,7 +32,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.Text).DisposeWith(disposables);
-            });        
+            });
         }
     }
 }

@@ -2,7 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
@@ -10,12 +10,8 @@ using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class OptionSettingViewModel : ReactiveObject
+    public class OptionSettingViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
-
         #region Core
 
         [Reactive] public int localPort { get; set; }
@@ -109,11 +105,11 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public OptionSettingViewModel(Window view)
+        public OptionSettingViewModel(Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
+            _updateView = updateView;
 
             #region Core
 
@@ -201,8 +197,6 @@ namespace v2rayN.ViewModels
             {
                 SaveSetting();
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void InitCoreType()
@@ -365,7 +359,7 @@ namespace v2rayN.ViewModels
                 {
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
-                _view.DialogResult = true;
+                _updateView?.Invoke(EViewAction.CloseWindow);
             }
             else
             {

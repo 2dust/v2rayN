@@ -2,7 +2,9 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using v2rayN.Enums;
 using v2rayN.Models;
+using v2rayN.Resx;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -19,7 +21,7 @@ namespace v2rayN.Views
             lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
             lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
 
-            ViewModel = new RoutingSettingViewModel(this);
+            ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
             Global.DomainStrategies.ForEach(it =>
             {
@@ -66,6 +68,22 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            else if (action == EViewAction.ShowYesNo)
+            {
+                if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

@@ -1,22 +1,18 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Helpers;
 using Splat;
 using System.IO;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class AddServer2ViewModel : ReactiveValidationObject
+    public class AddServer2ViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
-
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
 
@@ -25,10 +21,11 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
         public bool IsModified { get; set; }
 
-        public AddServer2ViewModel(ProfileItem profileItem, Window view)
+        public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, bool>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = LazyConfig.Instance.GetConfig();
+            _updateView = updateView;
 
             if (profileItem.indexId.IsNullOrEmpty())
             {
@@ -38,8 +35,6 @@ namespace v2rayN.ViewModels
             {
                 SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
-
-            _view = view;
 
             BrowseServerCmd = ReactiveCommand.Create(() =>
             {
@@ -55,8 +50,6 @@ namespace v2rayN.ViewModels
             {
                 SaveServer();
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void SaveServer()
@@ -91,7 +84,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.EditCustomServer(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _view.DialogResult = true;
+                _updateView?.Invoke(EViewAction.CloseWindow);
             }
             else
             {

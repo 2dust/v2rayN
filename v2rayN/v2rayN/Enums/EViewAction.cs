@@ -3,6 +3,9 @@
     public enum EViewAction
     {
         AdjustMainLvColWidth,
-        ProfilesFocus
+        ProfilesFocus,
+        CloseWindow,
+        ShowYesNo,
+        AddBatchRoutingRulesYesNo,
     }
 }

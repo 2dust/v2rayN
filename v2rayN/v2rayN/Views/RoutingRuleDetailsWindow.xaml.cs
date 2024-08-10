@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
+using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.ViewModels;
 
@@ -17,7 +18,7 @@ namespace v2rayN.Views
             clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;
             clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
-            ViewModel = new RoutingRuleDetailsViewModel(rulesItem, this);
+            ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
             cmbOutboundTag.Items.Add(Global.ProxyTag);
             cmbOutboundTag.Items.Add(Global.DirectTag);
             cmbOutboundTag.Items.Add(Global.BlockTag);
@@ -59,6 +60,15 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            return true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.ViewModels;
@@ -18,7 +19,7 @@ namespace v2rayN.Views
             this.Owner = Application.Current.MainWindow;
             _config = LazyConfig.Instance.GetConfig();
 
-            ViewModel = new DNSSettingViewModel(this);
+            ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
             Global.DomainStrategy4Freedoms.ForEach(it =>
             {
@@ -53,6 +54,15 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCmd, v => v.btnImportDefConfig4Singbox).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            return true;
         }
 
         private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)

@@ -2,29 +2,26 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
-    public class SubEditViewModel : ReactiveObject
+    public class SubEditViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
-
         [Reactive]
         public SubItem SelectedSource { get; set; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public SubEditViewModel(SubItem subItem, Window view)
+        public SubEditViewModel(SubItem subItem, Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
+            _updateView = updateView;
 
             if (subItem.id.IsNullOrEmpty())
             {
@@ -39,8 +36,6 @@ namespace v2rayN.ViewModels
             {
                 SaveSub();
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         private void SaveSub()
@@ -75,8 +70,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.AddSubItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _view.DialogResult = true;
-                //_view?.Close();
+                _updateView?.Invoke(EViewAction.CloseWindow);
             }
             else
             {

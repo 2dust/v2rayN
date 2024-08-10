@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using v2rayN.Enums;
 using v2rayN.Models;
+using v2rayN.Resx;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -20,7 +21,7 @@ namespace v2rayN.Views
             lstRules.SelectionChanged += lstRules_SelectionChanged;
             lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
 
-            ViewModel = new RoutingRuleSettingViewModel(routingItem, this);
+            ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
             Global.DomainStrategies.ForEach(it =>
             {
                 cmbdomainStrategy.Items.Add(it);
@@ -60,6 +61,30 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action)
+        {
+            if (action == EViewAction.CloseWindow)
+            {
+                this.DialogResult = true;
+            }
+            else if (action == EViewAction.ShowYesNo)
+            {
+                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+            else if (action == EViewAction.AddBatchRoutingRulesYesNo)
+            {
+                if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

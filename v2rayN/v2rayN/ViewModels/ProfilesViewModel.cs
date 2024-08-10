@@ -8,6 +8,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Handler.Fmt;
@@ -18,16 +19,14 @@ using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
-    public class ProfilesViewModel : ReactiveObject
+    public class ProfilesViewModel : MyReactiveObject
     {
         #region private prop
 
         private List<ProfileItem> _lstProfile;
         private string _serverFilter = string.Empty;
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
+
         private Dictionary<string, bool> _dicHeaderSort = new();
-        private Action<EViewAction> _updateView;
 
         #endregion private prop
 
@@ -103,12 +102,12 @@ namespace v2rayN.ViewModels
 
         #region Init
 
-        public ProfilesViewModel(Action<EViewAction> updateView)
+        public ProfilesViewModel(Func<EViewAction, bool>? updateView)
         {
+            _config = LazyConfig.Instance.GetConfig();
+            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _config = LazyConfig.Instance.GetConfig();
             MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => RefreshServersBiz());
 
             SelectedProfile = new();
@@ -507,8 +506,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-
-            if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
             {
                 return;
             }

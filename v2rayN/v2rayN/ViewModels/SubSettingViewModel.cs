@@ -5,7 +5,8 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
+using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
@@ -13,11 +14,8 @@ using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
-    public class SubSettingViewModel : ReactiveObject
+    public class SubSettingViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-
         private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
         public IObservableCollection<SubItem> SubItems => _subItems;
 
@@ -32,10 +30,11 @@ namespace v2rayN.ViewModels
         public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
         public bool IsModified { get; set; }
 
-        public SubSettingViewModel(Window view)
+        public SubSettingViewModel(Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+            _updateView = updateView;
 
             SelectedSource = new();
 
@@ -61,8 +60,6 @@ namespace v2rayN.ViewModels
             {
                 SubShare();
             }, canEditRemove);
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         public void RefreshSubItems()
@@ -96,7 +93,7 @@ namespace v2rayN.ViewModels
 
         private void DeleteSub()
         {
-            if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
             {
                 return;
             }

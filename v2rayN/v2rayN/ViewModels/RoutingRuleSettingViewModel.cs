@@ -3,7 +3,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Windows;
+using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
@@ -13,11 +13,8 @@ using Application = System.Windows.Application;
 
 namespace v2rayN.ViewModels
 {
-    public class RoutingRuleSettingViewModel : ReactiveObject
+    public class RoutingRuleSettingViewModel : MyReactiveObject
     {
-        private static Config _config;
-        private NoticeHandler? _noticeHandler;
-        private Window _view;
         private List<RulesItem> _rules;
 
         [Reactive]
@@ -44,11 +41,11 @@ namespace v2rayN.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public RoutingRuleSettingViewModel(RoutingItem routingItem, Window view)
+        public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _view = view;
+            _updateView = updateView;
             SelectedSource = new();
 
             if (routingItem.id.IsNullOrEmpty())
@@ -115,8 +112,6 @@ namespace v2rayN.ViewModels
             {
                 SaveRouting();
             });
-
-            Utils.SetDarkBorder(view, _config.uiItem.followSystemTheme ? !Utils.IsLightTheme() : _config.uiItem.colorModeDark);
         }
 
         public void RefreshRulesItems()
@@ -174,7 +169,7 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
-            if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
+            if (_updateView?.Invoke(EViewAction.ShowYesNo) == false)
             {
                 return;
             }
@@ -254,7 +249,7 @@ namespace v2rayN.ViewModels
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _view.DialogResult = true;
+                _updateView?.Invoke(EViewAction.CloseWindow);
             }
             else
             {
@@ -323,7 +318,7 @@ namespace v2rayN.ViewModels
         private int AddBatchRoutingRules(RoutingItem routingItem, string? clipboardData)
         {
             bool blReplace = false;
-            if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)
+            if (_updateView?.Invoke(EViewAction.AddBatchRoutingRulesYesNo) == false)
             {
                 blReplace = true;
             }
