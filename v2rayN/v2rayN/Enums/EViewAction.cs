@@ -10,6 +10,8 @@
         ShareSub,
         ShareServer,
         ShowHideWindow,
+        ScanScreenTask,
+        Shutdown,
         SubEditWindow,
         RoutingRuleSettingWindow,
         RoutingRuleDetailsWindow,
@@ -24,10 +26,10 @@
         DispatcherRefreshConnections,
         DispatcherRefreshProxyGroups,
         DispatcherProxiesDelayTest,
-
         DispatcherStatistics,
         DispatcherServerAvailability,
         DispatcherReload,
         DispatcherRefreshServersBiz,
+        DispatcherRefreshIcon,
     }
 }

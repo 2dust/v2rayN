@@ -38,8 +38,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
             });
-
-            Utils.SetDarkBorder(this, LazyConfig.Instance.GetConfig().uiItem.followSystemTheme ? !Utils.IsLightTheme() : LazyConfig.Instance.GetConfig().uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.GetConfig().uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.GetConfig().uiItem.colorModeDark);
         }
 
         private bool UpdateViewHandler(EViewAction action, object? obj)

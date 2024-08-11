@@ -37,6 +37,8 @@ namespace v2rayN.Views
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
+            MainFormHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+
             this.WhenActivated(disposables =>
             {
                 //servers
@@ -106,10 +108,8 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SubUpdateCmd, v => v.menuSubUpdate2).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubUpdateViaProxyCmd, v => v.menuSubUpdateViaProxy2).DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.NotifyIcon, v => v.tbNotify.Icon).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.RunningServerToolTipText, v => v.tbNotify.ToolTipText).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.NotifyLeftClickCmd, v => v.tbNotify.LeftClickCommand).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.AppIcon, v => v.Icon).DisposeWith(disposables);
 
                 //status bar
                 this.OneWayBind(ViewModel, vm => vm.InboundDisplay, v => v.txtInboundDisplay.Text).DisposeWith(disposables);
@@ -183,6 +183,8 @@ namespace v2rayN.Views
             AddHelpMenuItem();
         }
 
+        #region Event
+
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
@@ -246,12 +248,52 @@ namespace v2rayN.Views
                         ViewModel?.RefreshServersBiz();
                     }), DispatcherPriority.Normal);
                     break;
+
+                case EViewAction.DispatcherRefreshIcon:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        tbNotify.Icon = MainFormHandler.Instance.GetNotifyIcon(_config);
+                        this.Icon = MainFormHandler.Instance.GetAppIcon(_config);
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.Shutdown:
+                    Application.Current.Shutdown();
+                    break;
+
+                case EViewAction ScanScreenTask:
+                    ScanScreenTaskAsync().ContinueWith(_ => { });
+                    break;
             }
 
             return true;
         }
 
-        #region Event
+        private void OnHotkeyHandler(EGlobalHotkey e)
+        {
+            switch (e)
+            {
+                case EGlobalHotkey.ShowForm:
+                    ShowHideWindow(null);
+                    break;
+
+                case EGlobalHotkey.SystemProxyClear:
+                    ViewModel?.SetListenerType(ESysProxyType.ForcedClear);
+                    break;
+
+                case EGlobalHotkey.SystemProxySet:
+                    ViewModel?.SetListenerType(ESysProxyType.ForcedChange);
+                    break;
+
+                case EGlobalHotkey.SystemProxyUnchanged:
+                    ViewModel?.SetListenerType(ESysProxyType.Unchanged);
+                    break;
+
+                case EGlobalHotkey.SystemProxyPac:
+                    ViewModel?.SetListenerType(ESysProxyType.Pac);
+                    break;
+            }
+        }
 
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
         {
@@ -286,7 +328,7 @@ namespace v2rayN.Views
                         break;
 
                     case Key.S:
-                        ViewModel?.ScanScreenTaskAsync().ContinueWith(_ => { });
+                        ScanScreenTaskAsync().ContinueWith(_ => { });
                         break;
                 }
             }
@@ -318,6 +360,21 @@ namespace v2rayN.Views
         private void menuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
         {
             Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
+        }
+
+        public async Task ScanScreenTaskAsync()
+        {
+            ShowHideWindow(false);
+
+            var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
+            string result = await Task.Run(() =>
+            {
+                return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
+            });
+
+            ShowHideWindow(true);
+
+            ViewModel?.ScanScreenTaskAsync(result);
         }
 
         #endregion Event

@@ -202,7 +202,7 @@ namespace v2rayN.ViewModels
             }
             if (lst.Count > 0)
             {
-                Utils.SetClipboardData(JsonUtils.Serialize(lst));
+                WindowsUtils.SetClipboardData(JsonUtils.Serialize(lst));
                 //_noticeHandler?.Enqueue(ResUI.OperationSuccess"));
             }
         }
@@ -283,7 +283,7 @@ namespace v2rayN.ViewModels
 
         private void ImportRulesFromClipboard()
         {
-            var clipboardData = Utils.GetClipboardData();
+            var clipboardData = WindowsUtils.GetClipboardData();
             if (AddBatchRoutingRules(SelectedRouting, clipboardData) == 0)
             {
                 RefreshRulesItems();

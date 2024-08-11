@@ -43,7 +43,7 @@ namespace v2rayN.Handler
             if (_config.globalHotkeys == null) return;
             foreach (var item in _config.globalHotkeys)
             {
-                if (item.KeyCode != null && item.KeyCode != Key.None)
+                if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
                 {
                     int key = KeyInterop.VirtualKeyFromKey((Key)item.KeyCode);
                     KeyModifiers modifiers = KeyModifiers.None;

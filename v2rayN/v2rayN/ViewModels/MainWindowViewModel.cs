@@ -3,13 +3,10 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Media;
 using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
@@ -94,12 +91,6 @@ namespace v2rayN.ViewModels
         public bool BlReloadEnabled { get; set; }
 
         public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
-
-        [Reactive]
-        public Icon NotifyIcon { get; set; }
-
-        [Reactive]
-        public ImageSource AppIcon { get; set; }
 
         #endregion Menu
 
@@ -259,9 +250,9 @@ namespace v2rayN.ViewModels
             {
                 AddServerViaClipboard();
             });
-            AddServerViaScanCmd = ReactiveCommand.CreateFromTask(() =>
+            AddServerViaScanCmd = ReactiveCommand.Create(() =>
             {
-                return ScanScreenTaskAsync();
+                _updateView?.Invoke(EViewAction.ScanScreenTask, null);
             });
 
             //Subscription
@@ -390,9 +381,7 @@ namespace v2rayN.ViewModels
                 StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
 
-            MainFormHandler.Instance.UpdateTask(_config, UpdateTaskHandler);
-            MainFormHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, UpdateTaskHandler);
-
+            RegUpdateTask(_config, UpdateTaskHandler);
             RefreshRoutingsMenu();
             //RefreshServers();
 
@@ -463,32 +452,6 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void OnHotkeyHandler(EGlobalHotkey e)
-        {
-            switch (e)
-            {
-                case EGlobalHotkey.ShowForm:
-                    _updateView?.Invoke(EViewAction.ShowHideWindow, null);
-                    break;
-
-                case EGlobalHotkey.SystemProxyClear:
-                    SetListenerType(ESysProxyType.ForcedClear);
-                    break;
-
-                case EGlobalHotkey.SystemProxySet:
-                    SetListenerType(ESysProxyType.ForcedChange);
-                    break;
-
-                case EGlobalHotkey.SystemProxyUnchanged:
-                    SetListenerType(ESysProxyType.Unchanged);
-                    break;
-
-                case EGlobalHotkey.SystemProxyPac:
-                    SetListenerType(ESysProxyType.Pac);
-                    break;
-            }
-        }
-
         public void MyAppExit(bool blWindowsShutDown)
         {
             try
@@ -517,7 +480,7 @@ namespace v2rayN.ViewModels
             catch { }
             finally
             {
-                Application.Current.Shutdown();
+                _updateView?.Invoke(EViewAction.Shutdown, null);
             }
         }
 
@@ -613,7 +576,7 @@ namespace v2rayN.ViewModels
 
         public void AddServerViaClipboard()
         {
-            var clipboardData = Utils.GetClipboardData();
+            var clipboardData = WindowsUtils.GetClipboardData();
             int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _config.subIndexId, false);
             if (ret > 0)
             {
@@ -623,18 +586,8 @@ namespace v2rayN.ViewModels
             }
         }
 
-        public async Task ScanScreenTaskAsync()
+        public void ScanScreenTaskAsync(string result)
         {
-            _updateView?.Invoke(EViewAction.ShowHideWindow, false);
-
-            var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
-            string result = await Task.Run(() =>
-            {
-                return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
-            });
-
-            _updateView?.Invoke(EViewAction.ShowHideWindow, true);
-
             if (Utils.IsNullOrEmpty(result))
             {
                 _noticeHandler?.Enqueue(ResUI.NoValidQRcodeFound);
@@ -869,6 +822,12 @@ namespace v2rayN.ViewModels
         {
             await Task.Run(() =>
             {
+                if (_config.tunModeItem.enableTun)
+                {
+                    Thread.Sleep(1000);
+                    WindowsUtils.RemoveTunDevice();
+                }
+
                 var node = ConfigHandler.GetDefaultServer(_config);
                 _coreHandler.LoadCore(node);
             });
@@ -914,8 +873,7 @@ namespace v2rayN.ViewModels
 
             if (blChange)
             {
-                NotifyIcon = MainFormHandler.Instance.GetNotifyIcon(_config);
-                AppIcon = MainFormHandler.Instance.GetAppIcon(_config);
+                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 
@@ -966,8 +924,7 @@ namespace v2rayN.ViewModels
             {
                 _noticeHandler?.SendMessage(ResUI.TipChangeRouting, true);
                 Reload();
-                NotifyIcon = MainFormHandler.Instance.GetNotifyIcon(_config);
-                AppIcon = MainFormHandler.Instance.GetAppIcon(_config);
+                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 
@@ -1054,5 +1011,73 @@ namespace v2rayN.ViewModels
         }
 
         #endregion UI
+
+        #region UpdateTask
+
+        private void RegUpdateTask(Config config, Action<bool, string> update)
+        {
+            Task.Run(() => UpdateTaskRunSubscription(config, update));
+            Task.Run(() => UpdateTaskRunGeo(config, update));
+        }
+
+        private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> update)
+        {
+            await Task.Delay(60000);
+            Logging.SaveLog("UpdateTaskRunSubscription");
+
+            var updateHandle = new UpdateHandle();
+            while (true)
+            {
+                var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+                var lstSubs = LazyConfig.Instance.SubItems()
+                            .Where(t => t.autoUpdateInterval > 0)
+                            .Where(t => updateTime - t.updateTime >= t.autoUpdateInterval * 60)
+                            .ToList();
+
+                foreach (var item in lstSubs)
+                {
+                    updateHandle.UpdateSubscriptionProcess(config, item.id, true, (bool success, string msg) =>
+                    {
+                        update(success, msg);
+                        if (success)
+                            Logging.SaveLog("subscription" + msg);
+                    });
+                    item.updateTime = updateTime;
+                    ConfigHandler.AddSubItem(config, item);
+
+                    await Task.Delay(5000);
+                }
+                await Task.Delay(60000);
+            }
+        }
+
+        private async Task UpdateTaskRunGeo(Config config, Action<bool, string> update)
+        {
+            var autoUpdateGeoTime = DateTime.Now;
+
+            await Task.Delay(1000 * 120);
+            Logging.SaveLog("UpdateTaskRunGeo");
+
+            var updateHandle = new UpdateHandle();
+            while (true)
+            {
+                var dtNow = DateTime.Now;
+                if (config.guiItem.autoUpdateInterval > 0)
+                {
+                    if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)
+                    {
+                        updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
+                        {
+                            update(false, msg);
+                        });
+                        autoUpdateGeoTime = dtNow;
+                    }
+                }
+
+                await Task.Delay(1000 * 3600);
+            }
+        }
+
+        #endregion UpdateTask
     }
 }

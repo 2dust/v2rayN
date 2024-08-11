@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using v2rayN.Enums;
+﻿using v2rayN.Enums;
 
 namespace v2rayN.Models
 {
@@ -152,7 +151,7 @@ namespace v2rayN.Models
 
         public bool Shift { get; set; }
 
-        public Key? KeyCode { get; set; }
+        public int? KeyCode { get; set; }
     }
 
     [Serializable]

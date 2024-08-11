@@ -50,7 +50,7 @@ namespace v2rayN.ViewModels
         {
             if (FollowSystemTheme)
             {
-                ModifyTheme(!Utils.IsLightTheme());
+                ModifyTheme(!WindowsUtils.IsLightTheme());
             }
             else
             {
@@ -104,7 +104,7 @@ namespace v2rayN.ViewModels
                             ConfigHandler.SaveConfig(_config);
                             if (FollowSystemTheme)
                             {
-                                ModifyTheme(!Utils.IsLightTheme());
+                                ModifyTheme(!WindowsUtils.IsLightTheme());
                             }
                             else
                             {
@@ -173,8 +173,7 @@ namespace v2rayN.ViewModels
 
             theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
             _paletteHelper.SetTheme(theme);
-
-            Utils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+            WindowsUtils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
         }
 
         public void ChangePrimaryColor(System.Windows.Media.Color color)

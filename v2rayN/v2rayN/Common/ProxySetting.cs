@@ -11,24 +11,24 @@ namespace v2rayN.Common
         {
             if (type == 1)
             {
-                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
-                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
-                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
-                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
             if (type == 2)
             {
-                Utils.RegWriteValue(_regPath, "ProxyEnable", 1);
-                Utils.RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
-                Utils.RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
-                Utils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 1);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
             else if (type == 4)
             {
-                Utils.RegWriteValue(_regPath, "ProxyEnable", 0);
-                Utils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
-                Utils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
-                Utils.RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 0);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
             }
             return true;
         }

@@ -99,13 +99,13 @@ namespace v2rayN.Views
         private void menuMsgViewCopy_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var data = txtMsg.SelectedText.TrimEx();
-            Utils.SetClipboardData(data);
+            WindowsUtils.SetClipboardData(data);
         }
 
         private void menuMsgViewCopyAll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var data = txtMsg.Text;
-            Utils.SetClipboardData(data);
+            WindowsUtils.SetClipboardData(data);
         }
 
         private void menuMsgViewClear_Click(object sender, System.Windows.RoutedEventArgs e)

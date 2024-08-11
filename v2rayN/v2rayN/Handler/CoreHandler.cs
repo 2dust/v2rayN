@@ -46,11 +46,11 @@ namespace v2rayN.Handler
                 ShowMsg(false, msg);
                 ShowMsg(true, $"{node.GetSummary()}");
                 CoreStop();
-                if (_config.tunModeItem.enableTun)
-                {
-                    Thread.Sleep(1000);
-                    Utils.RemoveTunDevice();
-                }
+                //if (_config.tunModeItem.enableTun)
+                //{
+                //    Thread.Sleep(1000);
+                //    WindowsUtils.RemoveTunDevice();
+                //}
 
                 CoreStart(node);
 

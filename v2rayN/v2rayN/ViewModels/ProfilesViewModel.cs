@@ -739,7 +739,7 @@ namespace v2rayN.ViewModels
             }
             if (sb.Length > 0)
             {
-                Utils.SetClipboardData(sb.ToString());
+                WindowsUtils.SetClipboardData(sb.ToString());
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }
         }
