@@ -4,7 +4,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Windows;
 using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
@@ -30,9 +29,10 @@ namespace v2rayN.ViewModels
         [Reactive]
         public bool AutoRefresh { get; set; }
 
-        public ClashConnectionsViewModel()
+        public ClashConnectionsViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _config = LazyConfig.Instance.GetConfig();
+            _updateView = updateView;
             SortingSelected = _config.clashUIItem.connectionsSorting;
             AutoRefresh = _config.clashUIItem.connectionsAutoRefresh;
 
@@ -110,14 +110,11 @@ namespace v2rayN.ViewModels
                     return;
                 }
 
-                Application.Current?.Dispatcher.Invoke((Action)(() =>
-                {
-                    RefreshConnections(it?.connections);
-                }));
+                _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
             });
         }
 
-        private void RefreshConnections(List<ConnectionItem>? connections)
+        public void RefreshConnections(List<ConnectionItem>? connections)
         {
             _connectionItems.Clear();
 

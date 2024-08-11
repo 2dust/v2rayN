@@ -14,14 +14,14 @@ namespace v2rayN.Handler
         private CoreHandler _coreHandler;
         private List<ServerTestItem> _selecteds;
         private ESpeedActionType _actionType;
-        private Action<string, string, string> _updateFunc;
+        private Action<SpeedTestResult> _updateFunc;
 
         public SpeedtestHandler(Config config)
         {
             _config = config;
         }
 
-        public SpeedtestHandler(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<string, string, string> update)
+        public SpeedtestHandler(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
         {
             _config = config;
             _coreHandler = coreHandler;
@@ -408,7 +408,7 @@ namespace v2rayN.Handler
 
         private void UpdateFunc(string indexId, string delay, string speed = "")
         {
-            _updateFunc(indexId, delay, speed);
+            _updateFunc(new() { IndexId = indexId, Delay = delay, Speed = speed });
         }
     }
 }

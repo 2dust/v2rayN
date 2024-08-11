@@ -1,7 +1,11 @@
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
+using v2rayN.Enums;
+using v2rayN.Models;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -14,7 +18,7 @@ namespace v2rayN.Views
         public ClashProxiesView()
         {
             InitializeComponent();
-            ViewModel = new ClashProxiesViewModel();
+            ViewModel = new ClashProxiesViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(ClashProxiesViewModel));
             lstProxyDetails.PreviewMouseDoubleClick += lstProxyDetails_PreviewMouseDoubleClick;
 
@@ -36,6 +40,30 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SortingSelected, v => v.cmbSorting.SelectedIndex).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action, object? obj)
+        {
+            switch (action)
+            {
+                case EViewAction.DispatcherRefreshProxyGroups:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.RefreshProxyGroups();
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherProxiesDelayTest:
+
+                    if (obj is null) return false;
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.ProxiesDelayTestResult((SpeedTestResult)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+            }
+
+            return true;
         }
 
         private void ProxiesView_KeyDown(object sender, KeyEventArgs e)

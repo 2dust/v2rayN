@@ -8,7 +8,6 @@ using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
-using Application = System.Windows.Application;
 
 namespace v2rayN.ViewModels
 {
@@ -76,9 +75,9 @@ namespace v2rayN.ViewModels
             {
                 ImportRulesFromClipboard();
             });
-            ImportRulesFromUrlCmd = ReactiveCommand.CreateFromTask(() =>
+            ImportRulesFromUrlCmd = ReactiveCommand.Create(() =>
             {
-                return ImportRulesFromUrl();
+                ImportRulesFromUrl();
             });
 
             RuleRemoveCmd = ReactiveCommand.Create(() =>
@@ -292,7 +291,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private async Task ImportRulesFromUrl()
+        private void ImportRulesFromUrl()
         {
             var url = SelectedRouting.url;
             if (Utils.IsNullOrEmpty(url))
@@ -302,13 +301,10 @@ namespace v2rayN.ViewModels
             }
 
             DownloadHandle downloadHandle = new DownloadHandle();
-            var result = await downloadHandle.TryDownloadString(url, true, "");
+            var result = downloadHandle.TryDownloadString(url, true, "").Result;
             if (AddBatchRoutingRules(SelectedRouting, result) == 0)
             {
-                Application.Current.Dispatcher.Invoke((Action)(() =>
-                {
-                    RefreshRulesItems();
-                }));
+                RefreshRulesItems();
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
             }
         }

@@ -25,8 +25,6 @@ namespace v2rayN.ViewModels
 
         private CoreHandler _coreHandler;
 
-        private bool _showInTaskbar;
-
         #endregion private prop
 
         #region ObservableCollection
@@ -175,7 +173,7 @@ namespace v2rayN.ViewModels
             _updateView = updateView;
 
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => RefreshServersBiz());
+            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedRouting = new();
             SelectedServer = new();
@@ -352,7 +350,7 @@ namespace v2rayN.ViewModels
 
             NotifyLeftClickCmd = ReactiveCommand.Create(() =>
             {
-                ShowHideWindow(null);
+                _updateView?.Invoke(EViewAction.ShowHideWindow, null);
             });
 
             //System proxy
@@ -377,8 +375,7 @@ namespace v2rayN.ViewModels
 
             AutoHideStartup();
 
-            _showInTaskbar = true;
-            _config.uiItem.showInTaskbar = _showInTaskbar;
+            _config.uiItem.showInTaskbar = true;
         }
 
         private void Init()
@@ -405,10 +402,7 @@ namespace v2rayN.ViewModels
 
         private void OnProgramStarted(object state, bool timeout)
         {
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
-            {
-                ShowHideWindow(true);
-            }));
+            _updateView?.Invoke(EViewAction.ShowHideWindow, true);
         }
 
         #endregion Init
@@ -417,7 +411,7 @@ namespace v2rayN.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
-            if (!_showInTaskbar)
+            if (!_config.uiItem.showInTaskbar)
             {
                 return;
             }
@@ -444,23 +438,24 @@ namespace v2rayN.ViewModels
 
         private void UpdateStatisticsHandler(ServerSpeedItem update)
         {
+            if (!_config.uiItem.showInTaskbar)
+            {
+                return;
+            }
+            _updateView?.Invoke(EViewAction.DispatcherStatistics, update);
+        }
+
+        public void SetStatisticsResult(ServerSpeedItem update)
+        {
             try
             {
-                if (!_showInTaskbar)
+                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
+                SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
+
+                if ((update.proxyUp + update.proxyDown) > 0 && DateTime.Now.Second % 3 == 0)
                 {
-                    return;
+                    Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
                 }
-
-                Application.Current?.Dispatcher.Invoke((Action)(() =>
-                {
-                    SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.proxyUp), Utils.HumanFy(update.proxyDown));
-                    SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.directUp), Utils.HumanFy(update.directDown));
-
-                    if ((update.proxyUp + update.proxyDown) > 0 && DateTime.Now.Second % 3 == 0)
-                    {
-                        Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
-                    }
-                }));
             }
             catch (Exception ex)
             {
@@ -473,7 +468,7 @@ namespace v2rayN.ViewModels
             switch (e)
             {
                 case EGlobalHotkey.ShowForm:
-                    ShowHideWindow(null);
+                    _updateView?.Invoke(EViewAction.ShowHideWindow, null);
                     break;
 
                 case EGlobalHotkey.SystemProxyClear:
@@ -535,25 +530,22 @@ namespace v2rayN.ViewModels
             MessageBus.Current.SendMessage("", Global.CommandRefreshProfiles);
         }
 
-        private void RefreshServersBiz()
+        public void RefreshServersBiz()
         {
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
-            {
-                RefreshServersMenu();
+            RefreshServersMenu();
 
-                //display running server
-                var running = ConfigHandler.GetDefaultServer(_config);
-                if (running != null)
-                {
-                    RunningServerDisplay =
-                    RunningServerToolTipText = running.GetSummary();
-                }
-                else
-                {
-                    RunningServerDisplay =
-                    RunningServerToolTipText = ResUI.CheckServerSettings;
-                }
-            }));
+            //display running server
+            var running = ConfigHandler.GetDefaultServer(_config);
+            if (running != null)
+            {
+                RunningServerDisplay =
+                RunningServerToolTipText = running.GetSummary();
+            }
+            else
+            {
+                RunningServerDisplay =
+                RunningServerToolTipText = ResUI.CheckServerSettings;
+            }
         }
 
         private void RefreshServersMenu()
@@ -633,7 +625,7 @@ namespace v2rayN.ViewModels
 
         public async Task ScanScreenTaskAsync()
         {
-            ShowHideWindow(false);
+            _updateView?.Invoke(EViewAction.ShowHideWindow, false);
 
             var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
             string result = await Task.Run(() =>
@@ -641,7 +633,7 @@ namespace v2rayN.ViewModels
                 return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
             });
 
-            ShowHideWindow(true);
+            _updateView?.Invoke(EViewAction.ShowHideWindow, true);
 
             if (Utils.IsNullOrEmpty(result))
             {
@@ -710,15 +702,18 @@ namespace v2rayN.ViewModels
             (new UpdateHandle()).RunAvailabilityCheck((bool success, string msg) =>
             {
                 _noticeHandler?.SendMessage(msg, true);
-                Application.Current?.Dispatcher.Invoke((Action)(() =>
+
+                if (!_config.uiItem.showInTaskbar)
                 {
-                    if (!_showInTaskbar)
-                    {
-                        return;
-                    }
-                    RunningInfoDisplay = msg;
-                }));
+                    return;
+                }
+                _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
             });
+        }
+
+        public void TestServerAvailabilityResult(string msg)
+        {
+            RunningInfoDisplay = msg;
         }
 
         #endregion Add Servers
@@ -854,17 +849,20 @@ namespace v2rayN.ViewModels
             {
                 TestServerAvailability();
 
-                Application.Current?.Dispatcher.Invoke((Action)(() =>
-                {
-                    BlReloadEnabled = true;
-                    ShowClashUI = _config.IsRunningCore(ECoreType.clash);
-                    if (ShowClashUI)
-                    {
-                        Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
-                    }
-                    else { TabMainSelectedIndex = 0; }
-                }));
+                _updateView?.Invoke(EViewAction.DispatcherReload, null);
             });
+        }
+
+        public void ReloadResult()
+        {
+            ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, false);
+            BlReloadEnabled = true;
+            ShowClashUI = _config.IsRunningCore(ECoreType.clash);
+            if (ShowClashUI)
+            {
+                Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
+            }
+            else { TabMainSelectedIndex = 0; }
         }
 
         private async Task LoadCore()
@@ -873,10 +871,6 @@ namespace v2rayN.ViewModels
             {
                 var node = ConfigHandler.GetDefaultServer(_config);
                 _coreHandler.LoadCore(node);
-
-                //ConfigHandler.SaveConfig(_config, false);
-
-                ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, false);
             });
         }
 
@@ -911,21 +905,18 @@ namespace v2rayN.ViewModels
             SysProxyHandle.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
             _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
 
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
+            BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
+            BlSystemProxySet = (type == ESysProxyType.ForcedChange);
+            BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
+            BlSystemProxyPac = (type == ESysProxyType.Pac);
+
+            InboundDisplayStaus();
+
+            if (blChange)
             {
-                BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
-                BlSystemProxySet = (type == ESysProxyType.ForcedChange);
-                BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
-                BlSystemProxyPac = (type == ESysProxyType.Pac);
-
-                InboundDisplayStaus();
-
-                if (blChange)
-                {
-                    NotifyIcon = MainFormHandler.Instance.GetNotifyIcon(_config);
-                    AppIcon = MainFormHandler.Instance.GetAppIcon(_config);
-                }
-            }));
+                NotifyIcon = MainFormHandler.Instance.GetNotifyIcon(_config);
+                AppIcon = MainFormHandler.Instance.GetAppIcon(_config);
+            }
         }
 
         private void RefreshRoutingsMenu()
@@ -1013,27 +1004,6 @@ namespace v2rayN.ViewModels
 
         #region UI
 
-        public void ShowHideWindow(bool? blShow)
-        {
-            var bl = blShow ?? !_showInTaskbar;
-            if (bl)
-            {
-                Application.Current.MainWindow.Show();
-                if (Application.Current.MainWindow.WindowState == WindowState.Minimized)
-                {
-                    Application.Current.MainWindow.WindowState = WindowState.Normal;
-                }
-                Application.Current.MainWindow.Activate();
-                Application.Current.MainWindow.Focus();
-            }
-            else
-            {
-                Application.Current.MainWindow.Hide();
-            }
-            _showInTaskbar = bl;
-            _config.uiItem.showInTaskbar = _showInTaskbar;
-        }
-
         public void InboundDisplayStaus()
         {
             StringBuilder sb = new();
@@ -1078,10 +1048,7 @@ namespace v2rayN.ViewModels
                  .Delay(TimeSpan.FromSeconds(1))
                  .Subscribe(x =>
                  {
-                     Application.Current?.Dispatcher.Invoke(() =>
-                     {
-                         ShowHideWindow(false);
-                     });
+                     _updateView?.Invoke(EViewAction.ShowHideWindow, false);
                  });
             }
         }

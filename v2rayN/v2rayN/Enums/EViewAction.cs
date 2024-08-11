@@ -9,6 +9,7 @@
         ProfilesFocus,
         ShareSub,
         ShareServer,
+        ShowHideWindow,
         SubEditWindow,
         RoutingRuleSettingWindow,
         RoutingRuleDetailsWindow,
@@ -19,5 +20,14 @@
         OptionSettingWindow,
         GlobalHotkeySettingWindow,
         SubSettingWindow,
+        DispatcherSpeedTest,
+        DispatcherRefreshConnections,
+        DispatcherRefreshProxyGroups,
+        DispatcherProxiesDelayTest,
+
+        DispatcherStatistics,
+        DispatcherServerAvailability,
+        DispatcherReload,
+        DispatcherRefreshServersBiz,
     }
 }

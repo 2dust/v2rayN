@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
@@ -89,6 +90,7 @@ namespace v2rayN.Views
             });
 
             RestoreUI();
+            ViewModel?.RefreshServers();
         }
 
         #region Event
@@ -100,36 +102,50 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.ProfilesFocus)
+            switch (action)
             {
-                lstProfiles.Focus();
-            }
-            else if (action == EViewAction.ShowYesNo)
-            {
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-            else if (action == EViewAction.AddServerWindow)
-            {
-                if (obj is null) return false;
-                return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.AddServer2Window)
-            {
-                if (obj is null) return false;
-                return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.ShareServer)
-            {
-                if (obj is null) return false;
-                ShareServer((string)obj);
-            }
-            else if (action == EViewAction.SubEditWindow)
-            {
-                if (obj is null) return false;
-                return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+                case EViewAction.ProfilesFocus:
+                    lstProfiles.Focus();
+                    break;
+
+                case EViewAction.ShowYesNo:
+                    if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                    break;
+
+                case EViewAction.AddServerWindow:
+                    if (obj is null) return false;
+                    return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.AddServer2Window:
+                    if (obj is null) return false;
+                    return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.ShareServer:
+                    if (obj is null) return false;
+                    ShareServer((string)obj);
+                    break;
+
+                case EViewAction.SubEditWindow:
+                    if (obj is null) return false;
+                    return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.DispatcherSpeedTest:
+                    if (obj is null) return false;
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.SetSpeedTestResult((SpeedTestResult)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherRefreshServersBiz:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.RefreshServersBiz();
+                    }), DispatcherPriority.Normal);
+                    break;
             }
 
             return true;

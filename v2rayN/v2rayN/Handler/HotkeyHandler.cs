@@ -72,7 +72,7 @@ namespace v2rayN.Handler
                 bool isSuccess = false;
                 string msg;
 
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
                     isSuccess = RegisterHotKey(IntPtr.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey);
                 });
@@ -96,7 +96,7 @@ namespace v2rayN.Handler
         {
             foreach (var hotkey in _hotkeyTriggerDic.Keys)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
                     UnregisterHotKey(IntPtr.Zero, hotkey);
                 });
@@ -137,7 +137,7 @@ namespace v2rayN.Handler
             var _hotKeyCode = (int)msg.lParam;
             if (IsPause)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
                     UIElement? element = Keyboard.FocusedElement as UIElement;
                     if (element != null)

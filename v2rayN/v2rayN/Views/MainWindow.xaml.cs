@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 using v2rayN.Enums;
 using v2rayN.Handler;
 using v2rayN.Models;
@@ -184,35 +185,67 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.AddServerWindow)
+            switch (action)
             {
-                if (obj is null) return false;
-                return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.AddServer2Window)
-            {
-                if (obj is null) return false;
-                return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.DNSSettingWindow)
-            {
-                return (new DNSSettingWindow().ShowDialog() ?? false);
-            }
-            else if (action == EViewAction.RoutingSettingWindow)
-            {
-                return (new RoutingSettingWindow().ShowDialog() ?? false);
-            }
-            else if (action == EViewAction.OptionSettingWindow)
-            {
-                return (new OptionSettingWindow().ShowDialog() ?? false);
-            }
-            else if (action == EViewAction.GlobalHotkeySettingWindow)
-            {
-                return (new GlobalHotkeySettingWindow().ShowDialog() ?? false);
-            }
-            else if (action == EViewAction.SubSettingWindow)
-            {
-                return (new SubSettingWindow().ShowDialog() ?? false);
+                case EViewAction.AddServerWindow:
+                    if (obj is null) return false;
+                    return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.AddServer2Window:
+                    if (obj is null) return false;
+                    return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.DNSSettingWindow:
+                    return (new DNSSettingWindow().ShowDialog() ?? false);
+
+                case EViewAction.RoutingSettingWindow:
+                    return (new RoutingSettingWindow().ShowDialog() ?? false);
+
+                case EViewAction.OptionSettingWindow:
+                    return (new OptionSettingWindow().ShowDialog() ?? false);
+
+                case EViewAction.GlobalHotkeySettingWindow:
+                    return (new GlobalHotkeySettingWindow().ShowDialog() ?? false);
+
+                case EViewAction.SubSettingWindow:
+                    return (new SubSettingWindow().ShowDialog() ?? false);
+
+                case EViewAction.ShowHideWindow:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ShowHideWindow((bool?)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherStatistics:
+                    if (obj is null) return false;
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.SetStatisticsResult((ServerSpeedItem)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherServerAvailability:
+                    if (obj is null) return false;
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.TestServerAvailabilityResult((string)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherReload:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.ReloadResult();
+                    }), DispatcherPriority.Normal);
+                    break;
+
+                case EViewAction.DispatcherRefreshServersBiz:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.RefreshServersBiz();
+                    }), DispatcherPriority.Normal);
+                    break;
             }
 
             return true;
@@ -223,7 +256,7 @@ namespace v2rayN.Views
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            ViewModel?.ShowHideWindow(false);
+            ShowHideWindow(false);
         }
 
         private void menuExit_Click(object sender, RoutedEventArgs e)
@@ -269,7 +302,7 @@ namespace v2rayN.Views
         private void menuClose_Click(object sender, RoutedEventArgs e)
         {
             StorageUI();
-            ViewModel?.ShowHideWindow(false);
+            ShowHideWindow(false);
         }
 
         private void menuPromotion_Click(object sender, RoutedEventArgs e)
@@ -290,6 +323,26 @@ namespace v2rayN.Views
         #endregion Event
 
         #region UI
+
+        public void ShowHideWindow(bool? blShow)
+        {
+            var bl = blShow ?? !_config.uiItem.showInTaskbar;
+            if (bl)
+            {
+                Application.Current.MainWindow.Show();
+                if (Application.Current.MainWindow.WindowState == WindowState.Minimized)
+                {
+                    Application.Current.MainWindow.WindowState = WindowState.Normal;
+                }
+                Application.Current.MainWindow.Activate();
+                Application.Current.MainWindow.Focus();
+            }
+            else
+            {
+                Application.Current.MainWindow.Hide();
+            }
+            _config.uiItem.showInTaskbar = bl;
+        }
 
         private void RestoreUI()
         {

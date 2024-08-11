@@ -6,7 +6,6 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
-using System.Windows;
 using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
@@ -106,7 +105,7 @@ namespace v2rayN.ViewModels
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => RefreshServersBiz());
+            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedProfile = new();
             SelectedSub = new();
@@ -246,34 +245,31 @@ namespace v2rayN.ViewModels
             Locator.Current.GetService<MainWindowViewModel>()?.Reload();
         }
 
-        private void UpdateSpeedtestHandler(string indexId, string delay, string speed)
+        private void UpdateSpeedtestHandler(SpeedTestResult result)
         {
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
-            {
-                SetTestResult(indexId, delay, speed);
-            }));
+            _updateView?.Invoke(EViewAction.DispatcherSpeedTest, result);
         }
 
-        private void SetTestResult(string indexId, string delay, string speed)
+        public void SetSpeedTestResult(SpeedTestResult result)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (Utils.IsNullOrEmpty(result.IndexId))
             {
-                _noticeHandler?.SendMessage(delay, true);
-                _noticeHandler?.Enqueue(delay);
+                _noticeHandler?.SendMessage(result.Delay, true);
+                _noticeHandler?.Enqueue(result.Delay);
                 return;
             }
-            var item = _profileItems.Where(it => it.indexId == indexId).FirstOrDefault();
+            var item = _profileItems.Where(it => it.indexId == result.IndexId).FirstOrDefault();
             if (item != null)
             {
-                if (!Utils.IsNullOrEmpty(delay))
+                if (!Utils.IsNullOrEmpty(result.Delay))
                 {
-                    int.TryParse(delay, out int temp);
+                    int.TryParse(result.Delay, out int temp);
                     item.delay = temp;
-                    item.delayVal = $"{delay} {Global.DelayUnit}";
+                    item.delayVal = $"{result.Delay} {Global.DelayUnit}";
                 }
-                if (!Utils.IsNullOrEmpty(speed))
+                if (!Utils.IsNullOrEmpty(result.Speed))
                 {
-                    item.speedVal = $"{speed} {Global.SpeedUnit}";
+                    item.speedVal = $"{result.Speed} {Global.SpeedUnit}";
                 }
                 _profileItems.Replace(item, JsonUtils.DeepCopy(item));
             }
@@ -283,28 +279,25 @@ namespace v2rayN.ViewModels
         {
             try
             {
-                Application.Current?.Dispatcher.Invoke((Action)(() =>
+                var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
+                if (item != null)
                 {
-                    var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
-                    if (item != null)
-                    {
-                        item.todayDown = Utils.HumanFy(update.todayDown);
-                        item.todayUp = Utils.HumanFy(update.todayUp);
-                        item.totalDown = Utils.HumanFy(update.totalDown);
-                        item.totalUp = Utils.HumanFy(update.totalUp);
+                    item.todayDown = Utils.HumanFy(update.todayDown);
+                    item.todayUp = Utils.HumanFy(update.todayUp);
+                    item.totalDown = Utils.HumanFy(update.totalDown);
+                    item.totalUp = Utils.HumanFy(update.totalUp);
 
-                        if (SelectedProfile?.indexId == item.indexId)
-                        {
-                            var temp = JsonUtils.DeepCopy(item);
-                            _profileItems.Replace(item, temp);
-                            SelectedProfile = temp;
-                        }
-                        else
-                        {
-                            _profileItems.Replace(item, JsonUtils.DeepCopy(item));
-                        }
+                    if (SelectedProfile?.indexId == item.indexId)
+                    {
+                        var temp = JsonUtils.DeepCopy(item);
+                        _profileItems.Replace(item, temp);
+                        SelectedProfile = temp;
                     }
-                }));
+                    else
+                    {
+                        _profileItems.Replace(item, JsonUtils.DeepCopy(item));
+                    }
+                }
             }
             catch
             {
@@ -346,7 +339,7 @@ namespace v2rayN.ViewModels
             MessageBus.Current.SendMessage("", Global.CommandRefreshProfiles);
         }
 
-        private void RefreshServersBiz()
+        public void RefreshServersBiz()
         {
             var lstModel = LazyConfig.Instance.ProfileItems(_config.subIndexId, _serverFilter);
 
@@ -381,25 +374,22 @@ namespace v2rayN.ViewModels
                             totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
                             totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
                         }).OrderBy(t => t.sort).ToList();
-            _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel));
+            _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
-            Application.Current?.Dispatcher.Invoke((Action)(() =>
+            _profileItems.Clear();
+            _profileItems.AddRange(lstModel);
+            if (lstModel.Count > 0)
             {
-                _profileItems.Clear();
-                _profileItems.AddRange(lstModel);
-                if (lstModel.Count > 0)
+                var selected = lstModel.FirstOrDefault(t => t.indexId == _config.indexId);
+                if (selected != null)
                 {
-                    var selected = lstModel.FirstOrDefault(t => t.indexId == _config.indexId);
-                    if (selected != null)
-                    {
-                        SelectedProfile = selected;
-                    }
-                    else
-                    {
-                        SelectedProfile = lstModel[0];
-                    }
+                    SelectedProfile = selected;
                 }
-            }));
+                else
+                {
+                    SelectedProfile = lstModel[0];
+                }
+            }
         }
 
         public void RefreshSubscriptions()

@@ -1,5 +1,9 @@
 using ReactiveUI;
 using System.Reactive.Disposables;
+using System.Windows;
+using System.Windows.Threading;
+using v2rayN.Enums;
+using v2rayN.Models;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -12,7 +16,7 @@ namespace v2rayN.Views
         public ClashConnectionsView()
         {
             InitializeComponent();
-            ViewModel = new ClashConnectionsViewModel();
+            ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
 
             this.WhenActivated(disposables =>
             {
@@ -26,6 +30,22 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ConnectionCloseAllCmd, v => v.btnConnectionCloseAll).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
             });
+        }
+
+        private bool UpdateViewHandler(EViewAction action, object? obj)
+        {
+            switch (action)
+            {
+                case EViewAction.DispatcherRefreshConnections:
+                    if (obj is null) return false;
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        ViewModel?.RefreshConnections((List<ConnectionItem>?)obj);
+                    }), DispatcherPriority.Normal);
+                    break;
+            }
+
+            return true;
         }
 
         private void btnClose_Click(object sender, System.Windows.RoutedEventArgs e)
