@@ -69,7 +69,7 @@ namespace v2rayN.ViewModels
             });
             ImportRulesFromFileCmd = ReactiveCommand.Create(() =>
             {
-                ImportRulesFromFile();
+                _updateView?.Invoke(EViewAction.ImportRulesFromFile, null);
             });
             ImportRulesFromClipboardCmd = ReactiveCommand.Create(() =>
             {
@@ -256,13 +256,8 @@ namespace v2rayN.ViewModels
 
         #region Import rules
 
-        private void ImportRulesFromFile()
+        public void ImportRulesFromFile(string fileName)
         {
-            if (UI.OpenFileDialog(out string fileName,
-                "Rules|*.json|All|*.*") != true)
-            {
-                return;
-            }
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;

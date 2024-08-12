@@ -38,7 +38,7 @@ namespace v2rayN.ViewModels
 
             BrowseServerCmd = ReactiveCommand.Create(() =>
             {
-                BrowseServer();
+                _updateView?.Invoke(EViewAction.BrowseServer, null);
             });
 
             EditServerCmd = ReactiveCommand.Create(() =>
@@ -92,15 +92,8 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void BrowseServer()
+        public void BrowseServer(string fileName)
         {
-            //_noticeHandler?.Enqueue(ResUI.CustomServerTips);
-
-            if (UI.OpenFileDialog(out string fileName,
-                "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
-            {
-                return;
-            }
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;

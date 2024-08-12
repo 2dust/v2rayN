@@ -12,6 +12,8 @@
         ShowHideWindow,
         ScanScreenTask,
         Shutdown,
+        BrowseServer,
+        ImportRulesFromFile,
         SubEditWindow,
         RoutingRuleSettingWindow,
         RoutingRuleDetailsWindow,

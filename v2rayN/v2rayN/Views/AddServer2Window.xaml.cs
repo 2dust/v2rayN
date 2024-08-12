@@ -47,6 +47,15 @@ namespace v2rayN.Views
             {
                 this.DialogResult = true;
             }
+            else if (action == EViewAction.BrowseServer)
+            {
+                if (UI.OpenFileDialog(out string fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
+                {
+                    return false;
+                }
+                ViewModel?.BrowseServer(fileName);
+            }
+
             return true;
         }
 

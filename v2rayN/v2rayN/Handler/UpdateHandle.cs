@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
 using v2rayN.Enums;
 using v2rayN.Models;
 using v2rayN.Resx;
@@ -535,22 +534,22 @@ namespace v2rayN.Handler
 
         private async Task AskToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
         {
-            bool blDownload = false;
-            if (blAsk)
-            {
-                if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == MessageBoxResult.Yes)
-                {
-                    blDownload = true;
-                }
-            }
-            else
-            {
-                blDownload = true;
-            }
-            if (blDownload)
-            {
+            //bool blDownload = false;
+            //if (blAsk)
+            //{
+            //    if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == MessageBoxResult.Yes)
+            //    {
+            //        blDownload = true;
+            //    }
+            //}
+            //else
+            //{
+            //    blDownload = true;
+            //}
+            //if (blDownload)
+            //{
                 await downloadHandle.DownloadFileAsync(url, true, 600);
-            }
+            //}
         }
 
         private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> update)

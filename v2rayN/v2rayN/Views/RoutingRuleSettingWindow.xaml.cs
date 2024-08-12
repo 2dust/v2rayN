@@ -88,6 +88,14 @@ namespace v2rayN.Views
                 if (obj is null) return false;
                 return (new RoutingRuleDetailsWindow((RulesItem)obj)).ShowDialog() ?? false;
             }
+            else if (action == EViewAction.ImportRulesFromFile)
+            {
+                if (UI.OpenFileDialog(out string fileName, "Rules|*.json|All|*.*") != true)
+                {
+                    return false;
+                }
+                ViewModel?.ImportRulesFromFile(fileName);
+            }
             return true;
         }
 
