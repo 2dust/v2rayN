@@ -987,7 +987,7 @@ namespace v2rayN.Handler.CoreConfig
         {
             lstDnsExe = new();
             lstDirectExe = new();
-            var coreInfo = LazyConfig.Instance.GetCoreInfo();
+            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo)
             {
                 if (it.coreType == ECoreType.v2rayN)

@@ -447,7 +447,7 @@ namespace v2rayN.Views
 
         private void AddHelpMenuItem()
         {
-            var coreInfo = LazyConfig.Instance.GetCoreInfo();
+            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo
                 .Where(t => t.coreType != ECoreType.v2fly
                             && t.coreType != ECoreType.clash

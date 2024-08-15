@@ -466,11 +466,11 @@ namespace v2rayN.ViewModels
 
                 if (blWindowsShutDown)
                 {
-                    SysProxyHandle.ResetIEProxy4WindowsShutDown();
+                    SysProxyHandler.ResetIEProxy4WindowsShutDown();
                 }
                 else
                 {
-                    SysProxyHandle.UpdateSysProxy(_config, true);
+                    SysProxyHandler.UpdateSysProxy(_config, true);
                 }
 
                 ProfileExHandler.Instance.SaveTo();
@@ -656,7 +656,7 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            (new UpdateHandle()).RunAvailabilityCheck((bool success, string msg) =>
+            (new UpdateHandler()).RunAvailabilityCheck((bool success, string msg) =>
             {
                 _noticeHandler?.SendMessage(msg, true);
 
@@ -687,7 +687,7 @@ namespace v2rayN.ViewModels
 
         private void UpdateSubscriptionProcess(string subId, bool blProxy)
         {
-            (new UpdateHandle()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
+            (new UpdateHandler()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
 
         #endregion Subscription
@@ -757,7 +757,7 @@ namespace v2rayN.ViewModels
                     MyAppExit(false);
                 }
             }
-            (new UpdateHandle()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
+            (new UpdateHandler()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);
         }
 
         private void CheckUpdateCore(ECoreType type, bool? preRelease)
@@ -786,12 +786,12 @@ namespace v2rayN.ViewModels
                     }
                 }
             }
-            (new UpdateHandle()).CheckUpdateCore(type, _config, _updateUI, preRelease ?? _config.guiItem.checkPreReleaseUpdate);
+            (new UpdateHandler()).CheckUpdateCore(type, _config, _updateUI, preRelease ?? _config.guiItem.checkPreReleaseUpdate);
         }
 
         private void CheckUpdateGeo()
         {
-            (new UpdateHandle()).UpdateGeoFileAll(_config, UpdateTaskHandler);
+            (new UpdateHandler()).UpdateGeoFileAll(_config, UpdateTaskHandler);
         }
 
         #endregion CheckUpdate
@@ -865,7 +865,7 @@ namespace v2rayN.ViewModels
 
         private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
         {
-            SysProxyHandle.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
+            SysProxyHandler.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
             _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
@@ -1029,7 +1029,7 @@ namespace v2rayN.ViewModels
             await Task.Delay(60000);
             Logging.SaveLog("UpdateTaskRunSubscription");
 
-            var updateHandle = new UpdateHandle();
+            var updateHandle = new UpdateHandler();
             while (true)
             {
                 var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
@@ -1062,7 +1062,7 @@ namespace v2rayN.ViewModels
             await Task.Delay(1000 * 120);
             Logging.SaveLog("UpdateTaskRunGeo");
 
-            var updateHandle = new UpdateHandle();
+            var updateHandle = new UpdateHandler();
             while (true)
             {
                 var dtNow = DateTime.Now;

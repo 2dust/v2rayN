@@ -114,7 +114,7 @@ namespace v2rayN.Handler
 
                 if (!hasProc)
                 {
-                    var coreInfo = LazyConfig.Instance.GetCoreInfo();
+                    var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
                     foreach (var it in coreInfo)
                     {
                         if (it.coreType == ECoreType.v2rayN)
@@ -195,7 +195,7 @@ namespace v2rayN.Handler
             //}
             var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
             _config.runningCoreType = coreType;
-            var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.configType != EConfigType.Custom || node.displayLog;
             var proc = RunProcess(node, coreInfo, "", displayLog);
@@ -238,7 +238,7 @@ namespace v2rayN.Handler
                     string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
                     {
-                        var coreInfo2 = LazyConfig.Instance.GetCoreInfo(preCoreType);
+                        var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
                         var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
                         if (proc2 is not null)
                         {
@@ -256,7 +256,7 @@ namespace v2rayN.Handler
             ShowMsg(false, configPath);
             try
             {
-                var coreInfo = LazyConfig.Instance.GetCoreInfo(coreType);
+                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
                 var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true);
                 if (proc is null)
                 {

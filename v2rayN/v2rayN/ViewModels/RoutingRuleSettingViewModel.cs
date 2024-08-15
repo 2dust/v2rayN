@@ -295,7 +295,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            DownloadHandle downloadHandle = new DownloadHandle();
+            DownloadHandler downloadHandle = new DownloadHandler();
             var result = downloadHandle.TryDownloadString(url, true, "").Result;
             if (AddBatchRoutingRules(SelectedRouting, result) == 0)
             {

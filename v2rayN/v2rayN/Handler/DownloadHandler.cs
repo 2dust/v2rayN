@@ -12,7 +12,7 @@ namespace v2rayN.Handler
     /// <summary>
     ///Download
     /// </summary>
-    internal class DownloadHandle
+    internal class DownloadHandler
     {
         public event EventHandler<ResultEventArgs>? UpdateCompleted;
 

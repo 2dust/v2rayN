@@ -146,7 +146,7 @@ namespace v2rayN.Handler
                     return Task.CompletedTask;
                 }
 
-                DownloadHandle downloadHandle = new DownloadHandle();
+                DownloadHandler downloadHandle = new DownloadHandler();
 
                 List<Task> tasks = new();
                 foreach (var it in _selecteds)
@@ -213,7 +213,7 @@ namespace v2rayN.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandle downloadHandle = new();
+            DownloadHandler downloadHandle = new();
 
             var exitLoop = false;
             MessageBus.Current.Listen<string>(Global.CommandStopSpeedTest)
@@ -286,7 +286,7 @@ namespace v2rayN.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandle downloadHandle = new();
+            DownloadHandler downloadHandle = new();
 
             var exitLoop = false;
             MessageBus.Current.Listen<string>(Global.CommandStopSpeedTest)
@@ -358,7 +358,7 @@ namespace v2rayN.Handler
             await RunSpeedTestMulti();
         }
 
-        private async Task<string> GetRealPingTime(DownloadHandle downloadHandle, IWebProxy webProxy)
+        private async Task<string> GetRealPingTime(DownloadHandler downloadHandle, IWebProxy webProxy)
         {
             int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
             //string output = Utile.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;

@@ -11,7 +11,7 @@ using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
-    internal class UpdateHandle
+    internal class UpdateHandler
     {
         private Action<bool, string> _updateFunc;
         private Config _config;
@@ -38,7 +38,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = new();
+            DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -107,7 +107,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Empty;
 
-            DownloadHandle downloadHandle = new();
+            DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -194,7 +194,7 @@ namespace v2rayN.Handler
                         continue;
                     }
 
-                    var downloadHandle = new DownloadHandle();
+                    var downloadHandle = new DownloadHandler();
                     downloadHandle.Error += (sender2, args) =>
                     {
                         _updateFunc(false, $"{hashCode}{args.GetException().Message}");
@@ -306,7 +306,7 @@ namespace v2rayN.Handler
         {
             Task.Run(async () =>
             {
-                var time = await (new DownloadHandle()).RunAvailabilityCheck(null);
+                var time = await (new DownloadHandler()).RunAvailabilityCheck(null);
 
                 update(false, string.Format(ResUI.TestMeOutput, time));
             });
@@ -318,10 +318,10 @@ namespace v2rayN.Handler
         {
             try
             {
-                var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
+                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandle()).DownloadStringAsync(url, true, "");
+                var result = await (new DownloadHandler()).DownloadStringAsync(url, true, "");
                 if (!Utils.IsNullOrEmpty(result))
                 {
                     ResponseHandler(type, result, preRelease);
@@ -346,7 +346,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
+                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string filePath = string.Empty;
                 foreach (string name in coreInfo.coreExes)
                 {
@@ -416,7 +416,7 @@ namespace v2rayN.Handler
                 var version = new SemanticVersion(gitHubRelease?.TagName!);
                 var body = gitHubRelease?.Body;
 
-                var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
+                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
 
                 SemanticVersion curVersion;
                 string message;
@@ -532,7 +532,7 @@ namespace v2rayN.Handler
             }
         }
 
-        private async Task AskToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
+        private async Task AskToDownload(DownloadHandler downloadHandle, string url, bool blAsk)
         {
             //bool blDownload = false;
             //if (blAsk)
@@ -558,7 +558,7 @@ namespace v2rayN.Handler
             _updateFunc = update;
             var url = string.Format(Global.GeoUrl, geoName);
 
-            DownloadHandle downloadHandle = new();
+            DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)

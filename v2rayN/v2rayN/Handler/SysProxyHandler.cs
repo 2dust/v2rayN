@@ -5,7 +5,7 @@ using v2rayN.Models;
 
 namespace v2rayN.Handler
 {
-    public static class SysProxyHandle
+    public static class SysProxyHandler
     {
         private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
 
