@@ -617,6 +617,7 @@ namespace v2rayN.ViewModels
             }
             if (indexId == _config.indexId)
             {
+                RefreshServers();
                 Reload();
             }
             else
