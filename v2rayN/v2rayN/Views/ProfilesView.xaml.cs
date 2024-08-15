@@ -104,6 +104,13 @@ namespace v2rayN.Views
         {
             switch (action)
             {
+                case EViewAction.AdjustMainLvColWidth:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        AutofitColumnWidth();
+                    }), DispatcherPriority.Normal);
+                    break;
+
                 case EViewAction.ProfilesFocus:
                     lstProfiles.Focus();
                     break;

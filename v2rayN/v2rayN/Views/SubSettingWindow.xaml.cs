@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
 using v2rayN.Enums;
+using v2rayN.Handler;
 using v2rayN.Models;
 using v2rayN.Resx;
 using v2rayN.ViewModels;
@@ -34,6 +35,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare).DisposeWith(disposables);
             });
+            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.GetConfig().uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.GetConfig().uiItem.colorModeDark);
         }
 
         private bool UpdateViewHandler(EViewAction action, object? obj)

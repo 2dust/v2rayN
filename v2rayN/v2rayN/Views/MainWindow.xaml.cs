@@ -148,7 +148,7 @@ namespace v2rayN.Views
                 }
             });
 
-            var IsAdministrator = Utils.IsAdministrator();
+            var IsAdministrator = WindowsUtils.IsAdministrator();
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             if (!_config.guiItem.enableHWA)

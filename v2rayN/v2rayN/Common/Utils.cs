@@ -7,7 +7,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -404,7 +403,6 @@ namespace v2rayN
             }
         }
 
-    
         public static bool IsNullOrEmpty(string? text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -611,7 +609,6 @@ namespace v2rayN
             }
         }
 
-
         /// <summary>
         /// 取得GUID
         /// </summary>
@@ -634,26 +631,6 @@ namespace v2rayN
                 Logging.SaveLog(ex.Message, ex);
             }
             return string.Empty;
-        }
-
-        /// <summary>
-        /// IsAdministrator
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsAdministrator()
-        {
-            try
-            {
-                WindowsIdentity current = WindowsIdentity.GetCurrent();
-                WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
-                //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
-                return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                return false;
-            }
         }
 
         public static string GetDownloadFileName(string url)
@@ -871,49 +848,5 @@ namespace v2rayN
         }
 
         #endregion TempPath
-
-        #region 开机自动启动等
-
-        /// <summary>
-        /// 开机自动启动
-        /// </summary>
-        /// <param name="run"></param>
-        /// <returns></returns>
-        public static void SetAutoRun(string AutoRunRegPath, string AutoRunName, bool run)
-        {
-            try
-            {
-                var autoRunName = $"{AutoRunName}_{GetMD5(StartupPath())}";
-                WindowsUtils.
-
-                                //delete first
-                                RegWriteValue(AutoRunRegPath, autoRunName, "");
-                if (IsAdministrator())
-                {
-                    WindowsUtils.AutoStart(autoRunName, "", "");
-                }
-
-                if (run)
-                {
-                    string exePath = GetExePath();
-                    if (IsAdministrator())
-                    {
-                        WindowsUtils.AutoStart(autoRunName, exePath, "");
-                    }
-                    else
-                    {
-                        WindowsUtils.RegWriteValue(AutoRunRegPath, autoRunName, exePath.AppendQuotes());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-            }
-        }
-
-        #endregion 开机自动启动等
-
-
     }
 }

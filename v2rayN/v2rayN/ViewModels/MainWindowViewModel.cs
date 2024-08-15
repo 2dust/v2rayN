@@ -170,7 +170,7 @@ namespace v2rayN.ViewModels
             SelectedServer = new();
             if (_config.tunModeItem.enableTun)
             {
-                if (Utils.IsAdministrator())
+                if (WindowsUtils.IsAdministrator())
                 {
                     EnableTun = true;
                 }
@@ -421,6 +421,10 @@ namespace v2rayN.ViewModels
                 if (indexIdOld != _config.indexId)
                 {
                     Reload();
+                }
+                if (_config.uiItem.enableAutoAdjustMainLvColWidth)
+                {
+                    Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidth();
                 }
             }
         }
@@ -825,7 +829,7 @@ namespace v2rayN.ViewModels
                 if (_config.tunModeItem.enableTun)
                 {
                     Thread.Sleep(1000);
-                    WindowsUtils.RemoveTunDevice();
+                    //WindowsUtils.RemoveTunDevice();
                 }
 
                 var node = ConfigHandler.GetDefaultServer(_config);
@@ -947,7 +951,7 @@ namespace v2rayN.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !Utils.IsAdministrator())
+                if (EnableTun && !WindowsUtils.IsAdministrator())
                 {
                     _config.tunModeItem.enableTun = false;
                     RebootAsAdmin();

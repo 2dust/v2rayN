@@ -17,7 +17,6 @@ namespace v2rayN
 {
     internal static class WindowsUtils
     {
-
         /// <summary>
         /// 获取剪贴板数
         /// </summary>
@@ -55,6 +54,7 @@ namespace v2rayN
             {
             }
         }
+
         /// <summary>
         /// Auto Start via TaskService
         /// </summary>
@@ -199,14 +199,70 @@ namespace v2rayN
             }
         }
 
-        public static void SetDarkBorder(System.Windows.Window window, bool dark)
+        public static void SetDarkBorder(Window window, bool dark)
         {
             // Make sure the handle is created before the window is shown
-            IntPtr hWnd = new System.Windows.Interop.WindowInteropHelper(window).EnsureHandle();
+            IntPtr hWnd = new WindowInteropHelper(window).EnsureHandle();
             int attribute = dark ? 1 : 0;
             uint attributeSize = (uint)Marshal.SizeOf(attribute);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
+        }
+
+        /// <summary>
+        /// IsAdministrator
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsAdministrator()
+        {
+            try
+            {
+                WindowsIdentity current = WindowsIdentity.GetCurrent();
+                WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
+                //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
+                return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 开机自动启动
+        /// </summary>
+        /// <param name="run"></param>
+        /// <returns></returns>
+        public static void SetAutoRun(string AutoRunRegPath, string AutoRunName, bool run)
+        {
+            try
+            {
+                var autoRunName = $"{AutoRunName}_{Utils.GetMD5(Utils.StartupPath())}";
+                //delete first
+                RegWriteValue(AutoRunRegPath, autoRunName, "");
+                if (IsAdministrator())
+                {
+                    AutoStart(autoRunName, "", "");
+                }
+
+                if (run)
+                {
+                    string exePath = Utils.GetExePath();
+                    if (IsAdministrator())
+                    {
+                        AutoStart(autoRunName, exePath, "");
+                    }
+                    else
+                    {
+                        RegWriteValue(AutoRunRegPath, autoRunName, exePath.AppendQuotes());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
         }
 
         #region Windows API
