@@ -87,7 +87,7 @@ namespace v2rayN.Handler
                     return;
                 }
                 var urlBase = $"{GetApiUrl()}/proxies";
-                urlBase += @"/{0}/delay?timeout=10000&url=" + LazyConfig.Instance.GetConfig().speedTestItem.speedPingTestUrl;
+                urlBase += @"/{0}/delay?timeout=10000&url=" + LazyConfig.Instance.Config.speedTestItem.speedPingTestUrl;
 
                 List<Task> tasks = new List<Task>();
                 foreach (var it in lstProxy)

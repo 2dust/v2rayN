@@ -34,7 +34,7 @@ namespace v2rayN.ViewModels
 
         public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, bool>? updateView)
         {
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 

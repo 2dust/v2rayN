@@ -548,7 +548,7 @@ namespace v2rayN.Handler
             //}
             //if (blDownload)
             //{
-                await downloadHandle.DownloadFileAsync(url, true, 600);
+            await downloadHandle.DownloadFileAsync(url, true, 600);
             //}
         }
 

@@ -34,7 +34,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -66,7 +66,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
@@ -96,7 +96,7 @@ namespace v2rayN.Handler
 
         public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
-            Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+            Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -185,7 +185,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 var webProxy = GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
@@ -230,7 +230,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var webProxy = GetWebProxy(blProxy);
 
@@ -264,7 +264,7 @@ namespace v2rayN.Handler
 
                 try
                 {
-                    var config = LazyConfig.Instance.GetConfig();
+                    var config = LazyConfig.Instance.Config;
                     int responseTime = await GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10);
                     return responseTime;
                 }

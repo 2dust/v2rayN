@@ -11,7 +11,7 @@ namespace v2rayN.Converters
         {
             try
             {
-                var fontFamily = LazyConfig.Instance.GetConfig().uiItem.currentFontFamily;
+                var fontFamily = LazyConfig.Instance.Config.uiItem.currentFontFamily;
                 if (!Utils.IsNullOrEmpty(fontFamily))
                 {
                     var fontPath = Utils.GetFontsPath();

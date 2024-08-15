@@ -7,11 +7,11 @@ namespace v2rayN.Handler
     {
         private static readonly Lazy<LazyConfig> _instance = new(() => new());
         private Config _config;
-
-        public static LazyConfig Instance => _instance.Value;
-
         private int? _statePort;
         private int? _statePort2;
+
+        public static LazyConfig Instance => _instance.Value;
+        public Config Config => _config;
 
         public int StatePort
         {
@@ -45,15 +45,7 @@ namespace v2rayN.Handler
 
         #region Config
 
-        public void SetConfig(Config config)
-        {
-            _config = config;
-        }
-
-        public Config GetConfig()
-        {
-            return _config;
-        }
+        public void SetConfig(Config config) => _config = config;
 
         public int GetLocalPort(EInboundProtocol protocol)
         {

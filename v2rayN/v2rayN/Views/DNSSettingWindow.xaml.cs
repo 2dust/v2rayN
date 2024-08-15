@@ -17,7 +17,7 @@ namespace v2rayN.Views
             InitializeComponent();
 
             this.Owner = Application.Current.MainWindow;
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
 
             ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
@@ -54,7 +54,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCmd, v => v.btnImportDefConfig4Singbox).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.GetConfig().uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.GetConfig().uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
         }
 
         private bool UpdateViewHandler(EViewAction action, object? obj)

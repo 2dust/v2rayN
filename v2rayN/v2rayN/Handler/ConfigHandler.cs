@@ -206,7 +206,6 @@ namespace v2rayN.Handler
                 };
             }
 
-            LazyConfig.Instance.SetConfig(config);
             return 0;
         }
 

@@ -25,7 +25,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
 
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;

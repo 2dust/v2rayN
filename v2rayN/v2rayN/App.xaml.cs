@@ -59,6 +59,7 @@ namespace v2rayN
                 Environment.Exit(0);
                 return;
             }
+            LazyConfig.Instance.SetConfig(_config);
 
             //Under Win10
             if (Environment.OSVersion.Version.Major < 10)

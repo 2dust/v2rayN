@@ -24,7 +24,7 @@ namespace v2rayN.ViewModels
         public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, bool>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
             _updateView = updateView;
 
             if (profileItem.indexId.IsNullOrEmpty())

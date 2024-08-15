@@ -19,7 +19,7 @@ namespace v2rayN.Views
             InitializeComponent();
 
             this.Owner = Application.Current.MainWindow;
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
             _config.globalHotkeys ??= new List<KeyEventItem>();
 
             txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_PreviewKeyDown;

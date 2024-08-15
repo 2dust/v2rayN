@@ -20,7 +20,7 @@ namespace v2rayN.Handler.CoreConfig
                     msg = ResUI.CheckServerSettings;
                     return -1;
                 }
-                var config = LazyConfig.Instance.GetConfig();
+                var config = LazyConfig.Instance.Config;
 
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)

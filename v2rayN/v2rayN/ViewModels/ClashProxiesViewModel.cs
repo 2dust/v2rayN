@@ -50,7 +50,7 @@ namespace v2rayN.ViewModels
         public ClashProxiesViewModel(Func<EViewAction, object?, bool>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
             _updateView = updateView;
 
             SelectedGroup = new();

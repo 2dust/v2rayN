@@ -107,7 +107,7 @@ namespace v2rayN.ViewModels
 
         public OptionSettingViewModel(Func<EViewAction, object?, bool>? updateView)
         {
-            _config = LazyConfig.Instance.GetConfig();
+            _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
@@ -301,7 +301,7 @@ namespace v2rayN.ViewModels
             _config.hysteriaItem.up_mbps = hyUpMbps;
             _config.hysteriaItem.down_mbps = hyDownMbps;
             _config.coreBasicItem.enableFragment = enableFragment;
-            
+
             _config.guiItem.autoRun = AutoRun;
             _config.guiItem.enableStatistics = EnableStatistics;
             _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
