@@ -162,8 +162,10 @@ namespace v2rayN.ViewModels
 
             if (mode != ERuleMode.Unchanged)
             {
-                Dictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("mode", mode.ToString().ToLower());
+                Dictionary<string, string> headers = new()
+                {
+                    { "mode", mode.ToString().ToLower() }
+                };
                 ClashApiHandler.Instance.ClashConfigUpdate(headers);
             }
         }
@@ -382,15 +384,10 @@ namespace v2rayN.ViewModels
                 _proxyGroups.Replace(group, group2);
 
                 SelectedGroup = group2;
-
-                //var index = _proxyGroups.IndexOf(group);
-                //_proxyGroups.Remove(group);
-                //_proxyGroups.Insert(index, group);
+                 
             }
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-
-            //RefreshProxyDetails(true);
-            //GetClashProxies(true);
+             
         }
 
         private void ProxiesDelayTest(bool blAll)

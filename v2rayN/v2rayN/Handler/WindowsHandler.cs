@@ -1,22 +1,15 @@
-﻿using Microsoft.Win32;
-using Splat;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using v2rayN.Enums;
-using v2rayN.Handler.CoreConfig;
 using v2rayN.Models;
-using v2rayN.Resx;
 
 namespace v2rayN.Handler
 {
-    public sealed class MainFormHandler
+    public sealed class WindowsHandler
     {
-        private static readonly Lazy<MainFormHandler> instance = new(() => new());
-        public static MainFormHandler Instance => instance.Value;
+        private static readonly Lazy<WindowsHandler> instance = new(() => new());
+        public static WindowsHandler Instance => instance.Value;
 
         public Icon GetNotifyIcon(Config config)
         {
@@ -123,66 +116,11 @@ namespace v2rayN.Handler
             }
         }
 
-        public void Export2ClientConfig(ProfileItem item, Config config)
-        {
-            if (item == null)
-            {
-                return;
-            }
-
-            SaveFileDialog fileDialog = new()
-            {
-                Filter = "Config|*.json",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (fileDialog.ShowDialog() != true)
-            {
-                return;
-            }
-            string fileName = fileDialog.FileName;
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                return;
-            }
-            if (CoreConfigHandler.GenerateClientConfig(item, fileName, out string msg, out string content) != 0)
-            {
-                Locator.Current.GetService<NoticeHandler>()?.Enqueue(msg);
-            }
-            else
-            {
-                msg = string.Format(ResUI.SaveClientConfigurationIn, fileName);
-                Locator.Current.GetService<NoticeHandler>()?.SendMessageAndEnqueue(msg);
-            }
-        }
-
         public void RegisterGlobalHotkey(Config config, Action<EGlobalHotkey> handler, Action<bool, string>? update)
         {
             HotkeyHandler.Instance.UpdateViewEvent += update;
             HotkeyHandler.Instance.HotkeyTriggerEvent += handler;
             HotkeyHandler.Instance.Load();
-        }
-
-        public void RegisterSystemColorSet(Config config, Window window, Action<bool> update)
-        {
-            var helper = new WindowInteropHelper(window);
-            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
-            hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
-            {
-                if (config.uiItem.followSystemTheme)
-                {
-                    const int WM_SETTINGCHANGE = 0x001A;
-                    if (msg == WM_SETTINGCHANGE)
-                    {
-                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                        {
-                            update(!WindowsUtils.IsLightTheme());
-                        }
-                    }
-                }
-
-                return IntPtr.Zero;
-            });
         }
     }
 }

@@ -355,13 +355,64 @@ namespace v2rayN.Handler
 
         #region Server
 
+        public static int AddServer(Config config, ProfileItem profileItem)
+        {
+            var item = LazyConfig.Instance.GetProfileItem(profileItem.indexId);
+            if (item is null)
+            {
+                item = profileItem;
+            }
+            else
+            {
+                item.coreType = profileItem.coreType;
+                item.remarks = profileItem.remarks;
+                item.address = profileItem.address;
+                item.port = profileItem.port;
+
+                item.id = profileItem.id;
+                item.alterId = profileItem.alterId;
+                item.security = profileItem.security;
+                item.flow = profileItem.flow;
+
+                item.network = profileItem.network;
+                item.headerType = profileItem.headerType;
+                item.requestHost = profileItem.requestHost;
+                item.path = profileItem.path;
+
+                item.streamSecurity = profileItem.streamSecurity;
+                item.sni = profileItem.sni;
+                item.allowInsecure = profileItem.allowInsecure;
+                item.fingerprint = profileItem.fingerprint;
+                item.alpn = profileItem.alpn;
+
+                item.publicKey = profileItem.publicKey;
+                item.shortId = profileItem.shortId;
+                item.spiderX = profileItem.spiderX;
+            }
+
+            var ret = item.configType switch
+            {
+                EConfigType.VMess => AddVMessServer(config, item),
+                EConfigType.Shadowsocks => AddShadowsocksServer(config, item),
+                EConfigType.Socks => AddSocksServer(config, item),
+                EConfigType.Http => AddHttpServer(config, item),
+                EConfigType.Trojan => AddTrojanServer(config, item),
+                EConfigType.VLESS => AddVlessServer(config, item),
+                EConfigType.Hysteria2 => AddHysteria2Server(config, item),
+                EConfigType.Tuic => AddTuicServer(config, item),
+                EConfigType.Wireguard => AddWireguardServer(config, item),
+                _ => -1,
+            };
+            return ret;
+        }
+
         /// <summary>
         /// Add or edit server
         /// </summary>
         /// <param name="config"></param>
         /// <param name="profileItem"></param>
         /// <returns></returns>
-        public static int AddServer(Config config, ProfileItem profileItem, bool toFile = true)
+        public static int AddVMessServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
             profileItem.configType = EConfigType.VMess;
 
@@ -619,7 +670,21 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int EditCustomServer(Config config, ProfileItem profileItem)
         {
-            if (SQLiteHelper.Instance.Update(profileItem) > 0)
+            var item = LazyConfig.Instance.GetProfileItem(profileItem.indexId);
+            if (item is null)
+            {
+                item = profileItem;
+            }
+            else
+            {
+                item.remarks = profileItem.remarks;
+                item.address = profileItem.address;
+                item.coreType = profileItem.coreType;
+                item.displayLog = profileItem.displayLog;
+                item.preSocksPort = profileItem.preSocksPort;
+            }
+
+            if (SQLiteHelper.Instance.Update(item) > 0)
             {
                 return 0;
             }
@@ -1189,7 +1254,7 @@ namespace v2rayN.Handler
 
                 var addStatus = profileItem.configType switch
                 {
-                    EConfigType.VMess => AddServer(config, profileItem, false),
+                    EConfigType.VMess => AddVMessServer(config, profileItem, false),
                     EConfigType.Shadowsocks => AddShadowsocksServer(config, profileItem, false),
                     EConfigType.Socks => AddSocksServer(config, profileItem, false),
                     EConfigType.Trojan => AddTrojanServer(config, profileItem, false),
@@ -1419,21 +1484,41 @@ namespace v2rayN.Handler
 
         public static int AddSubItem(Config config, SubItem subItem)
         {
-            if (Utils.IsNullOrEmpty(subItem.id))
+            var item = LazyConfig.Instance.GetSubItem(subItem.id);
+            if (item is null)
             {
-                subItem.id = Utils.GetGUID(false);
+                item = subItem;
+            }
+            else
+            {
+                item.remarks = subItem.remarks;
+                item.url = subItem.url;
+                item.moreUrl = subItem.moreUrl;
+                item.enabled = subItem.enabled;
+                item.autoUpdateInterval = subItem.autoUpdateInterval;
+                item.userAgent = subItem.userAgent;
+                item.sort = subItem.sort;
+                item.filter = subItem.filter;
+                item.convertTarget = subItem.convertTarget;
+                item.prevProfile = subItem.prevProfile;
+                item.nextProfile = subItem.nextProfile;
+            }
 
-                if (subItem.sort <= 0)
+            if (Utils.IsNullOrEmpty(item.id))
+            {
+                item.id = Utils.GetGUID(false);
+
+                if (item.sort <= 0)
                 {
                     var maxSort = 0;
                     if (SQLiteHelper.Instance.Table<SubItem>().Count() > 0)
                     {
                         maxSort = SQLiteHelper.Instance.Table<SubItem>().Max(t => t == null ? 0 : t.sort);
                     }
-                    subItem.sort = maxSort + 1;
+                    item.sort = maxSort + 1;
                 }
             }
-            if (SQLiteHelper.Instance.Replace(subItem) > 0)
+            if (SQLiteHelper.Instance.Replace(item) > 0)
             {
                 return 0;
             }

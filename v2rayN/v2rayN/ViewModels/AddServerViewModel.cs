@@ -85,54 +85,7 @@ namespace v2rayN.ViewModels
                 }
             }
 
-            var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
-            if (item is null)
-            {
-                item = SelectedSource;
-            }
-            else
-            {
-                item.coreType = SelectedSource.coreType;
-                item.remarks = SelectedSource.remarks;
-                item.address = SelectedSource.address;
-                item.port = SelectedSource.port;
-
-                item.id = SelectedSource.id;
-                item.alterId = SelectedSource.alterId;
-                item.security = SelectedSource.security;
-                item.flow = SelectedSource.flow;
-
-                item.network = SelectedSource.network;
-                item.headerType = SelectedSource.headerType;
-                item.requestHost = SelectedSource.requestHost;
-                item.path = SelectedSource.path;
-
-                item.streamSecurity = SelectedSource.streamSecurity;
-                item.sni = SelectedSource.sni;
-                item.allowInsecure = SelectedSource.allowInsecure;
-                item.fingerprint = SelectedSource.fingerprint;
-                item.alpn = SelectedSource.alpn;
-
-                item.publicKey = SelectedSource.publicKey;
-                item.shortId = SelectedSource.shortId;
-                item.spiderX = SelectedSource.spiderX;
-            }
-
-            var ret = item.configType switch
-            {
-                EConfigType.VMess => ConfigHandler.AddServer(_config, item),
-                EConfigType.Shadowsocks => ConfigHandler.AddShadowsocksServer(_config, item),
-                EConfigType.Socks => ConfigHandler.AddSocksServer(_config, item),
-                EConfigType.Http => ConfigHandler.AddHttpServer(_config, item),
-                EConfigType.Trojan => ConfigHandler.AddTrojanServer(_config, item),
-                EConfigType.VLESS => ConfigHandler.AddVlessServer(_config, item),
-                EConfigType.Hysteria2 => ConfigHandler.AddHysteria2Server(_config, item),
-                EConfigType.Tuic => ConfigHandler.AddTuicServer(_config, item),
-                EConfigType.Wireguard => ConfigHandler.AddWireguardServer(_config, item),
-                _ => -1,
-            };
-
-            if (ret == 0)
+            if (ConfigHandler.AddServer(_config, SelectedSource) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);

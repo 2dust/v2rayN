@@ -4,6 +4,7 @@
     {
         CloseWindow,
         ShowYesNo,
+        SaveFileDialog,
         AddBatchRoutingRulesYesNo,
         AdjustMainLvColWidth,
         ProfilesFocus,

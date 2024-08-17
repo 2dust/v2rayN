@@ -67,21 +67,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
-            if (item is null)
-            {
-                item = SelectedSource;
-            }
-            else
-            {
-                item.remarks = SelectedSource.remarks;
-                item.address = SelectedSource.address;
-                item.coreType = SelectedSource.coreType;
-                item.displayLog = SelectedSource.displayLog;
-                item.preSocksPort = SelectedSource.preSocksPort;
-            }
-
-            if (ConfigHandler.EditCustomServer(_config, item) == 0)
+            if (ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);

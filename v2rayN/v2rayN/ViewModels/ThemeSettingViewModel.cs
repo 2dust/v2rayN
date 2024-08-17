@@ -7,9 +7,12 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using v2rayN.Base;
 using v2rayN.Handler;
+using v2rayN.Models;
 using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
@@ -40,7 +43,7 @@ namespace v2rayN.ViewModels
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            MainFormHandler.Instance.RegisterSystemColorSet(_config, Application.Current.MainWindow, (bool bl) => { ModifyTheme(bl); });
+            RegisterSystemColorSet(_config, Application.Current.MainWindow, (bool bl) => { ModifyTheme(bl); });
 
             BindingUI();
             RestoreUI();
@@ -185,6 +188,28 @@ namespace v2rayN.ViewModels
             theme.PrimaryDark = new ColorPair(color.Darken());
 
             _paletteHelper.SetTheme(theme);
+        }
+
+        public void RegisterSystemColorSet(Config config, Window window, Action<bool> update)
+        {
+            var helper = new WindowInteropHelper(window);
+            var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
+            hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+            {
+                if (config.uiItem.followSystemTheme)
+                {
+                    const int WM_SETTINGCHANGE = 0x001A;
+                    if (msg == WM_SETTINGCHANGE)
+                    {
+                        if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
+                        {
+                            update(!WindowsUtils.IsLightTheme());
+                        }
+                    }
+                }
+
+                return IntPtr.Zero;
+            });
         }
     }
 }

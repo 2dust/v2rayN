@@ -47,27 +47,7 @@ namespace v2rayN.ViewModels
                 return;
             }
 
-            var item = LazyConfig.Instance.GetSubItem(SelectedSource.id);
-            if (item is null)
-            {
-                item = SelectedSource;
-            }
-            else
-            {
-                item.remarks = SelectedSource.remarks;
-                item.url = SelectedSource.url;
-                item.moreUrl = SelectedSource.moreUrl;
-                item.enabled = SelectedSource.enabled;
-                item.autoUpdateInterval = SelectedSource.autoUpdateInterval;
-                item.userAgent = SelectedSource.userAgent;
-                item.sort = SelectedSource.sort;
-                item.filter = SelectedSource.filter;
-                item.convertTarget = SelectedSource.convertTarget;
-                item.prevProfile = SelectedSource.prevProfile;
-                item.nextProfile = SelectedSource.nextProfile;
-            }
-
-            if (ConfigHandler.AddSubItem(_config, item) == 0)
+            if (ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);

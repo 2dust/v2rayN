@@ -1,4 +1,5 @@
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
@@ -122,6 +123,21 @@ namespace v2rayN.Views
                     }
                     break;
 
+                case EViewAction.SaveFileDialog:
+                    if (obj is null) return false;
+                    SaveFileDialog fileDialog = new()
+                    {
+                        Filter = "Config|*.json",
+                        FilterIndex = 2,
+                        RestoreDirectory = true
+                    };
+                    if (fileDialog.ShowDialog() != true)
+                    {
+                        return false;
+                    }
+                    ViewModel?.Export2ClientConfigResult(fileDialog.FileName, (ProfileItem)obj);
+                    break;
+
                 case EViewAction.AddServerWindow:
                     if (obj is null) return false;
                     return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
@@ -188,7 +204,7 @@ namespace v2rayN.Views
             }
             else
             {
-                ViewModel?.EditServer(false, EConfigType.Custom);
+                ViewModel?.EditServer(EConfigType.Custom);
             }
         }
 
@@ -224,7 +240,7 @@ namespace v2rayN.Views
                         break;
 
                     case Key.D:
-                        ViewModel?.EditServer(false, EConfigType.Custom);
+                        ViewModel?.EditServer(EConfigType.Custom);
                         break;
 
                     case Key.F:

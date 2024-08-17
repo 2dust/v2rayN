@@ -37,7 +37,7 @@ namespace v2rayN.Views
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
-            MainFormHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
 
             this.WhenActivated(disposables =>
             {
@@ -252,8 +252,8 @@ namespace v2rayN.Views
                 case EViewAction.DispatcherRefreshIcon:
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
-                        tbNotify.Icon = MainFormHandler.Instance.GetNotifyIcon(_config);
-                        this.Icon = MainFormHandler.Instance.GetAppIcon(_config);
+                        tbNotify.Icon = WindowsHandler.Instance.GetNotifyIcon(_config);
+                        this.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
                     break;
 

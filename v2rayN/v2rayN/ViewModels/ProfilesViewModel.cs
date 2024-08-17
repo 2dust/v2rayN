@@ -9,8 +9,8 @@ using System.Text;
 using v2rayN.Base;
 using v2rayN.Enums;
 using v2rayN.Handler;
+using v2rayN.Handler.CoreConfig;
 using v2rayN.Handler.Fmt;
-using v2rayN.Handler.Statistics;
 using v2rayN.Models;
 using v2rayN.Resx;
 
@@ -143,7 +143,7 @@ namespace v2rayN.ViewModels
             //servers delete
             EditServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(false, EConfigType.Custom);
+                EditServer(EConfigType.Custom);
             }, canEditRemove);
             RemoveServerCmd = ReactiveCommand.Create(() =>
             {
@@ -346,39 +346,7 @@ namespace v2rayN.ViewModels
 
         public void RefreshServersBiz()
         {
-            var lstModel = LazyConfig.Instance.ProfileItems(_config.subIndexId, _serverFilter);
-
-            ConfigHandler.SetDefaultServer(_config, lstModel);
-
-            var lstServerStat = (_config.guiItem.enableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
-            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
-            lstModel = (from t in lstModel
-                        join t2 in lstServerStat on t.indexId equals t2.indexId into t2b
-                        from t22 in t2b.DefaultIfEmpty()
-                        join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
-                        from t33 in t3b.DefaultIfEmpty()
-                        select new ProfileItemModel
-                        {
-                            indexId = t.indexId,
-                            configType = t.configType,
-                            remarks = t.remarks,
-                            address = t.address,
-                            port = t.port,
-                            security = t.security,
-                            network = t.network,
-                            streamSecurity = t.streamSecurity,
-                            subid = t.subid,
-                            subRemarks = t.subRemarks,
-                            isActive = t.indexId == _config.indexId,
-                            sort = t33 == null ? 0 : t33.sort,
-                            delay = t33 == null ? 0 : t33.delay,
-                            delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
-                            speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
-                            todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
-                            todayUp = t22 == null ? "" : Utils.HumanFy(t22.todayUp),
-                            totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
-                            totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
-                        }).OrderBy(t => t.sort).ToList();
+            var lstModel = LazyConfig.Instance.ProfileItemsEx(_config.subIndexId, _serverFilter);
             _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
             _profileItems.Clear();
@@ -448,32 +416,20 @@ namespace v2rayN.ViewModels
             return 0;
         }
 
-        public void EditServer(bool blNew, EConfigType eConfigType)
+        public void EditServer(EConfigType eConfigType)
         {
-            ProfileItem item;
-            if (blNew)
+            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
             {
-                item = new()
-                {
-                    subid = _config.subIndexId,
-                    configType = eConfigType,
-                    isSub = false,
-                };
+                return;
             }
-            else
+            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
+            if (item is null)
             {
-                if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
-                {
-                    return;
-                }
-                item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
-                if (item is null)
-                {
-                    _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
-                    return;
-                }
-                eConfigType = item.configType;
+                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
+                return;
             }
+            eConfigType = item.configType;
+
             bool? ret = false;
             if (eConfigType == EConfigType.Custom)
             {
@@ -722,7 +678,25 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
-            MainFormHandler.Instance.Export2ClientConfig(item, _config);
+
+            _updateView?.Invoke(EViewAction.SaveFileDialog, item);
+        }
+
+        public void Export2ClientConfigResult(string fileName, ProfileItem item)
+        {
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+            if (CoreConfigHandler.GenerateClientConfig(item, fileName, out string msg, out string content) != 0)
+            {
+                Locator.Current.GetService<NoticeHandler>()?.Enqueue(msg);
+            }
+            else
+            {
+                msg = string.Format(ResUI.SaveClientConfigurationIn, fileName);
+                Locator.Current.GetService<NoticeHandler>()?.SendMessageAndEnqueue(msg);
+            }
         }
 
         public void Export2ShareUrl()
