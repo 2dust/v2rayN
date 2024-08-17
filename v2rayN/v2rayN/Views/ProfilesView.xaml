@@ -192,14 +192,26 @@
                             Click="menuSelectAll_Click"
                             Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
-                        <MenuItem
-                            x:Name="menuExport2ClientConfig"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
-                        <MenuItem
-                            x:Name="menuExport2ShareUrl"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ClientConfig}">
+                            <MenuItem
+                                x:Name="menuExport2ClientConfig"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
+                            <MenuItem
+                                x:Name="menuExport2ClientConfigClipboard"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2ClientConfigClipboard}" />
+                        </MenuItem>
+                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ShareUrl}">
+                            <MenuItem
+                                x:Name="menuExport2ShareUrl"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
+                            <MenuItem
+                                x:Name="menuExport2ShareUrlBase64"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                        </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Resources>

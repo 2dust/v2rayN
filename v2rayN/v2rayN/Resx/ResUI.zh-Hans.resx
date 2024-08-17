@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>批量导出分享URL至剪贴板成功</value>
+    <value>导出分享链接至剪贴板成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
     <value>请先检查服务器设置</value>
@@ -299,7 +299,7 @@
     <value>成功从剪贴板导入 {0} 个服务器</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>扫描导入URL成功</value>
+    <value>扫描导入分享链接成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>当前服务的真连接延迟: {0} ms</value>
@@ -491,7 +491,7 @@
     <value>语言(重启)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>从剪贴板导入批量URL (Ctrl+V)</value>
+    <value>从剪贴板导入分享链接 (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>扫描屏幕上的二维码 (Ctrl+S)</value>
@@ -524,10 +524,10 @@
     <value>测试服务器延迟Tcping(多选) (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>导出所选服务器为客户端配置</value>
+    <value>导出所选服务器完整配置</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>批量导出分享URL至剪贴板(多选) (Ctrl+C)</value>
+    <value>导出分享链接至剪贴板(多选) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>添加自定义配置服务器</value>
@@ -1260,5 +1260,11 @@
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
     <value>自动调整列宽</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>导出分享链接至剪贴板(多选) Base64编码</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>导出所选服务器完整配置至剪贴板</value>
   </data>
 </root>

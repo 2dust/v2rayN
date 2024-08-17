@@ -90,7 +90,9 @@ namespace v2rayN.ViewModels
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
 
+        public ReactiveCommand<Unit, Unit> Export2ClientConfigClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
+        public ReactiveCommand<Unit, Unit> Export2ShareUrlBase64Cmd { get; }
 
         public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
         public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
@@ -216,11 +218,19 @@ namespace v2rayN.ViewModels
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
             {
-                Export2ClientConfig();
+                Export2ClientConfig(false);
+            }, canEditRemove);
+            Export2ClientConfigClipboardCmd = ReactiveCommand.Create(() =>
+            {
+                Export2ClientConfig(true);
             }, canEditRemove);
             Export2ShareUrlCmd = ReactiveCommand.Create(() =>
             {
-                Export2ShareUrl();
+                Export2ShareUrl(false);
+            }, canEditRemove);
+            Export2ShareUrlBase64Cmd = ReactiveCommand.Create(() =>
+            {
+                Export2ShareUrl(true);
             }, canEditRemove);
 
             //Subscription
@@ -670,7 +680,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void Export2ClientConfig()
+        private void Export2ClientConfig(bool blClipboard)
         {
             var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
@@ -678,8 +688,22 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
-
-            _updateView?.Invoke(EViewAction.SaveFileDialog, item);
+            if (blClipboard)
+            {
+                if (CoreConfigHandler.GenerateClientConfig(item, null, out string msg, out string content) != 0)
+                {
+                    Locator.Current.GetService<NoticeHandler>()?.Enqueue(msg);
+                }
+                else
+                {
+                    WindowsUtils.SetClipboardData(content);
+                    _noticeHandler?.SendMessage(ResUI.OperationSuccess);
+                }
+            }
+            else
+            {
+                _updateView?.Invoke(EViewAction.SaveFileDialog, item);
+            }
         }
 
         public void Export2ClientConfigResult(string fileName, ProfileItem item)
@@ -699,7 +723,7 @@ namespace v2rayN.ViewModels
             }
         }
 
-        public void Export2ShareUrl()
+        public void Export2ShareUrl(bool blEncode)
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
@@ -719,7 +743,14 @@ namespace v2rayN.ViewModels
             }
             if (sb.Length > 0)
             {
-                WindowsUtils.SetClipboardData(sb.ToString());
+                if (blEncode)
+                {
+                    WindowsUtils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
+                }
+                else
+                {
+                    WindowsUtils.SetClipboardData(sb.ToString());
+                }
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }
         }

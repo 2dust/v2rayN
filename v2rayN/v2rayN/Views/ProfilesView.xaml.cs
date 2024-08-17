@@ -87,7 +87,9 @@ namespace v2rayN.Views
 
                 //servers export
                 this.BindCommand(ViewModel, vm => vm.Export2ClientConfigCmd, v => v.menuExport2ClientConfig).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
             });
 
             RestoreUI();
@@ -236,7 +238,7 @@ namespace v2rayN.Views
                         break;
 
                     case Key.C:
-                        ViewModel?.Export2ShareUrl();
+                        ViewModel?.Export2ShareUrl(false);
                         break;
 
                     case Key.D:

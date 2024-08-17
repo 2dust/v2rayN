@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Batch export share URL to clipboard successfully</value>
+    <value>Export Share Link to Clipboard Successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
     <value>Please check the server settings first</value>
@@ -299,7 +299,7 @@
     <value>{0} servers have been imported from clipboard</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import URL successfully</value>
+    <value>Scan import the shared link successfully</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>The ping of current service: {0} ms</value>
@@ -491,7 +491,7 @@
     <value>Language (Restart)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Import bulk URL from clipboard (Ctrl+V)</value>
+    <value>Importing Share Links from clipboard (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>Scan QR code on the screen (Ctrl+S)</value>
@@ -524,10 +524,10 @@
     <value>Test servers with tcping (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Export selected server for client configuration</value>
+    <value>Export selected server for complete configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Export share URLs to clipboard (Ctrl+C)</value>
+    <value>Export Share Link to Clipboard (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Add a custom configuration server</value>
@@ -1263,5 +1263,11 @@
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
     <value>Auto column width adjustment</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Export Base64-encoded Share Links to Clipboard</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Export selected server for complete configuration to clipboard</value>
   </data>
 </root>

@@ -79,7 +79,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Batch export share URL to clipboard successfully 的本地化字符串。
+        ///   查找类似 Export Share Link to Clipboard Successfully 的本地化字符串。
         /// </summary>
         public static string BatchExportURLSuccessfully {
             get {
@@ -610,7 +610,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Import bulk URL from clipboard (Ctrl+V) 的本地化字符串。
+        ///   查找类似 Importing Share Links from clipboard (Ctrl+V) 的本地化字符串。
         /// </summary>
         public static string menuAddServerViaClipboard {
             get {
@@ -772,7 +772,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Export selected server for client configuration 的本地化字符串。
+        ///   查找类似 Export selected server for complete configuration 的本地化字符串。
         /// </summary>
         public static string menuExport2ClientConfig {
             get {
@@ -781,11 +781,29 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Export share URLs to clipboard (Ctrl+C) 的本地化字符串。
+        ///   查找类似 Export selected server for complete configuration to clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport2ClientConfigClipboard {
+            get {
+                return ResourceManager.GetString("menuExport2ClientConfigClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Share Link to Clipboard (Ctrl+C) 的本地化字符串。
         /// </summary>
         public static string menuExport2ShareUrl {
             get {
                 return ResourceManager.GetString("menuExport2ShareUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Base64-encoded Share Links to Clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport2ShareUrlBase64 {
+            get {
+                return ResourceManager.GetString("menuExport2ShareUrlBase64", resourceCulture);
             }
         }
         
@@ -1934,7 +1952,7 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Scan import URL successfully 的本地化字符串。
+        ///   查找类似 Scan import the shared link successfully 的本地化字符串。
         /// </summary>
         public static string SuccessfullyImportedServerViaScan {
             get {
