@@ -828,8 +828,8 @@ namespace v2rayN.ViewModels
             {
                 if (_config.tunModeItem.enableTun)
                 {
-                    Thread.Sleep(1000);
-                    //WindowsUtils.RemoveTunDevice();
+                    Task.Delay(1000).Wait();
+                    WindowsUtils.RemoveTunDevice();
                 }
 
                 var node = ConfigHandler.GetDefaultServer(_config);

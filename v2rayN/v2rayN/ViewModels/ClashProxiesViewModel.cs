@@ -17,9 +17,9 @@ namespace v2rayN.ViewModels
 {
     public class ClashProxiesViewModel : MyReactiveObject
     {
-        private Dictionary<String, ProxiesItem>? proxies;
-        private Dictionary<String, ProvidersItem>? providers;
-        private int delayTimeout = 99999999;
+        private Dictionary<String, ProxiesItem>? _proxies;
+        private Dictionary<String, ProvidersItem>? _providers;
+        private int _delayTimeout = 99999999;
 
         private IObservableCollection<ClashProxyModel> _proxyGroups = new ObservableCollectionExtended<ClashProxyModel>();
         private IObservableCollection<ClashProxyModel> _proxyDetails = new ObservableCollectionExtended<ClashProxyModel>();
@@ -175,11 +175,10 @@ namespace v2rayN.ViewModels
             ClashApiHandler.Instance.GetClashProxies(_config, (it, it2) =>
             {
                 //UpdateHandler(false, "Refresh Clash Proxies");
-                proxies = it?.proxies;
-                providers = it2?.providers;
+                _proxies = it?.proxies;
+                _providers = it2?.providers;
 
-                ClashApiHandler.Instance.SetProxies(proxies);
-                if (proxies == null)
+                if (_proxies == null)
                 {
                     return;
                 }
@@ -200,11 +199,11 @@ namespace v2rayN.ViewModels
             {
                 foreach (var it in proxyGroups)
                 {
-                    if (string.IsNullOrEmpty(it.name) || !proxies.ContainsKey(it.name))
+                    if (string.IsNullOrEmpty(it.name) || !_proxies.ContainsKey(it.name))
                     {
                         continue;
                     }
-                    var item = proxies[it.name];
+                    var item = _proxies[it.name];
                     if (!Global.allowSelectType.Contains(item.type.ToLower()))
                     {
                         continue;
@@ -219,7 +218,7 @@ namespace v2rayN.ViewModels
             }
 
             //from api
-            foreach (KeyValuePair<string, ProxiesItem> kv in proxies)
+            foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
             {
                 if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
                 {
@@ -267,12 +266,12 @@ namespace v2rayN.ViewModels
             {
                 return;
             }
-            if (proxies == null)
+            if (_proxies == null)
             {
                 return;
             }
 
-            proxies.TryGetValue(name, out ProxiesItem proxy);
+            _proxies.TryGetValue(name, out ProxiesItem proxy);
             if (proxy == null || proxy.all == null)
             {
                 return;
@@ -298,7 +297,7 @@ namespace v2rayN.ViewModels
                     isActive = isActive,
                     name = item,
                     type = proxy2.type,
-                    delay = delay <= 0 ? delayTimeout : delay,
+                    delay = delay <= 0 ? _delayTimeout : delay,
                     delayName = delay <= 0 ? string.Empty : $"{delay}ms",
                 });
             }
@@ -321,17 +320,17 @@ namespace v2rayN.ViewModels
 
         private ProxiesItem? TryGetProxy(string name)
         {
-            if (proxies is null)
+            if (_proxies is null)
                 return null;
-            proxies.TryGetValue(name, out ProxiesItem proxy2);
+            _proxies.TryGetValue(name, out ProxiesItem proxy2);
             if (proxy2 != null)
             {
                 return proxy2;
             }
             //from providers
-            if (providers != null)
+            if (_providers != null)
             {
-                foreach (KeyValuePair<string, ProvidersItem> kv in providers)
+                foreach (KeyValuePair<string, ProvidersItem> kv in _providers)
                 {
                     if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
                     {
@@ -424,12 +423,12 @@ namespace v2rayN.ViewModels
                 }
                 else if (dicResult != null && dicResult.ContainsKey("message"))
                 {
-                    detail.delay = delayTimeout;
+                    detail.delay = _delayTimeout;
                     detail.delayName = $"{dicResult["message"]}";
                 }
                 else
                 {
-                    detail.delay = delayTimeout;
+                    detail.delay = _delayTimeout;
                     detail.delayName = String.Empty;
                 }
                 _proxyDetails.Replace(detail, JsonUtils.DeepCopy(detail));
@@ -459,7 +458,7 @@ namespace v2rayN.ViewModels
                           ProxiesDelayTest();
                           lastTime = dtNow;
                       }
-                      Thread.Sleep(1000);
+                      Task.Delay(1000).Wait();
                   }
               });
         }

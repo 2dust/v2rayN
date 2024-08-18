@@ -96,7 +96,7 @@ namespace v2rayN.ViewModels
                           GetClashConnections();
                           lastTime = dtNow;
                       }
-                      Thread.Sleep(1000);
+                      Task.Delay(1000).Wait();
                   }
               });
         }

@@ -8,18 +8,8 @@ namespace v2rayN.Handler
         private static readonly Lazy<ClashApiHandler> instance = new(() => new());
         public static ClashApiHandler Instance => instance.Value;
 
-        private Dictionary<String, ProxiesItem> _proxies;
+        private Dictionary<String, ProxiesItem>? _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
-
-        public void SetProxies(Dictionary<String, ProxiesItem> proxies)
-        {
-            _proxies = proxies;
-        }
-
-        public Dictionary<String, ProxiesItem> GetProxies()
-        {
-            return _proxies;
-        }
 
         public void GetClashProxies(Config config, Action<ClashProxies, ClashProviders> update)
         {
@@ -40,10 +30,11 @@ namespace v2rayN.Handler
 
                 if (clashProxies != null || clashProviders != null)
                 {
+                    _proxies = clashProxies?.proxies;
                     update(clashProxies, clashProviders);
                     return;
                 }
-                Thread.Sleep(5000);
+                Task.Delay(5000).Wait();
             }
             update(null, null);
         }
@@ -56,19 +47,18 @@ namespace v2rayN.Handler
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        if (GetProxies() != null)
+                        if (_proxies != null)
                         {
                             break;
                         }
-                        Thread.Sleep(5000);
+                        Task.Delay(5000).Wait();
                     }
-                    var proxies = GetProxies();
-                    if (proxies == null)
+                    if (_proxies == null)
                     {
                         return;
                     }
                     lstProxy = new List<ClashProxyModel>();
-                    foreach (KeyValuePair<string, ProxiesItem> kv in proxies)
+                    foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
                     {
                         if (Global.notAllowTestType.Contains(kv.Value.type.ToLower()))
                         {
@@ -106,7 +96,7 @@ namespace v2rayN.Handler
                 }
                 Task.WaitAll(tasks.ToArray());
 
-                Thread.Sleep(1000);
+                Task.Delay(1000).Wait();
                 update(null, "");
             });
         }
@@ -148,8 +138,7 @@ namespace v2rayN.Handler
         {
             Task.Run(async () =>
             {
-                var proxies = GetProxies();
-                if (proxies == null)
+                if (_proxies == null)
                 {
                     return;
                 }

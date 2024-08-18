@@ -17,7 +17,7 @@
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.1.2" />		
 		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
-		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.0" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.2" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.6.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" /> 
