@@ -7,12 +7,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using v2rayN.Base;
-using v2rayN.Enums;
 using v2rayN.Handler;
-using v2rayN.Handler.CoreConfig;
-using v2rayN.Handler.Fmt;
-using v2rayN.Models;
-using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
@@ -24,6 +19,7 @@ namespace v2rayN.ViewModels
         private string _serverFilter = string.Empty;
 
         private Dictionary<string, bool> _dicHeaderSort = new();
+        private SpeedtestHandler? _speedtestHandler;
 
         #endregion private prop
 
@@ -676,8 +672,13 @@ namespace v2rayN.ViewModels
             var coreHandler = Locator.Current.GetService<CoreHandler>();
             if (coreHandler != null)
             {
-                new SpeedtestHandler(_config, coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
+                _speedtestHandler = new SpeedtestHandler(_config, coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
             }
+        }
+
+        public void ServerSpeedtestStop()
+        {
+            _speedtestHandler?.ExitLoop();
         }
 
         private void Export2ClientConfig(bool blClipboard)

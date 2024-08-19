@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:conv="clr-namespace:v2rayN.Converters"
-    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"

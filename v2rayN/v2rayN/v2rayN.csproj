@@ -15,71 +15,18 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Downloader" Version="3.1.2" />		
 		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
 		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.2" />
 		<PackageReference Include="QRCoder.Xaml" Version="1.6.0" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" /> 
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageReference Include="ReactiveUI.Validation" Version="4.0.9" />
 		<PackageReference Include="ReactiveUI.WPF" Version="20.1.1" />
-		<PackageReference Include="Splat.NLog" Version="15.1.1" />
-		<PackageReference Include="YamlDotNet" Version="16.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
-        <EmbeddedResource Include="Sample\clash_mixin_yaml" />       
-        <EmbeddedResource Include="Sample\clash_tun_yaml" />       
-        <EmbeddedResource Include="Sample\SingboxSampleOutbound" />       
-        <EmbeddedResource Include="Sample\SingboxSampleClientConfig">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-		<EmbeddedResource Include="Sample\tun_singbox_dns">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Sample\custom_routing_black">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\custom_routing_global">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\custom_routing_locked">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\custom_routing_rules">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\custom_routing_white">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleClientConfig">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleHttpRequest">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleHttpResponse">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\SampleInbound">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-		<EmbeddedResource Include="Sample\SampleOutbound" />
-		<EmbeddedResource Include="Sample\tun_singbox_rules">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
-        <EmbeddedResource Include="Sample\tun_singbox_inbound">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-		<EmbeddedResource Include="Sample\dns_v2ray_normal">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Sample\dns_singbox_normal">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>  
         <EmbeddedResource Include="v2rayN.ico">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
@@ -93,34 +40,7 @@
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\PacLib\PacLib.csproj" />
-	  <ProjectReference Include="..\ProtosLib\ProtosLib.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Resx\ResUI.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ResUI.resx</DependentUpon>
-		</Compile>		
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Resx\ResUI.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>ResUI.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.ru.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
+	  <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>
 
 </Project>

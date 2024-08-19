@@ -1,0 +1,38 @@
+﻿namespace ServiceLib.Enums
+{
+    public enum EViewAction
+    {
+        CloseWindow,
+        ShowYesNo,
+        SaveFileDialog,
+        AddBatchRoutingRulesYesNo,
+        AdjustMainLvColWidth,
+        ProfilesFocus,
+        ShareSub,
+        ShareServer,
+        ShowHideWindow,
+        ScanScreenTask,
+        Shutdown,
+        BrowseServer,
+        ImportRulesFromFile,
+        SubEditWindow,
+        RoutingRuleSettingWindow,
+        RoutingRuleDetailsWindow,
+        AddServerWindow,
+        AddServer2Window,
+        DNSSettingWindow,
+        RoutingSettingWindow,
+        OptionSettingWindow,
+        GlobalHotkeySettingWindow,
+        SubSettingWindow,
+        DispatcherSpeedTest,
+        DispatcherRefreshConnections,
+        DispatcherRefreshProxyGroups,
+        DispatcherProxiesDelayTest,
+        DispatcherStatistics,
+        DispatcherServerAvailability,
+        DispatcherReload,
+        DispatcherRefreshServersBiz,
+        DispatcherRefreshIcon,
+    }
+}

@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
-using v2rayN.Handler;
-using v2rayN.Models;
 
 namespace v2rayN
 {

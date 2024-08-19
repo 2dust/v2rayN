@@ -10,10 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using v2rayN.Base;
-using v2rayN.Enums;
-using v2rayN.Handler;
-using v2rayN.Models;
-using v2rayN.Resx;
 using v2rayN.ViewModels;
 using Point = System.Windows.Point;
 
@@ -294,7 +290,7 @@ namespace v2rayN.Views
                 }
                 else if (e.Key == Key.Escape)
                 {
-                    MessageBus.Current.SendMessage("true", Global.CommandStopSpeedTest);
+                    ViewModel?.ServerSpeedtestStop();
                 }
             }
         }

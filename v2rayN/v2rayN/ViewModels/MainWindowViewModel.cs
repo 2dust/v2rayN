@@ -8,11 +8,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using v2rayN.Base;
-using v2rayN.Enums;
 using v2rayN.Handler;
-using v2rayN.Handler.Statistics;
-using v2rayN.Models;
-using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {
@@ -754,7 +750,28 @@ namespace v2rayN.ViewModels
                 _noticeHandler?.SendMessage(msg);
                 if (success)
                 {
-                    MyAppExit(false);
+                    try
+                    {
+                        var fileName = msg;
+                        Process process = new()
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+                                FileName = "v2rayUpgrade.exe",
+                                Arguments = fileName.AppendQuotes(),
+                                WorkingDirectory = Utils.StartupPath()
+                            }
+                        };
+                        process.Start();
+                        if (process.Id > 0)
+                        {
+                            MyAppExit(false);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _noticeHandler?.SendMessage(ex.Message);
+                    }
                 }
             }
             (new UpdateHandler()).CheckUpdateGuiN(_config, _updateUI, _config.guiItem.checkPreReleaseUpdate);

@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Downloader" Version="3.1.2" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="Splat.NLog" Version="15.1.1" />
+		<PackageReference Include="YamlDotNet" Version="16.0.0" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Sample\clash_mixin_yaml" />
+    <EmbeddedResource Include="Sample\clash_tun_yaml" />
+    <EmbeddedResource Include="Sample\custom_routing_black" />
+    <EmbeddedResource Include="Sample\custom_routing_global" />
+    <EmbeddedResource Include="Sample\custom_routing_locked" />
+    <EmbeddedResource Include="Sample\custom_routing_rules" />
+    <EmbeddedResource Include="Sample\custom_routing_white" />
+    <EmbeddedResource Include="Sample\dns_singbox_normal" />
+    <EmbeddedResource Include="Sample\dns_v2ray_normal" />
+    <EmbeddedResource Include="Sample\SampleClientConfig" />
+    <EmbeddedResource Include="Sample\SampleHttpRequest" />
+    <EmbeddedResource Include="Sample\SampleHttpResponse" />
+    <EmbeddedResource Include="Sample\SampleInbound" />
+    <EmbeddedResource Include="Sample\SampleOutbound" />
+    <EmbeddedResource Include="Sample\SingboxSampleClientConfig" />
+    <EmbeddedResource Include="Sample\SingboxSampleOutbound" />
+    <EmbeddedResource Include="Sample\tun_singbox_dns" />
+    <EmbeddedResource Include="Sample\tun_singbox_inbound" />
+    <EmbeddedResource Include="Sample\tun_singbox_rules" />
+  </ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ProtosLib\ProtosLib.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resx\ResUI.Designer.cs">
+	    <DependentUpon>ResUI.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
+	    <SubType>Designer</SubType>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.resx">
+	    <SubType>Designer</SubType>
+	    <LastGenOutput>ResUI.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.ru.resx">
+	    <SubType>Designer</SubType>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
+	    <SubType>Designer</SubType>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
+	    <SubType>Designer</SubType>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>

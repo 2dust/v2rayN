@@ -2,8 +2,6 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
-using v2rayN.Handler;
-using v2rayN.Models;
 
 namespace v2rayN.Views
 {

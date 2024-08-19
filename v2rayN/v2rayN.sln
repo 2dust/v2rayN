@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacLib", "PacLib\PacLib.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayUpgrade", "v2rayUpgrade\v2rayUpgrade.csproj", "{3CD0B9E8-331B-42C6-A395-4DA0FD4BC8EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLib", "ServiceLib\ServiceLib.csproj", "{1B6456C4-FFAA-4298-80F6-7B689A6E9243}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3CD0B9E8-331B-42C6-A395-4DA0FD4BC8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CD0B9E8-331B-42C6-A395-4DA0FD4BC8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CD0B9E8-331B-42C6-A395-4DA0FD4BC8EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

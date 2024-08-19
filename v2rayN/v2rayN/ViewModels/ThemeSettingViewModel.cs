@@ -12,8 +12,6 @@ using System.Windows;
 using System.Windows.Interop;
 using v2rayN.Base;
 using v2rayN.Handler;
-using v2rayN.Models;
-using v2rayN.Resx;
 
 namespace v2rayN.ViewModels
 {

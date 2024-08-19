@@ -8,10 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
-using v2rayN.Enums;
 using v2rayN.Handler;
-using v2rayN.Models;
-using v2rayN.Resx;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -457,7 +454,7 @@ namespace v2rayN.Views
                 var item = new MenuItem()
                 {
                     Tag = it.coreUrl.Replace(@"/releases", ""),
-                    Header = string.Format(Resx.ResUI.menuWebsiteItem, it.coreType.ToString().Replace("_", " ")).UpperFirstChar()
+                    Header = string.Format(ResUI.menuWebsiteItem, it.coreType.ToString().Replace("_", " ")).UpperFirstChar()
                 };
                 item.Click += MenuItem_Click;
                 menuHelp.Items.Add(item);

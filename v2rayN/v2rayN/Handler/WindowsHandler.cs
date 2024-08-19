@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
-using v2rayN.Enums;
-using v2rayN.Models;
 
 namespace v2rayN.Handler
 {

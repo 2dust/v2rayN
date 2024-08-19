@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">

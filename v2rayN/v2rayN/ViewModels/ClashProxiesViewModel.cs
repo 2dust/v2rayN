@@ -6,12 +6,9 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using v2rayN.Base;
-using v2rayN.Enums;
 using v2rayN.Handler;
-using v2rayN.Models;
-using v2rayN.Resx;
-using static v2rayN.Models.ClashProviders;
-using static v2rayN.Models.ClashProxies;
+using static ServiceLib.Models.ClashProviders;
+using static ServiceLib.Models.ClashProxies;
 
 namespace v2rayN.ViewModels
 {
@@ -383,10 +380,8 @@ namespace v2rayN.ViewModels
                 _proxyGroups.Replace(group, group2);
 
                 SelectedGroup = group2;
-                 
             }
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-             
         }
 
         private void ProxiesDelayTest(bool blAll)
