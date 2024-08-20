@@ -58,7 +58,7 @@ namespace ServiceLib.Handler
             {
                 _processJob ??= new();
                 _processJob?.AddProcess(processHandle);
-            }            
+            }
         }
 
         #endregion Config

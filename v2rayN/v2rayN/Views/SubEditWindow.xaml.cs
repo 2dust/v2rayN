@@ -46,7 +46,6 @@ namespace v2rayN.Views
                 case EViewAction.CloseWindow:
                     this.DialogResult = true;
                     break;
-
             }
             return true;
         }

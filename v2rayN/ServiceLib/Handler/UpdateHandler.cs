@@ -40,7 +40,7 @@ namespace ServiceLib.Handler
                     _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
                     string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                     fileName = Utils.UrlEncode(fileName);
-                    _updateFunc(true, fileName);            
+                    _updateFunc(true, fileName);
                 }
                 else
                 {
