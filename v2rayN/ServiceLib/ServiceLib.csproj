@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.1.2" />
+		<PackageReference Include="ReactiveUI" Version="20.1.1" />
+		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="Splat.NLog" Version="15.1.1" />
 		<PackageReference Include="YamlDotNet" Version="16.0.0" />

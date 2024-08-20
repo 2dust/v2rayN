@@ -3,14 +3,11 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Diagnostics;
-using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
-using v2rayN.Base;
-using v2rayN.Handler;
 
-namespace v2rayN.ViewModels
+namespace ServiceLib.ViewModels
 {
     public class MainWindowViewModel : MyReactiveObject
     {
@@ -149,6 +146,8 @@ namespace v2rayN.ViewModels
         [Reactive]
         public int TabMainSelectedIndex { get; set; }
 
+        public bool IsAdministrator { get; set; }
+
         #endregion UI
 
         #region Init
@@ -159,22 +158,10 @@ namespace v2rayN.ViewModels
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
             MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedRouting = new();
             SelectedServer = new();
-            if (_config.tunModeItem.enableTun)
-            {
-                if (WindowsUtils.IsAdministrator())
-                {
-                    EnableTun = true;
-                }
-                else
-                {
-                    _config.tunModeItem.enableTun = EnableTun = false;
-                }
-            }
 
             Init();
 
@@ -244,7 +231,7 @@ namespace v2rayN.ViewModels
             });
             AddServerViaClipboardCmd = ReactiveCommand.Create(() =>
             {
-                AddServerViaClipboard();
+                AddServerViaClipboard(null);
             });
             AddServerViaScanCmd = ReactiveCommand.Create(() =>
             {
@@ -385,11 +372,6 @@ namespace v2rayN.ViewModels
             ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, true);
         }
 
-        private void OnProgramStarted(object state, bool timeout)
-        {
-            _updateView?.Invoke(EViewAction.ShowHideWindow, true);
-        }
-
         #endregion Init
 
         #region Actions
@@ -457,24 +439,15 @@ namespace v2rayN.ViewModels
             try
             {
                 Logging.SaveLog("MyAppExit Begin");
+                //if (blWindowsShutDown)
+                _updateView?.Invoke(EViewAction.UpdateSysProxy, true);
 
                 ConfigHandler.SaveConfig(_config);
-
-                if (blWindowsShutDown)
-                {
-                    SysProxyHandler.ResetIEProxy4WindowsShutDown();
-                }
-                else
-                {
-                    SysProxyHandler.UpdateSysProxy(_config, true);
-                }
-
                 ProfileExHandler.Instance.SaveTo();
-
                 StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
-
                 _coreHandler.CoreStop();
+
                 Logging.SaveLog("MyAppExit End");
             }
             catch { }
@@ -574,10 +547,14 @@ namespace v2rayN.ViewModels
             }
         }
 
-        public void AddServerViaClipboard()
+        public void AddServerViaClipboard(string? clipboardData)
         {
-            var clipboardData = WindowsUtils.GetClipboardData();
-            int ret = ConfigHandler.AddBatchServers(_config, clipboardData!, _config.subIndexId, false);
+            if (clipboardData == null)
+            {
+                _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
+                return;
+            }
+            int ret = ConfigHandler.AddBatchServers(_config, clipboardData, _config.subIndexId, false);
             if (ret > 0)
             {
                 RefreshSubscriptions();
@@ -843,11 +820,11 @@ namespace v2rayN.ViewModels
         {
             await Task.Run(() =>
             {
-                if (_config.tunModeItem.enableTun)
-                {
-                    Task.Delay(1000).Wait();
-                    WindowsUtils.RemoveTunDevice();
-                }
+                //if (_config.tunModeItem.enableTun)
+                //{
+                //    Task.Delay(1000).Wait();
+                //    WindowsUtils.RemoveTunDevice();
+                //}
 
                 var node = ConfigHandler.GetDefaultServer(_config);
                 _coreHandler.LoadCore(node);
@@ -882,7 +859,7 @@ namespace v2rayN.ViewModels
 
         private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
         {
-            SysProxyHandler.UpdateSysProxy(_config, _config.tunModeItem.enableTun ? true : false);
+            _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
             _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
@@ -968,7 +945,7 @@ namespace v2rayN.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !WindowsUtils.IsAdministrator())
+                if (EnableTun && !IsAdministrator)
                 {
                     _config.tunModeItem.enableTun = false;
                     RebootAsAdmin();

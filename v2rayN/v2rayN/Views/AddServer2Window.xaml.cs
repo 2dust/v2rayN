@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -40,17 +39,19 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                this.DialogResult = true;
-            }
-            else if (action == EViewAction.BrowseServer)
-            {
-                if (UI.OpenFileDialog(out string fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
-                {
-                    return false;
-                }
-                ViewModel?.BrowseServer(fileName);
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
+
+                case EViewAction.BrowseServer:
+                    if (UI.OpenFileDialog(out string fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
+                    {
+                        return false;
+                    }
+                    ViewModel?.BrowseServer(fileName);
+                    break;
             }
 
             return true;

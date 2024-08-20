@@ -1406,6 +1406,10 @@ namespace ServiceLib.Handler
 
         public static int AddBatchServers(Config config, string strData, string subid, bool isSub)
         {
+            if (Utils.IsNullOrEmpty(strData))
+            {
+                return -1;
+            }
             List<ProfileItem>? lstOriSub = null;
             if (isSub && !Utils.IsNullOrEmpty(subid))
             {

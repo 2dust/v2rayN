@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -36,26 +35,27 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                this.DialogResult = true;
-            }
-            else if (action == EViewAction.ShowYesNo)
-            {
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-            else if (action == EViewAction.SubEditWindow)
-            {
-                if (obj is null) return false;
-                return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.ShareSub)
-            {
-                if (obj is null) return false;
-                ShareSub((string)obj);
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
+
+                case EViewAction.ShowYesNo:
+                    if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                    break;
+
+                case EViewAction.SubEditWindow:
+                    if (obj is null) return false;
+                    return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.ShareSub:
+                    if (obj is null) return false;
+                    ShareSub((string)obj);
+                    break;
             }
             return true;
         }

@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
-using v2rayN.Handler;
 
-namespace v2rayN.Base
+namespace ServiceLib.Base
 {
     public class MyReactiveObject : ReactiveObject
     {

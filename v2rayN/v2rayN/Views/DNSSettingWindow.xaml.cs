@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -56,9 +55,11 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                this.DialogResult = true;
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
             }
             return true;
         }

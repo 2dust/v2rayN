@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:v2rayN.ViewModels"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
     Width="700"
     Height="500"

@@ -366,6 +366,7 @@ namespace ServiceLib.Common
 
         public static bool IsBase64String(string plainText)
         {
+            if(plainText.IsNullOrEmpty()) return false;
             var buffer = new Span<byte>(new byte[plainText.Length]);
             return Convert.TryFromBase64String(plainText, buffer, out int _);
         }

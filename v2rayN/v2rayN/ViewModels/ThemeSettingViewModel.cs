@@ -10,8 +10,6 @@ using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using v2rayN.Base;
-using v2rayN.Handler;
 
 namespace v2rayN.ViewModels
 {

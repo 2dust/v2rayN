@@ -3,10 +3,8 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using v2rayN.Base;
-using v2rayN.Handler;
 
-namespace v2rayN.ViewModels
+namespace ServiceLib.ViewModels
 {
     public class RoutingRuleSettingViewModel : MyReactiveObject
     {
@@ -70,7 +68,7 @@ namespace v2rayN.ViewModels
             });
             ImportRulesFromClipboardCmd = ReactiveCommand.Create(() =>
             {
-                ImportRulesFromClipboard();
+                ImportRulesFromClipboard(null);
             });
             ImportRulesFromUrlCmd = ReactiveCommand.Create(() =>
             {
@@ -199,8 +197,7 @@ namespace v2rayN.ViewModels
             }
             if (lst.Count > 0)
             {
-                WindowsUtils.SetClipboardData(JsonUtils.Serialize(lst));
-                //_noticeHandler?.Enqueue(ResUI.OperationSuccess"));
+                _updateView?.Invoke(EViewAction.SetClipboardData, JsonUtils.Serialize(lst));
             }
         }
 
@@ -273,9 +270,13 @@ namespace v2rayN.ViewModels
             }
         }
 
-        private void ImportRulesFromClipboard()
+        public void ImportRulesFromClipboard(string? clipboardData)
         {
-            var clipboardData = WindowsUtils.GetClipboardData();
+            if (clipboardData == null)
+            {
+                _updateView?.Invoke(EViewAction.ImportRulesFromClipboard, null);
+                return;
+            }
             if (AddBatchRoutingRules(SelectedRouting, clipboardData) == 0)
             {
                 RefreshRulesItems();

@@ -5,12 +5,10 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
-using v2rayN.Base;
-using v2rayN.Handler;
 using static ServiceLib.Models.ClashProviders;
 using static ServiceLib.Models.ClashProxies;
 
-namespace v2rayN.ViewModels
+namespace ServiceLib.ViewModels
 {
     public class ClashProxiesViewModel : MyReactiveObject
     {

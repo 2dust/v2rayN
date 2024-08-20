@@ -2,7 +2,6 @@ using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Threading;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {

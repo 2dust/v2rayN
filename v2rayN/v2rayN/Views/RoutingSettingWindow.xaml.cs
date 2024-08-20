@@ -2,7 +2,6 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -70,21 +69,23 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                this.DialogResult = true;
-            }
-            else if (action == EViewAction.ShowYesNo)
-            {
-                if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-            else if (action == EViewAction.RoutingRuleSettingWindow)
-            {
-                if (obj is null) return false;
-                return (new RoutingRuleSettingWindow((RoutingItem)obj)).ShowDialog() ?? false;
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
+
+                case EViewAction.ShowYesNo:
+                    if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                    break;
+
+                case EViewAction.RoutingRuleSettingWindow:
+
+                    if (obj is null) return false;
+                    return (new RoutingRuleSettingWindow((RoutingItem)obj)).ShowDialog() ?? false;
             }
             return true;
         }

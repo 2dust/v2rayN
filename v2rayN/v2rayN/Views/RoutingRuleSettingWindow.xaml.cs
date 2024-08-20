@@ -2,7 +2,6 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -63,37 +62,53 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                this.DialogResult = true;
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
+
+                case EViewAction.ShowYesNo:
+
+                    if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                    break;
+
+                case EViewAction.AddBatchRoutingRulesYesNo:
+
+                    if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)
+                    {
+                        return false;
+                    }
+                    break;
+
+                case EViewAction.RoutingRuleDetailsWindow:
+
+                    if (obj is null) return false;
+                    return (new RoutingRuleDetailsWindow((RulesItem)obj)).ShowDialog() ?? false;
+
+                case EViewAction.ImportRulesFromFile:
+
+                    if (UI.OpenFileDialog(out string fileName, "Rules|*.json|All|*.*") != true)
+                    {
+                        return false;
+                    }
+                    ViewModel?.ImportRulesFromFile(fileName);
+                    break;
+
+                case EViewAction.SetClipboardData:
+                    if (obj is null) return false;
+                    WindowsUtils.SetClipboardData((string)obj);
+                    break;
+
+                case EViewAction.ImportRulesFromClipboard:
+                    var clipboardData = WindowsUtils.GetClipboardData();
+                    ViewModel?.ImportRulesFromClipboard(clipboardData);
+                    break;
             }
-            else if (action == EViewAction.ShowYesNo)
-            {
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-            else if (action == EViewAction.AddBatchRoutingRulesYesNo)
-            {
-                if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-            }
-            else if (action == EViewAction.RoutingRuleDetailsWindow)
-            {
-                if (obj is null) return false;
-                return (new RoutingRuleDetailsWindow((RulesItem)obj)).ShowDialog() ?? false;
-            }
-            else if (action == EViewAction.ImportRulesFromFile)
-            {
-                if (UI.OpenFileDialog(out string fileName, "Rules|*.json|All|*.*") != true)
-                {
-                    return false;
-                }
-                ViewModel?.ImportRulesFromFile(fileName);
-            }
+
             return true;
         }
 

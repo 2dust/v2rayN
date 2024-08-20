@@ -4,9 +4,8 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 using System.Reactive.Linq;
-using v2rayN.Base;
 
-namespace v2rayN.ViewModels
+namespace ServiceLib.ViewModels
 {
     public class ClashConnectionsViewModel : MyReactiveObject
     {

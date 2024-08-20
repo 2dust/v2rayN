@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Splat;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -58,6 +59,7 @@ namespace v2rayN
                 return;
             }
             LazyConfig.Instance.SetConfig(_config);
+            Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
 
             //Under Win10
             if (Environment.OSVersion.Version.Major < 10)

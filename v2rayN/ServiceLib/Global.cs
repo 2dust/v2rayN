@@ -71,6 +71,7 @@
         public const int MaxPort = 65536;
         public const string CommandClearMsg = "CommandClearMsg";
         public const string CommandSendMsgView = "CommandSendMsgView";
+        public const string CommandSendSnackMsg = "CommandSendSnackMsg";
         public const string CommandStopSpeedTest = "CommandStopSpeedTest";
         public const string CommandRefreshProfiles = "CommandRefreshProfiles";
         public const string DelayUnit = "";

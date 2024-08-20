@@ -4,7 +4,6 @@ using System.IO;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Media;
-using v2rayN.ViewModels;
 
 namespace v2rayN.Views
 {
@@ -171,10 +170,12 @@ namespace v2rayN.Views
 
         private bool UpdateViewHandler(EViewAction action, object? obj)
         {
-            if (action == EViewAction.CloseWindow)
+            switch (action)
             {
-                WindowsUtils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, togAutoRun.IsChecked ?? false);
-                this.DialogResult = true;
+                case EViewAction.CloseWindow:
+                    WindowsUtils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, togAutoRun.IsChecked ?? false);
+                    this.DialogResult = true;
+                    break;
             }
             return true;
         }

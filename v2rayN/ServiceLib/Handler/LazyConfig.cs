@@ -1,4 +1,6 @@
-﻿namespace ServiceLib.Handler
+﻿using System.Runtime.InteropServices;
+
+namespace ServiceLib.Handler
 {
     public sealed class LazyConfig
     {
@@ -28,7 +30,7 @@
             }
         }
 
-        private Job _processJob = new();
+        private Job? _processJob;
 
         public LazyConfig()
         {
@@ -52,7 +54,11 @@
 
         public void AddProcess(IntPtr processHandle)
         {
-            _processJob.AddProcess(processHandle);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                _processJob ??= new();
+                _processJob?.AddProcess(processHandle);
+            }            
         }
 
         #endregion Config

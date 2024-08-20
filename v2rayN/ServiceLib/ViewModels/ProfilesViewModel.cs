@@ -6,10 +6,8 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
-using v2rayN.Base;
-using v2rayN.Handler;
 
-namespace v2rayN.ViewModels
+namespace ServiceLib.ViewModels
 {
     public class ProfilesViewModel : MyReactiveObject
     {
@@ -697,7 +695,7 @@ namespace v2rayN.ViewModels
                 }
                 else
                 {
-                    WindowsUtils.SetClipboardData(content);
+                    _updateView?.Invoke(EViewAction.SetClipboardData, content);
                     _noticeHandler?.SendMessage(ResUI.OperationSuccess);
                 }
             }
@@ -746,11 +744,11 @@ namespace v2rayN.ViewModels
             {
                 if (blEncode)
                 {
-                    WindowsUtils.SetClipboardData(Utils.Base64Encode(sb.ToString()));
+                    _updateView?.Invoke(EViewAction.SetClipboardData, Utils.Base64Encode(sb.ToString()));
                 }
                 else
                 {
-                    WindowsUtils.SetClipboardData(sb.ToString());
+                    _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
                 }
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }

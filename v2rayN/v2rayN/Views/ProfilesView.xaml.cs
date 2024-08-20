@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using v2rayN.Base;
-using v2rayN.ViewModels;
 using Point = System.Windows.Point;
 
 namespace v2rayN.Views
@@ -103,6 +102,11 @@ namespace v2rayN.Views
         {
             switch (action)
             {
+                case EViewAction.SetClipboardData:
+                    if (obj is null) return false;
+                    WindowsUtils.SetClipboardData((string)obj);
+                    break;
+
                 case EViewAction.AdjustMainLvColWidth:
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
