@@ -165,7 +165,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            foreach (var it in SelectedSources)
+            foreach (var it in SelectedSources ?? [SelectedSource])
             {
                 var item = _rules.FirstOrDefault(t => t.id == it?.id);
                 if (item != null)
@@ -186,7 +186,7 @@ namespace ServiceLib.ViewModels
             }
 
             var lst = new List<RulesItem4Ray>();
-            foreach (var it in SelectedSources)
+            foreach (var it in SelectedSources ?? [SelectedSource])
             {
                 var item = _rules.FirstOrDefault(t => t.id == it?.id);
                 if (item != null)

@@ -90,7 +90,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            foreach (var it in SelectedSources)
+            foreach (var it in SelectedSources ?? [SelectedSource])
             {
                 ConfigHandler.DeleteSubItem(_config, it.id);
             }

@@ -256,7 +256,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            foreach (var it in SelectedSources)
+            foreach (var it in SelectedSources ?? [SelectedSource])
             {
                 var item = LazyConfig.Instance.GetRoutingItem(it?.id);
                 if (item != null)
