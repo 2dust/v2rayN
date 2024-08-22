@@ -734,7 +734,7 @@ namespace ServiceLib.ViewModels
                         {
                             StartInfo = new ProcessStartInfo
                             {
-                                FileName = "v2rayUpgrade.exe",
+                                FileName = "v2rayUpgrade",
                                 Arguments = fileName.AppendQuotes(),
                                 WorkingDirectory = Utils.StartupPath()
                             }

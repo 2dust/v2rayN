@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-	<TargetFramework>net8.0-windows</TargetFramework>
-	<OutputType>WinExe</OutputType>
-	<UseWindowsForms>true</UseWindowsForms>	    
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 	<Copyright>Copyright © 2019-2024 (GPLv3)</Copyright>
-	<FileVersion>1.1.0.0</FileVersion>
-	<ApplicationManifest>app.manifest</ApplicationManifest>
-	<Nullable>enable</Nullable>
+	<FileVersion>1.2.0.0</FileVersion>
   </PropertyGroup>
+
 </Project>
