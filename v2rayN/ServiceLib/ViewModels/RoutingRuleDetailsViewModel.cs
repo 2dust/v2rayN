@@ -27,7 +27,7 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, bool>? updateView)
+        public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -51,11 +51,11 @@ namespace ServiceLib.ViewModels
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
-                SaveRules();
+                SaveRulesAsync();
             });
         }
 
-        private void SaveRules()
+        private async Task SaveRulesAsync()
         {
             Domain = Utils.Convert2Comma(Domain);
             IP = Utils.Convert2Comma(IP);
@@ -88,7 +88,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             //_noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            await _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }
 }

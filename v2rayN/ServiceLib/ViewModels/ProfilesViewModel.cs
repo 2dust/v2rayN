@@ -95,13 +95,13 @@ namespace ServiceLib.ViewModels
 
         #region Init
 
-        public ProfilesViewModel(Func<EViewAction, object?, bool>? updateView)
+        public ProfilesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedProfile = new();
             SelectedSub = new();
@@ -120,7 +120,7 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
                 x => x.SelectedSub,
                 y => y != null && !y.remarks.IsNullOrEmpty() && _config.subIndexId != y.id)
-                    .Subscribe(c => SubSelectedChanged(c));
+                    .Subscribe(c => SubSelectedChangedAsync(c));
             this.WhenAnyValue(
                  x => x.SelectedMoveToGroup,
                  y => y != null && !y.remarks.IsNullOrEmpty())
@@ -139,11 +139,11 @@ namespace ServiceLib.ViewModels
             //servers delete
             EditServerCmd = ReactiveCommand.Create(() =>
             {
-                EditServer(EConfigType.Custom);
+                EditServerAsync(EConfigType.Custom);
             }, canEditRemove);
             RemoveServerCmd = ReactiveCommand.Create(() =>
             {
-                RemoveServer();
+                RemoveServerAsync();
             }, canEditRemove);
             RemoveDuplicateServerCmd = ReactiveCommand.Create(() =>
             {
@@ -159,7 +159,7 @@ namespace ServiceLib.ViewModels
             }, canEditRemove);
             ShareServerCmd = ReactiveCommand.Create(() =>
             {
-                ShareServer();
+                ShareServerAsync();
             }, canEditRemove);
             SetDefaultMultipleServerCmd = ReactiveCommand.Create(() =>
             {
@@ -212,29 +212,29 @@ namespace ServiceLib.ViewModels
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.Create(() =>
             {
-                Export2ClientConfig(false);
+                Export2ClientConfigAsync(false);
             }, canEditRemove);
             Export2ClientConfigClipboardCmd = ReactiveCommand.Create(() =>
             {
-                Export2ClientConfig(true);
+                Export2ClientConfigAsync(true);
             }, canEditRemove);
             Export2ShareUrlCmd = ReactiveCommand.Create(() =>
             {
-                Export2ShareUrl(false);
+                Export2ShareUrlAsync(false);
             }, canEditRemove);
             Export2ShareUrlBase64Cmd = ReactiveCommand.Create(() =>
             {
-                Export2ShareUrl(true);
+                Export2ShareUrlAsync(true);
             }, canEditRemove);
 
             //Subscription
             AddSubCmd = ReactiveCommand.Create(() =>
             {
-                EditSub(true);
+                EditSubAsync(true);
             });
             EditSubCmd = ReactiveCommand.Create(() =>
             {
-                EditSub(false);
+                EditSubAsync(false);
             });
 
             #endregion WhenAnyValue && ReactiveCommand
@@ -308,16 +308,16 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void AutofitColumnWidth()
+        public async Task AutofitColumnWidthAsync()
         {
-            _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
+            await _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
         }
 
         #endregion Actions
 
         #region Servers && Groups
 
-        private void SubSelectedChanged(bool c)
+        private async Task SubSelectedChangedAsync(bool c)
         {
             if (!c)
             {
@@ -327,7 +327,7 @@ namespace ServiceLib.ViewModels
 
             RefreshServers();
 
-            _updateView?.Invoke(EViewAction.ProfilesFocus, null);
+            await _updateView?.Invoke(EViewAction.ProfilesFocus, null);
         }
 
         private void ServerFilterChanged(bool c)
@@ -420,7 +420,7 @@ namespace ServiceLib.ViewModels
             return 0;
         }
 
-        public void EditServer(EConfigType eConfigType)
+        public async Task EditServerAsync(EConfigType eConfigType)
         {
             if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
             {
@@ -437,11 +437,11 @@ namespace ServiceLib.ViewModels
             bool? ret = false;
             if (eConfigType == EConfigType.Custom)
             {
-                ret = _updateView?.Invoke(EViewAction.AddServer2Window, item);
+                ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
             }
             else
             {
-                ret = _updateView?.Invoke(EViewAction.AddServerWindow, item);
+                ret = await _updateView?.Invoke(EViewAction.AddServerWindow, item);
             }
             if (ret == true)
             {
@@ -453,13 +453,13 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void RemoveServer()
+        public async Task RemoveServerAsync()
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
                 return;
             }
-            if (_updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+            if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
             {
                 return;
             }
@@ -546,7 +546,7 @@ namespace ServiceLib.ViewModels
             SetDefaultServer(SelectedServer.ID);
         }
 
-        public void ShareServer()
+        public async Task ShareServerAsync()
         {
             var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
@@ -560,7 +560,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            _updateView?.Invoke(EViewAction.ShareServer, url);
+            await _updateView?.Invoke(EViewAction.ShareServer, url);
         }
 
         private void SetDefaultMultipleServer(ECoreType coreType)
@@ -679,7 +679,7 @@ namespace ServiceLib.ViewModels
             _speedtestHandler?.ExitLoop();
         }
 
-        private void Export2ClientConfig(bool blClipboard)
+        private async Task Export2ClientConfigAsync(bool blClipboard)
         {
             var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
@@ -695,13 +695,13 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    _updateView?.Invoke(EViewAction.SetClipboardData, content);
+                    await _updateView?.Invoke(EViewAction.SetClipboardData, content);
                     _noticeHandler?.SendMessage(ResUI.OperationSuccess);
                 }
             }
             else
             {
-                _updateView?.Invoke(EViewAction.SaveFileDialog, item);
+                await _updateView?.Invoke(EViewAction.SaveFileDialog, item);
             }
         }
 
@@ -722,7 +722,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void Export2ShareUrl(bool blEncode)
+        public async Task Export2ShareUrlAsync(bool blEncode)
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
@@ -744,11 +744,11 @@ namespace ServiceLib.ViewModels
             {
                 if (blEncode)
                 {
-                    _updateView?.Invoke(EViewAction.SetClipboardData, Utils.Base64Encode(sb.ToString()));
+                    await _updateView?.Invoke(EViewAction.SetClipboardData, Utils.Base64Encode(sb.ToString()));
                 }
                 else
                 {
-                    _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+                    await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
                 }
                 _noticeHandler?.SendMessage(ResUI.BatchExportURLSuccessfully);
             }
@@ -758,7 +758,7 @@ namespace ServiceLib.ViewModels
 
         #region Subscription
 
-        private void EditSub(bool blNew)
+        private async Task EditSubAsync(bool blNew)
         {
             SubItem item;
             if (blNew)
@@ -773,10 +773,10 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
-            if (_updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
+            if (await _updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
             {
                 RefreshSubscriptions();
-                SubSelectedChanged(true);
+                SubSelectedChangedAsync(true);
             }
         }
 

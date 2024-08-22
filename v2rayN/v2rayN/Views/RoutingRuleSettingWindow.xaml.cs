@@ -60,7 +60,7 @@ namespace v2rayN.Views
             WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -95,7 +95,7 @@ namespace v2rayN.Views
                     {
                         return false;
                     }
-                    ViewModel?.ImportRulesFromFile(fileName);
+                    ViewModel?.ImportRulesFromFileAsync(fileName);
                     break;
 
                 case EViewAction.SetClipboardData:
@@ -105,11 +105,11 @@ namespace v2rayN.Views
 
                 case EViewAction.ImportRulesFromClipboard:
                     var clipboardData = WindowsUtils.GetClipboardData();
-                    ViewModel?.ImportRulesFromClipboard(clipboardData);
+                    ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
                     break;
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -127,7 +127,7 @@ namespace v2rayN.Views
                 }
                 else if (e.Key == Key.C)
                 {
-                    ViewModel?.RuleExportSelected();
+                    ViewModel?.RuleExportSelectedAsync();
                 }
             }
             else
@@ -150,7 +150,7 @@ namespace v2rayN.Views
                 }
                 else if (e.Key == Key.Delete)
                 {
-                    ViewModel?.RuleRemove();
+                    ViewModel?.RuleRemoveAsync();
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace v2rayN.Views
 
         private void LstRules_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel?.RuleEdit(false);
+            ViewModel?.RuleEditAsync(false);
         }
 
         private void menuRuleSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)

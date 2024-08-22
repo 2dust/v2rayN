@@ -39,7 +39,7 @@ namespace v2rayN.Views
             WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -47,7 +47,7 @@ namespace v2rayN.Views
                     this.DialogResult = true;
                     break;
             }
-            return true;
+            return await Task.FromResult(true);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

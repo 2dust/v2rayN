@@ -152,13 +152,13 @@ namespace ServiceLib.ViewModels
 
         #region Init
 
-        public MainWindowViewModel(Func<EViewAction, object?, bool>? updateView)
+        public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(x => _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedRouting = new();
             SelectedServer = new();
@@ -170,7 +170,7 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
                 x => x.SelectedRouting,
                 y => y != null && !y.remarks.IsNullOrEmpty())
-                    .Subscribe(c => RoutingSelectedChanged(c));
+                    .Subscribe(c => RoutingSelectedChangedAsync(c));
 
             this.WhenAnyValue(
               x => x.SelectedServer,
@@ -191,57 +191,57 @@ namespace ServiceLib.ViewModels
             //servers
             AddVmessServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.VMess);
+                AddServerAsync(true, EConfigType.VMess);
             });
             AddVlessServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.VLESS);
+                AddServerAsync(true, EConfigType.VLESS);
             });
             AddShadowsocksServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Shadowsocks);
+                AddServerAsync(true, EConfigType.Shadowsocks);
             });
             AddSocksServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Socks);
+                AddServerAsync(true, EConfigType.Socks);
             });
             AddHttpServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Http);
+                AddServerAsync(true, EConfigType.Http);
             });
             AddTrojanServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Trojan);
+                AddServerAsync(true, EConfigType.Trojan);
             });
             AddHysteria2ServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Hysteria2);
+                AddServerAsync(true, EConfigType.Hysteria2);
             });
             AddTuicServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Tuic);
+                AddServerAsync(true, EConfigType.Tuic);
             });
             AddWireguardServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Wireguard);
+                AddServerAsync(true, EConfigType.Wireguard);
             });
             AddCustomServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServer(true, EConfigType.Custom);
+                AddServerAsync(true, EConfigType.Custom);
             });
             AddServerViaClipboardCmd = ReactiveCommand.Create(() =>
             {
-                AddServerViaClipboard(null);
+                AddServerViaClipboardAsync(null);
             });
-            AddServerViaScanCmd = ReactiveCommand.Create(() =>
+            AddServerViaScanCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                _updateView?.Invoke(EViewAction.ScanScreenTask, null);
+                await _updateView?.Invoke(EViewAction.ScanScreenTask, null);
             });
 
             //Subscription
             SubSettingCmd = ReactiveCommand.Create(() =>
             {
-                SubSetting();
+                SubSettingAsync();
             });
 
             SubUpdateCmd = ReactiveCommand.Create(() =>
@@ -264,19 +264,19 @@ namespace ServiceLib.ViewModels
             //Setting
             OptionSettingCmd = ReactiveCommand.Create(() =>
             {
-                OptionSetting();
+                OptionSettingAsync();
             });
             RoutingSettingCmd = ReactiveCommand.Create(() =>
             {
-                RoutingSetting();
+                RoutingSettingAsync();
             });
             DNSSettingCmd = ReactiveCommand.Create(() =>
             {
-                DNSSetting();
+                DNSSettingAsync();
             });
-            GlobalHotkeySettingCmd = ReactiveCommand.Create(() =>
+            GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                if (_updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
+                if (await _updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
                 {
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
@@ -322,9 +322,9 @@ namespace ServiceLib.ViewModels
                 Reload();
             });
 
-            NotifyLeftClickCmd = ReactiveCommand.Create(() =>
+            NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                _updateView?.Invoke(EViewAction.ShowHideWindow, null);
+                await _updateView?.Invoke(EViewAction.ShowHideWindow, null);
             });
 
             //System proxy
@@ -369,7 +369,7 @@ namespace ServiceLib.ViewModels
             //RefreshServers();
 
             Reload();
-            ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, true);
+            ChangeSystemProxyStatusAsync(_config.systemProxyItem.sysProxyType, true);
         }
 
         #endregion Init
@@ -402,7 +402,7 @@ namespace ServiceLib.ViewModels
                 }
                 if (_config.uiItem.enableAutoAdjustMainLvColWidth)
                 {
-                    Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidth();
+                    Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidthAsync();
                 }
             }
         }
@@ -434,13 +434,13 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void MyAppExit(bool blWindowsShutDown)
+        public async Task MyAppExitAsync(bool blWindowsShutDown)
         {
             try
             {
                 Logging.SaveLog("MyAppExit Begin");
                 //if (blWindowsShutDown)
-                _updateView?.Invoke(EViewAction.UpdateSysProxy, true);
+                await _updateView?.Invoke(EViewAction.UpdateSysProxy, true);
 
                 ConfigHandler.SaveConfig(_config);
                 ProfileExHandler.Instance.SaveTo();
@@ -453,7 +453,7 @@ namespace ServiceLib.ViewModels
             catch { }
             finally
             {
-                _updateView?.Invoke(EViewAction.Shutdown, null);
+                await _updateView?.Invoke(EViewAction.Shutdown, null);
             }
         }
 
@@ -519,7 +519,7 @@ namespace ServiceLib.ViewModels
 
         #region Add Servers
 
-        public void AddServer(bool blNew, EConfigType eConfigType)
+        public async Task AddServerAsync(bool blNew, EConfigType eConfigType)
         {
             ProfileItem item = new()
             {
@@ -531,11 +531,11 @@ namespace ServiceLib.ViewModels
             bool? ret = false;
             if (eConfigType == EConfigType.Custom)
             {
-                ret = _updateView?.Invoke(EViewAction.AddServer2Window, item);
+                ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
             }
             else
             {
-                ret = _updateView?.Invoke(EViewAction.AddServerWindow, item);
+                ret = await _updateView?.Invoke(EViewAction.AddServerWindow, item);
             }
             if (ret == true)
             {
@@ -547,11 +547,11 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void AddServerViaClipboard(string? clipboardData)
+        public async Task AddServerViaClipboardAsync(string? clipboardData)
         {
             if (clipboardData == null)
             {
-                _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
+                await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
                 return;
             }
             int ret = ConfigHandler.AddBatchServers(_config, clipboardData, _config.subIndexId, false);
@@ -629,7 +629,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            (new UpdateHandler()).RunAvailabilityCheck((bool success, string msg) =>
+            (new UpdateHandler()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
                 _noticeHandler?.SendMessage(msg, true);
 
@@ -637,7 +637,7 @@ namespace ServiceLib.ViewModels
                 {
                     return;
                 }
-                _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
+                await _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
             });
         }
 
@@ -650,9 +650,9 @@ namespace ServiceLib.ViewModels
 
         #region Subscription
 
-        private void SubSetting()
+        private async Task SubSettingAsync()
         {
-            if (_updateView?.Invoke(EViewAction.SubSettingWindow, null) == true)
+            if (await _updateView?.Invoke(EViewAction.SubSettingWindow, null) == true)
             {
                 RefreshSubscriptions();
             }
@@ -667,9 +667,9 @@ namespace ServiceLib.ViewModels
 
         #region Setting
 
-        private void OptionSetting()
+        private async Task OptionSettingAsync()
         {
-            var ret = _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
+            var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
             if (ret == true)
             {
                 //RefreshServers();
@@ -677,9 +677,9 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RoutingSetting()
+        private async Task RoutingSettingAsync()
         {
-            var ret = _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
+            var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
             if (ret == true)
             {
                 ConfigHandler.InitBuiltinRouting(_config);
@@ -689,9 +689,9 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void DNSSetting()
+        private async Task DNSSettingAsync()
         {
-            var ret = _updateView?.Invoke(EViewAction.DNSSettingWindow, null);
+            var ret = await _updateView?.Invoke(EViewAction.DNSSettingWindow, null);
             if (ret == true)
             {
                 Reload();
@@ -711,7 +711,7 @@ namespace ServiceLib.ViewModels
             try
             {
                 Process.Start(startInfo);
-                MyAppExit(false);
+                MyAppExitAsync(false);
             }
             catch { }
         }
@@ -742,7 +742,7 @@ namespace ServiceLib.ViewModels
                         process.Start();
                         if (process.Id > 0)
                         {
-                            MyAppExit(false);
+                            MyAppExitAsync(false);
                         }
                     }
                     catch (Exception ex)
@@ -796,17 +796,17 @@ namespace ServiceLib.ViewModels
         {
             BlReloadEnabled = false;
 
-            LoadCore().ContinueWith(task =>
+            LoadCore().ContinueWith(async task =>
             {
                 TestServerAvailability();
 
-                _updateView?.Invoke(EViewAction.DispatcherReload, null);
+                await _updateView?.Invoke(EViewAction.DispatcherReload, null);
             });
         }
 
         public void ReloadResult()
         {
-            ChangeSystemProxyStatus(_config.systemProxyItem.sysProxyType, false);
+            ChangeSystemProxyStatusAsync(_config.systemProxyItem.sysProxyType, false);
             BlReloadEnabled = true;
             ShowClashUI = _config.IsRunningCore(ECoreType.clash);
             if (ShowClashUI)
@@ -835,7 +835,7 @@ namespace ServiceLib.ViewModels
         {
             ConfigHandler.SaveConfig(_config, false);
 
-            ChangeSystemProxyStatus(ESysProxyType.ForcedClear, false);
+            ChangeSystemProxyStatusAsync(ESysProxyType.ForcedClear, false);
 
             _coreHandler.CoreStop();
         }
@@ -851,15 +851,15 @@ namespace ServiceLib.ViewModels
                 return;
             }
             _config.systemProxyItem.sysProxyType = type;
-            ChangeSystemProxyStatus(type, true);
+            ChangeSystemProxyStatusAsync(type, true);
 
             SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
             ConfigHandler.SaveConfig(_config, false);
         }
 
-        private void ChangeSystemProxyStatus(ESysProxyType type, bool blChange)
+        private async Task ChangeSystemProxyStatusAsync(ESysProxyType type, bool blChange)
         {
-            _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
+            await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
             _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
@@ -871,7 +871,7 @@ namespace ServiceLib.ViewModels
 
             if (blChange)
             {
-                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+                await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 
@@ -896,7 +896,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RoutingSelectedChanged(bool c)
+        private async Task RoutingSelectedChangedAsync(bool c)
         {
             if (!c)
             {
@@ -922,7 +922,7 @@ namespace ServiceLib.ViewModels
             {
                 _noticeHandler?.SendMessage(ResUI.TipChangeRouting, true);
                 Reload();
-                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+                await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 
@@ -1001,9 +1001,9 @@ namespace ServiceLib.ViewModels
             {
                 Observable.Range(1, 1)
                  .Delay(TimeSpan.FromSeconds(1))
-                 .Subscribe(x =>
+                 .Subscribe(async x =>
                  {
-                     _updateView?.Invoke(EViewAction.ShowHideWindow, false);
+                     await _updateView?.Invoke(EViewAction.ShowHideWindow, false);
                  });
             }
         }

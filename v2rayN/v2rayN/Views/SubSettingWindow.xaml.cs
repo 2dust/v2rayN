@@ -33,7 +33,7 @@ namespace v2rayN.Views
             WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -57,7 +57,7 @@ namespace v2rayN.Views
                     ShareSub((string)obj);
                     break;
             }
-            return true;
+            return await Task.FromResult(true);
         }
 
         private async void ShareSub(string url)
@@ -86,7 +86,7 @@ namespace v2rayN.Views
 
         private void LstSubscription_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel?.EditSub(false);
+            ViewModel?.EditSubAsync(false);
         }
 
         private void LstSubscription_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

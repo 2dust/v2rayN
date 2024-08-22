@@ -100,7 +100,7 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public OptionSettingViewModel(Func<EViewAction, object?, bool>? updateView)
+        public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -190,7 +190,7 @@ namespace ServiceLib.ViewModels
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
-                SaveSetting();
+                SaveSettingAsync();
             });
         }
 
@@ -246,7 +246,7 @@ namespace ServiceLib.ViewModels
             });
         }
 
-        private void SaveSetting()
+        private async Task SaveSettingAsync()
         {
             if (Utils.IsNullOrEmpty(localPort.ToString()) || !Utils.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
@@ -343,7 +343,7 @@ namespace ServiceLib.ViewModels
                 {
                     _noticeHandler?.Enqueue(ResUI.OperationSuccess);
                 }
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
+                await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

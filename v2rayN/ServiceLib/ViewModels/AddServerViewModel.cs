@@ -12,7 +12,7 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-        public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, bool>? updateView)
+        public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -33,11 +33,11 @@ namespace ServiceLib.ViewModels
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
-                SaveServer();
+                SaveServerAsync();
             });
         }
 
-        private void SaveServer()
+        private async Task SaveServerAsync()
         {
             if (Utils.IsNullOrEmpty(SelectedSource.remarks))
             {
@@ -83,7 +83,7 @@ namespace ServiceLib.ViewModels
             if (ConfigHandler.AddServer(_config, SelectedSource) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
+                await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

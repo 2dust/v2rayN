@@ -25,7 +25,7 @@ namespace ServiceLib.ViewModels
         [Reactive]
         public bool AutoRefresh { get; set; }
 
-        public ClashConnectionsViewModel(Func<EViewAction, object?, bool>? updateView)
+        public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _updateView = updateView;
@@ -99,14 +99,14 @@ namespace ServiceLib.ViewModels
 
         private void GetClashConnections()
         {
-            ClashApiHandler.Instance.GetClashConnections(_config, (it) =>
+            ClashApiHandler.Instance.GetClashConnections(_config, async (it) =>
             {
                 if (it == null)
                 {
                     return;
                 }
 
-                _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
+                await _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
             });
         }
 

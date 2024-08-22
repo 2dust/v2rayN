@@ -98,7 +98,7 @@ namespace v2rayN.Views
             StorageUI();
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -173,7 +173,7 @@ namespace v2rayN.Views
                     break;
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
 
         public async void ShareServer(string url)
@@ -206,7 +206,7 @@ namespace v2rayN.Views
             }
             else
             {
-                ViewModel?.EditServer(EConfigType.Custom);
+                ViewModel?.EditServerAsync(EConfigType.Custom);
             }
         }
 
@@ -238,15 +238,15 @@ namespace v2rayN.Views
                         break;
 
                     case Key.C:
-                        ViewModel?.Export2ShareUrl(false);
+                        ViewModel?.Export2ShareUrlAsync(false);
                         break;
 
                     case Key.D:
-                        ViewModel?.EditServer(EConfigType.Custom);
+                        ViewModel?.EditServerAsync(EConfigType.Custom);
                         break;
 
                     case Key.F:
-                        ViewModel?.ShareServer();
+                        ViewModel?.ShareServerAsync();
                         break;
 
                     case Key.O:
@@ -274,7 +274,7 @@ namespace v2rayN.Views
                 }
                 else if (e.Key == Key.Delete)
                 {
-                    ViewModel?.RemoveServer();
+                    ViewModel?.RemoveServerAsync();
                 }
                 else if (e.Key == Key.T)
                 {

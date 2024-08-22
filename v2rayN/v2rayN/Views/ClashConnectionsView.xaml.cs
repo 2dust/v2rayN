@@ -29,7 +29,7 @@ namespace v2rayN.Views
             });
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -42,7 +42,7 @@ namespace v2rayN.Views
                     break;
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
 
         private void btnClose_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -65,7 +65,7 @@ namespace ServiceLib.ViewModels
 
         #endregion Reactive
 
-        public RoutingSettingViewModel(Func<EViewAction, object?, bool>? updateView)
+        public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
@@ -98,11 +98,11 @@ namespace ServiceLib.ViewModels
 
             RoutingAdvancedAddCmd = ReactiveCommand.Create(() =>
             {
-                RoutingAdvancedEdit(true);
+                RoutingAdvancedEditAsync(true);
             });
             RoutingAdvancedRemoveCmd = ReactiveCommand.Create(() =>
             {
-                RoutingAdvancedRemove();
+                RoutingAdvancedRemoveAsync();
             }, canEditRemove);
             RoutingAdvancedSetDefaultCmd = ReactiveCommand.Create(() =>
             {
@@ -115,7 +115,7 @@ namespace ServiceLib.ViewModels
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
-                SaveRouting();
+                SaveRoutingAsync();
             });
         }
 
@@ -189,7 +189,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void SaveRouting()
+        private async Task SaveRoutingAsync()
         {
             _config.routingBasicItem.domainStrategy = domainStrategy;
             _config.routingBasicItem.enableRoutingAdvanced = enableRoutingAdvanced;
@@ -201,7 +201,7 @@ namespace ServiceLib.ViewModels
             if (ConfigHandler.SaveConfig(_config) == 0)
             {
                 _noticeHandler?.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
+                await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
@@ -223,7 +223,7 @@ namespace ServiceLib.ViewModels
             _noticeHandler?.Enqueue(ResUI.OperationSuccess);
         }
 
-        public void RoutingAdvancedEdit(bool blNew)
+        public async Task RoutingAdvancedEditAsync(bool blNew)
         {
             RoutingItem item;
             if (blNew)
@@ -238,21 +238,21 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
-            if (_updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
+            if (await _updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
             {
                 RefreshRoutingItems();
                 IsModified = true;
             }
         }
 
-        public void RoutingAdvancedRemove()
+        public async Task RoutingAdvancedRemoveAsync()
         {
             if (SelectedSource is null || SelectedSource.remarks.IsNullOrEmpty())
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
-            if (_updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+            if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
             {
                 return;
             }

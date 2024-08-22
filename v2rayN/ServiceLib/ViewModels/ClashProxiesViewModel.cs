@@ -42,7 +42,7 @@ namespace ServiceLib.ViewModels
         [Reactive]
         public bool AutoRefresh { get; set; }
 
-        public ClashProxiesViewModel(Func<EViewAction, object?, bool>? updateView)
+        public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = LazyConfig.Instance.Config;
@@ -167,7 +167,7 @@ namespace ServiceLib.ViewModels
 
         private void GetClashProxies(bool refreshUI)
         {
-            ClashApiHandler.Instance.GetClashProxies(_config, (it, it2) =>
+            ClashApiHandler.Instance.GetClashProxies(_config, async (it, it2) =>
             {
                 //UpdateHandler(false, "Refresh Clash Proxies");
                 _proxies = it?.proxies;
@@ -179,7 +179,7 @@ namespace ServiceLib.ViewModels
                 }
                 if (refreshUI)
                 {
-                    _updateView?.Invoke(EViewAction.DispatcherRefreshProxyGroups, null);
+                    await _updateView?.Invoke(EViewAction.DispatcherRefreshProxyGroups, null);
                 }
             });
         }
@@ -386,7 +386,7 @@ namespace ServiceLib.ViewModels
         {
             //UpdateHandler(false, "Clash Proxies Latency Test");
 
-            ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), (item, result) =>
+            ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
             {
                 if (item == null)
                 {
@@ -398,7 +398,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
 
-                _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.name, Delay = result });
+                await _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.name, Delay = result });
             });
         }
 

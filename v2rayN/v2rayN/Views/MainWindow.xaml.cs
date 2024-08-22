@@ -204,7 +204,7 @@ namespace v2rayN.Views
             }), DispatcherPriority.Normal);
         }
 
-        private bool UpdateViewHandler(EViewAction action, object? obj)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
             switch (action)
             {
@@ -291,11 +291,11 @@ namespace v2rayN.Views
 
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = WindowsUtils.GetClipboardData();
-                    ViewModel?.AddServerViaClipboard(clipboardData);
+                    ViewModel?.AddServerViaClipboardAsync(clipboardData);
                     break;
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
 
         private void OnHotkeyHandler(EGlobalHotkey e)
@@ -336,14 +336,14 @@ namespace v2rayN.Views
 
             tbNotify.Dispose();
             StorageUI();
-            ViewModel?.MyAppExit(false);
+            ViewModel?.MyAppExitAsync(false);
         }
 
         private void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             Logging.SaveLog("Current_SessionEnding");
             StorageUI();
-            ViewModel?.MyAppExit(true);
+            ViewModel?.MyAppExitAsync(true);
         }
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -354,7 +354,7 @@ namespace v2rayN.Views
                 {
                     case Key.V:
                         var clipboardData = WindowsUtils.GetClipboardData();
-                        ViewModel?.AddServerViaClipboard(clipboardData);
+                        ViewModel?.AddServerViaClipboardAsync(clipboardData);
                         break;
 
                     case Key.S:
