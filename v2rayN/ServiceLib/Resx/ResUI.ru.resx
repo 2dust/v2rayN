@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Экспортирование URL в буфер обмена успешно завершено</value>
@@ -536,7 +541,7 @@
     <value>Добавить сервер [Shadowsocks]</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Добавить сервер [Socks]</value>
+    <value>Добавить сервер [SOCKS]</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>Добавить сервер [Trojan]</value>
@@ -698,7 +703,7 @@
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>Настройки DNS V2ray</value>
+    <value>Настройки DNS V2Ray</value>
   </data>
   <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
     <value>Настройки DNS sing-box</value>
@@ -761,7 +766,7 @@
     <value>Включить сниффинг</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Порт Socks</value>
+    <value>Порт SOCKS</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Автозапуск</value>

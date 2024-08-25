@@ -592,7 +592,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Http] server 的本地化字符串。
+        ///   查找类似 Add [HTTP] server 的本地化字符串。
         /// </summary>
         public static string menuAddHttpServer {
             get {
@@ -637,7 +637,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Socks] server 的本地化字符串。
+        ///   查找类似 Add [SOCKS] server 的本地化字符串。
         /// </summary>
         public static string menuAddSocksServer {
             get {
@@ -655,7 +655,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Tuic] server 的本地化字符串。
+        ///   查找类似 Add [TUIC] server 的本地化字符串。
         /// </summary>
         public static string menuAddTuicServer {
             get {
@@ -682,7 +682,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add [Wireguard] server 的本地化字符串。
+        ///   查找类似 Add [WireGuard] server 的本地化字符串。
         /// </summary>
         public static string menuAddWireguardServer {
             get {
@@ -2600,7 +2600,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2ray DNS settings 的本地化字符串。
+        ///   查找类似 V2Ray DNS settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCoreDns {
             get {

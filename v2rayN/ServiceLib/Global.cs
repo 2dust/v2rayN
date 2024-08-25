@@ -135,25 +135,25 @@
         {
             {EConfigType.VMess,"vmess://"},
             {EConfigType.Shadowsocks,"ss://"},
-            {EConfigType.Socks,"socks://"},
+            {EConfigType.SOCKS,"socks://"},
             {EConfigType.VLESS,"vless://"},
             {EConfigType.Trojan,"trojan://"},
             {EConfigType.Hysteria2,"hysteria2://"},
-            {EConfigType.Tuic,"tuic://"},
-            {EConfigType.Wireguard,"wireguard://"}
+            {EConfigType.TUIC,"tuic://"},
+            {EConfigType.WireGuard,"wireguard://"}
         };
 
         public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
         {
             {EConfigType.VMess,"vmess"},
             {EConfigType.Shadowsocks,"shadowsocks"},
-            {EConfigType.Socks,"socks"},
-            {EConfigType.Http,"http"},
+            {EConfigType.SOCKS,"socks"},
+            {EConfigType.HTTP,"http"},
             {EConfigType.VLESS,"vless"},
             {EConfigType.Trojan,"trojan"},
             {EConfigType.Hysteria2,"hysteria2"},
-            {EConfigType.Tuic,"tuic"},
-            {EConfigType.Wireguard,"wireguard"}
+            {EConfigType.TUIC,"tuic"},
+            {EConfigType.WireGuard,"wireguard"}
         };
 
         public static readonly List<string> VmessSecurities = new() { "aes-128-gcm", "chacha20-poly1305", "auto", "none", "zero" };

@@ -110,7 +110,7 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
-                    if (it.configType is EConfigType.Hysteria2 or EConfigType.Tuic or EConfigType.Wireguard)
+                    if (it.configType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard)
                     {
                         continue;
                     }
@@ -642,8 +642,8 @@ namespace ServiceLib.Handler.CoreConfig
                             outbound.settings.vnext = null;
                             break;
                         }
-                    case EConfigType.Socks:
-                    case EConfigType.Http:
+                    case EConfigType.SOCKS:
+                    case EConfigType.HTTP:
                         {
                             ServersItem4Ray serversItem;
                             if (outbound.settings.servers.Count <= 0)
@@ -1201,8 +1201,8 @@ namespace ServiceLib.Handler.CoreConfig
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom
                     && prevNode.configType != EConfigType.Hysteria2
-                    && prevNode.configType != EConfigType.Tuic
-                    && prevNode.configType != EConfigType.Wireguard)
+                    && prevNode.configType != EConfigType.TUIC
+                    && prevNode.configType != EConfigType.WireGuard)
                 {
                     var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(prevNode, prevOutbound);
@@ -1220,8 +1220,8 @@ namespace ServiceLib.Handler.CoreConfig
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom
                     && nextNode.configType != EConfigType.Hysteria2
-                    && nextNode.configType != EConfigType.Tuic
-                    && nextNode.configType != EConfigType.Wireguard)
+                    && nextNode.configType != EConfigType.TUIC
+                    && nextNode.configType != EConfigType.WireGuard)
                 {
                     var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     GenOutbound(nextNode, nextOutbound);

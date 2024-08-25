@@ -383,7 +383,8 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!--<TabItem Header="{x:Static resx:ResUI.TbSettingsCoreKcp}">
+            <!--<TabItem
+            Header="{x:Static resx:ResUI.TbSettingsCoreKcp}">
                 <Grid Margin="{StaticResource SettingItemMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -1060,7 +1061,7 @@
                         Margin="{StaticResource SettingItemMargin}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Socks" />
+                        Text="SOCKS" />
                     <ComboBox
                         x:Name="cmbCoreType4"
                         Grid.Row="4"

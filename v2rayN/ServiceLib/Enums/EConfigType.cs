@@ -5,12 +5,12 @@
         VMess = 1,
         Custom = 2,
         Shadowsocks = 3,
-        Socks = 4,
+        SOCKS = 4,
         VLESS = 5,
         Trojan = 6,
         Hysteria2 = 7,
-        Tuic = 8,
-        Wireguard = 9,
-        Http = 10
+        TUIC = 8,
+        WireGuard = 9,
+        HTTP = 10
     }
 }

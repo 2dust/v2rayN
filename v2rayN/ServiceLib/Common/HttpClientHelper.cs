@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.HTTP.Headers;
 using System.Net.Mime;
 using System.Text;
 

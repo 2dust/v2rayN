@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>导出分享链接至剪贴板成功</value>
@@ -536,7 +541,7 @@
     <value>添加[Shadowsocks]服务器</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加[Socks]服务器</value>
+    <value>添加[SOCKS]服务器</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>添加[Trojan]服务器</value>
@@ -695,7 +700,7 @@
     <value>Core: 基础设置</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS设置</value>
+    <value>V2Ray DNS设置</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP设置</value>
@@ -1091,7 +1096,7 @@
     <value>使用系统hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>添加[Tuic]服务器</value>
+    <value>添加[TUIC]服务器</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
@@ -1112,7 +1117,7 @@
     <value>启用IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加[Wireguard]服务器</value>
+    <value>添加[WireGuard]服务器</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1145,7 +1150,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>添加[Http]服务器</value>
+    <value>添加[HTTP]服务器</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>启用分片（Fragment）</value>

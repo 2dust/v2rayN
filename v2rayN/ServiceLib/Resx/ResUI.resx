@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>Export Share Link to Clipboard Successfully</value>
@@ -536,7 +541,7 @@
     <value>Add [Shadowsocks] server</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Add [Socks] server</value>
+    <value>Add [SOCKS] server</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>Add [Trojan] server</value>
@@ -695,7 +700,7 @@
     <value>Core: basic settings</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS settings</value>
+    <value>V2Ray DNS settings</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP settings</value>
@@ -1094,7 +1099,7 @@
     <value>Use System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [Tuic] server</value>
+    <value>Add [TUIC] server</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
@@ -1115,7 +1120,7 @@
     <value>Enable IPv6 Address</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [Wireguard] server</value>
+    <value>Add [WireGuard] server</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1148,7 +1153,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [Http] server</value>
+    <value>Add [HTTP] server</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>

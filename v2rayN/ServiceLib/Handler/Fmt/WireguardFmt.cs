@@ -8,7 +8,7 @@
 
             ProfileItem item = new()
             {
-                configType = EConfigType.Wireguard
+                configType = EConfigType.WireGuard
             };
 
             Uri url = new(str);
@@ -62,7 +62,7 @@
             Utils.UrlEncode(item.id),
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.ProtocolShares[EConfigType.Wireguard]}{url}/{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.WireGuard]}{url}/{query}{remark}";
             return url;
         }
     }

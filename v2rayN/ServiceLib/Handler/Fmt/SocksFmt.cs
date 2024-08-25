@@ -17,7 +17,7 @@
                 return null;
             }
 
-            item.configType = EConfigType.Socks;
+            item.configType = EConfigType.SOCKS;
 
             return item;
         }
@@ -41,7 +41,7 @@
             //new
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
             url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
-            url = $"{Global.ProtocolShares[EConfigType.Socks]}{url}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.SOCKS]}{url}{remark}";
             return url;
         }
 
@@ -49,9 +49,9 @@
         {
             ProfileItem item = new()
             {
-                configType = EConfigType.Socks
+                configType = EConfigType.SOCKS
             };
-            result = result[Global.ProtocolShares[EConfigType.Socks].Length..];
+            result = result[Global.ProtocolShares[EConfigType.SOCKS].Length..];
             //remark
             int indexRemark = result.IndexOf("#");
             if (indexRemark > 0)

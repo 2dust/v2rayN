@@ -10,12 +10,12 @@
                 {
                     EConfigType.VMess => VmessFmt.ToUri(item),
                     EConfigType.Shadowsocks => ShadowsocksFmt.ToUri(item),
-                    EConfigType.Socks => SocksFmt.ToUri(item),
+                    EConfigType.SOCKS => SocksFmt.ToUri(item),
                     EConfigType.Trojan => TrojanFmt.ToUri(item),
                     EConfigType.VLESS => VLESSFmt.ToUri(item),
                     EConfigType.Hysteria2 => Hysteria2Fmt.ToUri(item),
-                    EConfigType.Tuic => TuicFmt.ToUri(item),
-                    EConfigType.Wireguard => WireguardFmt.ToUri(item),
+                    EConfigType.TUIC => TuicFmt.ToUri(item),
+                    EConfigType.WireGuard => WireguardFmt.ToUri(item),
                     _ => null,
                 };
 
@@ -49,7 +49,7 @@
                 {
                     return ShadowsocksFmt.Resolve(str, out msg);
                 }
-                else if (str.StartsWith(Global.ProtocolShares[EConfigType.Socks]))
+                else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS]))
                 {
                     return SocksFmt.Resolve(str, out msg);
                 }
@@ -65,11 +65,11 @@
                 {
                     return Hysteria2Fmt.Resolve(str, out msg);
                 }
-                else if (str.StartsWith(Global.ProtocolShares[EConfigType.Tuic]))
+                else if (str.StartsWith(Global.ProtocolShares[EConfigType.TUIC]))
                 {
                     return TuicFmt.Resolve(str, out msg);
                 }
-                else if (str.StartsWith(Global.ProtocolShares[EConfigType.Wireguard]))
+                else if (str.StartsWith(Global.ProtocolShares[EConfigType.WireGuard]))
                 {
                     return WireguardFmt.Resolve(str, out msg);
                 }

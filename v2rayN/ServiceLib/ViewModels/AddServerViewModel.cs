@@ -70,8 +70,8 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
-            if (SelectedSource.configType != EConfigType.Socks
-                && SelectedSource.configType != EConfigType.Http)
+            if (SelectedSource.configType != EConfigType.SOCKS
+                && SelectedSource.configType != EConfigType.HTTP)
             {
                 if (Utils.IsNullOrEmpty(SelectedSource.id))
                 {

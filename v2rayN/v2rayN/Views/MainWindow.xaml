@@ -27,7 +27,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         </ResourceDictionary>
@@ -227,7 +228,7 @@
                                 <MenuItem
                                     x:Name="menuCheckUpdateN"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="V2rayN" />
+                                    Header="v2rayN" />
                                 <MenuItem
                                     x:Name="menuCheckUpdateXrayCore"
                                     Height="{StaticResource MenuItemHeight}"
@@ -315,9 +316,11 @@
                             Margin="8,0"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Right">
-                            <TextBlock x:Name="txtSpeedProxyDisplay" Style="{StaticResource StatusbarItem}" />
+                            <TextBlock x:Name="txtSpeedProxyDisplay"
+                                Style="{StaticResource StatusbarItem}" />
                             <Border Margin="2" />
-                            <TextBlock x:Name="txtSpeedDirectDisplay" Style="{StaticResource StatusbarItem}" />
+                            <TextBlock x:Name="txtSpeedDirectDisplay"
+                                Style="{StaticResource StatusbarItem}" />
                         </StackPanel>
 
                         <StackPanel
@@ -325,9 +328,11 @@
                             Margin="8,0"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Left">
-                            <TextBlock x:Name="txtInboundDisplay" Style="{StaticResource StatusbarItem}" />
+                            <TextBlock x:Name="txtInboundDisplay"
+                                Style="{StaticResource StatusbarItem}" />
                             <Border Margin="2" />
-                            <TextBlock x:Name="txtInboundLanDisplay" Style="{StaticResource StatusbarItem}" />
+                            <TextBlock x:Name="txtInboundLanDisplay"
+                                Style="{StaticResource StatusbarItem}" />
                         </StackPanel>
 
                         <StackPanel
@@ -398,9 +403,12 @@
                             x:Name="tabMain"
                             Grid.Column="2"
                             HorizontalContentAlignment="Left">
-                            <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
-                            <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
-                            <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
+                            <TabItem x:Name="tabMsgView"
+                                Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                            <TabItem x:Name="tabClashProxies"
+                                Header="{x:Static resx:ResUI.TbProxies}" />
+                            <TabItem x:Name="tabClashConnections"
+                                Header="{x:Static resx:ResUI.TbConnections}" />
                         </TabControl>
                     </Grid>
                     <Grid x:Name="gridMain1" Visibility="Collapsed">
@@ -532,7 +540,8 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                    <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
+                    <materialDesign:Snackbar x:Name="MainSnackbar"
+                        MessageQueue="{materialDesign:MessageQueue}" />
                 </Grid>
             </DockPanel>
             <tb:TaskbarIcon
@@ -542,7 +551,8 @@
                 ToolTipText="v2rayN">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
-                        <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}">
+                        <MenuItem x:Name="menuSystemProxyClear"
+                            Height="{StaticResource MenuItemHeight}">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon
@@ -554,7 +564,8 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem x:Name="menuSystemProxySet" Height="{StaticResource MenuItemHeight}">
+                        <MenuItem x:Name="menuSystemProxySet"
+                            Height="{StaticResource MenuItemHeight}">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon
@@ -566,7 +577,8 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem x:Name="menuSystemProxyNothing" Height="{StaticResource MenuItemHeight}">
+                        <MenuItem x:Name="menuSystemProxyNothing"
+                            Height="{StaticResource MenuItemHeight}">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon
@@ -578,7 +590,8 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem x:Name="menuSystemProxyPac" Height="{StaticResource MenuItemHeight}">
+                        <MenuItem x:Name="menuSystemProxyPac"
+                            Height="{StaticResource MenuItemHeight}">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon
