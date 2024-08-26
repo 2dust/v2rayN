@@ -116,7 +116,7 @@ namespace ServiceLib.Handler
                             foreach (Process p in existing)
                             {
                                 string? path = p.MainModule?.FileName;
-                                if (path == $"{Utils.GetBinPath(vName, it.coreType.ToString())}.exe")
+                                if (path == Utils.GetExeName(Utils.GetBinPath(vName, it.coreType.ToString())))
                                 {
                                     KillProcess(p);
                                 }
@@ -151,7 +151,7 @@ namespace ServiceLib.Handler
             string fileName = string.Empty;
             foreach (string name in coreInfo.coreExes)
             {
-                string vName = $"{name}.exe";
+                string vName = Utils.GetExeName(name);
                 vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
                 if (File.Exists(vName))
                 {

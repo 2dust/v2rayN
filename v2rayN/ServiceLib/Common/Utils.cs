@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -701,6 +702,18 @@ namespace ServiceLib.Common
                 Logging.SaveLog(ex.Message, ex);
             }
             return systemHosts;
+        }
+
+        public static string GetExeName(string name)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return $"{name}.exe";
+            }
+            else
+            {
+                return name;
+            }
         }
 
         #endregion 杂项
