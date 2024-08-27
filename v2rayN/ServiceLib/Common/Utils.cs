@@ -593,20 +593,22 @@ namespace ServiceLib.Common
                 string location = GetExePath();
                 if (blFull)
                 {
-                    return string.Format("v2rayN - V{0} - {1}",
+                    return string.Format("{0} - V{1} - {2}",
+                            Global.AppName,
                             FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString(),
                             File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
                 }
                 else
                 {
-                    return string.Format("v2rayN/{0}",
+                    return string.Format("{0}/{1}",
+                        Global.AppName,
                         FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString());
                 }
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                return string.Empty;
+                return Global.AppName;
             }
         }
 

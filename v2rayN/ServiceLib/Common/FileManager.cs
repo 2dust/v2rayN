@@ -33,6 +33,22 @@ namespace ServiceLib.Common
             }
         }
 
+        public static void UncompressedFile(string fileName, string toPath, string? toName)
+        {
+            try
+            {
+                FileInfo fileInfo = new(fileName);
+                using FileStream originalFileStream = fileInfo.OpenRead();
+                using FileStream decompressedFileStream = File.Create(toName != null ? Path.Combine(toPath, toName) : toPath);
+                using GZipStream decompressionStream = new(originalFileStream, CompressionMode.Decompress);
+                decompressionStream.CopyTo(decompressedFileStream);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+        }
+
         public static string NonExclusiveReadAllText(string path)
         {
             return NonExclusiveReadAllText(path, Encoding.Default);
@@ -99,5 +115,6 @@ namespace ServiceLib.Common
             }
             return true;
         }
+    
     }
 }

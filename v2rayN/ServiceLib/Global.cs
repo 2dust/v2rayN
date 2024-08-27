@@ -4,6 +4,7 @@
     {
         #region const
 
+        public const string AppName = "v2rayN";
         public const string GithubUrl = "https://github.com";
         public const string GithubApiUrl = "https://api.github.com/repos";
         public const string V2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";

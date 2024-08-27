@@ -766,7 +766,18 @@ namespace ServiceLib.ViewModels
                     string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(msg));
                     string toPath = Utils.GetBinPath("", type.ToString());
 
-                    FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
+                    if (fileName.Contains(".tar.gz"))
+                    {
+                        //It's too complicated to unzip. TODO
+                    }
+                    else if (fileName.Contains(".gz"))
+                    {
+                        FileManager.UncompressedFile(fileName, toPath, type.ToString());
+                    }
+                    else
+                    {
+                        FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
+                    }
 
                     _noticeHandler?.SendMessage(ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 

@@ -18,6 +18,9 @@
         public string coreDownloadUrl64 { get; set; }
 
         public string coreDownloadUrlArm64 { get; set; }
+        public string? coreDownloadUrlLinux32 { get; set; }
+        public string? coreDownloadUrlLinux64 { get; set; }
+        public string? coreDownloadUrlLinuxArm64 { get; set; }
 
         public string match { get; set; }
         public string versionArg { get; set; }
