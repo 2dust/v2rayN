@@ -9,6 +9,8 @@ namespace ServiceLib.ViewModels
     {
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
+        [Reactive]
+        public string? CoreType { get; set; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
@@ -30,6 +32,7 @@ namespace ServiceLib.ViewModels
             {
                 SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
+            CoreType = SelectedSource?.coreType?.ToString();
 
             SaveCmd = ReactiveCommand.Create(() =>
             {
@@ -79,6 +82,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
+            SelectedSource.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
             if (ConfigHandler.AddServer(_config, SelectedSource) == 0)
             {

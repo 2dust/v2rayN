@@ -9,6 +9,8 @@ namespace ServiceLib.ViewModels
     {
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
+        [Reactive]
+        public string? CoreType { get; set; }
 
         public ReactiveCommand<Unit, Unit> BrowseServerCmd { get; }
         public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
@@ -29,6 +31,7 @@ namespace ServiceLib.ViewModels
             {
                 SelectedSource = JsonUtils.DeepCopy(profileItem);
             }
+            CoreType = SelectedSource?.coreType?.ToString();
 
             BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -60,6 +63,7 @@ namespace ServiceLib.ViewModels
                 _noticeHandler?.Enqueue(ResUI.FillServerAddressCustom);
                 return;
             }
+            SelectedSource.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
             if (ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
             {
