@@ -54,7 +54,7 @@ namespace ServiceLib.Handler
 
         public void AddProcess(IntPtr processHandle)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (Utils.IsWindows())
             {
                 _processJob ??= new();
                 _processJob?.AddProcess(processHandle);

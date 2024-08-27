@@ -444,7 +444,7 @@ namespace ServiceLib.Handler
 
         private string? GetUrlFromCore(CoreInfo? coreInfo)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (Utils.IsWindows())
             {
                 return RuntimeInformation.ProcessArchitecture switch
                 {
@@ -454,7 +454,7 @@ namespace ServiceLib.Handler
                     _ => null,
                 };
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (Utils.IsLinux())
             {
                 return RuntimeInformation.ProcessArchitecture switch
                 {
