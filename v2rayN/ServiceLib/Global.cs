@@ -60,6 +60,7 @@
         public const string InboundAPIProtocol = "dokodemo-door";
         public const string HttpProtocol = "http://";
         public const string HttpsProtocol = "https://";
+        public const string SocksProtocol = "socks://";
 
         public const string UserEMail = "t@t.tt";
         public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";

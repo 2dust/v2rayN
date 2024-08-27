@@ -1147,4 +1147,7 @@
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
     <value>匯出所選伺服器完整配置至剪貼簿</value>
   </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>顯示或隱藏主介面</value>
+  </data>
 </root>

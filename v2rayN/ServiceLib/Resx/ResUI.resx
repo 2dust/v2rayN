@@ -1270,4 +1270,7 @@
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
     <value>Export selected server for complete configuration to clipboard</value>
   </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Show or hide the main window</value>
+  </data>
 </root>

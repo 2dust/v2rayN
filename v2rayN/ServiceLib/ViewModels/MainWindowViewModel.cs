@@ -658,7 +658,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void UpdateSubscriptionProcess(string subId, bool blProxy)
+        public void UpdateSubscriptionProcess(string subId, bool blProxy)
         {
             (new UpdateHandler()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }

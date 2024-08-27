@@ -29,7 +29,7 @@ namespace ServiceLib.Resx {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ResUI() {
+        internal ResUI() {
         }
         
         /// <summary>
@@ -1317,6 +1317,15 @@ namespace ServiceLib.Resx {
         public static string menuShareServer {
             get {
                 return ResourceManager.GetString("menuShareServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show or hide the main window 的本地化字符串。
+        /// </summary>
+        public static string menuShowOrHideMainWindow {
+            get {
+                return ResourceManager.GetString("menuShowOrHideMainWindow", resourceCulture);
             }
         }
         

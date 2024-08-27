@@ -289,7 +289,7 @@ namespace ServiceLib.Handler
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandler()).DownloadStringAsync(url, true, "");
+                var result = await (new DownloadHandler()).DownloadStringAsync(url, true, Global.AppName);
                 if (!Utils.IsNullOrEmpty(result))
                 {
                     ResponseHandler(type, result, preRelease);
