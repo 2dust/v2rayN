@@ -1,9 +1,9 @@
-﻿using QRCoder;
-using QRCoder.Xaml;
-using System.Drawing;
+﻿using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
@@ -16,7 +16,7 @@ namespace v2rayN
     /// </summary>
     public class QRCodeHelper
     {
-        public static DrawingImage? GetQRCode(string? strContent)
+        public static ImageSource? GetQRCode(string? strContent)
         {
             if (strContent is null)
             {
@@ -24,16 +24,30 @@ namespace v2rayN
             }
             try
             {
-                QRCodeGenerator qrGenerator = new();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
-                XamlQRCode qrCode = new(qrCodeData);
-                DrawingImage qrCodeAsXaml = qrCode.GetGraphic(40);
-                return qrCodeAsXaml;
+                var qrCodeImage = ServiceLib.Common.QRCodeHelper.GenQRCode(strContent);
+                if (qrCodeImage is null)
+                {
+                    return null;
+                }
+                return ByteToImage(qrCodeImage);
             }
             catch
             {
                 return null;
             }
+        }
+
+        private static ImageSource ByteToImage(byte[] imageData)
+        {
+            BitmapImage biImg = new();
+            MemoryStream ms = new(imageData);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+
+            ImageSource imgSrc = biImg as ImageSource;
+
+            return imgSrc;
         }
 
         public static string ScanScreen(float dpiX, float dpiY)
