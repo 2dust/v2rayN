@@ -1,0 +1,197 @@
+﻿<Window
+    x:Class="v2rayN.Desktop.Views.RoutingRuleDetailsWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuRoutingRuleDetailsSetting}"
+    Width="900"
+    Height="700"
+    x:DataType="vms:RoutingRuleDetailsViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid Classes="Margin8" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="outboundTag" />
+            <ComboBox
+                x:Name="cmbOutboundTag"
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="200"
+                Classes="Margin4"
+                MaxDropDownHeight="1000" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Classes="Margin4"
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="port" />
+            <TextBox
+                x:Name="txtPort"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="200"
+                HorizontalAlignment="Left"
+                Classes="Margin4" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Classes="Margin4">
+                <Button Click="linkRuleobjectDoc_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
+                </Button>
+            </TextBlock>
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="protocol" />
+            <ListBox
+                x:Name="clbProtocol"
+                Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Classes="Margin4"
+                SelectionMode="Multiple"
+                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="inboundTag" />
+            <ListBox
+                x:Name="clbInboundTag"
+                Grid.Row="3"
+                Grid.Column="1"
+                Classes="Margin4"
+                SelectionMode="Multiple"
+                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="network" />
+            <ComboBox
+                x:Name="cmbNetwork"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="200"
+                Classes="Margin4"
+                MaxDropDownHeight="1000" />
+
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin4"
+                Text="enabled" />
+            <ToggleSwitch
+                x:Name="togEnabled"
+                Grid.Row="5"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Classes="Margin4" />
+
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Classes="Margin4"
+                Text="{x:Static resx:ResUI.TbRoutingTips}" />
+        </Grid>
+
+        <StackPanel
+            HorizontalAlignment="Right"
+            Classes="Margin8"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <StackPanel
+                Width="600"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <CheckBox x:Name="chkAutoSort">
+                    <TextBlock Text="{x:Static resx:ResUI.TbAutoSort}" />
+                </CheckBox>
+            </StackPanel>
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand" />
+        </StackPanel>
+
+        <Grid Classes="Margin8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <HeaderedContentControl Grid.Column="0" Header="{x:Static resx:ResUI.TbRoutingRuleDomain}">
+                <TextBox
+                    Name="txtDomain"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <HeaderedContentControl Grid.Column="2" Header="{x:Static resx:ResUI.TbRoutingRuleIP}">
+                <TextBox
+                    Name="txtIP"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
+            <HeaderedContentControl Grid.Column="4" Header="{x:Static resx:ResUI.TbRoutingRuleProcess}">
+                <TextBox
+                    Name="txtProcess"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+        </Grid>
+    </DockPanel>
+</Window>

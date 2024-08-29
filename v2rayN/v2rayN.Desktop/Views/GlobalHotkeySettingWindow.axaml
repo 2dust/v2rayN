@@ -1,0 +1,144 @@
+﻿<Window
+    x:Class="v2rayN.Desktop.Views.GlobalHotkeySettingWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuSetting}"
+    Width="700"
+    Height="500"
+    x:DataType="vms:SubEditViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel Classes="Margin8">
+        <StackPanel
+            Classes="Margin4"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnReset"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbReset}" />
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand" />
+        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="gridText" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="400" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        Text="{x:Static resx:ResUI.TbGlobalHotkeySetting}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbDisplayGUI}" />
+
+                    <TextBox
+                        x:Name="txtGlobalHotkey0"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbClearSystemProxy}" />
+                    <TextBox
+                        x:Name="txtGlobalHotkey1"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSetSystemProxy}" />
+                    <TextBox
+                        x:Name="txtGlobalHotkey2"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbNotChangeSystemProxy}" />
+                    <TextBox
+                        x:Name="txtGlobalHotkey3"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSystemProxyPac}" />
+                    <TextBox
+                        x:Name="txtGlobalHotkey4"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Classes="Margin4"
+                        VerticalAlignment="Center"
+                        IsReadOnly="True" />
+                </Grid>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Classes="Margin4"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}" />
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

@@ -1,0 +1,31 @@
+<Application
+    x:Class="v2rayN.Desktop.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    RequestedThemeVariant="Default">
+
+    <Application.Styles>
+        <StyleInclude Source="Styles/GlobalStyles.axaml" />
+        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+        <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
+    </Application.Styles>
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Clicked="TrayIcon_Clicked" Icon="/Assets/NotifyIcon1.ico">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                        <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
+                        <NativeMenuItem Click="MenuSubUpdate_Click" Header="{x:Static resx:ResUI.menuSubUpdate}" />
+                        <NativeMenuItem Click="MenuSubUpdateViaProxy_Click" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Click="TrayIcon_Clicked" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
+                        <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+</Application>

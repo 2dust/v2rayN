@@ -1,0 +1,234 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.SubEditWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuSubSetting}"
+    Width="700"
+    Height="600"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel Classes="Margin8">
+        <StackPanel
+            HorizontalAlignment="Center"
+            Classes="Margin4"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand" />
+        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.menuSubscription}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvRemarks}" />
+
+                <TextBox
+                    x:Name="txtRemarks"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvUrl}" />
+                <TextBox
+                    x:Name="txtUrl"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    TextWrapping="Wrap"
+                    ToolTip.Tip="{x:Static resx:ResUI.SubUrlTips}" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvEnabled}" />
+
+                <DockPanel
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Classes="Margin4">
+                    <ToggleSwitch
+                        x:Name="togEnable"
+                        HorizontalAlignment="Center"
+                        Classes="Margin4"
+                        DockPanel.Dock="Left" />
+
+                    <TextBox
+                        x:Name="txtAutoUpdateInterval"
+                        Width="200"
+                        VerticalAlignment="Center"
+                        Classes="Margin4"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{x:Static resx:ResUI.SubUrlTips}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Classes="Margin4"
+                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                </DockPanel>
+
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvFilter}" />
+                <TextBox
+                    x:Name="txtFilter"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    ToolTip.Tip="{x:Static resx:ResUI.SubUrlTips}" />
+
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvConvertTarget}" />
+                <ComboBox
+                    x:Name="cmbConvertTarget"
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Width="200"
+                    VerticalAlignment=" "
+                    Classes="Margin4"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvConvertTargetTip}" />
+
+                <TextBlock
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvUserAgent}" />
+                <TextBox
+                    x:Name="txtUserAgent"
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    TextWrapping="Wrap"
+                    ToolTip.Tip="{x:Static resx:ResUI.SubUrlTips}" />
+
+                <TextBlock
+                    Grid.Row="8"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvSort}" />
+                <TextBox
+                    x:Name="txtSort"
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    Classes="Margin4" />
+
+                <TextBlock
+                    Grid.Row="9"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvPrevProfile}" />
+                <TextBox
+                    x:Name="txtPrevProfile"
+                    Grid.Row="9"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
+
+                <TextBlock
+                    Grid.Row="10"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvNextProfile}" />
+                <TextBox
+                    x:Name="txtNextProfile"
+                    Grid.Row="10"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
+
+                <TextBlock
+                    Grid.Row="11"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.LvMoreUrl}" />
+                <TextBox
+                    x:Name="txtMoreUrl"
+                    Grid.Row="12"
+                    Grid.Column="1"
+                    MinHeight="100"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Classes="TextArea Margin4"
+                    MinLines="4"
+                    TextWrapping="Wrap"
+                    ToolTip.Tip="{x:Static resx:ResUI.SubUrlTips}" />
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

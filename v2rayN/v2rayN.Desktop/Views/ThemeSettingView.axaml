@@ -1,0 +1,72 @@
+﻿<UserControl
+    x:Class="v2rayN.Desktop.Views.ThemeSettingView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:v2rayN.Desktop.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:ThemeSettingViewModel"
+    mc:Ignorable="d">
+    <Button Width="30" Height="30">
+        <Button.Content>
+            <Image
+                Width="20"
+                Height="20"
+                Source="/Assets/more.png" />
+        </Button.Content>
+        <Button.Flyout>
+            <Flyout>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="100"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
+                        <ToggleSwitch
+                            x:Name="togDarkMode"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Classes="Margin8" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Width="100"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
+                        <ComboBox
+                            x:Name="cmbCurrentFontSize"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="100"
+                            Classes="Margin8" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Width="100"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
+                        <ComboBox
+                            x:Name="cmbCurrentLanguage"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="100"
+                            Classes="Margin8" />
+                    </StackPanel>
+                </StackPanel>
+            </Flyout>
+        </Button.Flyout>
+    </Button>
+</UserControl>

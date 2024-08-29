@@ -1,0 +1,107 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.MsgView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="2">
+        <WrapPanel
+            VerticalAlignment="Center"
+            Classes="Margin8"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <TextBox
+                x:Name="cmbMsgFilter"
+                Width="200"
+                Margin="8,0"
+                VerticalContentAlignment="Center"
+                ToolTip.Tip="{x:Static resx:ResUI.MsgFilterTitle}" />
+
+            <Button
+                x:Name="btnCopy"
+                Width="24"
+                Height="24"
+                Margin="8,0"
+                Classes="Success"
+                Click="menuMsgViewCopyAll_Click"
+                Theme="{DynamicResource SolidButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
+                <Button.Content>
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/copy.png" />
+                </Button.Content>
+            </Button>
+            <Button
+                x:Name="btnClear"
+                Width="24"
+                Height="24"
+                Margin="8,0"
+                Classes="Success"
+                Click="menuMsgViewClear_Click"
+                Theme="{DynamicResource SolidButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewClear}">
+                <Button.Content>
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/delete.png" />
+                </Button.Content>
+            </Button>
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleSwitch
+                x:Name="togAutoRefresh"
+                Margin="8,0"
+                HorizontalAlignment="Left"
+                IsChecked="True" />
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                IsVisible="False"
+                Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+            <ToggleSwitch
+                x:Name="togScrollToEnd"
+                Margin="8,0"
+                HorizontalAlignment="Left"
+                IsChecked="True"
+                IsVisible="False" />
+        </WrapPanel>
+        <TextBox
+            Name="txtMsg"
+            BorderThickness="0"
+            Classes="TextArea"
+            IsReadOnly="True"
+            TextAlignment="Left"
+            TextWrapping="Wrap">
+            <TextBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        x:Name="menuMsgViewSelectAll"
+                        Click="menuMsgViewSelectAll_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                    <MenuItem
+                        x:Name="menuMsgViewCopy"
+                        Click="menuMsgViewCopy_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                    <MenuItem
+                        x:Name="menuMsgViewCopyAll"
+                        Click="menuMsgViewCopyAll_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
+                    <MenuItem
+                        x:Name="menuMsgViewClear"
+                        Click="menuMsgViewClear_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewClear}" />
+                </ContextMenu>
+            </TextBox.ContextMenu>
+        </TextBox>
+    </DockPanel>
+</UserControl>

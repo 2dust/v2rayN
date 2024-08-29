@@ -1,0 +1,179 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.ClashProxiesView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:v2rayN.Desktop.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:ClashProxiesViewModel"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <conv:DelayColorConverter x:Key="DelayColorConverter" />
+    </UserControl.Resources>
+
+    <DockPanel Margin="2">
+        <WrapPanel
+            VerticalAlignment="Center"
+            Classes="Margin8"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.menuRulemode}" />
+            <ComboBox
+                x:Name="cmbRulemode"
+                Width="80"
+                Margin="8,0">
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeDirect}" />
+            </ComboBox>
+
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbSorting}" />
+            <ComboBox
+                x:Name="cmbSorting"
+                Width="60"
+                Margin="8,0">
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
+                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDefault}" />
+            </ComboBox>
+
+            <Button
+                x:Name="menuProxiesReload"
+                Width="24"
+                Height="24"
+                Margin="8,0"
+                Classes="Success"
+                Theme="{DynamicResource SolidButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuProxiesReload}">
+                <Button.Content>
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/refresh.png" />
+                </Button.Content>
+            </Button>
+
+            <Button
+                x:Name="menuProxiesDelaytest"
+                Width="24"
+                Height="24"
+                Margin="8,0"
+                Classes="Success"
+                Theme="{DynamicResource SolidButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuProxiesDelaytest}">
+                <Button.Content>
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/light.png" />
+                </Button.Content>
+            </Button>
+
+            <TextBlock
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleSwitch
+                x:Name="togAutoRefresh"
+                Margin="8,0"
+                HorizontalAlignment="Left" />
+        </WrapPanel>
+        <DockPanel>
+            <ListBox
+                x:Name="lstProxyGroups"
+                Margin="0,0,5,0"
+                DockPanel.Dock="Left"
+                ItemsSource="{Binding ProxyGroups}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Width="160"
+                            Margin="4,0"
+                            Padding="0"
+                            Theme="{StaticResource CardBorder}">
+                            <DockPanel>
+                                <Grid Grid.Column="0" Classes="Margin4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Grid.Row="0">
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding type}" />
+                                        <TextBlock Text="{Binding name}" />
+                                    </DockPanel>
+                                    <TextBlock Grid.Row="1" Text="{Binding now}" />
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListBox>
+
+            <ListBox x:Name="lstProxyDetails" ItemsSource="{Binding ProxyDetails}">
+                <ItemsControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
+                        <MenuItem x:Name="menuProxiesSelectActivity" Header="{x:Static resx:ResUI.menuProxiesSelectActivity}" />
+                    </ContextMenu>
+                </ItemsControl.ContextMenu>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Width="160"
+                            Padding="0"
+                            Theme="{StaticResource CardBorder}">
+                            <DockPanel>
+                                <Border
+                                    Width="5"
+                                    Height="30"
+                                    Margin="0,1"
+                                    Background="YellowGreen"
+                                    CornerRadius="4"
+                                    DockPanel.Dock="Left"
+                                    IsVisible="{Binding isActive}" />
+                                <Grid Classes="Margin4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Text="{Binding name}"
+                                        TextWrapping="WrapWithOverflow" />
+                                    <DockPanel Grid.Row="1">
+                                        <TextBlock
+                                            DockPanel.Dock="Right"
+                                            Foreground="{Binding Path=delay, Converter={StaticResource DelayColorConverter}}"
+                                            Text="{Binding delayName}" />
+                                        <TextBlock Text="{Binding type}" />
+                                    </DockPanel>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

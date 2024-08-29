@@ -1,0 +1,39 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!--  Add Controls for Previewer Here  -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="TextBlock.Margin4">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="StackPanel.Margin4">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="DockPanel.Margin4">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="WrapPanel.Margin4">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="Grid.Margin4">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+
+    <Style Selector="TextBlock.Margin8">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="StackPanel.Margin8">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="DockPanel.Margin8">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="WrapPanel.Margin8">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style Selector="Grid.Margin8">
+        <Setter Property="Margin" Value="8" />
+    </Style>
+</Styles>
