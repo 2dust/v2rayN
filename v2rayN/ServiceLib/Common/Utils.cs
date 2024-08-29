@@ -572,20 +572,34 @@ namespace ServiceLib.Common
                 {
                     return string.Format("{0} - V{1} - {2}",
                             Global.AppName,
-                            FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString(),
+                            GetVersionInfo(),
                             File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
                 }
                 else
                 {
                     return string.Format("{0}/{1}",
                         Global.AppName,
-                        FileVersionInfo.GetVersionInfo(location).FileVersion?.ToString());
+                        GetVersionInfo());
                 }
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
                 return Global.AppName;
+            }
+        }
+
+        public static string GetVersionInfo()
+        {
+            try
+            {
+                string location = GetExePath();
+                return FileVersionInfo.GetVersionInfo(location)?.FileVersion ?? "0.0";
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                return "0.0";
             }
         }
 

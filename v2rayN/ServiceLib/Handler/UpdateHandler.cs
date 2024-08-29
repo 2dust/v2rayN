@@ -418,7 +418,7 @@ namespace ServiceLib.Handler
                         }
                     case ECoreType.v2rayN:
                         {
-                            curVersion = new SemanticVersion(FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString());
+                            curVersion = new SemanticVersion(Utils.GetVersionInfo());
                             message = string.Format(ResUI.IsLatestN, type, curVersion);
                             url = string.Format(GetUrlFromCore(coreInfo), version);
                             break;
