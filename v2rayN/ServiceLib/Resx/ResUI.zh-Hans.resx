@@ -1270,4 +1270,7 @@
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>显示或隐藏主界面</value>
   </data>
+  <data name="UpdateStandalonePackageTip" xml:space="preserve">
+    <value>您当前运行的是独立包，请手动下载 SelfContained.7z文件解压覆盖</value>
+  </data>
 </root>

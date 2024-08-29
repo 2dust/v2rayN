@@ -1273,4 +1273,7 @@
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Show or hide the main window</value>
   </data>
+  <data name="UpdateStandalonePackageTip" xml:space="preserve">
+    <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
+  </data>
 </root>

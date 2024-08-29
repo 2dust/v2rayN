@@ -722,6 +722,16 @@ namespace ServiceLib.ViewModels
 
         private void CheckUpdateN()
         {
+            //Check for standalone windows .Net version
+            if (Utils.IsWindows() 
+                && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
+                && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
+                )
+            {
+                _noticeHandler?.SendMessageAndEnqueue(ResUI.UpdateStandalonePackageTip);
+                return;
+            }
+
             void _updateUI(bool success, string msg)
             {
                 _noticeHandler?.SendMessage(msg);

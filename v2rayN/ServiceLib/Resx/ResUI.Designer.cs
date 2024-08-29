@@ -3525,5 +3525,14 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("UngroupedServers", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it! 的本地化字符串。
+        /// </summary>
+        public static string UpdateStandalonePackageTip {
+            get {
+                return ResourceManager.GetString("UpdateStandalonePackageTip", resourceCulture);
+            }
+        }
     }
 }
