@@ -30,7 +30,6 @@
                 Width="24"
                 Height="24"
                 Margin="8,0"
-                Click="menuMsgViewCopyAll_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
@@ -40,7 +39,6 @@
                 Width="24"
                 Height="24"
                 Margin="8,0"
-                Click="menuMsgViewClear_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
@@ -81,22 +79,18 @@
                     <MenuItem
                         x:Name="menuMsgViewSelectAll"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewSelectAll_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
                     <MenuItem
                         x:Name="menuMsgViewCopy"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewCopy_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
                     <MenuItem
                         x:Name="menuMsgViewCopyAll"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewCopyAll_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
                     <MenuItem
                         x:Name="menuMsgViewClear"
                         Height="{StaticResource MenuItemHeight}"
-                        Click="menuMsgViewClear_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewClear}" />
                 </ContextMenu>
             </TextBox.ContextMenu>

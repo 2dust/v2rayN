@@ -14,7 +14,7 @@ namespace v2rayN.Views
             InitializeComponent();
             ViewModel = new ThemeSettingViewModel();
 
-            for (int i = Global.MinFontSize; i <= Global.MinFontSize + 8; i++)
+            for (int i = Global.MinFontSize; i <= Global.MinFontSize + 10; i++)
             {
                 cmbCurrentFontSize.Items.Add(i.ToString());
             }

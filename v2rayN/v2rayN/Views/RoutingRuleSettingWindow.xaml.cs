@@ -16,6 +16,9 @@ namespace v2rayN.Views
             this.PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
             lstRules.SelectionChanged += lstRules_SelectionChanged;
             lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
+            menuRuleSelectAll.Click += menuRuleSelectAll_Click;
+            btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
+            btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
 
             ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
             Global.DomainStrategies.ForEach(it =>

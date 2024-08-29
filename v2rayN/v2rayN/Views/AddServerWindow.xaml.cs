@@ -15,6 +15,8 @@ namespace v2rayN.Views
             this.Loaded += Window_Loaded;
             cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;
             cmbStreamSecurity.SelectionChanged += CmbStreamSecurity_SelectionChanged;
+            btnGUID.Click += btnGUID_Click;
+            btnGUID5.Click += btnGUID_Click;
 
             ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 

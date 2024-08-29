@@ -16,6 +16,8 @@ namespace v2rayN.Views
             this.PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
             lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
             lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
+            menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
+            btnCancel.Click += btnCancel_Click;
 
             ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 

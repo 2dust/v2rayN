@@ -189,7 +189,6 @@
                         <MenuItem
                             x:Name="menuSelectAll"
                             Height="{StaticResource MenuItemHeight}"
-                            Click="menuSelectAll_Click"
                             Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuExport2ClientConfig}">

@@ -26,6 +26,10 @@ namespace v2rayN.Views
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+            menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
+            menuPromotion.Click += menuPromotion_Click;
+            menuClose.Click += menuClose_Click;
+            menuExit.Click += menuExit_Click;
 
             MessageBus.Current.Listen<string>(Global.CommandSendSnackMsg).Subscribe(x => DelegateSnackMsg(x));
             ViewModel = new MainWindowViewModel(UpdateViewHandler);

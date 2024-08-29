@@ -34,13 +34,11 @@
                 x:Name="btnReset"
                 Width="100"
                 Margin="8,0"
-                Click="btnReset_Click"
                 Content="{x:Static resx:ResUI.TbReset}"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnSave"
                 Width="100"
-                Click="btnSave_Click"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 Cursor="Hand"
                 Style="{StaticResource DefButton}" />

@@ -148,7 +148,6 @@
                 x:Name="btnCancel"
                 Width="100"
                 Margin="8,0"
-                Click="btnCancel_Click"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
@@ -184,7 +183,6 @@
                                 <MenuItem
                                     x:Name="menuRoutingAdvancedSelectAll"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Click="menuRoutingAdvancedSelectAll_Click"
                                     Header="{x:Static resx:ResUI.menuSelectAll}" />
                                 <MenuItem
                                     x:Name="menuRoutingAdvancedSetDefault"

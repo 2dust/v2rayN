@@ -17,6 +17,14 @@ namespace v2rayN.Views
             InitializeComponent();
             _config = LazyConfig.Instance.Config;
             MessageBus.Current.Listen<string>(Global.CommandSendMsgView).Subscribe(x => DelegateAppendText(x));
+
+            btnCopy.Click += menuMsgViewCopyAll_Click;
+            btnClear.Click += menuMsgViewClear_Click;
+            menuMsgViewSelectAll.Click += menuMsgViewSelectAll_Click;
+            menuMsgViewCopy.Click += menuMsgViewCopy_Click;
+            menuMsgViewCopyAll.Click += menuMsgViewCopyAll_Click;
+            menuMsgViewClear.Click += menuMsgViewClear_Click;
+
             Global.PresetMsgFilters.ForEach(it =>
             {
                 cmbMsgFilter.Items.Add(it);

@@ -19,6 +19,7 @@ namespace v2rayN.Views
             this.Closing += SubSettingWindow_Closing;
             lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
             lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
+            menuClose.Click += menuClose_Click;
 
             this.WhenActivated(disposables =>
             {
