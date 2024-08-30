@@ -9,6 +9,7 @@ namespace ServiceLib.ViewModels
     {
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
+
         [Reactive]
         public string? CoreType { get; set; }
 
@@ -82,7 +83,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
-            SelectedSource.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
+            SelectedSource.coreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
             if (ConfigHandler.AddServer(_config, SelectedSource) == 0)
             {
