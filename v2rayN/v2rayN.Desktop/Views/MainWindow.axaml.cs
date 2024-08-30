@@ -279,6 +279,11 @@ namespace v2rayN.Desktop.Views
                     var clipboardData = await AvaUtils.GetClipboardData(this);
                     ViewModel?.AddServerViaClipboardAsync(clipboardData);
                     break;
+                case EViewAction.AdjustMainLvColWidth:
+                    Dispatcher.UIThread.Post(() =>
+                       Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidthAsync(),
+                        DispatcherPriority.Default);
+                    break;
             }
 
             return await Task.FromResult(true);

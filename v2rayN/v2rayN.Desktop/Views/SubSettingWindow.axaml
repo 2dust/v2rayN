@@ -33,6 +33,7 @@
             x:Name="lstSubscription"
             AutoGenerateColumns="False"
             BorderThickness="1"
+            CanUserResizeColumns="True"
             GridLinesVisibility="All"
             HeadersVisibility="Column"
             IsReadOnly="True"

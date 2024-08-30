@@ -297,6 +297,12 @@ namespace v2rayN.Views
                     var clipboardData = WindowsUtils.GetClipboardData();
                     ViewModel?.AddServerViaClipboardAsync(clipboardData);
                     break;
+                case EViewAction.AdjustMainLvColWidth:
+                    Application.Current?.Dispatcher.Invoke((() =>
+                    {
+                        Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidthAsync();
+                    }), DispatcherPriority.Normal);
+                    break;
             }
 
             return await Task.FromResult(true);

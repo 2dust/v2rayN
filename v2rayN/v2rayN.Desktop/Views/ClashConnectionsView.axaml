@@ -64,6 +64,7 @@
             x:Name="lstConnections"
             AutoGenerateColumns="False"
             BorderThickness="1"
+            CanUserResizeColumns="True"
             GridLinesVisibility="All"
             HeadersVisibility="Column"
             IsReadOnly="True"
