@@ -2,7 +2,7 @@
   "servers": [
     {
       "tag": "remote",
-      "address": "tcp://8.8.8.8",
+      "address": "8.8.8.8",
       "strategy": "ipv4_only",
       "detour": "proxy"
     },
