@@ -49,6 +49,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -213,13 +214,30 @@
                 <TextBlock
                     Grid.Row="11"
                     Grid.Column="0"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Classes="Margin4"
+                    Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
+                <TextBox
+                    x:Name="txtPreSocksPort"
+                    Grid.Row="11"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    Classes="Margin4"
+                    ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}" />
+
+                <TextBlock
+                    Grid.Row="12"
+                    Grid.Column="0"
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Center"
                     Classes="Margin4"
                     Text="{x:Static resx:ResUI.LvMoreUrl}" />
                 <TextBox
                     x:Name="txtMoreUrl"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     MinHeight="100"
                     HorizontalAlignment="Stretch"

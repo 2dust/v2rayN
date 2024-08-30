@@ -15,6 +15,9 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -69,6 +72,19 @@ public partial class App : Application
         {
             Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.User);
         }
+    }
+
+    private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        if (e.ExceptionObject != null)
+        {
+            Logging.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
+        }
+    }
+
+    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+        Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
     }
 
     private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)

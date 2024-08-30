@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<FileVersion>6.55</FileVersion>
@@ -33,6 +34,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
+    </ItemGroup>
+ 
+    <ItemGroup>
+      <EmbeddedResource Include="v2rayN.ico">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
  
  
