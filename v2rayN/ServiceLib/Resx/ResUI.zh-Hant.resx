@@ -1153,4 +1153,7 @@
   <data name="UpdateStandalonePackageTip" xml:space="preserve">
     <value>您目前運行的是獨立包，請手動下載 SelfContained.7z檔案解壓縮覆蓋</value>
   </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>自訂配置的Socks端口</value>
+  </data>
 </root>

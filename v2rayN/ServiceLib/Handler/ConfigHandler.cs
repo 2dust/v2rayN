@@ -1282,7 +1282,10 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            var subRemarks = LazyConfig.Instance.GetSubItem(subid)?.remarks;
+
+            var subItem = LazyConfig.Instance.GetSubItem(subid);
+            var subRemarks = subItem?.remarks;
+            var preSocksPort = subItem?.preSocksPort;
 
             List<ProfileItem>? lstProfiles = null;
             //Is sing-box array configuration
@@ -1306,6 +1309,7 @@ namespace ServiceLib.Handler
                 {
                     it.subid = subid;
                     it.isSub = isSub;
+                    it.preSocksPort = preSocksPort;
                     if (AddCustomServer(config, it, true) == 0)
                     {
                         count++;
@@ -1362,6 +1366,7 @@ namespace ServiceLib.Handler
             }
             profileItem.subid = subid;
             profileItem.isSub = isSub;
+            profileItem.preSocksPort = preSocksPort;
             if (AddCustomServer(config, profileItem, true) == 0)
             {
                 return 1;
@@ -1501,6 +1506,7 @@ namespace ServiceLib.Handler
                 item.convertTarget = subItem.convertTarget;
                 item.prevProfile = subItem.prevProfile;
                 item.nextProfile = subItem.nextProfile;
+                item.preSocksPort = subItem.preSocksPort;
             }
 
             if (Utils.IsNullOrEmpty(item.id))

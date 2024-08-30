@@ -668,7 +668,7 @@
     <value>Encryption</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
-    <value>txtPreSocksPort</value>
+    <value>Socks port</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
     <value>* After setting this value, an socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
@@ -1275,5 +1275,8 @@
   </data>
   <data name="UpdateStandalonePackageTip" xml:space="preserve">
     <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
+  </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>Custom config socks port</value>
   </data>
 </root>

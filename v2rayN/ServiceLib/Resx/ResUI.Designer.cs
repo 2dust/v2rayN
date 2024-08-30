@@ -2330,11 +2330,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 txtPreSocksPort 的本地化字符串。
+        ///   查找类似 Socks port 的本地化字符串。
         /// </summary>
         public static string TbPreSocksPort {
             get {
                 return ResourceManager.GetString("TbPreSocksPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom config socks port 的本地化字符串。
+        /// </summary>
+        public static string TbPreSocksPort4Sub {
+            get {
+                return ResourceManager.GetString("TbPreSocksPort4Sub", resourceCulture);
             }
         }
         

@@ -31,5 +31,7 @@ namespace ServiceLib.Models
         public string? prevProfile { get; set; }
 
         public string? nextProfile { get; set; }
+
+        public int? preSocksPort { get; set; }
     }
 }

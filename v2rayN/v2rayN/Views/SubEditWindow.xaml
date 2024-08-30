@@ -69,6 +69,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -281,6 +282,24 @@
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
+
+                <TextBlock
+                    Grid.Row="11"
+                    Grid.Column="0"
+                    Margin="4"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
+                <TextBox
+                    x:Name="txtPreSocksPort"
+                    Grid.Row="11"
+                    Grid.Column="1"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TipPreSocksPort}"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
             </Grid>
         </ScrollViewer>
     </DockPanel>

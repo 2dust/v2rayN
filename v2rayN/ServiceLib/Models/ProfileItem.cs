@@ -178,7 +178,7 @@ namespace ServiceLib.Models
 
         public ECoreType? coreType { get; set; }
 
-        public int preSocksPort { get; set; }
+        public int? preSocksPort { get; set; }
 
         public string fingerprint { get; set; }
 

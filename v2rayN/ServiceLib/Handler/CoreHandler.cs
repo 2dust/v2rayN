@@ -218,7 +218,7 @@ namespace ServiceLib.Handler
                         coreType = preCoreType,
                         configType = EConfigType.Socks,
                         address = Global.Loopback,
-                        port = node.preSocksPort
+                        port = node.preSocksPort.Value,
                     };
                     _config.runningCoreType = preCoreType;
                 }
