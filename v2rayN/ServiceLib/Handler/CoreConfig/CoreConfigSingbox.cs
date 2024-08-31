@@ -702,6 +702,7 @@ namespace ServiceLib.Handler.CoreConfig
                         enabled = true,
                         protocol = _config.mux4SboxItem.protocol,
                         max_connections = _config.mux4SboxItem.max_connections,
+                        padding = _config.mux4SboxItem.padding,
                     };
                     outbound.multiplex = mux;
                 }
