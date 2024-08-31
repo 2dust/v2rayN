@@ -343,15 +343,10 @@ namespace ServiceLib.Models
 
     public class Mux4Ray
     {
-        /// <summary>
-        ///
-        /// </summary>
         public bool enabled { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int concurrency { get; set; }
+        public int? concurrency { get; set; }
+        public int? xudpConcurrency { get; set; }
+        public string? xudpProxyUDP443 { get; set; }
     }
 
     public class Response4Ray

@@ -770,7 +770,9 @@ namespace ServiceLib.Handler.CoreConfig
                 if (enabled)
                 {
                     outbound.mux.enabled = true;
-                    outbound.mux.concurrency = 8;
+                    outbound.mux.concurrency = _config.mux4RayItem.concurrency;
+                    outbound.mux.xudpConcurrency = _config.mux4RayItem.xudpConcurrency;
+                    outbound.mux.xudpProxyUDP443 = _config.mux4RayItem.xudpProxyUDP443;
                 }
                 else
                 {

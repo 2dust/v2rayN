@@ -41,6 +41,7 @@
         public UIItem uiItem { get; set; }
         public ConstItem constItem { get; set; }
         public SpeedTestItem speedTestItem { get; set; }
+        public Mux4RayItem mux4RayItem { get; set; }
         public Mux4SboxItem mux4SboxItem { get; set; }
         public HysteriaItem hysteriaItem { get; set; }
         public ClashUIItem clashUIItem { get; set; }

@@ -173,6 +173,13 @@ namespace ServiceLib.Handler
                 config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
             }
 
+            config.mux4RayItem ??= new()
+                {
+                    concurrency = 8,
+                    xudpConcurrency = 16,
+                    xudpProxyUDP443 = "reject"
+                };
+
             if (config.mux4SboxItem == null)
             {
                 config.mux4SboxItem = new()
