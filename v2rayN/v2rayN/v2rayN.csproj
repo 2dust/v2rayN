@@ -16,7 +16,7 @@
 	
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
-		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.2" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.3" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" /> 
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" /> 
