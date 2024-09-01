@@ -168,6 +168,10 @@ namespace ServiceLib.Common
                     {
                         progress.Report(101);
                     }
+                    else if (value.Error != null)
+                    {
+                        throw value.Error;
+                    }
                 }
             };
 

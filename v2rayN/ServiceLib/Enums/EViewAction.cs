@@ -38,5 +38,7 @@
         DispatcherReload,
         DispatcherRefreshServersBiz,
         DispatcherRefreshIcon,
+        DispatcherCheckUpdate,
+        DispatcherCheckUpdateFinished,       
     }
 }

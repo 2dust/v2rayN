@@ -852,7 +852,7 @@ namespace ServiceLib.ViewModels
             });
         }
 
-        private void CloseCore()
+        public void CloseCore()
         {
             ConfigHandler.SaveConfig(_config, false);
 

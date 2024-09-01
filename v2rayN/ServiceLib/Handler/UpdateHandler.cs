@@ -50,6 +50,7 @@ namespace ServiceLib.Handler
             downloadHandle.Error += (sender2, args) =>
             {
                 _updateFunc(false, args.GetException().Message);
+                _updateFunc(false, "");
             };
             AbsoluteCompleted += (sender2, args) =>
             {
@@ -61,19 +62,20 @@ namespace ServiceLib.Handler
                     url = args.Url;
                     AskToDownload(downloadHandle, url, true).ContinueWith(task =>
                     {
-                        _updateFunc(false, url);
+                        _updateFunc(false, "");
                     });
                 }
                 else
                 {
                     _updateFunc(false, args.Msg);
+                    _updateFunc(false, "");
                 }
             };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
-            CheckUpdateAsync(ECoreType.v2rayN, preRelease);
+            CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
         }
 
-        public void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
+        public async void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
             _updateFunc = update;
@@ -103,7 +105,8 @@ namespace ServiceLib.Handler
             };
             downloadHandle.Error += (sender2, args) =>
             {
-                _updateFunc(true, args.GetException().Message);
+                _updateFunc(false, args.GetException().Message); 
+                _updateFunc(false, "");
             };
 
             AbsoluteCompleted += (sender2, args) =>
@@ -116,16 +119,17 @@ namespace ServiceLib.Handler
                     url = args.Url;
                     AskToDownload(downloadHandle, url, true).ContinueWith(task =>
                     {
-                        _updateFunc(false, url);
+                        _updateFunc(false, "");
                     });
                 }
                 else
                 {
                     _updateFunc(false, args.Msg);
+                    _updateFunc(false, "");
                 }
             };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
-            CheckUpdateAsync(type, preRelease);
+            CheckUpdateAsync(downloadHandle, type, preRelease);
         }
 
         public void UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> update)
@@ -267,6 +271,7 @@ namespace ServiceLib.Handler
             {
                 await UpdateGeoFile("geosite", _config, update);
                 await UpdateGeoFile("geoip", _config, update);
+                _updateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
             });
         }
 
@@ -282,14 +287,14 @@ namespace ServiceLib.Handler
 
         #region private
 
-        private async void CheckUpdateAsync(ECoreType type, bool preRelease)
+        private async void CheckUpdateAsync(DownloadHandler downloadHandle, ECoreType type, bool preRelease)
         {
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string url = coreInfo.coreReleaseApiUrl;
 
-                var result = await (new DownloadHandler()).DownloadStringAsync(url, true, Global.AppName);
+                var result = await downloadHandle.DownloadStringAsync(url, true, Global.AppName);
                 if (!Utils.IsNullOrEmpty(result))
                 {
                     ResponseHandler(type, result, preRelease);
@@ -483,7 +488,7 @@ namespace ServiceLib.Handler
             //}
             //if (blDownload)
             //{
-            await downloadHandle.DownloadFileAsync(url, true, 600);
+            await downloadHandle.DownloadFileAsync(url, true, 60);
             //}
         }
 

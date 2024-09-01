@@ -212,7 +212,7 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0">
+                            <MenuItem Name="menuCheckUpdate" Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -222,27 +222,6 @@
                                         <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
                                     </StackPanel>
                                 </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuCheckUpdateN"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="V2rayN" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateXrayCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Xray Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateMihomoCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Mihomo Core" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateSingBoxCore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Sing-box Core" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuCheckUpdateGeo"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="Geo files" />
                             </MenuItem>
                         </Menu>
                         <Separator />
