@@ -1097,7 +1097,7 @@ namespace ServiceLib.Handler.CoreConfig
                         address = Utils.IsNullOrEmpty(dNSItem?.domainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.domainDNSAddress,
                         domains = [node.address]
                     };
-                    servers.AsArray().Insert(0, JsonUtils.SerializeToNode(dnsServer));
+                    servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
                 }
             }
             return 0;
