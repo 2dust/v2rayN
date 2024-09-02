@@ -11,10 +11,11 @@ namespace v2rayN.Desktop.Views
     public partial class MsgView : UserControl
     {
         private static Config? _config;
+        private ConcurrentQueue<string> _queueMsg = new();
+        private int _numMaxMsg = 500;
 
         private string lastMsgFilter = string.Empty;
         private bool lastMsgFilterNotAvailable;
-        private ConcurrentBag<string> _lstMsg = [];
 
         public MsgView()
         {
@@ -74,30 +75,30 @@ namespace v2rayN.Desktop.Views
 
             if (togScrollToEnd.IsChecked ?? true)
             {
+                txtMsg.CaretIndex = int.MaxValue;
             }
         }
 
         private void ShowMsg(string msg)
         {
-            if (_lstMsg.Count > 999)
+            if (_queueMsg.Count > _numMaxMsg)
             {
-                ClearMsg();
+                for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
+                {
+                    _queueMsg.TryDequeue(out _);
+                }
             }
+            _queueMsg.Enqueue(msg);
             if (!msg.EndsWith(Environment.NewLine))
             {
-                _lstMsg.Add(Environment.NewLine);
+                _queueMsg.Enqueue(Environment.NewLine);
             }
-            _lstMsg.Add(msg);
-            // if (!msg.EndsWith(Environment.NewLine))
-            // {
-            //     _lstMsg.Add(Environment.NewLine);
-            // }
-            this.txtMsg.Text = string.Join("", _lstMsg);
+            txtMsg.Text = string.Join("", _queueMsg.ToArray());
         }
 
         public void ClearMsg()
         {
-            _lstMsg.Clear();
+            _queueMsg.Clear();
             txtMsg.Clear();
         }
 

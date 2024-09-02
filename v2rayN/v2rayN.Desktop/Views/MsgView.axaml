@@ -66,14 +66,12 @@
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
-                IsVisible="False"
                 Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
             <ToggleSwitch
                 x:Name="togScrollToEnd"
                 Margin="8,0"
                 HorizontalAlignment="Left"
-                IsChecked="True"
-                IsVisible="False" />
+                IsChecked="True" />
         </WrapPanel>
         <TextBox
             Name="txtMsg"

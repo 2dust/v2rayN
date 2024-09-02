@@ -1,4 +1,5 @@
 using ReactiveUI;
+using System.Collections.Concurrent;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Threading;
@@ -8,6 +9,8 @@ namespace v2rayN.Views
     public partial class MsgView
     {
         private static Config? _config;
+        private ConcurrentQueue<string> _queueMsg = new();
+        private int _numMaxMsg = 500;
 
         private string lastMsgFilter = string.Empty;
         private bool lastMsgFilterNotAvailable;
@@ -80,19 +83,24 @@ namespace v2rayN.Views
 
         private void ShowMsg(string msg)
         {
-            if (txtMsg.LineCount > 999)
+            if (_queueMsg.Count > _numMaxMsg)
             {
-                ClearMsg();
+                for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
+                {
+                    _queueMsg.TryDequeue(out _);
+                }
             }
-            this.txtMsg.AppendText(msg);
+            _queueMsg.Enqueue(msg);
             if (!msg.EndsWith(Environment.NewLine))
             {
-                this.txtMsg.AppendText(Environment.NewLine);
+                _queueMsg.Enqueue(Environment.NewLine);
             }
+            txtMsg.Text = string.Join("", _queueMsg.ToArray());
         }
 
         public void ClearMsg()
         {
+            _queueMsg.Clear();
             txtMsg.Clear();
         }
 
