@@ -27,7 +27,7 @@
                     this.minor = int.Parse(parts[1]);
                     this.patch = 0;
                 }
-                else if (parts.Length == 3)
+                else if (parts.Length == 3 || parts.Length == 4)
                 {
                     this.major = int.Parse(parts[0]);
                     this.minor = int.Parse(parts[1]);

@@ -593,8 +593,7 @@ namespace ServiceLib.Common
         {
             try
             {
-                string location = GetExePath();
-                return FileVersionInfo.GetVersionInfo(location)?.FileVersion ?? "0.0";
+                return Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "0.0";
             }
             catch (Exception ex)
             {
