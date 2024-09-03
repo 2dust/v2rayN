@@ -1506,6 +1506,7 @@ namespace ServiceLib.Handler
                 item.userAgent = subItem.userAgent;
                 item.sort = subItem.sort;
                 item.filter = subItem.filter;
+                item.updateTime = subItem.updateTime;
                 item.convertTarget = subItem.convertTarget;
                 item.prevProfile = subItem.prevProfile;
                 item.nextProfile = subItem.nextProfile;
