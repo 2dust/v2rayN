@@ -1,104 +1,54 @@
-using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
-using System.Collections.Concurrent;
-using System.Text.RegularExpressions;
+using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
 {
-    public partial class MsgView : UserControl
+    public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
-        private static Config? _config;
-        private ConcurrentQueue<string> _queueMsg = new();
-        private int _numMaxMsg = 500;
-
-        private string lastMsgFilter = string.Empty;
-        private bool lastMsgFilterNotAvailable;
-
         public MsgView()
         {
             InitializeComponent();
-            _config = LazyConfig.Instance.Config;
-            MessageBus.Current.Listen<string>(Global.CommandSendMsgView).Subscribe(x => DelegateAppendText(x));
-            //Global.PresetMsgFilters.ForEach(it =>
-            //{
-            //    cmbMsgFilter.Items.Add(it);
-            //});
-            if (!_config.uiItem.mainMsgFilter.IsNullOrEmpty())
+
+            ViewModel = new MsgViewModel(UpdateViewHandler);
+
+            this.WhenActivated(disposables =>
             {
-                cmbMsgFilter.Text = _config.uiItem.mainMsgFilter;
-            }
-            cmbMsgFilter.TextChanged += (s, e) =>
-            {
-                _config.uiItem.mainMsgFilter = cmbMsgFilter.Text?.ToString();
-            };
+                this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+            });
         }
 
-        private void DelegateAppendText(string msg)
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
-            Dispatcher.UIThread.Post(() => AppendText(msg), DispatcherPriority.ApplicationIdle);
+            switch (action)
+            {
+                case EViewAction.DispatcherShowMsg:
+                    if (obj is null) return false;
+
+                    Dispatcher.UIThread.Post(() =>
+                        ShowMsg(obj),
+                       DispatcherPriority.ApplicationIdle);
+                    break;
+            }
+            return await Task.FromResult(true);
         }
 
-        public void AppendText(string msg)
+        private void ShowMsg(object msg)
         {
-            if (msg == Global.CommandClearMsg)
-            {
-                ClearMsg();
-                return;
-            }
-            if (togAutoRefresh.IsChecked == false)
-            {
-                return;
-            }
-
-            var MsgFilter = cmbMsgFilter.Text?.ToString();
-            if (MsgFilter != lastMsgFilter) lastMsgFilterNotAvailable = false;
-            if (!Utils.IsNullOrEmpty(MsgFilter) && !lastMsgFilterNotAvailable)
-            {
-                try
-                {
-                    if (!Regex.IsMatch(msg, MsgFilter))
-                    {
-                        return;
-                    }
-                }
-                catch (Exception)
-                {
-                    lastMsgFilterNotAvailable = true;
-                }
-            }
-            lastMsgFilter = MsgFilter;
-
-            ShowMsg(msg);
-
+            txtMsg.Text = msg.ToString();
             if (togScrollToEnd.IsChecked ?? true)
             {
                 txtMsg.CaretIndex = int.MaxValue;
             }
         }
 
-        private void ShowMsg(string msg)
-        {
-            if (_queueMsg.Count > _numMaxMsg)
-            {
-                for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
-                {
-                    _queueMsg.TryDequeue(out _);
-                }
-            }
-            _queueMsg.Enqueue(msg);
-            if (!msg.EndsWith(Environment.NewLine))
-            {
-                _queueMsg.Enqueue(Environment.NewLine);
-            }
-            txtMsg.Text = string.Join("", _queueMsg.ToArray());
-        }
-
         public void ClearMsg()
         {
-            _queueMsg.Clear();
+            ViewModel?.ClearMsg();
             txtMsg.Clear();
         }
 

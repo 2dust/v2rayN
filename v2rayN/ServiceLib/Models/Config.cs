@@ -38,6 +38,7 @@
         public GrpcItem grpcItem { get; set; }
         public RoutingBasicItem routingBasicItem { get; set; }
         public GUIItem guiItem { get; set; }
+        public MsgUIItem msgUIItem { get; set; }
         public UIItem uiItem { get; set; }
         public ConstItem constItem { get; set; }
         public SpeedTestItem speedTestItem { get; set; }

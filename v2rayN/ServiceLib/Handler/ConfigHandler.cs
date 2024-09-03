@@ -124,20 +124,16 @@ namespace ServiceLib.Handler
                     mtu = 9000,
                 };
             }
-            if (config.guiItem == null)
+            config.guiItem ??= new()
             {
-                config.guiItem = new()
-                {
-                    enableStatistics = false,
-                };
-            }
-            if (config.uiItem == null)
+                enableStatistics = false,
+            };
+            config.msgUIItem ??= new();
+
+            config.uiItem ??= new UIItem()
             {
-                config.uiItem = new UIItem()
-                {
-                    enableAutoAdjustMainLvColWidth = true
-                };
-            }
+                enableAutoAdjustMainLvColWidth = true
+            };
             if (config.uiItem.mainColumnItem == null)
             {
                 config.uiItem.mainColumnItem = new();
@@ -174,11 +170,11 @@ namespace ServiceLib.Handler
             }
 
             config.mux4RayItem ??= new()
-                {
-                    concurrency = 8,
-                    xudpConcurrency = 16,
-                    xudpProxyUDP443 = "reject"
-                };
+            {
+                concurrency = 8,
+                xudpConcurrency = 16,
+                xudpProxyUDP443 = "reject"
+            };
 
             if (config.mux4SboxItem == null)
             {
