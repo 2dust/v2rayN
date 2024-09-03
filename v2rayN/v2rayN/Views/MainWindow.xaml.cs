@@ -206,7 +206,10 @@ namespace v2rayN.Views
 
         private void OnProgramStarted(object state, bool timeout)
         {
-            ShowHideWindow(true);
+            Application.Current?.Dispatcher.Invoke((Action)(() =>
+            {
+                ShowHideWindow(true);
+            }));
         }
 
         private void DelegateSnackMsg(string content)
