@@ -58,7 +58,7 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        public async Task DownloadFileAsync(string url, bool blProxy, int downloadTimeout)
+        public async Task DownloadFileAsync(string url, string fileName, bool blProxy, int downloadTimeout)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ServiceLib.Handler
                 var webProxy = GetWebProxy(blProxy);
                 await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                     url,
-                    Utils.GetTempPath(Utils.GetDownloadFileName(url)),
+                    fileName,
                     progress,
                     downloadTimeout);
             }

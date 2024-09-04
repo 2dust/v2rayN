@@ -9,10 +9,9 @@ namespace ServiceLib.Handler
     {
         private Action<bool, string> _updateFunc;
         private Config _config;
+        private int _timeout = 30;
 
-        public event EventHandler<ResultEventArgs> AbsoluteCompleted;
-
-        public class ResultEventArgs : EventArgs
+        private class ResultEventArgs
         {
             public bool Success;
             public string Msg;
@@ -26,11 +25,12 @@ namespace ServiceLib.Handler
             }
         }
 
-        public void CheckUpdateGuiN(Config config, Action<bool, string> update, bool preRelease)
+        public async Task CheckUpdateGuiN(Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
             _updateFunc = update;
             var url = string.Empty;
+            var fileName = string.Empty;
 
             DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
@@ -38,9 +38,7 @@ namespace ServiceLib.Handler
                 if (args.Success)
                 {
                     _updateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
-                    string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
-                    fileName = Utils.UrlEncode(fileName);
-                    _updateFunc(true, fileName);
+                    _updateFunc(true, Utils.UrlEncode(fileName));
                 }
                 else
                 {
@@ -50,36 +48,31 @@ namespace ServiceLib.Handler
             downloadHandle.Error += (sender2, args) =>
             {
                 _updateFunc(false, args.GetException().Message);
-                _updateFunc(false, "");
             };
-            AbsoluteCompleted += (sender2, args) =>
-            {
-                if (args.Success)
-                {
-                    _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
-                    _updateFunc(false, args.Msg);
 
-                    url = args.Url;
-                    AskToDownload(downloadHandle, url, true).ContinueWith(task =>
-                    {
-                        _updateFunc(false, "");
-                    });
-                }
-                else
-                {
-                    _updateFunc(false, args.Msg);
-                    _updateFunc(false, "");
-                }
-            };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
-            CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
+            var args = await CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
+            if (args.Success)
+            {
+                _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
+                _updateFunc(false, args.Msg);
+
+                url = args.Url;
+                fileName = Utils.GetTempPath(Utils.GetGUID());
+                await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
+            }
+            else
+            {
+                _updateFunc(false, args.Msg);
+            }
         }
 
-        public async void CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
+        public async Task CheckUpdateCore(ECoreType type, Config config, Action<bool, string> update, bool preRelease)
         {
             _config = config;
             _updateFunc = update;
             var url = string.Empty;
+            var fileName = string.Empty;
 
             DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
@@ -91,7 +84,7 @@ namespace ServiceLib.Handler
 
                     try
                     {
-                        _updateFunc(true, url);
+                        _updateFunc(true, fileName);
                     }
                     catch (Exception ex)
                     {
@@ -105,31 +98,27 @@ namespace ServiceLib.Handler
             };
             downloadHandle.Error += (sender2, args) =>
             {
-                _updateFunc(false, args.GetException().Message); 
-                _updateFunc(false, "");
+                _updateFunc(false, args.GetException().Message);
             };
 
-            AbsoluteCompleted += (sender2, args) =>
-            {
-                if (args.Success)
-                {
-                    _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, type));
-                    _updateFunc(false, args.Msg);
-
-                    url = args.Url;
-                    AskToDownload(downloadHandle, url, true).ContinueWith(task =>
-                    {
-                        _updateFunc(false, "");
-                    });
-                }
-                else
-                {
-                    _updateFunc(false, args.Msg);
-                    _updateFunc(false, "");
-                }
-            };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
-            CheckUpdateAsync(downloadHandle, type, preRelease);
+            var args = await CheckUpdateAsync(downloadHandle, type, preRelease);
+            if (args.Success)
+            {
+                _updateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, type));
+                _updateFunc(false, args.Msg);
+
+                url = args.Url;
+                fileName = Utils.GetTempPath(Utils.GetGUID());
+                await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
+            }
+            else
+            {
+                if (!args.Msg.IsNullOrEmpty())
+                {
+                    _updateFunc(false, args.Msg);
+                }
+            }
         }
 
         public void UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> update)
@@ -265,14 +254,11 @@ namespace ServiceLib.Handler
             });
         }
 
-        public void UpdateGeoFileAll(Config config, Action<bool, string> update)
+        public async Task UpdateGeoFileAll(Config config, Action<bool, string> update)
         {
-            Task.Run(async () =>
-            {
-                await UpdateGeoFile("geosite", _config, update);
-                await UpdateGeoFile("geoip", _config, update);
-                _updateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
-            });
+            await UpdateGeoFile("geosite", _config, update);
+            await UpdateGeoFile("geoip", _config, update);
+            _updateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
         public void RunAvailabilityCheck(Action<bool, string> update)
@@ -287,28 +273,28 @@ namespace ServiceLib.Handler
 
         #region private
 
-        private async void CheckUpdateAsync(DownloadHandler downloadHandle, ECoreType type, bool preRelease)
+        private async Task<ResultEventArgs> CheckUpdateAsync(DownloadHandler downloadHandle, ECoreType type, bool preRelease)
         {
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
-                string url = coreInfo.coreReleaseApiUrl;
+                var url = coreInfo?.coreReleaseApiUrl;
 
                 var result = await downloadHandle.DownloadStringAsync(url, true, Global.AppName);
                 if (!Utils.IsNullOrEmpty(result))
                 {
-                    ResponseHandler(type, result, preRelease);
+                    return await ParseDownloadUrl(type, result, preRelease);
                 }
                 else
                 {
-                    Logging.SaveLog("StatusCode error: " + url);
-                    return;
+                    return new ResultEventArgs(false, "");
                 }
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
                 _updateFunc(false, ex.Message);
+                return new ResultEventArgs(false, ex.Message);
             }
         }
 
@@ -380,7 +366,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        private void ResponseHandler(ECoreType type, string gitHubReleaseApi, bool preRelease)
+        private async Task<ResultEventArgs> ParseDownloadUrl(ECoreType type, string gitHubReleaseApi, bool preRelease)
         {
             try
             {
@@ -434,16 +420,16 @@ namespace ServiceLib.Handler
 
                 if (curVersion >= version && version != new SemanticVersion(0, 0, 0))
                 {
-                    AbsoluteCompleted?.Invoke(this, new ResultEventArgs(false, message));
-                    return;
+                    return new ResultEventArgs(false, message);
                 }
 
-                AbsoluteCompleted?.Invoke(this, new ResultEventArgs(true, body, url));
+                return new ResultEventArgs(true, body, url);
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
                 _updateFunc(false, ex.Message);
+                return new ResultEventArgs(false, ex.Message);
             }
         }
 
@@ -472,31 +458,12 @@ namespace ServiceLib.Handler
             return null;
         }
 
-        private async Task AskToDownload(DownloadHandler downloadHandle, string url, bool blAsk)
-        {
-            //bool blDownload = false;
-            //if (blAsk)
-            //{
-            //    if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == MessageBoxResult.Yes)
-            //    {
-            //        blDownload = true;
-            //    }
-            //}
-            //else
-            //{
-            //    blDownload = true;
-            //}
-            //if (blDownload)
-            //{
-            await downloadHandle.DownloadFileAsync(url, true, 60);
-            //}
-        }
-
         private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
             var url = string.Format(Global.GeoUrl, geoName);
+            var fileName = Utils.GetTempPath(Utils.GetGUID());
 
             DownloadHandler downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
@@ -507,7 +474,6 @@ namespace ServiceLib.Handler
 
                     try
                     {
-                        string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                         if (File.Exists(fileName))
                         {
                             string targetPath = Utils.GetBinPath($"{geoName}.dat");
@@ -531,7 +497,8 @@ namespace ServiceLib.Handler
             {
                 _updateFunc(false, args.GetException().Message);
             };
-            await AskToDownload(downloadHandle, url, false);
+
+            await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
         }
 
         #endregion private

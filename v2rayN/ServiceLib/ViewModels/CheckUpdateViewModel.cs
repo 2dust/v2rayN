@@ -28,9 +28,13 @@ namespace ServiceLib.ViewModels
 
             RefreshSubItems();
 
-            CheckUpdateCmd = ReactiveCommand.Create(() =>
+            CheckUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                CheckUpdate();
+                await CheckUpdate()
+                .ContinueWith(t =>
+                {
+                    UpdateFinished();
+                });
             });
             EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
             IsCheckUpdate = true;
@@ -77,9 +81,11 @@ namespace ServiceLib.ViewModels
             });
         }
 
-        private void CheckUpdate()
+        private async Task CheckUpdate()
         {
             _lstUpdated.Clear();
+            _lstUpdated = _checkUpdateItem.Where(x => x.isSelected == true)
+                    .Select(x => new CheckUpdateItem() { coreType = x.coreType }).ToList();
 
             for (int k = _checkUpdateItem.Count - 1; k >= 0; k--)
             {
@@ -87,23 +93,22 @@ namespace ServiceLib.ViewModels
                 if (item.isSelected == true)
                 {
                     IsCheckUpdate = false;
-                    _lstUpdated.Add(new CheckUpdateItem() { coreType = item.coreType });
                     UpdateView(item.coreType, "...");
                     if (item.coreType == _geo)
                     {
-                        CheckUpdateGeo();
+                        await CheckUpdateGeo();
                     }
                     else if (item.coreType == ECoreType.v2rayN.ToString())
                     {
-                        CheckUpdateN(EnableCheckPreReleaseUpdate);
+                        await CheckUpdateN(EnableCheckPreReleaseUpdate);
                     }
                     else if (item.coreType == ECoreType.mihomo.ToString())
                     {
-                        CheckUpdateCore(item, false);
+                        await CheckUpdateCore(item, false);
                     }
                     else
                     {
-                        CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
+                        await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
                     }
                 }
             }
@@ -123,7 +128,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void CheckUpdateGeo()
+        private async Task CheckUpdateGeo()
         {
             void _updateUI(bool success, string msg)
             {
@@ -131,13 +136,16 @@ namespace ServiceLib.ViewModels
                 if (success)
                 {
                     UpdatedPlusPlus(_geo, "");
-                    UpdateFinished();
                 }
             }
-            (new UpdateHandler()).UpdateGeoFileAll(_config, _updateUI);
+            await (new UpdateHandler()).UpdateGeoFileAll(_config, _updateUI)
+                .ContinueWith(t =>
+                {
+                    UpdatedPlusPlus(_geo, "");
+                });
         }
 
-        private void CheckUpdateN(bool preRelease)
+        private async Task CheckUpdateN(bool preRelease)
         {
             //Check for standalone windows .Net version
             if (Utils.IsWindows()
@@ -151,54 +159,38 @@ namespace ServiceLib.ViewModels
 
             void _updateUI(bool success, string msg)
             {
+                UpdateView(ECoreType.v2rayN.ToString(), msg);
                 if (success)
                 {
                     UpdateView(ECoreType.v2rayN.ToString(), ResUI.OperationSuccess);
                     UpdatedPlusPlus(ECoreType.v2rayN.ToString(), msg);
-                    UpdateFinished();
-                }
-                else
-                {
-                    if (msg.IsNullOrEmpty())
-                    {
-                        UpdatedPlusPlus(ECoreType.v2rayN.ToString(), "");
-                        UpdateFinished();
-                    }
-                    else
-                    {
-                        UpdateView(ECoreType.v2rayN.ToString(), msg);
-                    }
                 }
             }
-           (new UpdateHandler()).CheckUpdateGuiN(_config, _updateUI, preRelease);
+            await (new UpdateHandler()).CheckUpdateGuiN(_config, _updateUI, preRelease)
+                .ContinueWith(t =>
+                {
+                    UpdatedPlusPlus(ECoreType.v2rayN.ToString(), "");
+                });
         }
 
-        private void CheckUpdateCore(CheckUpdateItem item, bool preRelease)
+        private async Task CheckUpdateCore(CheckUpdateItem item, bool preRelease)
         {
             void _updateUI(bool success, string msg)
             {
+                UpdateView(item.coreType, msg);
                 if (success)
                 {
                     UpdateView(item.coreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
                     UpdatedPlusPlus(item.coreType, msg);
-                    UpdateFinished();
-                }
-                else
-                {
-                    if (msg.IsNullOrEmpty())
-                    {
-                        UpdatedPlusPlus(item.coreType, "");
-                        UpdateFinished();
-                    }
-                    else
-                    {
-                        UpdateView(item.coreType, msg);
-                    }
                 }
             }
             var type = (ECoreType)Enum.Parse(typeof(ECoreType), item.coreType);
-            (new UpdateHandler()).CheckUpdateCore(type, _config, _updateUI, preRelease);
+            await (new UpdateHandler()).CheckUpdateCore(type, _config, _updateUI, preRelease)
+                .ContinueWith(t =>
+                {
+                    UpdatedPlusPlus(item.coreType, "");
+                });
         }
 
         private void UpdateFinished()
@@ -206,13 +198,15 @@ namespace ServiceLib.ViewModels
             if (_lstUpdated.Count > 0 && _lstUpdated.Count(x => x.isFinished == true) == _lstUpdated.Count)
             {
                 _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, false);
-
+                Task.Delay(1000);
                 UpgradeCore();
 
                 if (_lstUpdated.Any(x => x.coreType == ECoreType.v2rayN.ToString() && x.isFinished == true))
                 {
+                    Task.Delay(1000);
                     UpgradeN();
                 }
+                Task.Delay(1000);
                 _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, true);
             }
         }
@@ -270,7 +264,7 @@ namespace ServiceLib.ViewModels
                     continue;
                 }
 
-                var fileName = Utils.GetTempPath(Utils.GetDownloadFileName(item.fileName));
+                var fileName = item.fileName;
                 if (!File.Exists(fileName))
                 {
                     continue;

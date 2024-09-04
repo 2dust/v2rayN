@@ -176,7 +176,7 @@ namespace ServiceLib.Common
             };
 
             using var cts = new CancellationTokenSource();
-            await downloader.DownloadFileTaskAsync(url, fileName, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            await downloader.DownloadFileTaskAsync(url, fileName, cts.Token);
 
             downloadOpt = null;
         }
