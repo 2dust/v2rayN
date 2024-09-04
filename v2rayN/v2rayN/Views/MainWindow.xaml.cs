@@ -15,7 +15,7 @@ namespace v2rayN.Views
 {
     public partial class MainWindow
     {
-        private static Config _config; 
+        private static Config _config;
         private CheckUpdateView? _checkUpdateView;
 
         public MainWindow()
@@ -296,7 +296,7 @@ namespace v2rayN.Views
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         Application.Current.Shutdown();
-                    }), DispatcherPriority.Normal);                
+                    }), DispatcherPriority.Normal);
                     break;
 
                 case EViewAction.ScanScreenTask:

@@ -115,6 +115,5 @@ namespace ServiceLib.Common
             }
             return true;
         }
-    
     }
 }

@@ -2,7 +2,6 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.ViewModels

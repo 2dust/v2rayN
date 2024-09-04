@@ -34,6 +34,7 @@ namespace v2rayN.Views
                         ViewModel?.UpdateViewResult((CheckUpdateItem)obj);
                     }), DispatcherPriority.Normal);
                     break;
+
                 case EViewAction.DispatcherCheckUpdateFinished:
                     if (obj is null) return false;
                     Application.Current?.Dispatcher.Invoke((() =>
@@ -41,7 +42,6 @@ namespace v2rayN.Views
                         ViewModel?.UpdateFinishedResult((bool)obj);
                     }), DispatcherPriority.Normal);
                     break;
-                    
             }
 
             return await Task.FromResult(true);

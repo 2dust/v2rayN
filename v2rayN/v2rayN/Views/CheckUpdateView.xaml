@@ -56,7 +56,6 @@
                 IsCancel="True"
                 IsDefault="True"
                 Style="{StaticResource MaterialDesignFlatButton}" />
-
         </StackPanel>
 
         <StackPanel>
@@ -106,7 +105,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
         </StackPanel>
     </DockPanel>
 </reactiveui:ReactiveUserControl>

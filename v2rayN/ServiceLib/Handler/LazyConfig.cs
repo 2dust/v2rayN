@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     public sealed class LazyConfig
     {

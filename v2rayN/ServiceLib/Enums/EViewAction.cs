@@ -39,7 +39,7 @@
         DispatcherRefreshServersBiz,
         DispatcherRefreshIcon,
         DispatcherCheckUpdate,
-        DispatcherCheckUpdateFinished, 
+        DispatcherCheckUpdateFinished,
         DispatcherShowMsg,
     }
 }

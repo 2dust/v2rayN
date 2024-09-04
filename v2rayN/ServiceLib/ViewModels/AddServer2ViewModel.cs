@@ -9,6 +9,7 @@ namespace ServiceLib.ViewModels
     {
         [Reactive]
         public ProfileItem SelectedSource { get; set; }
+
         [Reactive]
         public string? CoreType { get; set; }
 
