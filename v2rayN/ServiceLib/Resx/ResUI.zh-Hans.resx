@@ -1016,7 +1016,7 @@
     <value>移至上下</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
+    <value>公钥</value>
   </data>
   <data name="TbShortId" xml:space="preserve">
     <value>ShortId</value>
@@ -1115,13 +1115,13 @@
     <value>添加[Wireguard]服务器</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
+    <value>私钥</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
     <value>Reserved(2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>地址(IP,IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密码(obfs password)</value>
