@@ -1250,7 +1250,7 @@ namespace ServiceLib.Handler.CoreConfig
 
         private int GenExperimental(SingboxConfig singboxConfig)
         {
-            if (_config.guiItem.enableStatistics)
+            //if (_config.guiItem.enableStatistics)
             {
                 singboxConfig.experimental ??= new Experimental4Sbox();
                 singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
