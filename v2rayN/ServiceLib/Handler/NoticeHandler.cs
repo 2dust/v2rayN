@@ -22,13 +22,13 @@ namespace ServiceLib.Handler
             MessageBus.Current.SendMessage(content, Global.CommandSendMsgView);
         }
 
-        public void SendMessage(string? content, bool time)
+        public void SendMessageEx(string? content  )
         {
             if (content.IsNullOrEmpty())
             {
                 return;
             }
-            content = $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {content}";
+            content = $"{DateTime.Now:yyyy/MM/dd HH:mm:ss} {content}";
             SendMessage(content);
         }
 

@@ -135,7 +135,7 @@ namespace ServiceLib.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
-            _noticeHandler?.SendMessage(msg, true);
+            _noticeHandler?.SendMessageEx(msg);
         }
 
         public void ProxiesReload()

@@ -391,7 +391,7 @@ namespace ServiceLib.ViewModels
 
         private void UpdateTaskHandler(bool success, string msg)
         {
-            _noticeHandler?.SendMessage(msg);
+            _noticeHandler?.SendMessageEx(msg);
             if (success)
             {
                 var indexIdOld = _config.indexId;
@@ -631,7 +631,7 @@ namespace ServiceLib.ViewModels
             }
             (new UpdateHandler()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
-                _noticeHandler?.SendMessage(msg, true);
+                _noticeHandler?.SendMessageEx(msg);
 
                 if (!_config.uiItem.showInTaskbar)
                 {
@@ -881,7 +881,7 @@ namespace ServiceLib.ViewModels
         private async Task ChangeSystemProxyStatusAsync(ESysProxyType type, bool blChange)
         {
             await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
-            _noticeHandler?.SendMessage($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}", true);
+            _noticeHandler?.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
             BlSystemProxySet = (type == ESysProxyType.ForcedChange);
@@ -941,7 +941,7 @@ namespace ServiceLib.ViewModels
 
             if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
-                _noticeHandler?.SendMessage(ResUI.TipChangeRouting, true);
+                _noticeHandler?.SendMessageEx(ResUI.TipChangeRouting);
                 Reload();
                 await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }

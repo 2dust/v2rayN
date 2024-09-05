@@ -258,7 +258,7 @@ namespace ServiceLib.ViewModels
         {
             if (Utils.IsNullOrEmpty(result.IndexId))
             {
-                _noticeHandler?.SendMessage(result.Delay, true);
+                _noticeHandler?.SendMessageEx(result.Delay);
                 _noticeHandler?.Enqueue(result.Delay);
                 return;
             }
