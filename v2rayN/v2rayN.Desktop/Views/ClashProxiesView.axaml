@@ -104,7 +104,7 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="4,0"
+                            Margin="0"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>

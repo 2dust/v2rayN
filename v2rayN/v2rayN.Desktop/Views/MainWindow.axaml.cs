@@ -72,13 +72,7 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
 
-                //check update
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateNCmd, v => v.menuCheckUpdateN).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateXrayCoreCmd, v => v.menuCheckUpdateXrayCore).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateClashMetaCoreCmd, v => v.menuCheckUpdateMihomoCore).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateSingBoxCoreCmd, v => v.menuCheckUpdateSingBoxCore).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.CheckUpdateGeoCmd, v => v.menuCheckUpdateGeo).DisposeWith(disposables);
-
+                
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
@@ -172,6 +166,7 @@ namespace v2rayN.Desktop.Views
                 tabClashConnections2.Content ??= new ClashConnectionsView();
             }
             conTheme.Content ??= new ThemeSettingView();
+            conCheckUpdate.Content ??= new CheckUpdateView();
 
             RestoreUI();
             AddHelpMenuItem();

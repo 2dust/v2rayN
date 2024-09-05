@@ -87,16 +87,8 @@
 
                 <MenuItem Padding="8,0">
                     <MenuItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
-                        </StackPanel>
+                        <ContentControl x:Name="conCheckUpdate" />
                     </MenuItem.Header>
-                    <MenuItem x:Name="menuCheckUpdateN" Header="V2rayN" />
-                    <MenuItem x:Name="menuCheckUpdateXrayCore" Header="Xray Core" />
-                    <MenuItem x:Name="menuCheckUpdateMihomoCore" Header="Mihomo Core" />
-                    <MenuItem x:Name="menuCheckUpdateSingBoxCore" Header="Sing-box Core" />
-                    <Separator />
-                    <MenuItem x:Name="menuCheckUpdateGeo" Header="Geo files" />
                 </MenuItem>
 
                 <MenuItem x:Name="menuHelp" Padding="8,0">

@@ -1,0 +1,96 @@
+﻿<UserControl
+    x:Class="v2rayN.Desktop.Views.CheckUpdateView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:CheckUpdateViewModel"
+    mc:Ignorable="d">
+    <Button Classes="Tertiary">
+        <Button.Content>
+            <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
+        </Button.Content>
+        <Button.Flyout>
+            <Flyout Placement="RightEdgeAlignedTop">
+                <DockPanel Margin="16">
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        Classes="Margin8"
+                        DockPanel.Dock="Bottom"
+                        Orientation="Horizontal">
+
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
+                        <ToggleSwitch
+                            x:Name="togEnableCheckPreReleaseUpdate"
+                            HorizontalAlignment="Left"
+                            Classes="Margin8" />
+
+                        <Button
+                            x:Name="btnCheckUpdate"
+                            Width="100"
+                            Classes="Margin8"
+                            Content="{x:Static resx:ResUI.menuCheckUpdate}" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <ListBox
+                            x:Name="lstCheckUpdates"
+                            BorderThickness="1"
+                            ItemsSource="{Binding CheckUpdateItems}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Width="500"
+                                        Height="80"
+                                        Margin="0"
+                                        VerticalAlignment="Center"
+                                        Theme="{StaticResource CardBorder}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*" />
+                                                <ColumnDefinition Width="1*" />
+                                                <ColumnDefinition Width="3*" />
+                                            </Grid.ColumnDefinitions>
+                                            <ToggleSwitch
+                                                x:Name="togAutoRefresh"
+                                                Grid.Column="0"
+                                                Margin="8"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding isSelected}" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding coreType}" />
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding remarks}"
+                                                TextWrapping="WrapWithOverflow" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </DockPanel>
+            </Flyout>
+        </Button.Flyout>
+    </Button>
+</UserControl>
