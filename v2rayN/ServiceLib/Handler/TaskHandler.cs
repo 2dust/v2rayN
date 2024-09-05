@@ -61,7 +61,7 @@
                 {
                     if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)
                     {
-                        updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
+                        await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                         {
                             update(false, msg);
                         });
