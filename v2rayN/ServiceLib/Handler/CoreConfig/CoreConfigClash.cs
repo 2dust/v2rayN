@@ -64,6 +64,12 @@
                 var txtFile = File.ReadAllText(addressFileName);
                 txtFile = txtFile.Replace(tagYamlStr1, tagYamlStr2);
 
+                //YAML anchors
+                if (txtFile.Contains("<<:") && txtFile.Contains("*") && txtFile.Contains("&"))
+                {
+                    txtFile = YamlUtils.PreprocessYaml(txtFile);
+                }
+
                 var fileContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
                 if (fileContent == null)
                 {

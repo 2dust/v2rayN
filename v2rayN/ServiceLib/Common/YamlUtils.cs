@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace ServiceLib.Common
@@ -35,13 +36,17 @@ namespace ServiceLib.Common
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToYaml(Object obj)
+        public static string ToYaml(Object? obj)
         {
+            string result = string.Empty;
+            if (obj == null)
+            {
+                return result;
+            }
             var serializer = new SerializerBuilder()
                     .WithNamingConvention(HyphenatedNamingConvention.Instance)
                     .Build();
 
-            string result = string.Empty;
             try
             {
                 result = serializer.Serialize(obj);
@@ -51,6 +56,24 @@ namespace ServiceLib.Common
                 Logging.SaveLog(ex.Message, ex);
             }
             return result;
+        }
+
+        public static string? PreprocessYaml(string str)
+        {
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+            try
+            {
+                var mergingParser = new MergingParser(new Parser(new StringReader(str)));
+                var obj = new DeserializerBuilder().Build().Deserialize(mergingParser);
+                return ToYaml(obj);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("PreprocessYaml", ex);
+                return null;
+            }
         }
 
         #endregion YAML
