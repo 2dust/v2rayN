@@ -35,5 +35,25 @@ namespace v2rayN
 
             return true;
         }
+
+        public static bool? SaveFileDialog(out string fileName, string filter)
+        {
+            fileName = string.Empty;
+
+            SaveFileDialog fileDialog = new()
+            {
+                Filter = filter,
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (fileDialog.ShowDialog() != true)
+            {
+                return false;
+            }
+
+            fileName = fileDialog.FileName;
+
+            return true;
+        }
     }
 }

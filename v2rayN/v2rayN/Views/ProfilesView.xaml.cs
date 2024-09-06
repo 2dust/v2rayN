@@ -129,17 +129,11 @@ namespace v2rayN.Views
 
                 case EViewAction.SaveFileDialog:
                     if (obj is null) return false;
-                    SaveFileDialog fileDialog = new()
-                    {
-                        Filter = "Config|*.json",
-                        FilterIndex = 2,
-                        RestoreDirectory = true
-                    };
-                    if (fileDialog.ShowDialog() != true)
+                    if (UI.SaveFileDialog(out string fileName, "Config|*.json") != true)
                     {
                         return false;
                     }
-                    ViewModel?.Export2ClientConfigResult(fileDialog.FileName, (ProfileItem)obj);
+                    ViewModel?.Export2ClientConfigResult(fileName, (ProfileItem)obj);
                     break;
 
                 case EViewAction.AddServerWindow:
