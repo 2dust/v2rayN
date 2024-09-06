@@ -428,6 +428,24 @@ namespace ServiceLib.ViewModels
             }
         }
 
+        public async Task V2rayUpgrade(string fileName)
+        {
+            Process process = new()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "v2rayUpgrade",
+                    Arguments = fileName.AppendQuotes(),
+                    WorkingDirectory = Utils.StartupPath()
+                }
+            };
+            process.Start();
+            if (process.Id > 0)
+            {
+                await MyAppExitAsync(false);
+            }
+        }
+
         #endregion Actions
 
         #region Servers && Groups
