@@ -11,6 +11,7 @@ namespace ServiceLib.ViewModels
     public class CheckUpdateViewModel : MyReactiveObject
     {
         private const string _geo = "GeoFiles";
+        private string _v2rayN = ECoreType.v2rayN.ToString();
         private List<CheckUpdateItem> _lstUpdated = [];
 
         private IObservableCollection<CheckUpdateItem> _checkUpdateItem = new ObservableCollectionExtended<CheckUpdateItem>();
@@ -52,7 +53,7 @@ namespace ServiceLib.ViewModels
             _checkUpdateItem.Add(new CheckUpdateItem()
             {
                 isSelected = false,
-                coreType = ECoreType.v2rayN.ToString(),
+                coreType = _v2rayN,
                 remarks = ResUI.menuCheckUpdate,
             });
             _checkUpdateItem.Add(new CheckUpdateItem()
@@ -98,7 +99,7 @@ namespace ServiceLib.ViewModels
                     {
                         await CheckUpdateGeo();
                     }
-                    else if (item.coreType == ECoreType.v2rayN.ToString())
+                    else if (item.coreType == _v2rayN)
                     {
                         await CheckUpdateN(EnableCheckPreReleaseUpdate);
                     }
@@ -153,23 +154,23 @@ namespace ServiceLib.ViewModels
                 && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
                 )
             {
-                UpdateView(ResUI.UpdateStandalonePackageTip, ResUI.UpdateStandalonePackageTip);
+                UpdateView(_v2rayN, ResUI.UpdateStandalonePackageTip);
                 return;
             }
 
             void _updateUI(bool success, string msg)
             {
-                UpdateView(ECoreType.v2rayN.ToString(), msg);
+                UpdateView(_v2rayN, msg);
                 if (success)
                 {
-                    UpdateView(ECoreType.v2rayN.ToString(), ResUI.OperationSuccess);
-                    UpdatedPlusPlus(ECoreType.v2rayN.ToString(), msg);
+                    UpdateView(_v2rayN, ResUI.OperationSuccess);
+                    UpdatedPlusPlus(_v2rayN, msg);
                 }
             }
             await (new UpdateHandler()).CheckUpdateGuiN(_config, _updateUI, preRelease)
                 .ContinueWith(t =>
                 {
-                    UpdatedPlusPlus(ECoreType.v2rayN.ToString(), "");
+                    UpdatedPlusPlus(_v2rayN, "");
                 });
         }
 
@@ -201,7 +202,7 @@ namespace ServiceLib.ViewModels
                 Task.Delay(1000);
                 UpgradeCore();
 
-                if (_lstUpdated.Any(x => x.coreType == ECoreType.v2rayN.ToString() && x.isFinished == true))
+                if (_lstUpdated.Any(x => x.coreType == _v2rayN && x.isFinished == true))
                 {
                     Task.Delay(1000);
                     UpgradeN();
@@ -228,7 +229,7 @@ namespace ServiceLib.ViewModels
         {
             try
             {
-                var fileName = _lstUpdated.FirstOrDefault(x => x.coreType == ECoreType.v2rayN.ToString())?.fileName;
+                var fileName = _lstUpdated.FirstOrDefault(x => x.coreType == _v2rayN)?.fileName;
                 if (fileName.IsNullOrEmpty())
                 {
                     return;
@@ -251,7 +252,7 @@ namespace ServiceLib.ViewModels
             }
             catch (Exception ex)
             {
-                UpdateView(ECoreType.v2rayN.ToString(), ex.Message);
+                UpdateView(_v2rayN, ex.Message);
             }
         }
 
