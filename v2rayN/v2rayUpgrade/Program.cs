@@ -66,7 +66,7 @@ namespace v2rayUpgrade
             {
                 string thisAppOldFile = $"{GetExePath()}.tmp";
                 File.Delete(thisAppOldFile);
-                string startKey = "v2rayN/";
+                string splitKey = "/";
 
                 using ZipArchive archive = ZipFile.OpenRead(fileName);
                 foreach (ZipArchiveEntry entry in archive.Entries)
@@ -77,11 +77,11 @@ namespace v2rayUpgrade
                         {
                             continue;
                         }
-                        string fullName = entry.FullName;
-                        if (fullName.StartsWith(startKey))
-                        {
-                            fullName = fullName[startKey.Length..];
-                        }
+
+                        var lst = entry.FullName.Split(splitKey);
+                        if (lst.Length == 1) continue;
+                        string fullName = string.Join(splitKey, lst[1..lst.Length]);
+
                         if (string.Equals(GetExePath(), GetPath(fullName), StringComparison.OrdinalIgnoreCase))
                         {
                             File.Move(GetExePath(), thisAppOldFile);
@@ -90,6 +90,8 @@ namespace v2rayUpgrade
                         string entryOutputPath = GetPath(fullName);
                         Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
                         entry.ExtractToFile(entryOutputPath, true);
+
+                        Console.WriteLine(entryOutputPath);
                     }
                     catch (Exception ex)
                     {
@@ -104,11 +106,12 @@ namespace v2rayUpgrade
             }
             if (sb.Length > 0)
             {
-                Console.WriteLine("Upgrade Failed,Hold ctrl + c to copy to clipboard.\n" +
-                    "(升级失败,按住ctrl+c可以复制到剪贴板)." + sb.ToString());
+                Console.WriteLine("Upgrade Failed.\n" +
+                    "(升级失败)." + sb.ToString());
                 return;
             }
 
+            Console.WriteLine("Start v2rayN, please wait...(正在重启，请等待)");
             Process.Start("v2rayN");
         }
 
