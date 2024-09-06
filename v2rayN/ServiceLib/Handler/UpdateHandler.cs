@@ -437,6 +437,15 @@ namespace ServiceLib.Handler
         {
             if (Utils.IsWindows())
             {
+                //Check for standalone windows .Net version
+                if (coreInfo?.coreType == ECoreType.v2rayN
+                    && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
+                    && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
+                    )
+                {
+                    return coreInfo?.coreDownloadUrl64.Replace("v2rayN.zip", "zz_v2rayN-SelfContained.zip");
+                }
+
                 return RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.Arm64 => coreInfo?.coreDownloadUrlArm64,

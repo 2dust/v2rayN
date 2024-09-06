@@ -148,15 +148,15 @@ namespace ServiceLib.ViewModels
 
         private async Task CheckUpdateN(bool preRelease)
         {
-            //Check for standalone windows .Net version
-            if (Utils.IsWindows()
-                && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
-                && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
-                )
-            {
-                UpdateView(_v2rayN, ResUI.UpdateStandalonePackageTip);
-                return;
-            }
+            ////Check for standalone windows .Net version
+            //if (Utils.IsWindows()
+            //    && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
+            //    && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
+            //    )
+            //{
+            //    UpdateView(_v2rayN, ResUI.UpdateStandalonePackageTip);
+            //    return;
+            //}
 
             void _updateUI(bool success, string msg)
             {
