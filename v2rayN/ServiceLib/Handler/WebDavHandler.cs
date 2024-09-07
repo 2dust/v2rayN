@@ -11,7 +11,7 @@ namespace ServiceLib.Handler
         private Config? _config;
         private WebDavClient? _client;
         private string? _lastDescription;
-        private string _webDir = "mywebdir";
+        private string _webDir = Global.AppName + "_backup";
         private string _webFileName = "backup.zip";
         private string _logTitle = "WebDav--";
 
@@ -51,17 +51,12 @@ namespace ServiceLib.Handler
             return await Task.FromResult(true);
         }
 
-        private async Task<bool> CheckProp()
+        private async Task<bool> TryCreateDir()
         {
             if (_client is null) return false;
             try
             {
-                var result = await _client.Propfind(_webDir);
-                if (result.IsSuccessful)
-                {
-                    return true;
-                }
-                var result2 = await _client.Mkcol(_webDir); // create a directory
+                var result2 = await _client.Mkcol(_webDir);
                 if (result2.IsSuccessful)
                 {
                     return true;
@@ -93,12 +88,20 @@ namespace ServiceLib.Handler
             {
                 return false;
             }
-            if (await CheckProp() == false)
+            await TryCreateDir();
+
+            var testName = "readme_test";
+            var myContent = new StringContent(testName);
+            var result = await _client.PutFile($"{_webDir}/{testName}", myContent);
+            if (result.IsSuccessful)
+            {
+                await _client.Delete($"{_webDir}/{testName}");
+                return true;
+            }
+            else
             {
                 return false;
             }
-
-            return true;
         }
 
         public async Task<bool> PutFile(string fileName)
@@ -107,10 +110,7 @@ namespace ServiceLib.Handler
             {
                 return false;
             }
-            if (await CheckProp() == false)
-            {
-                return false;
-            }
+            await TryCreateDir();
 
             try
             {
@@ -136,10 +136,8 @@ namespace ServiceLib.Handler
             {
                 return false;
             }
-            if (await CheckProp() == false)
-            {
-                return false;
-            }
+            await TryCreateDir();
+
             try
             {
                 var response = await _client.GetRawFile($"{_webDir}/{_webFileName}");
