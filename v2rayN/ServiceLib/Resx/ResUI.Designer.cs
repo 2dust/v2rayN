@@ -583,6 +583,42 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 WebDav Check 的本地化字符串。
+        /// </summary>
+        public static string LvWebDavCheck {
+            get {
+                return ResourceManager.GetString("LvWebDavCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WebDav Password 的本地化字符串。
+        /// </summary>
+        public static string LvWebDavPassword {
+            get {
+                return ResourceManager.GetString("LvWebDavPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WebDav Url 的本地化字符串。
+        /// </summary>
+        public static string LvWebDavUrl {
+            get {
+                return ResourceManager.GetString("LvWebDavUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WebDav User Name 的本地化字符串。
+        /// </summary>
+        public static string LvWebDavUserName {
+            get {
+                return ResourceManager.GetString("LvWebDavUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add a custom configuration server 的本地化字符串。
         /// </summary>
         public static string menuAddCustomServer {
@@ -687,6 +723,15 @@ namespace ServiceLib.Resx {
         public static string menuAddWireguardServer {
             get {
                 return ResourceManager.GetString("menuAddWireguardServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Backup and Restore 的本地化字符串。
+        /// </summary>
+        public static string menuBackupAndRestore {
+            get {
+                return ResourceManager.GetString("menuBackupAndRestore", resourceCulture);
             }
         }
         
@@ -858,6 +903,33 @@ namespace ServiceLib.Resx {
         public static string menuImportRulesFromUrl {
             get {
                 return ResourceManager.GetString("menuImportRulesFromUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Backup to local 的本地化字符串。
+        /// </summary>
+        public static string menuLocalBackup {
+            get {
+                return ResourceManager.GetString("menuLocalBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local 的本地化字符串。
+        /// </summary>
+        public static string menuLocalBackupAndRestore {
+            get {
+                return ResourceManager.GetString("menuLocalBackupAndRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore from local 的本地化字符串。
+        /// </summary>
+        public static string menuLocalRestore {
+            get {
+                return ResourceManager.GetString("menuLocalRestore", resourceCulture);
             }
         }
         
@@ -1092,6 +1164,33 @@ namespace ServiceLib.Resx {
         public static string menuReload {
             get {
                 return ResourceManager.GetString("menuReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Backup to remote (WebDAV) 的本地化字符串。
+        /// </summary>
+        public static string menuRemoteBackup {
+            get {
+                return ResourceManager.GetString("menuRemoteBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remote (WebDAV) 的本地化字符串。
+        /// </summary>
+        public static string menuRemoteBackupAndRestore {
+            get {
+                return ResourceManager.GetString("menuRemoteBackupAndRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore from remote (WebDAV) 的本地化字符串。
+        /// </summary>
+        public static string menuRemoteRestore {
+            get {
+                return ResourceManager.GetString("menuRemoteRestore", resourceCulture);
             }
         }
         

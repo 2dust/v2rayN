@@ -17,6 +17,7 @@ namespace v2rayN.Views
     {
         private static Config _config;
         private CheckUpdateView? _checkUpdateView;
+        private BackupAndRestoreView? _backupAndRestoreView;
 
         public MainWindow()
         {
@@ -33,6 +34,7 @@ namespace v2rayN.Views
             menuClose.Click += menuClose_Click;
             menuExit.Click += menuExit_Click;
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
+            menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
             MessageBus.Current.Listen<string>(Global.CommandSendSnackMsg).Subscribe(x => DelegateSnackMsg(x));
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
@@ -71,7 +73,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
-              
+
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
@@ -186,12 +188,6 @@ namespace v2rayN.Views
 
             RestoreUI();
             AddHelpMenuItem();
-        }
-
-        private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            _checkUpdateView ??= new CheckUpdateView();
-            DialogHost.Show(_checkUpdateView, "RootDialog");
         }
 
         #region Event
@@ -423,6 +419,18 @@ namespace v2rayN.Views
             ShowHideWindow(true);
 
             ViewModel?.ScanScreenTaskAsync(result);
+        }
+
+        private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            _checkUpdateView ??= new CheckUpdateView();
+            DialogHost.Show(_checkUpdateView, "RootDialog");
+        }
+
+        private void MenuBackupAndRestore_Click(object sender, RoutedEventArgs e)
+        {
+            _backupAndRestoreView ??= new BackupAndRestoreView();
+            DialogHost.Show(_backupAndRestoreView, "RootDialog");
         }
 
         #endregion Event

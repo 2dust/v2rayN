@@ -204,6 +204,8 @@ namespace ServiceLib.Handler
                 };
             }
 
+            config.webDavItem ??= new();
+
             return 0;
         }
 

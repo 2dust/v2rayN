@@ -248,4 +248,12 @@
         public bool notProxyLocalAddress { get; set; } = true;
         public string systemProxyAdvancedProtocol { get; set; }
     }
+
+    [Serializable]
+    public class WebDavItem
+    {
+        public string? url { get; set; }
+        public string? userName { get; set; }
+        public string? password { get; set; }
+    }
 }

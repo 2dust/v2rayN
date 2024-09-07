@@ -1279,4 +1279,37 @@
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Custom config socks port</value>
   </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Backup and Restore</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Backup to local</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Restore from local</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Backup to remote (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Restore from remote (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Remote (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav Url</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>WebDav User Name</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>WebDav Password</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDav Check</value>
+  </data>
 </root>

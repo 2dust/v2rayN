@@ -22,7 +22,7 @@ namespace ServiceLib.Handler
             MessageBus.Current.SendMessage(content, Global.CommandSendMsgView);
         }
 
-        public void SendMessageEx(string? content  )
+        public void SendMessageEx(string? content)
         {
             if (content.IsNullOrEmpty())
             {

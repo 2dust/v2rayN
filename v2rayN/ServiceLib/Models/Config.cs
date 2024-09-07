@@ -47,6 +47,7 @@
         public HysteriaItem hysteriaItem { get; set; }
         public ClashUIItem clashUIItem { get; set; }
         public SystemProxyItem systemProxyItem { get; set; }
+        public WebDavItem webDavItem { get; set; }
         public List<InItem> inbound { get; set; }
         public List<KeyEventItem> globalHotkeys { get; set; }
         public List<CoreTypeItem> coreTypeItem { get; set; }

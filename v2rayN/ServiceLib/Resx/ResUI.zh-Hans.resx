@@ -1276,4 +1276,37 @@
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>自定义配置的Socks端口</value>
   </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>备份和还原</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>备份到本地</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>从本地恢复</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>备份到远程 (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>从远程恢复 (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>远程 (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>WebDav 账户</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDav 可用检查</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>WebDav 密码</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav 服务器地址</value>
+  </data>
 </root>

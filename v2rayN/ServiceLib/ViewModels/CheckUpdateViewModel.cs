@@ -3,7 +3,6 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Diagnostics;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels

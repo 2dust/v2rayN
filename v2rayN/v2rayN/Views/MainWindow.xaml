@@ -187,13 +187,13 @@
                                     Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
+                                    x:Name="menuBackupAndRestore"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
+                                <MenuItem
                                     x:Name="menuOpenTheFileLocation"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
-                                <!--<MenuItem
-                                    x:Name="menuImportOldGuiConfig"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuImportOldGuiConfig}" />-->
                             </MenuItem>
                         </Menu>
                         <Separator />
