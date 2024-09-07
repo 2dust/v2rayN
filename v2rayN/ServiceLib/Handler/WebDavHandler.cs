@@ -100,6 +100,7 @@ namespace ServiceLib.Handler
             }
             else
             {
+                SaveLog(result.Description);
                 return false;
             }
         }

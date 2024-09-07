@@ -28,7 +28,7 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.DispatcherCheckUpdate:
-                    if (obj is null) return false;                   
+                    if (obj is null) return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.UpdateViewResult((CheckUpdateItem)obj),
                     DispatcherPriority.Default);

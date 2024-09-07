@@ -21,18 +21,18 @@
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
 
-            <TextBlock               
+            <TextBlock
                 Margin="{StaticResource SettingItemMargin}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
             <ToggleButton
-                x:Name="togEnableCheckPreReleaseUpdate"          
+                x:Name="togEnableCheckPreReleaseUpdate"
                 Margin="{StaticResource SettingItemMargin}"
                 HorizontalAlignment="Left" />
 
             <Button
-                x:Name="btnCheckUpdate"           
+                x:Name="btnCheckUpdate"
                 Width="100"
                 Margin="8"
                 Content="{x:Static resx:ResUI.menuCheckUpdate}"
@@ -40,7 +40,7 @@
                 IsDefault="True"
                 Style="{StaticResource MaterialDesignFlatButton}" />
 
-            <Button        
+            <Button
                 Width="100"
                 Margin="8"
                 HorizontalAlignment="Right"
