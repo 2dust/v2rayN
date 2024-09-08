@@ -592,6 +592,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remote folder name (optional) 的本地化字符串。
+        /// </summary>
+        public static string LvWebDavDirName {
+            get {
+                return ResourceManager.GetString("LvWebDavDirName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 WebDav Password 的本地化字符串。
         /// </summary>
         public static string LvWebDavPassword {

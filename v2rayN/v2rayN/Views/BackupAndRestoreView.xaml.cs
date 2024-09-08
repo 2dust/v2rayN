@@ -25,6 +25,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSource.url, v => v.txtWebDavUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.userName, v => v.txtWebDavUserName.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.password, v => v.txtWebDavPassword.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.dirName, v => v.txtWebDavDirName.Text).DisposeWith(disposables);
+                
                 this.BindCommand(ViewModel, vm => vm.WebDavCheckCmd, v => v.menuWebDavCheck).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.RemoteBackupCmd, v => v.menuRemoteBackup).DisposeWith(disposables);

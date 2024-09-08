@@ -117,6 +117,11 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
+            //exist
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
 
             //backup first
             var fileBackup = Utils.GetBackupPath($"backup_{DateTime.Now:yyyyMMddHHmmss}.zip");

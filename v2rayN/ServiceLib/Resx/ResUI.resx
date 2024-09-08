@@ -1312,4 +1312,7 @@
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDav Check</value>
   </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Remote folder name (optional)</value>
+  </data>
 </root>

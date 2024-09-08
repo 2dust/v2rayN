@@ -130,6 +130,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -184,9 +185,25 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}" />
 
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="8"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.LvWebDavDirName}" />
+
+                                    <TextBox
+                                        x:Name="txtWebDavDirName"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Margin="8"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource DefTextBox}" />
+
                                     <Button
                                         x:Name="menuWebDavCheck"
-                                        Grid.Row="3"
+                                        Grid.Row="4"
                                         Grid.Column="1"
                                         Margin="8"
                                         VerticalAlignment="Center"

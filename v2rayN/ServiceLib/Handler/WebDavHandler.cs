@@ -35,6 +35,14 @@ namespace ServiceLib.Handler
                     _client?.Dispose();
                     _client = null;
                 }
+                if (_config.webDavItem.dirName.IsNullOrEmpty())
+                {
+                    _webDir = Global.AppName + "_backup";
+                }
+                else
+                {
+                    _webDir = _config.webDavItem.dirName.TrimEx();
+                }
 
                 var clientParams = new WebDavClientParams
                 {
@@ -145,6 +153,7 @@ namespace ServiceLib.Handler
                 if (!response.IsSuccessful)
                 {
                     SaveLog(response.Description);
+                    return false;
                 }
                 using var outputFileStream = new FileStream(fileName, FileMode.Create);
                 response.Stream.CopyTo(outputFileStream);

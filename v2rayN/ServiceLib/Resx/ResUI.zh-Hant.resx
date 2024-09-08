@@ -1189,4 +1189,7 @@
   <data name="LvWebDavUrl" xml:space="preserve">
     <value>WebDav 服務器地址</value>
   </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>遠端資料夾名稱(可選)</value>
+  </data>
 </root>
