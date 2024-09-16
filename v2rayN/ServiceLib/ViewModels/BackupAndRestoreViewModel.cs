@@ -7,6 +7,9 @@ namespace ServiceLib.ViewModels
 {
     public class BackupAndRestoreViewModel : MyReactiveObject
     {
+        private readonly string _guiConfigs = "guiConfigs";
+        private static string BackupFileName => $"backup_{DateTime.Now:yyyyMMddHHmmss}.zip";
+
         public ReactiveCommand<Unit, Unit> RemoteBackupCmd { get; }
         public ReactiveCommand<Unit, Unit> RemoteRestoreCmd { get; }
         public ReactiveCommand<Unit, Unit> WebDavCheckCmd { get; }
@@ -65,7 +68,7 @@ namespace ServiceLib.ViewModels
         private async Task RemoteBackup()
         {
             DisplayOperationMsg();
-            var fileName = Utils.GetBackupPath($"backup_{DateTime.Now:yyyyMMddHHmmss}.zip");
+            var fileName = Utils.GetBackupPath(BackupFileName);
             var result = await CreateZipFileFromDirectory(fileName);
             if (result)
             {
@@ -122,9 +125,16 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
+            //check
+            var lstFiles = FileManager.GetFilesFromZip(fileName);
+            if (lstFiles is null || !lstFiles.Where(t => t.Contains(_guiConfigs)).Any())
+            {
+                DisplayOperationMsg(ResUI.LocalRestoreInvalidZipTips);
+                return;
+            }
 
             //backup first
-            var fileBackup = Utils.GetBackupPath($"backup_{DateTime.Now:yyyyMMddHHmmss}.zip");
+            var fileBackup = Utils.GetBackupPath(BackupFileName);
             var result = await CreateZipFileFromDirectory(fileBackup);
             if (result)
             {
@@ -145,7 +155,7 @@ namespace ServiceLib.ViewModels
 
             var configDir = Utils.GetConfigPath();
             var configDirZipTemp = Utils.GetTempPath($"v2rayN_{DateTime.Now:yyyyMMddHHmmss}");
-            var configDirTemp = Path.Combine(configDirZipTemp, "guiConfigs");
+            var configDirTemp = Path.Combine(configDirZipTemp, _guiConfigs);
 
             await Task.Run(() => FileManager.CopyDirectory(configDir, configDirTemp, false, "cache.db"));
             var ret = await Task.Run(() => FileManager.CreateFromDirectory(configDirZipTemp, fileName));

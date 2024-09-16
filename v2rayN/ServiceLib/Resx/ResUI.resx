@@ -1315,4 +1315,7 @@
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>Remote folder name (optional)</value>
   </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>Invalid backup file</value>
+  </data>
 </root>

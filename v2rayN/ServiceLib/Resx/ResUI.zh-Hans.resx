@@ -1312,4 +1312,7 @@
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>远程文件夹名称(可选)</value>
   </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>无效备份文件</value>
+  </data>
 </root>

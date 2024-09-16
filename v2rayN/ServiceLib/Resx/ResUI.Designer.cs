@@ -322,6 +322,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Invalid backup file 的本地化字符串。
+        /// </summary>
+        public static string LocalRestoreInvalidZipTips {
+            get {
+                return ResourceManager.GetString("LocalRestoreInvalidZipTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         public static string LvAddress {

@@ -102,6 +102,24 @@ namespace ServiceLib.Common
             return true;
         }
 
+        public static List<string>? GetFilesFromZip(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                return null;
+            }
+            try
+            {
+                using ZipArchive archive = ZipFile.OpenRead(fileName);
+                return archive.Entries.Select(entry => entry.FullName).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+                return null;
+            }
+        }
+
         public static bool CreateFromDirectory(string sourceDirectoryName, string destinationArchiveFileName)
         {
             try

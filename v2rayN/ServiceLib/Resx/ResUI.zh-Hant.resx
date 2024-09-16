@@ -1192,4 +1192,7 @@
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>遠端資料夾名稱(可選)</value>
   </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>無效備份文件</value>
+  </data>
 </root>
