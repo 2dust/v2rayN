@@ -567,13 +567,12 @@ namespace ServiceLib.Common
         {
             try
             {
-                string location = GetExePath();
                 if (blFull)
                 {
                     return string.Format("{0} - V{1} - {2}",
                             Global.AppName,
                             GetVersionInfo(),
-                            File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
+                            File.GetLastWriteTime(GetExePath()).ToString("yyyy/MM/dd"));
                 }
                 else
                 {
@@ -593,7 +592,7 @@ namespace ServiceLib.Common
         {
             try
             {
-                return Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString() ?? "0.0";
+                return Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(3) ?? "0.0";
             }
             catch (Exception ex)
             {
