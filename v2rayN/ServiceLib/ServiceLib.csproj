@@ -14,7 +14,7 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="Splat.NLog" Version="15.1.1" />
 		<PackageReference Include="WebDav.Client" Version="2.8.0" />
-		<PackageReference Include="YamlDotNet" Version="16.1.0" />
+		<PackageReference Include="YamlDotNet" Version="16.1.2" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
 	</ItemGroup>
 	
