@@ -261,14 +261,10 @@ namespace ServiceLib.Handler
             _updateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
-        public void RunAvailabilityCheck(Action<bool, string> update)
+        public async Task RunAvailabilityCheck(Action<bool, string> update)
         {
-            Task.Run(async () =>
-            {
-                var time = await (new DownloadHandler()).RunAvailabilityCheck(null);
-
-                update(false, string.Format(ResUI.TestMeOutput, time));
-            });
+            var time = await (new DownloadHandler()).RunAvailabilityCheck(null);
+            update(false, string.Format(ResUI.TestMeOutput, time));
         }
 
         #region private

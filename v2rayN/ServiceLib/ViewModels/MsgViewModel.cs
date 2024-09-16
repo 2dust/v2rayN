@@ -60,6 +60,10 @@ namespace ServiceLib.ViewModels
             }
 
             _blLockShow = true;
+            if (!_config.uiItem.showInTaskbar)
+            {
+                await Task.Delay(1000);
+            }
 
             await Task.Delay(100);
             var txt = string.Join("", _queueMsg.ToArray());

@@ -349,10 +349,6 @@ namespace ServiceLib.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
-            if (!_config.uiItem.showInTaskbar)
-            {
-                return;
-            }
             _noticeHandler?.SendMessage(msg);
             if (notify)
             {
@@ -611,21 +607,16 @@ namespace ServiceLib.ViewModels
             SetDefaultServer(SelectedServer.ID);
         }
 
-        public void TestServerAvailability()
+        public async Task TestServerAvailability()
         {
             var item = ConfigHandler.GetDefaultServer(_config);
             if (item == null)
             {
                 return;
             }
-            (new UpdateHandler()).RunAvailabilityCheck(async (bool success, string msg) =>
+            await (new UpdateHandler()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
                 _noticeHandler?.SendMessageEx(msg);
-
-                if (!_config.uiItem.showInTaskbar)
-                {
-                    return;
-                }
                 await _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
             });
         }
@@ -715,7 +706,7 @@ namespace ServiceLib.ViewModels
 
             LoadCore().ContinueWith(async task =>
             {
-                TestServerAvailability();
+                await TestServerAvailability();
 
                 await _updateView?.Invoke(EViewAction.DispatcherReload, null);
             });
