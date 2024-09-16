@@ -16,7 +16,7 @@
     <DockPanel Classes="Margin8">
         <StackPanel
             HorizontalAlignment="Center"
-            Classes="Margin4"
+            Classes="Margin8"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -95,7 +95,7 @@
                         BorderThickness="1"
                         Classes="TextArea Margin8"
                         TextWrapping="Wrap"
-                        ToolTip.Tip="Http/Socks" />
+                        Watermark="Http/Socks" />
                 </DockPanel>
             </TabItem>
 
@@ -153,7 +153,7 @@
                             BorderThickness="1"
                             Classes="TextArea Margin8"
                             TextWrapping="Wrap"
-                            ToolTip.Tip="Http/Socks" />
+                            Watermark="Http/Socks" />
 
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
 
@@ -165,7 +165,7 @@
                             BorderThickness="1"
                             Classes="TextArea Margin8"
                             TextWrapping="Wrap"
-                            ToolTip.Tip="{x:Static resx:ResUI.TbSettingsTunMode}" />
+                            Watermark="{x:Static resx:ResUI.TbSettingsTunMode}" />
                     </Grid>
                 </DockPanel>
             </TabItem>

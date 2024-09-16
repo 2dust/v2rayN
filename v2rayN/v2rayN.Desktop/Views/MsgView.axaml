@@ -20,7 +20,7 @@
                 Width="200"
                 Margin="8,0"
                 VerticalContentAlignment="Center"
-                ToolTip.Tip="{x:Static resx:ResUI.MsgFilterTitle}" />
+                Watermark="{x:Static resx:ResUI.MsgFilterTitle}" />
 
             <Button
                 x:Name="btnCopy"
@@ -62,7 +62,8 @@
                 x:Name="togAutoRefresh"
                 Margin="8,0"
                 HorizontalAlignment="Left"
-                IsChecked="True" />
+                IsChecked="True"
+                Theme="{StaticResource SimpleToggleSwitch}" />
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
@@ -71,7 +72,8 @@
                 x:Name="togScrollToEnd"
                 Margin="8,0"
                 HorizontalAlignment="Left"
-                IsChecked="True" />
+                IsChecked="True"
+                Theme="{StaticResource SimpleToggleSwitch}" />
         </WrapPanel>
         <TextBox
             Name="txtMsg"

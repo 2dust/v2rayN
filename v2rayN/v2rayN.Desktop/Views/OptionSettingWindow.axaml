@@ -309,12 +309,12 @@
                                 x:Name="txtUpMbps"
                                 Width="90"
                                 Classes="Margin8"
-                                ToolTip.Tip="Up" />
+                                Watermark="Up" />
                             <TextBox
                                 x:Name="txtDownMbps"
                                 Width="90"
                                 Classes="Margin8"
-                                ToolTip.Tip="Down" />
+                                Watermark="Down" />
                         </StackPanel>
 
                         <TextBlock

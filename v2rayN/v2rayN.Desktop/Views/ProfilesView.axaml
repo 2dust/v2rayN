@@ -75,7 +75,7 @@
                     Width="200"
                     Margin="4,0"
                     VerticalContentAlignment="Center"
-                    ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
+                    Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"

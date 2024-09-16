@@ -62,7 +62,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 Text="{x:Static resx:ResUI.LvRemarks}" />
             <StackPanel
                 Grid.Row="0"
@@ -76,25 +76,25 @@
                     Width="300"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Classes="Margin4"
+                    Classes="Margin8"
                     TextWrapping="Wrap" />
 
                 <TextBlock
                     VerticalAlignment="Center"
-                    Classes="Margin4"
+                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
                     Width="100"
                     HorizontalAlignment="Left"
-                    Classes="Margin4" />
+                    Classes="Margin8" />
             </StackPanel>
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 Text="{x:Static resx:ResUI.TbdomainStrategy}" />
             <StackPanel
                 Grid.Row="1"
@@ -103,22 +103,22 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy"
                     Width="200"
-                    Classes="Margin4" />
+                    Classes="Margin8" />
                 <TextBlock
                     VerticalAlignment="Center"
-                    Classes="Margin4"
+                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
                 <ComboBox
                     x:Name="cmbdomainStrategy4Singbox"
                     Width="200"
-                    Classes="Margin4" />
+                    Classes="Margin8" />
             </StackPanel>
 
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 Text="{x:Static resx:ResUI.LvUrl}" />
             <TextBox
                 x:Name="txtUrl"
@@ -127,14 +127,14 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 TextWrapping="Wrap" />
 
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 Text="{x:Static resx:ResUI.LvCustomIcon}" />
             <TextBox
                 x:Name="txtCustomIcon"
@@ -143,20 +143,20 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowseCustomIcon"
                 Grid.Row="3"
                 Grid.Column="2"
-                Classes="Margin4"
+                Classes="Margin8"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
 
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin4">
+                Classes="Margin8">
                 <Button Click="linkCustomRulesetPath4Singbox">
                     <TextBlock Text="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}" />
                 </Button>
@@ -168,13 +168,13 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin4"
+                Classes="Margin8"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowseCustomRulesetPath4Singbox"
                 Grid.Row="4"
                 Grid.Column="2"
-                Classes="Margin4"
+                Classes="Margin8"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
         </Grid>
 

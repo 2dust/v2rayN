@@ -16,7 +16,7 @@
     <DockPanel Classes="Margin8">
         <StackPanel
             HorizontalAlignment="Center"
-            Classes="Margin4"
+            Classes="Margin8"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -57,14 +57,14 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.menuServers}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbRemarks}" />
 
                     <TextBox
@@ -74,13 +74,13 @@
                         Width="400"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Classes="Margin4" />
+                        Classes="Margin8" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbAddress}" />
                     <TextBox
                         x:Name="txtAddress"
@@ -89,7 +89,7 @@
                         Width="400"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         IsReadOnly="True" />
                     <StackPanel
                         Grid.Row="2"
@@ -110,7 +110,7 @@
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbCoreType}" />
                     <ComboBox
                         x:Name="cmbCoreType"
@@ -118,24 +118,24 @@
                         Grid.Column="1"
                         Width="200"
                         HorizontalAlignment="Left"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         MaxDropDownHeight="1000" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbDisplayLog}" />
                     <StackPanel
                         Grid.Row="4"
                         Grid.Column="1"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Orientation="Horizontal">
                         <ToggleSwitch
                             x:Name="togDisplayLog"
                             HorizontalAlignment="Left"
-                            Classes="Margin4" />
+                            Classes="Margin8" />
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
@@ -146,7 +146,7 @@
                         Grid.Row="5"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbPreSocksPort}" />
                     <TextBox
                         x:Name="txtPreSocksPort"
@@ -154,12 +154,12 @@
                         Grid.Column="1"
                         Width="200"
                         HorizontalAlignment="Left"
-                        Classes="Margin4" />
+                        Classes="Margin8" />
                     <StackPanel
                         Grid.Row="6"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
-                        Classes="Margin4">
+                        Classes="Margin8">
                         <TextBlock
                             Width="500"
                             VerticalAlignment="Center"
