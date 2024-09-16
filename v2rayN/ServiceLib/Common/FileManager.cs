@@ -143,6 +143,10 @@ namespace ServiceLib.Common
                 {
                     continue;
                 }
+                if (file.Extension == file.Name)
+                {
+                    continue;
+                }
                 string targetFilePath = Path.Combine(destinationDir, file.Name);
                 file.CopyTo(targetFilePath);
             }

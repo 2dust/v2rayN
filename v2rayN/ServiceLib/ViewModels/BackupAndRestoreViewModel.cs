@@ -147,7 +147,7 @@ namespace ServiceLib.ViewModels
             var configDirZipTemp = Utils.GetTempPath($"v2rayN_{DateTime.Now:yyyyMMddHHmmss}");
             var configDirTemp = Path.Combine(configDirZipTemp, "guiConfigs");
 
-            await Task.Run(() => FileManager.CopyDirectory(configDir, configDirTemp, true, "cache.db"));
+            await Task.Run(() => FileManager.CopyDirectory(configDir, configDirTemp, false, "cache.db"));
             var ret = await Task.Run(() => FileManager.CreateFromDirectory(configDirZipTemp, fileName));
             await Task.Run(() => Directory.Delete(configDirZipTemp, true));
             return ret;
