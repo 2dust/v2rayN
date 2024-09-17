@@ -640,6 +640,7 @@ namespace ServiceLib.Models
         public int? maxUploadSize { get; set; }
 
         public int? maxConcurrentUploads { get; set; }
+        public string? maxConnections {get;set}
     }
 
     public class HttpSettings4Ray
