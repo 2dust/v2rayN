@@ -106,6 +106,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Host filter 的本地化字符串。
+        /// </summary>
+        public static string ConnectionsHostFilterTitle {
+            get {
+                return ResourceManager.GetString("ConnectionsHostFilterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually. 的本地化字符串。
         /// </summary>
         public static string CustomServerTips {

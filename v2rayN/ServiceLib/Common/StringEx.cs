@@ -14,6 +14,11 @@ namespace ServiceLib.Common
             return string.IsNullOrWhiteSpace(value);
         }
 
+        public static bool IsNotEmpty([NotNullWhen(false)] this string? value)
+        {
+            return !string.IsNullOrEmpty(value);
+        }
+
         public static bool BeginWithAny(this string s, IEnumerable<char> chars)
         {
             if (s.IsNullOrEmpty()) return false;

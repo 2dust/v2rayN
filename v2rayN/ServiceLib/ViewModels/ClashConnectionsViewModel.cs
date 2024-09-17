@@ -20,6 +20,9 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> ConnectionCloseAllCmd { get; }
 
         [Reactive]
+        public string HostFilter { get; set; }
+
+        [Reactive]
         public int SortingSelected { get; set; }
 
         [Reactive]
@@ -77,7 +80,7 @@ namespace ServiceLib.ViewModels
         {
             var lastTime = DateTime.Now;
 
-            Observable.Interval(TimeSpan.FromSeconds(10))
+            Observable.Interval(TimeSpan.FromSeconds(5))
               .Subscribe(x =>
               {
                   if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.clash)))
@@ -118,12 +121,18 @@ namespace ServiceLib.ViewModels
             var lstModel = new List<ClashConnectionModel>();
             foreach (var item in connections ?? [])
             {
+                var host = $"{(string.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+                if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
+                {
+                    continue;
+                }
+
                 ClashConnectionModel model = new();
 
                 model.id = item.id;
                 model.network = item.metadata.network;
                 model.type = item.metadata.type;
-                model.host = $"{(string.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+                model.host = host;
                 var sp = (dtNow - item.start);
                 model.time = sp.TotalSeconds < 0 ? 1 : sp.TotalSeconds;
                 model.upload = item.upload;

@@ -1195,4 +1195,7 @@
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
     <value>無效備份文件</value>
   </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>主機過濾器</value>
+  </data>
 </root>

@@ -1318,4 +1318,7 @@
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
     <value>Invalid backup file</value>
   </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>Host filter</value>
+  </data>
 </root>
