@@ -248,10 +248,10 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
+                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                     if (it.configType is EConfigType.VMess or EConfigType.VLESS)
                     {
-                        var item2 = LazyConfig.Instance.GetProfileItem(it.indexId);
-                        if (item2 is null || Utils.IsNullOrEmpty(item2.id) || !Utils.IsGuidByParse(item2.id))
+                        if (item is null || Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
                         {
                             continue;
                         }
@@ -294,7 +294,6 @@ namespace ServiceLib.Handler.CoreConfig
                     v2rayConfig.inbounds.Add(inbound);
 
                     //outbound
-                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
                     if (item is null)
                     {
                         continue;
@@ -306,6 +305,12 @@ namespace ServiceLib.Handler.CoreConfig
                     }
                     if (item.configType == EConfigType.VLESS
                      && !Global.Flows.Contains(item.flow))
+                    {
+                        continue;
+                    }
+                    if ((it.configType is EConfigType.VLESS or EConfigType.Trojan)
+                        && item.streamSecurity == Global.StreamSecurityReality
+                        && item.publicKey.IsNullOrEmpty())
                     {
                         continue;
                     }
