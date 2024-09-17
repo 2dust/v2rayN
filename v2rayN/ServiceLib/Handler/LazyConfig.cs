@@ -104,11 +104,11 @@
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";
-            if (!Utils.IsNullOrEmpty(subid))
+            if (Utils.IsNotEmpty(subid))
             {
                 sql += $" and a.subid = '{subid}'";
             }
-            if (!Utils.IsNullOrEmpty(filter))
+            if (Utils.IsNotEmpty(filter))
             {
                 if (filter.Contains('\''))
                 {

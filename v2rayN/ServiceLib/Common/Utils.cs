@@ -417,6 +417,11 @@ namespace ServiceLib.Common
             return false;
         }
 
+        public static bool IsNotEmpty(string? text)
+        {
+            return !string.IsNullOrEmpty(text);
+        }
+
         /// <summary>
         /// 验证IP地址是否合法
         /// </summary>

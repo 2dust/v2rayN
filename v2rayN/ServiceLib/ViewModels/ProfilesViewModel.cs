@@ -265,13 +265,13 @@ namespace ServiceLib.ViewModels
             var item = _profileItems.Where(it => it.indexId == result.IndexId).FirstOrDefault();
             if (item != null)
             {
-                if (!Utils.IsNullOrEmpty(result.Delay))
+                if (Utils.IsNotEmpty(result.Delay))
                 {
                     int.TryParse(result.Delay, out int temp);
                     item.delay = temp;
                     item.delayVal = $"{result.Delay} {Global.DelayUnit}";
                 }
-                if (!Utils.IsNullOrEmpty(result.Speed))
+                if (Utils.IsNotEmpty(result.Speed))
                 {
                     item.speedVal = $"{result.Speed} {Global.SpeedUnit}";
                 }

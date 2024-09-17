@@ -76,7 +76,7 @@ namespace ServiceLib.ViewModels
         {
             //filter msg
             if (MsgFilter != _lastMsgFilter) _lastMsgFilterNotAvailable = false;
-            if (!Utils.IsNullOrEmpty(MsgFilter) && !_lastMsgFilterNotAvailable)
+            if (Utils.IsNotEmpty(MsgFilter) && !_lastMsgFilterNotAvailable)
             {
                 try
                 {

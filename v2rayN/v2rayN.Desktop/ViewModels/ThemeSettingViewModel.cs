@@ -70,7 +70,7 @@ namespace v2rayN.Desktop.ViewModels
              y => y != null && !y.IsNullOrEmpty())
                 .Subscribe(c =>
                 {
-                    if (!Utils.IsNullOrEmpty(CurrentLanguage) && _config.uiItem.currentLanguage != CurrentLanguage)
+                    if (Utils.IsNotEmpty(CurrentLanguage) && _config.uiItem.currentLanguage != CurrentLanguage)
                     {
                         _config.uiItem.currentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);

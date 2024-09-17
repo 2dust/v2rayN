@@ -43,7 +43,7 @@
                 }
 
                 string addressFileName = node.address;
-                if (string.IsNullOrEmpty(addressFileName))
+                if (Utils.IsNullOrEmpty(addressFileName))
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
                     return -1;
@@ -117,7 +117,7 @@
                 if (_config.tunModeItem.enableTun)
                 {
                     string tun = Utils.GetEmbedText(Global.ClashTunYaml);
-                    if (!string.IsNullOrEmpty(tun))
+                    if (Utils.IsNotEmpty(tun))
                     {
                         var tunContent = YamlUtils.FromYaml<Dictionary<string, object>>(tun);
                         if (tunContent != null)

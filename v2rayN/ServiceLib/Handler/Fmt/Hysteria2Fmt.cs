@@ -31,20 +31,20 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (!Utils.IsNullOrEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.remarks))
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (!Utils.IsNullOrEmpty(item.sni))
+            if (Utils.IsNotEmpty(item.sni))
             {
                 dicQuery.Add("sni", item.sni);
             }
-            if (!Utils.IsNullOrEmpty(item.alpn))
+            if (Utils.IsNotEmpty(item.alpn))
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
             }
-            if (!Utils.IsNullOrEmpty(item.path))
+            if (Utils.IsNotEmpty(item.path))
             {
                 dicQuery.Add("obfs", "salamander");
                 dicQuery.Add("obfs-password", Utils.UrlEncode(item.path));

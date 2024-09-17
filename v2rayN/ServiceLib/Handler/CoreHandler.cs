@@ -302,7 +302,7 @@ namespace ServiceLib.Handler
                 {
                     proc.OutputDataReceived += (sender, e) =>
                     {
-                        if (!Utils.IsNullOrEmpty(e.Data))
+                        if (Utils.IsNotEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);
@@ -310,7 +310,7 @@ namespace ServiceLib.Handler
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
-                        if (!Utils.IsNullOrEmpty(e.Data))
+                        if (Utils.IsNotEmpty(e.Data))
                         {
                             string msg = e.Data + Environment.NewLine;
                             ShowMsg(false, msg);

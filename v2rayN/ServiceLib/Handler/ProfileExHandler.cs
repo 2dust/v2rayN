@@ -35,7 +35,7 @@ namespace ServiceLib.Handler
 
         private void IndexIdEnqueue(string indexId)
         {
-            if (!Utils.IsNullOrEmpty(indexId) && !_queIndexIds.Contains(indexId))
+            if (Utils.IsNotEmpty(indexId) && !_queIndexIds.Contains(indexId))
             {
                 _queIndexIds.Enqueue(indexId);
             }

@@ -34,25 +34,25 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (!Utils.IsNullOrEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.remarks))
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
 
             var dicQuery = new Dictionary<string, string>();
-            if (!Utils.IsNullOrEmpty(item.publicKey))
+            if (Utils.IsNotEmpty(item.publicKey))
             {
                 dicQuery.Add("publickey", Utils.UrlEncode(item.publicKey));
             }
-            if (!Utils.IsNullOrEmpty(item.path))
+            if (Utils.IsNotEmpty(item.path))
             {
                 dicQuery.Add("reserved", Utils.UrlEncode(item.path));
             }
-            if (!Utils.IsNullOrEmpty(item.requestHost))
+            if (Utils.IsNotEmpty(item.requestHost))
             {
                 dicQuery.Add("address", Utils.UrlEncode(item.requestHost));
             }
-            if (!Utils.IsNullOrEmpty(item.shortId))
+            if (Utils.IsNotEmpty(item.shortId))
             {
                 dicQuery.Add("mtu", Utils.UrlEncode(item.shortId));
             }

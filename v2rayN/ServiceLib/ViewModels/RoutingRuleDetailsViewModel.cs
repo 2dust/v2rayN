@@ -80,7 +80,7 @@ namespace ServiceLib.ViewModels
               || SelectedSource.ip?.Count > 0
               || SelectedSource.protocol?.Count > 0
               || SelectedSource.process?.Count > 0
-              || !Utils.IsNullOrEmpty(SelectedSource.port);
+              || Utils.IsNotEmpty(SelectedSource.port);
 
             if (!hasRule)
             {

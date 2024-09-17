@@ -143,7 +143,7 @@ namespace ServiceLib.Handler
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
                     string hashCode = $"{item.remarks}->";
-                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (!Utils.IsNullOrEmpty(subId) && item.id != subId))
+                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (Utils.IsNotEmpty(subId) && item.id != subId))
                     {
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                         continue;
@@ -169,7 +169,7 @@ namespace ServiceLib.Handler
                     //one url
                     url = Utils.GetPunycode(url);
                     //convert
-                    if (!Utils.IsNullOrEmpty(item.convertTarget))
+                    if (Utils.IsNotEmpty(item.convertTarget))
                     {
                         var subConvertUrl = Utils.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
                         url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
@@ -189,9 +189,9 @@ namespace ServiceLib.Handler
                     }
 
                     //more url
-                    if (Utils.IsNullOrEmpty(item.convertTarget) && !Utils.IsNullOrEmpty(item.moreUrl.TrimEx()))
+                    if (Utils.IsNullOrEmpty(item.convertTarget) && Utils.IsNotEmpty(item.moreUrl.TrimEx()))
                     {
-                        if (!Utils.IsNullOrEmpty(result) && Utils.IsBase64String(result!))
+                        if (Utils.IsNotEmpty(result) && Utils.IsBase64String(result!))
                         {
                             result = Utils.Base64Decode(result);
                         }
@@ -210,7 +210,7 @@ namespace ServiceLib.Handler
                             {
                                 result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
                             }
-                            if (!Utils.IsNullOrEmpty(result2))
+                            if (Utils.IsNotEmpty(result2))
                             {
                                 if (Utils.IsBase64String(result2!))
                                 {
@@ -277,7 +277,7 @@ namespace ServiceLib.Handler
                 var url = coreInfo?.coreReleaseApiUrl;
 
                 var result = await downloadHandle.DownloadStringAsync(url, true, Global.AppName);
-                if (!Utils.IsNullOrEmpty(result))
+                if (Utils.IsNotEmpty(result))
                 {
                     return await ParseDownloadUrl(type, result, preRelease);
                 }

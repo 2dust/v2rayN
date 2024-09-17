@@ -22,7 +22,7 @@ namespace ServiceLib.Common
 
         public async Task<string?> TryGetAsync(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (Utils.IsNullOrEmpty(url))
                 return null;
 
             try

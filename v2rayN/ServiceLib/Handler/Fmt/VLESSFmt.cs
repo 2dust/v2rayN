@@ -33,12 +33,12 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (!Utils.IsNullOrEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.remarks))
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (!Utils.IsNullOrEmpty(item.security))
+            if (Utils.IsNotEmpty(item.security))
             {
                 dicQuery.Add("encryption", item.security);
             }

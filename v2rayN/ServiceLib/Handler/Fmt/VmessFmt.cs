@@ -78,12 +78,12 @@
             item.alterId = Utils.ToInt(vmessQRCode.aid);
             item.security = Utils.ToString(vmessQRCode.scy);
 
-            item.security = !Utils.IsNullOrEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;
-            if (!Utils.IsNullOrEmpty(vmessQRCode.net))
+            item.security = Utils.IsNotEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;
+            if (Utils.IsNotEmpty(vmessQRCode.net))
             {
                 item.network = vmessQRCode.net;
             }
-            if (!Utils.IsNullOrEmpty(vmessQRCode.type))
+            if (Utils.IsNotEmpty(vmessQRCode.type))
             {
                 item.headerType = vmessQRCode.type;
             }

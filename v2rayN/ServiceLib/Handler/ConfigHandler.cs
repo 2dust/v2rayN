@@ -23,7 +23,7 @@ namespace ServiceLib.Handler
         {
             //载入配置文件
             var result = Utils.LoadResource(Utils.GetConfigPath(configRes));
-            if (!Utils.IsNullOrEmpty(result))
+            if (Utils.IsNotEmpty(result))
             {
                 //转成Json
                 config = JsonUtils.Deserialize<Config>(result);
@@ -1007,7 +1007,7 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            if (!Utils.IsNullOrEmpty(profileItem.security) && profileItem.security != Global.None)
+            if (Utils.IsNotEmpty(profileItem.security) && profileItem.security != Global.None)
             {
                 profileItem.security = Global.None;
             }
@@ -1045,7 +1045,7 @@ namespace ServiceLib.Handler
         {
             profileItem.configVersion = 2;
 
-            if (!Utils.IsNullOrEmpty(profileItem.streamSecurity))
+            if (Utils.IsNotEmpty(profileItem.streamSecurity))
             {
                 if (profileItem.streamSecurity != Global.StreamSecurity
                      && profileItem.streamSecurity != Global.StreamSecurityReality)
@@ -1065,7 +1065,7 @@ namespace ServiceLib.Handler
                 }
             }
 
-            if (!Utils.IsNullOrEmpty(profileItem.network) && !Global.Networks.Contains(profileItem.network))
+            if (Utils.IsNotEmpty(profileItem.network) && !Global.Networks.Contains(profileItem.network))
             {
                 profileItem.network = Global.DefaultNetwork;
             }
@@ -1186,7 +1186,7 @@ namespace ServiceLib.Handler
 
             string subFilter = string.Empty;
             //remove sub items
-            if (isSub && !Utils.IsNullOrEmpty(subid))
+            if (isSub && Utils.IsNotEmpty(subid))
             {
                 RemoveServerViaSubid(config, subid, isSub);
                 subFilter = LazyConfig.Instance.GetSubItem(subid)?.filter ?? "";
@@ -1219,7 +1219,7 @@ namespace ServiceLib.Handler
                 }
 
                 //exist sub items
-                if (isSub && !Utils.IsNullOrEmpty(subid))
+                if (isSub && Utils.IsNotEmpty(subid))
                 {
                     var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub
                                                 && config.uiItem.enableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
@@ -1241,7 +1241,7 @@ namespace ServiceLib.Handler
                         }
                     }
                     //filter
-                    if (!Utils.IsNullOrEmpty(subFilter))
+                    if (Utils.IsNotEmpty(subFilter))
                     {
                         if (!Regex.IsMatch(profileItem.remarks, subFilter))
                         {
@@ -1305,7 +1305,7 @@ namespace ServiceLib.Handler
             }
             if (lstProfiles != null && lstProfiles.Count > 0)
             {
-                if (isSub && !Utils.IsNullOrEmpty(subid))
+                if (isSub && Utils.IsNotEmpty(subid))
                 {
                     RemoveServerViaSubid(config, subid, isSub);
                 }
@@ -1361,7 +1361,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (isSub && !Utils.IsNullOrEmpty(subid))
+            if (isSub && Utils.IsNotEmpty(subid))
             {
                 RemoveServerViaSubid(config, subid, isSub);
             }
@@ -1389,7 +1389,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (isSub && !Utils.IsNullOrEmpty(subid))
+            if (isSub && Utils.IsNotEmpty(subid))
             {
                 RemoveServerViaSubid(config, subid, isSub);
             }
@@ -1421,7 +1421,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
             List<ProfileItem>? lstOriSub = null;
-            if (isSub && !Utils.IsNullOrEmpty(subid))
+            if (isSub && Utils.IsNotEmpty(subid))
             {
                 lstOriSub = LazyConfig.Instance.ProfileItems(subid);
             }

@@ -117,7 +117,7 @@ namespace ServiceLib.Handler
             try
             {
                 var result1 = await DownloadStringAsync(url, blProxy, userAgent);
-                if (!Utils.IsNullOrEmpty(result1))
+                if (Utils.IsNotEmpty(result1))
                 {
                     return result1;
                 }
@@ -135,7 +135,7 @@ namespace ServiceLib.Handler
             try
             {
                 var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent);
-                if (!Utils.IsNullOrEmpty(result2))
+                if (Utils.IsNotEmpty(result2))
                 {
                     return result2;
                 }
@@ -155,7 +155,7 @@ namespace ServiceLib.Handler
                 using var wc = new WebClient();
                 wc.Proxy = GetWebProxy(blProxy);
                 var result3 = await wc.DownloadStringTaskAsync(url);
-                if (!Utils.IsNullOrEmpty(result3))
+                if (Utils.IsNotEmpty(result3))
                 {
                     return result3;
                 }
@@ -197,7 +197,7 @@ namespace ServiceLib.Handler
 
                 Uri uri = new(url);
                 //Authorization Header
-                if (!Utils.IsNullOrEmpty(uri.UserInfo))
+                if (Utils.IsNotEmpty(uri.UserInfo))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
                 }

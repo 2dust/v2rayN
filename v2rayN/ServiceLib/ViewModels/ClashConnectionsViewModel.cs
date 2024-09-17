@@ -37,7 +37,7 @@ namespace ServiceLib.ViewModels
 
             var canEditRemove = this.WhenAnyValue(
              x => x.SelectedSource,
-             selectedSource => selectedSource != null && !string.IsNullOrEmpty(selectedSource.id));
+             selectedSource => selectedSource != null && Utils.IsNotEmpty(selectedSource.id));
 
             this.WhenAnyValue(
               x => x.SortingSelected,
@@ -121,7 +121,7 @@ namespace ServiceLib.ViewModels
             var lstModel = new List<ClashConnectionModel>();
             foreach (var item in connections ?? [])
             {
-                var host = $"{(string.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+                var host = $"{(Utils.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
                 if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
                 {
                     continue;

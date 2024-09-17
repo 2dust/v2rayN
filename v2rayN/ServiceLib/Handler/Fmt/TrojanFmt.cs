@@ -30,7 +30,7 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (!Utils.IsNullOrEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.remarks))
             {
                 remark = "#" + Utils.UrlEncode(item.remarks);
             }

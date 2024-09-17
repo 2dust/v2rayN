@@ -57,7 +57,7 @@ namespace ServiceLib.ViewModels
 
             this.WhenAnyValue(
                x => x.SelectedGroup,
-               y => y != null && !string.IsNullOrEmpty(y.name))
+               y => y != null && Utils.IsNotEmpty(y.name))
                    .Subscribe(c => RefreshProxyDetails(c));
 
             this.WhenAnyValue(
@@ -194,7 +194,7 @@ namespace ServiceLib.ViewModels
             {
                 foreach (var it in proxyGroups)
                 {
-                    if (string.IsNullOrEmpty(it.name) || !_proxies.ContainsKey(it.name))
+                    if (Utils.IsNullOrEmpty(it.name) || !_proxies.ContainsKey(it.name))
                     {
                         continue;
                     }
@@ -220,7 +220,7 @@ namespace ServiceLib.ViewModels
                     continue;
                 }
                 var item = _proxyGroups.Where(t => t.name == kv.Key).FirstOrDefault();
-                if (item != null && !string.IsNullOrEmpty(item.name))
+                if (item != null && Utils.IsNotEmpty(item.name))
                 {
                     continue;
                 }
@@ -257,7 +257,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var name = SelectedGroup?.name;
-            if (string.IsNullOrEmpty(name))
+            if (Utils.IsNullOrEmpty(name))
             {
                 return;
             }
@@ -342,21 +342,21 @@ namespace ServiceLib.ViewModels
 
         public void SetActiveProxy()
         {
-            if (SelectedGroup == null || string.IsNullOrEmpty(SelectedGroup.name))
+            if (SelectedGroup == null || Utils.IsNullOrEmpty(SelectedGroup.name))
             {
                 return;
             }
-            if (SelectedDetail == null || string.IsNullOrEmpty(SelectedDetail.name))
+            if (SelectedDetail == null || Utils.IsNullOrEmpty(SelectedDetail.name))
             {
                 return;
             }
             var name = SelectedGroup.name;
-            if (string.IsNullOrEmpty(name))
+            if (Utils.IsNullOrEmpty(name))
             {
                 return;
             }
             var nameNode = SelectedDetail.name;
-            if (string.IsNullOrEmpty(nameNode))
+            if (Utils.IsNullOrEmpty(nameNode))
             {
                 return;
             }
@@ -393,7 +393,7 @@ namespace ServiceLib.ViewModels
                     GetClashProxies(true);
                     return;
                 }
-                if (string.IsNullOrEmpty(result))
+                if (Utils.IsNullOrEmpty(result))
                 {
                     return;
                 }
