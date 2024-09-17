@@ -913,7 +913,8 @@ namespace ServiceLib.Handler.CoreConfig
                         SplithttpSettings4Ray splithttpSettings = new()
                         {
                             maxUploadSize = 1000000,
-                            maxConcurrentUploads = 10
+                            maxConcurrentUploads = 10,
+                            maxConnections="10-20"
                         };
 
                         if (Utils.IsNotEmpty(node.path))
