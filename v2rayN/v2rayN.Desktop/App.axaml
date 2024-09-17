@@ -13,7 +13,10 @@
 
     <TrayIcon.Icons>
         <TrayIcons>
-            <TrayIcon Clicked="TrayIcon_Clicked" Icon="/Assets/NotifyIcon1.ico">
+            <TrayIcon
+                Clicked="TrayIcon_Clicked"
+                Icon="/Assets/NotifyIcon1.ico"
+                ToolTipText="v2rayN Desktop">
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />

@@ -18,6 +18,13 @@
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
+            <TextBox
+                x:Name="txtHostFilter"
+                Width="200"
+                Margin="8,0"
+                VerticalContentAlignment="Center"
+                Watermark="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
+
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
