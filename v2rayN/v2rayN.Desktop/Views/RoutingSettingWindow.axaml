@@ -26,9 +26,9 @@
             </Menu>
 
             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
-                <Button Click="linkdomainStrategy_Click">
+                <HyperlinkButton Classes="WithIcon" Click="linkdomainStrategy_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy}" />
-                </Button>
+                </HyperlinkButton>
             </TextBlock>
             <ComboBox
                 x:Name="cmbdomainStrategy"
@@ -45,9 +45,9 @@
                 Margin="8,0,0,0" />
             <Separator />
             <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
-                <Button Click="linkdomainStrategy4Singbox_Click">
+                <HyperlinkButton Classes="WithIcon" Click="linkdomainStrategy4Singbox_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
-                </Button>
+                </HyperlinkButton>
             </TextBlock>
             <ComboBox
                 x:Name="cmbdomainStrategy4Singbox"

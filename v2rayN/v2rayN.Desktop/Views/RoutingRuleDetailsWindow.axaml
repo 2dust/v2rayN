@@ -66,9 +66,9 @@
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Classes="Margin8">
-                <Button Click="linkRuleobjectDoc_Click">
+                <HyperlinkButton Classes="WithIcon" Click="linkRuleobjectDoc_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
-                </Button>
+                </HyperlinkButton>
             </TextBlock>
 
             <TextBlock

@@ -43,9 +43,9 @@
                             Text="{x:Static resx:ResUI.TbSettingsRemoteDNS}" />
 
                         <TextBlock VerticalAlignment="Center" Classes="Margin8">
-                            <Button Click="linkDnsObjectDoc_Click">
+                            <HyperlinkButton Classes="WithIcon" Click="linkDnsObjectDoc_Click">
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />
-                            </Button>
+                            </HyperlinkButton>
                         </TextBlock>
                         <Button
                             x:Name="btnImportDefConfig4V2ray"
@@ -103,9 +103,9 @@
                 <DockPanel Classes="Margin8">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Classes="Margin8">
-                            <Button Click="linkDnsSingboxObjectDoc_Click">
+                            <HyperlinkButton Classes="WithIcon" Click="linkDnsSingboxObjectDoc_Click">
                                 <TextBlock Text="{x:Static resx:ResUI.TbDnsSingboxObjectDoc}" />
-                            </Button>
+                            </HyperlinkButton>
                         </TextBlock>
                         <Button
                             x:Name="btnImportDefConfig4Singbox"

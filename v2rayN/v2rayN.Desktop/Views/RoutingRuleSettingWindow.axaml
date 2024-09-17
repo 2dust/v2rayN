@@ -157,9 +157,9 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8">
-                <Button Click="linkCustomRulesetPath4Singbox">
+                <HyperlinkButton Classes="WithIcon" Click="linkCustomRulesetPath4Singbox">
                     <TextBlock Text="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}" />
-                </Button>
+                </HyperlinkButton>
             </TextBlock>
             <TextBox
                 x:Name="txtCustomRulesetPath4Singbox"
