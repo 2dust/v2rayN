@@ -16,7 +16,7 @@
     <DockPanel Classes="Margin8">
         <StackPanel
             HorizontalAlignment="Center"
-            Classes="Margin4"
+            Classes="Margin8"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -113,7 +113,7 @@
                             <ListBox
                                 x:Name="clbdestOverride"
                                 HorizontalAlignment="Left"
-                                Classes="Margin4"
+                                Classes="Margin8"
                                 SelectionMode="Multiple"
                                 Theme="{DynamicResource PureCardRadioGroupListBox}" />
                         </StackPanel>

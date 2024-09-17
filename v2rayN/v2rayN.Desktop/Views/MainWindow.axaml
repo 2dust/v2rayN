@@ -148,7 +148,7 @@
                     <ToggleSwitch
                         x:Name="togEnableTun"
                         HorizontalAlignment="Left"
-                        Classes="Margin4"
+                        Classes="Margin8"
                         Theme="{StaticResource SimpleToggleSwitch}" />
                 </StackPanel>
 

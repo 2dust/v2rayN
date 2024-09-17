@@ -92,7 +92,6 @@
         <DockPanel>
             <ListBox
                 x:Name="lstProxyGroups"
-                Margin="0,0,5,0"
                 DockPanel.Dock="Left"
                 ItemsSource="{Binding ProxyGroups}">
                 <ItemsControl.ItemsPanel>
@@ -108,16 +107,17 @@
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>
-                                <Grid Grid.Column="0" Classes="Margin4">
+                                <Grid Grid.Column="0" Classes="Margin8">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="8" />
+                                        <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <DockPanel Grid.Row="0">
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding type}" />
                                         <TextBlock Text="{Binding name}" />
                                     </DockPanel>
-                                    <TextBlock Grid.Row="1" Text="{Binding now}" />
+                                    <TextBlock Grid.Row="2" Text="{Binding now}" />
                                 </Grid>
                             </DockPanel>
                         </Border>
@@ -141,6 +141,7 @@
                     <DataTemplate>
                         <Border
                             Width="160"
+                            Margin="0"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>
@@ -152,16 +153,17 @@
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
                                     IsVisible="{Binding isActive}" />
-                                <Grid Classes="Margin4">
+                                <Grid Classes="Margin8">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="2*" />
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="8" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <TextBlock
                                         Grid.Row="0"
                                         Text="{Binding name}"
                                         TextWrapping="WrapWithOverflow" />
-                                    <DockPanel Grid.Row="1">
+                                    <DockPanel Grid.Row="2">
                                         <TextBlock
                                             DockPanel.Dock="Right"
                                             Foreground="{Binding Path=delay, Converter={StaticResource DelayColorConverter}}"
