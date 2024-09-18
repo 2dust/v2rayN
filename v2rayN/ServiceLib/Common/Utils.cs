@@ -158,10 +158,11 @@ namespace ServiceLib.Common
         /// </summary>
         /// <param name="plainText"></param>
         /// <returns></returns>
-        public static string Base64Decode(string plainText)
+        public static string Base64Decode(string? plainText)
         {
             try
             {
+                if (plainText.IsNullOrEmpty()) return "";
                 plainText = plainText.Trim()
                   .Replace(Environment.NewLine, "")
                   .Replace("\n", "")
@@ -365,7 +366,7 @@ namespace ServiceLib.Common
             }
         }
 
-        public static bool IsBase64String(string plainText)
+        public static bool IsBase64String(string? plainText)
         {
             if (plainText.IsNullOrEmpty()) return false;
             var buffer = new Span<byte>(new byte[plainText.Length]);
@@ -812,7 +813,7 @@ namespace ServiceLib.Common
             }
             if (coreType != null)
             {
-                _tempPath = Path.Combine(_tempPath, coreType.ToString()!);
+                _tempPath = Path.Combine(_tempPath, coreType.ToString());
                 if (!Directory.Exists(_tempPath))
                 {
                     Directory.CreateDirectory(_tempPath);

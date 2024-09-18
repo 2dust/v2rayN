@@ -191,7 +191,7 @@ namespace ServiceLib.Handler
                     //more url
                     if (Utils.IsNullOrEmpty(item.convertTarget) && Utils.IsNotEmpty(item.moreUrl.TrimEx()))
                     {
-                        if (Utils.IsNotEmpty(result) && Utils.IsBase64String(result!))
+                        if (Utils.IsNotEmpty(result) && Utils.IsBase64String(result))
                         {
                             result = Utils.Base64Decode(result);
                         }
@@ -212,7 +212,7 @@ namespace ServiceLib.Handler
                             }
                             if (Utils.IsNotEmpty(result2))
                             {
-                                if (Utils.IsBase64String(result2!))
+                                if (Utils.IsBase64String(result2))
                                 {
                                     result += Utils.Base64Decode(result2);
                                 }
@@ -368,7 +368,7 @@ namespace ServiceLib.Handler
             {
                 var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
                 var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
-                var version = new SemanticVersion(gitHubRelease?.TagName!);
+                var version = new SemanticVersion(gitHubRelease?.TagName);
                 var body = gitHubRelease?.Body;
 
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);

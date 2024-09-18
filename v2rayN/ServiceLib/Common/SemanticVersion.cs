@@ -15,11 +15,19 @@
             this.version = $"{major}.{minor}.{patch}";
         }
 
-        public SemanticVersion(string version)
+        public SemanticVersion(string? version)
         {
-            this.version = version.RemovePrefix('v');
             try
             {
+                if (version.IsNullOrEmpty())
+                {
+                    this.major = 0;
+                    this.minor = 0;
+                    this.patch = 0;
+                    return;
+                }
+                this.version = version.RemovePrefix('v');
+
                 string[] parts = this.version.Split('.');
                 if (parts.Length == 2)
                 {
@@ -43,7 +51,6 @@
                 this.major = 0;
                 this.minor = 0;
                 this.patch = 0;
-                //this.version = "0.0.0";
             }
         }
 

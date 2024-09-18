@@ -168,7 +168,7 @@
             return SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
         }
 
-        public ProfileItem? GetProfileItemViaRemarks(string remarks)
+        public ProfileItem? GetProfileItemViaRemarks(string? remarks)
         {
             if (Utils.IsNullOrEmpty(remarks))
             {
