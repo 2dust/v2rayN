@@ -7,9 +7,9 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
     xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="v2rayN"
     Width="900"
     Height="700"
@@ -20,8 +20,9 @@
     ShowInTaskbar="True"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="ClearType"
+    TextOptions.TextHintingMode="Fixed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -57,14 +58,6 @@
                                         <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
                                     </StackPanel>
                                 </MenuItem.Header>
-                                <MenuItem
-                                    x:Name="menuAddServerViaClipboard"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                                <MenuItem
-                                    x:Name="menuAddServerViaScan"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
                                 <MenuItem
                                     x:Name="menuAddCustomServer"
                                     Height="{StaticResource MenuItemHeight}"
@@ -107,6 +100,15 @@
                                     x:Name="menuAddWireguardServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                                <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuAddServerViaClipboard"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                                <MenuItem
+                                    x:Name="menuAddServerViaScan"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -180,6 +182,7 @@
                                 <MenuItem
                                     x:Name="menuSettingsSetUWP"
                                     Height="{StaticResource MenuItemHeight}"
+                                    Click="menuSettingsSetUWP_Click"
                                     Header="{x:Static resx:ResUI.TbSettingsSetUWP}" />
                                 <MenuItem
                                     x:Name="menuClearServerStatistics"
@@ -187,13 +190,13 @@
                                     Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
-                                    x:Name="menuBackupAndRestore"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
-                                <MenuItem
                                     x:Name="menuOpenTheFileLocation"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
+                                <!--<MenuItem
+                                    x:Name="menuImportOldGuiConfig"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuImportOldGuiConfig}" />-->
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -212,7 +215,7 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Name="menuCheckUpdate" Padding="8,0">
+                            <MenuItem Padding="8,0">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -222,6 +225,27 @@
                                         <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
                                     </StackPanel>
                                 </MenuItem.Header>
+                                <MenuItem
+                                    x:Name="menuCheckUpdateN"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="V2rayN" />
+                                <MenuItem
+                                    x:Name="menuCheckUpdateXrayCore"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="Xray Core" />
+                                <MenuItem
+                                    x:Name="menuCheckUpdateMihomoCore"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="Mihomo Core" />
+                                <MenuItem
+                                    x:Name="menuCheckUpdateSingBoxCore"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="Sing-box Core" />
+                                <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuCheckUpdateGeo"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="Geo files" />
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -240,7 +264,10 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuPromotion" Padding="8,0">
+                            <MenuItem
+                                x:Name="menuPromotion"
+                                Padding="8,0"
+                                Click="menuPromotion_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -254,7 +281,10 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem x:Name="menuClose" Padding="8,0">
+                            <MenuItem
+                                x:Name="menuClose"
+                                Padding="8,0"
+                                Click="menuClose_Click">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
@@ -609,6 +639,7 @@
                         <MenuItem
                             x:Name="menuExit"
                             Height="{StaticResource MenuItemHeight}"
+                            Click="menuExit_Click"
                             Header="{x:Static resx:ResUI.menuExit}" />
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>

@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     xmlns:conv="clr-namespace:v2rayN.Converters"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"
     Height="600"
@@ -19,8 +19,9 @@
     ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="ClearType"
+    TextOptions.TextHintingMode="Fixed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -58,7 +59,6 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -282,24 +282,6 @@
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
-
-                <TextBlock
-                    Grid.Row="11"
-                    Grid.Column="0"
-                    Margin="4"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
-                <TextBox
-                    x:Name="txtPreSocksPort"
-                    Grid.Row="11"
-                    Grid.Column="1"
-                    Margin="4"
-                    HorizontalAlignment="Left"
-                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TipPreSocksPort}"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}"
-                    ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
             </Grid>
         </ScrollViewer>
     </DockPanel>

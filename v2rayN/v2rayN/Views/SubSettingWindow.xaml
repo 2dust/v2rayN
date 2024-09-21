@@ -7,8 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="800"
     Height="600"
@@ -19,8 +19,9 @@
     ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="ClearType"
+    TextOptions.TextHintingMode="Fixed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <materialDesign:DialogHost
@@ -73,7 +74,10 @@
                             <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubShare}" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="menuClose" IsCancel="True">
+                    <Button
+                        x:Name="menuClose"
+                        Click="menuClose_Click"
+                        IsCancel="True">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 Margin="0,0,8,0"

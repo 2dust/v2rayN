@@ -7,8 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuRoutingSetting}"
     Width="990"
     Height="700"
@@ -19,8 +19,9 @@
     ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="ClearType"
+    TextOptions.TextHintingMode="Fixed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -148,6 +149,7 @@
                 x:Name="btnCancel"
                 Width="100"
                 Margin="8,0"
+                Click="btnCancel_Click"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
@@ -183,6 +185,7 @@
                                 <MenuItem
                                     x:Name="menuRoutingAdvancedSelectAll"
                                     Height="{StaticResource MenuItemHeight}"
+                                    Click="menuRoutingAdvancedSelectAll_Click"
                                     Header="{x:Static resx:ResUI.menuSelectAll}" />
                                 <MenuItem
                                     x:Name="menuRoutingAdvancedSetDefault"

@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     xmlns:conv="clr-namespace:v2rayN.Converters"
+    xmlns:resx="clr-namespace:v2rayN.Resx"
+    xmlns:vms="clr-namespace:v2rayN.ViewModels"
     Title="{x:Static resx:ResUI.menuRoutingRuleSetting}"
     Width="960"
     Height="700"
@@ -19,8 +19,9 @@
     ShowInTaskbar="False"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="ClearType"
+    TextOptions.TextHintingMode="Fixed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel>
@@ -213,6 +214,7 @@
                 Grid.Row="3"
                 Grid.Column="2"
                 Margin="2,0,8,0"
+                Click="btnBrowseCustomIcon_Click"
                 Content="{x:Static resx:ResUI.TbBrowse}"
                 Style="{StaticResource DefButton}" />
 
@@ -242,6 +244,7 @@
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="2,0,8,0"
+                Click="btnBrowseCustomRulesetPath4Singbox_Click"
                 Content="{x:Static resx:ResUI.TbBrowse}"
                 Style="{StaticResource DefButton}" />
         </Grid>
@@ -273,6 +276,7 @@
                             <MenuItem
                                 x:Name="menuRuleSelectAll"
                                 Height="{StaticResource MenuItemHeight}"
+                                Click="menuRuleSelectAll_Click"
                                 Header="{x:Static resx:ResUI.menuSelectAll}" />
                             <MenuItem
                                 x:Name="menuRuleExportSelected"
