@@ -14,6 +14,7 @@ namespace ServiceLib.ViewModels
         #region private prop
 
         private CoreHandler _coreHandler;
+        private bool _isAdministrator { get; set; }
 
         #endregion private prop
 
@@ -139,17 +140,16 @@ namespace ServiceLib.ViewModels
         [Reactive]
         public int TabMainSelectedIndex { get; set; }
 
-        public bool IsAdministrator { get; set; }
-
         #endregion UI
 
         #region Init
 
-        public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+        public MainWindowViewModel(bool isAdministrator, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = LazyConfig.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
+            _isAdministrator = isAdministrator;
 
             MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
@@ -157,6 +157,16 @@ namespace ServiceLib.ViewModels
             SelectedServer = new();
 
             Init();
+
+            _config.uiItem.showInTaskbar = true;
+            if (_config.tunModeItem.enableTun && _isAdministrator)
+            {
+                EnableTun = true;
+            }
+            else
+            {
+                _config.tunModeItem.enableTun = EnableTun = false;
+            }
 
             #region WhenAnyValue && ReactiveCommand
 
@@ -319,8 +329,6 @@ namespace ServiceLib.ViewModels
             #endregion WhenAnyValue && ReactiveCommand
 
             AutoHideStartup();
-
-            _config.uiItem.showInTaskbar = true;
         }
 
         private void Init()
@@ -853,12 +861,13 @@ namespace ServiceLib.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !IsAdministrator)
+                if (EnableTun && !_isAdministrator)
                 {
                     _config.tunModeItem.enableTun = false;
                     RebootAsAdmin();
                     return;
                 }
+                ConfigHandler.SaveConfig(_config);
                 Reload();
             }
         }

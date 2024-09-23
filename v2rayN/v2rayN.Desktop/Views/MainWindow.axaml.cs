@@ -34,8 +34,9 @@ namespace v2rayN.Desktop.Views
             menuPromotion.Click += menuPromotion_Click;
             menuClose.Click += menuClose_Click;
 
+            var IsAdministrator = true;//WindowsUtils.IsAdministrator();
             MessageBus.Current.Listen<string>(Global.CommandSendSnackMsg).Subscribe(x => DelegateSnackMsg(x));
-            ViewModel = new MainWindowViewModel(UpdateViewHandler);
+            ViewModel = new MainWindowViewModel(IsAdministrator, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
@@ -114,24 +115,10 @@ namespace v2rayN.Desktop.Views
 
             if (Utils.IsWindows())
             {
-                var IsAdministrator = false;//WindowsUtils.IsAdministrator();
-                ViewModel.IsAdministrator = IsAdministrator;
                 this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
-                if (_config.tunModeItem.enableTun)
-                {
-                    if (IsAdministrator)
-                    {
-                        ViewModel.EnableTun = true;
-                    }
-                    else
-                    {
-                        _config.tunModeItem.enableTun = ViewModel.EnableTun = false;
-                    }
-                }
             }
             else
             {
-                ViewModel.IsAdministrator = true;
                 this.Title = $"{Utils.GetVersion()}";
                 menuRebootAsAdmin.IsVisible = false;
                 menuSettingsSetUWP.IsVisible = false;
