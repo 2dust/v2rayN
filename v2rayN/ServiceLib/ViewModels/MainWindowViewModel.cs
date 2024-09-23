@@ -775,7 +775,8 @@ namespace ServiceLib.ViewModels
 
         private async Task ChangeSystemProxyStatusAsync(ESysProxyType type, bool blChange)
         {
-            await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
+            //await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
+            await _updateView?.Invoke(EViewAction.UpdateSysProxy, false);
             _noticeHandler?.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
