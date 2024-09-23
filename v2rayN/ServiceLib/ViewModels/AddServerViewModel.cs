@@ -21,7 +21,7 @@ namespace ServiceLib.ViewModels
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.indexId.IsNullOrEmpty())
             {
                 profileItem.network = Global.DefaultNetwork;
                 profileItem.headerType = Global.None;
