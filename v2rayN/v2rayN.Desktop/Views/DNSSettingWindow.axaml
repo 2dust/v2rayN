@@ -95,7 +95,7 @@
                         BorderThickness="1"
                         Classes="TextArea Margin8"
                         TextWrapping="Wrap"
-                        Watermark="Http/Socks" />
+                        Watermark="HTTP/SOCKS" />
                 </DockPanel>
             </TabItem>
 
@@ -153,7 +153,7 @@
                             BorderThickness="1"
                             Classes="TextArea Margin8"
                             TextWrapping="Wrap"
-                            Watermark="Http/Socks" />
+                            Watermark="HTTP/SOCKS" />
 
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
 

@@ -536,7 +536,7 @@
     <value>Добавить сервер [Shadowsocks]</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Добавить сервер [Socks]</value>
+    <value>Добавить сервер [SOCKS]</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>Добавить сервер [Trojan]</value>

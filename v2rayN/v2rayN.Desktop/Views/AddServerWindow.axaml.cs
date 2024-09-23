@@ -85,8 +85,8 @@ namespace v2rayN.Desktop.Views
                     });
                     break;
 
-                case EConfigType.Socks:
-                case EConfigType.Http:
+                case EConfigType.SOCKS:
+                case EConfigType.HTTP:
                     gridSocks.IsVisible = true;
                     break;
 
@@ -121,7 +121,7 @@ namespace v2rayN.Desktop.Views
                     cmbFingerprint.SelectedValue = string.Empty;
                     break;
 
-                case EConfigType.Tuic:
+                case EConfigType.TUIC:
                     gridTuic.IsVisible = true;
                     sepa2.IsVisible = false;
                     gridTransport.IsVisible = false;
@@ -135,7 +135,7 @@ namespace v2rayN.Desktop.Views
                     });
                     break;
 
-                case EConfigType.Wireguard:
+                case EConfigType.WireGuard:
                     gridWireguard.IsVisible = true;
 
                     sepa2.IsVisible = false;
@@ -168,8 +168,8 @@ namespace v2rayN.Desktop.Views
                         this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.cmbSecurity3.SelectedValue).DisposeWith(disposables);
                         break;
 
-                    case EConfigType.Socks:
-                    case EConfigType.Http:
+                    case EConfigType.SOCKS:
+                    case EConfigType.HTTP:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId4.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.txtSecurity4.Text).DisposeWith(disposables);
                         break;
@@ -190,13 +190,13 @@ namespace v2rayN.Desktop.Views
                         this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath7.Text).DisposeWith(disposables);
                         break;
 
-                    case EConfigType.Tuic:
+                    case EConfigType.TUIC:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId8.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.security, v => v.txtSecurity8.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.headerType, v => v.cmbHeaderType8.SelectedValue).DisposeWith(disposables);
                         break;
 
-                    case EConfigType.Wireguard:
+                    case EConfigType.WireGuard:
                         this.Bind(ViewModel, vm => vm.SelectedSource.id, v => v.txtId9.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.publicKey, v => v.txtPublicKey9.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.path, v => v.txtPath9.Text).DisposeWith(disposables);

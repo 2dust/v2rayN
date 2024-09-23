@@ -206,11 +206,11 @@ namespace ServiceLib.ViewModels
             });
             AddSocksServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServerAsync(true, EConfigType.Socks);
+                AddServerAsync(true, EConfigType.SOCKS);
             });
             AddHttpServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServerAsync(true, EConfigType.Http);
+                AddServerAsync(true, EConfigType.HTTP);
             });
             AddTrojanServerCmd = ReactiveCommand.Create(() =>
             {
@@ -222,11 +222,11 @@ namespace ServiceLib.ViewModels
             });
             AddTuicServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServerAsync(true, EConfigType.Tuic);
+                AddServerAsync(true, EConfigType.TUIC);
             });
             AddWireguardServerCmd = ReactiveCommand.Create(() =>
             {
-                AddServerAsync(true, EConfigType.Wireguard);
+                AddServerAsync(true, EConfigType.WireGuard);
             });
             AddCustomServerCmd = ReactiveCommand.Create(() =>
             {

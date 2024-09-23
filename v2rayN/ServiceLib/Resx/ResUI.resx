@@ -536,7 +536,7 @@
     <value>Add [Shadowsocks] server</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Add [Socks] server</value>
+    <value>Add [SOCKS] server</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>Add [Trojan] server</value>
@@ -1094,7 +1094,7 @@
     <value>Use System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [Tuic] server</value>
+    <value>Add [TUIC] server</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
@@ -1115,7 +1115,7 @@
     <value>Enable IPv6 Address</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [Wireguard] server</value>
+    <value>Add [WireGuard] server</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1148,7 +1148,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [Http] server</value>
+    <value>Add [HTTP] server</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>

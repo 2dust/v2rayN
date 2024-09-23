@@ -535,7 +535,7 @@
     <value>新增[Shadowsocks]伺服器</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>新增[Socks]伺服器</value>
+    <value>新增[SOCKS]伺服器</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>新增[Trojan]伺服器</value>
@@ -1082,7 +1082,7 @@
     <value>IP 或 IP CIDR</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>新增[Tuic]伺服器</value>
+    <value>新增[TUIC]伺服器</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理別名</value>
@@ -1118,7 +1118,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>新增[Http]伺服器</value>
+    <value>新增[HTTP]伺服器</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>啟用分片（Fragment）</value>

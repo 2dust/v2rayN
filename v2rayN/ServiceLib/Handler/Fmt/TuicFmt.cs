@@ -8,7 +8,7 @@
 
             ProfileItem item = new()
             {
-                configType = EConfigType.Tuic
+                configType = EConfigType.TUIC
             };
 
             Uri url = new(str);
@@ -57,7 +57,7 @@
             $"{item.id}:{item.security}",
             GetIpv6(item.address),
             item.port);
-            url = $"{Global.ProtocolShares[EConfigType.Tuic]}{url}{query}{remark}";
+            url = $"{Global.ProtocolShares[EConfigType.TUIC]}{url}{query}{remark}";
             return url;
         }
     }

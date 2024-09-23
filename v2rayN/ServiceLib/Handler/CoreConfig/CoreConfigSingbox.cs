@@ -606,7 +606,7 @@ namespace ServiceLib.Handler.CoreConfig
                             GenOutboundMux(node, outbound);
                             break;
                         }
-                    case EConfigType.Socks:
+                    case EConfigType.SOCKS:
                         {
                             outbound.version = "5";
                             if (Utils.IsNotEmpty(node.security)
@@ -617,7 +617,7 @@ namespace ServiceLib.Handler.CoreConfig
                             }
                             break;
                         }
-                    case EConfigType.Http:
+                    case EConfigType.HTTP:
                         {
                             if (Utils.IsNotEmpty(node.security)
                               && Utils.IsNotEmpty(node.id))
@@ -667,14 +667,14 @@ namespace ServiceLib.Handler.CoreConfig
                             outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
                             break;
                         }
-                    case EConfigType.Tuic:
+                    case EConfigType.TUIC:
                         {
                             outbound.uuid = node.id;
                             outbound.password = node.security;
                             outbound.congestion_control = node.headerType;
                             break;
                         }
-                    case EConfigType.Wireguard:
+                    case EConfigType.WireGuard:
                         {
                             outbound.private_key = node.id;
                             outbound.peer_public_key = node.publicKey;
@@ -1240,7 +1240,7 @@ namespace ServiceLib.Handler.CoreConfig
             }
 
             //Tun2SocksAddress
-            if (_config.tunModeItem.enableTun && node?.configType == EConfigType.Socks && Utils.IsDomain(node?.sni))
+            if (_config.tunModeItem.enableTun && node?.configType == EConfigType.SOCKS && Utils.IsDomain(node?.sni))
             {
                 dns4Sbox.rules.Insert(0, new()
                 {

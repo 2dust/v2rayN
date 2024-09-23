@@ -401,13 +401,13 @@ namespace ServiceLib.Handler
             {
                 EConfigType.VMess => AddVMessServer(config, item),
                 EConfigType.Shadowsocks => AddShadowsocksServer(config, item),
-                EConfigType.Socks => AddSocksServer(config, item),
-                EConfigType.Http => AddHttpServer(config, item),
+                EConfigType.SOCKS => AddSocksServer(config, item),
+                EConfigType.HTTP => AddHttpServer(config, item),
                 EConfigType.Trojan => AddTrojanServer(config, item),
                 EConfigType.VLESS => AddVlessServer(config, item),
                 EConfigType.Hysteria2 => AddHysteria2Server(config, item),
-                EConfigType.Tuic => AddTuicServer(config, item),
-                EConfigType.Wireguard => AddWireguardServer(config, item),
+                EConfigType.TUIC => AddTuicServer(config, item),
+                EConfigType.WireGuard => AddWireguardServer(config, item),
                 _ => -1,
             };
             return ret;
@@ -739,7 +739,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int AddSocksServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Socks;
+            profileItem.configType = EConfigType.SOCKS;
 
             profileItem.address = profileItem.address.TrimEx();
 
@@ -756,7 +756,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int AddHttpServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Http;
+            profileItem.configType = EConfigType.HTTP;
 
             profileItem.address = profileItem.address.TrimEx();
 
@@ -829,7 +829,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int AddTuicServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Tuic;
+            profileItem.configType = EConfigType.TUIC;
             profileItem.coreType = ECoreType.sing_box;
 
             profileItem.address = profileItem.address.TrimEx();
@@ -868,7 +868,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Wireguard;
+            profileItem.configType = EConfigType.WireGuard;
             profileItem.coreType = ECoreType.sing_box;
 
             profileItem.address = profileItem.address.TrimEx();
@@ -1263,12 +1263,12 @@ namespace ServiceLib.Handler
                 {
                     EConfigType.VMess => AddVMessServer(config, profileItem, false),
                     EConfigType.Shadowsocks => AddShadowsocksServer(config, profileItem, false),
-                    EConfigType.Socks => AddSocksServer(config, profileItem, false),
+                    EConfigType.SOCKS => AddSocksServer(config, profileItem, false),
                     EConfigType.Trojan => AddTrojanServer(config, profileItem, false),
                     EConfigType.VLESS => AddVlessServer(config, profileItem, false),
                     EConfigType.Hysteria2 => AddHysteria2Server(config, profileItem, false),
-                    EConfigType.Tuic => AddTuicServer(config, profileItem, false),
-                    EConfigType.Wireguard => AddWireguardServer(config, profileItem, false),
+                    EConfigType.TUIC => AddTuicServer(config, profileItem, false),
+                    EConfigType.WireGuard => AddWireguardServer(config, profileItem, false),
                     _ => -1,
                 };
 

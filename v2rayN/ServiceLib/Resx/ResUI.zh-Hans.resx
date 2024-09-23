@@ -536,7 +536,7 @@
     <value>添加[Shadowsocks]服务器</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加[Socks]服务器</value>
+    <value>添加[SOCKS]服务器</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
     <value>添加[Trojan]服务器</value>
@@ -1091,7 +1091,7 @@
     <value>使用系统hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>添加[Tuic]服务器</value>
+    <value>添加[TUIC]服务器</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
@@ -1112,7 +1112,7 @@
     <value>启用IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加[Wireguard]服务器</value>
+    <value>添加[WireGuard]服务器</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1145,7 +1145,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>添加[Http]服务器</value>
+    <value>添加[HTTP]服务器</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>启用分片（Fragment）</value>
