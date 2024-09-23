@@ -338,23 +338,15 @@ namespace v2rayN.Views
                             item2.Width = item.Width;
                             item2.DisplayIndex = displayIndex++;
                         }
+                        if (item.Name.StartsWith("to"))
+                        {
+                            if (!_config.guiItem.enableStatistics)
+                            {
+                                item2.Visibility = Visibility.Hidden;
+                            }
+                        }
                     }
                 }
-            }
-
-            if (!_config.guiItem.enableStatistics)
-            {
-                colTodayUp.Visibility =
-                colTodayDown.Visibility =
-                colTotalUp.Visibility =
-                colTotalDown.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                colTodayUp.Visibility =
-                colTodayDown.Visibility =
-                colTotalUp.Visibility =
-                colTotalDown.Visibility = Visibility.Visible;
             }
         }
 
