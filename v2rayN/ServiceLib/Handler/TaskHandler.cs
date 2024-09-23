@@ -12,7 +12,7 @@
         public void RegUpdateTask(Config config, Action<bool, string> update)
         {
             Task.Run(() => UpdateTaskRunSubscription(config, update));
-            Task.Run(() => UpdateTaskRunGeo(config, update));
+            //Task.Run(() => UpdateTaskRunGeo(config, update));
         }
 
         private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> update)
