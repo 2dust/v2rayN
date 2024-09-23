@@ -493,7 +493,8 @@ namespace v2rayN.Views
         {
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo
-                .Where(t => t.coreType != ECoreType.v2fly
+                .Where(t => t.coreType != ECoreType.v2fly 
+                            && t.coreType != ECoreType.SagerNet
                             && t.coreType != ECoreType.clash
                             && t.coreType != ECoreType.clash_meta
                             && t.coreType != ECoreType.hysteria))

@@ -27,7 +27,7 @@
         <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />		
         <PackageReference Include="Semi.Avalonia" Version="11.1.0.4" />
         <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.1.0.4" />
-        <PackageReference Include="ReactiveUI" Version="20.1.1" />
+        <PackageReference Include="ReactiveUI" Version="20.1.63" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 	</ItemGroup>
 
