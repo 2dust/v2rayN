@@ -18,10 +18,9 @@
     KeyDown="GlobalHotkeySettingWindow_KeyDown"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
+    Style="{StaticResource WindowGlobal}"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel Margin="8">

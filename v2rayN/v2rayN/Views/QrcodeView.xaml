@@ -8,6 +8,7 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     d:DesignHeight="300"
     d:DesignWidth="300"
+    Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
     <Grid Margin="30">
         <Grid.RowDefinitions>

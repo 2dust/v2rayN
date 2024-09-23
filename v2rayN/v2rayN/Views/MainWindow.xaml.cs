@@ -145,7 +145,7 @@ namespace v2rayN.Views
             });
 
             this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
-      
+
             if (!_config.guiItem.enableHWA)
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;

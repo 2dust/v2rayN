@@ -12,6 +12,7 @@
     d:DesignHeight="600"
     d:DesignWidth="800"
     x:TypeArguments="vms:BackupAndRestoreViewModel"
+    Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>

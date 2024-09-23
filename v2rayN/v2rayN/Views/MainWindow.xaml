@@ -18,10 +18,9 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     ShowInTaskbar="True"
+    Style="{StaticResource WindowGlobal}"
     TextElement.FontFamily="{x:Static conv:MaterialDesignFonts.MyFont}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    TextOptions.TextFormattingMode="Display"
-    TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>

@@ -13,6 +13,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vms:ProfilesViewModel"
+    Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
