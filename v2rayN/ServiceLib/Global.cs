@@ -166,7 +166,7 @@
         public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "httpupgrade", "splithttp", "h2", "quic", "grpc" };
         public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> CoreTypes = new() { "v2fly", "SagerNet", "Xray", "sing_box" };
+        public static readonly List<string> CoreTypes = new() { "v2fly", "Xray", "sing_box" };//TODO
         public static readonly List<string> CoreTypes4VLESS = new() { "Xray", "sing_box" };
         public static readonly List<string> DomainStrategies = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> DomainStrategies4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
