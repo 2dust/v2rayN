@@ -140,7 +140,14 @@ namespace ServiceLib.Handler
             }
             if (Utils.IsNullOrEmpty(config.uiItem.currentLanguage))
             {
-                config.uiItem.currentLanguage = Global.Languages[0];
+                if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    config.uiItem.currentLanguage = Global.Languages[0];
+                }
+                else
+                {
+                    config.uiItem.currentLanguage = Global.Languages[2];
+                }
             }
 
             if (config.constItem == null)
