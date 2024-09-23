@@ -94,7 +94,7 @@
 
         public bool ignoreGeoUpdateCore { get; set; } = true;
 
-        public int autoUpdateInterval { get; set; } = 10;
+        public int autoUpdateInterval { get; set; }
 
         public bool checkPreReleaseUpdate { get; set; } = false;
 
