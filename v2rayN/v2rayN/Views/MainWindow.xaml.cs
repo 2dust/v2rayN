@@ -42,6 +42,28 @@ namespace v2rayN.Views
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+            {
+                tabProfiles.Content ??= new ProfilesView();
+                tabMsgView.Content ??= new MsgView();
+                tabClashProxies.Content ??= new ClashProxiesView();
+                tabClashConnections.Content ??= new ClashConnectionsView();
+            }
+            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+            {
+                tabProfiles1.Content ??= new ProfilesView();
+                tabMsgView1.Content ??= new MsgView();
+                tabClashProxies1.Content ??= new ClashProxiesView();
+                tabClashConnections1.Content ??= new ClashConnectionsView();
+            }
+            else
+            {
+                tabProfiles2.Content ??= new ProfilesView();
+                tabMsgView2.Content ??= new MsgView();
+                tabClashProxies2.Content ??= new ClashProxiesView();
+                tabClashConnections2.Content ??= new ClashConnectionsView();
+            }
+            pbTheme.Content ??= new ThemeSettingView();
 
             this.WhenActivated(disposables =>
             {
@@ -150,30 +172,7 @@ namespace v2rayN.Views
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
-
-            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
-            {
-                tabProfiles.Content ??= new ProfilesView();
-                tabMsgView.Content ??= new MsgView();
-                tabClashProxies.Content ??= new ClashProxiesView();
-                tabClashConnections.Content ??= new ClashConnectionsView();
-            }
-            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
-            {
-                tabProfiles1.Content ??= new ProfilesView();
-                tabMsgView1.Content ??= new MsgView();
-                tabClashProxies1.Content ??= new ClashProxiesView();
-                tabClashConnections1.Content ??= new ClashConnectionsView();
-            }
-            else
-            {
-                tabProfiles2.Content ??= new ProfilesView();
-                tabMsgView2.Content ??= new MsgView();
-                tabClashProxies2.Content ??= new ClashProxiesView();
-                tabClashConnections2.Content ??= new ClashConnectionsView();
-            }
-            pbTheme.Content ??= new ThemeSettingView();
-
+            
             RestoreUI();
             AddHelpMenuItem();
         }
