@@ -370,7 +370,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
+                        <!--
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
@@ -389,8 +389,7 @@
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
-                            TextWrapping="Wrap" />
-
+                            TextWrapping="Wrap" />-->
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
@@ -491,19 +490,6 @@
                         <ToggleSwitch
                             x:Name="togEnableCheckPreReleaseUpdate"
                             Grid.Row="9"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            Classes="Margin8" />
-
-                        <TextBlock
-                            Grid.Row="10"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
-                        <ToggleSwitch
-                            x:Name="togEnableDragDropSort"
-                            Grid.Row="10"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             Classes="Margin8" />

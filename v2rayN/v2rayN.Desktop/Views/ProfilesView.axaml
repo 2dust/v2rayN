@@ -82,7 +82,6 @@
                 AutoGenerateColumns="False"
                 BorderThickness="1"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False"
                 GridLinesVisibility="All"
                 HeadersVisibility="Column"
                 IsReadOnly="True"
@@ -171,7 +170,7 @@
                         Width="100"
                         Binding="{Binding subRemarks}"
                         Header="{x:Static resx:ResUI.LvSubscription}" />
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn SortMemberPath="delay">
                         <DataGridTemplateColumn.Header>
                             <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
                         </DataGridTemplateColumn.Header>

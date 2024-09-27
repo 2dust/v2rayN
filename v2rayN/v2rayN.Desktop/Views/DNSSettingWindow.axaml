@@ -33,7 +33,6 @@
         </StackPanel>
 
         <TabControl HorizontalContentAlignment="Left">
-
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
                 <DockPanel Classes="Margin8">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -89,13 +88,15 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <TextBox
-                        x:Name="txtnormalDNS"
-                        VerticalAlignment="Stretch"
-                        BorderThickness="1"
-                        Classes="TextArea Margin8"
-                        TextWrapping="Wrap"
-                        Watermark="HTTP/SOCKS" />
+                    <Grid Classes="Margin8">
+                        <TextBox
+                            x:Name="txtnormalDNS"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="1"
+                            Classes="TextArea Margin8"
+                            TextWrapping="Wrap"
+                            Watermark="HTTP/SOCKS" />
+                    </Grid>
                 </DockPanel>
             </TabItem>
 
@@ -148,6 +149,7 @@
                         <TextBox
                             x:Name="txtnormalDNS2"
                             Grid.Column="0"
+                            Width="400"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             BorderThickness="1"
@@ -160,6 +162,7 @@
                         <TextBox
                             x:Name="txttunDNS2"
                             Grid.Column="2"
+                            Width="400"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             BorderThickness="1"

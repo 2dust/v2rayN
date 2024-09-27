@@ -6,18 +6,18 @@
     </Design.PreviewWith>
 
     <Style Selector="TextBlock.Margin8">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="10" />
     </Style>
     <Style Selector="StackPanel.Margin8">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="10" />
     </Style>
     <Style Selector="DockPanel.Margin8">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="10" />
     </Style>
     <Style Selector="WrapPanel.Margin8">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="10" />
     </Style>
     <Style Selector="Grid.Margin8">
-        <Setter Property="Margin" Value="8" />
+        <Setter Property="Margin" Value="10" />
     </Style>
 </Styles>

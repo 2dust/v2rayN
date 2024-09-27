@@ -116,6 +116,7 @@ namespace v2rayN.Desktop.Views
             if (Utils.IsWindows())
             {
                 this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+                menuGlobalHotkeySetting.IsVisible = false;
             }
             else
             {
