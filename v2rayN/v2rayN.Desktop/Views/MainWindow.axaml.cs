@@ -11,6 +11,7 @@ using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views
 {
@@ -124,8 +125,6 @@ namespace v2rayN.Desktop.Views
                 menuRebootAsAdmin.IsVisible = false;
                 menuSettingsSetUWP.IsVisible = false;
                 menuGlobalHotkeySetting.IsVisible = false;
-                menuOpenTheFileLocation.IsVisible = false;
-                cmbSystemProxy.IsVisible = false;
                 if (_config.tunModeItem.enableTun)
                 {
                     ViewModel.EnableTun = true;
@@ -255,7 +254,7 @@ namespace v2rayN.Desktop.Views
 
                 case EViewAction.UpdateSysProxy:
                     if (obj is null) return false;
-                    //  await SysProxyHandler.UpdateSysProxy(_config, (bool)obj);
+                    await SysProxyHandler.UpdateSysProxy(_config, (bool)obj);
                     break;
 
                 case EViewAction.AddServerViaClipboard:

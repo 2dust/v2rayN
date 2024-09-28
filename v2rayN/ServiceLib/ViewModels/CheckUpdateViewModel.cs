@@ -67,12 +67,15 @@ namespace ServiceLib.ViewModels
                 coreType = ECoreType.mihomo.ToString(),
                 remarks = ResUI.menuCheckUpdate,
             });
-            _checkUpdateItem.Add(new CheckUpdateItem()
+            if (Utils.IsWindows())
             {
-                isSelected = true,
-                coreType = ECoreType.sing_box.ToString(),
-                remarks = ResUI.menuCheckUpdate,
-            });
+                _checkUpdateItem.Add(new CheckUpdateItem()
+                {
+                    isSelected = true,
+                    coreType = ECoreType.sing_box.ToString(),
+                    remarks = ResUI.menuCheckUpdate,
+                });
+            }
             _checkUpdateItem.Add(new CheckUpdateItem()
             {
                 isSelected = true,

@@ -295,7 +295,14 @@ namespace ServiceLib.ViewModels
             });
             OpenTheFileLocationCmd = ReactiveCommand.Create(() =>
             {
-                Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
+                if (Utils.IsWindows())
+                {
+                    Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
+                }
+                else if (Utils.IsLinux())
+                {
+                    Utils.ProcessStart("nautilus", Utils.GetConfigPath());
+                }
             });
 
             ReloadCmd = ReactiveCommand.Create(() =>

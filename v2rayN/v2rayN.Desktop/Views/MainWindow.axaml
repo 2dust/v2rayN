@@ -165,7 +165,6 @@
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
-                        <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyPac}" />
                     </ComboBox>
 
                     <ComboBox

@@ -1,4 +1,6 @@
-﻿namespace v2rayN.Desktop.Handler
+﻿using v2rayN.Desktop.Common;
+
+namespace v2rayN.Desktop.Handler
 {
     public static class SysProxyHandler
     {
@@ -14,48 +16,56 @@
             try
             {
                 int port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.http);
+                int portSocks = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
+                int portPac = LazyConfig.Instance.GetLocalPort(EInboundProtocol.pac);
                 if (port <= 0)
                 {
                     return false;
                 }
                 if (type == ESysProxyType.ForcedChange)
                 {
-                    var strProxy = $"{Global.Loopback}:{port}";
-                    await SetProxy(strProxy);
+                    if (Utils.IsWindows())
+                    {
+                        //TODO
+                    }
+                    else if (Utils.IsLinux())
+                    {
+                        await ProxySettingLinux.SetProxy(Global.Loopback, port);
+                    }
+                    else if (Utils.IsOSX())
+                    {
+                        await ProxySettingOSX.SetProxy(Global.Loopback, port);
+                    }
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
-                    await UnsetProxy();
+                    if (Utils.IsWindows())
+                    {
+                        //TODO
+                    }
+                    else if (Utils.IsLinux())
+                    {
+                        await ProxySettingLinux.UnsetProxy();
+                    }
+                    else if (Utils.IsOSX())
+                    {
+                        await ProxySettingOSX.UnsetProxy();
+                    }
                 }
-                else if (type == ESysProxyType.Unchanged)
+                else if (type == ESysProxyType.Pac)
                 {
                 }
+
+                //if (type != ESysProxyType.Pac)
+                //{
+                //    PacHandler.Stop();
+                //}
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
             }
             return true;
-        }
-
-        private static async Task SetProxy(string? strProxy)
-        {
-            await Task.Run(() =>
-            {
-                var httpProxy = strProxy is null ? null : $"{Global.HttpProtocol}{strProxy}";
-                var socksProxy = strProxy is null ? null : $"{Global.SocksProtocol}{strProxy}";
-                var noProxy = $"localhost,127.0.0.0/8,::1";
-
-                Environment.SetEnvironmentVariable("http_proxy", httpProxy, EnvironmentVariableTarget.User);
-                Environment.SetEnvironmentVariable("https_proxy", httpProxy, EnvironmentVariableTarget.User);
-                Environment.SetEnvironmentVariable("all_proxy", socksProxy, EnvironmentVariableTarget.User);
-                Environment.SetEnvironmentVariable("no_proxy", noProxy, EnvironmentVariableTarget.User);
-            });
-        }
-
-        private static async Task UnsetProxy()
-        {
-            await SetProxy(null);
         }
     }
 }
