@@ -116,6 +116,8 @@
                                         <ComboBox
                                             x:Name="cmbMoveToGroup"
                                             Width="200"
+                                            DisplayMemberBinding="{Binding remarks}"
+                                            ItemsSource="{Binding SubItems}"
                                             ToolTip.Tip="{x:Static resx:ResUI.menuSubscription}" />
                                     </DockPanel>
                                 </MenuItem.Header>
@@ -141,36 +143,46 @@
                 </DataGrid.ContextMenu>
 
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Width="40" Binding="{Binding isActive}" />
+                    <DataGridCheckBoxColumn
+                        Width="40"
+                        Binding="{Binding isActive}"
+                        Tag="isActive" />
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding configType}"
-                        Header="{x:Static resx:ResUI.LvServiceType}" />
+                        Header="{x:Static resx:ResUI.LvServiceType}"
+                        Tag="configType" />
                     <DataGridTextColumn
                         Width="150"
                         Binding="{Binding remarks}"
-                        Header="{x:Static resx:ResUI.LvRemarks}" />
+                        Header="{x:Static resx:ResUI.LvRemarks}"
+                        Tag="remarks" />
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding address}"
-                        Header="{x:Static resx:ResUI.LvAddress}" />
+                        Header="{x:Static resx:ResUI.LvAddress}"
+                        Tag="address" />
                     <DataGridTextColumn
                         Width="60"
                         Binding="{Binding port}"
-                        Header="{x:Static resx:ResUI.LvPort}" />
+                        Header="{x:Static resx:ResUI.LvPort}"
+                        Tag="port" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding network}"
-                        Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                        Header="{x:Static resx:ResUI.LvTransportProtocol}"
+                        Tag="network" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding streamSecurity}"
-                        Header="{x:Static resx:ResUI.LvTLS}" />
+                        Header="{x:Static resx:ResUI.LvTLS}"
+                        Tag="streamSecurity" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding subRemarks}"
-                        Header="{x:Static resx:ResUI.LvSubscription}" />
-                    <DataGridTemplateColumn SortMemberPath="delay">
+                        Header="{x:Static resx:ResUI.LvSubscription}"
+                        Tag="subRemarks" />
+                    <DataGridTemplateColumn SortMemberPath="delay" Tag="delay">
                         <DataGridTemplateColumn.Header>
                             <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
                         </DataGridTemplateColumn.Header>
@@ -188,24 +200,29 @@
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding speedVal}"
-                        Header="{x:Static resx:ResUI.LvTestSpeed}" />
+                        Header="{x:Static resx:ResUI.LvTestSpeed}"
+                        Tag="speedVal" />
 
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding todayUp}"
-                        Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
+                        Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
+                        Tag="todayUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding todayDown}"
-                        Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
+                        Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}"
+                        Tag="todayDown" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding totalUp}"
-                        Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
+                        Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}"
+                        Tag="totalUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding totalDown}"
-                        Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
+                        Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}"
+                        Tag="totalDown" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
