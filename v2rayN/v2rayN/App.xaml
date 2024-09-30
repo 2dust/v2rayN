@@ -186,7 +186,7 @@
                 x:Key="WindowGlobal"
                 BasedOn="{StaticResource {x:Type Window}}"
                 TargetType="{x:Type Window}">
-                <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+                <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
                 <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
                 <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
             </Style>
@@ -194,7 +194,7 @@
                 x:Key="ViewGlobal"
                 BasedOn="{StaticResource {x:Type UserControl}}"
                 TargetType="{x:Type UserControl}">
-                <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+                <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
                 <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
                 <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
             </Style>
