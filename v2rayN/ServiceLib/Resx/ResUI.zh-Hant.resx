@@ -124,10 +124,10 @@
     <value>請先檢查伺服器設定</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value>配置格式不正確</value>
+    <value>設定格式不正確</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意，自訂配置完全依賴您自己的配置，不能使用所有設定功能。如需使用系統代理請手動修改監聽埠。</value>
+    <value>注意，自訂設定完全依賴您自己的設定，不能使用所有設定功能。如需使用系統代理請手動修改監聽埠。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
@@ -139,19 +139,19 @@
     <value>是否下載? {0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
-    <value>轉換配置檔案失敗</value>
+    <value>轉換設定檔失敗</value>
   </data>
   <data name="FailedGenDefaultConfiguration" xml:space="preserve">
-    <value>生成預設配置檔案失敗</value>
+    <value>生成預設設定檔失敗</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value>獲取預設配置失敗</value>
+    <value>獲取預設設定失敗</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>匯入自訂配置伺服器失敗</value>
+    <value>匯入自訂設定伺服器失敗</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
-    <value>讀取配置檔案失敗</value>
+    <value>讀取設定檔失敗</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>請填寫正確格式伺服器埠</value>
@@ -169,10 +169,10 @@
     <value>請填寫使用者ID</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>不是正確的配置，請檢查</value>
+    <value>不是正確的設定，請檢查</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
-    <value>初始化配置</value>
+    <value>初始化設定</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
     <value>{0} {1} 已是最新版本。</value>
@@ -256,7 +256,7 @@
     <value>非VMess或SS協定</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>在資料夾 ({0}) 下未找到Core文件 (檔案名:{1})，請下載後放入資料夾、，下載網址: {2}</value>
+    <value>在資料夾 ({0}) 下未找到Core檔案 (檔案名:{1})，請下載後放入資料夾，下載網址: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>掃描完成,未發現有效二維碼</value>
@@ -283,16 +283,16 @@
     <value>是否確定移除伺服器?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
-    <value>用戶端配置檔案儲存在:{0}</value>
+    <value>用戶端設定檔儲存在:{0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
     <value>啟動服務({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>配置成功{0}</value>
+    <value>設定成功{0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>成功匯入自訂配置伺服器</value>
+    <value>成功匯入自訂設定伺服器</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
     <value>成功從剪貼簿匯入 {0} 個伺服器</value>
@@ -364,7 +364,7 @@
     <value>*h2 host中間逗號(,)分隔</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
-    <value>*QUIC 加密方式</value>
+    <value>*QUIC加密方式</value>
   </data>
   <data name="TransportHeaderTypeTip1" xml:space="preserve">
     <value>*TCP偽裝類型</value>
@@ -376,7 +376,7 @@
     <value>*QUIC偽裝類型</value>
   </data>
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*GRPC 模式</value>
+    <value>*GRPC模式</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -397,7 +397,7 @@
     <value>所有</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>請瀏覽匯入伺服器配置</value>
+    <value>請瀏覽匯入伺服器設定</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>測試中...</value>
@@ -409,7 +409,7 @@
     <value>本機</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>伺服器過濾器，按Enter執行</value>
+    <value>伺服器過濾，按Enter執行</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>檢查更新</value>
@@ -475,7 +475,7 @@
     <value>PAC模式</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
-    <value>自動配置系統代理</value>
+    <value>自動設定系統代理</value>
   </data>
   <data name="TbSettingsColor" xml:space="preserve">
     <value>顏色</value>
@@ -523,13 +523,13 @@
     <value>測試伺服器延遲Tcping(多選) (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>匯出所選伺服器完整配置</value>
+    <value>匯出所選伺服器完整設定</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>匯出分享链接至剪貼簿(多選) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>新增自訂配置伺服器</value>
+    <value>新增自訂設定伺服器</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
     <value>新增[Shadowsocks]伺服器</value>
@@ -670,7 +670,7 @@
     <value>SOCKS埠</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* 自訂配置的Socks埠值，可不設定；當設定此值後，將使用Xray/sing-box(Tun)額外啟動一個前置Socks服務，提供分流和速度顯示等功能</value>
+    <value>* 自訂設定的Socks埠值，可不設定；當設定此值後，將使用Xray/sing-box(Tun)額外啟動一個前置Socks服務，提供分流和速度顯示等功能</value>
   </data>
   <!--********************************************-->
   <data name="TbBrowse" xml:space="preserve">
@@ -689,7 +689,7 @@
     <value>啟動後隱藏視窗</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>自動更新Geo文件的間隔(單位小時)</value>
+    <value>自動更新Geo檔案的間隔(單位小時)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: 基礎設定</value>
@@ -719,7 +719,7 @@
     <value>例外</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>例外. 對於下列字元開頭的位址不使用代理配置檔案:使用分號(;)分隔</value>
+    <value>例外. 對於下列字元開頭的位址不使用代理設定檔:使用分號(;)分隔</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>本機HTTP監聽埠</value>
@@ -800,7 +800,7 @@
     <value>重設</value>
   </data>
   <data name="TbSetSystemProxy" xml:space="preserve">
-    <value>自動配置系統代理</value>
+    <value>自動設定系統代理</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
     <value>PAC模式</value>
@@ -830,7 +830,7 @@
     <value>上移 (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>過濾器, 支援正則</value>
+    <value>過濾, 支援正則</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官網</value>
@@ -884,7 +884,7 @@
     <value>從剪貼簿中匯入規則</value>
   </data>
   <data name="menuImportRulesFromFile" xml:space="preserve">
-    <value>從文件中匯入規則</value>
+    <value>從檔案中匯入規則</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
     <value>從訂閱URL中匯入規則</value>
@@ -911,10 +911,10 @@
     <value>儲存時Domain, IP, 行程名 自動排序</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
-    <value>規則詳細說明文件</value>
+    <value>規則詳細說明檔案</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支援填寫DnsObject,JSON格式，點擊查看文件</value>
+    <value>支援填寫DnsObject,JSON格式，點擊查看檔案</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分組此處請留空</value>
@@ -950,7 +950,7 @@
     <value>顯示日誌</value>
   </data>
   <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>匯入舊的配置檔案guiNConfig</value>
+    <value>匯入舊的設定檔guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>啟用TUN模式</value>
@@ -995,7 +995,7 @@
     <value>目前字型(需重啟)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>複製字型TTF/TTC文件到目錄guiFonts，重啟設定</value>
+    <value>複製字型TTF/TTC檔案到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>http端口= +1；Pac端口= +4；*ray API端口= +5；mihomo API端口= +6；</value>
@@ -1046,7 +1046,7 @@
     <value>自動更新間隔(分鐘)</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
-    <value>啟動日誌存到文件</value>
+    <value>啟動日誌存到檔案</value>
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
     <value>訂閱轉換目標類型</value>
@@ -1061,10 +1061,10 @@
     <value>sing-box DNS設定</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>請填寫 DNS JSON 結構，點擊查看文件</value>
+    <value>請填寫 DNS JSON 結構，點擊查看檔案</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>點擊匯入預設DNS配置</value>
+    <value>點擊匯入預設DNS設定</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
     <value>sing-box域名解析策略</value>
@@ -1127,7 +1127,7 @@
     <value>使用Xray且非Tun模式啟用，和分組前置代理衝突</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>啟用sing-box（規則集文件）的緩存文件</value>
+    <value>啟用sing-box（規則集檔案）的快取檔案</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>自訂sing-box rule-set</value>
@@ -1145,7 +1145,7 @@
     <value>匯出分享链接至剪貼簿(多選) Base64编码</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>匯出所選伺服器完整配置至剪貼簿</value>
+    <value>匯出所選伺服器完整設定至剪貼簿</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>顯示或隱藏主介面</value>
@@ -1154,7 +1154,7 @@
     <value>您目前運行的是獨立包，請手動下載 SelfContained.7z檔案解壓縮覆蓋</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>自訂配置的Socks端口</value>
+    <value>自訂設定的Socks端口</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>備份和還原</value>
@@ -1187,15 +1187,15 @@
     <value>WebDav 密碼</value>
   </data>
   <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav 服務器地址</value>
+    <value>WebDav 伺服器地址</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>遠端資料夾名稱(可選)</value>
   </data>
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
-    <value>無效備份文件</value>
+    <value>無效備份檔案</value>
   </data>
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
-    <value>主機過濾器</value>
+    <value>主機過濾</value>
   </data>
 </root>
