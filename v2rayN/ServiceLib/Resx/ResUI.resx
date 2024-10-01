@@ -410,7 +410,7 @@
     <value>Local</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Servers Filter, press Enter to execute</value>
+    <value>Server filter, press Enter to execute</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Check Update</value>
@@ -491,7 +491,7 @@
     <value>Language (Restart)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Importing Share Links from clipboard (Ctrl+V)</value>
+    <value>Import Share Links from clipboard (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>Scan QR code on the screen (Ctrl+S)</value>
