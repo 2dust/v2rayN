@@ -1318,4 +1318,7 @@
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
     <value>主机过滤器</value>
   </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>活动</value>
+  </data>
 </root>

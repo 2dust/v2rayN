@@ -83,7 +83,7 @@
                 BorderThickness="1"
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"
-                HeadersVisibility="Column"
+                HeadersVisibility="All"
                 IsReadOnly="True"
                 ItemsSource="{Binding ProfileItems}">
                 <DataGrid.KeyBindings>
@@ -143,20 +143,34 @@
                 </DataGrid.ContextMenu>
 
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn
-                        Width="40"
-                        Binding="{Binding isActive}"
-                        Tag="isActive" />
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding configType}"
                         Header="{x:Static resx:ResUI.LvServiceType}"
                         Tag="configType" />
-                    <DataGridTextColumn
-                        Width="150"
-                        Binding="{Binding remarks}"
-                        Header="{x:Static resx:ResUI.LvRemarks}"
-                        Tag="remarks" />
+
+                    <DataGridTemplateColumn SortMemberPath="remarks" Tag="remarks">
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="{x:Static resx:ResUI.LvRemarks}" />
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="8,0" Orientation="Horizontal">
+                                    <Label
+                                        Margin="0,0,8,0"
+                                        Classes="Solid Red"
+                                        Content="{x:Static resx:ResUI.TipActiveServer}"
+                                        IsVisible="{Binding isActive}"
+                                        Theme="{StaticResource TagLabel}" />
+                                    <Label
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding remarks}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding address}"

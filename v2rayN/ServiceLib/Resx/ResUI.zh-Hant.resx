@@ -1198,4 +1198,7 @@
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
     <value>主機過濾</value>
   </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>活動</value>
+  </data>
 </root>

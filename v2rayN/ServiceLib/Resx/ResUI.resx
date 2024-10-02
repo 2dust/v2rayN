@@ -1321,4 +1321,7 @@
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
     <value>Host filter</value>
   </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>Active</value>    
+  </data>
 </root>
