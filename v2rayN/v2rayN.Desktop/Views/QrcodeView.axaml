@@ -1,25 +1,17 @@
-﻿<Window
+﻿<UserControl
     x:Class="v2rayN.Desktop.Views.QrcodeView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    Title=""
-    Width="400"
-    Height="480"
     d:DesignHeight="480"
     d:DesignWidth="400"
-    ExtendClientAreaChromeHints="NoChrome"
-    ExtendClientAreaToDecorationsHint="True"
-    ShowInTaskbar="False"
-    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
 
         <Image
@@ -37,12 +29,6 @@
             IsReadOnly="True"
             MaxLines="1" />
 
-        <Button
-            x:Name="btnCancel"
-            Grid.Row="2"
-            Width="100"
-            HorizontalAlignment="Right"
-            Classes="Margin8"
-            Content="{x:Static resx:ResUI.TbConfirm}" />
+ 
     </Grid>
-</Window>
+</UserControl>

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
+using DialogHostAvalonia;
 using DynamicData;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
@@ -71,7 +72,7 @@ namespace v2rayN.Desktop.Views
                 return;
             }
             var dialog = new QrcodeView(url);
-            await dialog.ShowDialog(this);
+            await DialogHost.Show(dialog, "dialogHostSub");
         }
 
         private void LstSubscription_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)

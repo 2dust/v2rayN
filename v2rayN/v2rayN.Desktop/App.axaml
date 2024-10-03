@@ -9,6 +9,7 @@
         <StyleInclude Source="Styles/GlobalStyles.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
+        <StyleInclude Source="avares://DialogHost.Avalonia/Styles.xaml" />
     </Application.Styles>
 
     <TrayIcon.Icons>

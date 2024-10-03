@@ -24,6 +24,7 @@
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.3" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.3" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.3" />
+        <PackageReference Include="DialogHost.Avalonia" Version="0.8.1" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />		
         <PackageReference Include="Semi.Avalonia" Version="11.1.0.4" />
         <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.1.0.4" />

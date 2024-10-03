@@ -3,7 +3,7 @@ using Avalonia.Media.Imaging;
 
 namespace v2rayN.Desktop.Views
 {
-    public partial class QrcodeView : Window
+    public partial class QrcodeView : UserControl
     {
         public QrcodeView(string? url)
         {
@@ -12,7 +12,7 @@ namespace v2rayN.Desktop.Views
             txtContent.Text = url;
             imgQrcode.Source = GetQRCode(url);
 
-            btnCancel.Click += (s, e) => this.Close();
+          //  btnCancel.Click += (s, e) => this.Close();
         }
 
         private Bitmap? GetQRCode(string? url)
