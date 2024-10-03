@@ -105,7 +105,7 @@
                         Width="150"
                         Binding="{Binding url}"
                         Header="{x:Static resx:ResUI.LvUrl}" />
-                    <DataGridTextColumn
+                    <DataGridCheckBoxColumn
                         Width="100"
                         Binding="{Binding enabled}"
                         Header="{x:Static resx:ResUI.LvEnabled}" />

@@ -53,6 +53,7 @@ namespace v2rayN.Desktop.Views
 
             this.WhenActivated(disposables =>
             {
+                this.Bind(ViewModel, vm => vm.SelectedSource.remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.outboundTag, v => v.cmbOutboundTag.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.port, v => v.txtPort.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);

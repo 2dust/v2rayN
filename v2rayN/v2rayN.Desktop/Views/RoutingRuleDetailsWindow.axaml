@@ -33,36 +33,56 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8"
-                Text="outboundTag" />
-            <ComboBox
-                x:Name="cmbOutboundTag"
+                Text="{x:Static resx:ResUI.LvRemarks}" />
+            <TextBox
+                x:Name="txtRemarks"
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="200"
-                Classes="Margin8"
-                MaxDropDownHeight="1000" />
-            <TextBlock
+                HorizontalAlignment="Left"
+                Classes="Margin8" />
+            <ToggleSwitch
+                x:Name="togEnabled"
                 Grid.Row="0"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Classes="Margin8"
-                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
+                Classes="Margin8" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8"
+                Text="outboundTag" />
+            <ComboBox
+                x:Name="cmbOutboundTag"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="200"
+                Classes="Margin8"
+                MaxDropDownHeight="1000" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Classes="Margin8"
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Margin8"
                 Text="port" />
             <TextBox
                 x:Name="txtPort"
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="1"
                 Width="200"
                 HorizontalAlignment="Left"
                 Classes="Margin8" />
             <TextBlock
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Classes="Margin8">
@@ -72,14 +92,14 @@
             </TextBlock>
 
             <TextBlock
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8"
                 Text="protocol" />
             <ListBox
                 x:Name="clbProtocol"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="1"
                 HorizontalAlignment="Left"
                 Classes="Margin8"
@@ -87,46 +107,32 @@
                 Theme="{DynamicResource PureCardRadioGroupListBox}" />
 
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8"
                 Text="inboundTag" />
             <ListBox
                 x:Name="clbInboundTag"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="1"
                 Classes="Margin8"
                 SelectionMode="Multiple"
                 Theme="{DynamicResource PureCardRadioGroupListBox}" />
 
             <TextBlock
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Classes="Margin8"
                 Text="network" />
             <ComboBox
                 x:Name="cmbNetwork"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Width="200"
                 Classes="Margin8"
                 MaxDropDownHeight="1000" />
-
-            <TextBlock
-                Grid.Row="5"
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Classes="Margin8"
-                Text="enabled" />
-            <ToggleSwitch
-                x:Name="togEnabled"
-                Grid.Row="5"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Classes="Margin8" />
-
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2"
@@ -169,25 +175,40 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <HeaderedContentControl Grid.Column="0" Header="{x:Static resx:ResUI.TbRoutingRuleDomain}">
+            <HeaderedContentControl
+                Grid.Column="0"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleDomain}">
                 <TextBox
                     Name="txtDomain"
+                    VerticalAlignment="Stretch"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />
             </HeaderedContentControl>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-            <HeaderedContentControl Grid.Column="2" Header="{x:Static resx:ResUI.TbRoutingRuleIP}">
+            <HeaderedContentControl
+                Grid.Column="2"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleIP}">
                 <TextBox
                     Name="txtIP"
+                    VerticalAlignment="Stretch"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />
             </HeaderedContentControl>
             <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
-            <HeaderedContentControl Grid.Column="4" Header="{x:Static resx:ResUI.TbRoutingRuleProcess}">
+            <HeaderedContentControl
+                Grid.Column="4"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleProcess}">
                 <TextBox
                     Name="txtProcess"
+                    VerticalAlignment="Stretch"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />

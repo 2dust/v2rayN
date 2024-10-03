@@ -124,6 +124,7 @@ namespace ServiceLib.ViewModels
                     domains = Utils.List2String(item.domain),
                     ips = Utils.List2String(item.ip),
                     enabled = item.enabled,
+                    remarks = item.remarks,
                 };
                 _rulesItems.Add(it);
             }

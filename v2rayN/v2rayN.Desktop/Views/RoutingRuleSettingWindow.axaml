@@ -206,20 +206,28 @@
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
+                        <DataGridCheckBoxColumn
+                            Width="60"
+                            Binding="{Binding enabled}"
+                            Header="" />
                         <DataGridTextColumn
-                            Width="110"
+                            Width="150"
+                            Binding="{Binding remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="120"
                             Binding="{Binding outboundTag}"
                             Header="outboundTag" />
                         <DataGridTextColumn
-                            Width="80"
+                            Width="100"
                             Binding="{Binding port}"
                             Header="port" />
                         <DataGridTextColumn
-                            Width="80"
+                            Width="100"
                             Binding="{Binding protocols}"
                             Header="protocol" />
                         <DataGridTextColumn
-                            Width="110"
+                            Width="120"
                             Binding="{Binding inboundTags}"
                             Header="inboundTag" />
                         <DataGridTextColumn
@@ -227,17 +235,13 @@
                             Binding="{Binding network}"
                             Header="network" />
                         <DataGridTextColumn
-                            Width="190"
+                            Width="200"
                             Binding="{Binding domains}"
                             Header="domain" />
                         <DataGridTextColumn
-                            Width="190"
+                            Width="200"
                             Binding="{Binding ips}"
                             Header="ip" />
-                        <DataGridTextColumn
-                            Width="80"
-                            Binding="{Binding enabled}"
-                            Header="enabled" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

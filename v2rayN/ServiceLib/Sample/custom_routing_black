@@ -1,30 +1,56 @@
 [
   {
+    "remarks": "绕过bittorrent",
     "outboundTag": "direct",
     "protocol": [
       "bittorrent"
     ]
   },
   {
+    "remarks": "Google cn",
+    "outboundTag": "proxy",
+    "domain": [
+      "domain:googleapis.cn",
+      "domain:gstatic.com"
+    ]
+  },
+  {
+    "remarks": "阻断udp443",
     "outboundTag": "block",
     "port": "443",
     "network": "udp"
   },
   {
+    "remarks": "阻断广告",
     "outboundTag": "block",
     "domain": [
       "geosite:category-ads-all"
     ]
   },
   {
+    "remarks": "绕过局域网IP",
+    "outboundTag": "direct",
+    "ip": [
+      "geoip:private"
+    ]
+  },
+  {
+    "remarks": "绕过局域网域名",
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:private"
+    ]
+  },
+  {
+    "remarks": "代理GFW",
     "outboundTag": "proxy",
-
     "domain": [
       "geosite:gfw",
       "geosite:greatfire"
     ]
   },
   {
+    "remarks": "代理Google等",
     "outboundTag": "proxy",
     "ip": [
       "1.0.0.1",
@@ -40,6 +66,7 @@
     ]
   },
   {
+    "remarks": "最终直连",
     "port": "0-65535",
     "outboundTag": "direct"
   }

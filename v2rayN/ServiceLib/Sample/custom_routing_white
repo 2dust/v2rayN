@@ -1,23 +1,41 @@
 [
   {
-    "outboundTag": "direct",
+    "remarks": "Google cn",
+    "outboundTag": "proxy",
     "domain": [
-      "domain:example-example.com",
-      "domain:example-example2.com"
+      "domain:googleapis.cn",
+      "domain:gstatic.com"
     ]
   },
   {
+    "remarks": "阻断udp443",
     "outboundTag": "block",
     "port": "443",
     "network": "udp"
   },
   {
+    "remarks": "阻断广告",
     "outboundTag": "block",
     "domain": [
       "geosite:category-ads-all"
     ]
   },
   {
+    "remarks": "绕过局域网IP",
+    "outboundTag": "direct",
+    "ip": [
+      "geoip:private"
+    ]
+  },
+  {
+    "remarks": "绕过局域网域名",
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:private"
+    ]
+  },
+  {
+    "remarks": "绕过中国域名",
     "outboundTag": "direct",
     "domain": [
       "domain:dns.alidns.com",
@@ -30,6 +48,7 @@
     ]
   },
   {
+    "remarks": "绕过中国IP",
     "outboundTag": "direct",
     "ip": [
       "223.5.5.5/32",
@@ -51,11 +70,11 @@
       "218.30.118.6/32",
       "123.125.81.6/32",
       "140.207.198.6/32",
-      "geoip:private",
       "geoip:cn"
     ]
   },
   {
+    "remarks": "最终代理",
     "port": "0-65535",
     "outboundTag": "proxy"
   }
