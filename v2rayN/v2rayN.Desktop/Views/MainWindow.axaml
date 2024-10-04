@@ -90,11 +90,7 @@
                         </MenuItem.Header>
                     </MenuItem>
 
-                    <MenuItem Padding="8,0">
-                        <MenuItem.Header>
-                            <ContentControl x:Name="conCheckUpdate" />
-                        </MenuItem.Header>
-                    </MenuItem>
+                    <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
 
                     <MenuItem x:Name="menuHelp" Padding="8,0">
                         <MenuItem.Header>
