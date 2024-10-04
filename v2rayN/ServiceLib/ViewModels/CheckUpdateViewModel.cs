@@ -196,20 +196,20 @@ namespace ServiceLib.ViewModels
                 });
         }
 
-        private void UpdateFinished()
+        private async Task UpdateFinished()
         {
             if (_lstUpdated.Count > 0 && _lstUpdated.Count(x => x.isFinished == true) == _lstUpdated.Count)
             {
                 _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, false);
-                Task.Delay(1000);
+                await Task.Delay(2000);
                 UpgradeCore();
 
                 if (_lstUpdated.Any(x => x.coreType == _v2rayN && x.isFinished == true))
                 {
-                    Task.Delay(1000);
+                    await Task.Delay(1000);
                     UpgradeN();
                 }
-                Task.Delay(1000);
+                await Task.Delay(1000);
                 _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, true);
             }
         }
