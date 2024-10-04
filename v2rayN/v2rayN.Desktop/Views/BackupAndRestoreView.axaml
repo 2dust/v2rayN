@@ -1,0 +1,231 @@
+﻿<UserControl
+    x:Class="v2rayN.Desktop.Views.BackupAndRestoreView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:BackupAndRestoreViewModel"
+    mc:Ignorable="d">
+
+    <DockPanel Margin="16">
+        <DockPanel Classes="Margin8" DockPanel.Dock="Bottom">
+            <TextBlock
+                Name="txtMsg"
+                HorizontalAlignment="Left"
+                Classes="Margin8" />
+        </DockPanel>
+
+        <StackPanel>
+            <Border
+                Margin="0"
+                VerticalAlignment="Center"
+                Theme="{StaticResource CardBorder}">
+
+                <Grid Classes="Margin8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Classes="Margin8"
+                        Text="{x:Static resx:ResUI.menuLocalBackupAndRestore}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Text="{x:Static resx:ResUI.menuLocalBackup}" />
+                    <Button
+                        Name="menuLocalBackup"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Content="{x:Static resx:ResUI.menuLocalBackup}" />
+
+                    <Separator Grid.Row="2" Grid.ColumnSpan="2" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Text="{x:Static resx:ResUI.menuLocalRestore}" />
+                    <Button
+                        Name="menuLocalRestore"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Content="{x:Static resx:ResUI.menuLocalRestore}" />
+                </Grid>
+            </Border>
+            <Border
+                Margin="0"
+                VerticalAlignment="Center"
+                Theme="{StaticResource CardBorder}">
+                <Grid Classes="Margin8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
+
+                        <Button
+                            Width="30"
+                            Height="30"
+                            Margin="10,0"
+                            Theme="{DynamicResource BorderlessButton}">
+                            <Button.Content>
+                                <PathIcon
+                                    Width="20"
+                                    Height="20"
+                                    Data="M511.9,276.3c43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2 -43.8,0 -79.2,35.5 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2zM511.9,434.8c-43.8,0 -79.2,35.5 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2 43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2zM511.9,751.8c-43.8,0 -79.2,35.4 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2 43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2z"
+                                    Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="300" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                Text="{x:Static resx:ResUI.LvWebDavUrl}" />
+
+                                            <TextBox
+                                                x:Name="txtWebDavUrl"
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                TextWrapping="Wrap" />
+
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                Text="{x:Static resx:ResUI.LvWebDavUserName}" />
+
+                                            <TextBox
+                                                x:Name="txtWebDavUserName"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8" />
+
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                Text="{x:Static resx:ResUI.LvWebDavPassword}" />
+
+                                            <TextBox
+                                                x:Name="txtWebDavPassword"
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8" />
+
+                                            <TextBlock
+                                                Grid.Row="3"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                Text="{x:Static resx:ResUI.LvWebDavDirName}" />
+
+                                            <TextBox
+                                                x:Name="txtWebDavDirName"
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8" />
+
+                                            <Button
+                                                x:Name="menuWebDavCheck"
+                                                Grid.Row="4"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Classes="Margin8"
+                                                Content="{x:Static resx:ResUI.LvWebDavCheck}" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+
+                    </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Text="{x:Static resx:ResUI.menuRemoteBackup}" />
+                    <Button
+                        Name="menuRemoteBackup"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Content="{x:Static resx:ResUI.menuRemoteBackup}" />
+
+                    <Separator Grid.Row="2" Grid.ColumnSpan="3" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Text="{x:Static resx:ResUI.menuRemoteRestore}" />
+                    <Button
+                        Name="menuRemoteRestore"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        Content="{x:Static resx:ResUI.menuRemoteRestore}" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

@@ -40,7 +40,6 @@
       <EmbeddedResource Include="v2rayN.ico">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </EmbeddedResource>
-    </ItemGroup>
- 
+    </ItemGroup> 
  
 </Project>

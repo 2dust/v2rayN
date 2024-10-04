@@ -1,16 +1,22 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
-using System.Windows;
+using v2rayN.Desktop.Common;
 
-namespace v2rayN.Views
+namespace v2rayN.Desktop.Views
 {
-    public partial class BackupAndRestoreView
+    public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestoreViewModel>
     {
         private NoticeHandler? _noticeHandler;
+        private Window _window;
 
-        public BackupAndRestoreView()
+        public BackupAndRestoreView(Window window)
         {
+            _window = window;
+
             InitializeComponent();
             menuLocalBackup.Click += MenuLocalBackup_Click;
             menuLocalRestore.Click += MenuLocalRestore_Click;
@@ -32,23 +38,27 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.RemoteBackupCmd, v => v.menuRemoteBackup).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RemoteRestoreCmd, v => v.menuRemoteRestore).DisposeWith(disposables);
             });
-        }        
+        }
 
-        private void MenuLocalBackup_Click(object sender, RoutedEventArgs e)
+        private async void MenuLocalBackup_Click(object? sender, RoutedEventArgs e)
         {
-            if (UI.SaveFileDialog(out string fileName, "Zip|*.zip") != true)
+            var fileName = await UI.SaveFileDialog(_window, "Zip|*.zip");
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
+
             ViewModel?.LocalBackup(fileName);
         }
 
-        private void MenuLocalRestore_Click(object sender, RoutedEventArgs e)
+        private async void MenuLocalRestore_Click(object? sender, RoutedEventArgs e)
         {
-            if (UI.OpenFileDialog(out string fileName, "Zip|*.zip|All|*.*") != true)
+            var fileName = await UI.OpenFileDialog(_window, null);
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
+
             ViewModel?.LocalRestore(fileName);
         }
 
