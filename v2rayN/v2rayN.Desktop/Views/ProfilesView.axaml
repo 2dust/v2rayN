@@ -54,21 +54,26 @@
                             Source="/Assets/add.png" />
                     </Button.Content>
                 </Button>
-                <Button
+                <SplitButton
                     x:Name="btnAutofitColumnWidth"
-                    Width="30"
+                    Width="54"
                     Height="30"
                     Margin="20,0"
                     Classes="Success"
-                    Theme="{DynamicResource SolidButton}"
+                    Theme="{DynamicResource SolidSplitButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <Button.Content>
+                    <SplitButton.Content>
                         <Image
                             Width="20"
                             Height="20"
                             Source="/Assets/fit.png" />
-                    </Button.Content>
-                </Button>
+                    </SplitButton.Content>
+                    <SplitButton.Flyout>
+                        <MenuFlyout>
+                            <MenuItem Name="menuStorageUI" Header="{x:Static resx:ResUI.menuStorageUI}" />
+                        </MenuFlyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
 
                 <TextBox
                     x:Name="txtServerFilter"

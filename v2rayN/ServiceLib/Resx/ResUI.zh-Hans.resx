@@ -1321,4 +1321,7 @@
   <data name="TipActiveServer" xml:space="preserve">
     <value>活动</value>
   </data>
+  <data name="menuStorageUI" xml:space="preserve">
+    <value>保存界面布局</value>
+  </data>
 </root>

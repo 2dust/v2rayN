@@ -1474,6 +1474,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Save Interface Layout 的本地化字符串。
+        /// </summary>
+        public static string menuStorageUI {
+            get {
+                return ResourceManager.GetString("menuStorageUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add 的本地化字符串。
         /// </summary>
         public static string menuSubAdd {

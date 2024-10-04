@@ -10,7 +10,10 @@
     d:DesignWidth="800"
     x:DataType="vms:CheckUpdateViewModel"
     mc:Ignorable="d">
-    <Button Classes="Tertiary">
+    <Button
+        Classes="Tertiary"
+        FontWeight="Regular"
+        Theme="{DynamicResource BorderlessButton}">
         <Button.Content>
             <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
         </Button.Content>
