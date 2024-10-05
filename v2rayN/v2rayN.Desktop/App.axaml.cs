@@ -14,6 +14,7 @@ public partial class App : Application
 
     public override void Initialize()
     {
+        Init();
         AvaloniaXamlLoader.Load(this);
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -47,26 +48,24 @@ public partial class App : Application
         //}
 
         Logging.Setup();
-        Init();
         Logging.LoggingEnabled(_config.guiItem.enableLog);
         Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
         Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
         Logging.ClearLogs();
-
-        Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
     }
 
     private void Init()
     {
         if (ConfigHandler.LoadConfig(ref _config) != 0)
         {
-            Logging.SaveLog($"Loading GUI configuration file is abnormal,please restart the application{Environment.NewLine}加载GUI配置文件异常,请重启应用");
+            //Logging.SaveLog($"Loading GUI configuration file is abnormal,please restart the application{Environment.NewLine}加载GUI配置文件异常,请重启应用");
             Environment.Exit(0);
             return;
         }
         LazyConfig.Instance.SetConfig(_config);
         Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
-
+        Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
+        
         //Under Win10
         if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
         {
