@@ -63,7 +63,7 @@ namespace ServiceLib.Handler.Statistics
                 await Task.Delay(1000);
                 try
                 {
-                    if (!(_config.IsRunningCore(ECoreType.clash)))
+                    if (!(_config.IsRunningCore(ECoreType.sing_box)))
                     {
                         continue;
                     }

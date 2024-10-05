@@ -83,7 +83,7 @@ namespace ServiceLib.ViewModels
             Observable.Interval(TimeSpan.FromSeconds(5))
               .Subscribe(x =>
               {
-                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.clash)))
+                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
                   {
                       return;
                   }

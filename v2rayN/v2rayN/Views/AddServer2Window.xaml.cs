@@ -17,10 +17,7 @@ namespace v2rayN.Views
             foreach (ECoreType it in Enum.GetValues(typeof(ECoreType)))
             {
                 if (it == ECoreType.v2rayN)
-                    continue; 
-                //TODO
-                if (it is ECoreType.clash or ECoreType.clash_meta or ECoreType.SagerNet)
-                    continue;
+                    continue;              
                 cmbCoreType.Items.Add(it.ToString());
             }
             cmbCoreType.Items.Add(string.Empty);

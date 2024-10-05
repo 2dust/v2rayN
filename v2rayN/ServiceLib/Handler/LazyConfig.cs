@@ -38,14 +38,6 @@
             SQLiteHelper.Instance.CreateTable<RoutingItem>();
             SQLiteHelper.Instance.CreateTable<ProfileExItem>();
             SQLiteHelper.Instance.CreateTable<DNSItem>();
-
-            //TODO
-            //Prepare to remove the clash
-            SQLiteHelper.Instance.Execute($"update ProfileItem set coreType = 13 where coreType = 11");
-            SQLiteHelper.Instance.Execute($"update ProfileItem set coreType = 13 where coreType = 12");
-            //Prepare to remove the SagerNet
-            SQLiteHelper.Instance.Execute($"update ProfileItem set coreType = 2 where coreType = 3");
-
         }
 
         #region Config

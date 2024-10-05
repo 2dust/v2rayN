@@ -731,7 +731,7 @@ namespace ServiceLib.ViewModels
         {
             ChangeSystemProxyStatusAsync(_config.systemProxyItem.sysProxyType, false);
             BlReloadEnabled = true;
-            ShowClashUI = _config.IsRunningCore(ECoreType.clash);
+            ShowClashUI = _config.IsRunningCore(ECoreType.sing_box);
             if (ShowClashUI)
             {
                 Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();

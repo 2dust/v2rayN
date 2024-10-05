@@ -9,10 +9,7 @@
         public const string GithubApiUrl = "https://api.github.com/repos";
         public const string V2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
         public const string XrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
-        public const string SagerNetCoreUrl = "https://github.com/SagerNet/v2ray-core/releases";
         public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
-        public const string ClashCoreUrl = "https://github.com/Dreamacro/clash/releases";
-        public const string ClashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
         public const string MihomoCoreUrl = "https://github.com/MetaCubeX/mihomo/releases";
         public const string HysteriaCoreUrl = "https://github.com/apernet/hysteria/releases";
         public const string NaiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
@@ -166,7 +163,7 @@
         public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "httpupgrade", "splithttp", "h2", "quic", "grpc" };
         public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> CoreTypes = new() { "v2fly", "Xray", "sing_box" };//TODO
+        public static readonly List<string> CoreTypes = new() { "v2fly", "Xray", "sing_box" };
         public static readonly List<string> CoreTypes4VLESS = new() { "Xray", "sing_box" };
         public static readonly List<string> DomainStrategies = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> DomainStrategies4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };

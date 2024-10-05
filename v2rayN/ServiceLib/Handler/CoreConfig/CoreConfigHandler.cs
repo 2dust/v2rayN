@@ -20,7 +20,7 @@
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)
                 {
-                    if (node.coreType is ECoreType.clash or ECoreType.clash_meta or ECoreType.mihomo)
+                    if (node.coreType is   ECoreType.mihomo)
                     {
                         var configGenClash = new CoreConfigClash(config);
                         return configGenClash.GenerateClientCustomConfig(node, fileName, out msg);

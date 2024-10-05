@@ -62,18 +62,6 @@ namespace ServiceLib.Handler
 
             _coreInfo.Add(new CoreInfo
             {
-                coreType = ECoreType.SagerNet,
-                coreExes = new List<string> { "SagerNet", "v2ray" },
-                arguments = "run",
-                coreUrl = Global.SagerNetCoreUrl,
-                coreReleaseApiUrl = Global.SagerNetCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
-                match = "V2Ray",
-                versionArg = "version",
-                redirectInfo = true,
-            });
-
-            _coreInfo.Add(new CoreInfo
-            {
                 coreType = ECoreType.v2fly_v5,
                 coreExes = new List<string> { "v2ray" },
                 arguments = "run -c config.json -format jsonv5",
@@ -104,41 +92,17 @@ namespace ServiceLib.Handler
 
             _coreInfo.Add(new CoreInfo
             {
-                coreType = ECoreType.clash,
-                coreExes = new List<string> { "clash-windows-amd64-v3", "clash-windows-amd64", "clash-windows-386", "clash" },
-                arguments = "-f config.json" + PortableMode(),
-                coreUrl = Global.ClashCoreUrl,
-                coreReleaseApiUrl = Global.ClashCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
-                match = "v",
-                versionArg = "-v",
-                redirectInfo = true,
-            });
-
-            _coreInfo.Add(new CoreInfo
-            {
-                coreType = ECoreType.clash_meta,
-                coreExes = new List<string> { "Clash.Meta-windows-amd64-compatible", "Clash.Meta-windows-amd64", "Clash.Meta-windows-386", "Clash.Meta", "clash" },
-                arguments = "-f config.json" + PortableMode(),
-                coreUrl = Global.ClashMetaCoreUrl,
-                coreReleaseApiUrl = Global.ClashMetaCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
-                match = "v",
-                versionArg = "-v",
-                redirectInfo = true,
-            });
-
-            _coreInfo.Add(new CoreInfo
-            {
                 coreType = ECoreType.mihomo,
                 coreExes = new List<string> { $"mihomo-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-windows-386", "mihomo", "clash" },
                 arguments = "-f config.json" + PortableMode(),
                 coreUrl = Global.MihomoCoreUrl,
                 coreReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
-                coreDownloadUrl32 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-386-{0}.zip",
-                coreDownloadUrl64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-amd64-compatible-{0}.zip",
-                coreDownloadUrlArm64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-windows-arm64-{0}.zip",
-                coreDownloadUrlLinux32 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-linux-386-{0}.gz",
-                coreDownloadUrlLinux64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-linux-amd64-compatible-{0}.gz",
-                coreDownloadUrlLinuxArm64 = Global.ClashMetaCoreUrl + "/download/{0}/mihomo-linux-arm64-{0}.gz",
+                coreDownloadUrl32 = Global.MihomoCoreUrl + "/download/{0}/mihomo-windows-386-{0}.zip",
+                coreDownloadUrl64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-windows-amd64-compatible-{0}.zip",
+                coreDownloadUrlArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-windows-arm64-{0}.zip",
+                coreDownloadUrlLinux32 = Global.MihomoCoreUrl + "/download/{0}/mihomo-linux-386-{0}.gz",
+                coreDownloadUrlLinux64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-linux-amd64-compatible-{0}.gz",
+                coreDownloadUrlLinuxArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-linux-arm64-{0}.gz",
                 match = "Mihomo",
                 versionArg = "-v",
                 redirectInfo = true,

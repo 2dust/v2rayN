@@ -451,8 +451,6 @@ namespace v2rayN.Desktop.Views
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo
                 .Where(t => t.coreType != ECoreType.v2fly
-                            && t.coreType != ECoreType.clash
-                            && t.coreType != ECoreType.clash_meta
                             && t.coreType != ECoreType.hysteria))
             {
                 var item = new MenuItem()

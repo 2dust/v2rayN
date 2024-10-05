@@ -337,14 +337,11 @@ namespace ServiceLib.Handler
                 switch (type)
                 {
                     case ECoreType.v2fly:
-                    case ECoreType.SagerNet:
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
                         version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
                         break;
 
-                    case ECoreType.clash:
-                    case ECoreType.clash_meta:
                     case ECoreType.mihomo:
                         version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
                         break;
@@ -379,7 +376,6 @@ namespace ServiceLib.Handler
                 switch (type)
                 {
                     case ECoreType.v2fly:
-                    case ECoreType.SagerNet:
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
                         {
@@ -388,8 +384,6 @@ namespace ServiceLib.Handler
                             url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"));
                             break;
                         }
-                    case ECoreType.clash:
-                    case ECoreType.clash_meta:
                     case ECoreType.mihomo:
                         {
                             curVersion = GetCoreVersion(type);
