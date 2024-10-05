@@ -11,7 +11,7 @@
     x:DataType="vms:CheckUpdateViewModel"
     mc:Ignorable="d">
 
-    <DockPanel Margin="16">
+    <DockPanel Classes="Margin8">
         <StackPanel
             HorizontalAlignment="Right"
             Classes="Margin8"

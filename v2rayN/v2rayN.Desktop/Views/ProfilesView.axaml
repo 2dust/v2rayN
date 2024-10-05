@@ -30,13 +30,14 @@
                     Height="30"
                     Margin="4,0"
                     Classes="Success"
-                    Theme="{DynamicResource SolidButton}"
+                    Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                     <Button.Content>
-                        <Image
-                            Width="20"
-                            Height="20"
-                            Source="/Assets/edit.png" />
+                        <PathIcon
+                            Width="24"
+                            Height="24"
+                            Data="{StaticResource building_edit}"
+                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
                 <Button
@@ -45,13 +46,14 @@
                     Height="30"
                     Margin="4,0"
                     Classes="Success"
-                    Theme="{DynamicResource SolidButton}"
+                    Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                     <Button.Content>
-                        <Image
-                            Width="20"
-                            Height="20"
-                            Source="/Assets/add.png" />
+                        <PathIcon
+                            Width="24"
+                            Height="24"
+                            Data="{StaticResource building_add}"
+                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
                 <SplitButton
@@ -59,14 +61,15 @@
                     Width="54"
                     Height="30"
                     Margin="20,0"
-                    Classes="Success"
-                    Theme="{DynamicResource SolidSplitButton}"
+                    Classes="Tertiary"
+                    Theme="{DynamicResource BorderlessSplitButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <SplitButton.Content>
-                        <Image
-                            Width="20"
-                            Height="20"
-                            Source="/Assets/fit.png" />
+                        <PathIcon
+                            Width="24"
+                            Height="24"
+                            Data="{StaticResource building_fit}"
+                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </SplitButton.Content>
                     <SplitButton.Flyout>
                         <MenuFlyout>

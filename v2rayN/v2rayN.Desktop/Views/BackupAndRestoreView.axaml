@@ -11,7 +11,7 @@
     x:DataType="vms:BackupAndRestoreViewModel"
     mc:Ignorable="d">
 
-    <DockPanel Margin="16">
+    <DockPanel Classes="Margin8">
         <DockPanel Classes="Margin8" DockPanel.Dock="Bottom">
             <TextBlock
                 Name="txtMsg"
@@ -21,7 +21,7 @@
 
         <StackPanel>
             <Border
-                Margin="0"
+                Margin="4"
                 VerticalAlignment="Center"
                 Theme="{StaticResource CardBorder}">
 
@@ -74,7 +74,7 @@
                 </Grid>
             </Border>
             <Border
-                Margin="0"
+                Margin="4"
                 VerticalAlignment="Center"
                 Theme="{StaticResource CardBorder}">
                 <Grid Classes="Margin8">
@@ -105,7 +105,7 @@
                                 <PathIcon
                                     Width="20"
                                     Height="20"
-                                    Data="M511.9,276.3c43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2 -43.8,0 -79.2,35.5 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2zM511.9,434.8c-43.8,0 -79.2,35.5 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2 43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2zM511.9,751.8c-43.8,0 -79.2,35.4 -79.2,79.2 0,43.8 35.5,79.2 79.2,79.2 43.8,0 79.2,-35.5 79.2,-79.2 0,-43.8 -35.5,-79.2 -79.2,-79.2z"
+                                    Data="{StaticResource building_more}"
                                     Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                             </Button.Content>
                             <Button.Flyout>

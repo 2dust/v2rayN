@@ -24,34 +24,36 @@
 
             <Button
                 x:Name="btnCopy"
-                Width="24"
-                Height="24"
+                Width="30"
+                Height="30"
                 Margin="8,0"
                 Classes="Success"
                 Click="menuMsgViewCopyAll_Click"
-                Theme="{DynamicResource SolidButton}"
+                Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <Button.Content>
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="/Assets/copy.png" />
+                    <PathIcon
+                        Width="20"
+                        Height="20"
+                        Data="{StaticResource building_copy}"
+                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
             <Button
                 x:Name="btnClear"
-                Width="24"
-                Height="24"
+                Width="30"
+                Height="30"
                 Margin="8,0"
                 Classes="Success"
                 Click="menuMsgViewClear_Click"
-                Theme="{DynamicResource SolidButton}"
+                Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <Button.Content>
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="/Assets/delete.png" />
+                    <PathIcon
+                        Width="20"
+                        Height="20"
+                        Data="{StaticResource building_delete}"
+                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
             <TextBlock

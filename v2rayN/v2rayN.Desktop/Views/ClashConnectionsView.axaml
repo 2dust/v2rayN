@@ -43,17 +43,18 @@
 
             <Button
                 x:Name="btnConnectionCloseAll"
-                Width="24"
-                Height="24"
+                Width="30"
+                Height="30"
                 Margin="8,0"
                 Classes="Success"
-                Theme="{DynamicResource SolidButton}"
+                Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <Button.Content>
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="/Assets/delete.png" />
+                    <PathIcon
+                        Width="20"
+                        Height="20"
+                        Data="{StaticResource building_delete}"
+                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
 
