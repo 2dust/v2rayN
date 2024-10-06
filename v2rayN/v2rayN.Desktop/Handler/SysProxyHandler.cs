@@ -1,4 +1,5 @@
-﻿using v2rayN.Desktop.Common;
+﻿using PacLib;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Handler
 {
@@ -26,7 +27,25 @@ namespace v2rayN.Desktop.Handler
                 {
                     if (Utils.IsWindows())
                     {
-                        //TODO
+                        var strExceptions = "";
+                        if (config.systemProxyItem.notProxyLocalAddress)
+                        {
+                            strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyItem.systemProxyExceptions}";
+                        }
+
+                        var strProxy = string.Empty;
+                        if (Utils.IsNullOrEmpty(config.systemProxyItem.systemProxyAdvancedProtocol))
+                        {
+                            strProxy = $"{Global.Loopback}:{port}";
+                        }
+                        else
+                        {
+                            strProxy = config.systemProxyItem.systemProxyAdvancedProtocol
+                                .Replace("{ip}", Global.Loopback)
+                                .Replace("{http_port}", port.ToString())
+                                .Replace("{socks_port}", portSocks.ToString());
+                        }
+                        ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
                     }
                     else if (Utils.IsLinux())
                     {
@@ -41,7 +60,7 @@ namespace v2rayN.Desktop.Handler
                 {
                     if (Utils.IsWindows())
                     {
-                        //TODO
+                        ProxySettingWindows.UnsetProxy();
                     }
                     else if (Utils.IsLinux())
                     {

@@ -1,9 +1,12 @@
-﻿using System.Runtime.InteropServices;
-using static v2rayN.Common.ProxySetting.InternetConnectionOption;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using static PacLib.ProxySettingWindows.InternetConnectionOption;
 
-namespace v2rayN.Common
+namespace PacLib
 {
-    internal class ProxySetting
+    public class ProxySettingWindows
     {
         private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
 
@@ -11,24 +14,24 @@ namespace v2rayN.Common
         {
             if (type == 1)
             {
-                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 0);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+                RegWriteValue(_regPath, "ProxyEnable", 0);
+                RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
             if (type == 2)
             {
-                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 1);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
+                RegWriteValue(_regPath, "ProxyEnable", 1);
+                RegWriteValue(_regPath, "ProxyServer", strProxy ?? string.Empty);
+                RegWriteValue(_regPath, "ProxyOverride", exceptions ?? string.Empty);
+                RegWriteValue(_regPath, "AutoConfigURL", string.Empty);
             }
             else if (type == 4)
             {
-                WindowsUtils.RegWriteValue(_regPath, "ProxyEnable", 0);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyServer", string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "ProxyOverride", string.Empty);
-                WindowsUtils.RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
+                RegWriteValue(_regPath, "ProxyEnable", 0);
+                RegWriteValue(_regPath, "ProxyServer", string.Empty);
+                RegWriteValue(_regPath, "ProxyOverride", string.Empty);
+                RegWriteValue(_regPath, "AutoConfigURL", strProxy ?? string.Empty);
             }
             return true;
         }
@@ -72,7 +75,7 @@ namespace v2rayN.Common
             catch (Exception ex)
             {
                 SetProxyFallback(strProxy, exceptions, type);
-                Logging.SaveLog(ex.Message, ex);
+                //Logging.SaveLog(ex.Message, ex);
                 return false;
             }
         }
@@ -88,7 +91,7 @@ namespace v2rayN.Common
             }
             else if (type is 2 or 4) // named proxy or autoproxy script URL
             {
-                optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
+                optionCount = string.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
 
             int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
@@ -355,6 +358,31 @@ namespace v2rayN.Common
                 ref int lpcb,             // Size of the buffer
                 ref int lpcEntries        // Number of entries written to the buffer
             );
+        }
+
+        private static void RegWriteValue(string path, string name, object value)
+        {
+            RegistryKey? regKey = null;
+            try
+            {
+                regKey = Registry.CurrentUser.CreateSubKey(path);
+                if (string.IsNullOrEmpty(value.ToString()))
+                {
+                    regKey?.DeleteValue(name, false);
+                }
+                else
+                {
+                    regKey?.SetValue(name, value);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Logging.SaveLog(ex.Message, ex);
+            }
+            finally
+            {
+                regKey?.Close();
+            }
         }
     }
 }

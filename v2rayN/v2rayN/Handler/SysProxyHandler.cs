@@ -1,12 +1,9 @@
 ﻿using PacLib;
-using v2rayN.Common;
 
 namespace v2rayN.Handler
 {
     public static class SysProxyHandler
     {
-        private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
-
         public static bool UpdateSysProxy(Config config, bool forceDisable)
         {
             var type = config.systemProxyItem.sysProxyType;
@@ -45,11 +42,11 @@ namespace v2rayN.Handler
                             .Replace("{http_port}", port.ToString())
                             .Replace("{socks_port}", portSocks.ToString());
                     }
-                    ProxySetting.SetProxy(strProxy, strExceptions, 2);
+                    ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
                 }
                 else if (type == ESysProxyType.ForcedClear)
                 {
-                    ProxySetting.UnsetProxy();
+                    ProxySettingWindows.UnsetProxy();
                 }
                 else if (type == ESysProxyType.Unchanged)
                 {
@@ -58,7 +55,7 @@ namespace v2rayN.Handler
                 {
                     PacHandler.Start(Utils.GetConfigPath(), port, portPac);
                     var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
-                    ProxySetting.SetProxy(strProxy, "", 4);
+                    ProxySettingWindows.SetProxy(strProxy, "", 4);
                 }
 
                 if (type != ESysProxyType.Pac)
@@ -71,11 +68,6 @@ namespace v2rayN.Handler
                 Logging.SaveLog(ex.Message, ex);
             }
             return true;
-        }
-
-        public static void ResetIEProxy4WindowsShutDown()
-        {
-            ProxySetting.UnsetProxy();
         }
     }
 }
