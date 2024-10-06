@@ -2,14 +2,14 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Splat;
-using v2rayN.Desktop.Common;
+using v2rayN.Desktop.ViewModels;
 using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop;
 
 public partial class App : Application
 {
-    public static EventWaitHandle ProgramStarted;
+    //public static EventWaitHandle ProgramStarted;
     private static Config _config;
 
     public override void Initialize()
@@ -19,6 +19,8 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+        this.DataContext = new AppViewModel();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -65,7 +67,7 @@ public partial class App : Application
         LazyConfig.Instance.SetConfig(_config);
         Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
         Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
-        
+
         //Under Win10
         if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
         {
@@ -102,35 +104,6 @@ public partial class App : Application
             {
                 desktop.MainWindow?.Show();
             }
-        }
-    }
-
-    private void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            var clipboardData = AvaUtils.GetClipboardData(desktop.MainWindow).Result;
-            Locator.Current.GetService<MainWindowViewModel>()?.AddServerViaClipboardAsync(clipboardData);
-        }
-    }
-
-    private void MenuSubUpdate_Click(object? sender, EventArgs e)
-    {
-        Locator.Current.GetService<MainWindowViewModel>()?.UpdateSubscriptionProcess("", false);
-    }
-
-    private void MenuSubUpdateViaProxy_Click(object? sender, EventArgs e)
-    {
-        Locator.Current.GetService<MainWindowViewModel>()?.UpdateSubscriptionProcess("", true);
-    }
-
-    private void MenuExit_Click(object? sender, EventArgs e)
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            Locator.Current.GetService<MainWindowViewModel>()?.MyAppExitAsync(false);
-
-            desktop.Shutdown();
         }
     }
 }
