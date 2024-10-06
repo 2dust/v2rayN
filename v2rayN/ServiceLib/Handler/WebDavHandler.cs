@@ -98,19 +98,26 @@ namespace ServiceLib.Handler
             }
             await TryCreateDir();
 
-            var testName = "readme_test";
-            var myContent = new StringContent(testName);
-            var result = await _client.PutFile($"{_webDir}/{testName}", myContent);
-            if (result.IsSuccessful)
+            try
             {
-                await _client.Delete($"{_webDir}/{testName}");
-                return true;
+                var testName = "readme_test";
+                var myContent = new StringContent(testName);
+                var result = await _client.PutFile($"{_webDir}/{testName}", myContent);
+                if (result.IsSuccessful)
+                {
+                    await _client.Delete($"{_webDir}/{testName}");
+                    return true;
+                }
+                else
+                {
+                    SaveLog(result.Description);               
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SaveLog(result.Description);
-                return false;
+                SaveLog(ex);
             }
+            return false;
         }
 
         public async Task<bool> PutFile(string fileName)
