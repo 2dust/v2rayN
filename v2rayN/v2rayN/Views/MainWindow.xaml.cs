@@ -36,7 +36,7 @@ namespace v2rayN.Views
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-            var IsAdministrator = WindowsUtils.IsAdministrator();
+            var IsAdministrator = Utils.IsAdministrator();
             MessageBus.Current.Listen<string>(Global.CommandSendSnackMsg).Subscribe(x => DelegateSnackMsg(x));
             ViewModel = new MainWindowViewModel(IsAdministrator, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));

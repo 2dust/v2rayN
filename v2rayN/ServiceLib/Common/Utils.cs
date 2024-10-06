@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -701,24 +702,6 @@ namespace ServiceLib.Common
             return systemHosts;
         }
 
-        public static string GetExeName(string name)
-        {
-            if (IsWindows())
-            {
-                return $"{name}.exe";
-            }
-            else
-            {
-                return name;
-            }
-        }
-
-        public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-        public static bool IsLinux() => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-
-        public static bool IsOSX() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
         #endregion 杂项
 
         #region TempPath
@@ -864,5 +847,39 @@ namespace ServiceLib.Common
         }
 
         #endregion TempPath
+
+        #region Platform
+
+        public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        public static bool IsLinux() => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        public static bool IsOSX() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        public static string GetExeName(string name)
+        {
+            if (IsWindows())
+            {
+                return $"{name}.exe";
+            }
+            else
+            {
+                return name;
+            }
+        }
+
+        public static bool IsAdministrator()
+        {
+            if (IsWindows())
+            {
+                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            else
+            {
+                return Mono.Unix.Native.Syscall.geteuid() == 0;
+            }
+        }
+
+        #endregion Platform
     }
 }

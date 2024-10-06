@@ -207,27 +207,7 @@ namespace v2rayN
             uint attributeSize = (uint)Marshal.SizeOf(attribute);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
-        }
-
-        /// <summary>
-        /// IsAdministrator
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsAdministrator()
-        {
-            try
-            {
-                WindowsIdentity current = WindowsIdentity.GetCurrent();
-                WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
-                //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
-                return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                return false;
-            }
-        }
+        }         
 
         /// <summary>
         /// 开机自动启动
@@ -241,7 +221,7 @@ namespace v2rayN
                 var autoRunName = $"{AutoRunName}_{Utils.GetMD5(Utils.StartupPath())}";
                 //delete first
                 RegWriteValue(AutoRunRegPath, autoRunName, "");
-                if (IsAdministrator())
+                if (Utils.IsAdministrator())
                 {
                     AutoStart(autoRunName, "", "");
                 }
@@ -249,7 +229,7 @@ namespace v2rayN
                 if (run)
                 {
                     string exePath = Utils.GetExePath();
-                    if (IsAdministrator())
+                    if (Utils.IsAdministrator())
                     {
                         AutoStart(autoRunName, exePath, "");
                     }
