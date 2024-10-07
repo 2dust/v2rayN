@@ -1,4 +1,6 @@
-﻿namespace ServiceLib.Handler.CoreConfig
+﻿using ServiceLib.Services.CoreConfig;
+
+namespace ServiceLib.Handler
 {
     /// <summary>
     /// Core configuration file processing class
@@ -20,14 +22,14 @@
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)
                 {
-                    if (node.coreType is   ECoreType.mihomo)
+                    if (node.coreType is ECoreType.mihomo)
                     {
-                        var configGenClash = new CoreConfigClash(config);
+                        var configGenClash = new CoreConfigClashService(config);
                         return configGenClash.GenerateClientCustomConfig(node, fileName, out msg);
                     }
                     if (node.coreType is ECoreType.sing_box)
                     {
-                        var configGenSingbox = new CoreConfigSingbox(config);
+                        var configGenSingbox = new CoreConfigSingboxService(config);
                         return configGenSingbox.GenerateClientCustomConfig(node, fileName, out msg);
                     }
                     else
@@ -37,7 +39,7 @@
                 }
                 else if (AppHandler.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
                 {
-                    var configGenSingbox = new CoreConfigSingbox(config);
+                    var configGenSingbox = new CoreConfigSingboxService(config);
                     if (configGenSingbox.GenerateClientConfigContent(node, out SingboxConfig? singboxConfig, out msg) != 0)
                     {
                         return -1;
@@ -53,7 +55,7 @@
                 }
                 else
                 {
-                    var coreConfigV2ray = new CoreConfigV2ray(config);
+                    var coreConfigV2ray = new CoreConfigV2rayService(config);
                     if (coreConfigV2ray.GenerateClientConfigContent(node, out V2rayConfig? v2rayConfig, out msg) != 0)
                     {
                         return -1;
@@ -128,7 +130,7 @@
         {
             if (coreType == ECoreType.sing_box)
             {
-                if (new CoreConfigSingbox(config).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                if (new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
                 {
                     return -1;
                 }
@@ -136,7 +138,7 @@
             }
             else
             {
-                if (new CoreConfigV2ray(config).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                if (new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
                 {
                     return -1;
                 }
@@ -150,7 +152,7 @@
             msg = ResUI.CheckServerSettings;
             if (coreType == ECoreType.sing_box)
             {
-                if (new CoreConfigSingbox(config).GenerateClientMultipleLoadConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
+                if (new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds, out SingboxConfig? singboxConfig, out msg) != 0)
                 {
                     return -1;
                 }
@@ -158,7 +160,7 @@
             }
             else if (coreType == ECoreType.Xray)
             {
-                if (new CoreConfigV2ray(config).GenerateClientMultipleLoadConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
+                if (new CoreConfigV2rayService(config).GenerateClientMultipleLoadConfig(selecteds, out V2rayConfig? v2rayConfig, out msg) != 0)
                 {
                     return -1;
                 }

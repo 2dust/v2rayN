@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ServiceLib.Handler
+namespace ServiceLib.Services
 {
-    public class UpdateHandler
+    public class UpdateService
     {
         private Action<bool, string> _updateFunc;
         private Config _config;
@@ -32,7 +32,7 @@ namespace ServiceLib.Handler
             var url = string.Empty;
             var fileName = string.Empty;
 
-            DownloadHandler downloadHandle = new();
+            DownloadService downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -74,7 +74,7 @@ namespace ServiceLib.Handler
             var url = string.Empty;
             var fileName = string.Empty;
 
-            DownloadHandler downloadHandle = new();
+            DownloadService downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
@@ -110,7 +110,7 @@ namespace ServiceLib.Handler
 
                 url = args.Url;
                 var ext = Path.GetExtension(url);
-                fileName = Utils.GetTempPath(Utils.GetGUID()+ ext);
+                fileName = Utils.GetTempPath(Utils.GetGUID() + ext);
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
             else
@@ -144,7 +144,7 @@ namespace ServiceLib.Handler
                     string url = item.url.TrimEx();
                     string userAgent = item.userAgent.TrimEx();
                     string hashCode = $"{item.remarks}->";
-                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (Utils.IsNotEmpty(subId) && item.id != subId))
+                    if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || Utils.IsNotEmpty(subId) && item.id != subId)
                     {
                         //_updateFunc(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                         continue;
@@ -159,7 +159,7 @@ namespace ServiceLib.Handler
                         continue;
                     }
 
-                    var downloadHandle = new DownloadHandler();
+                    var downloadHandle = new DownloadService();
                     downloadHandle.Error += (sender2, args) =>
                     {
                         _updateFunc(false, $"{hashCode}{args.GetException().Message}");
@@ -264,13 +264,13 @@ namespace ServiceLib.Handler
 
         public async Task RunAvailabilityCheck(Action<bool, string> update)
         {
-            var time = await (new DownloadHandler()).RunAvailabilityCheck(null);
+            var time = await new DownloadService().RunAvailabilityCheck(null);
             update(false, string.Format(ResUI.TestMeOutput, time));
         }
 
         #region private
 
-        private async Task<ResultEventArgs> CheckUpdateAsync(DownloadHandler downloadHandle, ECoreType type, bool preRelease)
+        private async Task<ResultEventArgs> CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, bool preRelease)
         {
             try
             {
@@ -465,7 +465,7 @@ namespace ServiceLib.Handler
             var url = string.Format(Global.GeoUrl, geoName);
             var fileName = Utils.GetTempPath(Utils.GetGUID());
 
-            DownloadHandler downloadHandle = new();
+            DownloadService downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)

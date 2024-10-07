@@ -1,13 +1,13 @@
-﻿namespace ServiceLib.Handler.CoreConfig
+﻿namespace ServiceLib.Services.CoreConfig
 {
     /// <summary>
     /// Core configuration file processing class
     /// </summary>
-    public class CoreConfigClash
+    public class CoreConfigClashService
     {
         private Config _config;
 
-        public CoreConfigClash(Config config)
+        public CoreConfigClashService(Config config)
         {
             _config = config;
         }

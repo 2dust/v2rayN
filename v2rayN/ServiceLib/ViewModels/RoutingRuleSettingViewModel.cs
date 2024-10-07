@@ -1,6 +1,7 @@
 ﻿using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Services;
 using Splat;
 using System.Reactive;
 
@@ -295,7 +296,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            DownloadHandler downloadHandle = new DownloadHandler();
+            DownloadService downloadHandle = new DownloadService();
             var result = await downloadHandle.TryDownloadString(url, true, "");
             var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
             if (ret == 0)

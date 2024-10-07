@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace ServiceLib.Handler
+namespace ServiceLib.Services
 {
-    public class SpeedtestHandler
+    public class SpeedtestService
     {
         private Config? _config;
         private CoreHandler _coreHandler;
@@ -13,7 +13,7 @@ namespace ServiceLib.Handler
         private Action<SpeedTestResult> _updateFunc;
         private bool _exitLoop = false;
 
-        public SpeedtestHandler(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
+        public SpeedtestService(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
         {
             _config = config;
             _coreHandler = coreHandler;
@@ -144,7 +144,7 @@ namespace ServiceLib.Handler
                     return Task.CompletedTask;
                 }
 
-                DownloadHandler downloadHandle = new DownloadHandler();
+                DownloadService downloadHandle = new DownloadService();
 
                 List<Task> tasks = new();
                 foreach (var it in _selecteds)
@@ -211,7 +211,7 @@ namespace ServiceLib.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandler downloadHandle = new();
+            DownloadService downloadHandle = new();
 
             foreach (var it in _selecteds)
             {
@@ -241,7 +241,7 @@ namespace ServiceLib.Handler
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
 
-                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
@@ -273,7 +273,7 @@ namespace ServiceLib.Handler
             string url = _config.speedTestItem.speedTestUrl;
             var timeout = _config.speedTestItem.speedTestTimeout;
 
-            DownloadHandler downloadHandle = new();
+            DownloadService downloadHandle = new();
 
             foreach (var it in _selecteds)
             {
@@ -303,7 +303,7 @@ namespace ServiceLib.Handler
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
-                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (bool success, string msg) =>
+                _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
@@ -334,7 +334,7 @@ namespace ServiceLib.Handler
             await RunSpeedTestMulti();
         }
 
-        private async Task<string> GetRealPingTime(DownloadHandler downloadHandle, IWebProxy webProxy)
+        private async Task<string> GetRealPingTime(DownloadService downloadHandle, IWebProxy webProxy)
         {
             int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
             //string output = Utile.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
@@ -349,7 +349,7 @@ namespace ServiceLib.Handler
             {
                 if (!IPAddress.TryParse(url, out IPAddress? ipAddress))
                 {
-                    IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
+                    IPHostEntry ipHostInfo = Dns.GetHostEntry(url);
                     ipAddress = ipHostInfo.AddressList[0];
                 }
 

@@ -3,12 +3,12 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 
-namespace ServiceLib.Handler
+namespace ServiceLib.Services
 {
     /// <summary>
     ///Download
     /// </summary>
-    public class DownloadHandler
+    public class DownloadService
     {
         public event EventHandler<ResultEventArgs>? UpdateCompleted;
 

@@ -1,4 +1,6 @@
-﻿namespace ServiceLib.Handler
+﻿using ServiceLib.Services;
+
+namespace ServiceLib.Handler
 {
     public class TaskHandler
     {
@@ -20,7 +22,7 @@
             await Task.Delay(60000);
             Logging.SaveLog("UpdateTaskRunSubscription");
 
-            var updateHandle = new UpdateHandler();
+            var updateHandle = new UpdateService();
             while (true)
             {
                 var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
@@ -53,7 +55,7 @@
             //await Task.Delay(1000 * 120);
             Logging.SaveLog("UpdateTaskRunGeo");
 
-            var updateHandle = new UpdateHandler();
+            var updateHandle = new UpdateService();
             while (true)
             {
                 await Task.Delay(1000 * 3600);

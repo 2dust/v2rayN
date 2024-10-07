@@ -2,13 +2,13 @@
 using System.Net.NetworkInformation;
 using System.Text.Json.Nodes;
 
-namespace ServiceLib.Handler.CoreConfig
+namespace ServiceLib.Services.CoreConfig
 {
-    public class CoreConfigV2ray
+    public class CoreConfigV2rayService
     {
         private Config _config;
 
-        public CoreConfigV2ray(Config config)
+        public CoreConfigV2rayService(Config config)
         {
             _config = config;
         }
@@ -308,7 +308,7 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
-                    if ((it.configType is EConfigType.VLESS or EConfigType.Trojan)
+                    if (it.configType is EConfigType.VLESS or EConfigType.Trojan
                         && item.streamSecurity == Global.StreamSecurityReality
                         && item.publicKey.IsNullOrEmpty())
                     {

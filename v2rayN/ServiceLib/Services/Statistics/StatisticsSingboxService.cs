@@ -1,9 +1,9 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
 
-namespace ServiceLib.Handler.Statistics
+namespace ServiceLib.Services.Statistics
 {
-    public class StatisticsSingbox
+    public class StatisticsSingboxService
     {
         private Config _config;
         private bool _exitFlag;
@@ -11,7 +11,7 @@ namespace ServiceLib.Handler.Statistics
         private string url = string.Empty;
         private Action<ServerSpeedItem> _updateFunc;
 
-        public StatisticsSingbox(Config config, Action<ServerSpeedItem> update)
+        public StatisticsSingboxService(Config config, Action<ServerSpeedItem> update)
         {
             _config = config;
             _updateFunc = update;
@@ -63,7 +63,7 @@ namespace ServiceLib.Handler.Statistics
                 await Task.Delay(1000);
                 try
                 {
-                    if (!(_config.IsRunningCore(ECoreType.sing_box)))
+                    if (!_config.IsRunningCore(ECoreType.sing_box))
                     {
                         continue;
                     }

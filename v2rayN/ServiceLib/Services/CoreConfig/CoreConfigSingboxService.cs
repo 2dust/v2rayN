@@ -2,13 +2,13 @@
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace ServiceLib.Handler.CoreConfig
+namespace ServiceLib.Services.CoreConfig
 {
-    public class CoreConfigSingbox
+    public class CoreConfigSingboxService
     {
         private Config _config;
 
-        public CoreConfigSingbox(Config config)
+        public CoreConfigSingboxService(Config config)
         {
             _config = config;
         }
@@ -192,7 +192,7 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
-                    if ((it.configType is EConfigType.VLESS or EConfigType.Trojan)
+                    if (it.configType is EConfigType.VLESS or EConfigType.Trojan
                         && item.streamSecurity == Global.StreamSecurityReality
                         && item.publicKey.IsNullOrEmpty())
                     {
@@ -476,7 +476,7 @@ namespace ServiceLib.Handler.CoreConfig
                 singboxConfig.inbounds = [];
 
                 if (!_config.tunModeItem.enableTun
-                    || (_config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound && _config.runningCoreType == ECoreType.sing_box))
+                    || _config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound && _config.runningCoreType == ECoreType.sing_box)
                 {
                     var inbound = new Inbound4Sbox()
                     {

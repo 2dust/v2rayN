@@ -36,7 +36,7 @@ namespace ServiceLib.Common
                 }
             };
 
-            using var downloader = new DownloadService(downloadOpt);
+            using var downloader = new Downloader.DownloadService(downloadOpt);
             downloader.DownloadFileCompleted += (sender, value) =>
             {
                 if (value.Error != null)
@@ -76,7 +76,7 @@ namespace ServiceLib.Common
             int totalSecond = 0;
             var hasValue = false;
             double maxSpeed = 0;
-            using var downloader = new DownloadService(downloadOpt);
+            using var downloader = new Downloader.DownloadService(downloadOpt);
             //downloader.DownloadStarted += (sender, value) =>
             //{
             //    if (progress != null)
@@ -145,7 +145,7 @@ namespace ServiceLib.Common
 
             var progressPercentage = 0;
             var hasValue = false;
-            using var downloader = new DownloadService(downloadOpt);
+            using var downloader = new Downloader.DownloadService(downloadOpt);
             downloader.DownloadStarted += (sender, value) =>
             {
                 progress?.Report(0);

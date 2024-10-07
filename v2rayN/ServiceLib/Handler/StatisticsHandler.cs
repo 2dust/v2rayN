@@ -1,4 +1,6 @@
-﻿namespace ServiceLib.Handler.Statistics
+﻿using ServiceLib.Services.Statistics;
+
+namespace ServiceLib.Handler
 {
     public class StatisticsHandler
     {
@@ -9,8 +11,8 @@
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
         private Action<ServerSpeedItem> _updateFunc;
-        private StatisticsV2ray? _statisticsV2Ray;
-        private StatisticsSingbox? _statisticsSingbox;
+        private StatisticsV2rayService? _statisticsV2Ray;
+        private StatisticsSingboxService? _statisticsSingbox;
 
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
@@ -25,8 +27,8 @@
 
             InitData();
 
-            _statisticsV2Ray = new StatisticsV2ray(config, UpdateServerStat);
-            _statisticsSingbox = new StatisticsSingbox(config, UpdateServerStat);
+            _statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStat);
+            _statisticsSingbox = new StatisticsSingboxService(config, UpdateServerStat);
         }
 
         public void Close()

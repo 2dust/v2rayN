@@ -2,6 +2,7 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Services;
 using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -17,7 +18,7 @@ namespace ServiceLib.ViewModels
         private string _serverFilter = string.Empty;
 
         private Dictionary<string, bool> _dicHeaderSort = new();
-        private SpeedtestHandler? _speedtestHandler;
+        private SpeedtestService? _speedtestHandler;
 
         #endregion private prop
 
@@ -670,7 +671,7 @@ namespace ServiceLib.ViewModels
             var coreHandler = Locator.Current.GetService<CoreHandler>();
             if (coreHandler != null)
             {
-                _speedtestHandler = new SpeedtestHandler(_config, coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
+                _speedtestHandler = new SpeedtestService(_config, coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
             }
         }
 

@@ -629,7 +629,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            await (new UpdateHandler()).RunAvailabilityCheck(async (bool success, string msg) =>
+            await (new UpdateService()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
                 _noticeHandler?.SendMessageEx(msg);
                 await _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
@@ -655,7 +655,7 @@ namespace ServiceLib.ViewModels
 
         public void UpdateSubscriptionProcess(string subId, bool blProxy)
         {
-            (new UpdateHandler()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
+            (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
 
         #endregion Subscription
