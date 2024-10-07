@@ -1,6 +1,4 @@
-﻿using Splat;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     public sealed class AppHandler
     {
@@ -33,7 +31,7 @@ namespace ServiceLib.Handler
         #region Init
 
         public AppHandler()
-        {          
+        {
         }
 
         public bool InitApp()
@@ -42,7 +40,6 @@ namespace ServiceLib.Handler
             {
                 return false;
             }
-            Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
             Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
 
             //Under Win10

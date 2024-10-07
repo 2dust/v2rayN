@@ -164,8 +164,6 @@
                 HorizontalAlignment="Left"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRoutingTips}" />
-
-
         </Grid>
 
         <StackPanel

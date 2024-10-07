@@ -2,7 +2,6 @@
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
@@ -10,7 +9,6 @@ namespace v2rayN.Desktop.Views
 {
     public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestoreViewModel>
     {
-        private NoticeHandler? _noticeHandler;
         private Window _window;
 
         public BackupAndRestoreView(Window window)
@@ -23,7 +21,6 @@ namespace v2rayN.Desktop.Views
 
             ViewModel = new BackupAndRestoreViewModel(UpdateViewHandler);
 
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.OperationMsg, v => v.txtMsg.Text).DisposeWith(disposables);

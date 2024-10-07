@@ -1,6 +1,4 @@
-﻿using ServiceLib.Services.Statistics;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     public class StatisticsHandler
     {

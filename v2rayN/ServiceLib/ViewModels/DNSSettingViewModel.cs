@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels
@@ -24,7 +23,7 @@ namespace ServiceLib.ViewModels
         public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
 
             var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray);
@@ -68,7 +67,7 @@ namespace ServiceLib.ViewModels
                 {
                     if (normalDNS.Contains("{") || normalDNS.Contains("}"))
                     {
-                        _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
+                        NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
                         return;
                     }
                 }
@@ -78,7 +77,7 @@ namespace ServiceLib.ViewModels
                 var obj2 = JsonUtils.Deserialize<Dns4Sbox>(normalDNS2);
                 if (obj2 == null)
                 {
-                    _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
+                    NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }
@@ -87,7 +86,7 @@ namespace ServiceLib.ViewModels
                 var obj2 = JsonUtils.Deserialize<Dns4Sbox>(tunDNS2);
                 if (obj2 == null)
                 {
-                    _noticeHandler?.Enqueue(ResUI.FillCorrectDNSText);
+                    NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }
@@ -106,7 +105,7 @@ namespace ServiceLib.ViewModels
             item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2)); ;
             ConfigHandler.SaveDNSItems(_config, item2);
 
-            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             await _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }

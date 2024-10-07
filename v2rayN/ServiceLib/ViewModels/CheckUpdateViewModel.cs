@@ -24,7 +24,6 @@ namespace ServiceLib.ViewModels
         {
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
 
             RefreshSubItems();
 

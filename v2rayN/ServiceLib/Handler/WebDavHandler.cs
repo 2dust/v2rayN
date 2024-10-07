@@ -110,7 +110,7 @@ namespace ServiceLib.Handler
                 }
                 else
                 {
-                    SaveLog(result.Description);               
+                    SaveLog(result.Description);
                 }
             }
             catch (Exception ex)

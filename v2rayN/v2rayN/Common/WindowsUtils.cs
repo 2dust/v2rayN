@@ -207,7 +207,7 @@ namespace v2rayN
             uint attributeSize = (uint)Marshal.SizeOf(attribute);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
-        }         
+        }
 
         /// <summary>
         /// 开机自动启动

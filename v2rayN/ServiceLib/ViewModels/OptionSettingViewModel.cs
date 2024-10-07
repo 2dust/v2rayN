@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels
@@ -103,7 +102,7 @@ namespace ServiceLib.ViewModels
         public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
 
             #region Core
@@ -251,7 +250,7 @@ namespace ServiceLib.ViewModels
             if (Utils.IsNullOrEmpty(localPort.ToString()) || !Utils.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
             {
-                _noticeHandler?.Enqueue(ResUI.FillLocalListeningPort);
+                NoticeHandler.Instance.Enqueue(ResUI.FillLocalListeningPort);
                 return;
             }
             var needReboot = (EnableStatistics != _config.guiItem.enableStatistics
@@ -267,7 +266,7 @@ namespace ServiceLib.ViewModels
             //       || Utile.IsNullOrEmpty(KcpreadBufferSize.ToString()) || !Utile.IsNumeric(KcpreadBufferSize.ToString())
             //       || Utile.IsNullOrEmpty(KcpwriteBufferSize.ToString()) || !Utile.IsNumeric(KcpwriteBufferSize.ToString()))
             //{
-            //    _noticeHandler?.Enqueue(ResUI.FillKcpParameters);
+            //    NoticeHandler.Instance.Enqueue(ResUI.FillKcpParameters);
             //    return;
             //}
 
@@ -337,17 +336,17 @@ namespace ServiceLib.ViewModels
             {
                 if (needReboot)
                 {
-                    _noticeHandler?.Enqueue(ResUI.NeedRebootTips);
+                    NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
                 else
                 {
-                    _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                    NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 }
                 await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
             }
         }
 

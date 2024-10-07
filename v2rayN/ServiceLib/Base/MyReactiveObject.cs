@@ -6,6 +6,5 @@ namespace ServiceLib.Base
     {
         protected static Config? _config;
         protected Func<EViewAction, object?, Task<bool>>? _updateView;
-        protected NoticeHandler? _noticeHandler;
     }
 }

@@ -2,7 +2,6 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using static ServiceLib.Models.ClashProviders;
@@ -44,7 +43,6 @@ namespace ServiceLib.ViewModels
 
         public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
@@ -135,7 +133,7 @@ namespace ServiceLib.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
-            _noticeHandler?.SendMessageEx(msg);
+            NoticeHandler.Instance.SendMessageEx(msg);
         }
 
         public void ProxiesReload()
@@ -363,7 +361,7 @@ namespace ServiceLib.ViewModels
             var selectedProxy = TryGetProxy(name);
             if (selectedProxy == null || selectedProxy.type != "Selector")
             {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
                 return;
             }
 
@@ -379,7 +377,7 @@ namespace ServiceLib.ViewModels
 
                 SelectedGroup = group2;
             }
-            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
         }
 
         private void ProxiesDelayTest(bool blAll)

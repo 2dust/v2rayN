@@ -1,5 +1,4 @@
 ﻿using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
 
@@ -7,8 +6,6 @@ namespace v2rayN.Views
 {
     public partial class BackupAndRestoreView
     {
-        private NoticeHandler? _noticeHandler;
-
         public BackupAndRestoreView()
         {
             InitializeComponent();
@@ -17,7 +14,6 @@ namespace v2rayN.Views
 
             ViewModel = new BackupAndRestoreViewModel(UpdateViewHandler);
 
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.OperationMsg, v => v.txtMsg.Text).DisposeWith(disposables);
@@ -32,7 +28,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.RemoteBackupCmd, v => v.menuRemoteBackup).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RemoteRestoreCmd, v => v.menuRemoteRestore).DisposeWith(disposables);
             });
-        }        
+        }
 
         private void MenuLocalBackup_Click(object sender, RoutedEventArgs e)
         {

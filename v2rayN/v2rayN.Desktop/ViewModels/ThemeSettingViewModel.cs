@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Styling;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive.Linq;
 
 namespace v2rayN.Desktop.ViewModels
@@ -22,7 +21,6 @@ namespace v2rayN.Desktop.ViewModels
         public ThemeSettingViewModel()
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
 
             BindingUI();
             RestoreUI();
@@ -75,7 +73,7 @@ namespace v2rayN.Desktop.ViewModels
                         _config.uiItem.currentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                         ConfigHandler.SaveConfig(_config);
-                        _noticeHandler?.Enqueue(ResUI.NeedRebootTips);
+                        NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
                     }
                 });
         }

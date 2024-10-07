@@ -1,8 +1,6 @@
 ﻿using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using ServiceLib.Services;
-using Splat;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels
@@ -38,7 +36,7 @@ namespace ServiceLib.ViewModels
         public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
             SelectedSource = new();
 
@@ -160,7 +158,7 @@ namespace ServiceLib.ViewModels
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
             if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
@@ -183,7 +181,7 @@ namespace ServiceLib.ViewModels
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
 
@@ -207,7 +205,7 @@ namespace ServiceLib.ViewModels
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
 
@@ -228,7 +226,7 @@ namespace ServiceLib.ViewModels
             string remarks = SelectedRouting.remarks;
             if (Utils.IsNullOrEmpty(remarks))
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
             var item = SelectedRouting;
@@ -241,12 +239,12 @@ namespace ServiceLib.ViewModels
 
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
             }
         }
 
@@ -268,7 +266,7 @@ namespace ServiceLib.ViewModels
             if (ret == 0)
             {
                 RefreshRulesItems();
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             }
         }
 
@@ -283,7 +281,7 @@ namespace ServiceLib.ViewModels
             if (ret == 0)
             {
                 RefreshRulesItems();
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             }
         }
 
@@ -292,7 +290,7 @@ namespace ServiceLib.ViewModels
             var url = SelectedRouting.url;
             if (Utils.IsNullOrEmpty(url))
             {
-                _noticeHandler?.Enqueue(ResUI.MsgNeedUrl);
+                NoticeHandler.Instance.Enqueue(ResUI.MsgNeedUrl);
                 return;
             }
 
@@ -302,7 +300,7 @@ namespace ServiceLib.ViewModels
             if (ret == 0)
             {
                 RefreshRulesItems();
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             }
         }
 

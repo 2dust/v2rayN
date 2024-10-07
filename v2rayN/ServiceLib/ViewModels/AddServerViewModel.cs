@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels
@@ -18,7 +17,7 @@ namespace ServiceLib.ViewModels
         public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
 
             if (profileItem.indexId.IsNullOrEmpty())
@@ -45,32 +44,32 @@ namespace ServiceLib.ViewModels
         {
             if (Utils.IsNullOrEmpty(SelectedSource.remarks))
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
             if (Utils.IsNullOrEmpty(SelectedSource.address))
             {
-                _noticeHandler?.Enqueue(ResUI.FillServerAddress);
+                NoticeHandler.Instance.Enqueue(ResUI.FillServerAddress);
                 return;
             }
             var port = SelectedSource.port.ToString();
             if (Utils.IsNullOrEmpty(port) || !Utils.IsNumeric(port)
                 || SelectedSource.port <= 0 || SelectedSource.port >= Global.MaxPort)
             {
-                _noticeHandler?.Enqueue(ResUI.FillCorrectServerPort);
+                NoticeHandler.Instance.Enqueue(ResUI.FillCorrectServerPort);
                 return;
             }
             if (SelectedSource.configType == EConfigType.Shadowsocks)
             {
                 if (Utils.IsNullOrEmpty(SelectedSource.id))
                 {
-                    _noticeHandler?.Enqueue(ResUI.FillPassword);
+                    NoticeHandler.Instance.Enqueue(ResUI.FillPassword);
                     return;
                 }
                 if (Utils.IsNullOrEmpty(SelectedSource.security))
                 {
-                    _noticeHandler?.Enqueue(ResUI.PleaseSelectEncryption);
+                    NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                     return;
                 }
             }
@@ -79,7 +78,7 @@ namespace ServiceLib.ViewModels
             {
                 if (Utils.IsNullOrEmpty(SelectedSource.id))
                 {
-                    _noticeHandler?.Enqueue(ResUI.FillUUID);
+                    NoticeHandler.Instance.Enqueue(ResUI.FillUUID);
                     return;
                 }
             }
@@ -87,12 +86,12 @@ namespace ServiceLib.ViewModels
 
             if (ConfigHandler.AddServer(_config, SelectedSource) == 0)
             {
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
             }
         }
     }

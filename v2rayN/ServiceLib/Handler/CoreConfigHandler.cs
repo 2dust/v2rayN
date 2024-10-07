@@ -1,6 +1,4 @@
-﻿using ServiceLib.Services.CoreConfig;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     /// <summary>
     /// Core configuration file processing class

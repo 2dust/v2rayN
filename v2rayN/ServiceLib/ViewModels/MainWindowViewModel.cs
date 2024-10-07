@@ -147,7 +147,7 @@ namespace ServiceLib.ViewModels
         public MainWindowViewModel(bool isAdministrator, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
             _isAdministrator = isAdministrator;
 
@@ -281,7 +281,7 @@ namespace ServiceLib.ViewModels
             {
                 if (await _updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
                 {
-                    _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                    NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 }
             });
             RebootAsAdminCmd = ReactiveCommand.Create(() =>
@@ -364,16 +364,16 @@ namespace ServiceLib.ViewModels
 
         private void UpdateHandler(bool notify, string msg)
         {
-            _noticeHandler?.SendMessage(msg);
+            NoticeHandler.Instance.SendMessage(msg);
             if (notify)
             {
-                _noticeHandler?.Enqueue(msg);
+                NoticeHandler.Instance.Enqueue(msg);
             }
         }
 
         private void UpdateTaskHandler(bool success, string msg)
         {
-            _noticeHandler?.SendMessageEx(msg);
+            NoticeHandler.Instance.SendMessageEx(msg);
             if (success)
             {
                 var indexIdOld = _config.indexId;
@@ -559,7 +559,7 @@ namespace ServiceLib.ViewModels
             {
                 RefreshSubscriptions();
                 RefreshServers();
-                _noticeHandler?.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
+                NoticeHandler.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
             }
         }
 
@@ -567,7 +567,7 @@ namespace ServiceLib.ViewModels
         {
             if (Utils.IsNullOrEmpty(result))
             {
-                _noticeHandler?.Enqueue(ResUI.NoValidQRcodeFound);
+                NoticeHandler.Instance.Enqueue(ResUI.NoValidQRcodeFound);
             }
             else
             {
@@ -576,7 +576,7 @@ namespace ServiceLib.ViewModels
                 {
                     RefreshSubscriptions();
                     RefreshServers();
-                    _noticeHandler?.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
+                    NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
                 }
             }
         }
@@ -594,7 +594,7 @@ namespace ServiceLib.ViewModels
             var item = AppHandler.Instance.GetProfileItem(indexId);
             if (item is null)
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
 
@@ -631,7 +631,7 @@ namespace ServiceLib.ViewModels
             }
             await (new UpdateService()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
-                _noticeHandler?.SendMessageEx(msg);
+                NoticeHandler.Instance.SendMessageEx(msg);
                 await _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
             });
         }
@@ -784,7 +784,7 @@ namespace ServiceLib.ViewModels
         {
             //await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
             await _updateView?.Invoke(EViewAction.UpdateSysProxy, false);
-            _noticeHandler?.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
+            NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
             BlSystemProxySet = (type == ESysProxyType.ForcedChange);
@@ -844,7 +844,7 @@ namespace ServiceLib.ViewModels
 
             if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
-                _noticeHandler?.SendMessageEx(ResUI.TipChangeRouting);
+                NoticeHandler.Instance.SendMessageEx(ResUI.TipChangeRouting);
                 Reload();
                 await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }

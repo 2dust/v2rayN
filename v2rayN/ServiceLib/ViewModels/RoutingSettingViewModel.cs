@@ -1,7 +1,6 @@
 ﻿using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 using System.Reactive;
 
 namespace ServiceLib.ViewModels
@@ -68,7 +67,7 @@ namespace ServiceLib.ViewModels
         public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _noticeHandler = Locator.Current.GetService<NoticeHandler>();
+
             _updateView = updateView;
             SelectedSource = new();
 
@@ -200,12 +199,12 @@ namespace ServiceLib.ViewModels
 
             if (ConfigHandler.SaveConfig(_config) == 0)
             {
-                _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 await _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {
-                _noticeHandler?.Enqueue(ResUI.OperationFailed);
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
             }
         }
 
@@ -219,8 +218,8 @@ namespace ServiceLib.ViewModels
             DirectIP = "geoip:private,geoip:cn";
             BlockDomain = "geosite:category-ads-all";
 
-            //_noticeHandler?.Enqueue(ResUI.OperationSuccess);
-            _noticeHandler?.Enqueue(ResUI.OperationSuccess);
+            //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
         }
 
         public async Task RoutingAdvancedEditAsync(bool blNew)
@@ -249,7 +248,7 @@ namespace ServiceLib.ViewModels
         {
             if (SelectedSource is null || SelectedSource.remarks.IsNullOrEmpty())
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
             if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
@@ -274,7 +273,7 @@ namespace ServiceLib.ViewModels
             var item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)
             {
-                _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);
+                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
                 return;
             }
 

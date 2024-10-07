@@ -1,6 +1,4 @@
-﻿using ServiceLib.Services;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     public class TaskHandler
     {

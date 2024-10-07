@@ -4,6 +4,9 @@ namespace ServiceLib.Handler
 {
     public class NoticeHandler
     {
+        private static readonly Lazy<NoticeHandler> _instance = new(() => new());
+        public static NoticeHandler Instance => _instance.Value;
+
         public void Enqueue(string? content)
         {
             if (content.IsNullOrEmpty())
