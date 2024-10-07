@@ -667,11 +667,8 @@ namespace ServiceLib.ViewModels
                 return;
             }
             //ClearTestResult();
-            var coreHandler = Locator.Current.GetService<CoreHandler>();
-            if (coreHandler != null)
-            {
-                _speedtestHandler = new SpeedtestService(_config, coreHandler, lstSelecteds, actionType, UpdateSpeedtestHandler);
-            }
+
+            _speedtestHandler = new SpeedtestService(_config, lstSelecteds, actionType, UpdateSpeedtestHandler);
         }
 
         public void ServerSpeedtestStop()

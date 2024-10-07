@@ -7,16 +7,15 @@ namespace ServiceLib.Services
     public class SpeedtestService
     {
         private Config? _config;
-        private CoreHandler _coreHandler;
         private List<ServerTestItem> _selecteds;
         private ESpeedActionType _actionType;
         private Action<SpeedTestResult> _updateFunc;
         private bool _exitLoop = false;
 
-        public SpeedtestService(Config config, CoreHandler coreHandler, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
+        public SpeedtestService(Config config, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
         {
             _config = config;
-            _coreHandler = coreHandler;
+
             _actionType = actionType;
             _updateFunc = update;
 
@@ -137,7 +136,7 @@ namespace ServiceLib.Services
             {
                 string msg = string.Empty;
 
-                pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
+                pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
@@ -185,7 +184,7 @@ namespace ServiceLib.Services
             {
                 if (pid > 0)
                 {
-                    _coreHandler.CoreStopPid(pid);
+                    CoreHandler.Instance.CoreStopPid(pid);
                 }
                 ProfileExHandler.Instance.SaveTo();
             }
@@ -201,7 +200,7 @@ namespace ServiceLib.Services
             //    _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
             //}
 
-            pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
+            pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -254,7 +253,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                _coreHandler.CoreStopPid(pid);
+                CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
             ProfileExHandler.Instance.SaveTo();
@@ -263,7 +262,7 @@ namespace ServiceLib.Services
         private async Task RunSpeedTestMulti()
         {
             int pid = -1;
-            pid = _coreHandler.LoadCoreConfigSpeedtest(_selecteds);
+            pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -319,7 +318,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                _coreHandler.CoreStopPid(pid);
+                CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
             ProfileExHandler.Instance.SaveTo();

@@ -13,7 +13,6 @@ namespace ServiceLib.ViewModels
     {
         #region private prop
 
-        private CoreHandler _coreHandler;
         private bool _isAdministrator { get; set; }
 
         #endregion private prop
@@ -342,8 +341,7 @@ namespace ServiceLib.ViewModels
         {
             ConfigHandler.InitBuiltinRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
-            _coreHandler = new CoreHandler(_config, UpdateHandler);
-            Locator.CurrentMutable.RegisterLazySingleton(() => _coreHandler, typeof(CoreHandler));
+            CoreHandler.Instance.Init(_config, UpdateHandler);
 
             if (_config.guiItem.enableStatistics)
             {
@@ -428,7 +426,7 @@ namespace ServiceLib.ViewModels
                 ProfileExHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
-                _coreHandler.CoreStop();
+                CoreHandler.Instance.CoreStop();
 
                 Logging.SaveLog("MyAppExit End");
             }
@@ -750,7 +748,7 @@ namespace ServiceLib.ViewModels
                 //}
 
                 var node = ConfigHandler.GetDefaultServer(_config);
-                _coreHandler.LoadCore(node);
+                CoreHandler.Instance.LoadCore(node);
             });
         }
 
@@ -760,7 +758,7 @@ namespace ServiceLib.ViewModels
 
             ChangeSystemProxyStatusAsync(ESysProxyType.ForcedClear, false);
 
-            _coreHandler.CoreStop();
+            CoreHandler.Instance.CoreStop();
         }
 
         #endregion core job

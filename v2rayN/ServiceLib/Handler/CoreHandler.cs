@@ -8,12 +8,14 @@ namespace ServiceLib.Handler
     /// </summary>
     public class CoreHandler
     {
+        private static readonly Lazy<CoreHandler> _instance = new(() => new());
+        public static CoreHandler Instance => _instance.Value;
         private Config _config;
         private Process? _process;
         private Process? _processPre;
         private Action<bool, string> _updateFunc;
 
-        public CoreHandler(Config config, Action<bool, string> update)
+        public void Init(Config config, Action<bool, string> update)
         {
             _config = config;
             _updateFunc = update;
