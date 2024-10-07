@@ -37,7 +37,7 @@ namespace v2rayN.ViewModels
 
         public ThemeSettingViewModel()
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             RegisterSystemColorSet(_config, Application.Current.MainWindow, (bool bl) => { ModifyTheme(bl); });
 

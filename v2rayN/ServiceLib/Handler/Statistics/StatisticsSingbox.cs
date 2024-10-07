@@ -26,7 +26,7 @@ namespace ServiceLib.Handler.Statistics
 
             try
             {
-                url = $"ws://{Global.Loopback}:{LazyConfig.Instance.StatePort2}/traffic";
+                url = $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
 
                 if (webSocket == null)
                 {

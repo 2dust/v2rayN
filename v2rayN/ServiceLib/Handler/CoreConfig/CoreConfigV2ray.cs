@@ -118,7 +118,7 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
-                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    var item = AppHandler.Instance.GetProfileItem(it.indexId);
                     if (item is null)
                     {
                         continue;
@@ -236,7 +236,7 @@ namespace ServiceLib.Handler.CoreConfig
                 v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
                 v2rayConfig.outbounds.RemoveAt(0);
 
-                int httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                int httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
@@ -248,7 +248,7 @@ namespace ServiceLib.Handler.CoreConfig
                     {
                         continue;
                     }
-                    var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                    var item = AppHandler.Instance.GetProfileItem(it.indexId);
                     if (it.configType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         if (item is null || Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
@@ -637,7 +637,7 @@ namespace ServiceLib.Handler.CoreConfig
                             serversItem.address = node.address;
                             serversItem.port = node.port;
                             serversItem.password = node.id;
-                            serversItem.method = LazyConfig.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : "none";
+                            serversItem.method = AppHandler.Instance.GetShadowsocksSecurities(node).Contains(node.security) ? node.security : "none";
 
                             serversItem.ota = false;
                             serversItem.level = 1;
@@ -1029,7 +1029,7 @@ namespace ServiceLib.Handler.CoreConfig
         {
             try
             {
-                var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+                var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray);
                 var normalDNS = item?.normalDNS;
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
                 if (Utils.IsNullOrEmpty(normalDNS))
@@ -1136,7 +1136,7 @@ namespace ServiceLib.Handler.CoreConfig
                     Inboundsettings4Ray apiInboundSettings = new();
                     apiInbound.tag = tag;
                     apiInbound.listen = Global.Loopback;
-                    apiInbound.port = LazyConfig.Instance.StatePort;
+                    apiInbound.port = AppHandler.Instance.StatePort;
                     apiInbound.protocol = Global.InboundAPIProtocol;
                     apiInboundSettings.address = Global.Loopback;
                     apiInbound.settings = apiInboundSettings;
@@ -1193,7 +1193,7 @@ namespace ServiceLib.Handler.CoreConfig
             }
             try
             {
-                var subItem = LazyConfig.Instance.GetSubItem(node.subid);
+                var subItem = AppHandler.Instance.GetSubItem(node.subid);
                 if (subItem is null)
                 {
                     return 0;
@@ -1204,7 +1204,7 @@ namespace ServiceLib.Handler.CoreConfig
                 var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
 
                 //Previous proxy
-                var prevNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.prevProfile);
+                var prevNode = AppHandler.Instance.GetProfileItemViaRemarks(subItem.prevProfile);
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom
                     && prevNode.configType != EConfigType.Hysteria2
@@ -1223,7 +1223,7 @@ namespace ServiceLib.Handler.CoreConfig
                 }
 
                 //Next proxy
-                var nextNode = LazyConfig.Instance.GetProfileItemViaRemarks(subItem.nextProfile);
+                var nextNode = AppHandler.Instance.GetProfileItemViaRemarks(subItem.nextProfile);
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom
                     && nextNode.configType != EConfigType.Hysteria2

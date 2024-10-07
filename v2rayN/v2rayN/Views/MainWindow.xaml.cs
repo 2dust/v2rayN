@@ -23,7 +23,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
 
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
             App.Current.SessionEnding += Current_SessionEnding;

@@ -146,7 +146,7 @@ namespace ServiceLib.ViewModels
 
         public MainWindowViewModel(bool isAdministrator, Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
             _isAdministrator = isAdministrator;
@@ -486,7 +486,7 @@ namespace ServiceLib.ViewModels
 
         private void RefreshServersMenu()
         {
-            var lstModel = LazyConfig.Instance.ProfileItems(_config.subIndexId, "");
+            var lstModel = AppHandler.Instance.ProfileItems(_config.subIndexId, "");
 
             _servers.Clear();
             if (lstModel.Count > _config.guiItem.trayMenuServersLimit)
@@ -591,7 +591,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var item = LazyConfig.Instance.GetProfileItem(indexId);
+            var item = AppHandler.Instance.GetProfileItem(indexId);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
@@ -809,7 +809,7 @@ namespace ServiceLib.ViewModels
             }
 
             BlRouting = true;
-            var routings = LazyConfig.Instance.RoutingItems();
+            var routings = AppHandler.Instance.RoutingItems();
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
@@ -832,7 +832,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = LazyConfig.Instance.GetRoutingItem(SelectedRouting?.id);
+            var item = AppHandler.Instance.GetRoutingItem(SelectedRouting?.id);
             if (item is null)
             {
                 return;
@@ -887,7 +887,7 @@ namespace ServiceLib.ViewModels
         public void InboundDisplayStaus()
         {
             StringBuilder sb = new();
-            sb.Append($"[{EInboundProtocol.socks}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)}]");
+            sb.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]");
             sb.Append(" | ");
             //if (_config.systemProxyItem.sysProxyType == ESysProxyType.ForcedChange)
             //{
@@ -895,7 +895,7 @@ namespace ServiceLib.ViewModels
             //}
             //else
             //{
-            sb.Append($"[{EInboundProtocol.http}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.http)}]");
+            sb.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http)}]");
             //}
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
@@ -904,9 +904,9 @@ namespace ServiceLib.ViewModels
                 if (_config.inbound[0].newPort4LAN)
                 {
                     StringBuilder sb2 = new();
-                    sb2.Append($"[{EInboundProtocol.socks}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks2)}]");
+                    sb2.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");
                     sb2.Append(" | ");
-                    sb2.Append($"[{EInboundProtocol.http}:{LazyConfig.Instance.GetLocalPort(EInboundProtocol.http2)}]");
+                    sb2.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http2)}]");
                     InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
                 }
                 else

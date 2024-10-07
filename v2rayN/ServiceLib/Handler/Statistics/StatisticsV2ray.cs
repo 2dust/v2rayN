@@ -29,7 +29,7 @@ namespace ServiceLib.Handler.Statistics
             {
                 try
                 {
-                    _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{LazyConfig.Instance.StatePort}");
+                    _channel = GrpcChannel.ForAddress($"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort}");
                     _client = new StatsService.StatsServiceClient(_channel);
                 }
                 catch (Exception ex)

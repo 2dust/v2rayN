@@ -182,7 +182,7 @@ namespace ServiceLib.Handler
             //{
             //    coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
             //}
-            var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+            var coreType = AppHandler.Instance.GetCoreType(node, node.configType);
             _config.runningCoreType = coreType;
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
@@ -207,7 +207,7 @@ namespace ServiceLib.Handler
                         configType = EConfigType.SOCKS,
                         address = Global.Loopback,
                         sni = node.address, //Tun2SocksAddress
-                        port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks)
+                        port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
                     };
                 }
                 else if ((node.configType == EConfigType.Custom && node.preSocksPort > 0))
@@ -339,7 +339,7 @@ namespace ServiceLib.Handler
                     startUpSuccessful = true;
                 }
 
-                LazyConfig.Instance.AddProcess(proc.Handle);
+                AppHandler.Instance.AddProcess(proc.Handle);
                 return proc;
             }
             catch (Exception ex)

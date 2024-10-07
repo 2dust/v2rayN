@@ -15,7 +15,7 @@
                     msg = ResUI.CheckServerSettings;
                     return -1;
                 }
-                var config = LazyConfig.Instance.Config;
+                var config = AppHandler.Instance.Config;
 
                 msg = ResUI.InitialConfiguration;
                 if (node.configType == EConfigType.Custom)
@@ -35,7 +35,7 @@
                         return GenerateClientCustomConfig(node, fileName, out msg);
                     }
                 }
-                else if (LazyConfig.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
+                else if (AppHandler.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
                 {
                     var configGenSingbox = new CoreConfigSingbox(config);
                     if (configGenSingbox.GenerateClientConfigContent(node, out SingboxConfig? singboxConfig, out msg) != 0)

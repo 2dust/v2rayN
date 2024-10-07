@@ -73,7 +73,7 @@ namespace v2rayN.Views
 
                 case EConfigType.Shadowsocks:
                     gridSs.Visibility = Visibility.Visible;
-                    LazyConfig.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
+                    AppHandler.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
                     {
                         cmbSecurity3.Items.Add(it);
                     });
@@ -219,7 +219,7 @@ namespace v2rayN.Views
             });
 
             this.Title = $"{profileItem.configType}";
-            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.uiItem.colorModeDark);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

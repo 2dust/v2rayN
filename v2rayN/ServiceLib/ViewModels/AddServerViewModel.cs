@@ -17,7 +17,7 @@ namespace ServiceLib.ViewModels
 
         public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 

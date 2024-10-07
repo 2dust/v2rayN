@@ -22,7 +22,7 @@ namespace v2rayN.Views
             InitializeComponent();
             lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
 
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
 
             Application.Current.Exit += Current_Exit;
             btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;

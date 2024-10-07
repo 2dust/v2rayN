@@ -67,7 +67,7 @@ namespace ServiceLib.ViewModels
 
         public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
             SelectedSource = new();
@@ -165,7 +165,7 @@ namespace ServiceLib.ViewModels
         {
             _routingItems.Clear();
 
-            var routings = LazyConfig.Instance.RoutingItems();
+            var routings = AppHandler.Instance.RoutingItems();
             foreach (var item in routings)
             {
                 bool def = false;
@@ -232,7 +232,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = LazyConfig.Instance.GetRoutingItem(SelectedSource?.id);
+                item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
                 if (item is null)
                 {
                     return;
@@ -258,7 +258,7 @@ namespace ServiceLib.ViewModels
             }
             foreach (var it in SelectedSources ?? [SelectedSource])
             {
-                var item = LazyConfig.Instance.GetRoutingItem(it?.id);
+                var item = AppHandler.Instance.GetRoutingItem(it?.id);
                 if (item != null)
                 {
                     ConfigHandler.RemoveRoutingItem(item);
@@ -271,7 +271,7 @@ namespace ServiceLib.ViewModels
 
         public void RoutingAdvancedSetDefault()
         {
-            var item = LazyConfig.Instance.GetRoutingItem(SelectedSource?.id);
+            var item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectRules);

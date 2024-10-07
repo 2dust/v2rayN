@@ -1,13 +1,15 @@
-﻿namespace ServiceLib.Handler
+﻿using Splat;
+
+namespace ServiceLib.Handler
 {
-    public sealed class LazyConfig
+    public sealed class AppHandler
     {
-        private static readonly Lazy<LazyConfig> _instance = new(() => new());
+        private static readonly Lazy<AppHandler> _instance = new(() => new());
         private Config _config;
         private int? _statePort;
         private int? _statePort2;
-
-        public static LazyConfig Instance => _instance.Value;
+        private Job? _processJob;
+        public static AppHandler Instance => _instance.Value;
         public Config Config => _config;
 
         public int StatePort
@@ -28,21 +30,50 @@
             }
         }
 
-        private Job? _processJob;
+        #region Init
 
-        public LazyConfig()
+        public AppHandler()
+        {          
+        }
+
+        public bool InitApp()
         {
+            if (ConfigHandler.LoadConfig(ref _config) != 0)
+            {
+                return false;
+            }
+            Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
+            Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
+
+            //Under Win10
+            if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
+            {
+                Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.User);
+            }
+            return true;
+        }
+
+        public bool InitComponents()
+        {
+            Logging.Setup();
+            Logging.LoggingEnabled(true);
+            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
+            Logging.ClearLogs();
+
             SQLiteHelper.Instance.CreateTable<SubItem>();
             SQLiteHelper.Instance.CreateTable<ProfileItem>();
             SQLiteHelper.Instance.CreateTable<ServerStatItem>();
             SQLiteHelper.Instance.CreateTable<RoutingItem>();
             SQLiteHelper.Instance.CreateTable<ProfileExItem>();
             SQLiteHelper.Instance.CreateTable<DNSItem>();
+
+            return true;
         }
 
-        #region Config
+        #endregion Init
 
-        public void SetConfig(Config config) => _config = config;
+        #region Config
 
         public int GetLocalPort(EInboundProtocol protocol)
         {

@@ -21,7 +21,7 @@ namespace ServiceLib.ViewModels
         public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
             if (profileItem.indexId.IsNullOrEmpty())
@@ -84,7 +84,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = LazyConfig.Instance.GetProfileItem(SelectedSource.indexId);
+            var item = AppHandler.Instance.GetProfileItem(SelectedSource.indexId);
             item ??= SelectedSource;
             item.address = fileName;
             if (ConfigHandler.AddCustomServer(_config, item, false) == 0)

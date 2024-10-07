@@ -27,7 +27,7 @@ namespace v2rayN.Desktop.Views
         {
             InitializeComponent();
 
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.BottomRight };
 
             //ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);

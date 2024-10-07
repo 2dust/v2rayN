@@ -23,17 +23,17 @@ namespace ServiceLib.ViewModels
 
         public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
-            var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+            var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray);
             useSystemHosts = item.useSystemHosts;
             domainStrategy4Freedom = item?.domainStrategy4Freedom ?? string.Empty;
             domainDNSAddress = item?.domainDNSAddress ?? string.Empty;
             normalDNS = item?.normalDNS ?? string.Empty;
 
-            var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+            var item2 = AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
             domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
             domainDNSAddress2 = item2?.domainDNSAddress ?? string.Empty;
             normalDNS2 = item2?.normalDNS ?? string.Empty;
@@ -92,14 +92,14 @@ namespace ServiceLib.ViewModels
                 }
             }
 
-            var item = LazyConfig.Instance.GetDNSItem(ECoreType.Xray);
+            var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray);
             item.domainStrategy4Freedom = domainStrategy4Freedom;
             item.domainDNSAddress = domainDNSAddress;
             item.useSystemHosts = useSystemHosts;
             item.normalDNS = normalDNS;
             ConfigHandler.SaveDNSItems(_config, item);
 
-            var item2 = LazyConfig.Instance.GetDNSItem(ECoreType.sing_box);
+            var item2 = AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
             item2.domainStrategy4Freedom = domainStrategy4Freedom2;
             item2.domainDNSAddress = domainDNSAddress2;
             item2.normalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));

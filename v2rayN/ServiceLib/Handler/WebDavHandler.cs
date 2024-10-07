@@ -17,7 +17,7 @@ namespace ServiceLib.Handler
 
         public WebDavHandler()
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
         }
 
         private async Task<bool> GetClient()

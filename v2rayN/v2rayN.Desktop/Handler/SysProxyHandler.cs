@@ -16,9 +16,9 @@ namespace v2rayN.Desktop.Handler
 
             try
             {
-                int port = LazyConfig.Instance.GetLocalPort(EInboundProtocol.http);
-                int portSocks = LazyConfig.Instance.GetLocalPort(EInboundProtocol.socks);
-                int portPac = LazyConfig.Instance.GetLocalPort(EInboundProtocol.pac);
+                int port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
+                int portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                int portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
                 if (port <= 0)
                 {
                     return false;

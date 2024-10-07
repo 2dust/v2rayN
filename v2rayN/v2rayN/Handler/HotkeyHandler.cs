@@ -16,7 +16,7 @@ namespace v2rayN.Handler
 
         private Config _config
         {
-            get => LazyConfig.Instance.Config;
+            get => AppHandler.Instance.Config;
         }
 
         private Dictionary<int, List<EGlobalHotkey>> _hotkeyTriggerDic;

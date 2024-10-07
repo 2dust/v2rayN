@@ -16,7 +16,7 @@ namespace v2rayN.Views
             InitializeComponent();
 
             this.Owner = Application.Current.MainWindow;
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             var lstFonts = GetFonts(Utils.GetFontsPath());
 
             ViewModel = new OptionSettingViewModel(UpdateViewHandler);
@@ -165,7 +165,7 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, LazyConfig.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : LazyConfig.Instance.Config.uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.uiItem.colorModeDark);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

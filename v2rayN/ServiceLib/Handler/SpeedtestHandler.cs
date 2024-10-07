@@ -236,7 +236,7 @@ namespace ServiceLib.Handler
                 ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
                 UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
-                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                var item = AppHandler.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.port);
@@ -299,7 +299,7 @@ namespace ServiceLib.Handler
                 ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
                 UpdateFunc(it.indexId, "", ResUI.Speedtesting);
 
-                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                var item = AppHandler.Instance.GetProfileItem(it.indexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.port);

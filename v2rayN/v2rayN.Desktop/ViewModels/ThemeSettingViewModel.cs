@@ -21,7 +21,7 @@ namespace v2rayN.Desktop.ViewModels
 
         public ThemeSettingViewModel()
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
 
             BindingUI();

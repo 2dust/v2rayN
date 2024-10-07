@@ -30,7 +30,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -62,7 +62,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
@@ -92,7 +92,7 @@ namespace ServiceLib.Handler
 
         public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
-            Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
+            Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -181,7 +181,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 var webProxy = GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
@@ -226,7 +226,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var webProxy = GetWebProxy(blProxy);
 
@@ -260,7 +260,7 @@ namespace ServiceLib.Handler
 
                 try
                 {
-                    var config = LazyConfig.Instance.Config;
+                    var config = AppHandler.Instance.Config;
                     int responseTime = await GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10);
                     return responseTime;
                 }
@@ -314,7 +314,7 @@ namespace ServiceLib.Handler
             {
                 return null;
             }
-            var httpPort = LazyConfig.Instance.GetLocalPort(EInboundProtocol.http);
+            var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
             if (!SocketCheck(Global.Loopback, httpPort))
             {
                 return null;

@@ -13,7 +13,7 @@ namespace v2rayN.Desktop.Views
         {
             InitializeComponent();
 
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             btnCancel.Click += (s, e) => this.Close();
             ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 

@@ -76,7 +76,7 @@ namespace ServiceLib.Handler
                     return;
                 }
                 var urlBase = $"{GetApiUrl()}/proxies";
-                urlBase += @"/{0}/delay?timeout=10000&url=" + LazyConfig.Instance.Config.speedTestItem.speedPingTestUrl;
+                urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.speedTestItem.speedPingTestUrl;
 
                 List<Task> tasks = new List<Task>();
                 foreach (var it in lstProxy)
@@ -200,7 +200,7 @@ namespace ServiceLib.Handler
 
         private string GetApiUrl()
         {
-            return $"{Global.HttpProtocol}{Global.Loopback}:{LazyConfig.Instance.StatePort2}";
+            return $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort2}";
         }
     }
 }

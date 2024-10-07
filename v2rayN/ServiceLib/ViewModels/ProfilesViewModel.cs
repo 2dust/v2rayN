@@ -97,7 +97,7 @@ namespace ServiceLib.ViewModels
 
         public ProfilesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
             _updateView = updateView;
 
@@ -350,7 +350,7 @@ namespace ServiceLib.ViewModels
 
         public void RefreshServersBiz()
         {
-            var lstModel = LazyConfig.Instance.ProfileItemsEx(_config.subIndexId, _serverFilter);
+            var lstModel = AppHandler.Instance.ProfileItemsEx(_config.subIndexId, _serverFilter);
             _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
             _profileItems.Clear();
@@ -374,7 +374,7 @@ namespace ServiceLib.ViewModels
             _subItems.Clear();
 
             _subItems.Add(new SubItem { remarks = ResUI.AllGroupServers });
-            foreach (var item in LazyConfig.Instance.SubItems().OrderBy(t => t.sort))
+            foreach (var item in AppHandler.Instance.SubItems().OrderBy(t => t.sort))
             {
                 _subItems.Add(item);
             }
@@ -405,7 +405,7 @@ namespace ServiceLib.ViewModels
             {
                 foreach (var profile in orderProfiles)
                 {
-                    var item = LazyConfig.Instance.GetProfileItem(profile.indexId);
+                    var item = AppHandler.Instance.GetProfileItem(profile.indexId);
                     if (item is not null)
                     {
                         lstSelecteds.Add(item);
@@ -426,7 +426,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
@@ -515,7 +515,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var item = LazyConfig.Instance.GetProfileItem(indexId);
+            var item = AppHandler.Instance.GetProfileItem(indexId);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
@@ -548,7 +548,7 @@ namespace ServiceLib.ViewModels
 
         public async Task ShareServerAsync()
         {
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
@@ -681,7 +681,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Export2ClientConfigAsync(bool blClipboard)
         {
-            var item = LazyConfig.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
             if (item is null)
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseSelectServer);
@@ -767,7 +767,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = LazyConfig.Instance.GetSubItem(_config.subIndexId);
+                item = AppHandler.Instance.GetSubItem(_config.subIndexId);
                 if (item is null)
                 {
                     return;

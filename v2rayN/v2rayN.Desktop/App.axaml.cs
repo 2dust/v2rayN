@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Splat;
 using v2rayN.Desktop.ViewModels;
 using v2rayN.Desktop.Views;
 
@@ -10,11 +9,14 @@ namespace v2rayN.Desktop;
 public partial class App : Application
 {
     //public static EventWaitHandle ProgramStarted;
-    private static Config _config;
 
     public override void Initialize()
     {
-        Init();
+        if (!AppHandler.Instance.InitApp())
+        {
+            Environment.Exit(0);
+            return;
+        }
         AvaloniaXamlLoader.Load(this);
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -49,30 +51,7 @@ public partial class App : Application
         //    return;
         //}
 
-        Logging.Setup();
-        Logging.LoggingEnabled(_config.guiItem.enableLog);
-        Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
-        Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
-        Logging.ClearLogs();
-    }
-
-    private void Init()
-    {
-        if (ConfigHandler.LoadConfig(ref _config) != 0)
-        {
-            //Logging.SaveLog($"Loading GUI configuration file is abnormal,please restart the application{Environment.NewLine}加载GUI配置文件异常,请重启应用");
-            Environment.Exit(0);
-            return;
-        }
-        LazyConfig.Instance.SetConfig(_config);
-        Locator.CurrentMutable.RegisterLazySingleton(() => new NoticeHandler(), typeof(NoticeHandler));
-        Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
-
-        //Under Win10
-        if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
-        {
-            Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.User);
-        }
+        AppHandler.Instance.InitComponents();
     }
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

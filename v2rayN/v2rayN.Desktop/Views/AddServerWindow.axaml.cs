@@ -79,7 +79,7 @@ namespace v2rayN.Desktop.Views
 
                 case EConfigType.Shadowsocks:
                     gridSs.IsVisible = true;
-                    LazyConfig.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
+                    AppHandler.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
                     {
                         cmbSecurity3.Items.Add(it);
                     });

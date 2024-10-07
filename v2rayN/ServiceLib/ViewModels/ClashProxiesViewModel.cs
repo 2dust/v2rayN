@@ -45,7 +45,7 @@ namespace ServiceLib.ViewModels
         public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _noticeHandler = Locator.Current.GetService<NoticeHandler>();
-            _config = LazyConfig.Instance.Config;
+            _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
             SelectedGroup = new();

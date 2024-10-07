@@ -364,7 +364,7 @@ namespace ServiceLib.Handler
 
         public static int AddServer(Config config, ProfileItem profileItem)
         {
-            var item = LazyConfig.Instance.GetProfileItem(profileItem.indexId);
+            var item = AppHandler.Instance.GetProfileItem(profileItem.indexId);
             if (item is null)
             {
                 item = profileItem;
@@ -476,7 +476,7 @@ namespace ServiceLib.Handler
         {
             foreach (var it in indexes)
             {
-                var item = LazyConfig.Instance.GetProfileItem(it.indexId);
+                var item = AppHandler.Instance.GetProfileItem(it.indexId);
                 if (item is null)
                 {
                     continue;
@@ -541,7 +541,7 @@ namespace ServiceLib.Handler
 
         public static ProfileItem? GetDefaultServer(Config config)
         {
-            var item = LazyConfig.Instance.GetProfileItem(config.indexId);
+            var item = AppHandler.Instance.GetProfileItem(config.indexId);
             if (item is null)
             {
                 var item2 = SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault();
@@ -677,7 +677,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int EditCustomServer(Config config, ProfileItem profileItem)
         {
-            var item = LazyConfig.Instance.GetProfileItem(profileItem.indexId);
+            var item = AppHandler.Instance.GetProfileItem(profileItem.indexId);
             if (item is null)
             {
                 item = profileItem;
@@ -717,7 +717,7 @@ namespace ServiceLib.Handler
             profileItem.id = profileItem.id.TrimEx();
             profileItem.security = profileItem.security.TrimEx();
 
-            if (!LazyConfig.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.security))
+            if (!AppHandler.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.security))
             {
                 return -1;
             }
@@ -894,7 +894,7 @@ namespace ServiceLib.Handler
 
         public static int SortServers(Config config, string subId, string colName, bool asc)
         {
-            var lstModel = LazyConfig.Instance.ProfileItems(subId, "");
+            var lstModel = AppHandler.Instance.ProfileItems(subId, "");
             if (lstModel.Count <= 0)
             {
                 return -1;
@@ -1026,7 +1026,7 @@ namespace ServiceLib.Handler
 
         public static Tuple<int, int> DedupServerList(Config config, string subId)
         {
-            var lstProfile = LazyConfig.Instance.ProfileItems(subId);
+            var lstProfile = AppHandler.Instance.ProfileItems(subId);
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
@@ -1126,7 +1126,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                var item = LazyConfig.Instance.GetProfileItem(indexId);
+                var item = AppHandler.Instance.GetProfileItem(indexId);
                 if (item == null)
                 {
                     return 0;
@@ -1161,7 +1161,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            var profileItem = LazyConfig.Instance.GetProfileItem(indexId) ?? new();
+            var profileItem = AppHandler.Instance.GetProfileItem(indexId) ?? new();
             profileItem.indexId = indexId;
             profileItem.remarks = coreType == ECoreType.sing_box ? ResUI.menuSetDefaultMultipleServer : ResUI.menuSetDefaultLoadBalanceServer;
             profileItem.address = Global.CoreMultipleLoadConfigFileName;
@@ -1196,7 +1196,7 @@ namespace ServiceLib.Handler
             if (isSub && Utils.IsNotEmpty(subid))
             {
                 RemoveServerViaSubid(config, subid, isSub);
-                subFilter = LazyConfig.Instance.GetSubItem(subid)?.filter ?? "";
+                subFilter = AppHandler.Instance.GetSubItem(subid)?.filter ?? "";
             }
 
             int countServers = 0;
@@ -1235,7 +1235,7 @@ namespace ServiceLib.Handler
                         //Check for duplicate indexId
                         if (lstDbIndexId is null)
                         {
-                            lstDbIndexId = LazyConfig.Instance.ProfileItemIndexes("");
+                            lstDbIndexId = AppHandler.Instance.ProfileItemIndexes("");
                         }
                         if (lstAdd.Any(t => t.indexId == existItem.indexId)
                             || lstDbIndexId.Any(t => t == existItem.indexId))
@@ -1295,7 +1295,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            var subItem = LazyConfig.Instance.GetSubItem(subid);
+            var subItem = AppHandler.Instance.GetSubItem(subid);
             var subRemarks = subItem?.remarks;
             var preSocksPort = subItem?.preSocksPort;
 
@@ -1430,7 +1430,7 @@ namespace ServiceLib.Handler
             List<ProfileItem>? lstOriSub = null;
             if (isSub && Utils.IsNotEmpty(subid))
             {
-                lstOriSub = LazyConfig.Instance.ProfileItems(subid);
+                lstOriSub = AppHandler.Instance.ProfileItems(subid);
             }
 
             var counter = 0;
@@ -1500,7 +1500,7 @@ namespace ServiceLib.Handler
 
         public static int AddSubItem(Config config, SubItem subItem)
         {
-            var item = LazyConfig.Instance.GetSubItem(subItem.id);
+            var item = AppHandler.Instance.GetSubItem(subItem.id);
             if (item is null)
             {
                 item = subItem;
@@ -1577,7 +1577,7 @@ namespace ServiceLib.Handler
 
         public static int DeleteSubItem(Config config, string id)
         {
-            var item = LazyConfig.Instance.GetSubItem(id);
+            var item = AppHandler.Instance.GetSubItem(id);
             if (item is null)
             {
                 return 0;
@@ -1752,7 +1752,7 @@ namespace ServiceLib.Handler
 
         public static RoutingItem GetDefaultRouting(Config config)
         {
-            var item = LazyConfig.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
+            var item = AppHandler.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
             if (item is null)
             {
                 var item2 = SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(t => t.locked == false);
@@ -1766,7 +1766,7 @@ namespace ServiceLib.Handler
         public static int InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
         {
             var ver = "V3-";
-            var items = LazyConfig.Instance.RoutingItems();
+            var items = AppHandler.Instance.RoutingItems();
             if (blImportAdvancedRules || items.Where(t => t.remarks.StartsWith(ver)).ToList().Count <= 0)
             {
                 var maxSort = items.Count;
@@ -1832,7 +1832,7 @@ namespace ServiceLib.Handler
 
         public static int InitBuiltinDNS(Config config)
         {
-            var items = LazyConfig.Instance.DNSItems();
+            var items = AppHandler.Instance.DNSItems();
             if (items.Count <= 0)
             {
                 var item = new DNSItem()
