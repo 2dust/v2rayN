@@ -275,7 +275,7 @@ namespace ServiceLib.Services
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
-                var url = coreInfo?.coreReleaseApiUrl;
+                var url = coreInfo?.ReleaseApiUrl;
 
                 var result = await downloadHandle.TryDownloadString(url, true, Global.AppName);
                 if (Utils.IsNotEmpty(result))
@@ -304,10 +304,10 @@ namespace ServiceLib.Services
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string filePath = string.Empty;
-                foreach (string name in coreInfo.coreExes)
+                foreach (string name in coreInfo.CoreExes)
                 {
                     string vName = Utils.GetExeName(name);
-                    vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
+                    vName = Utils.GetBinPath(vName, coreInfo.CoreType.ToString());
                     if (File.Exists(vName))
                     {
                         filePath = vName;
@@ -324,7 +324,7 @@ namespace ServiceLib.Services
 
                 using Process p = new();
                 p.StartInfo.FileName = filePath;
-                p.StartInfo.Arguments = coreInfo.versionArg;
+                p.StartInfo.Arguments = coreInfo.VersionArg;
                 p.StartInfo.WorkingDirectory = Utils.GetConfigPath();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
@@ -339,7 +339,7 @@ namespace ServiceLib.Services
                     case ECoreType.v2fly:
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
-                        version = Regex.Match(echo, $"{coreInfo.match} ([0-9.]+) \\(").Groups[1].Value;
+                        version = Regex.Match(echo, $"{coreInfo.Match} ([0-9.]+) \\(").Groups[1].Value;
                         break;
 
                     case ECoreType.mihomo:
@@ -429,19 +429,19 @@ namespace ServiceLib.Services
             if (Utils.IsWindows())
             {
                 //Check for standalone windows .Net version
-                if (coreInfo?.coreType == ECoreType.v2rayN
+                if (coreInfo?.CoreType == ECoreType.v2rayN
                     && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
                     && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
                     )
                 {
-                    return coreInfo?.coreDownloadUrl64.Replace("v2rayN.zip", "zz_v2rayN-SelfContained.zip");
+                    return coreInfo?.DownloadUrlWin64?.Replace("v2rayN.zip", "zz_v2rayN-SelfContained.zip");
                 }
 
                 return RuntimeInformation.ProcessArchitecture switch
                 {
-                    Architecture.Arm64 => coreInfo?.coreDownloadUrlArm64,
-                    Architecture.X86 => coreInfo?.coreDownloadUrl32,
-                    Architecture.X64 => coreInfo?.coreDownloadUrl64,
+                    Architecture.Arm64 => coreInfo?.DownloadUrlWinArm64,
+                    Architecture.X86 => coreInfo?.DownloadUrlWin32,
+                    Architecture.X64 => coreInfo?.DownloadUrlWin64,
                     _ => null,
                 };
             }
@@ -449,9 +449,8 @@ namespace ServiceLib.Services
             {
                 return RuntimeInformation.ProcessArchitecture switch
                 {
-                    Architecture.Arm64 => coreInfo?.coreDownloadUrlLinuxArm64,
-                    Architecture.X86 => coreInfo?.coreDownloadUrlLinux32,
-                    Architecture.X64 => coreInfo?.coreDownloadUrlLinux64,
+                    Architecture.Arm64 => coreInfo?.DownloadUrlLinuxArm64,
+                    Architecture.X64 => coreInfo?.DownloadUrlLinux64,
                     _ => null,
                 };
             }

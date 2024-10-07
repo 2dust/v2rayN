@@ -108,17 +108,17 @@ namespace ServiceLib.Handler
                     var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
                     foreach (var it in coreInfo)
                     {
-                        if (it.coreType == ECoreType.v2rayN)
+                        if (it.CoreType == ECoreType.v2rayN)
                         {
                             continue;
                         }
-                        foreach (string vName in it.coreExes)
+                        foreach (string vName in it.CoreExes)
                         {
                             var existing = Process.GetProcessesByName(vName);
                             foreach (Process p in existing)
                             {
                                 string? path = p.MainModule?.FileName;
-                                if (path == Utils.GetExeName(Utils.GetBinPath(vName, it.coreType.ToString())))
+                                if (path == Utils.GetExeName(Utils.GetBinPath(vName, it.CoreType.ToString())))
                                 {
                                     KillProcess(p);
                                 }
@@ -151,10 +151,10 @@ namespace ServiceLib.Handler
         private string CoreFindExe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
-            foreach (string name in coreInfo.coreExes)
+            foreach (string name in coreInfo.CoreExes)
             {
                 string vName = Utils.GetExeName(name);
-                vName = Utils.GetBinPath(vName, coreInfo.coreType.ToString());
+                vName = Utils.GetBinPath(vName, coreInfo.CoreType.ToString());
                 if (File.Exists(vName))
                 {
                     fileName = vName;
@@ -163,7 +163,7 @@ namespace ServiceLib.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.coreType.ToString()), string.Join(", ", coreInfo.coreExes.ToArray()), coreInfo.coreUrl);
+                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
                 Logging.SaveLog(msg);
                 ShowMsg(false, msg);
             }
@@ -288,7 +288,7 @@ namespace ServiceLib.Handler
                     StartInfo = new()
                     {
                         FileName = fileName,
-                        Arguments = string.Format(coreInfo.arguments, configPath),
+                        Arguments = string.Format(coreInfo.Arguments, configPath),
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = displayLog,

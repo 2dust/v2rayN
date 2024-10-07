@@ -992,13 +992,13 @@ namespace ServiceLib.Services.CoreConfig
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo)
             {
-                if (it.coreType == ECoreType.v2rayN)
+                if (it.CoreType == ECoreType.v2rayN)
                 {
                     continue;
                 }
-                foreach (var it2 in it.coreExes)
+                foreach (var it2 in it.CoreExes)
                 {
-                    if (!lstDnsExe.Contains(it2) && it.coreType != ECoreType.sing_box)
+                    if (!lstDnsExe.Contains(it2) && it.CoreType != ECoreType.sing_box)
                     {
                         lstDnsExe.Add($"{it2}.exe");
                     }

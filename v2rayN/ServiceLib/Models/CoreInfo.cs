@@ -3,28 +3,18 @@
     [Serializable]
     public class CoreInfo
     {
-        public ECoreType coreType { get; set; }
-
-        public List<string> coreExes { get; set; }
-
-        public string arguments { get; set; }
-
-        public string coreUrl { get; set; }
-
-        public string coreReleaseApiUrl { get; set; }
-
-        public string coreDownloadUrl32 { get; set; }
-
-        public string coreDownloadUrl64 { get; set; }
-
-        public string coreDownloadUrlArm64 { get; set; }
-        public string? coreDownloadUrlLinux32 { get; set; }
-        public string? coreDownloadUrlLinux64 { get; set; }
-        public string? coreDownloadUrlLinuxArm64 { get; set; }
-
-        public string match { get; set; }
-        public string versionArg { get; set; }
-
-        public bool redirectInfo { get; set; }
+        public ECoreType CoreType { get; set; }
+        public List<string>? CoreExes { get; set; }
+        public string? Arguments { get; set; }
+        public string? Url { get; set; }
+        public string? ReleaseApiUrl { get; set; }
+        public string? DownloadUrlWin32 { get; set; }
+        public string? DownloadUrlWin64 { get; set; }
+        public string? DownloadUrlWinArm64 { get; set; }
+        public string? DownloadUrlLinux64 { get; set; }
+        public string? DownloadUrlLinuxArm64 { get; set; }
+        public string? Match { get; set; }
+        public string? VersionArg { get; set; }
+        public bool RedirectInfo { get; set; }
     }
 }

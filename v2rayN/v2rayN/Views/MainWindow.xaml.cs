@@ -492,13 +492,13 @@ namespace v2rayN.Views
         {
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
             foreach (var it in coreInfo
-                .Where(t => t.coreType != ECoreType.v2fly
-                            && t.coreType != ECoreType.hysteria))
+                .Where(t => t.CoreType != ECoreType.v2fly
+                            && t.CoreType != ECoreType.hysteria))
             {
                 var item = new MenuItem()
                 {
-                    Tag = it.coreUrl.Replace(@"/releases", ""),
-                    Header = string.Format(ResUI.menuWebsiteItem, it.coreType.ToString().Replace("_", " ")).UpperFirstChar()
+                    Tag = it.Url.Replace(@"/releases", ""),
+                    Header = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar()
                 };
                 item.Click += MenuItem_Click;
                 menuHelp.Items.Add(item);

@@ -84,15 +84,15 @@
                                     Grid.Column="0"
                                     Margin="8"
                                     HorizontalAlignment="Left"
-                                    IsChecked="{Binding isSelected}" />
+                                    IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"
                                     Style="{StaticResource ListItemTitle}"
-                                    Text="{Binding coreType}" />
+                                    Text="{Binding CoreType}" />
                                 <TextBlock
                                     Grid.Column="2"
                                     Style="{StaticResource ListItemSubTitle}"
-                                    Text="{Binding remarks}"
+                                    Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />
                             </Grid>
                         </Border>

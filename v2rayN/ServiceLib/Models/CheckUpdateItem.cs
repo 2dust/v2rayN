@@ -2,10 +2,10 @@
 {
     public class CheckUpdateItem
     {
-        public bool? isSelected { get; set; }
-        public string coreType { get; set; }
-        public string? remarks { get; set; }
-        public string? fileName { get; set; }
-        public bool? isFinished { get; set; }
+        public bool? IsSelected { get; set; }
+        public string? CoreType { get; set; }
+        public string? Remarks { get; set; }
+        public string? FileName { get; set; }
+        public bool? IsFinished { get; set; }
     }
 }

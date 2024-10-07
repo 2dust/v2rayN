@@ -68,15 +68,15 @@
                                     Margin="8"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
-                                    IsChecked="{Binding isSelected}" />
+                                    IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Text="{Binding coreType}" />
+                                    Text="{Binding CoreType}" />
                                 <TextBlock
                                     Grid.Column="2"
                                     VerticalAlignment="Center"
-                                    Text="{Binding remarks}"
+                                    Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />
                             </Grid>
                         </Border>
