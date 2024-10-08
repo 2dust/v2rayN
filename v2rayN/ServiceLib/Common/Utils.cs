@@ -691,6 +691,41 @@ namespace ServiceLib.Common
             return systemHosts;
         }
 
+        public static async Task<string?> GetCliWrapOutput(string filePath, string? arg)
+        {
+            return await GetCliWrapOutput(filePath, arg != null ? [arg] : null);
+        }
+
+        public static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args)
+        {
+            try
+            {
+                var cmd = Cli.Wrap(filePath);
+                if (args != null)
+                {
+                    if (args.Count() == 1)
+                    {
+                        cmd = cmd.WithArguments(args.First());
+                    }
+                    else
+                    {
+                        cmd = cmd.WithArguments(args);
+                    }
+                }
+                var result = await cmd.ExecuteBufferedAsync();
+                if (result.IsSuccess)
+                {
+                    return result.StandardOutput.ToString();
+                }
+                Logging.SaveLog(result.ToString() ?? "");
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("GetCliWrapOutput", ex);
+            }
+            return null;
+        }
+
         #endregion 杂项
 
         #region TempPath
@@ -879,19 +914,7 @@ namespace ServiceLib.Common
 
         private static async Task<string?> GetLinuxUserId()
         {
-            try
-            {
-                var result = await Cli.Wrap("/bin/bash")
-                    .WithArguments(["-c", "id -u"])
-                    .WithValidation(CommandResultValidation.None)
-                    .ExecuteBufferedAsync();
-
-                return result.StandardOutput.ToString();
-            }
-            catch
-            {
-                return null;
-            }
+            return await GetCliWrapOutput("/bin/bash", ["-c", "id -u"]);
         }
 
         #endregion Platform

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Services
@@ -298,7 +296,7 @@ namespace ServiceLib.Services
         /// <summary>
         /// 获取Core版本
         /// </summary>
-        private SemanticVersion GetCoreVersion(ECoreType type)
+        private async Task<SemanticVersion> GetCoreVersion(ECoreType type)
         {
             try
             {
@@ -322,17 +320,8 @@ namespace ServiceLib.Services
                     return new SemanticVersion("");
                 }
 
-                using Process p = new();
-                p.StartInfo.FileName = filePath;
-                p.StartInfo.Arguments = coreInfo.VersionArg;
-                p.StartInfo.WorkingDirectory = Utils.GetConfigPath();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
-                p.Start();
-                p.WaitForExit(5000);
-                string echo = p.StandardOutput.ReadToEnd();
+                var result = await Utils.GetCliWrapOutput(filePath, coreInfo.VersionArg);
+                var echo = result ?? "";
                 string version = string.Empty;
                 switch (type)
                 {
@@ -379,21 +368,21 @@ namespace ServiceLib.Services
                     case ECoreType.Xray:
                     case ECoreType.v2fly_v5:
                         {
-                            curVersion = GetCoreVersion(type);
+                            curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"));
                             break;
                         }
                     case ECoreType.mihomo:
                         {
-                            curVersion = GetCoreVersion(type);
+                            curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion);
                             url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"));
                             break;
                         }
                     case ECoreType.sing_box:
                         {
-                            curVersion = GetCoreVersion(type);
+                            curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
                             url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"), version);
                             break;

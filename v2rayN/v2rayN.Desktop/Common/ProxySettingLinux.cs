@@ -1,7 +1,4 @@
-﻿using CliWrap;
-using CliWrap.Buffered;
-
-namespace v2rayN.Desktop.Common
+﻿namespace v2rayN.Desktop.Common
 {
     public class ProxySettingLinux
     {
@@ -25,17 +22,8 @@ namespace v2rayN.Desktop.Common
             {
                 if (cmd is null || cmd.Cmd.IsNullOrEmpty() || cmd.Arguments.IsNullOrEmpty())
                 { continue; }
-
                 await Task.Delay(10);
-                var result = await Cli.Wrap(cmd.Cmd)
-                       .WithArguments(cmd.Arguments)
-                       .ExecuteBufferedAsync();
-
-                if (result.ExitCode != 0)
-                {
-                    //Logging.SaveLog($"Command failed {cmd.Cmd},{cmd.Arguments}");
-                    Logging.SaveLog(result.ToString() ?? "");
-                }
+                await Utils.GetCliWrapOutput(cmd.Cmd, cmd.Arguments);
             }
         }
 
