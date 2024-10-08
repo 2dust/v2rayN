@@ -59,7 +59,7 @@
             result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
             result = Utils.Base64Decode(result);
 
-            //转成Json
+            
             VmessQRCode? vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
             if (vmessQRCode == null)
             {

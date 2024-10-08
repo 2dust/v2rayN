@@ -9,8 +9,8 @@ namespace ServiceLib.Handler
     /// </summary>
     public class ConfigHandler
     {
-        private static string configRes = Global.ConfigFileName;
-        private static readonly object objLock = new();
+        private static readonly string _configRes = Global.ConfigFileName;
+        private static readonly object _objLock = new();
 
         #region ConfigHandler
 
@@ -21,39 +21,29 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static int LoadConfig(ref Config? config)
         {
-            //载入配置文件
-            var result = Utils.LoadResource(Utils.GetConfigPath(configRes));
+            var result = Utils.LoadResource(Utils.GetConfigPath(_configRes));
             if (Utils.IsNotEmpty(result))
             {
-                //转成Json
                 config = JsonUtils.Deserialize<Config>(result);
             }
             else
             {
-                if (File.Exists(Utils.GetConfigPath(configRes)))
+                if (File.Exists(Utils.GetConfigPath(_configRes)))
                 {
                     Logging.SaveLog("LoadConfig Exception");
                     return -1;
                 }
             }
 
-            if (config == null)
-            {
-                config = new Config
-                {
-                };
-            }
-            if (config.coreBasicItem == null)
-            {
-                config.coreBasicItem = new()
-                {
-                    logEnabled = false,
-                    loglevel = "warning",
-                    muxEnabled = false,
-                };
-            }
+            config ??= new Config();
 
-            //本地监听
+            config.coreBasicItem ??= new()
+            {
+                logEnabled = false,
+                loglevel = "warning",
+                muxEnabled = false,
+            };
+
             if (config.inbound == null)
             {
                 config.inbound = new List<InItem>();
@@ -75,55 +65,38 @@ namespace ServiceLib.Handler
                     config.inbound[0].protocol = EInboundProtocol.socks.ToString();
                 }
             }
-            if (config.routingBasicItem == null)
+            config.routingBasicItem ??= new()
             {
-                config.routingBasicItem = new()
-                {
-                    enableRoutingAdvanced = true
-                };
-            }
-            //路由规则
+                enableRoutingAdvanced = true
+            };
+
             if (Utils.IsNullOrEmpty(config.routingBasicItem.domainStrategy))
             {
                 config.routingBasicItem.domainStrategy = Global.DomainStrategies[0];//"IPIfNonMatch";
             }
-            //if (Utile.IsNullOrEmpty(config.domainMatcher))
-            //{
-            //    config.domainMatcher = "linear";
-            //}
 
-            //kcp
-            if (config.kcpItem == null)
+            config.kcpItem ??= new KcpItem
             {
-                config.kcpItem = new KcpItem
-                {
-                    mtu = 1350,
-                    tti = 50,
-                    uplinkCapacity = 12,
-                    downlinkCapacity = 100,
-                    readBufferSize = 2,
-                    writeBufferSize = 2,
-                    congestion = false
-                };
-            }
-            if (config.grpcItem == null)
+                mtu = 1350,
+                tti = 50,
+                uplinkCapacity = 12,
+                downlinkCapacity = 100,
+                readBufferSize = 2,
+                writeBufferSize = 2,
+                congestion = false
+            };
+            config.grpcItem ??= new GrpcItem
             {
-                config.grpcItem = new GrpcItem
-                {
-                    idle_timeout = 60,
-                    health_check_timeout = 20,
-                    permit_without_stream = false,
-                    initial_windows_size = 0,
-                };
-            }
-            if (config.tunModeItem == null)
+                idle_timeout = 60,
+                health_check_timeout = 20,
+                permit_without_stream = false,
+                initial_windows_size = 0,
+            };
+            config.tunModeItem ??= new TunModeItem
             {
-                config.tunModeItem = new TunModeItem
-                {
-                    enableTun = false,
-                    mtu = 9000,
-                };
-            }
+                enableTun = false,
+                mtu = 9000,
+            };
             config.guiItem ??= new()
             {
                 enableStatistics = false,
@@ -150,19 +123,13 @@ namespace ServiceLib.Handler
                 }
             }
 
-            if (config.constItem == null)
-            {
-                config.constItem = new ConstItem();
-            }
+            config.constItem ??= new ConstItem();
             if (Utils.IsNullOrEmpty(config.constItem.defIEProxyExceptions))
             {
                 config.constItem.defIEProxyExceptions = Global.IEProxyExceptions;
             }
 
-            if (config.speedTestItem == null)
-            {
-                config.speedTestItem = new();
-            }
+            config.speedTestItem ??= new();
             if (config.speedTestItem.speedTestTimeout < 10)
             {
                 config.speedTestItem.speedTestTimeout = 10;
@@ -183,34 +150,19 @@ namespace ServiceLib.Handler
                 xudpProxyUDP443 = "reject"
             };
 
-            if (config.mux4SboxItem == null)
+            config.mux4SboxItem ??= new()
             {
-                config.mux4SboxItem = new()
-                {
-                    protocol = Global.SingboxMuxs[0],
-                    max_connections = 8
-                };
-            }
+                protocol = Global.SingboxMuxs[0],
+                max_connections = 8
+            };
 
-            if (config.hysteriaItem == null)
+            config.hysteriaItem ??= new()
             {
-                config.hysteriaItem = new()
-                {
-                    up_mbps = 100,
-                    down_mbps = 100
-                };
-            }
+                up_mbps = 100,
+                down_mbps = 100
+            };
             config.clashUIItem ??= new();
-
-            if (config.systemProxyItem == null)
-            {
-                config.systemProxyItem = new()
-                {
-                    systemProxyExceptions = config.systemProxyExceptions,
-                    systemProxyAdvancedProtocol = config.systemProxyAdvancedProtocol,
-                };
-            }
-
+            config.systemProxyItem ??= new();
             config.webDavItem ??= new();
 
             return 0;
@@ -234,12 +186,12 @@ namespace ServiceLib.Handler
         /// <param name="config"></param>
         private static void ToJsonFile(Config config)
         {
-            lock (objLock)
+            lock (_objLock)
             {
                 try
                 {
                     //save temp file
-                    var resPath = Utils.GetConfigPath(configRes);
+                    var resPath = Utils.GetConfigPath(_configRes);
                     var tempPath = $"{resPath}_temp";
                     if (JsonUtils.ToFile(config, tempPath) != 0)
                     {
@@ -259,104 +211,6 @@ namespace ServiceLib.Handler
                 }
             }
         }
-
-        //public static int ImportOldGuiConfig(Config config, string fileName)
-        //{
-        //    var result = Utils.LoadResource(fileName);
-        //    if (Utils.IsNullOrEmpty(result))
-        //    {
-        //        return -1;
-        //    }
-
-        //    var configOld = JsonUtils.Deserialize<ConfigOld>(result);
-        //    if (configOld == null)
-        //    {
-        //        return -1;
-        //    }
-
-        //    var subItem = JsonUtils.Deserialize<List<SubItem>>(JsonUtils.Serialize(configOld.subItem));
-        //    foreach (var it in subItem)
-        //    {
-        //        if (Utils.IsNullOrEmpty(it.id))
-        //        {
-        //            it.id = Utils.GetGUID(false);
-        //        }
-        //        SQLiteHelper.Instance.Replace(it);
-        //    }
-
-        //    var profileItems = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(configOld.vmess));
-        //    foreach (var it in profileItems)
-        //    {
-        //        if (Utils.IsNullOrEmpty(it.indexId))
-        //        {
-        //            it.indexId = Utils.GetGUID(false);
-        //        }
-        //        SQLiteHelper.Instance.Replace(it);
-        //    }
-
-        //    foreach (var it in configOld.routings)
-        //    {
-        //        if (it.locked)
-        //        {
-        //            continue;
-        //        }
-        //        var routing = JsonUtils.Deserialize<RoutingItem>(JsonUtils.Serialize(it));
-        //        foreach (var it2 in it.rules)
-        //        {
-        //            it2.id = Utils.GetGUID(false);
-        //        }
-        //        routing.ruleNum = it.rules.Count;
-        //        routing.ruleSet = JsonUtils.Serialize(it.rules, false);
-
-        //        if (Utils.IsNullOrEmpty(routing.id))
-        //        {
-        //            routing.id = Utils.GetGUID(false);
-        //        }
-        //        SQLiteHelper.Instance.Replace(routing);
-        //    }
-
-        //    config = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(configOld));
-
-        //    if (config.coreBasicItem == null)
-        //    {
-        //        config.coreBasicItem = new()
-        //        {
-        //            logEnabled = configOld.logEnabled,
-        //            loglevel = configOld.loglevel,
-        //            muxEnabled = configOld.muxEnabled,
-        //        };
-        //    }
-
-        //    if (config.routingBasicItem == null)
-        //    {
-        //        config.routingBasicItem = new()
-        //        {
-        //            enableRoutingAdvanced = configOld.enableRoutingAdvanced,
-        //            domainStrategy = configOld.domainStrategy
-        //        };
-        //    }
-
-        //    if (config.guiItem == null)
-        //    {
-        //        config.guiItem = new()
-        //        {
-        //            enableStatistics = configOld.enableStatistics,
-        //            keepOlderDedupl = configOld.keepOlderDedupl,
-        //            ignoreGeoUpdateCore = configOld.ignoreGeoUpdateCore,
-        //            autoUpdateInterval = configOld.autoUpdateInterval,
-        //            checkPreReleaseUpdate = configOld.checkPreReleaseUpdate,
-        //            enableSecurityProtocolTls13 = configOld.enableSecurityProtocolTls13,
-        //            trayMenuServersLimit = configOld.trayMenuServersLimit,
-        //        };
-        //    }
-
-        //    GetDefaultServer(config);
-        //    GetDefaultRouting(config);
-        //    SaveConfig(config);
-        //    LoadConfig(ref config);
-
-        //    return 0;
-        //}
 
         #endregion ConfigHandler
 

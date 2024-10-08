@@ -32,10 +32,10 @@ namespace ServiceLib.Services
                 }
                 _selecteds.Add(new ServerTestItem()
                 {
-                    indexId = it.indexId,
-                    address = it.address,
-                    port = it.port,
-                    configType = it.configType
+                    IndexId = it.indexId,
+                    Address = it.address,
+                    Port = it.port,
+                    ConfigType = it.configType
                 });
             }
             //clear test result
@@ -45,19 +45,19 @@ namespace ServiceLib.Services
                 {
                     case ESpeedActionType.Tcping:
                     case ESpeedActionType.Realping:
-                        UpdateFunc(it.indexId, ResUI.Speedtesting, "");
-                        ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
+                        UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
+                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, "0");
                         break;
 
                     case ESpeedActionType.Speedtest:
-                        UpdateFunc(it.indexId, "", ResUI.SpeedtestingWait);
-                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
+                        UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "0");
                         break;
 
                     case ESpeedActionType.Mixedtest:
-                        UpdateFunc(it.indexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
-                        ProfileExHandler.Instance.SetTestDelay(it.indexId, "0");
-                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, "0");
+                        UpdateFunc(it.IndexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
+                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, "0");
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "0");
                         break;
                 }
             }
@@ -95,7 +95,7 @@ namespace ServiceLib.Services
                 List<Task> tasks = [];
                 foreach (var it in _selecteds)
                 {
-                    if (it.configType == EConfigType.Custom)
+                    if (it.ConfigType == EConfigType.Custom)
                     {
                         continue;
                     }
@@ -103,11 +103,11 @@ namespace ServiceLib.Services
                     {
                         try
                         {
-                            int time = GetTcpingTime(it.address, it.port);
+                            int time = GetTcpingTime(it.Address, it.Port);
                             var output = FormatOut(time, Global.DelayUnit);
 
-                            ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                            UpdateFunc(it.indexId, output);
+                            ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
+                            UpdateFunc(it.IndexId, output);
                         }
                         catch (Exception ex)
                         {
@@ -148,11 +148,11 @@ namespace ServiceLib.Services
                 List<Task> tasks = new();
                 foreach (var it in _selecteds)
                 {
-                    if (!it.allowTest)
+                    if (!it.AllowTest)
                     {
                         continue;
                     }
-                    if (it.configType == EConfigType.Custom)
+                    if (it.ConfigType == EConfigType.Custom)
                     {
                         continue;
                     }
@@ -160,13 +160,13 @@ namespace ServiceLib.Services
                     {
                         try
                         {
-                            WebProxy webProxy = new(Global.Loopback, it.port);
+                            WebProxy webProxy = new(Global.Loopback, it.Port);
                             string output = await GetRealPingTime(downloadHandle, webProxy);
 
-                            ProfileExHandler.Instance.SetTestDelay(it.indexId, output);
-                            UpdateFunc(it.indexId, output);
+                            ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
+                            UpdateFunc(it.IndexId, output);
                             int.TryParse(output, out int delay);
-                            it.delay = delay;
+                            it.Delay = delay;
                         }
                         catch (Exception ex)
                         {
@@ -216,14 +216,14 @@ namespace ServiceLib.Services
             {
                 if (_exitLoop)
                 {
-                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                    UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }
-                if (!it.allowTest)
+                if (!it.AllowTest)
                 {
                     continue;
                 }
-                if (it.configType == EConfigType.Custom)
+                if (it.ConfigType == EConfigType.Custom)
                 {
                     continue;
                 }
@@ -232,22 +232,22 @@ namespace ServiceLib.Services
                 //    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
                 //    continue;
                 //}
-                ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
-                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
+                ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "-1");
+                UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-                var item = AppHandler.Instance.GetProfileItem(it.indexId);
+                var item = AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new(Global.Loopback, it.port);
+                WebProxy webProxy = new(Global.Loopback, it.Port);
 
                 await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, msg);
                     }
-                    UpdateFunc(it.indexId, "", msg);
+                    UpdateFunc(it.IndexId, "", msg);
                 });
             }
 
@@ -278,38 +278,38 @@ namespace ServiceLib.Services
             {
                 if (_exitLoop)
                 {
-                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                    UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }
 
-                if (!it.allowTest)
+                if (!it.AllowTest)
                 {
                     continue;
                 }
-                if (it.configType == EConfigType.Custom)
+                if (it.ConfigType == EConfigType.Custom)
                 {
                     continue;
                 }
-                if (it.delay < 0)
+                if (it.Delay < 0)
                 {
-                    UpdateFunc(it.indexId, "", ResUI.SpeedtestingSkip);
+                    UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }
-                ProfileExHandler.Instance.SetTestSpeed(it.indexId, "-1");
-                UpdateFunc(it.indexId, "", ResUI.Speedtesting);
+                ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "-1");
+                UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-                var item = AppHandler.Instance.GetProfileItem(it.indexId);
+                var item = AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new(Global.Loopback, it.port);
+                WebProxy webProxy = new(Global.Loopback, it.Port);
                 _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
                     decimal.TryParse(msg, out decimal dec);
                     if (dec > 0)
                     {
-                        ProfileExHandler.Instance.SetTestSpeed(it.indexId, msg);
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, msg);
                     }
-                    UpdateFunc(it.indexId, "", msg);
+                    UpdateFunc(it.IndexId, "", msg);
                 });
                 await Task.Delay(2000);
             }

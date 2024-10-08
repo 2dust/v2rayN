@@ -124,16 +124,16 @@ namespace ServiceLib.Services.CoreConfig
 
                 foreach (var it in selecteds)
                 {
-                    if (it.configType == EConfigType.Custom)
+                    if (it.ConfigType == EConfigType.Custom)
                     {
                         continue;
                     }
-                    if (it.port <= 0)
+                    if (it.Port <= 0)
                     {
                         continue;
                     }
-                    var item = AppHandler.Instance.GetProfileItem(it.indexId);
-                    if (it.configType is EConfigType.VMess or EConfigType.VLESS)
+                    var item = AppHandler.Instance.GetProfileItem(it.IndexId);
+                    if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         if (item is null || Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
                         {
@@ -164,8 +164,8 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         continue;
                     }
-                    it.port = port;
-                    it.allowTest = true;
+                    it.Port = port;
+                    it.AllowTest = true;
 
                     //inbound
                     Inbound4Sbox inbound = new()
@@ -192,7 +192,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         continue;
                     }
-                    if (it.configType is EConfigType.VLESS or EConfigType.Trojan
+                    if (it.ConfigType is EConfigType.VLESS or EConfigType.Trojan
                         && item.streamSecurity == Global.StreamSecurityReality
                         && item.publicKey.IsNullOrEmpty())
                     {

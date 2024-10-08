@@ -10,8 +10,6 @@
 
         public string indexId { get; set; }
         public string subIndexId { get; set; }
-        public string systemProxyExceptions { get; set; }
-        public string systemProxyAdvancedProtocol { get; set; }
 
         public ECoreType runningCoreType { get; set; }
 

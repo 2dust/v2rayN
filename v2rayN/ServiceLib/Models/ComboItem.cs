@@ -2,12 +2,12 @@
 {
     public class ComboItem
     {
-        public string ID
+        public string? ID
         {
             get; set;
         }
 
-        public string Text
+        public string? Text
         {
             get; set;
         }
