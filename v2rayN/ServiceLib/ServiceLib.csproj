@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.2.1" />
-		<PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
 		<PackageReference Include="ReactiveUI" Version="20.1.63" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />

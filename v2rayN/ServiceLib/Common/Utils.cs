@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using CliWrap;
+using CliWrap.Buffered;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
@@ -863,7 +865,32 @@ namespace ServiceLib.Common
             }
             else
             {
-                return Mono.Unix.Native.Syscall.geteuid() == 0;
+                var id = GetLinuxUserId().Result ?? "1000";
+                if (int.TryParse(id, out int userId))
+                {
+                    return userId == 0;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private static async Task<string?> GetLinuxUserId()
+        {
+            try
+            {
+                var result = await Cli.Wrap("/bin/bash")
+                    .WithArguments(["-c", "id -u"])
+                    .WithValidation(CommandResultValidation.None)
+                    .ExecuteBufferedAsync();
+
+                return result.StandardOutput.ToString();
+            }
+            catch
+            {
+                return null;
             }
         }
 
