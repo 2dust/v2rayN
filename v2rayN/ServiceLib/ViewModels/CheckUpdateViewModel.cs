@@ -32,7 +32,7 @@ namespace ServiceLib.ViewModels
                 await CheckUpdate()
                 .ContinueWith(t =>
                 {
-                    UpdateFinished();
+                    _ = UpdateFinished();
                 });
             });
             EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;

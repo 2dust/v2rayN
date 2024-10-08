@@ -13,12 +13,12 @@ namespace ServiceLib.Handler
         private Config _config;
         private Process? _process;
         private Process? _processPre;
-        private Action<bool, string> _updateFunc;
+        private Action<bool, string>? _updateFunc;
 
-        public void Init(Config config, Action<bool, string> update)
+        public void Init(Config config, Action<bool, string> updateFunc)
         {
             _config = config;
-            _updateFunc = update;
+            _updateFunc = updateFunc;
 
             Environment.SetEnvironmentVariable("v2ray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
@@ -267,7 +267,7 @@ namespace ServiceLib.Handler
 
         private void ShowMsg(bool notify, string msg)
         {
-            _updateFunc(notify, msg);
+            _updateFunc?.Invoke(notify, msg);
         }
 
         #endregion Private

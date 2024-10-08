@@ -10,12 +10,12 @@ namespace ServiceLib.Handler
         private Dictionary<String, ProxiesItem>? _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
 
-        public void GetClashProxies(Config config, Action<ClashProxies, ClashProviders> update)
+        public void GetClashProxies(Config config, Action<ClashProxies, ClashProviders> updateFunc)
         {
-            Task.Run(() => GetClashProxiesAsync(config, update));
+            Task.Run(() => GetClashProxiesAsync(config, updateFunc));
         }
 
-        private async Task GetClashProxiesAsync(Config config, Action<ClashProxies, ClashProviders> update)
+        private async Task GetClashProxiesAsync(Config config, Action<ClashProxies, ClashProviders> updateFunc)
         {
             for (var i = 0; i < 5; i++)
             {
@@ -30,15 +30,15 @@ namespace ServiceLib.Handler
                 if (clashProxies != null || clashProviders != null)
                 {
                     _proxies = clashProxies?.proxies;
-                    update(clashProxies, clashProviders);
+                    updateFunc?.Invoke(clashProxies, clashProviders);
                     return;
                 }
                 Task.Delay(5000).Wait();
             }
-            update(null, null);
+            updateFunc?.Invoke(null, null);
         }
 
-        public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Action<ClashProxyModel?, string> update)
+        public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Action<ClashProxyModel?, string> updateFunc)
         {
             Task.Run(() =>
             {
@@ -90,13 +90,13 @@ namespace ServiceLib.Handler
                     tasks.Add(Task.Run(async () =>
                     {
                         var result = await HttpClientHelper.Instance.TryGetAsync(url);
-                        update(it, result);
+                        updateFunc?.Invoke(it, result);
                     }));
                 }
                 Task.WaitAll(tasks.ToArray());
 
                 Task.Delay(1000).Wait();
-                update(null, "");
+                updateFunc?.Invoke(null, "");
             });
         }
 
@@ -164,12 +164,12 @@ namespace ServiceLib.Handler
             }
         }
 
-        public void GetClashConnections(Config config, Action<ClashConnections> update)
+        public void GetClashConnections(Config config, Action<ClashConnections> updateFunc)
         {
-            Task.Run(() => GetClashConnectionsAsync(config, update));
+            Task.Run(() => GetClashConnectionsAsync(config, updateFunc));
         }
 
-        private async Task GetClashConnectionsAsync(Config config, Action<ClashConnections> update)
+        private async Task GetClashConnectionsAsync(Config config, Action<ClashConnections> updateFunc)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace ServiceLib.Handler
                 var result = await HttpClientHelper.Instance.TryGetAsync(url);
                 var clashConnections = JsonUtils.Deserialize<ClashConnections>(result);
 
-                update(clashConnections);
+                updateFunc?.Invoke(clashConnections);
             }
             catch (Exception ex)
             {

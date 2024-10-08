@@ -26,7 +26,7 @@ namespace ServiceLib.Services
             }
         }
 
-        public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> update)
+        public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
         {
             try
             {
@@ -35,10 +35,10 @@ namespace ServiceLib.Services
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
                 {
-                    if (update != null)
+                    if (updateFunc != null)
                     {
                         string msg = $"{value}";
-                        update(false, msg);
+                        updateFunc?.Invoke(false, msg);
                     }
                 };
 
@@ -49,10 +49,10 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                update(false, ex.Message);
+                updateFunc?.Invoke(false, ex.Message);
                 if (ex.InnerException != null)
                 {
-                    update(false, ex.InnerException.Message);
+                    updateFunc?.Invoke(false, ex.InnerException.Message);
                 }
             }
             return 0;

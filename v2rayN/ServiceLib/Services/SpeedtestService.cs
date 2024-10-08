@@ -9,15 +9,15 @@ namespace ServiceLib.Services
         private Config? _config;
         private List<ServerTestItem> _selecteds;
         private ESpeedActionType _actionType;
-        private Action<SpeedTestResult> _updateFunc;
+        private Action<SpeedTestResult>? _updateFunc;
         private bool _exitLoop = false;
 
-        public SpeedtestService(Config config, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> update)
+        public SpeedtestService(Config config, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> updateFunc)
         {
             _config = config;
 
             _actionType = actionType;
-            _updateFunc = update;
+            _updateFunc = updateFunc;
 
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
@@ -383,7 +383,7 @@ namespace ServiceLib.Services
 
         private void UpdateFunc(string indexId, string delay, string speed = "")
         {
-            _updateFunc(new() { IndexId = indexId, Delay = delay, Speed = speed });
+            _updateFunc?.Invoke(new() { IndexId = indexId, Delay = delay, Speed = speed });
         }
     }
 }

@@ -110,7 +110,7 @@ namespace ServiceLib.Common
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                return new List<string>();
+                return [];
             }
         }
 
@@ -131,7 +131,7 @@ namespace ServiceLib.Common
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                return new List<string>();
+                return [];
             }
         }
 
@@ -640,29 +640,16 @@ namespace ServiceLib.Common
             return fileName;
         }
 
-        public static IPAddress? GetDefaultGateway()
-        {
-            return NetworkInterface
-                .GetAllNetworkInterfaces()
-                .Where(n => n.OperationalStatus == OperationalStatus.Up)
-                .Where(n => n.NetworkInterfaceType != NetworkInterfaceType.Loopback)
-                .SelectMany(n => n.GetIPProperties()?.GatewayAddresses)
-                .Select(g => g?.Address)
-                .Where(a => a != null)
-                // .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
-                // .Where(a => Array.FindIndex(a.GetAddressBytes(), b => b != 0) >= 0)
-                .FirstOrDefault();
-        }
-
         public static bool IsGuidByParse(string strSrc)
         {
-            return Guid.TryParse(strSrc, out Guid g);
+            return Guid.TryParse(strSrc, out _);
         }
 
-        public static void ProcessStart(string fileName, string arguments = "")
+        public static void ProcessStart(string? fileName, string arguments = "")
         {
             try
             {
+                if (fileName.IsNullOrEmpty()) { return; }
                 Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
             }
             catch (Exception ex)

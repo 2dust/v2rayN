@@ -10,12 +10,12 @@ namespace ServiceLib.Services.Statistics
         private GrpcChannel? _channel;
         private StatsService.StatsServiceClient? _client;
         private bool _exitFlag;
-        private Action<ServerSpeedItem> _updateFunc;
+        private Action<ServerSpeedItem>? _updateFunc;
 
-        public StatisticsV2rayService(Models.Config config, Action<ServerSpeedItem> update)
+        public StatisticsV2rayService(Models.Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;
-            _updateFunc = update;
+            _updateFunc = updateFunc;
             _exitFlag = false;
 
             GrpcInit();
@@ -70,7 +70,7 @@ namespace ServiceLib.Services.Statistics
                         if (res != null)
                         {
                             ParseOutput(res.Stat, out ServerSpeedItem server);
-                            _updateFunc(server);
+                            _updateFunc?.Invoke(server);
                         }
                     }
                     if (_channel != null)

@@ -9,13 +9,13 @@
         {
         }
 
-        public void RegUpdateTask(Config config, Action<bool, string> update)
+        public void RegUpdateTask(Config config, Action<bool, string> updateFunc)
         {
-            Task.Run(() => UpdateTaskRunSubscription(config, update));
-            Task.Run(() => UpdateTaskRunGeo(config, update));
+            Task.Run(() => UpdateTaskRunSubscription(config, updateFunc));
+            Task.Run(() => UpdateTaskRunGeo(config, updateFunc));
         }
 
-        private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> update)
+        private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> updateFunc)
         {
             await Task.Delay(60000);
             Logging.SaveLog("UpdateTaskRunSubscription");
@@ -33,7 +33,7 @@
                 {
                     updateHandle.UpdateSubscriptionProcess(config, item.id, true, (bool success, string msg) =>
                     {
-                        update(success, msg);
+                        updateFunc?.Invoke(success, msg);
                         if (success)
                             Logging.SaveLog("subscription" + msg);
                     });
@@ -46,7 +46,7 @@
             }
         }
 
-        private async Task UpdateTaskRunGeo(Config config, Action<bool, string> update)
+        private async Task UpdateTaskRunGeo(Config config, Action<bool, string> updateFunc)
         {
             var autoUpdateGeoTime = DateTime.Now;
 
@@ -65,7 +65,7 @@
                     {
                         await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                         {
-                            update(false, msg);
+                            updateFunc?.Invoke(false, msg);
                         });
                         autoUpdateGeoTime = dtNow;
                     }

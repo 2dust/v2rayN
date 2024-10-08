@@ -185,7 +185,7 @@ namespace v2rayN.ViewModels
             _paletteHelper.SetTheme(theme);
         }
 
-        public void RegisterSystemColorSet(Config config, Window window, Action<bool> update)
+        public void RegisterSystemColorSet(Config config, Window window, Action<bool> updateFunc)
         {
             var helper = new WindowInteropHelper(window);
             var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
@@ -198,7 +198,7 @@ namespace v2rayN.ViewModels
                     {
                         if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
                         {
-                            update(!WindowsUtils.IsLightTheme());
+                            updateFunc?.Invoke(!WindowsUtils.IsLightTheme());
                         }
                     }
                 }

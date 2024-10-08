@@ -9,12 +9,12 @@ namespace ServiceLib.Services.Statistics
         private bool _exitFlag;
         private ClientWebSocket? webSocket;
         private string url = string.Empty;
-        private Action<ServerSpeedItem> _updateFunc;
+        private Action<ServerSpeedItem>? _updateFunc;
 
-        public StatisticsSingboxService(Config config, Action<ServerSpeedItem> update)
+        public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;
-            _updateFunc = update;
+            _updateFunc = updateFunc;
             _exitFlag = false;
 
             Task.Run(() => Run());
@@ -92,7 +92,7 @@ namespace ServiceLib.Services.Statistics
                             {
                                 ParseOutput(result, out ulong up, out ulong down);
 
-                                _updateFunc(new ServerSpeedItem()
+                                _updateFunc?.Invoke(new ServerSpeedItem()
                                 {
                                     proxyUp = (long)(up / 1000),
                                     proxyDown = (long)(down / 1000)

@@ -8,16 +8,16 @@
         private Config _config;
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
-        private Action<ServerSpeedItem> _updateFunc;
+        private Action<ServerSpeedItem>? _updateFunc;
         private StatisticsV2rayService? _statisticsV2Ray;
         private StatisticsSingboxService? _statisticsSingbox;
 
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
-        public void Init(Config config, Action<ServerSpeedItem> update)
+        public void Init(Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;
-            _updateFunc = update;
+            _updateFunc = updateFunc;
             if (!config.guiItem.enableStatistics)
             {
                 return;
@@ -95,7 +95,7 @@
             server.todayDown = _serverStatItem.todayDown;
             server.totalUp = _serverStatItem.totalUp;
             server.totalDown = _serverStatItem.totalDown;
-            _updateFunc(server);
+            _updateFunc?.Invoke(server);
         }
 
         private void GetServerStatItem(string indexId)
