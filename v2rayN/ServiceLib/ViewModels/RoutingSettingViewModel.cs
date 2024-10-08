@@ -200,7 +200,7 @@ namespace ServiceLib.ViewModels
             if (ConfigHandler.SaveConfig(_config) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                await _updateView?.Invoke(EViewAction.CloseWindow, null);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

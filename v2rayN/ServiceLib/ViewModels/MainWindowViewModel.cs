@@ -433,7 +433,7 @@ namespace ServiceLib.ViewModels
             catch { }
             finally
             {
-                await _updateView?.Invoke(EViewAction.Shutdown, null);
+                _updateView?.Invoke(EViewAction.Shutdown, null);
             }
         }
 
@@ -630,7 +630,7 @@ namespace ServiceLib.ViewModels
             await (new UpdateService()).RunAvailabilityCheck(async (bool success, string msg) =>
             {
                 NoticeHandler.Instance.SendMessageEx(msg);
-                await _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
+                _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
             });
         }
 
@@ -721,7 +721,7 @@ namespace ServiceLib.ViewModels
             {
                 await TestServerAvailability();
 
-                await _updateView?.Invoke(EViewAction.DispatcherReload, null);
+                _updateView?.Invoke(EViewAction.DispatcherReload, null);
             });
         }
 
@@ -781,7 +781,7 @@ namespace ServiceLib.ViewModels
         private async Task ChangeSystemProxyStatusAsync(ESysProxyType type, bool blChange)
         {
             //await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
-            await _updateView?.Invoke(EViewAction.UpdateSysProxy, false);
+            _updateView?.Invoke(EViewAction.UpdateSysProxy, false);
             NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
@@ -793,7 +793,7 @@ namespace ServiceLib.ViewModels
 
             if (blChange)
             {
-                await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 
@@ -844,7 +844,7 @@ namespace ServiceLib.ViewModels
             {
                 NoticeHandler.Instance.SendMessageEx(ResUI.TipChangeRouting);
                 Reload();
-                await _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+                _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
             }
         }
 

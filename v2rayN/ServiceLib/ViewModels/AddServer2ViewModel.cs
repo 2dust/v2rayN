@@ -32,9 +32,9 @@ namespace ServiceLib.ViewModels
             }
             CoreType = SelectedSource?.coreType?.ToString();
 
-            BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
+            BrowseServerCmd = ReactiveCommand.Create(() =>
             {
-                await _updateView?.Invoke(EViewAction.BrowseServer, null);
+                _updateView?.Invoke(EViewAction.BrowseServer, null);
             });
 
             EditServerCmd = ReactiveCommand.Create(() =>
@@ -67,7 +67,7 @@ namespace ServiceLib.ViewModels
             if (ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                await _updateView?.Invoke(EViewAction.CloseWindow, null);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

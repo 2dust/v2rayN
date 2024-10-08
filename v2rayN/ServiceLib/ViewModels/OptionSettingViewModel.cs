@@ -342,7 +342,7 @@ namespace ServiceLib.ViewModels
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 }
-                await _updateView?.Invoke(EViewAction.CloseWindow, null);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

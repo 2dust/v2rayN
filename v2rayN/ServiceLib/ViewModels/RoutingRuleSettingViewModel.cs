@@ -240,7 +240,7 @@ namespace ServiceLib.ViewModels
             if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                await _updateView?.Invoke(EViewAction.CloseWindow, null);
+                _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else
             {

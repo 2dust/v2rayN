@@ -109,7 +109,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
 
-                await _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
+                _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
             });
         }
 

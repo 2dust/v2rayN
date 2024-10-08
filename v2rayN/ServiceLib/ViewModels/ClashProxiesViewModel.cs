@@ -177,7 +177,7 @@ namespace ServiceLib.ViewModels
                 }
                 if (refreshUI)
                 {
-                    await _updateView?.Invoke(EViewAction.DispatcherRefreshProxyGroups, null);
+                    _updateView?.Invoke(EViewAction.DispatcherRefreshProxyGroups, null);
                 }
             });
         }
@@ -396,7 +396,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
 
-                await _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.name, Delay = result });
+                _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.name, Delay = result });
             });
         }
 
