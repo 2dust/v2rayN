@@ -11,15 +11,15 @@ dotnet publish `
 	.\v2rayN\v2rayN.csproj `
 	-c Release `
 	--self-contained false `
-	-p:PublishReadyToRun=true `
+	-p:PublishReadyToRun=false `
 	-p:PublishSingleFile=true `
 	-o $OutputPath
 
 dotnet publish `
-	.\v2rayUpgrade\v2rayUpgrade.csproj `
+	.\AmazTool\AmazTool.csproj `
 	-c Release `
 	--self-contained false `
-	-p:PublishReadyToRun=true `
+	-p:PublishReadyToRun=false `
 	-p:PublishSingleFile=true `
 	-o $OutputPath
 
