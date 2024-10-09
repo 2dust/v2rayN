@@ -235,7 +235,7 @@ namespace ServiceLib.ViewModels
                 {
                     return;
                 }
-                Locator.Current.GetService<MainWindowViewModel>()?.V2rayUpgrade(fileName);
+                Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
             }
             catch (Exception ex)
             {

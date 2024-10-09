@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLib", "ServiceLib\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayN.Desktop", "v2rayN.Desktop\v2rayN.Desktop.csproj", "{5D16541A-F971-4C17-9315-BB8955E3F984}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayUpgrade", "v2rayUpgrade\v2rayUpgrade.csproj", "{47D68B1C-601C-4C69-873B-FFF0DC13EC97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazTool", "AmazTool\AmazTool.csproj", "{47D68B1C-601C-4C69-873B-FFF0DC13EC97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

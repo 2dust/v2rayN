@@ -137,7 +137,7 @@ namespace ServiceLib.ViewModels
             var result = await CreateZipFileFromDirectory(fileBackup);
             if (result)
             {
-                Locator.Current.GetService<MainWindowViewModel>()?.V2rayUpgrade(fileName);
+                Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
             }
             else
             {

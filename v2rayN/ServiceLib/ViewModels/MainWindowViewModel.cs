@@ -437,13 +437,13 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public async Task V2rayUpgrade(string fileName)
+        public async Task UpgradeApp(string fileName)
         {
             Process process = new()
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "v2rayUpgrade",
+                    FileName = "AmazTool",
                     Arguments = fileName.AppendQuotes(),
                     WorkingDirectory = Utils.StartupPath()
                 }

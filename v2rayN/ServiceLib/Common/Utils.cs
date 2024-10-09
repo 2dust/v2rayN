@@ -750,7 +750,7 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static string GetExePath()
         {
-            return Environment.ProcessPath ?? string.Empty;
+            return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
         }
 
         public static string StartupPath()

@@ -3,11 +3,11 @@ using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace v2rayUpgrade
+namespace AmazTool
 {
-    internal class Upgrade
+    internal class UpgradeApp
     {
-        public static void UpgradeApp(string fileName)
+        public static void Upgrade(string fileName)
         {
             Console.WriteLine(fileName);
             Console.WriteLine("In progress, please wait...(正在进行中，请等待)");
@@ -105,7 +105,7 @@ namespace v2rayUpgrade
 
         private static string GetExePath()
         {
-            return Environment.ProcessPath ?? string.Empty;
+            return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
         }
 
         private static string StartupPath()

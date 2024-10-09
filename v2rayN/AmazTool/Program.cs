@@ -1,4 +1,4 @@
-﻿namespace v2rayUpgrade
+﻿namespace AmazTool
 {
     internal static class Program
     {
@@ -16,7 +16,7 @@
             }
 
             var fileName = Uri.UnescapeDataString(string.Join(" ", args));
-            Upgrade.UpgradeApp(fileName);
+            UpgradeApp.Upgrade(fileName);
         }
     }
 }
