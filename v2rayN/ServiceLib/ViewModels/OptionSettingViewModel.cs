@@ -187,9 +187,9 @@ namespace ServiceLib.ViewModels
 
             InitCoreType();
 
-            SaveCmd = ReactiveCommand.Create(() =>
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveSettingAsync();
+                await SaveSettingAsync();
             });
         }
 

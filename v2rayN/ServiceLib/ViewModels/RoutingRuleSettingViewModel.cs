@@ -57,52 +57,52 @@ namespace ServiceLib.ViewModels
                x => x.SelectedSource,
                selectedSource => selectedSource != null && !selectedSource.outboundTag.IsNullOrEmpty());
 
-            RuleAddCmd = ReactiveCommand.Create(() =>
+            RuleAddCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RuleEditAsync(true);
+                await RuleEditAsync(true);
             });
             ImportRulesFromFileCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await _updateView?.Invoke(EViewAction.ImportRulesFromFile, null);
             });
-            ImportRulesFromClipboardCmd = ReactiveCommand.Create(() =>
+            ImportRulesFromClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ImportRulesFromClipboardAsync(null);
+                await ImportRulesFromClipboardAsync(null);
             });
-            ImportRulesFromUrlCmd = ReactiveCommand.Create(() =>
+            ImportRulesFromUrlCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ImportRulesFromUrl();
+                await ImportRulesFromUrl();
             });
 
-            RuleRemoveCmd = ReactiveCommand.Create(() =>
+            RuleRemoveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RuleRemoveAsync();
+                await RuleRemoveAsync();
             }, canEditRemove);
-            RuleExportSelectedCmd = ReactiveCommand.Create(() =>
+            RuleExportSelectedCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RuleExportSelectedAsync();
-            }, canEditRemove);
-
-            MoveTopCmd = ReactiveCommand.Create(() =>
-            {
-                MoveRule(EMove.Top);
-            }, canEditRemove);
-            MoveUpCmd = ReactiveCommand.Create(() =>
-            {
-                MoveRule(EMove.Up);
-            }, canEditRemove);
-            MoveDownCmd = ReactiveCommand.Create(() =>
-            {
-                MoveRule(EMove.Down);
-            }, canEditRemove);
-            MoveBottomCmd = ReactiveCommand.Create(() =>
-            {
-                MoveRule(EMove.Bottom);
+                await RuleExportSelectedAsync();
             }, canEditRemove);
 
-            SaveCmd = ReactiveCommand.Create(() =>
+            MoveTopCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveRoutingAsync();
+                await MoveRule(EMove.Top);
+            }, canEditRemove);
+            MoveUpCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await MoveRule(EMove.Up);
+            }, canEditRemove);
+            MoveDownCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await MoveRule(EMove.Down);
+            }, canEditRemove);
+            MoveBottomCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await MoveRule(EMove.Bottom);
+            }, canEditRemove);
+
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SaveRoutingAsync();
             });
         }
 
@@ -201,7 +201,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void MoveRule(EMove eMove)
+        public async Task MoveRule(EMove eMove)
         {
             if (SelectedSource is null || SelectedSource.outboundTag.IsNullOrEmpty())
             {
@@ -285,7 +285,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private async void ImportRulesFromUrl()
+        private async Task ImportRulesFromUrl()
         {
             var url = SelectedRouting.url;
             if (Utils.IsNullOrEmpty(url))

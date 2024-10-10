@@ -137,104 +137,104 @@ namespace ServiceLib.ViewModels
                   .Subscribe(c => ServerFilterChanged(c));
 
             //servers delete
-            EditServerCmd = ReactiveCommand.Create(() =>
+            EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                EditServerAsync(EConfigType.Custom);
+                await EditServerAsync(EConfigType.Custom);
             }, canEditRemove);
-            RemoveServerCmd = ReactiveCommand.Create(() =>
+            RemoveServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RemoveServerAsync();
+                await RemoveServerAsync();
             }, canEditRemove);
-            RemoveDuplicateServerCmd = ReactiveCommand.Create(() =>
+            RemoveDuplicateServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RemoveDuplicateServer();
+                await RemoveDuplicateServer();
             });
-            CopyServerCmd = ReactiveCommand.Create(() =>
+            CopyServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                CopyServer();
+                await CopyServer();
             }, canEditRemove);
-            SetDefaultServerCmd = ReactiveCommand.Create(() =>
+            SetDefaultServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetDefaultServer();
+                await SetDefaultServer();
             }, canEditRemove);
-            ShareServerCmd = ReactiveCommand.Create(() =>
+            ShareServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ShareServerAsync();
+                await ShareServerAsync();
             }, canEditRemove);
-            SetDefaultMultipleServerCmd = ReactiveCommand.Create(() =>
+            SetDefaultMultipleServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetDefaultMultipleServer(ECoreType.sing_box);
+                await SetDefaultMultipleServer(ECoreType.sing_box);
             }, canEditRemove);
-            SetDefaultLoadBalanceServerCmd = ReactiveCommand.Create(() =>
+            SetDefaultLoadBalanceServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetDefaultMultipleServer(ECoreType.Xray);
+                await SetDefaultMultipleServer(ECoreType.Xray);
             }, canEditRemove);
 
             //servers move
-            MoveTopCmd = ReactiveCommand.Create(() =>
+            MoveTopCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                MoveServer(EMove.Top);
+                await MoveServer(EMove.Top);
             }, canEditRemove);
-            MoveUpCmd = ReactiveCommand.Create(() =>
+            MoveUpCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                MoveServer(EMove.Up);
+                await MoveServer(EMove.Up);
             }, canEditRemove);
-            MoveDownCmd = ReactiveCommand.Create(() =>
+            MoveDownCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                MoveServer(EMove.Down);
+                await MoveServer(EMove.Down);
             }, canEditRemove);
-            MoveBottomCmd = ReactiveCommand.Create(() =>
+            MoveBottomCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                MoveServer(EMove.Bottom);
+                await MoveServer(EMove.Bottom);
             }, canEditRemove);
 
             //servers ping
-            MixedTestServerCmd = ReactiveCommand.Create(() =>
+            MixedTestServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ServerSpeedtest(ESpeedActionType.Mixedtest);
+                await ServerSpeedtest(ESpeedActionType.Mixedtest);
             });
-            TcpingServerCmd = ReactiveCommand.Create(() =>
+            TcpingServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ServerSpeedtest(ESpeedActionType.Tcping);
+                await ServerSpeedtest(ESpeedActionType.Tcping);
             }, canEditRemove);
-            RealPingServerCmd = ReactiveCommand.Create(() =>
+            RealPingServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ServerSpeedtest(ESpeedActionType.Realping);
+                await ServerSpeedtest(ESpeedActionType.Realping);
             }, canEditRemove);
-            SpeedServerCmd = ReactiveCommand.Create(() =>
+            SpeedServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ServerSpeedtest(ESpeedActionType.Speedtest);
+                await ServerSpeedtest(ESpeedActionType.Speedtest);
             }, canEditRemove);
-            SortServerResultCmd = ReactiveCommand.Create(() =>
+            SortServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SortServer(EServerColName.delayVal.ToString());
+                await SortServer(EServerColName.delayVal.ToString());
             });
             //servers export
-            Export2ClientConfigCmd = ReactiveCommand.Create(() =>
+            Export2ClientConfigCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                Export2ClientConfigAsync(false);
+                await Export2ClientConfigAsync(false);
             }, canEditRemove);
-            Export2ClientConfigClipboardCmd = ReactiveCommand.Create(() =>
+            Export2ClientConfigClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                Export2ClientConfigAsync(true);
+                await Export2ClientConfigAsync(true);
             }, canEditRemove);
-            Export2ShareUrlCmd = ReactiveCommand.Create(() =>
+            Export2ShareUrlCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                Export2ShareUrlAsync(false);
+                await Export2ShareUrlAsync(false);
             }, canEditRemove);
-            Export2ShareUrlBase64Cmd = ReactiveCommand.Create(() =>
+            Export2ShareUrlBase64Cmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                Export2ShareUrlAsync(true);
+                await Export2ShareUrlAsync(true);
             }, canEditRemove);
 
             //Subscription
-            AddSubCmd = ReactiveCommand.Create(() =>
+            AddSubCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                EditSubAsync(true);
+                await EditSubAsync(true);
             });
-            EditSubCmd = ReactiveCommand.Create(() =>
+            EditSubCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                EditSubAsync(false);
+                await EditSubAsync(false);
             });
 
             #endregion WhenAnyValue && ReactiveCommand
@@ -475,7 +475,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RemoveDuplicateServer()
+        private async Task RemoveDuplicateServer()
         {
             var tuple = ConfigHandler.DedupServerList(_config, _config.subIndexId);
             RefreshServers();
@@ -483,7 +483,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
         }
 
-        private void CopyServer()
+        private async Task CopyServer()
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, false) < 0)
             {
@@ -496,7 +496,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void SetDefaultServer()
+        public async Task SetDefaultServer()
         {
             if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
             {
@@ -505,7 +505,7 @@ namespace ServiceLib.ViewModels
             SetDefaultServer(SelectedProfile.indexId);
         }
 
-        private void SetDefaultServer(string indexId)
+        private async Task SetDefaultServer(string indexId)
         {
             if (Utils.IsNullOrEmpty(indexId))
             {
@@ -563,7 +563,7 @@ namespace ServiceLib.ViewModels
             await _updateView?.Invoke(EViewAction.ShareServer, url);
         }
 
-        private void SetDefaultMultipleServer(ECoreType coreType)
+        private async Task SetDefaultMultipleServer(ECoreType coreType)
         {
             if (GetProfileItems(out List<ProfileItem> lstSelecteds, true) < 0)
             {
@@ -586,7 +586,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void SortServer(string colName)
+        public async Task SortServer(string colName)
         {
             if (Utils.IsNullOrEmpty(colName))
             {
@@ -624,7 +624,7 @@ namespace ServiceLib.ViewModels
             //Reload();
         }
 
-        public void MoveServer(EMove eMove)
+        public async Task MoveServer(EMove eMove)
         {
             var item = _lstProfile.FirstOrDefault(t => t.indexId == SelectedProfile.indexId);
             if (item is null)
@@ -656,7 +656,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void ServerSpeedtest(ESpeedActionType actionType)
+        public async Task ServerSpeedtest(ESpeedActionType actionType)
         {
             if (actionType == ESpeedActionType.Mixedtest)
             {

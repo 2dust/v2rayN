@@ -26,9 +26,9 @@ namespace ServiceLib.ViewModels
                 SelectedSource = JsonUtils.DeepCopy(subItem);
             }
 
-            SaveCmd = ReactiveCommand.Create(() =>
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveSubAsync();
+                await SaveSubAsync();
             });
         }
 

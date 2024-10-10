@@ -35,11 +35,11 @@ namespace ServiceLib.Models
             string addr;
             if (arrAddr.Length > 2)
             {
-                addr = $"{arrAddr[0]}***{arrAddr[arrAddr.Length - 1]}";
+                addr = $"{arrAddr.First()}***{arrAddr.Last()}";
             }
             else if (arrAddr.Length > 1)
             {
-                addr = $"***{arrAddr[arrAddr.Length - 1]}";
+                addr = $"***{arrAddr.Last()}";
             }
             else
             {

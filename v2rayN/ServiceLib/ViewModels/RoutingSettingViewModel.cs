@@ -90,31 +90,31 @@ namespace ServiceLib.ViewModels
                 x => x.enableRoutingAdvanced)
                 .Subscribe(c => enableRoutingBasic = !enableRoutingAdvanced);
 
-            RoutingBasicImportRulesCmd = ReactiveCommand.Create(() =>
+            RoutingBasicImportRulesCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingBasicImportRules();
+                await RoutingBasicImportRules();
             });
 
-            RoutingAdvancedAddCmd = ReactiveCommand.Create(() =>
+            RoutingAdvancedAddCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingAdvancedEditAsync(true);
+                await RoutingAdvancedEditAsync(true);
             });
-            RoutingAdvancedRemoveCmd = ReactiveCommand.Create(() =>
+            RoutingAdvancedRemoveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingAdvancedRemoveAsync();
+                await RoutingAdvancedRemoveAsync();
             }, canEditRemove);
-            RoutingAdvancedSetDefaultCmd = ReactiveCommand.Create(() =>
+            RoutingAdvancedSetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingAdvancedSetDefault();
+                await RoutingAdvancedSetDefault();
             }, canEditRemove);
-            RoutingAdvancedImportRulesCmd = ReactiveCommand.Create(() =>
+            RoutingAdvancedImportRulesCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingAdvancedImportRules();
+                await RoutingAdvancedImportRules();
             });
 
-            SaveCmd = ReactiveCommand.Create(() =>
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveRoutingAsync();
+                await SaveRoutingAsync();
             });
         }
 
@@ -210,7 +210,7 @@ namespace ServiceLib.ViewModels
 
         #endregion Refresh Save
 
-        private void RoutingBasicImportRules()
+        private async Task RoutingBasicImportRules()
         {
             //Extra to bypass the mainland
             ProxyDomain = "geosite:google";
@@ -268,7 +268,7 @@ namespace ServiceLib.ViewModels
             IsModified = true;
         }
 
-        public void RoutingAdvancedSetDefault()
+        public async Task RoutingAdvancedSetDefault()
         {
             var item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)
@@ -284,7 +284,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RoutingAdvancedImportRules()
+        private async Task RoutingAdvancedImportRules()
         {
             if (ConfigHandler.InitBuiltinRouting(_config, true) == 0)
             {

@@ -32,19 +32,19 @@ namespace ServiceLib.ViewModels
             }
             CoreType = SelectedSource?.coreType?.ToString();
 
-            BrowseServerCmd = ReactiveCommand.Create(() =>
+            BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 _updateView?.Invoke(EViewAction.BrowseServer, null);
             });
 
-            EditServerCmd = ReactiveCommand.Create(() =>
+            EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                EditServer();
+                await EditServer();
             });
 
-            SaveServerCmd = ReactiveCommand.Create(() =>
+            SaveServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveServerAsync();
+                await SaveServerAsync();
             });
         }
 
@@ -100,7 +100,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void EditServer()
+        private async Task EditServer()
         {
             var address = SelectedSource.address;
             if (Utils.IsNullOrEmpty(address))

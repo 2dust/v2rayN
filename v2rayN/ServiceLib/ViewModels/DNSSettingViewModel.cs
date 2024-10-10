@@ -43,12 +43,12 @@ namespace ServiceLib.ViewModels
                 await SaveSettingAsync();
             });
 
-            ImportDefConfig4V2rayCmd = ReactiveCommand.Create(() =>
+            ImportDefConfig4V2rayCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 normalDNS = Utils.GetEmbedText(Global.DNSV2rayNormalFileName);
             });
 
-            ImportDefConfig4SingboxCmd = ReactiveCommand.Create(() =>
+            ImportDefConfig4SingboxCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 normalDNS2 = Utils.GetEmbedText(Global.DNSSingboxNormalFileName);
                 tunDNS2 = Utils.GetEmbedText(Global.TunSingboxDNSFileName);

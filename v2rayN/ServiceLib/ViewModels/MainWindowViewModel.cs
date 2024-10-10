@@ -191,49 +191,49 @@ namespace ServiceLib.ViewModels
                   .Subscribe(c => DoEnableTun(c));
 
             //servers
-            AddVmessServerCmd = ReactiveCommand.Create(() =>
+            AddVmessServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.VMess);
+                await AddServerAsync(true, EConfigType.VMess);
             });
-            AddVlessServerCmd = ReactiveCommand.Create(() =>
+            AddVlessServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.VLESS);
+                await AddServerAsync(true, EConfigType.VLESS);
             });
-            AddShadowsocksServerCmd = ReactiveCommand.Create(() =>
+            AddShadowsocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.Shadowsocks);
+                await AddServerAsync(true, EConfigType.Shadowsocks);
             });
-            AddSocksServerCmd = ReactiveCommand.Create(() =>
+            AddSocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.SOCKS);
+                await AddServerAsync(true, EConfigType.SOCKS);
             });
-            AddHttpServerCmd = ReactiveCommand.Create(() =>
+            AddHttpServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.HTTP);
+                await AddServerAsync(true, EConfigType.HTTP);
             });
-            AddTrojanServerCmd = ReactiveCommand.Create(() =>
+            AddTrojanServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.Trojan);
+                await AddServerAsync(true, EConfigType.Trojan);
             });
-            AddHysteria2ServerCmd = ReactiveCommand.Create(() =>
+            AddHysteria2ServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.Hysteria2);
+                await AddServerAsync(true, EConfigType.Hysteria2);
             });
-            AddTuicServerCmd = ReactiveCommand.Create(() =>
+            AddTuicServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.TUIC);
+                await AddServerAsync(true, EConfigType.TUIC);
             });
-            AddWireguardServerCmd = ReactiveCommand.Create(() =>
+            AddWireguardServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.WireGuard);
+                await AddServerAsync(true, EConfigType.WireGuard);
             });
-            AddCustomServerCmd = ReactiveCommand.Create(() =>
+            AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerAsync(true, EConfigType.Custom);
+                await AddServerAsync(true, EConfigType.Custom);
             });
-            AddServerViaClipboardCmd = ReactiveCommand.Create(() =>
+            AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                AddServerViaClipboardAsync(null);
+                await AddServerViaClipboardAsync(null);
             });
             AddServerViaScanCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -241,40 +241,40 @@ namespace ServiceLib.ViewModels
             });
 
             //Subscription
-            SubSettingCmd = ReactiveCommand.Create(() =>
+            SubSettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SubSettingAsync();
+                await SubSettingAsync();
             });
 
-            SubUpdateCmd = ReactiveCommand.Create(() =>
+            SubUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                UpdateSubscriptionProcess("", false);
+                await UpdateSubscriptionProcess("", false);
             });
-            SubUpdateViaProxyCmd = ReactiveCommand.Create(() =>
+            SubUpdateViaProxyCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                UpdateSubscriptionProcess("", true);
+                await UpdateSubscriptionProcess("", true);
             });
-            SubGroupUpdateCmd = ReactiveCommand.Create(() =>
+            SubGroupUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                UpdateSubscriptionProcess(_config.subIndexId, false);
+                await UpdateSubscriptionProcess(_config.subIndexId, false);
             });
-            SubGroupUpdateViaProxyCmd = ReactiveCommand.Create(() =>
+            SubGroupUpdateViaProxyCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                UpdateSubscriptionProcess(_config.subIndexId, true);
+                await UpdateSubscriptionProcess(_config.subIndexId, true);
             });
 
             //Setting
-            OptionSettingCmd = ReactiveCommand.Create(() =>
+            OptionSettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                OptionSettingAsync();
+                await OptionSettingAsync();
             });
-            RoutingSettingCmd = ReactiveCommand.Create(() =>
+            RoutingSettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RoutingSettingAsync();
+                await RoutingSettingAsync();
             });
-            DNSSettingCmd = ReactiveCommand.Create(() =>
+            DNSSettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                DNSSettingAsync();
+                await DNSSettingAsync();
             });
             GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -283,30 +283,22 @@ namespace ServiceLib.ViewModels
                     NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 }
             });
-            RebootAsAdminCmd = ReactiveCommand.Create(() =>
+            RebootAsAdminCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                RebootAsAdmin();
+                await RebootAsAdmin();
             });
-            ClearServerStatisticsCmd = ReactiveCommand.Create(() =>
+            ClearServerStatisticsCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                StatisticsHandler.Instance.ClearAllServerStatistics();
-                RefreshServers();
+                await ClearServerStatistics();
             });
-            OpenTheFileLocationCmd = ReactiveCommand.Create(() =>
+            OpenTheFileLocationCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                if (Utils.IsWindows())
-                {
-                    Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
-                }
-                else if (Utils.IsLinux())
-                {
-                    Utils.ProcessStart("nautilus", Utils.GetConfigPath());
-                }
+                await OpenTheFileLocation();
             });
 
-            ReloadCmd = ReactiveCommand.Create(() =>
+            ReloadCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                Reload();
+                await Reload();
             });
 
             NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -315,21 +307,21 @@ namespace ServiceLib.ViewModels
             });
 
             //System proxy
-            SystemProxyClearCmd = ReactiveCommand.Create(() =>
+            SystemProxyClearCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetListenerType(ESysProxyType.ForcedClear);
+                await SetListenerType(ESysProxyType.ForcedClear);
             });
-            SystemProxySetCmd = ReactiveCommand.Create(() =>
+            SystemProxySetCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetListenerType(ESysProxyType.ForcedChange);
+                await SetListenerType(ESysProxyType.ForcedChange);
             });
-            SystemProxyNothingCmd = ReactiveCommand.Create(() =>
+            SystemProxyNothingCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetListenerType(ESysProxyType.Unchanged);
+                await SetListenerType(ESysProxyType.Unchanged);
             });
-            SystemProxyPacCmd = ReactiveCommand.Create(() =>
+            SystemProxyPacCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetListenerType(ESysProxyType.Pac);
+                await SetListenerType(ESysProxyType.Pac);
             });
 
             #endregion WhenAnyValue && ReactiveCommand
@@ -651,7 +643,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void UpdateSubscriptionProcess(string subId, bool blProxy)
+        public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
         {
             (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
@@ -691,7 +683,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RebootAsAdmin()
+        private async Task RebootAsAdmin()
         {
             ProcessStartInfo startInfo = new()
             {
@@ -709,20 +701,35 @@ namespace ServiceLib.ViewModels
             catch { }
         }
 
+        private async Task ClearServerStatistics()
+        {
+            StatisticsHandler.Instance.ClearAllServerStatistics();
+            RefreshServers();
+        }
+
+        private async Task OpenTheFileLocation()
+        {
+            if (Utils.IsWindows())
+            {
+                Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
+            }
+            else if (Utils.IsLinux())
+            {
+                Utils.ProcessStart("nautilus", Utils.GetConfigPath());
+            }
+        }
+
         #endregion Setting
 
         #region core job
 
-        public void Reload()
+        public async Task Reload()
         {
             BlReloadEnabled = false;
 
-            LoadCore().ContinueWith(async task =>
-            {
-                await TestServerAvailability();
-
-                _updateView?.Invoke(EViewAction.DispatcherReload, null);
-            });
+            await LoadCore();
+            await TestServerAvailability();
+            _updateView?.Invoke(EViewAction.DispatcherReload, null);
         }
 
         public void ReloadResult()
@@ -765,7 +772,7 @@ namespace ServiceLib.ViewModels
 
         #region System proxy and Routings
 
-        public void SetListenerType(ESysProxyType type)
+        public async Task SetListenerType(ESysProxyType type)
         {
             if (_config.systemProxyItem.sysProxyType == type)
             {

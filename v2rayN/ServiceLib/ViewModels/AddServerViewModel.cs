@@ -34,9 +34,9 @@ namespace ServiceLib.ViewModels
             }
             CoreType = SelectedSource?.coreType?.ToString();
 
-            SaveCmd = ReactiveCommand.Create(() =>
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SaveServerAsync();
+                await SaveServerAsync();
             });
         }
 

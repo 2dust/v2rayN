@@ -49,14 +49,14 @@ namespace ServiceLib.ViewModels
                y => y == true)
                    .Subscribe(c => { _config.clashUIItem.connectionsAutoRefresh = AutoRefresh; });
 
-            ConnectionCloseCmd = ReactiveCommand.Create(() =>
+            ConnectionCloseCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ClashConnectionClose(false);
+                await ClashConnectionClose(false);
             }, canEditRemove);
 
-            ConnectionCloseAllCmd = ReactiveCommand.Create(() =>
+            ConnectionCloseAllCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ClashConnectionClose(true);
+                await ClashConnectionClose(true);
             });
 
             Init();
@@ -177,7 +177,7 @@ namespace ServiceLib.ViewModels
             _connectionItems.AddRange(lstModel);
         }
 
-        public void ClashConnectionClose(bool all)
+        public async Task ClashConnectionClose(bool all)
         {
             var id = string.Empty;
             if (!all)

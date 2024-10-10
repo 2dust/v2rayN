@@ -36,13 +36,13 @@ namespace ServiceLib.ViewModels
                x => x.SelectedSource,
                selectedSource => selectedSource != null && !selectedSource.id.IsNullOrEmpty());
 
-            SubAddCmd = ReactiveCommand.Create(() =>
+            SubAddCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                EditSubAsync(true);
+                await EditSubAsync(true);
             });
-            SubDeleteCmd = ReactiveCommand.Create(() =>
+            SubDeleteCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                DeleteSubAsync();
+                await DeleteSubAsync();
             }, canEditRemove);
             SubEditCmd = ReactiveCommand.CreateFromTask(async () =>
             {

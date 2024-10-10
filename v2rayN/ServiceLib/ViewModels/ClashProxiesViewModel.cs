@@ -73,22 +73,22 @@ namespace ServiceLib.ViewModels
             y => y == true)
                 .Subscribe(c => { _config.clashUIItem.proxiesAutoRefresh = AutoRefresh; });
 
-            ProxiesReloadCmd = ReactiveCommand.Create(() =>
+            ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ProxiesReload();
+                await ProxiesReload();
             });
-            ProxiesDelaytestCmd = ReactiveCommand.Create(() =>
+            ProxiesDelaytestCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ProxiesDelayTest(true);
+                await ProxiesDelayTest(true);
             });
 
-            ProxiesDelaytestPartCmd = ReactiveCommand.Create(() =>
+            ProxiesDelaytestPartCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                ProxiesDelayTest(false);
+                await ProxiesDelayTest(false);
             });
-            ProxiesSelectActivityCmd = ReactiveCommand.Create(() =>
+            ProxiesSelectActivityCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                SetActiveProxy();
+                await SetActiveProxy();
             });
 
             ProxiesReload();
@@ -136,13 +136,13 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.SendMessageEx(msg);
         }
 
-        public void ProxiesReload()
+        public async Task ProxiesReload()
         {
             GetClashProxies(true);
             ProxiesDelayTest();
         }
 
-        public void ProxiesDelayTest()
+        public async Task ProxiesDelayTest()
         {
             ProxiesDelayTest(true);
         }
@@ -338,7 +338,7 @@ namespace ServiceLib.ViewModels
             return null;
         }
 
-        public void SetActiveProxy()
+        public async Task SetActiveProxy()
         {
             if (SelectedGroup == null || Utils.IsNullOrEmpty(SelectedGroup.name))
             {
@@ -380,7 +380,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
         }
 
-        private void ProxiesDelayTest(bool blAll)
+        private async Task ProxiesDelayTest(bool blAll)
         {
             //UpdateHandler(false, "Clash Proxies Latency Test");
 
