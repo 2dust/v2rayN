@@ -101,7 +101,7 @@ namespace ServiceLib.ViewModels
 
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedProfile = new();
             SelectedSub = new();
@@ -345,7 +345,7 @@ namespace ServiceLib.ViewModels
 
         public void RefreshServers()
         {
-            MessageBus.Current.SendMessage("", Global.CommandRefreshProfiles);
+            MessageBus.Current.SendMessage("", EMsgCommand.RefreshProfiles.ToString());
         }
 
         public void RefreshServersBiz()

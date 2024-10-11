@@ -37,7 +37,7 @@ namespace v2rayN.Views
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
             var IsAdministrator = Utils.IsAdministrator();
-            MessageBus.Current.Listen<string>(Global.CommandSendSnackMsg).Subscribe(x => DelegateSnackMsg(x));
+            MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(x => DelegateSnackMsg(x));
             ViewModel = new MainWindowViewModel(IsAdministrator, UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 

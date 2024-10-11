@@ -24,7 +24,7 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(Global.CommandSendMsgView).Subscribe(async x => await AppendQueueMsg(x));
+            MessageBus.Current.Listen<string>(EMsgCommand.SendMsgView.ToString()).Subscribe(async x => await AppendQueueMsg(x));
 
             MsgFilter = _config.msgUIItem.mainMsgFilter ?? string.Empty;
             AutoRefresh = _config.msgUIItem.autoRefresh ?? true;

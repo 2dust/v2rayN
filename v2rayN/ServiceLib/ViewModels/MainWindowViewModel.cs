@@ -150,7 +150,7 @@ namespace ServiceLib.ViewModels
             _updateView = updateView;
             _isAdministrator = isAdministrator;
 
-            MessageBus.Current.Listen<string>(Global.CommandRefreshProfiles).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
 
             SelectedRouting = new();
             SelectedServer = new();
@@ -453,7 +453,7 @@ namespace ServiceLib.ViewModels
 
         private void RefreshServers()
         {
-            MessageBus.Current.SendMessage("", Global.CommandRefreshProfiles);
+            MessageBus.Current.SendMessage("", EMsgCommand.RefreshProfiles.ToString());
         }
 
         public void RefreshServersBiz()
