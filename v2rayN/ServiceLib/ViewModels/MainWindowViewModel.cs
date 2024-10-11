@@ -342,6 +342,7 @@ namespace ServiceLib.ViewModels
 
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
             RefreshRoutingsMenu();
+            InboundDisplayStaus();
             //RefreshServers();
 
             Reload();
@@ -657,6 +658,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
             if (ret == true)
             {
+                InboundDisplayStaus();
                 //RefreshServers();
                 Reload();
             }
@@ -795,8 +797,6 @@ namespace ServiceLib.ViewModels
             BlSystemProxySet = (type == ESysProxyType.ForcedChange);
             BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
             BlSystemProxyPac = (type == ESysProxyType.Pac);
-
-            InboundDisplayStaus();
 
             if (blChange)
             {
