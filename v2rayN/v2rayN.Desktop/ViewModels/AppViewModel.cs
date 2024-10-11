@@ -9,6 +9,9 @@ namespace v2rayN.Desktop.ViewModels
 {
     public class AppViewModel : MyReactiveObject
     {
+        public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
+        public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
+        public ReactiveCommand<Unit, Unit> SystemProxyNothingCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
@@ -18,33 +21,78 @@ namespace v2rayN.Desktop.ViewModels
         {
             _config = AppHandler.Instance.Config;
 
-            AddServerViaClipboardCmd = ReactiveCommand.Create(() =>
+            SystemProxyClearCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                await SetListenerType(ESysProxyType.ForcedClear);
+            });
+            SystemProxySetCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SetListenerType(ESysProxyType.ForcedChange);
+            });
+            SystemProxyNothingCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SetListenerType(ESysProxyType.Unchanged);
+            });
+
+            AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await AddServerViaClipboard();
+            });
+
+            SubUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await UpdateSubscriptionProcess(false);
+            });
+            SubUpdateViaProxyCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await UpdateSubscriptionProcess(true);
+            });
+
+            ExitCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await Exit();
+            });
+        }
+
+        private async Task SetListenerType(ESysProxyType type)
+        {
+            if (_config.systemProxyItem.sysProxyType == type)
+            {
+                return;
+            }
+
+            var service = Locator.Current.GetService<MainWindowViewModel>();
+            if (service != null) await service.SetListenerType(type);
+        }
+
+        private async Task AddServerViaClipboard()
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                if (desktop.MainWindow != null)
                 {
-                    var clipboardData = AvaUtils.GetClipboardData(desktop.MainWindow).Result;
-                    Locator.Current.GetService<MainWindowViewModel>()?.AddServerViaClipboardAsync(clipboardData);
+                    var clipboardData = await AvaUtils.GetClipboardData(desktop.MainWindow);
+                    var service = Locator.Current.GetService<MainWindowViewModel>();
+                    if (service != null) await service.AddServerViaClipboardAsync(clipboardData);
                 }
-            });
+            }
+        }
 
-            SubUpdateCmd = ReactiveCommand.Create(() =>
-            {
-                Locator.Current.GetService<MainWindowViewModel>()?.UpdateSubscriptionProcess("", false);
-            });
-            SubUpdateViaProxyCmd = ReactiveCommand.Create(() =>
-            {
-                Locator.Current.GetService<MainWindowViewModel>()?.UpdateSubscriptionProcess("", true);
-            });
+        private async Task UpdateSubscriptionProcess(bool blProxy)
+        {
+            var service = Locator.Current.GetService<MainWindowViewModel>();
+            if (service != null) await service.UpdateSubscriptionProcess("", blProxy);
+        }
 
-            ExitCmd = ReactiveCommand.Create(() =>
+        private async Task Exit()
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    Locator.Current.GetService<MainWindowViewModel>()?.MyAppExitAsync(false);
+                var service = Locator.Current.GetService<MainWindowViewModel>();
+                if (service != null) await service.MyAppExitAsync(false);
 
-                    desktop.Shutdown();
-                }
-            });
+                desktop.Shutdown();
+            }
         }
     }
 }

@@ -582,7 +582,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                SetDefaultServer(indexId);
+                await SetDefaultServer(indexId);
             }
         }
 

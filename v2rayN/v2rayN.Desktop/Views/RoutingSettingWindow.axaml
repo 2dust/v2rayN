@@ -92,6 +92,9 @@
                         HeadersVisibility="Column"
                         IsReadOnly="True"
                         ItemsSource="{Binding RoutingItems}">
+                        <DataGrid.KeyBindings>
+                            <KeyBinding Command="{Binding RoutingAdvancedSetDefaultCmd}" Gesture="Enter" />
+                        </DataGrid.KeyBindings>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem x:Name="menuRoutingAdvancedAdd" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />

@@ -82,12 +82,7 @@ namespace v2rayN.Desktop.Views
         }
 
         private void RoutingSettingWindow_KeyDown(object? sender, KeyEventArgs e)
-        {
-            if (ViewModel?.enableRoutingBasic ?? false)
-            {
-                return;
-            }
-
+        { 
             if (e.KeyModifiers == KeyModifiers.Control)
             {
                 if (e.Key == Key.A)

@@ -33,6 +33,10 @@
                 ToolTipText="v2rayN Desktop">
                 <TrayIcon.Menu>
                     <NativeMenu>
+                        <NativeMenuItem Command="{Binding SystemProxyClearCmd}" Header="{x:Static resx:ResUI.menuSystemProxyClear}" />
+                        <NativeMenuItem Command="{Binding SystemProxySetCmd}" Header="{x:Static resx:ResUI.menuSystemProxySet}" />
+                        <NativeMenuItem Command="{Binding SystemProxyNothingCmd}" Header="{x:Static resx:ResUI.menuSystemProxyNothing}" />
+                        <NativeMenuItemSeparator />
                         <NativeMenuItem Command="{Binding AddServerViaClipboardCmd}" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
