@@ -56,6 +56,7 @@ namespace ServiceLib.ViewModels
 
         //servers delete
         public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
+
         public ReactiveCommand<Unit, Unit> RemoveServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RemoveDuplicateServerCmd { get; }
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
@@ -66,12 +67,14 @@ namespace ServiceLib.ViewModels
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
+
         public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
 
         //servers ping
         public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
+
         public ReactiveCommand<Unit, Unit> TcpingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
@@ -79,6 +82,7 @@ namespace ServiceLib.ViewModels
 
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
+
         public ReactiveCommand<Unit, Unit> Export2ClientConfigClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlBase64Cmd { get; }
@@ -95,7 +99,11 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            if (_updateView != null)
+            {
+                MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString())
+                    .Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+            }
 
             SelectedProfile = new();
             SelectedSub = new();

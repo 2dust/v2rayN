@@ -74,21 +74,6 @@ public partial class App : Application
     {
     }
 
-    private void TrayIcon_Clicked(object? sender, EventArgs e)
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            if (desktop.MainWindow.IsVisible)
-            {
-                desktop.MainWindow?.Hide();
-            }
-            else
-            {
-                desktop.MainWindow?.Show();
-            }
-        }
-    }
-
     private void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -28,21 +28,47 @@
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon
-                Clicked="TrayIcon_Clicked"
+                Command="{Binding NotifyLeftClickCmd}"
                 Icon="/Assets/NotifyIcon1.ico"
-                ToolTipText="v2rayN Desktop">
+                ToolTipText="{Binding RunningServerToolTipText}">
                 <TrayIcon.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Command="{Binding SystemProxyClearCmd}" Header="{x:Static resx:ResUI.menuSystemProxyClear}" />
-                        <NativeMenuItem Command="{Binding SystemProxySetCmd}" Header="{x:Static resx:ResUI.menuSystemProxySet}" />
-                        <NativeMenuItem Command="{Binding SystemProxyNothingCmd}" Header="{x:Static resx:ResUI.menuSystemProxyNothing}" />
+                        <NativeMenuItem
+                            Command="{Binding SystemProxyClearCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxyClear}"
+                            IsVisible="{Binding BlNotSystemProxyClear}" />
+                        <NativeMenuItem
+                            Command="{Binding SystemProxyClearCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxyClear}"
+                            Icon="/Assets/NotifyIcon1.ico"
+                            IsVisible="{Binding BlSystemProxyClear}" />
+
+                        <NativeMenuItem
+                            Command="{Binding SystemProxySetCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxySet}"
+                            IsVisible="{Binding BlNotSystemProxySet}" />
+                        <NativeMenuItem
+                            Command="{Binding SystemProxySetCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxySet}"
+                            Icon="/Assets/NotifyIcon2.ico"
+                            IsVisible="{Binding BlSystemProxySet}" />
+
+                        <NativeMenuItem
+                            Command="{Binding SystemProxyNothingCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxyNothing}"
+                            IsVisible="{Binding BlNotSystemProxyNothing}" />
+                        <NativeMenuItem
+                            Command="{Binding SystemProxyNothingCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxyNothing}"
+                            Icon="/Assets/NotifyIcon3.ico"
+                            IsVisible="{Binding BlSystemProxyNothing}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
                         <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Click="TrayIcon_Clicked" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
+                        <NativeMenuItem Command="{Binding NotifyLeftClickCmd}" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
                         <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />
                     </NativeMenu>
                 </TrayIcon.Menu>
