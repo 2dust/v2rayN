@@ -26,19 +26,18 @@ namespace v2rayN.Views
             _config = AppHandler.Instance.Config;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
+            Application.Current.Exit += Current_Exit;
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
             menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
             menuPromotion.Click += menuPromotion_Click;
             menuClose.Click += menuClose_Click;
-            menuExit.Click += menuExit_Click;
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-            var IsAdministrator = Utils.IsAdministrator();
             MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(x => DelegateSnackMsg(x));
-            ViewModel = new MainWindowViewModel(IsAdministrator, UpdateViewHandler);
+            ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
@@ -100,49 +99,6 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
-                //system proxy
-                this.OneWayBind(ViewModel, vm => vm.BlSystemProxyClear, v => v.menuSystemProxyClear2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlSystemProxySet, v => v.menuSystemProxySet2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlSystemProxyNothing, v => v.menuSystemProxyNothing2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlSystemProxyPac, v => v.menuSystemProxyPac2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SystemProxyClearCmd, v => v.menuSystemProxyClear).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SystemProxySetCmd, v => v.menuSystemProxySet).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SystemProxyPacCmd, v => v.menuSystemProxyPac).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SystemProxyNothingCmd, v => v.menuSystemProxyNothing).DisposeWith(disposables);
-
-                //routings and servers
-                this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings.SelectedItem).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.menuRoutings.Visibility).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.sepRoutings.Visibility).DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.Servers, v => v.cmbServers.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedServer, v => v.cmbServers.SelectedItem).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlServers, v => v.cmbServers.Visibility).DisposeWith(disposables);
-
-                //tray menu
-                this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard2).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan2).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SubUpdateCmd, v => v.menuSubUpdate2).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SubUpdateViaProxyCmd, v => v.menuSubUpdateViaProxy2).DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.RunningServerToolTipText, v => v.tbNotify.ToolTipText).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.NotifyLeftClickCmd, v => v.tbNotify.LeftClickCommand).DisposeWith(disposables);
-
-                //status bar
-                this.OneWayBind(ViewModel, vm => vm.InboundDisplay, v => v.txtInboundDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.InboundLanDisplay, v => v.txtInboundLanDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.RunningServerDisplay, v => v.txtRunningServerDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.RunningInfoDisplay, v => v.txtRunningInfoDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
-
-                this.Bind(ViewModel, vm => vm.SystemProxySelected, v => v.cmbSystemProxy.SelectedIndex).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings2.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.cmbRoutings2.Visibility).DisposeWith(disposables);
-
                 if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
                 {
                     gridMain.Visibility = Visibility.Visible;
@@ -166,7 +122,7 @@ namespace v2rayN.Views
                 }
             });
 
-            this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             if (!_config.guiItem.enableHWA)
             {
@@ -237,33 +193,10 @@ namespace v2rayN.Views
                     }), DispatcherPriority.Normal);
                     break;
 
-                case EViewAction.DispatcherServerAvailability:
-                    if (obj is null) return false;
-                    Application.Current?.Dispatcher.Invoke((() =>
-                    {
-                        ViewModel?.TestServerAvailabilityResult((string)obj);
-                    }), DispatcherPriority.Normal);
-                    break;
-
                 case EViewAction.DispatcherReload:
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.ReloadResult();
-                    }), DispatcherPriority.Normal);
-                    break;
-
-                case EViewAction.DispatcherRefreshServersBiz:
-                    Application.Current?.Dispatcher.Invoke((() =>
-                    {
-                        ViewModel?.RefreshServersBiz();
-                    }), DispatcherPriority.Normal);
-                    break;
-
-                case EViewAction.DispatcherRefreshIcon:
-                    Application.Current?.Dispatcher.Invoke((() =>
-                    {
-                        tbNotify.Icon = WindowsHandler.Instance.GetNotifyIcon(_config);
-                        this.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
                     break;
 
@@ -275,12 +208,7 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.ScanScreenTask:
-                    ScanScreenTaskAsync().ContinueWith(_ => { });
-                    break;
-
-                case EViewAction.UpdateSysProxy:
-                    if (obj is null) return false;
-                    SysProxyHandler.UpdateSysProxy(_config, (bool)obj);
+                    await ScanScreenTaskAsync();
                     break;
 
                 case EViewAction.AddServerViaClipboard:
@@ -308,19 +236,10 @@ namespace v2rayN.Views
                     break;
 
                 case EGlobalHotkey.SystemProxyClear:
-                    ViewModel?.SetListenerType(ESysProxyType.ForcedClear);
-                    break;
-
                 case EGlobalHotkey.SystemProxySet:
-                    ViewModel?.SetListenerType(ESysProxyType.ForcedChange);
-                    break;
-
                 case EGlobalHotkey.SystemProxyUnchanged:
-                    ViewModel?.SetListenerType(ESysProxyType.Unchanged);
-                    break;
-
                 case EGlobalHotkey.SystemProxyPac:
-                    ViewModel?.SetListenerType(ESysProxyType.Pac);
+                    Locator.Current.GetService<StatusBarViewModel>()?.SetListenerType((ESysProxyType)((int)e - 1));
                     break;
             }
         }
@@ -331,13 +250,9 @@ namespace v2rayN.Views
             ShowHideWindow(false);
         }
 
-        private void menuExit_Click(object sender, RoutedEventArgs e)
+        private void Current_Exit(object sender, ExitEventArgs e)
         {
-            tabProfiles = null;
-
-            tbNotify.Dispose();
             StorageUI();
-            ViewModel?.MyAppExitAsync(false);
         }
 
         private void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
@@ -383,17 +298,12 @@ namespace v2rayN.Views
             Utils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
         }
 
-        private void txtRunningInfoDisplay_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ViewModel?.TestServerAvailability();
-        }
-
         private void menuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
         {
             Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
         }
 
-        public async Task ScanScreenTaskAsync()
+        private async Task ScanScreenTaskAsync()
         {
             ShowHideWindow(false);
 
@@ -405,7 +315,7 @@ namespace v2rayN.Views
 
             ShowHideWindow(true);
 
-            ViewModel?.ScanScreenTaskAsync(result);
+            ViewModel?.ScanScreenResult(result);
         }
 
         private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)

@@ -12,7 +12,6 @@ using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
-using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views
 {
@@ -40,9 +39,8 @@ namespace v2rayN.Desktop.Views
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-            var IsAdministrator = Utils.IsAdministrator();
             MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(x => DelegateSnackMsg(x));
-            ViewModel = new MainWindowViewModel(IsAdministrator, UpdateViewHandler);
+            ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
@@ -82,19 +80,6 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
-                //status bar
-                this.OneWayBind(ViewModel, vm => vm.InboundDisplay, v => v.txtInboundDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.InboundLanDisplay, v => v.txtInboundLanDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.RunningServerDisplay, v => v.txtRunningServerDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.RunningInfoDisplay, v => v.txtRunningInfoDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
-
-                this.Bind(ViewModel, vm => vm.SystemProxySelected, v => v.cmbSystemProxy.SelectedIndex).DisposeWith(disposables);
-                //this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings2.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
-
                 if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
                 {
                     gridMain.IsVisible = true;
@@ -118,7 +103,7 @@ namespace v2rayN.Desktop.Views
                 }
             });
 
-            this.Title = $"{Utils.GetVersion()} - {(IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
             if (Utils.IsWindows())
             {
                 menuGlobalHotkeySetting.IsVisible = false;
@@ -128,10 +113,6 @@ namespace v2rayN.Desktop.Views
                 menuRebootAsAdmin.IsVisible = false;
                 menuSettingsSetUWP.IsVisible = false;
                 menuGlobalHotkeySetting.IsVisible = false;
-                if (_config.tunModeItem.enableTun)
-                {
-                    ViewModel.EnableTun = true;
-                }
             }
 
             if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
@@ -215,30 +196,9 @@ namespace v2rayN.Desktop.Views
                     DispatcherPriority.Default);
                     break;
 
-                case EViewAction.DispatcherServerAvailability:
-                    if (obj is null) return false;
-                    Dispatcher.UIThread.Post(() =>
-                        ViewModel?.TestServerAvailabilityResult((string)obj),
-                    DispatcherPriority.Default);
-                    break;
-
                 case EViewAction.DispatcherReload:
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.ReloadResult(),
-                    DispatcherPriority.Default);
-                    break;
-
-                case EViewAction.DispatcherRefreshServersBiz:
-                    Dispatcher.UIThread.Post(() =>
-                        ViewModel?.RefreshServersBiz(),
-                    DispatcherPriority.Default);
-                    break;
-
-                case EViewAction.DispatcherRefreshIcon:
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        this.Icon = AvaUtils.GetAppIcon(_config.systemProxyItem.sysProxyType);
-                    },
                     DispatcherPriority.Default);
                     break;
 
@@ -251,12 +211,7 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.ScanScreenTask:
-                    ScanScreenTaskAsync().ContinueWith(_ => { });
-                    break;
-
-                case EViewAction.UpdateSysProxy:
-                    if (obj is null) return false;
-                    await SysProxyHandler.UpdateSysProxy(_config, (bool)obj);
+                    await ScanScreenTaskAsync();
                     break;
 
                 case EViewAction.AddServerViaClipboard:
@@ -282,21 +237,21 @@ namespace v2rayN.Desktop.Views
                     ShowHideWindow(null);
                     break;
 
-                case EGlobalHotkey.SystemProxyClear:
-                    ViewModel?.SetListenerType(ESysProxyType.ForcedClear);
-                    break;
+                    //case EGlobalHotkey.SystemProxyClear:
+                    //    ViewModel?.SetListenerType(ESysProxyType.ForcedClear);
+                    //    break;
 
-                case EGlobalHotkey.SystemProxySet:
-                    ViewModel?.SetListenerType(ESysProxyType.ForcedChange);
-                    break;
+                    //case EGlobalHotkey.SystemProxySet:
+                    //    ViewModel?.SetListenerType(ESysProxyType.ForcedChange);
+                    //    break;
 
-                case EGlobalHotkey.SystemProxyUnchanged:
-                    ViewModel?.SetListenerType(ESysProxyType.Unchanged);
-                    break;
+                    //case EGlobalHotkey.SystemProxyUnchanged:
+                    //    ViewModel?.SetListenerType(ESysProxyType.Unchanged);
+                    //    break;
 
-                case EGlobalHotkey.SystemProxyPac:
-                    ViewModel?.SetListenerType(ESysProxyType.Pac);
-                    break;
+                    //case EGlobalHotkey.SystemProxyPac:
+                    //    ViewModel?.SetListenerType(ESysProxyType.Pac);
+                    //    break;
             }
         }
 
@@ -340,11 +295,6 @@ namespace v2rayN.Desktop.Views
         private void menuPromotion_Click(object? sender, RoutedEventArgs e)
         {
             Utils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
-        }
-
-        private void TxtRunningServerDisplay_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
-        {
-            ViewModel?.TestServerAvailability();
         }
 
         private void menuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)

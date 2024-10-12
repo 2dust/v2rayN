@@ -2,9 +2,9 @@
     x:Class="v2rayN.Desktop.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:v2rayN.Desktop.ViewModels"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    x:DataType="local:AppViewModel"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:DataType="vms:StatusBarViewModel"
     RequestedThemeVariant="Default">
     <Application.Styles>
         <StyleInclude Source="Styles/GlobalStyles.axaml" />
@@ -37,13 +37,13 @@
                         <NativeMenuItem Command="{Binding SystemProxySetCmd}" Header="{x:Static resx:ResUI.menuSystemProxySet}" />
                         <NativeMenuItem Command="{Binding SystemProxyNothingCmd}" Header="{x:Static resx:ResUI.menuSystemProxyNothing}" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Command="{Binding AddServerViaClipboardCmd}" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                        <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
                         <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="TrayIcon_Clicked" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
-                        <NativeMenuItem Command="{Binding ExitCmd}" Header="{x:Static resx:ResUI.menuExit}" />
+                        <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />
                     </NativeMenu>
                 </TrayIcon.Menu>
             </TrayIcon>

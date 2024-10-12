@@ -1,0 +1,81 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.StatusBarView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:StatusBarViewModel"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel Height="50">
+            <DockPanel>
+                <StackPanel
+                    Margin="8,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right">
+                    <TextBlock x:Name="txtSpeedProxyDisplay" />
+                    <Border Margin="2" />
+                    <TextBlock x:Name="txtSpeedDirectDisplay" />
+                </StackPanel>
+
+                <StackPanel
+                    Width="240"
+                    Margin="8,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left">
+                    <TextBlock x:Name="txtInboundDisplay" />
+                    <Border Margin="2" />
+                    <TextBlock x:Name="txtInboundLanDisplay" />
+                </StackPanel>
+
+                <StackPanel
+                    x:Name="spEnableTun"
+                    Width="100"
+                    Margin="8,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left">
+                    <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
+                    <ToggleSwitch
+                        x:Name="togEnableTun"
+                        HorizontalAlignment="Left"
+                        Classes="Margin8"
+                        Theme="{StaticResource SimpleToggleSwitch}" />
+                </StackPanel>
+
+                <StackPanel
+                    Margin="8,0"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left"
+                    Orientation="Horizontal">
+                    <ComboBox
+                        x:Name="cmbSystemProxy"
+                        Width="120"
+                        Margin="8,0"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
+                        <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
+                        <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
+                        <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
+                    </ComboBox>
+
+                    <ComboBox
+                        x:Name="cmbRoutings2"
+                        Width="150"
+                        Margin="8,0"
+                        DisplayMemberBinding="{Binding remarks}"
+                        ItemsSource="{Binding RoutingItems}"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuRouting}" />
+                </StackPanel>
+
+                <StackPanel Margin="8,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="txtRunningServerDisplay" />
+                    <Border Margin="2" />
+                    <TextBlock x:Name="txtRunningInfoDisplay" />
+                </StackPanel>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

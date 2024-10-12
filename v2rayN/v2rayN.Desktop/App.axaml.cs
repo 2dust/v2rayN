@@ -1,7 +1,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using v2rayN.Desktop.ViewModels;
+using Splat;
+using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop;
@@ -22,7 +23,9 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
-        this.DataContext = new AppViewModel();
+        var ViewModel = new StatusBarViewModel(null);
+        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
+        this.DataContext = ViewModel;
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -83,6 +86,29 @@ public partial class App : Application
             {
                 desktop.MainWindow?.Show();
             }
+        }
+    }
+
+    private void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow != null)
+            {
+                var clipboardData = AvaUtils.GetClipboardData(desktop.MainWindow).Result;
+                var service = Locator.Current.GetService<MainWindowViewModel>();
+                if (service != null) _ = service.AddServerViaClipboardAsync(clipboardData);
+            }
+        }
+    }
+
+    private void MenuExit_Click(object? sender, EventArgs e)
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.MyAppExitAsync(false);
+
+            desktop.Shutdown();
         }
     }
 }

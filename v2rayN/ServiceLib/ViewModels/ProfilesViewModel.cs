@@ -15,7 +15,6 @@ namespace ServiceLib.ViewModels
 
         private List<ProfileItem> _lstProfile;
         private string _serverFilter = string.Empty;
-
         private Dictionary<string, bool> _dicHeaderSort = new();
         private SpeedtestService? _speedtestHandler;
 
@@ -57,7 +56,6 @@ namespace ServiceLib.ViewModels
 
         //servers delete
         public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
-
         public ReactiveCommand<Unit, Unit> RemoveServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RemoveDuplicateServerCmd { get; }
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
@@ -68,14 +66,12 @@ namespace ServiceLib.ViewModels
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
-
         public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
         public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
 
         //servers ping
         public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
-
         public ReactiveCommand<Unit, Unit> TcpingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
@@ -83,7 +79,6 @@ namespace ServiceLib.ViewModels
 
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
-
         public ReactiveCommand<Unit, Unit> Export2ClientConfigClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
         public ReactiveCommand<Unit, Unit> Export2ShareUrlBase64Cmd { get; }
@@ -98,7 +93,6 @@ namespace ServiceLib.ViewModels
         public ProfilesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
 
             MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
@@ -505,7 +499,7 @@ namespace ServiceLib.ViewModels
             SetDefaultServer(SelectedProfile.indexId);
         }
 
-        private async Task SetDefaultServer(string indexId)
+        public async Task SetDefaultServer(string indexId)
         {
             if (Utils.IsNullOrEmpty(indexId))
             {

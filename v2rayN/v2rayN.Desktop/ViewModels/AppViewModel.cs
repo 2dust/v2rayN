@@ -61,7 +61,7 @@ namespace v2rayN.Desktop.ViewModels
                 return;
             }
 
-            var service = Locator.Current.GetService<MainWindowViewModel>();
+            var service = Locator.Current.GetService<StatusBarViewModel>();
             if (service != null) await service.SetListenerType(type);
         }
 

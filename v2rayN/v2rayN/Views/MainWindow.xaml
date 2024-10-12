@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
+    xmlns:view="clr-namespace:v2rayN.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
     Width="900"
@@ -276,84 +276,7 @@
                     </ToolBar>
                 </ToolBarTray>
 
-                <materialDesign:ColorZone
-                    Height="50"
-                    DockPanel.Dock="Bottom"
-                    Mode="Standard">
-                    <DockPanel>
-                        <StackPanel
-                            Margin="8,0"
-                            VerticalAlignment="Center"
-                            DockPanel.Dock="Right">
-                            <TextBlock x:Name="txtSpeedProxyDisplay" Style="{StaticResource StatusbarItem}" />
-                            <Border Margin="2" />
-                            <TextBlock x:Name="txtSpeedDirectDisplay" Style="{StaticResource StatusbarItem}" />
-                        </StackPanel>
-
-                        <StackPanel
-                            Width="240"
-                            Margin="8,0"
-                            VerticalAlignment="Center"
-                            DockPanel.Dock="Left">
-                            <TextBlock x:Name="txtInboundDisplay" Style="{StaticResource StatusbarItem}" />
-                            <Border Margin="2" />
-                            <TextBlock x:Name="txtInboundLanDisplay" Style="{StaticResource StatusbarItem}" />
-                        </StackPanel>
-
-                        <StackPanel
-                            x:Name="spEnableTun"
-                            Width="auto"
-                            Margin="8,0"
-                            VerticalAlignment="Center"
-                            DockPanel.Dock="Left">
-                            <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
-                            <ToggleButton
-                                x:Name="togEnableTun"
-                                Margin="4"
-                                HorizontalAlignment="Left" />
-                        </StackPanel>
-
-                        <StackPanel
-                            Margin="8,0"
-                            VerticalAlignment="Center"
-                            DockPanel.Dock="Left"
-                            Orientation="Horizontal">
-                            <ComboBox
-                                x:Name="cmbSystemProxy"
-                                Width="120"
-                                Margin="8,0"
-                                materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
-                                FontSize="{DynamicResource StdFontSize}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
-                                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
-                                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
-                                <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyPac}" />
-                            </ComboBox>
-
-                            <ComboBox
-                                x:Name="cmbRoutings2"
-                                Width="150"
-                                Margin="8,0"
-                                materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                DisplayMemberPath="remarks"
-                                FontSize="{DynamicResource StdFontSize}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-                        </StackPanel>
-
-                        <StackPanel Margin="8,0" VerticalAlignment="Center">
-                            <TextBlock
-                                x:Name="txtRunningServerDisplay"
-                                PreviewMouseDown="txtRunningInfoDisplay_MouseDoubleClick"
-                                Style="{StaticResource StatusbarItem}" />
-                            <Border Margin="2" />
-                            <TextBlock
-                                x:Name="txtRunningInfoDisplay"
-                                PreviewMouseDown="txtRunningInfoDisplay_MouseDoubleClick"
-                                Style="{StaticResource StatusbarItem}" />
-                        </StackPanel>
-                    </DockPanel>
-                </materialDesign:ColorZone>
+                <view:StatusBarView DockPanel.Dock="Bottom" />
 
                 <Grid>
                     <Grid x:Name="gridMain" Visibility="Collapsed">
@@ -505,113 +428,6 @@
                     <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}" />
                 </Grid>
             </DockPanel>
-            <tb:TaskbarIcon
-                x:Name="tbNotify"
-                IconSource="/v2rayN.ico"
-                NoLeftClickDelay="True"
-                ToolTipText="v2rayN">
-                <tb:TaskbarIcon.ContextMenu>
-                    <ContextMenu Style="{StaticResource DefContextMenu}">
-                        <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}">
-                            <MenuItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        x:Name="menuSystemProxyClear2"
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Check" />
-                                    <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyClear}" />
-                                </StackPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <MenuItem x:Name="menuSystemProxySet" Height="{StaticResource MenuItemHeight}">
-                            <MenuItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        x:Name="menuSystemProxySet2"
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Check" />
-                                    <TextBlock Text="{x:Static resx:ResUI.menuSystemProxySet}" />
-                                </StackPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <MenuItem x:Name="menuSystemProxyNothing" Height="{StaticResource MenuItemHeight}">
-                            <MenuItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        x:Name="menuSystemProxyNothing2"
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Check" />
-                                    <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyNothing}" />
-                                </StackPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <MenuItem x:Name="menuSystemProxyPac" Height="{StaticResource MenuItemHeight}">
-                            <MenuItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        x:Name="menuSystemProxyPac2"
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Kind="Check" />
-                                    <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyPac}" />
-                                </StackPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <Separator x:Name="sepRoutings" />
-                        <MenuItem x:Name="menuRoutings" Height="Auto">
-                            <MenuItem.Header>
-                                <DockPanel>
-                                    <ComboBox
-                                        x:Name="cmbRoutings"
-                                        MaxWidth="300"
-                                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                        DisplayMemberPath="remarks"
-                                        FontSize="{DynamicResource StdFontSize}"
-                                        Style="{StaticResource MaterialDesignFilledComboBox}" />
-                                </DockPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <MenuItem Height="Auto">
-                            <MenuItem.Header>
-                                <DockPanel>
-                                    <ComboBox
-                                        x:Name="cmbServers"
-                                        MaxWidth="300"
-                                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuServers}"
-                                        DisplayMemberPath="Text"
-                                        FontSize="{DynamicResource StdFontSize}"
-                                        Style="{StaticResource MaterialDesignFilledComboBox}" />
-                                </DockPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem
-                            x:Name="menuAddServerViaClipboard2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                        <MenuItem
-                            x:Name="menuAddServerViaScan2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
-                        <MenuItem
-                            x:Name="menuSubUpdate2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSubUpdate}" />
-                        <MenuItem
-                            x:Name="menuSubUpdateViaProxy2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
-                        <Separator />
-                        <MenuItem
-                            x:Name="menuExit"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuExit}" />
-                    </ContextMenu>
-                </tb:TaskbarIcon.ContextMenu>
-            </tb:TaskbarIcon>
         </Grid>
     </materialDesign:DialogHost>
 </reactiveui:ReactiveWindow>

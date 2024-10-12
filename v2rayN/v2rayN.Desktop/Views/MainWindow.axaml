@@ -6,6 +6,7 @@
     xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:view="using:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
     Width="900"
@@ -118,72 +119,7 @@
                 </Menu>
             </DockPanel>
 
-            <StackPanel Height="50" DockPanel.Dock="Bottom">
-                <DockPanel>
-                    <StackPanel
-                        Margin="8,0"
-                        VerticalAlignment="Center"
-                        DockPanel.Dock="Right">
-                        <TextBlock x:Name="txtSpeedProxyDisplay" />
-                        <Border Margin="2" />
-                        <TextBlock x:Name="txtSpeedDirectDisplay" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Width="240"
-                        Margin="8,0"
-                        VerticalAlignment="Center"
-                        DockPanel.Dock="Left">
-                        <TextBlock x:Name="txtInboundDisplay" />
-                        <Border Margin="2" />
-                        <TextBlock x:Name="txtInboundLanDisplay" />
-                    </StackPanel>
-
-                    <StackPanel
-                        x:Name="spEnableTun"
-                        Width="100"
-                        Margin="8,0"
-                        VerticalAlignment="Center"
-                        DockPanel.Dock="Left">
-                        <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
-                        <ToggleSwitch
-                            x:Name="togEnableTun"
-                            HorizontalAlignment="Left"
-                            Classes="Margin8"
-                            Theme="{StaticResource SimpleToggleSwitch}" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Margin="8,0"
-                        VerticalAlignment="Center"
-                        DockPanel.Dock="Left"
-                        Orientation="Horizontal">
-                        <ComboBox
-                            x:Name="cmbSystemProxy"
-                            Width="120"
-                            Margin="8,0"
-                            ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
-                            <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
-                            <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
-                            <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
-                        </ComboBox>
-
-                        <ComboBox
-                            x:Name="cmbRoutings2"
-                            Width="150"
-                            Margin="8,0"
-                            DisplayMemberBinding="{Binding remarks}"
-                            ItemsSource="{Binding RoutingItems}"
-                            ToolTip.Tip="{x:Static resx:ResUI.menuRouting}" />
-                    </StackPanel>
-
-                    <StackPanel Margin="8,0" VerticalAlignment="Center">
-                        <TextBlock x:Name="txtRunningServerDisplay" Tapped="TxtRunningServerDisplay_Tapped" />
-                        <Border Margin="2" />
-                        <TextBlock x:Name="txtRunningInfoDisplay" Tapped="TxtRunningServerDisplay_Tapped" />
-                    </StackPanel>
-                </DockPanel>
-            </StackPanel>
+            <view:StatusBarView DockPanel.Dock="Bottom" />
 
             <Grid>
                 <Grid x:Name="gridMain" IsVisible="False">
