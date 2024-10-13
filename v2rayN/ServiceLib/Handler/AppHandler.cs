@@ -2,11 +2,14 @@
 {
     public sealed class AppHandler
     {
+        #region Property
+
         private static readonly Lazy<AppHandler> _instance = new(() => new());
         private Config _config;
         private int? _statePort;
         private int? _statePort2;
         private Job? _processJob;
+        private bool? _isAdministrator;
         public static AppHandler Instance => _instance.Value;
         public Config Config => _config;
 
@@ -27,6 +30,17 @@
                 return _statePort2.Value;
             }
         }
+
+        public bool IsAdministrator
+        {
+            get
+            {
+                _isAdministrator ??= Utils.IsAdministrator();
+                return _isAdministrator.Value;
+            }
+        }
+
+        #endregion Property
 
         #region Init
 

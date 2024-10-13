@@ -10,8 +10,6 @@ namespace ServiceLib.ViewModels
 {
     public class StatusBarViewModel : MyReactiveObject
     {
-        private bool _isAdministrator { get; set; }
-
         #region ObservableCollection
 
         private IObservableCollection<RoutingItem> _routingItems = new ObservableCollectionExtended<RoutingItem>();
@@ -119,8 +117,7 @@ namespace ServiceLib.ViewModels
             SelectedRouting = new();
             SelectedServer = new();
 
-            _isAdministrator = Utils.IsAdministrator();
-            if (_config.tunModeItem.enableTun && _isAdministrator)
+            if (_config.tunModeItem.enableTun && AppHandler.Instance.IsAdministrator)
             {
                 EnableTun = true;
             }
@@ -414,7 +411,7 @@ namespace ServiceLib.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !_isAdministrator)
+                if (EnableTun && !AppHandler.Instance.IsAdministrator)
                 {
                     _config.tunModeItem.enableTun = false;
                     Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
