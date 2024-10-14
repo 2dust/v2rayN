@@ -103,8 +103,6 @@
         public int trayMenuServersLimit { get; set; } = 20;
 
         public bool enableHWA { get; set; } = false;
-
-        public string geoSourceUrl { get; set; }
     }
 
     [Serializable]
@@ -142,6 +140,7 @@
     {
         public string defIEProxyExceptions { get; set; }
         public string subConvertUrl { get; set; } = string.Empty;
+        public string? geoSourceUrl { get; set; }
     }
 
     [Serializable]

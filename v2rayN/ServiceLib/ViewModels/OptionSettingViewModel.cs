@@ -165,7 +165,7 @@ namespace ServiceLib.ViewModels
             EnableHWA = _config.guiItem.enableHWA;
             SubConvertUrl = _config.constItem.subConvertUrl;
             MainGirdOrientation = (int)_config.uiItem.mainGirdOrientation;
-            GeoFileSourceUrl = _config.guiItem.geoSourceUrl;
+            GeoFileSourceUrl = _config.constItem.geoSourceUrl;
 
             #endregion UI
 
@@ -318,7 +318,7 @@ namespace ServiceLib.ViewModels
             _config.guiItem.enableHWA = EnableHWA;
             _config.constItem.subConvertUrl = SubConvertUrl;
             _config.uiItem.mainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
-            _config.guiItem.geoSourceUrl = GeoFileSourceUrl;
+            _config.constItem.geoSourceUrl = GeoFileSourceUrl;
 
             //systemProxy
             _config.systemProxyItem.systemProxyExceptions = systemProxyExceptions;

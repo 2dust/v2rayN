@@ -3003,18 +3003,16 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsFontSize", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Get Geo files source.
+        ///   查找类似 Geo files source (optional) 的本地化字符串。
         /// </summary>
-        public static string TbSettingsGeoFilesSource
-        {
-            get
-            {
+        public static string TbSettingsGeoFilesSource {
+            get {
                 return ResourceManager.GetString("TbSettingsGeoFilesSource", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   查找类似 HTTP Port 的本地化字符串。
         /// </summary>

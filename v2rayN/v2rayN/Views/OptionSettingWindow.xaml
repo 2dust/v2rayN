@@ -847,11 +847,10 @@
                             Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 
-
                         <TextBlock
                             Grid.Row="22"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsGeoFilesSource}" />
@@ -860,7 +859,7 @@
                             Grid.Row="22"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                     </Grid>

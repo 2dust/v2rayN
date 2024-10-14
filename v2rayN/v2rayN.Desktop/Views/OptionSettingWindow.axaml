@@ -32,7 +32,7 @@
                 Cursor="Hand" />
         </StackPanel>
 
-        <TabControl HorizontalContentAlignment="Left">
+        <TabControl HorizontalContentAlignment="Stretch">
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCore}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid Classes="Margin8">

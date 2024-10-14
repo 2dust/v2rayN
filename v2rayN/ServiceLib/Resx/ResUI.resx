@@ -1328,6 +1328,6 @@
     <value>Save Interface Layout</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
-    <value>Geo files source</value>
+    <value>Geo files source (optional)</value>
   </data>
 </root>

@@ -451,7 +451,9 @@ namespace ServiceLib.Services
             _config = config;
             _updateFunc = updateFunc;
 
-            var geoUrl = !String.IsNullOrEmpty(config?.guiItem.geoSourceUrl) ? config.guiItem.geoSourceUrl : Global.GeoUrl;
+            var geoUrl = string.IsNullOrEmpty(config?.constItem.geoSourceUrl)
+                ? Global.GeoUrl
+                : config.constItem.geoSourceUrl;
             var url = string.Format(Global.GeoUrl, geoName);
             var fileName = Utils.GetTempPath(Utils.GetGuid());
 

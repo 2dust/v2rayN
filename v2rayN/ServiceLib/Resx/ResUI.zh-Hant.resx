@@ -1204,4 +1204,7 @@
   <data name="menuStorageUI" xml:space="preserve">
     <value>儲存介面佈局</value>
   </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Geo文件來源(可選)</value>
+  </data>
 </root>
