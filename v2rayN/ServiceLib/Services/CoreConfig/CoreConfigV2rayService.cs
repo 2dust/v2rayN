@@ -829,7 +829,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     else if (Utils.IsNotEmpty(host))
                     {
-                        tlsSettings.serverName = Utils.String2List(host)[0];
+                        tlsSettings.serverName = Utils.String2List(host)?.First();
                     }
                     streamSettings.tlsSettings = tlsSettings;
                 }

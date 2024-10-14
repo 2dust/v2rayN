@@ -26,7 +26,7 @@ namespace v2rayN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var exePathKey = Utils.GetMD5(Utils.GetExePath());
+            var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
             var rebootas = (e.Args ?? new string[] { }).Any(t => t == Global.RebootAs);
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);

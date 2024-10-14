@@ -218,7 +218,7 @@ namespace v2rayN
         {
             try
             {
-                var autoRunName = $"{AutoRunName}_{Utils.GetMD5(Utils.StartupPath())}";
+                var autoRunName = $"{AutoRunName}_{Utils.GetMd5(Utils.StartupPath())}";
                 //delete first
                 RegWriteValue(AutoRunRegPath, autoRunName, "");
                 if (Utils.IsAdministrator())

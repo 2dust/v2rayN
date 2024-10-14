@@ -267,7 +267,7 @@ namespace v2rayN.Views
         private void btnGUID_Click(object sender, RoutedEventArgs e)
         {
             txtId.Text =
-            txtId5.Text = Utils.GetGUID();
+            txtId5.Text = Utils.GetGuid();
         }
 
         private void SetHeaderType()

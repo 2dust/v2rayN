@@ -232,7 +232,7 @@ namespace ServiceLib.ViewModels
             var item = SelectedRouting;
             foreach (var it in _rules)
             {
-                it.id = Utils.GetGUID(false);
+                it.id = Utils.GetGuid(false);
             }
             item.ruleNum = _rules.Count;
             item.ruleSet = JsonUtils.Serialize(_rules, false);
@@ -322,7 +322,7 @@ namespace ServiceLib.ViewModels
             }
             foreach (var rule in lstRules)
             {
-                rule.id = Utils.GetGUID(false);
+                rule.id = Utils.GetGuid(false);
             }
 
             if (blReplace)

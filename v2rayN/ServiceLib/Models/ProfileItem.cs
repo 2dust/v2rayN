@@ -58,7 +58,7 @@ namespace ServiceLib.Models
             return summary;
         }
 
-        public List<string> GetAlpn()
+        public List<string>? GetAlpn()
         {
             if (Utils.IsNullOrEmpty(alpn))
             {

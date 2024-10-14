@@ -120,10 +120,10 @@
         public string? version { get; set; }
         public string? network { get; set; }
         public string? packet_encoding { get; set; }
-        public string[]? local_address { get; set; }
+        public List<string>? local_address { get; set; }
         public string? private_key { get; set; }
         public string? peer_public_key { get; set; }
-        public int[]? reserved { get; set; }
+        public List<int>? reserved { get; set; }
         public int? mtu { get; set; }
         public string? plugin { get; set; }
         public string? plugin_opts { get; set; }
@@ -138,11 +138,11 @@
     public class Tls4Sbox
     {
         public bool enabled { get; set; }
-        public string server_name { get; set; }
+        public string? server_name { get; set; }
         public bool? insecure { get; set; }
-        public List<string> alpn { get; set; }
-        public Utls4Sbox utls { get; set; }
-        public Reality4Sbox reality { get; set; }
+        public List<string>? alpn { get; set; }
+        public Utls4Sbox? utls { get; set; }
+        public Reality4Sbox? reality { get; set; }
     }
 
     public class Multiplex4Sbox
