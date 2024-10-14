@@ -41,26 +41,29 @@ namespace v2rayN.Views
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
-            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+            switch (_config.uiItem.mainGirdOrientation)
             {
-                tabProfiles.Content ??= new ProfilesView();
-                tabMsgView.Content ??= new MsgView();
-                tabClashProxies.Content ??= new ClashProxiesView();
-                tabClashConnections.Content ??= new ClashConnectionsView();
-            }
-            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
-            {
-                tabProfiles1.Content ??= new ProfilesView();
-                tabMsgView1.Content ??= new MsgView();
-                tabClashProxies1.Content ??= new ClashProxiesView();
-                tabClashConnections1.Content ??= new ClashConnectionsView();
-            }
-            else
-            {
-                tabProfiles2.Content ??= new ProfilesView();
-                tabMsgView2.Content ??= new MsgView();
-                tabClashProxies2.Content ??= new ClashProxiesView();
-                tabClashConnections2.Content ??= new ClashConnectionsView();
+                case EGirdOrientation.Horizontal:
+                    tabProfiles.Content ??= new ProfilesView();
+                    tabMsgView.Content ??= new MsgView();
+                    tabClashProxies.Content ??= new ClashProxiesView();
+                    tabClashConnections.Content ??= new ClashConnectionsView();
+                    break;
+
+                case EGirdOrientation.Vertical:
+                    tabProfiles1.Content ??= new ProfilesView();
+                    tabMsgView1.Content ??= new MsgView();
+                    tabClashProxies1.Content ??= new ClashProxiesView();
+                    tabClashConnections1.Content ??= new ClashConnectionsView();
+                    break;
+
+                case EGirdOrientation.Tab:
+                default:
+                    tabProfiles2.Content ??= new ProfilesView();
+                    tabMsgView2.Content ??= new MsgView();
+                    tabClashProxies2.Content ??= new ClashProxiesView();
+                    tabClashConnections2.Content ??= new ClashConnectionsView();
+                    break;
             }
             pbTheme.Content ??= new ThemeSettingView();
 
@@ -99,26 +102,31 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
-                if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+                switch (_config.uiItem.mainGirdOrientation)
                 {
-                    gridMain.Visibility = Visibility.Visible;
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
-                }
-                else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
-                {
-                    gridMain1.Visibility = Visibility.Visible;
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(disposables);
-                }
-                else
-                {
-                    gridMain2.Visibility = Visibility.Visible;
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
+                    case EGirdOrientation.Horizontal:
+                        gridMain.Visibility = Visibility.Visible;
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(disposables);
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
+                        break;
+
+                    case EGirdOrientation.Vertical:
+                        gridMain1.Visibility = Visibility.Visible;
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(disposables);
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(disposables);
+                        break;
+
+                    case EGirdOrientation.Tab:
+                    default:
+                        gridMain2.Visibility = Visibility.Visible;
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
+                        this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
+                        break;
                 }
             });
 
