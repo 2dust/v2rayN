@@ -10,7 +10,7 @@
     d:DesignWidth="300"
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
-    <Grid Margin="30">
+    <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -38,7 +38,7 @@
         <Button
             Grid.Row="2"
             Width="100"
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
             Content="{x:Static resx:ResUI.TbConfirm}"

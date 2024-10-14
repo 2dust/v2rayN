@@ -34,12 +34,12 @@
                 VerticalAlignment="Center"
                 ClipToBounds="True"
                 Style="{StaticResource MaterialDesignToolBar}">
-                <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                     <MenuItem x:Name="menuRoutingBasic" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Server" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuRoutingBasic}" />
@@ -51,12 +51,12 @@
                             Header="{x:Static resx:ResUI.menuRoutingBasicImportRules}" />
                     </MenuItem>
                 </Menu>
-                <Menu Margin="0,8" Style="{StaticResource ToolbarMenu}">
+                <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                     <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Routes" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuRoutingAdvanced}" />
@@ -74,17 +74,17 @@
                 </Menu>
                 <Separator />
                 <TextBlock
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbenableRoutingAdvanced}" />
                 <ToggleButton
                     x:Name="togenableRoutingAdvanced"
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     HorizontalAlignment="Left" />
                 <Separator />
                 <TextBlock
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}">
                     <Hyperlink Click="linkdomainStrategy_Click">
@@ -95,22 +95,22 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy"
                     Width="110"
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     Style="{StaticResource DefComboBox}" />
                 <Separator />
                 <TextBlock
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbdomainMatcher}" />
                 <ComboBox
                     x:Name="cmbdomainMatcher"
                     Width="60"
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     Style="{StaticResource DefComboBox}" />
                 <Separator />
                 <TextBlock
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}">
                     <Hyperlink Click="linkdomainStrategy4Singbox_Click">
@@ -121,13 +121,13 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy4Singbox"
                     Width="100"
-                    Margin="8,0,0,0"
+                    Margin="{StaticResource MarginLeft8}"
                     Style="{StaticResource DefComboBox}" />
             </ToolBar>
         </ToolBarTray>
 
         <StackPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             HorizontalAlignment="Right"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
@@ -146,7 +146,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
@@ -158,7 +158,6 @@
                 <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRoutingTabRuleList}">
                     <DataGrid
                         x:Name="lstRoutings"
-                        Margin="2,0"
                         AutoGenerateColumns="False"
                         BorderThickness="1"
                         CanUserAddRows="False"
@@ -233,7 +232,7 @@
 
             <TabControl x:Name="tabBasic">
                 <TabItem Header="{x:Static resx:ResUI.TbRoutingTabProxy}">
-                    <Grid Margin="{StaticResource SettingItemMargin}">
+                    <Grid Margin="{StaticResource Margin8}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="10" />
@@ -266,7 +265,7 @@
                 </TabItem>
 
                 <TabItem Header="{x:Static resx:ResUI.TbRoutingTabDirect}">
-                    <Grid Margin="{StaticResource SettingItemMargin}">
+                    <Grid Margin="{StaticResource Margin8}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="10" />
@@ -299,7 +298,7 @@
                 </TabItem>
 
                 <TabItem Header="{x:Static resx:ResUI.TbRoutingTabBlock}">
-                    <Grid Margin="{StaticResource SettingItemMargin}">
+                    <Grid Margin="{StaticResource Margin8}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="10" />

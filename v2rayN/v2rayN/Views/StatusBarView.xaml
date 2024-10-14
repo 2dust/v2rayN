@@ -18,46 +18,46 @@
         <materialDesign:ColorZone Height="50" Mode="Standard">
             <DockPanel>
                 <StackPanel
-                    Margin="8,0"
+                    Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Right">
                     <TextBlock x:Name="txtSpeedProxyDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="2" />
+                    <Border Margin="{StaticResource Margin4}" />
                     <TextBlock x:Name="txtSpeedDirectDisplay" Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
 
                 <StackPanel
                     Width="240"
-                    Margin="8,0"
+                    Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
                     <TextBlock x:Name="txtInboundDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="2" />
+                    <Border Margin="{StaticResource Margin4}" />
                     <TextBlock x:Name="txtInboundLanDisplay" Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
 
                 <StackPanel
                     x:Name="spEnableTun"
                     Width="auto"
-                    Margin="8,0"
+                    Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
                     <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
                     <ToggleButton
                         x:Name="togEnableTun"
-                        Margin="4"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
                 </StackPanel>
 
                 <StackPanel
-                    Margin="8,0"
+                    Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"
                     Orientation="Horizontal">
                     <ComboBox
                         x:Name="cmbSystemProxy"
                         Width="120"
-                        Margin="8,0"
+                        Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
                         FontSize="{DynamicResource StdFontSize}"
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}">
@@ -70,16 +70,16 @@
                     <ComboBox
                         x:Name="cmbRoutings2"
                         Width="150"
-                        Margin="8,0"
+                        Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="remarks"
                         FontSize="{DynamicResource StdFontSize}"
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                 </StackPanel>
 
-                <StackPanel Margin="8,0" VerticalAlignment="Center">
+                <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
                     <TextBlock x:Name="txtRunningServerDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="2" />
+                    <Border Margin="{StaticResource Margin4}" />
                     <TextBlock x:Name="txtRunningInfoDisplay" Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
             </DockPanel>
@@ -99,7 +99,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     x:Name="menuSystemProxyClear2"
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Check" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyClear}" />
@@ -111,7 +111,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     x:Name="menuSystemProxySet2"
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Check" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuSystemProxySet}" />
@@ -123,7 +123,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     x:Name="menuSystemProxyNothing2"
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Check" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyNothing}" />
@@ -135,7 +135,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     x:Name="menuSystemProxyPac2"
-                                    Margin="0,0,8,0"
+                                    Margin="{StaticResource MarginRight8}"
                                     VerticalAlignment="Center"
                                     Kind="Check" />
                                 <TextBlock Text="{x:Static resx:ResUI.menuSystemProxyPac}" />

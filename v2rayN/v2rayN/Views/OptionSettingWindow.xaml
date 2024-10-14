@@ -22,9 +22,9 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Margin="8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
-            Margin="4"
+            Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
@@ -37,7 +37,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
@@ -47,7 +47,7 @@
         <TabControl HorizontalContentAlignment="Left">
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCore}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Margin="{StaticResource SettingItemMargin}">
+                    <Grid Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -78,7 +78,7 @@
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSocksPort}" />
@@ -87,12 +87,12 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefTextBox}" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"
-                            Margin="{StaticResource ServerItemMargin}"
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSocksPortTip}" />
@@ -100,7 +100,7 @@
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsUdpEnabled}" />
@@ -108,13 +108,13 @@
                             x:Name="togudpEnabled"
                             Grid.Row="1"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSniffingEnabled}" />
@@ -125,11 +125,11 @@
                             Orientation="Horizontal">
                             <ToggleButton
                                 x:Name="togsniffingEnabled"
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 HorizontalAlignment="Left" />
                             <ListBox
                                 x:Name="clbdestOverride"
-                                Margin="4"
+                                Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
                                 FontSize="{DynamicResource StdFontSize}"
                                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
@@ -138,7 +138,7 @@
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsRouteOnly}" />
@@ -146,13 +146,13 @@
                             x:Name="togrouteOnly"
                             Grid.Row="3"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAllowLAN}" />
@@ -160,13 +160,13 @@
                             x:Name="togAllowLANConn"
                             Grid.Row="4"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsNewPort4LAN}" />
@@ -174,13 +174,13 @@
                             x:Name="togNewPort4LAN"
                             Grid.Row="5"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsUser}" />
@@ -189,13 +189,13 @@
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsPass}" />
@@ -204,13 +204,13 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
@@ -218,13 +218,13 @@
                             x:Name="togmuxEnabled"
                             Grid.Row="8"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="9"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsLogEnabledToFile}" />
@@ -232,13 +232,13 @@
                             x:Name="toglogEnabled"
                             Grid.Row="9"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="10"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsLogLevel}" />
@@ -247,14 +247,14 @@
                             Grid.Row="10"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="Level"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="11"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefAllowInsecure}" />
@@ -262,13 +262,13 @@
                             x:Name="togdefAllowInsecure"
                             Grid.Row="11"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="12"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefFingerprint}" />
@@ -277,14 +277,14 @@
                             Grid.Row="12"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="13"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefUserAgent}" />
@@ -293,20 +293,20 @@
                             Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="13"
                             Grid.Column="3"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}" />
 
                         <TextBlock
                             Grid.Row="14"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsMux4SboxProtocol}" />
@@ -315,13 +315,13 @@
                             Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableCacheFile4Sbox}" />
@@ -329,13 +329,13 @@
                             x:Name="togenableCacheFile4Sbox"
                             Grid.Row="15"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}" />
@@ -348,13 +348,13 @@
                             <TextBox
                                 x:Name="txtUpMbps"
                                 Width="90"
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 materialDesign:HintAssist.Hint="Up"
                                 Style="{StaticResource DefTextBox}" />
                             <TextBox
                                 x:Name="txtDownMbps"
                                 Width="90"
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 materialDesign:HintAssist.Hint="Down"
                                 Style="{StaticResource DefTextBox}" />
                         </StackPanel>
@@ -362,7 +362,7 @@
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableFragment}" />
@@ -370,12 +370,12 @@
                             x:Name="togenableFragment"
                             Grid.Row="17"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="3"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}" />
                     </Grid>
@@ -383,7 +383,7 @@
             </TabItem>
 
             <!--<TabItem Header="{x:Static resx:ResUI.TbSettingsCoreKcp}">
-                <Grid Margin="{StaticResource SettingItemMargin}">
+                <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -405,7 +405,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="mtu" />
@@ -414,12 +414,12 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="tti" />
@@ -428,12 +428,12 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="uplinkCapacity" />
@@ -442,12 +442,12 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="downlinkCapacity" />
@@ -456,12 +456,12 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="readBufferSize" />
@@ -470,12 +470,12 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="writeBufferSize" />
@@ -484,12 +484,12 @@
                         Grid.Row="6"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}" />
+                        Margin="{StaticResource Margin8}" />
 
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="congestion" />
@@ -497,14 +497,14 @@
                         x:Name="togKcpcongestion"
                         Grid.Row="7"
                         Grid.Column="1"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         HorizontalAlignment="Left" />
                 </Grid>
             </TabItem>-->
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsN}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Grid.Row="2" Margin="{StaticResource SettingItemMargin}">
+                    <Grid Grid.Row="2" Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -538,7 +538,7 @@
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsStartBoot}" />
@@ -546,12 +546,12 @@
                             x:Name="togAutoRun"
                             Grid.Row="1"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="2"
-                            Margin="{StaticResource ServerItemMargin}"
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
@@ -560,7 +560,7 @@
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsStatistics}" />
@@ -568,13 +568,13 @@
                             x:Name="togEnableStatistics"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
@@ -582,13 +582,13 @@
                             x:Name="togKeepOlderDedupl"
                             Grid.Row="3"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsIgnoreGeoUpdateCore}" />
@@ -596,13 +596,13 @@
                             x:Name="togIgnoreGeoUpdateCore"
                             Grid.Row="4"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableAutoAdjustMainLvColWidth}" />
@@ -610,13 +610,13 @@
                             x:Name="togEnableAutoAdjustMainLvColWidth"
                             Grid.Row="5"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableUpdateSubOnlyRemarksExist}" />
@@ -624,13 +624,13 @@
                             x:Name="togEnableUpdateSubOnlyRemarksExist"
                             Grid.Row="6"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsTLS13}" />
@@ -638,13 +638,13 @@
                             x:Name="togEnableSecurityProtocolTls13"
                             Grid.Row="7"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAutoHideStartup}" />
@@ -652,13 +652,13 @@
                             x:Name="togAutoHideStartup"
                             Grid.Row="8"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="9"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
@@ -666,13 +666,13 @@
                             x:Name="togEnableCheckPreReleaseUpdate"
                             Grid.Row="9"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="10"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
@@ -680,13 +680,13 @@
                             x:Name="togEnableDragDropSort"
                             Grid.Row="10"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="11"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
@@ -694,13 +694,13 @@
                             x:Name="togDoubleClick2Activate"
                             Grid.Row="11"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="12"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
@@ -708,13 +708,13 @@
                             x:Name="togEnableHWA"
                             Grid.Row="12"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="14"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsAutoUpdateInterval}" />
@@ -723,14 +723,14 @@
                             Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
@@ -739,14 +739,14 @@
                             Grid.Row="15"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
@@ -755,13 +755,13 @@
                             Grid.Row="16"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             MaxDropDownHeight="1000"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="2"
-                            Margin="{StaticResource ServerItemMargin}"
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
@@ -770,7 +770,7 @@
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestTimeout}" />
@@ -779,13 +779,13 @@
                             Grid.Row="17"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="18"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
@@ -794,14 +794,14 @@
                             Grid.Row="18"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="19"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}" />
@@ -810,14 +810,14 @@
                             Grid.Row="19"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="20"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
@@ -826,7 +826,7 @@
                             Grid.Row="20"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="Convert Url"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
@@ -834,7 +834,7 @@
                         <TextBlock
                             Grid.Row="21"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsMainGirdOrientation}" />
@@ -843,37 +843,37 @@
                             Grid.Row="21"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsSystemproxy}">
-                <DockPanel Margin="{StaticResource SettingItemMargin}">
+                <DockPanel Margin="{StaticResource Margin8}">
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbSettingsNotProxyLocalAddress}" />
                             <ToggleButton
                                 x:Name="tognotProxyLocalAddress"
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 HorizontalAlignment="Left" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbSettingsAdvancedProtocol}" />
                             <ComboBox
                                 x:Name="cmbsystemProxyAdvancedProtocol"
                                 MinWidth="400"
-                                Margin="{StaticResource SettingItemMargin}"
+                                Margin="{StaticResource Margin8}"
                                 materialDesign:HintAssist.Hint="Protocol"
                                 Style="{StaticResource DefComboBox}" />
                         </StackPanel>
@@ -881,14 +881,14 @@
 
                     <TextBlock
                         Grid.Row="1"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Top"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip}" />
                     <TextBox
                         x:Name="txtsystemProxyExceptions"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Stretch"
                         AcceptsReturn="True"
                         BorderThickness="1"
@@ -899,8 +899,8 @@
             </TabItem>
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsTunMode}">
-                <DockPanel Margin="{StaticResource SettingItemMargin}">
-                    <Grid Margin="{StaticResource SettingItemMargin}" DockPanel.Dock="Top">
+                <DockPanel Margin="{StaticResource Margin8}">
+                    <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -919,7 +919,7 @@
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="Strict Route" />
@@ -927,13 +927,13 @@
                             x:Name="togStrictRoute"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="Stack" />
@@ -942,14 +942,14 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="Mtu" />
@@ -958,14 +958,14 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableExInbound}" />
@@ -973,13 +973,13 @@
                             x:Name="togEnableExInbound"
                             Grid.Row="5"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="0"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
@@ -987,14 +987,14 @@
                             x:Name="togEnableIPv6Address"
                             Grid.Row="6"
                             Grid.Column="1"
-                            Margin="{StaticResource SettingItemMargin}"
+                            Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
                     </Grid>
                 </DockPanel>
             </TabItem>
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreType}">
-                <Grid Margin="{StaticResource SettingItemMargin}">
+                <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -1011,7 +1011,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="VMess" />
@@ -1020,13 +1020,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="Custom" />
@@ -1035,13 +1035,13 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="Shadowsocks" />
@@ -1050,13 +1050,13 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="Socks" />
@@ -1065,13 +1065,13 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="VLESS" />
@@ -1080,13 +1080,13 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="0"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="Trojan" />
@@ -1095,7 +1095,7 @@
                         Grid.Row="6"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource SettingItemMargin}"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>

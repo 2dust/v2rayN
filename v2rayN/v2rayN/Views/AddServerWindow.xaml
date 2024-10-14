@@ -22,9 +22,9 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Margin="8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
-            Margin="4"
+            Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
@@ -37,7 +37,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
@@ -76,7 +76,7 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource ModuleTitle}"
                         Text="{x:Static resx:ResUI.menuServers}" />
                     <StackPanel
@@ -86,7 +86,7 @@
                         <ComboBox
                             x:Name="cmbCoreType"
                             Width="100"
-                            Margin="{StaticResource ServerItemMargin}"
+                            Margin="{StaticResource Margin4}"
                             materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TbCoreType}"
                             Style="{StaticResource DefComboBox}" />
                     </StackPanel>
@@ -94,7 +94,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbRemarks}" />
@@ -103,13 +103,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAddress}" />
@@ -118,13 +118,13 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPort}" />
@@ -133,7 +133,7 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
@@ -162,7 +162,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId}" />
@@ -171,20 +171,20 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                     <Button
                         x:Name="btnGUID"
                         Grid.Row="1"
                         Grid.Column="2"
-                        Margin="4,0"
+                        Margin="{StaticResource MarginLeftRight4}"
                         Content="{x:Static resx:ResUI.TbGUID}"
                         Style="{StaticResource DefButton}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAlterId}" />
@@ -193,14 +193,14 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSecurity}" />
@@ -209,7 +209,7 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -230,7 +230,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId3}" />
@@ -239,13 +239,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSecurity3}" />
@@ -254,7 +254,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="300"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -275,7 +275,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSecurity4}" />
@@ -284,13 +284,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId4}" />
@@ -299,7 +299,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
                 <Grid
@@ -321,7 +321,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId5}" />
@@ -330,20 +330,20 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                     <Button
                         x:Name="btnGUID5"
                         Grid.Row="1"
                         Grid.Column="2"
-                        Margin="4,0"
+                        Margin="{StaticResource MarginLeftRight4}"
                         Content="{x:Static resx:ResUI.TbGUID}"
                         Style="{StaticResource DefButton}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbFlow5}" />
@@ -352,13 +352,13 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSecurity5}" />
@@ -367,7 +367,7 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
@@ -389,7 +389,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId3}" />
@@ -398,13 +398,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbFlow5}" />
@@ -413,7 +413,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -434,7 +434,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId3}" />
@@ -443,13 +443,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPath7}" />
@@ -458,7 +458,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
                 <Grid
@@ -479,7 +479,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId}" />
@@ -488,13 +488,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbId3}" />
@@ -503,13 +503,13 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbHeaderType8}" />
@@ -518,7 +518,7 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -541,7 +541,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPrivateKey}" />
@@ -550,13 +550,13 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPublicKey}" />
@@ -565,14 +565,14 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbReserved}" />
@@ -581,13 +581,13 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbLocalAddress}" />
@@ -596,13 +596,13 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="Mtu" />
@@ -611,7 +611,7 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
@@ -642,14 +642,14 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.ColumnSpan="2"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource ModuleTitle}"
                         Text="{x:Static resx:ResUI.GbTransport}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbNetwork}" />
@@ -658,12 +658,12 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TipNetwork}" />
@@ -672,7 +672,7 @@
                         x:Name="labHeaderType"
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbHeaderType}" />
@@ -681,13 +681,13 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                     <TextBlock
                         x:Name="tipHeaderType"
                         Grid.Row="2"
                         Grid.Column="2"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbHeaderType}" />
@@ -695,7 +695,7 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbRequestHost}" />
@@ -704,13 +704,13 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                     <TextBlock
                         x:Name="tipRequestHost"
                         Grid.Row="3"
                         Grid.Column="2"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbRequestHost}" />
@@ -718,7 +718,7 @@
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPath}" />
@@ -727,13 +727,13 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
                     <TextBlock
                         x:Name="tipPath"
                         Grid.Row="4"
                         Grid.Column="2"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPath}" />
@@ -760,7 +760,7 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbStreamSecurity}" />
@@ -769,7 +769,7 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -791,7 +791,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSNI}" />
@@ -800,14 +800,14 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbFingerprint}" />
@@ -816,14 +816,14 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         IsEditable="True"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAlpn}" />
@@ -832,13 +832,13 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAllowInsecure}" />
@@ -847,7 +847,7 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="100"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
                 <Grid
@@ -869,7 +869,7 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSNI}" />
@@ -878,14 +878,14 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbFingerprint}" />
@@ -894,14 +894,14 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         IsEditable="True"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbPublicKey}" />
@@ -910,14 +910,14 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbShortId}" />
@@ -926,14 +926,14 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbSpiderX}" />
@@ -942,7 +942,7 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource ServerItemMargin}"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
