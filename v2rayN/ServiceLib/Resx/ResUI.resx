@@ -1322,9 +1322,12 @@
     <value>Host filter</value>
   </data>
   <data name="TipActiveServer" xml:space="preserve">
-    <value>Active</value>    
+    <value>Active</value>
   </data>
   <data name="menuStorageUI" xml:space="preserve">
     <value>Save Interface Layout</value>
+  </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Geo files source</value>
   </data>
 </root>
