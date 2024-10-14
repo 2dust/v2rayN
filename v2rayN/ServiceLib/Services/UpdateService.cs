@@ -56,7 +56,7 @@ namespace ServiceLib.Services
                 _updateFunc?.Invoke(false, args.Msg);
 
                 url = args.Url;
-                fileName = Utils.GetTempPath(Utils.GetGUID());
+                fileName = Utils.GetTempPath(Utils.GetGuid());
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
             else
@@ -108,7 +108,7 @@ namespace ServiceLib.Services
 
                 url = args.Url;
                 var ext = Path.GetExtension(url);
-                fileName = Utils.GetTempPath(Utils.GetGUID() + ext);
+                fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
             else
@@ -450,9 +450,10 @@ namespace ServiceLib.Services
         {
             _config = config;
             _updateFunc = updateFunc;
+
             var geoUrl = !String.IsNullOrEmpty(config?.guiItem.geoSourceUrl) ? config.guiItem.geoSourceUrl : Global.GeoUrl;
-            var url = string.Format(geoUrl, geoName);
-            var fileName = Utils.GetTempPath(Utils.GetGUID());
+            var url = string.Format(Global.GeoUrl, geoName);
+            var fileName = Utils.GetTempPath(Utils.GetGuid());
 
             DownloadService downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>

@@ -647,12 +647,12 @@ namespace ServiceLib.Models
         /// <summary>
         ///
         /// </summary>
-        public string path { get; set; }
+        public string? path { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public List<string> host { get; set; }
+        public List<string>? host { get; set; }
     }
 
     public class QuicSettings4Ray

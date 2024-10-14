@@ -17,7 +17,7 @@ namespace ServiceLib.Common
 
         private static IOrderedQueryable<T> _OrderBy<T>(IQueryable<T> query, string propertyName, bool isDesc)
         {
-            string methodname = (isDesc) ? "OrderByDescendingInternal" : "OrderByInternal";
+            var methodname = (isDesc) ? "OrderByDescendingInternal" : "OrderByInternal";
 
             var memberProp = typeof(T).GetProperty(propertyName);
 

@@ -13,9 +13,9 @@
     x:TypeArguments="vms:ClashConnectionsViewModel"
     mc:Ignorable="d">
 
-    <DockPanel Margin="2">
+    <DockPanel Margin="{StaticResource Margin4}">
         <WrapPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
@@ -23,21 +23,21 @@
             <TextBox
                 x:Name="txtHostFilter"
                 Width="200"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalContentAlignment="Center"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.ConnectionsHostFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 Style="{StaticResource DefTextBox}" />
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbSorting}" />
             <ComboBox
                 x:Name="cmbSorting"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpSpeed}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownSpeed}" />
@@ -51,20 +51,20 @@
                 x:Name="btnConnectionCloseAll"
                 Width="24"
                 Height="24"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Close" />
             </Button>
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left" />
         </WrapPanel>
 

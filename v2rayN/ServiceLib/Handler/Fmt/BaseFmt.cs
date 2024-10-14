@@ -197,7 +197,7 @@ namespace ServiceLib.Handler.Fmt
 
         protected static string WriteAllText(string strData, string ext = "json")
         {
-            var fileName = Utils.GetTempPath($"{Utils.GetGUID(false)}.{ext}");
+            var fileName = Utils.GetTempPath($"{Utils.GetGuid(false)}.{ext}");
             File.WriteAllText(fileName, strData);
             return fileName;
         }

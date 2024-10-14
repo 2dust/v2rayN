@@ -43,7 +43,7 @@ public partial class App : Application
 
     private void OnStartup(string[]? Args)
     {
-        var exePathKey = Utils.GetMD5(Utils.GetExePath());
+        var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
         var rebootas = (Args ?? new string[] { }).Any(t => t == Global.RebootAs);
         //ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);

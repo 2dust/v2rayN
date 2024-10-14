@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace ServiceLib.Handler
 {
@@ -494,7 +493,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
             var ext = Path.GetExtension(fileName);
-            string newFileName = $"{Utils.GetGUID()}{ext}";
+            string newFileName = $"{Utils.GetGuid()}{ext}";
             //newFileName = Path.Combine(Utile.GetTempPath(), newFileName);
 
             try
@@ -934,7 +933,7 @@ namespace ServiceLib.Handler
             var maxSort = -1;
             if (Utils.IsNullOrEmpty(profileItem.indexId))
             {
-                profileItem.indexId = Utils.GetGUID(false);
+                profileItem.indexId = Utils.GetGuid(false);
                 maxSort = ProfileExHandler.Instance.GetMaxSort();
             }
             if (!toFile && maxSort < 0)
@@ -1002,7 +1001,7 @@ namespace ServiceLib.Handler
 
         public static int AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, out string indexId)
         {
-            indexId = Utils.GetMD5(Global.CoreMultipleLoadConfigFileName);
+            indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
             string configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
             if (CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, out string msg) != 0)
             {
@@ -1341,7 +1340,7 @@ namespace ServiceLib.Handler
             try
             {
                 var uri = new Uri(url);
-                var queryVars = HttpUtility.ParseQueryString(uri.Query);
+                var queryVars = Utils.ParseQueryString(uri.Query);
                 subItem.remarks = queryVars["remarks"] ?? "import_sub";
             }
             catch (UriFormatException)
@@ -1378,7 +1377,7 @@ namespace ServiceLib.Handler
 
             if (Utils.IsNullOrEmpty(item.id))
             {
-                item.id = Utils.GetGUID(false);
+                item.id = Utils.GetGuid(false);
 
                 if (item.sort <= 0)
                 {
@@ -1461,7 +1460,7 @@ namespace ServiceLib.Handler
         {
             if (Utils.IsNullOrEmpty(item.id))
             {
-                item.id = Utils.GetGUID(false);
+                item.id = Utils.GetGuid(false);
             }
 
             if (SQLiteHelper.Instance.Replace(item) > 0)
@@ -1495,14 +1494,14 @@ namespace ServiceLib.Handler
 
             foreach (var item in lstRules)
             {
-                item.id = Utils.GetGUID(false);
+                item.id = Utils.GetGuid(false);
             }
             routingItem.ruleNum = lstRules.Count;
             routingItem.ruleSet = JsonUtils.Serialize(lstRules, false);
 
             if (Utils.IsNullOrEmpty(routingItem.id))
             {
-                routingItem.id = Utils.GetGUID(false);
+                routingItem.id = Utils.GetGuid(false);
             }
 
             if (SQLiteHelper.Instance.Replace(routingItem) > 0)
@@ -1711,7 +1710,7 @@ namespace ServiceLib.Handler
         {
             if (Utils.IsNullOrEmpty(item.id))
             {
-                item.id = Utils.GetGUID(false);
+                item.id = Utils.GetGuid(false);
             }
 
             if (SQLiteHelper.Instance.Replace(item) > 0)

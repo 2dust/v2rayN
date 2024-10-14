@@ -24,23 +24,47 @@
 
             <conv:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <Thickness
-                x:Key="ServerItemMargin"
+                x:Key="Margin4"
                 Bottom="4"
                 Left="4"
                 Right="4"
                 Top="4" />
             <Thickness
-                x:Key="SettingItemMargin"
+                x:Key="Margin8"
                 Bottom="8"
                 Left="8"
                 Right="8"
                 Top="8" />
             <Thickness
                 x:Key="OutlinedTextBoxDefaultPadding"
-                Bottom="12"
-                Left="16"
-                Right="12"
-                Top="12" />
+                Bottom="8"
+                Left="8"
+                Right="8"
+                Top="8" />
+            <Thickness
+                x:Key="MarginLeftRight4"
+                Bottom="0"
+                Left="4"
+                Right="4"
+                Top="0" />
+            <Thickness
+                x:Key="MarginLeftRight8"
+                Bottom="0"
+                Left="8"
+                Right="8"
+                Top="0" />
+            <Thickness
+                x:Key="MarginLeft8"
+                Bottom="0"
+                Left="8"
+                Right="0"
+                Top="0" />
+            <Thickness
+                x:Key="MarginRight8"
+                Bottom="0"
+                Left="0"
+                Right="8"
+                Top="0" />
             <Style
                 x:Key="ModuleTitle"
                 BasedOn="{StaticResource MaterialDesignTextBlock}"

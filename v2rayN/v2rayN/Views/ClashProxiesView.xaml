@@ -20,22 +20,22 @@
         <converters:DelayColorConverter x:Key="DelayColorConverter" />
     </UserControl.Resources>
 
-    <DockPanel Margin="2">
+    <DockPanel Margin="{StaticResource Margin4}">
         <WrapPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.menuRulemode}" />
             <ComboBox
                 x:Name="cmbRulemode"
                 Width="80"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
@@ -43,14 +43,14 @@
             </ComboBox>
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbSorting}" />
             <ComboBox
                 x:Name="cmbSorting"
                 Width="60"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource DefComboBox}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
@@ -61,7 +61,7 @@
                 x:Name="menuProxiesReload"
                 Width="24"
                 Height="24"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuProxiesReload}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Reload" />
@@ -71,26 +71,26 @@
                 x:Name="menuProxiesDelaytest"
                 Width="24"
                 Height="24"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuProxiesDelaytest}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
             </Button>
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left" />
         </WrapPanel>
         <DockPanel>
             <ListView
                 x:Name="lstProxyGroups"
-                Margin="0,0,5,0"
+                Margin="{StaticResource MarginRight8}"
                 BorderThickness="0"
                 DockPanel.Dock="Left"
                 ItemContainerStyle="{StaticResource lvItemSelected}"
@@ -106,10 +106,10 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="4,0"
+                            Margin="{StaticResource MarginLeftRight4}"
                             Padding="0">
                             <DockPanel>
-                                <Grid Grid.Column="0" Margin="4">
+                                <Grid Grid.Column="0" Margin="{StaticResource Margin4}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition />
@@ -162,7 +162,7 @@
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
                                     Visibility="{Binding Path=isActive, Converter={StaticResource BoolToVisConverter}}" />
-                                <Grid Margin="4">
+                                <Grid Margin="{StaticResource Margin4}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="2*" />
                                         <RowDefinition Height="1*" />

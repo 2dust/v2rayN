@@ -69,7 +69,7 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static string Serialize(object? obj, bool indented = true)
         {
-            string result = string.Empty;
+            var result = string.Empty;
             try
             {
                 if (obj == null)
@@ -112,7 +112,7 @@ namespace ServiceLib.Common
             }
             try
             {
-                using FileStream file = File.Create(filePath);
+                using var file = File.Create(filePath);
 
                 var options = new JsonSerializerOptions
                 {

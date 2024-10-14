@@ -10,8 +10,6 @@ namespace ServiceLib.ViewModels
 {
     public class StatusBarViewModel : MyReactiveObject
     {
-        private bool _isAdministrator { get; set; }
-
         #region ObservableCollection
 
         private IObservableCollection<RoutingItem> _routingItems = new ObservableCollectionExtended<RoutingItem>();
@@ -108,19 +106,16 @@ namespace ServiceLib.ViewModels
         public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-            _updateView = updateView;
 
-            if (_updateView != null)
+            if (updateView != null)
             {
-                MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString())
-                    .Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
+                Init(updateView);
             }
 
             SelectedRouting = new();
             SelectedServer = new();
 
-            _isAdministrator = Utils.IsAdministrator();
-            if (_config.tunModeItem.enableTun && _isAdministrator)
+            if (_config.tunModeItem.enableTun && AppHandler.Instance.IsAdministrator)
             {
                 EnableTun = true;
             }
@@ -130,7 +125,7 @@ namespace ServiceLib.ViewModels
             }
 
             RefreshRoutingsMenu();
-            InboundDisplayStaus();
+            InboundDisplayStatus();
             ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, true);
 
             #region WhenAnyValue && ReactiveCommand
@@ -414,7 +409,7 @@ namespace ServiceLib.ViewModels
             {
                 _config.tunModeItem.enableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !_isAdministrator)
+                if (EnableTun && !AppHandler.Instance.IsAdministrator)
                 {
                     _config.tunModeItem.enableTun = false;
                     Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
@@ -429,19 +424,12 @@ namespace ServiceLib.ViewModels
 
         #region UI
 
-        public void InboundDisplayStaus()
+        public void InboundDisplayStatus()
         {
             StringBuilder sb = new();
             sb.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]");
             sb.Append(" | ");
-            //if (_config.systemProxyItem.sysProxyType == ESysProxyType.ForcedChange)
-            //{
-            //    sb.Append($"[{Global.InboundHttp}({ResUI.SystemProxy}):{LazyConfig.Instance.GetLocalPort(Global.InboundHttp)}]");
-            //}
-            //else
-            //{
             sb.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http)}]");
-            //}
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
             if (_config.inbound[0].allowLANConn)

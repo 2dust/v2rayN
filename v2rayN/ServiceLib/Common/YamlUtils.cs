@@ -21,7 +21,7 @@ namespace ServiceLib.Common
                 .Build();
             try
             {
-                T obj = deserializer.Deserialize<T>(str);
+                var obj = deserializer.Deserialize<T>(str);
                 return obj;
             }
             catch (Exception ex)
@@ -36,9 +36,9 @@ namespace ServiceLib.Common
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToYaml(Object? obj)
+        public static string ToYaml(object? obj)
         {
-            string result = string.Empty;
+            var result = string.Empty;
             if (obj == null)
             {
                 return result;

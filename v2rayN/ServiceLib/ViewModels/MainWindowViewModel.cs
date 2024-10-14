@@ -414,7 +414,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
             if (ret == true)
             {
-                Locator.Current.GetService<StatusBarViewModel>()?.InboundDisplayStaus();
+                Locator.Current.GetService<StatusBarViewModel>()?.InboundDisplayStatus();
                 Reload();
             }
         }

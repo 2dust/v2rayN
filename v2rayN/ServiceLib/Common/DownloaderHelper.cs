@@ -36,7 +36,7 @@ namespace ServiceLib.Common
                 }
             };
 
-            using var downloader = new Downloader.DownloadService(downloadOpt);
+            await using var downloader = new Downloader.DownloadService(downloadOpt);
             downloader.DownloadFileCompleted += (sender, value) =>
             {
                 if (value.Error != null)
@@ -46,12 +46,12 @@ namespace ServiceLib.Common
             };
 
             using var cts = new CancellationTokenSource();
-            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
             using StreamReader reader = new(stream);
 
             downloadOpt = null;
 
-            return reader.ReadToEnd();
+            return await reader.ReadToEndAsync(cts.Token);
         }
 
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
@@ -72,11 +72,11 @@ namespace ServiceLib.Common
                 }
             };
 
-            DateTime totalDatetime = DateTime.Now;
-            int totalSecond = 0;
+            var totalDatetime = DateTime.Now;
+            var totalSecond = 0;
             var hasValue = false;
             double maxSpeed = 0;
-            using var downloader = new Downloader.DownloadService(downloadOpt);
+            await using var downloader = new Downloader.DownloadService(downloadOpt);
             //downloader.DownloadStarted += (sender, value) =>
             //{
             //    if (progress != null)
@@ -86,7 +86,7 @@ namespace ServiceLib.Common
             //};
             downloader.DownloadProgressChanged += (sender, value) =>
             {
-                TimeSpan ts = (DateTime.Now - totalDatetime);
+                var ts = (DateTime.Now - totalDatetime);
                 if (progress != null && ts.Seconds > totalSecond)
                 {
                     hasValue = true;
@@ -112,7 +112,7 @@ namespace ServiceLib.Common
             //progress.Report("......");
             using var cts = new CancellationTokenSource();
             cts.CancelAfter(timeout * 1000);
-            using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
+            await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
 
             downloadOpt = null;
         }
@@ -145,7 +145,7 @@ namespace ServiceLib.Common
 
             var progressPercentage = 0;
             var hasValue = false;
-            using var downloader = new Downloader.DownloadService(downloadOpt);
+            await using var downloader = new Downloader.DownloadService(downloadOpt);
             downloader.DownloadStarted += (sender, value) =>
             {
                 progress?.Report(0);

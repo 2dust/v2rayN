@@ -8,7 +8,7 @@ namespace ServiceLib.Common
      * http://stackoverflow.com/questions/6266820/working-example-of-createjobobject-setinformationjobobject-pinvoke-in-net
      */
 
-    public class Job : IDisposable
+    public sealed class Job : IDisposable
     {
         private IntPtr handle = IntPtr.Zero;
 
@@ -73,7 +73,7 @@ namespace ServiceLib.Common
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposed) return;
             disposed = true;

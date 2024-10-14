@@ -27,7 +27,7 @@ namespace ServiceLib.Common
 
             try
             {
-                HttpResponseMessage response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url);
                 return await response.Content.ReadAsStringAsync();
             }
             catch
@@ -84,8 +84,8 @@ namespace ServiceLib.Common
             var total = response.Content.Headers.ContentLength ?? -1L;
             var canReportProgress = total != -1 && progress != null;
 
-            using var stream = await response.Content.ReadAsStreamAsync(token);
-            using var file = File.Create(fileName);
+            await using var stream = await response.Content.ReadAsStreamAsync(token);
+            await using var file = File.Create(fileName);
             var totalRead = 0L;
             var buffer = new byte[1024 * 1024];
             var progressPercentage = 0;
@@ -98,7 +98,7 @@ namespace ServiceLib.Common
                 totalRead += read;
 
                 if (read == 0) break;
-                file.Write(buffer, 0, read);
+                await file.WriteAsync(buffer, 0, read, token);
 
                 if (canReportProgress)
                 {
@@ -133,13 +133,13 @@ namespace ServiceLib.Common
             //var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
             //var canReportProgress = total != -1 && progress != null;
 
-            using var stream = await response.Content.ReadAsStreamAsync(token);
+            await using var stream = await response.Content.ReadAsStreamAsync(token);
             var totalRead = 0L;
             var buffer = new byte[1024 * 64];
             var isMoreToRead = true;
-            string progressSpeed = string.Empty;
-            DateTime totalDatetime = DateTime.Now;
-            int totalSecond = 0;
+            var progressSpeed = string.Empty;
+            var totalDatetime = DateTime.Now;
+            var totalSecond = 0;
 
             do
             {
@@ -168,7 +168,7 @@ namespace ServiceLib.Common
 
                     totalRead += read;
 
-                    TimeSpan ts = (DateTime.Now - totalDatetime);
+                    var ts = (DateTime.Now - totalDatetime);
                     if (progress != null && ts.Seconds > totalSecond)
                     {
                         totalSecond = ts.Seconds;

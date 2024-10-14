@@ -85,7 +85,7 @@ namespace ServiceLib.ViewModels
         private async Task RemoteRestore()
         {
             DisplayOperationMsg();
-            var fileName = Utils.GetTempPath(Utils.GetGUID());
+            var fileName = Utils.GetTempPath(Utils.GetGuid());
             var result = await WebDavHandler.Instance.GetRawFile(fileName);
             if (result)
             {

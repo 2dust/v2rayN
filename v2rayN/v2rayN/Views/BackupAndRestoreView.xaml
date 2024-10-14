@@ -21,11 +21,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel Margin="16">
-        <DockPanel Margin="8" DockPanel.Dock="Bottom">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Bottom">
             <Button
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="{x:Static resx:ResUI.menuClose}"
                 DockPanel.Dock="Right"
@@ -35,14 +35,14 @@
 
             <TextBlock
                 x:Name="txtMsg"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource ToolbarTextBlock}" />
         </DockPanel>
 
         <StackPanel>
-            <materialDesign:Card Width="Auto" Margin="8">
-                <Grid Margin="8">
+            <materialDesign:Card Width="Auto" Margin="{StaticResource Margin8}">
+                <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -56,14 +56,14 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         Style="{StaticResource ModuleTitle}"
                         Text="{x:Static resx:ResUI.menuLocalBackupAndRestore}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.menuLocalBackup}" />
@@ -71,7 +71,7 @@
                         x:Name="menuLocalBackup"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuLocalBackup}"
                         Style="{StaticResource DefButton}" />
@@ -84,7 +84,7 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.menuLocalRestore}" />
@@ -92,14 +92,14 @@
                         x:Name="menuLocalRestore"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuLocalRestore}"
                         Style="{StaticResource DefButton}" />
                 </Grid>
             </materialDesign:Card>
-            <materialDesign:Card Width="Auto" Margin="8">
-                <Grid Margin="8">
+            <materialDesign:Card Width="Auto" Margin="{StaticResource Margin8}">
+                <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -115,7 +115,7 @@
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="8"
+                            Margin="{StaticResource Margin8}"
                             Style="{StaticResource ModuleTitle}"
                             Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
@@ -124,7 +124,7 @@
                             HorizontalAlignment="Right"
                             StaysOpen="True"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
-                            <StackPanel Margin="16">
+                            <StackPanel Margin="{StaticResource Margin8}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -140,7 +140,7 @@
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.LvWebDavUrl}" />
@@ -149,7 +149,7 @@
                                         x:Name="txtWebDavUrl"
                                         Grid.Row="0"
                                         Grid.Column="1"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}"
                                         TextWrapping="Wrap" />
@@ -157,7 +157,7 @@
                                     <TextBlock
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.LvWebDavUserName}" />
@@ -166,14 +166,14 @@
                                         x:Name="txtWebDavUserName"
                                         Grid.Row="1"
                                         Grid.Column="1"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}" />
 
                                     <TextBlock
                                         Grid.Row="2"
                                         Grid.Column="0"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.LvWebDavPassword}" />
@@ -182,14 +182,14 @@
                                         x:Name="txtWebDavPassword"
                                         Grid.Row="2"
                                         Grid.Column="1"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}" />
 
                                     <TextBlock
                                         Grid.Row="3"
                                         Grid.Column="0"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ToolbarTextBlock}"
                                         Text="{x:Static resx:ResUI.LvWebDavDirName}" />
@@ -198,7 +198,7 @@
                                         x:Name="txtWebDavDirName"
                                         Grid.Row="3"
                                         Grid.Column="1"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}" />
 
@@ -206,7 +206,7 @@
                                         x:Name="menuWebDavCheck"
                                         Grid.Row="4"
                                         Grid.Column="1"
-                                        Margin="8"
+                                        Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"
                                         Content="{x:Static resx:ResUI.LvWebDavCheck}"
                                         Style="{StaticResource DefButton}" />
@@ -218,7 +218,7 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.menuRemoteBackup}" />
@@ -226,7 +226,7 @@
                         x:Name="menuRemoteBackup"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuRemoteBackup}"
                         Style="{StaticResource DefButton}" />
@@ -238,7 +238,7 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.menuRemoteRestore}" />
@@ -246,7 +246,7 @@
                         x:Name="menuRemoteRestore"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Margin="8"
+                        Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuRemoteRestore}"
                         Style="{StaticResource DefButton}" />

@@ -678,8 +678,8 @@ namespace ServiceLib.Services.CoreConfig
                         {
                             outbound.private_key = node.id;
                             outbound.peer_public_key = node.publicKey;
-                            outbound.reserved = Utils.String2List(node.path).Select(int.Parse).ToArray();
-                            outbound.local_address = [.. Utils.String2List(node.requestHost)];
+                            outbound.reserved = Utils.String2List(node.path)?.Select(int.Parse).ToList();
+                            outbound.local_address = Utils.String2List(node.requestHost);
                             outbound.mtu = Utils.ToInt(node.shortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.shortId);
                             break;
                         }
@@ -732,7 +732,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     else if (Utils.IsNotEmpty(node.requestHost))
                     {
-                        server_name = Utils.String2List(node.requestHost)[0];
+                        server_name = Utils.String2List(node.requestHost)?.First();
                     }
                     var tls = new Tls4Sbox()
                     {

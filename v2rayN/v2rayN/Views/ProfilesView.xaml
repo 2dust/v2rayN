@@ -21,7 +21,7 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <WrapPanel Margin="2" DockPanel.Dock="Top">
+            <WrapPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
                     MaxHeight="200"
@@ -39,7 +39,7 @@
                     x:Name="btnEditSub"
                     Width="30"
                     Height="30"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLeftRight4}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuSubEdit}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Edit" />
@@ -48,7 +48,7 @@
                     x:Name="btnAddSub"
                     Width="30"
                     Height="30"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLeftRight4}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuSubAdd}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
@@ -58,7 +58,7 @@
                     x:Name="btnAutofitColumnWidth"
                     Width="30"
                     Height="30"
-                    Margin="20,0"
+                    Margin="{StaticResource MarginLeftRight8}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
@@ -66,7 +66,7 @@
                 <TextBox
                     x:Name="txtServerFilter"
                     Width="200"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLeftRight4}"
                     VerticalContentAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                     materialDesign:TextFieldAssist.HasClearButton="True"

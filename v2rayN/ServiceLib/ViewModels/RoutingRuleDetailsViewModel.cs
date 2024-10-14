@@ -34,7 +34,7 @@ namespace ServiceLib.ViewModels
 
             if (rulesItem.id.IsNullOrEmpty())
             {
-                rulesItem.id = Utils.GetGUID(false);
+                rulesItem.id = Utils.GetGuid(false);
                 rulesItem.outboundTag = Global.ProxyTag;
                 rulesItem.enabled = true;
                 SelectedSource = rulesItem;

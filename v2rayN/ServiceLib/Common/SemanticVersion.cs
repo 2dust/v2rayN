@@ -28,14 +28,14 @@
                 }
                 this.version = version.RemovePrefix('v');
 
-                string[] parts = this.version.Split('.');
+                var parts = this.version.Split('.');
                 if (parts.Length == 2)
                 {
                     this.major = int.Parse(parts[0]);
                     this.minor = int.Parse(parts[1]);
                     this.patch = 0;
                 }
-                else if (parts.Length == 3 || parts.Length == 4)
+                else if (parts.Length is 3 or 4)
                 {
                     this.major = int.Parse(parts[0]);
                     this.minor = int.Parse(parts[1]);

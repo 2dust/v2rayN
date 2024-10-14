@@ -12,7 +12,7 @@
     x:TypeArguments="vms:ThemeSettingViewModel"
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
-    <StackPanel Margin="8">
+    <StackPanel Margin="{StaticResource Margin8}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -35,7 +35,7 @@
                 x:Name="togDarkMode"
                 Grid.Row="0"
                 Grid.Column="1"
-                Margin="8" />
+                Margin="{StaticResource Margin8}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -47,7 +47,7 @@
                 x:Name="followSystemTheme"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="8" />
+                Margin="{StaticResource Margin8}" />
 
             <TextBlock
                 Grid.Row="2"
@@ -60,7 +60,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 DisplayMemberPath="Name"
                 Style="{StaticResource DefComboBox}" />
 
@@ -75,7 +75,7 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 Style="{StaticResource DefComboBox}" />
 
             <TextBlock
@@ -89,7 +89,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 Style="{StaticResource DefComboBox}" />
         </Grid>
     </StackPanel>

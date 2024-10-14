@@ -70,12 +70,12 @@
             item.network = Global.DefaultNetwork;
             item.headerType = Global.None;
 
-            item.configVersion = Utils.ToInt(vmessQRCode.v);
+            item.configVersion = vmessQRCode.v;
             item.remarks = Utils.ToString(vmessQRCode.ps);
             item.address = Utils.ToString(vmessQRCode.add);
-            item.port = Utils.ToInt(vmessQRCode.port);
+            item.port = vmessQRCode.port;
             item.id = Utils.ToString(vmessQRCode.id);
-            item.alterId = Utils.ToInt(vmessQRCode.aid);
+            item.alterId = vmessQRCode.aid;
             item.security = Utils.ToString(vmessQRCode.scy);
 
             item.security = Utils.IsNotEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;

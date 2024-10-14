@@ -30,7 +30,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -62,7 +62,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
@@ -92,7 +92,7 @@ namespace ServiceLib.Services
 
         public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
-            Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+            SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -181,7 +181,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
                 var webProxy = GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
@@ -226,7 +226,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                Utils.SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
                 var webProxy = GetWebProxy(blProxy);
 
@@ -336,6 +336,19 @@ namespace ServiceLib.Services
             {
                 return false;
             }
+        }
+
+        private static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
+        {
+            if (enableSecurityProtocolTls13)
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+            }
+            else
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+            }
+            ServicePointManager.DefaultConnectionLimit = 256;
         }
     }
 }

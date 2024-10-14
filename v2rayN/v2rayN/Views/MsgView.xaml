@@ -13,9 +13,9 @@
     x:TypeArguments="vms:MsgViewModel"
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
-    <DockPanel Margin="2">
+    <DockPanel Margin="{StaticResource Margin4}">
         <WrapPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
@@ -23,7 +23,7 @@
             <ComboBox
                 x:Name="cmbMsgFilter"
                 Width="200"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEditable="True"
@@ -32,7 +32,7 @@
                 x:Name="btnCopy"
                 Width="24"
                 Height="24"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
@@ -41,29 +41,29 @@
                 x:Name="btnClear"
                 Width="24"
                 Height="24"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
             </Button>
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleButton
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
                 IsChecked="True" />
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
             <ToggleButton
                 x:Name="togScrollToEnd"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
                 IsChecked="True" />
         </WrapPanel>

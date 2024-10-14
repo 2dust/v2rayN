@@ -50,7 +50,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="Server" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
@@ -114,7 +114,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="BookClockOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
@@ -149,7 +149,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="SettingsOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
@@ -201,7 +201,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="Reload" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
@@ -215,7 +215,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="Update" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuCheckUpdate}" />
@@ -229,7 +229,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="HelpCircleOutline" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuHelp}" />
@@ -243,7 +243,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="VolumeHigh" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuPromotion}" />
@@ -257,7 +257,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon
-                                            Margin="0,0,8,0"
+                                            Margin="{StaticResource MarginRight8}"
                                             VerticalAlignment="Center"
                                             Kind="Minimize" />
                                         <TextBlock Text="{x:Static resx:ResUI.menuClose}" />
@@ -313,11 +313,7 @@
                             <TabItem x:Name="tabMsgView1">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="MessageTextOutline" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="MessageTextOutline" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -328,11 +324,7 @@
                             <TabItem x:Name="tabClashProxies1">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="ArrowDecisionOutline" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="ArrowDecisionOutline" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -343,11 +335,7 @@
                             <TabItem x:Name="tabClashConnections1">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="LanConnect" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="LanConnect" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -366,11 +354,7 @@
                             <TabItem x:Name="tabProfiles2">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="Server" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Server" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -381,11 +365,7 @@
                             <TabItem x:Name="tabMsgView2">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="MessageTextOutline" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="MessageTextOutline" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -396,11 +376,7 @@
                             <TabItem x:Name="tabClashProxies2">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="ArrowDecisionOutline" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="ArrowDecisionOutline" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"
@@ -411,11 +387,7 @@
                             <TabItem x:Name="tabClashConnections2">
                                 <TabItem.Header>
                                     <StackPanel>
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="LanConnect" />
+                                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="LanConnect" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource ToolbarTextBlock}"

@@ -15,27 +15,27 @@
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
 
-    <DockPanel Margin="16">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             HorizontalAlignment="Right"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
 
             <TextBlock
-                Margin="{StaticResource SettingItemMargin}"
+                Margin="{StaticResource Margin8}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
             <ToggleButton
                 x:Name="togEnableCheckPreReleaseUpdate"
-                Margin="{StaticResource SettingItemMargin}"
+                Margin="{StaticResource Margin8}"
                 HorizontalAlignment="Left" />
 
             <Button
                 x:Name="btnCheckUpdate"
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckUpdate}"
                 IsCancel="True"
                 IsDefault="True"
@@ -43,7 +43,7 @@
 
             <Button
                 Width="100"
-                Margin="8"
+                Margin="{StaticResource Margin8}"
                 HorizontalAlignment="Right"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="{x:Static resx:ResUI.menuClose}"
@@ -67,7 +67,7 @@
                         <Border
                             Width="500"
                             Height="50"
-                            Margin="8"
+                            Margin="{StaticResource Margin8}"
                             Padding="0"
                             VerticalAlignment="Center">
                             <Grid>
@@ -82,7 +82,7 @@
                                 <ToggleButton
                                     x:Name="togAutoRefresh"
                                     Grid.Column="0"
-                                    Margin="8"
+                                    Margin="{StaticResource Margin8}"
                                     HorizontalAlignment="Left"
                                     IsChecked="{Binding IsSelected}" />
                                 <TextBlock

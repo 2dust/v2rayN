@@ -23,7 +23,7 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel>
-        <Grid Margin="8" DockPanel.Dock="Top">
+        <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -41,7 +41,7 @@
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.LvRemarks}" />
@@ -50,20 +50,20 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="200"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
             <ToggleButton
                 x:Name="togEnabled"
                 Grid.Row="0"
                 Grid.Column="2"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="outboundTag" />
@@ -72,13 +72,13 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="200"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
@@ -86,7 +86,7 @@
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="port" />
@@ -95,13 +95,13 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="200"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="2"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}">
                 <Hyperlink Click="linkRuleobjectDoc_Click">
@@ -113,7 +113,7 @@
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="protocol" />
@@ -121,7 +121,7 @@
                 x:Name="clbProtocol"
                 Grid.Row="3"
                 Grid.Column="1"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
@@ -129,7 +129,7 @@
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="inboundTag" />
@@ -137,14 +137,14 @@
                 x:Name="clbInboundTag"
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
 
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="0"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="network" />
@@ -153,21 +153,21 @@
                 Grid.Row="5"
                 Grid.Column="1"
                 Width="200"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
 
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2"
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRoutingTips}" />
         </Grid>
 
         <StackPanel
-            Margin="8"
+            Margin="{StaticResource Margin8}"
             HorizontalAlignment="Right"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
@@ -188,14 +188,14 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="true"
                 Style="{StaticResource DefButton}" />
         </StackPanel>
 
-        <Grid Margin="{StaticResource SettingItemMargin}">
+        <Grid Margin="{StaticResource Margin8}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="10" />
