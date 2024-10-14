@@ -3,13 +3,13 @@
     {
       "tag": "remote",
       "address": "8.8.8.8",
-      "strategy": "ipv4_only",
+      "strategy": "prefer_ipv4",
       "detour": "proxy"
     },
     {
       "tag": "local",
       "address": "223.5.5.5",
-      "strategy": "ipv4_only",
+      "strategy": "prefer_ipv4",
       "detour": "direct"
     },
     {
