@@ -528,6 +528,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -844,6 +845,23 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefComboBox}" />
+
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource SettingItemMargin}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsGeoFilesSource}" />
+                        <ComboBox
+                            x:Name="cmbGetFilesSourceUrl"
+                            Grid.Row="22"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource SettingItemMargin}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                     </Grid>
                 </ScrollViewer>

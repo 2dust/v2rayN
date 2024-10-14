@@ -103,6 +103,8 @@
         public int trayMenuServersLimit { get; set; } = 20;
 
         public bool enableHWA { get; set; } = false;
+
+        public string geoSourceUrl { get; set; }
     }
 
     [Serializable]

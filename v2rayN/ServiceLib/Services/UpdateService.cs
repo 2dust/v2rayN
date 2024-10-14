@@ -255,8 +255,8 @@ namespace ServiceLib.Services
 
         public async Task UpdateGeoFileAll(Config config, Action<bool, string> updateFunc)
         {
-            await UpdateGeoFile("geosite", _config, updateFunc);
-            await UpdateGeoFile("geoip", _config, updateFunc);
+            await UpdateGeoFile("geosite", config, updateFunc);
+            await UpdateGeoFile("geoip", config, updateFunc);
             _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
@@ -450,6 +450,8 @@ namespace ServiceLib.Services
         {
             _config = config;
             _updateFunc = updateFunc;
+
+            var geoUrl = !String.IsNullOrEmpty(config?.guiItem.geoSourceUrl) ? config.guiItem.geoSourceUrl : Global.GeoUrl;
             var url = string.Format(Global.GeoUrl, geoName);
             var fileName = Utils.GetTempPath(Utils.GetGuid());
 
