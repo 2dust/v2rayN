@@ -11,7 +11,7 @@ namespace ServiceLib.Common
         private SQLiteConnection _db;
         private SQLiteAsyncConnection _dbAsync;
         private static readonly object objLock = new();
-        public readonly string _configDB = "guiNDB.db";
+        private readonly string _configDB = "guiNDB.db";
 
         public SQLiteHelper()
         {
