@@ -1331,7 +1331,8 @@
     <value>Geo files source (optional)</value>
   </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
-    <value>Sing-box srs files source (optional)</value>
+    <value>sing-box ruleset files source (optional)</value>
+  </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
     <value>UpgradeApp does not exist</value>
   </data>

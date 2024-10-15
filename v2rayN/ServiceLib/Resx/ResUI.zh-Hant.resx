@@ -1210,4 +1210,7 @@
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
     <value>升级工具App不存在</value>
   </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>sing-box ruleset文件來源(可選)</value>
+  </data>
 </root>

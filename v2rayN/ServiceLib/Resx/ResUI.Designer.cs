@@ -3012,18 +3012,7 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsGeoFilesSource", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   查找类似 Sing-box srs files source (optional) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsSrsFilesSource
-        {
-            get
-            {
-                return ResourceManager.GetString("TbSettingsSrsFilesSource", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   查找类似 HTTP Port 的本地化字符串。
         /// </summary>
@@ -3237,6 +3226,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsSpeedTestUrl {
             get {
                 return ResourceManager.GetString("TbSettingsSpeedTestUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box ruleset files source (optional) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSrsFilesSource {
+            get {
+                return ResourceManager.GetString("TbSettingsSrsFilesSource", resourceCulture);
             }
         }
         
