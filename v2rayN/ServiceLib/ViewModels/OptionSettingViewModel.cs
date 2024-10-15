@@ -66,6 +66,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public string SubConvertUrl { get; set; }
         [Reactive] public int MainGirdOrientation { get; set; }
         [Reactive] public string GeoFileSourceUrl { get; set; }
+        [Reactive] public string SrsFileSourceUrl { get; set; }
 
         #endregion UI
 
@@ -166,6 +167,7 @@ namespace ServiceLib.ViewModels
             SubConvertUrl = _config.constItem.subConvertUrl;
             MainGirdOrientation = (int)_config.uiItem.mainGirdOrientation;
             GeoFileSourceUrl = _config.constItem.geoSourceUrl;
+            SrsFileSourceUrl = _config.constItem.srsSourceUrl;
 
             #endregion UI
 
@@ -319,6 +321,7 @@ namespace ServiceLib.ViewModels
             _config.constItem.subConvertUrl = SubConvertUrl;
             _config.uiItem.mainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
             _config.constItem.geoSourceUrl = GeoFileSourceUrl;
+            _config.constItem.srsSourceUrl = SrsFileSourceUrl;
 
             //systemProxy
             _config.systemProxyItem.systemProxyExceptions = systemProxyExceptions;

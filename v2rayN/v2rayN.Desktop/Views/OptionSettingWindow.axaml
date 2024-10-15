@@ -365,6 +365,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -621,6 +622,19 @@
                         <ComboBox
                             x:Name="cmbGetFilesSourceUrl"
                             Grid.Row="22"
+                            Grid.Column="1"
+                            Width="300"
+                            Classes="Margin8" />
+
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsSrsFilesSource}" />
+                        <ComboBox
+                            x:Name="cmbSrsFilesSourceUrl"
+                            Grid.Row="23"
                             Grid.Column="1"
                             Width="300"
                             Classes="Margin8" />
