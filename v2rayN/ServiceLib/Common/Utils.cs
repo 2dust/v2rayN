@@ -479,6 +479,12 @@ namespace ServiceLib.Common
 
         #region 杂项
 
+        public static bool UpgradeAppExists(out string fileName)
+        {
+            fileName = Path.Combine(Utils.StartupPath(), GetExeName("AmazTool"));
+            return File.Exists(fileName);
+        }
+
         /// <summary>
         /// 取得版本
         /// </summary>

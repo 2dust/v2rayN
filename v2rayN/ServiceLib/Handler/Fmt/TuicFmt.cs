@@ -16,7 +16,8 @@
             item.address = url.IdnHost;
             item.port = url.Port;
             item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            var userInfoParts = url.UserInfo.Split(new[] { ':' }, 2);
+            var rawUserInfo = Utils.UrlDecode(url.UserInfo);
+            var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
             if (userInfoParts.Length == 2)
             {
                 item.id = userInfoParts[0];
@@ -51,14 +52,7 @@
             }
             dicQuery.Add("congestion_control", item.headerType);
 
-            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
-
-            url = string.Format("{0}@{1}:{2}",
-            $"{item.id}:{item.security}",
-            GetIpv6(item.address),
-            item.port);
-            url = $"{Global.ProtocolShares[EConfigType.TUIC]}{url}{query}{remark}";
-            return url;
+            return ToUri(EConfigType.TUIC, item.address, item.port, $"{item.id}:{item.security}", dicQuery, remark);
         }
     }
 }

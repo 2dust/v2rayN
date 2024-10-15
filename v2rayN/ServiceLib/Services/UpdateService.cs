@@ -423,7 +423,7 @@ namespace ServiceLib.Services
                     && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
                     )
                 {
-                    return coreInfo?.DownloadUrlWin64?.Replace("v2rayN.zip", "zz_v2rayN-SelfContained.zip");
+                    return coreInfo?.DownloadUrlWin64?.Replace(".zip", "-SelfContained.zip");
                 }
 
                 return RuntimeInformation.ProcessArchitecture switch

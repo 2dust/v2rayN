@@ -1327,4 +1327,7 @@
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo文件来源(可选)</value>
   </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>升级工具App不存在</value>
+  </data>
 </root>

@@ -1332,5 +1332,7 @@
   </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
     <value>Sing-box srs files source (optional)</value>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>UpgradeApp does not exist</value>
   </data>
 </root>

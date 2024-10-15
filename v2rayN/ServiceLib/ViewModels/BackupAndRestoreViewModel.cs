@@ -126,9 +126,14 @@ namespace ServiceLib.ViewModels
             }
             //check
             var lstFiles = FileManager.GetFilesFromZip(fileName);
-            if (lstFiles is null || !lstFiles.Where(t => t.Contains(_guiConfigs)).Any())
+            if (lstFiles is null || !lstFiles.Any(t => t.Contains(_guiConfigs)))
             {
                 DisplayOperationMsg(ResUI.LocalRestoreInvalidZipTips);
+                return;
+            }
+            if (!Utils.UpgradeAppExists(out _))
+            {
+                DisplayOperationMsg(ResUI.UpgradeAppNotExistTip);
                 return;
             }
 

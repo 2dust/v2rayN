@@ -36,14 +36,8 @@
             }
             var dicQuery = new Dictionary<string, string>();
             GetStdTransport(item, null, ref dicQuery);
-            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            url = string.Format("{0}@{1}:{2}",
-            item.id,
-            GetIpv6(item.address),
-            item.port);
-            url = $"{Global.ProtocolShares[EConfigType.Trojan]}{url}{query}{remark}";
-            return url;
+            return ToUri(EConfigType.Trojan, item.address, item.port, item.id, dicQuery, remark);
         }
     }
 }

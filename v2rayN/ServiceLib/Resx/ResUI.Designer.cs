@@ -3707,5 +3707,14 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("UpdateStandalonePackageTip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 UpgradeApp does not exist 的本地化字符串。
+        /// </summary>
+        public static string UpgradeAppNotExistTip {
+            get {
+                return ResourceManager.GetString("UpgradeAppNotExistTip", resourceCulture);
+            }
+        }
     }
 }

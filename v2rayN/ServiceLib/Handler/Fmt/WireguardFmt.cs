@@ -56,14 +56,7 @@
             {
                 dicQuery.Add("mtu", Utils.UrlEncode(item.shortId));
             }
-            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
-
-            url = string.Format("{0}@{1}:{2}",
-            Utils.UrlEncode(item.id),
-            GetIpv6(item.address),
-            item.port);
-            url = $"{Global.ProtocolShares[EConfigType.WireGuard]}{url}/{query}{remark}";
-            return url;
+            return ToUri(EConfigType.WireGuard, item.address, item.port, item.id, dicQuery, remark);
         }
     }
 }

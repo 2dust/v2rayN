@@ -40,9 +40,7 @@
             //url = Utile.Base64Encode(url);
             //new
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
-            url = $"{Global.ProtocolShares[EConfigType.SOCKS]}{url}{remark}";
-            return url;
+            return ToUri(EConfigType.SOCKS, item.address, item.port, pw, null, remark);
         }
 
         private static ProfileItem? ResolveSocks(string result)
@@ -112,9 +110,9 @@
             };
 
             // parse base64 UserInfo
-            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.Unescaped);
-            string userInfo = Utils.Base64Decode(rawUserInfo);
-            string[] userInfoParts = userInfo.Split(new[] { ':' }, 2);
+            var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
+            var userInfo = Utils.Base64Decode(rawUserInfo);
+            var userInfoParts = userInfo.Split(new[] { ':' }, 2);
             if (userInfoParts.Length == 2)
             {
                 item.security = userInfoParts[0];
