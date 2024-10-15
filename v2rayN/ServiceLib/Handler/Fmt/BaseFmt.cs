@@ -201,6 +201,7 @@ namespace ServiceLib.Handler.Fmt
             File.WriteAllText(fileName, strData);
             return fileName;
         }
+
         protected static string ToUri(EConfigType eConfigType, string address, object port, string userInfo, Dictionary<string, string>? dicQuery, string? remark)
         {
             var query = dicQuery != null

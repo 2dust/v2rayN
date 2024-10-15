@@ -2,12 +2,8 @@
 using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
-using v2rayN.Base;
 using v2rayN.Handler;
 
 namespace v2rayN.Views

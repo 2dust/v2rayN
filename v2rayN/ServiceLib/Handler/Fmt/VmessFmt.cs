@@ -59,7 +59,6 @@
             result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
             result = Utils.Base64Decode(result);
 
-            
             VmessQRCode? vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
