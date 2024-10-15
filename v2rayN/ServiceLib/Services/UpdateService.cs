@@ -454,7 +454,7 @@ namespace ServiceLib.Services
             var geoUrl = string.IsNullOrEmpty(config?.constItem.geoSourceUrl)
                 ? Global.GeoUrl
                 : config.constItem.geoSourceUrl;
-            var url = string.Format(Global.GeoUrl, geoName);
+            var url = string.Format(geoUrl, geoName);
             var fileName = Utils.GetTempPath(Utils.GetGuid());
 
             DownloadService downloadHandle = new();
