@@ -235,6 +235,11 @@ namespace ServiceLib.ViewModels
                 {
                     return;
                 }
+                if (!Utils.UpgradeAppExists(out _))
+                {
+                    UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                    return;
+                }
                 Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
             }
             catch (Exception ex)

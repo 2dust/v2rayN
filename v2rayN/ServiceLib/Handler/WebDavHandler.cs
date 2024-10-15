@@ -12,7 +12,7 @@ namespace ServiceLib.Handler
         private WebDavClient? _client;
         private string? _lastDescription;
         private string _webDir = Global.AppName + "_backup";
-        private string _webFileName = "backup.zip";
+        private readonly string _webFileName = "backup.zip";
         private string _logTitle = "WebDav--";
 
         public WebDavHandler()
@@ -130,7 +130,7 @@ namespace ServiceLib.Handler
 
             try
             {
-                using var fs = File.OpenRead(fileName);
+                await using var fs = File.OpenRead(fileName);
                 var result = await _client.PutFile($"{_webDir}/{_webFileName}", fs); // upload a resource
                 if (result.IsSuccessful)
                 {
@@ -162,8 +162,9 @@ namespace ServiceLib.Handler
                     SaveLog(response.Description);
                     return false;
                 }
-                using var outputFileStream = new FileStream(fileName, FileMode.Create);
-                response.Stream.CopyTo(outputFileStream);
+
+                await using var outputFileStream = new FileStream(fileName, FileMode.Create);
+                await response.Stream.CopyToAsync(outputFileStream);
                 return true;
             }
             catch (Exception ex)
