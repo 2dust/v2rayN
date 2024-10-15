@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using ServiceLib.Common;
+using System.Data;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler
@@ -1616,6 +1618,79 @@ namespace ServiceLib.Handler
             return item;
         }
 
+        public static int InitRouting(Config config, bool blImportAdvancedRules = false)
+        {
+            if (!String.IsNullOrEmpty(config.constItem.routeRulesTemplateSourceUrl))
+            {
+                InitExternalRouting(config, blImportAdvancedRules);
+            } 
+            else
+            {
+                InitBuiltinRouting(config, blImportAdvancedRules);
+            }
+
+            if (GetLockedRoutingItem(config) == null)
+            {
+                var item1 = new RoutingItem()
+                {
+                    remarks = "locked",
+                    url = string.Empty,
+                    locked = true,
+                };
+                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
+            }
+
+            return 0;
+        }
+
+        public static int InitExternalRouting(Config config, bool blImportAdvancedRules = false)
+        {
+            DownloadService downloadHandle = new DownloadService();
+            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, false, "")).Result;
+            if (String.IsNullOrEmpty(templateContent))
+                return InitBuiltinRouting(config, blImportAdvancedRules); // fallback 
+
+            var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
+            if (template == null)
+                return InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+
+            var items = AppHandler.Instance.RoutingItems();
+            var maxSort = items.Count;
+
+            if (blImportAdvancedRules || items.Where(t => t.remarks.StartsWith(template.version)).ToList().Count <= 0)
+            {
+                for (var i = 0; i < template.routingItems.Length; i++)
+                {
+                    var item = template.routingItems[i];
+
+                    if (String.IsNullOrEmpty(item.url) && String.IsNullOrEmpty(item.ruleSet))
+                        continue;
+
+                    var ruleSetsString = !String.IsNullOrEmpty(item.ruleSet)
+                        ? item.ruleSet
+                        : Task.Run(() => downloadHandle.TryDownloadString(item.url, false, "")).Result;
+
+                    if (String.IsNullOrEmpty(ruleSetsString))
+                        continue;
+
+                    item.remarks = $"{template.version}-{item.remarks}";
+                    item.enabled = true;
+                    item.sort = ++maxSort;
+                    item.url = string.Empty;
+
+                    AddBatchRoutingRules(ref item, ruleSetsString);
+
+                    //first rule as default at first startup
+                    if (!blImportAdvancedRules && i == 0)
+                    {
+                        SetDefaultRouting(config, item);
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         public static int InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
         {
             var ver = "V3-";
@@ -1654,17 +1729,6 @@ namespace ServiceLib.Handler
                 {
                     SetDefaultRouting(config, item2);
                 }
-            }
-
-            if (GetLockedRoutingItem(config) == null)
-            {
-                var item1 = new RoutingItem()
-                {
-                    remarks = "locked",
-                    url = string.Empty,
-                    locked = true,
-                };
-                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
             }
             return 0;
         }

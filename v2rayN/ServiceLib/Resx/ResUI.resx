@@ -1336,4 +1336,7 @@
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
     <value>UpgradeApp does not exist</value>
   </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Routing rules source (optional)</value>
+  </data>
 </root>

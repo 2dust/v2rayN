@@ -253,6 +253,23 @@ namespace ServiceLib.Services
             });
         }
 
+        public async Task<bool> VerifyGeoFilesRepo(Config config, Action<bool, string> updateFunc)
+        {
+            var repoPath = Utils.GetBinPath("geo.repo");
+            var repo = File.Exists(repoPath) ? File.ReadAllText(repoPath) : "";
+
+            if (repo != (config.constItem.geoSourceUrl ?? ""))
+            {
+                await UpdateGeoFileAll(config, updateFunc);
+
+                File.WriteAllText(repoPath, repo);
+
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task UpdateGeoFileAll(Config config, Action<bool, string> updateFunc)
         {
             await UpdateGeoFile("geosite", config, updateFunc);

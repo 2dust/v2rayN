@@ -3014,6 +3014,17 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Routing rules source (optional) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsRoutingRulesSource
+        {
+            get
+            {
+                return ResourceManager.GetString("TbSettingsRoutingRulesSource", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 HTTP Port 的本地化字符串。
         /// </summary>
         public static string TbSettingsHttpPort {

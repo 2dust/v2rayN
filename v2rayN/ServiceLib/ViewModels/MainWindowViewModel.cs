@@ -188,9 +188,10 @@ namespace ServiceLib.ViewModels
 
         private void Init()
         {
-            ConfigHandler.InitBuiltinRouting(_config);
+            ConfigHandler.InitRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
+            Task.Run(() => VerifyGeoFiles(true));
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
             if (_config.guiItem.enableStatistics)
@@ -421,6 +422,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
             if (ret == true)
             {
+                await VerifyGeoFiles();
                 Locator.Current.GetService<StatusBarViewModel>()?.InboundDisplayStatus();
                 Reload();
             }
@@ -431,7 +433,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
             if (ret == true)
             {
-                ConfigHandler.InitBuiltinRouting(_config);
+                ConfigHandler.InitRouting(_config);
                 Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
                 Reload();
             }
@@ -539,6 +541,14 @@ namespace ServiceLib.ViewModels
                         ShowHideWindow(false);
                     });
             }
+        }
+
+        public async Task VerifyGeoFiles(bool needReload = false)
+        {
+            var result = await new UpdateService().VerifyGeoFilesRepo(_config, UpdateHandler);
+
+            if (needReload && !result)
+                Reload();
         }
 
         #endregion core job

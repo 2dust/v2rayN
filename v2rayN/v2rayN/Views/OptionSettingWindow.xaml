@@ -530,6 +530,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -874,6 +875,22 @@
                         <ComboBox
                             x:Name="cmbSrsFilesSourceUrl"
                             Grid.Row="23"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin8}"
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="24"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsRoutingRulesSource}" />
+                        <ComboBox
+                            x:Name="cmbRoutingRulesSourceUrl"
+                            Grid.Row="24"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
