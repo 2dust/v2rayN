@@ -1367,12 +1367,16 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     else
                     {
+                        var geoUrl = Global.SingboxRulesetSources.Count <= _config.constItem.geoSource
+                            ? Global.SingboxRulesetUrl
+                            : Global.SingboxRulesetSources[_config.constItem.geoSource];
+
                         customRuleset = new()
                         {
                             type = "remote",
                             format = "binary",
                             tag = item,
-                            url = string.Format(Global.SingboxRulesetUrl, item.StartsWith(geosite) ? geosite : geoip, item),
+                            url = string.Format(geoUrl, item.StartsWith(geosite) ? geosite : geoip, item),
                             download_detour = Global.ProxyTag
                         };
                     }

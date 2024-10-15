@@ -451,10 +451,11 @@ namespace ServiceLib.Services
             _config = config;
             _updateFunc = updateFunc;
 
-            var geoUrl = string.IsNullOrEmpty(config?.constItem.geoSourceUrl)
+            var geoIndex = config?.constItem.geoSource ?? 0;
+            var geoUrl = Global.GeoFilesSources.Count <= geoIndex
                 ? Global.GeoUrl
-                : config.constItem.geoSourceUrl;
-            var url = string.Format(Global.GeoUrl, geoName);
+                : Global.GeoFilesSources[geoIndex];
+            var url = string.Format(geoUrl, geoName);
             var fileName = Utils.GetTempPath(Utils.GetGuid());
 
             DownloadService downloadHandle = new();

@@ -65,7 +65,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool EnableHWA { get; set; }
         [Reactive] public string SubConvertUrl { get; set; }
         [Reactive] public int MainGirdOrientation { get; set; }
-        [Reactive] public string GeoFileSourceUrl { get; set; }
+        [Reactive] public int GeoFileSource { get; set; }
 
         #endregion UI
 
@@ -165,7 +165,7 @@ namespace ServiceLib.ViewModels
             EnableHWA = _config.guiItem.enableHWA;
             SubConvertUrl = _config.constItem.subConvertUrl;
             MainGirdOrientation = (int)_config.uiItem.mainGirdOrientation;
-            GeoFileSourceUrl = _config.constItem.geoSourceUrl;
+            GeoFileSource = _config.constItem.geoSource;
 
             #endregion UI
 
@@ -318,7 +318,7 @@ namespace ServiceLib.ViewModels
             _config.guiItem.enableHWA = EnableHWA;
             _config.constItem.subConvertUrl = SubConvertUrl;
             _config.uiItem.mainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
-            _config.constItem.geoSourceUrl = GeoFileSourceUrl;
+            _config.constItem.geoSource = GeoFileSource;
 
             //systemProxy
             _config.systemProxyItem.systemProxyExceptions = systemProxyExceptions;

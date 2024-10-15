@@ -619,7 +619,7 @@
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsGeoFilesSource}" />
                         <ComboBox
-                            x:Name="cmbGetFilesSourceUrl"
+                            x:Name="cmbGetFilesSource"
                             Grid.Row="22"
                             Grid.Column="1"
                             Width="300"

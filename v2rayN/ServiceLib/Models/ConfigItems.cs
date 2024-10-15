@@ -140,7 +140,7 @@
     {
         public string defIEProxyExceptions { get; set; }
         public string subConvertUrl { get; set; } = string.Empty;
-        public string? geoSourceUrl { get; set; }
+        public int geoSource { get; set; } = 0;
     }
 
     [Serializable]

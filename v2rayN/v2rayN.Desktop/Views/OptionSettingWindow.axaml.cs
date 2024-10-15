@@ -83,9 +83,9 @@ namespace v2rayN.Desktop.Views
             {
                 cmbSubConvertUrl.Items.Add(it);
             });
-            Global.GeoFilesSources.ForEach(it =>
+            Global.GeoSourceNames.ForEach(it =>
             {
-                cmbGetFilesSourceUrl.Items.Add(it);
+                cmbGetFilesSource.Items.Add(it);
             });
             foreach (EGirdOrientation it in Enum.GetValues(typeof(EGirdOrientation)))
             {
@@ -136,7 +136,7 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.GeoFileSource, v => v.cmbGetFilesSource.SelectedIndex).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);
