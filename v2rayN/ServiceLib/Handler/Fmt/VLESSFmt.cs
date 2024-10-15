@@ -47,14 +47,8 @@
                 dicQuery.Add("encryption", Global.None);
             }
             GetStdTransport(item, Global.None, ref dicQuery);
-            string query = "?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray());
 
-            url = string.Format("{0}@{1}:{2}",
-            item.id,
-            GetIpv6(item.address),
-            item.port);
-            url = $"{Global.ProtocolShares[EConfigType.VLESS]}{url}{query}{remark}";
-            return url;
+            return ToUri(EConfigType.VLESS, item.address, item.port, item.id, dicQuery, remark);
         }
     }
 }

@@ -42,9 +42,7 @@ namespace ServiceLib.Handler.Fmt
             //url = Utile.Base64Encode(url);
             //new Sip002
             var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            url = $"{pw}@{GetIpv6(item.address)}:{item.port}";
-            url = $"{Global.ProtocolShares[EConfigType.Shadowsocks]}{url}{remark}";
-            return url;
+            return ToUri(EConfigType.Shadowsocks, item.address, item.port, pw, null, remark);
         }
 
         private static readonly Regex UrlFinder = new(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -98,7 +96,7 @@ namespace ServiceLib.Handler.Fmt
                 address = parsedUrl.IdnHost,
                 port = parsedUrl.Port,
             };
-            string rawUserInfo = parsedUrl.GetComponents(UriComponents.UserInfo, UriFormat.UriEscaped);
+            var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
             //2022-blake3
             if (rawUserInfo.Contains(':'))
             {
