@@ -600,7 +600,7 @@ namespace ServiceLib.Common
             return await GetCliWrapOutput(filePath, arg != null ? new List<string>() { arg } : null);
         }
 
-        private static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args)
+        public static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args)
         {
             try
             {
