@@ -1,10 +1,10 @@
-﻿using Microsoft.Win32;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using static PacLib.ProxySettingWindows.InternetConnectionOption;
+using static ServiceLib.Handler.SysProxy.ProxySettingWindows.InternetConnectionOption;
 
-namespace PacLib
+namespace ServiceLib.Handler.SysProxy
 {
     public class ProxySettingWindows
     {
@@ -362,10 +362,10 @@ namespace PacLib
 
         private static void RegWriteValue(string path, string name, object value)
         {
-            RegistryKey? regKey = null;
+            Microsoft.Win32.RegistryKey? regKey = null;
             try
             {
-                regKey = Registry.CurrentUser.CreateSubKey(path);
+                regKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(path);
                 if (string.IsNullOrEmpty(value.ToString()))
                 {
                     regKey?.DeleteValue(name, false);

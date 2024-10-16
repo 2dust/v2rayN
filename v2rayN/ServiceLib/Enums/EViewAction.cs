@@ -7,7 +7,6 @@
         SaveFileDialog,
         AddBatchRoutingRulesYesNo,
         AdjustMainLvColWidth,
-        UpdateSysProxy,
         SetClipboardData,
         AddServerViaClipboard,
         ImportRulesFromClipboard,

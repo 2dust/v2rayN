@@ -43,6 +43,7 @@
 
 
 	<ItemGroup>
+	  <ProjectReference Include="..\PacLib\PacLib.csproj" />
 	  <ProjectReference Include="..\ProtosLib\ProtosLib.csproj" />
 	</ItemGroup>
 

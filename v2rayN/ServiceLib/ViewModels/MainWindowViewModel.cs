@@ -263,7 +263,7 @@ namespace ServiceLib.ViewModels
             {
                 Logging.SaveLog("MyAppExit Begin");
                 //if (blWindowsShutDown)
-                await _updateView?.Invoke(EViewAction.UpdateSysProxy, true);
+                await SysProxyHandler.UpdateSysProxy(_config, true);
 
                 ConfigHandler.SaveConfig(_config);
                 ProfileExHandler.Instance.SaveTo();
@@ -492,12 +492,13 @@ namespace ServiceLib.ViewModels
 
             await LoadCore();
             Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
+            await SysProxyHandler.UpdateSysProxy(_config, false);
             _updateView?.Invoke(EViewAction.DispatcherReload, null);
         }
 
         public void ReloadResult()
         {
-            //ChangeSystemProxyStatusAsync(_config.systemProxyItem.sysProxyType, false);
+            //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);
             BlReloadEnabled = true;
             ShowClashUI = _config.IsRunningCore(ECoreType.sing_box);
             if (ShowClashUI)

@@ -96,11 +96,6 @@ namespace v2rayN.Views
                         Application.Current.MainWindow.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
                     break;
-
-                case EViewAction.UpdateSysProxy:
-                    if (obj is null) return false;
-                    SysProxyHandler.UpdateSysProxy(_config, (bool)obj);
-                    break;
             }
             return await Task.FromResult(true);
         }

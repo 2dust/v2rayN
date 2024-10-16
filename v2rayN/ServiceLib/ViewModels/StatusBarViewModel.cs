@@ -3,7 +3,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Text;
 
 namespace ServiceLib.ViewModels
@@ -318,10 +317,9 @@ namespace ServiceLib.ViewModels
             ConfigHandler.SaveConfig(_config, false);
         }
 
-        private async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
+        public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
         {
-            //await _updateView?.Invoke(EViewAction.UpdateSysProxy, _config.tunModeItem.enableTun ? true : false);
-            _updateView?.Invoke(EViewAction.UpdateSysProxy, false);
+            await SysProxyHandler.UpdateSysProxy(_config, false);
 
             BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
             BlSystemProxySet = (type == ESysProxyType.ForcedChange);

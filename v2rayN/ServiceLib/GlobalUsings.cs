@@ -8,3 +8,4 @@ global using ServiceLib.Services.Statistics;
 global using ServiceLib.Services.CoreConfig;
 global using ServiceLib.Models;
 global using ServiceLib.Resx;
+global using ServiceLib.Handler.SysProxy;

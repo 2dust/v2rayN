@@ -1,7 +1,6 @@
 ﻿using PacLib;
-using v2rayN.Desktop.Common;
 
-namespace v2rayN.Desktop.Handler
+namespace ServiceLib.Handler.SysProxy
 {
     public static class SysProxyHandler
     {
@@ -16,9 +15,9 @@ namespace v2rayN.Desktop.Handler
 
             try
             {
-                int port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-                int portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                int portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
+                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
+                var portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
                 if (port <= 0)
                 {
                     return false;
@@ -73,12 +72,15 @@ namespace v2rayN.Desktop.Handler
                 }
                 else if (type == ESysProxyType.Pac)
                 {
+                    PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+                    var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+                    ProxySettingWindows.SetProxy(strProxy, "", 4);
                 }
 
-                //if (type != ESysProxyType.Pac)
-                //{
-                //    PacHandler.Stop();
-                //}
+                if (type != ESysProxyType.Pac)
+                {
+                    PacHandler.Stop();
+                }
             }
             catch (Exception ex)
             {

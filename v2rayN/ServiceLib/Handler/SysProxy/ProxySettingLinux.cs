@@ -1,4 +1,4 @@
-﻿namespace v2rayN.Desktop.Common
+﻿namespace ServiceLib.Handler.SysProxy
 {
     public class ProxySettingLinux
     {

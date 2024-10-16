@@ -33,7 +33,6 @@
 	</ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PacLib\PacLib.csproj" />
       <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
     </ItemGroup>
  
