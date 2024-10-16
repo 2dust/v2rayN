@@ -33,7 +33,6 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
         public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
-        public ReactiveCommand<Unit, Unit> ExitCmd { get; }
 
         #region System Proxy
 

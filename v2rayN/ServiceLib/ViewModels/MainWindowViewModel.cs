@@ -45,8 +45,8 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> OpenTheFileLocationCmd { get; }
 
         //Presets
-        public ReactiveCommand<Unit, Unit> PresetDefaultCmd { get; }
-        public ReactiveCommand<Unit, Unit> PresetRussiaCmd { get; }
+        public ReactiveCommand<Unit, Unit> RegionalPresetDefaultCmd { get; }
+        public ReactiveCommand<Unit, Unit> RegionalPresetRussiaCmd { get; }
 
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
@@ -185,14 +185,14 @@ namespace ServiceLib.ViewModels
                 await Reload();
             });
 
-            PresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
+            RegionalPresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await ApplyPreset(EPresetType.Default);
+                await ApplyRegionalPreset(EPresetType.Default);
             });
 
-            PresetRussiaCmd = ReactiveCommand.CreateFromTask(async () =>
+            RegionalPresetRussiaCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await ApplyPreset(EPresetType.Russia);
+                await ApplyRegionalPreset(EPresetType.Russia);
             });
 
             #endregion WhenAnyValue && ReactiveCommand
@@ -202,7 +202,7 @@ namespace ServiceLib.ViewModels
 
         private void Init()
         {
-            ConfigHandler.InitRouting(_config);
+            ConfigHandler.InitBuiltinRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
@@ -445,7 +445,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
             if (ret == true)
             {
-                ConfigHandler.InitRouting(_config);
+                ConfigHandler.InitBuiltinRouting(_config);
                 Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
                 Reload();
             }
@@ -560,16 +560,14 @@ namespace ServiceLib.ViewModels
 
         #region Presets
 
-        public async Task ApplyPreset(EPresetType type)
+        public async Task ApplyRegionalPreset(EPresetType type)
         {
-            ConfigHandler.ApplyPreset(_config, type);
-
-            await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
-
+            ConfigHandler.ApplyRegionalPreset(_config, type);
             ConfigHandler.InitRouting(_config);
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
             ConfigHandler.SaveConfig(_config, false);
+            await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
             Reload();
         }
 

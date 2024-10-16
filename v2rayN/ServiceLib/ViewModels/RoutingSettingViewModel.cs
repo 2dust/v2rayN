@@ -71,7 +71,7 @@ namespace ServiceLib.ViewModels
             _updateView = updateView;
             SelectedSource = new();
 
-            ConfigHandler.InitRouting(_config);
+            ConfigHandler.InitBuiltinRouting(_config);
 
             enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
             domainStrategy = _config.routingBasicItem.domainStrategy;
@@ -123,6 +123,17 @@ namespace ServiceLib.ViewModels
         private void BindingLockedData()
         {
             _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
+            if (_lockedItem == null)
+            {
+                _lockedItem = new RoutingItem()
+                {
+                    remarks = "locked",
+                    url = string.Empty,
+                    locked = true,
+                };
+                ConfigHandler.AddBatchRoutingRules(ref _lockedItem, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
+            }
+
             if (_lockedItem != null)
             {
                 _lockedRules = JsonUtils.Deserialize<List<RulesItem>>(_lockedItem.ruleSet);

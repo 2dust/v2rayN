@@ -1116,27 +1116,27 @@ namespace ServiceLib.Resx {
         /// <summary>
         ///   查找类似 Regional presets 的本地化字符串。
         /// </summary>
-        public static string menuPresets {
+        public static string menuRegionalPresets {
             get {
-                return ResourceManager.GetString("menuPresets", resourceCulture);
+                return ResourceManager.GetString("menuRegionalPresets", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
-        public static string menuPresetsDefault {
+        public static string menuRegionalPresetsDefault {
             get {
-                return ResourceManager.GetString("menuPresetsDefault", resourceCulture);
+                return ResourceManager.GetString("menuRegionalPresetsDefault", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Russia 的本地化字符串。
         /// </summary>
-        public static string menuPresetsRussia {
+        public static string menuRegionalPresetsRussia {
             get {
-                return ResourceManager.GetString("menuPresetsRussia", resourceCulture);
+                return ResourceManager.GetString("menuRegionalPresetsRussia", resourceCulture);
             }
         }
         
@@ -2753,6 +2753,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Users in China region can ignore this item 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsChinaUserTip {
+            get {
+                return ResourceManager.GetString("TbSettingsChinaUserTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Color 的本地化字符串。
         /// </summary>
         public static string TbSettingsColor {
@@ -3041,17 +3050,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Routing rules source (optional) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsRoutingRulesSource
-        {
-            get
-            {
-                return ResourceManager.GetString("TbSettingsRoutingRulesSource", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   查找类似 HTTP Port 的本地化字符串。
         /// </summary>
         public static string TbSettingsHttpPort {
@@ -3201,6 +3199,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsRouteOnly {
             get {
                 return ResourceManager.GetString("TbSettingsRouteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Routing rules source (optional) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsRoutingRulesSource {
+            get {
+                return ResourceManager.GetString("TbSettingsRoutingRulesSource", resourceCulture);
             }
         }
         

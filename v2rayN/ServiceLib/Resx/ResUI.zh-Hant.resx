@@ -1213,4 +1213,19 @@
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
     <value>sing-box ruleset文件來源(可選)</value>
   </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>路由规则集来源(可选)</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>中国区域用户可忽略此项</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>区域预置设置</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>默认区域</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>俄羅斯</value>
+  </data>
 </root>

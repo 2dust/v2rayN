@@ -80,7 +80,8 @@
                             Grid.Column="2"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsSocksPortTip}" />
+                            Text="{x:Static resx:ResUI.TbSettingsSocksPortTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="1"
@@ -331,9 +332,10 @@
                             Classes="Margin8" />
                         <TextBlock
                             Grid.Row="17"
-                            Grid.Column="3"
+                            Grid.Column="2"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}" />
+                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -626,6 +628,13 @@
                             Grid.Column="1"
                             Width="300"
                             Classes="Margin8" />
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="23"
@@ -639,6 +648,13 @@
                             Grid.Column="1"
                             Width="300"
                             Classes="Margin8" />
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="24"
@@ -652,6 +668,14 @@
                             Grid.Column="1"
                             Width="300"
                             Classes="Margin8" />
+                        <TextBlock
+                            Grid.Row="24"
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            TextWrapping="Wrap" />
+
                     </Grid>
                 </ScrollViewer>
             </TabItem>

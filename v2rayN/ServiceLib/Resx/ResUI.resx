@@ -1339,13 +1339,16 @@
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
     <value>Routing rules source (optional)</value>
   </data>
-  <data name="menuPresets" xml:space="preserve">
-    <value>Regional presets</value>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Regional presets setting</value>
   </data>
-  <data name="menuPresetsDefault" xml:space="preserve">
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
     <value>Default</value>
   </data>
-  <data name="menuPresetsRussia" xml:space="preserve">
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>Russia</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Users in China region can ignore this item</value>
   </data>
 </root>

@@ -1,6 +1,4 @@
-﻿using ServiceLib.Common;
-using System.Data;
-using System.Text.Json.Nodes;
+﻿using System.Data;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler
@@ -1620,24 +1618,13 @@ namespace ServiceLib.Handler
 
         public static int InitRouting(Config config, bool blImportAdvancedRules = false)
         {
-            if (!String.IsNullOrEmpty(config.constItem.routeRulesTemplateSourceUrl))
-            {
-                InitExternalRouting(config, blImportAdvancedRules);
-            } 
-            else
+            if (string.IsNullOrEmpty(config.constItem.routeRulesTemplateSourceUrl))
             {
                 InitBuiltinRouting(config, blImportAdvancedRules);
             }
-
-            if (GetLockedRoutingItem(config) == null)
+            else
             {
-                var item1 = new RoutingItem()
-                {
-                    remarks = "locked",
-                    url = string.Empty,
-                    locked = true,
-                };
-                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
+                InitExternalRouting(config, blImportAdvancedRules);
             }
 
             return 0;
@@ -1645,10 +1632,10 @@ namespace ServiceLib.Handler
 
         public static int InitExternalRouting(Config config, bool blImportAdvancedRules = false)
         {
-            DownloadService downloadHandle = new DownloadService();
+            var downloadHandle = new DownloadService();
             var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, false, "")).Result;
             if (String.IsNullOrEmpty(templateContent))
-                return InitBuiltinRouting(config, blImportAdvancedRules); // fallback 
+                return InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
             var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
             if (template == null)
@@ -1656,35 +1643,35 @@ namespace ServiceLib.Handler
 
             var items = AppHandler.Instance.RoutingItems();
             var maxSort = items.Count;
-
-            if (blImportAdvancedRules || items.Where(t => t.remarks.StartsWith(template.version)).ToList().Count <= 0)
+            if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(template.version)).ToList().Count > 0)
             {
-                for (var i = 0; i < template.routingItems.Length; i++)
+                return 0;
+            }
+            for (var i = 0; i < template.routingItems.Length; i++)
+            {
+                var item = template.routingItems[i];
+
+                if (String.IsNullOrEmpty(item.url) && String.IsNullOrEmpty(item.ruleSet))
+                    continue;
+
+                var ruleSetsString = !String.IsNullOrEmpty(item.ruleSet)
+                    ? item.ruleSet
+                    : Task.Run(() => downloadHandle.TryDownloadString(item.url, false, "")).Result;
+
+                if (String.IsNullOrEmpty(ruleSetsString))
+                    continue;
+
+                item.remarks = $"{template.version}-{item.remarks}";
+                item.enabled = true;
+                item.sort = ++maxSort;
+                item.url = string.Empty;
+
+                AddBatchRoutingRules(ref item, ruleSetsString);
+
+                //first rule as default at first startup
+                if (!blImportAdvancedRules && i == 0)
                 {
-                    var item = template.routingItems[i];
-
-                    if (String.IsNullOrEmpty(item.url) && String.IsNullOrEmpty(item.ruleSet))
-                        continue;
-
-                    var ruleSetsString = !String.IsNullOrEmpty(item.ruleSet)
-                        ? item.ruleSet
-                        : Task.Run(() => downloadHandle.TryDownloadString(item.url, false, "")).Result;
-
-                    if (String.IsNullOrEmpty(ruleSetsString))
-                        continue;
-
-                    item.remarks = $"{template.version}-{item.remarks}";
-                    item.enabled = true;
-                    item.sort = ++maxSort;
-                    item.url = string.Empty;
-
-                    AddBatchRoutingRules(ref item, ruleSetsString);
-
-                    //first rule as default at first startup
-                    if (!blImportAdvancedRules && i == 0)
-                    {
-                        SetDefaultRouting(config, item);
-                    }
+                    SetDefaultRouting(config, item);
                 }
             }
 
@@ -1695,45 +1682,47 @@ namespace ServiceLib.Handler
         {
             var ver = "V3-";
             var items = AppHandler.Instance.RoutingItems();
-            if (blImportAdvancedRules || items.Where(t => t.remarks.StartsWith(ver)).ToList().Count <= 0)
+            if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(ver)).ToList().Count > 0)
             {
-                var maxSort = items.Count;
-                //Bypass the mainland
-                var item2 = new RoutingItem()
-                {
-                    remarks = $"{ver}绕过大陆(Whitelist)",
-                    url = string.Empty,
-                    sort = maxSort + 1,
-                };
-                AddBatchRoutingRules(ref item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
+                return 0;
+            }
 
-                //Blacklist
-                var item3 = new RoutingItem()
-                {
-                    remarks = $"{ver}黑名单(Blacklist)",
-                    url = string.Empty,
-                    sort = maxSort + 2,
-                };
-                AddBatchRoutingRules(ref item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
+            var maxSort = items.Count;
+            //Bypass the mainland
+            var item2 = new RoutingItem()
+            {
+                remarks = $"{ver}绕过大陆(Whitelist)",
+                url = string.Empty,
+                sort = maxSort + 1,
+            };
+            AddBatchRoutingRules(ref item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
 
-                //Global
-                var item1 = new RoutingItem()
-                {
-                    remarks = $"{ver}全局(Global)",
-                    url = string.Empty,
-                    sort = maxSort + 3,
-                };
-                AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
+            //Blacklist
+            var item3 = new RoutingItem()
+            {
+                remarks = $"{ver}黑名单(Blacklist)",
+                url = string.Empty,
+                sort = maxSort + 2,
+            };
+            AddBatchRoutingRules(ref item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
 
-                if (!blImportAdvancedRules)
-                {
-                    SetDefaultRouting(config, item2);
-                }
+            //Global
+            var item1 = new RoutingItem()
+            {
+                remarks = $"{ver}全局(Global)",
+                url = string.Empty,
+                sort = maxSort + 3,
+            };
+            AddBatchRoutingRules(ref item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
+
+            if (!blImportAdvancedRules)
+            {
+                SetDefaultRouting(config, item2);
             }
             return 0;
         }
 
-        public static RoutingItem GetLockedRoutingItem(Config config)
+        public static RoutingItem? GetLockedRoutingItem(Config config)
         {
             return SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == true);
         }
@@ -1789,9 +1778,9 @@ namespace ServiceLib.Handler
 
         #endregion DNS
 
-        #region Presets
+        #region Regional Presets
 
-        public static bool ApplyPreset(Config config, EPresetType type) 
+        public static bool ApplyRegionalPreset(Config config, EPresetType type)
         {
             switch (type)
             {
@@ -1813,6 +1802,6 @@ namespace ServiceLib.Handler
             return false;
         }
 
-        #endregion
+        #endregion Regional Presets
     }
 }
