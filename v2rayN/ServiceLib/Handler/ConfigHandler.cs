@@ -1788,5 +1788,31 @@ namespace ServiceLib.Handler
         }
 
         #endregion DNS
+
+        #region Presets
+
+        public static bool ApplyPreset(Config config, EPresetType type) 
+        {
+            switch (type)
+            {
+                case EPresetType.Default:
+                    config.constItem.geoSourceUrl = "";
+                    config.constItem.srsSourceUrl = "";
+                    config.constItem.routeRulesTemplateSourceUrl = "";
+
+                    return true;
+
+                case EPresetType.Russia:
+                    config.constItem.geoSourceUrl = Global.GeoFilesSources[1];
+                    config.constItem.srsSourceUrl = Global.SingboxRulesetSources[1];
+                    config.constItem.routeRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+
+                    return true;
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }

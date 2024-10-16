@@ -1114,6 +1114,33 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Regional presets 的本地化字符串。
+        /// </summary>
+        public static string menuPresets {
+            get {
+                return ResourceManager.GetString("menuPresets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default 的本地化字符串。
+        /// </summary>
+        public static string menuPresetsDefault {
+            get {
+                return ResourceManager.GetString("menuPresetsDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Russia 的本地化字符串。
+        /// </summary>
+        public static string menuPresetsRussia {
+            get {
+                return ResourceManager.GetString("menuPresetsRussia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Auto column width adjustment 的本地化字符串。
         /// </summary>
         public static string menuProfileAutofitColumnWidth {

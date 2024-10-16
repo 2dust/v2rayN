@@ -44,6 +44,10 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
         public ReactiveCommand<Unit, Unit> OpenTheFileLocationCmd { get; }
 
+        //Presets
+        public ReactiveCommand<Unit, Unit> PresetDefaultCmd { get; }
+        public ReactiveCommand<Unit, Unit> PresetRussiaCmd { get; }
+
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
         [Reactive]
@@ -181,6 +185,16 @@ namespace ServiceLib.ViewModels
                 await Reload();
             });
 
+            PresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyPreset(EPresetType.Default);
+            });
+
+            PresetRussiaCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyPreset(EPresetType.Russia);
+            });
+
             #endregion WhenAnyValue && ReactiveCommand
 
             AutoHideStartup();
@@ -191,7 +205,6 @@ namespace ServiceLib.ViewModels
             ConfigHandler.InitRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
-            Task.Run(() => VerifyGeoFiles(true));
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
             if (_config.guiItem.enableStatistics)
@@ -422,7 +435,6 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
             if (ret == true)
             {
-                await VerifyGeoFiles();
                 Locator.Current.GetService<StatusBarViewModel>()?.InboundDisplayStatus();
                 Reload();
             }
@@ -543,14 +555,23 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public async Task VerifyGeoFiles(bool needReload = false)
-        {
-            var result = await new UpdateService().VerifyGeoFilesRepo(_config, UpdateHandler);
+        #endregion core job
 
-            if (needReload && !result)
-                Reload();
+        #region Presets
+
+        public async Task ApplyPreset(EPresetType type)
+        {
+            ConfigHandler.ApplyPreset(_config, type);
+
+            await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
+
+            ConfigHandler.InitRouting(_config);
+            Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
+
+            ConfigHandler.SaveConfig(_config, false);
+            Reload();
         }
 
-        #endregion core job
+        #endregion
     }
 }

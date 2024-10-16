@@ -74,6 +74,10 @@
                         <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
                         <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
                         <MenuItem x:Name="menuGlobalHotkeySetting" Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuPresets}">
+                            <MenuItem x:Name="menuPresetsDefault" Header="{x:Static resx:ResUI.menuPresetsDefault}" />
+                            <MenuItem x:Name="menuPresetsRussia" Header="{x:Static resx:ResUI.menuPresetsRussia}" />
+                        </MenuItem>
                         <Separator />
                         <MenuItem x:Name="menuRebootAsAdmin" Header="{x:Static resx:ResUI.menuRebootAsAdmin}" />
                         <MenuItem x:Name="menuSettingsSetUWP" Header="{x:Static resx:ResUI.TbSettingsSetUWP}" />
