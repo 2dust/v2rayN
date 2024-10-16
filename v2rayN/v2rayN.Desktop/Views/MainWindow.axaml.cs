@@ -76,6 +76,8 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.PresetDefaultCmd, v => v.menuPresetsDefault).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.PresetRussiaCmd, v => v.menuPresetsRussia).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);

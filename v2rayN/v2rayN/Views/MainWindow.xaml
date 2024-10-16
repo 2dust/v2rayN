@@ -171,6 +171,16 @@
                                     x:Name="menuGlobalHotkeySetting"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
+                                <MenuItem Height="{StaticResource MenuItemHeight}" Header="{x:Static resx:ResUI.menuPresets}">
+                                    <MenuItem
+                                        x:Name="menuPresetsDefault"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuPresetsDefault}" />
+                                    <MenuItem
+                                        x:Name="menuPresetsRussia"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuPresetsRussia}" />
+                                </MenuItem>
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuRebootAsAdmin"

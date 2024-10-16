@@ -71,7 +71,7 @@ namespace ServiceLib.ViewModels
             _updateView = updateView;
             SelectedSource = new();
 
-            ConfigHandler.InitBuiltinRouting(_config);
+            ConfigHandler.InitRouting(_config);
 
             enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
             domainStrategy = _config.routingBasicItem.domainStrategy;
@@ -286,7 +286,7 @@ namespace ServiceLib.ViewModels
 
         private async Task RoutingAdvancedImportRules()
         {
-            if (ConfigHandler.InitBuiltinRouting(_config, true) == 0)
+            if (ConfigHandler.InitRouting(_config, true) == 0)
             {
                 RefreshRoutingItems();
                 IsModified = true;

@@ -1336,4 +1336,16 @@
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
     <value>UpgradeApp does not exist</value>
   </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Routing rules source (optional)</value>
+  </data>
+  <data name="menuPresets" xml:space="preserve">
+    <value>Regional presets</value>
+  </data>
+  <data name="menuPresetsDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="menuPresetsRussia" xml:space="preserve">
+    <value>Russia</value>
+  </data>
 </root>

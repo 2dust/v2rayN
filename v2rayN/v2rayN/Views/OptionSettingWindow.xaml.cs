@@ -93,6 +93,10 @@ namespace v2rayN.Views
             {
                 cmbSrsFilesSourceUrl.Items.Add(it);
             });
+            Global.RoutingRulesSources.ForEach(it =>
+            {
+                cmbRoutingRulesSourceUrl.Items.Add(it);
+            });
             foreach (EGirdOrientation it in Enum.GetValues(typeof(EGirdOrientation)))
             {
                 cmbMainGirdOrientation.Items.Add(it.ToString());
@@ -155,6 +159,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.RoutingRulesSourceUrl, v => v.cmbRoutingRulesSourceUrl.Text).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);

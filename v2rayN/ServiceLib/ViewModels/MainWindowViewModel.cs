@@ -44,6 +44,10 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
         public ReactiveCommand<Unit, Unit> OpenTheFileLocationCmd { get; }
 
+        //Presets
+        public ReactiveCommand<Unit, Unit> PresetDefaultCmd { get; }
+        public ReactiveCommand<Unit, Unit> PresetRussiaCmd { get; }
+
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
         [Reactive]
@@ -181,6 +185,16 @@ namespace ServiceLib.ViewModels
                 await Reload();
             });
 
+            PresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyPreset(EPresetType.Default);
+            });
+
+            PresetRussiaCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyPreset(EPresetType.Russia);
+            });
+
             #endregion WhenAnyValue && ReactiveCommand
 
             AutoHideStartup();
@@ -188,7 +202,7 @@ namespace ServiceLib.ViewModels
 
         private void Init()
         {
-            ConfigHandler.InitBuiltinRouting(_config);
+            ConfigHandler.InitRouting(_config);
             ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
@@ -431,7 +445,7 @@ namespace ServiceLib.ViewModels
             var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
             if (ret == true)
             {
-                ConfigHandler.InitBuiltinRouting(_config);
+                ConfigHandler.InitRouting(_config);
                 Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
                 Reload();
             }
@@ -543,5 +557,22 @@ namespace ServiceLib.ViewModels
         }
 
         #endregion core job
+
+        #region Presets
+
+        public async Task ApplyPreset(EPresetType type)
+        {
+            ConfigHandler.ApplyPreset(_config, type);
+
+            await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
+
+            ConfigHandler.InitRouting(_config);
+            Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
+
+            ConfigHandler.SaveConfig(_config, false);
+            Reload();
+        }
+
+        #endregion
     }
 }
