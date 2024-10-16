@@ -953,7 +953,7 @@
     <value>匯入舊的設定檔guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>啟用TUN模式</value>
+    <value>啟用TUN</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>為區域網路開啟新的埠</value>

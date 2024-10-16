@@ -41,12 +41,17 @@
                     Width="auto"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
-                    DockPanel.Dock="Left">
-                    <TextBlock Text="{x:Static resx:ResUI.TbEnableTunAs}" />
+                    DockPanel.Dock="Left"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="{StaticResource MarginLeftRight8}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbEnableTunAs}" />
                     <ToggleButton
                         x:Name="togEnableTun"
                         Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel
@@ -56,7 +61,7 @@
                     Orientation="Horizontal">
                     <ComboBox
                         x:Name="cmbSystemProxy"
-                        Width="120"
+                        Width="160"
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
                         FontSize="{DynamicResource StdFontSize}"
@@ -69,7 +74,7 @@
 
                     <ComboBox
                         x:Name="cmbRoutings2"
-                        Width="150"
+                        Width="160"
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="remarks"

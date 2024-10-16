@@ -1114,33 +1114,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Regional presets 的本地化字符串。
-        /// </summary>
-        public static string menuRegionalPresets {
-            get {
-                return ResourceManager.GetString("menuRegionalPresets", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Default 的本地化字符串。
-        /// </summary>
-        public static string menuRegionalPresetsDefault {
-            get {
-                return ResourceManager.GetString("menuRegionalPresetsDefault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Russia 的本地化字符串。
-        /// </summary>
-        public static string menuRegionalPresetsRussia {
-            get {
-                return ResourceManager.GetString("menuRegionalPresetsRussia", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Auto column width adjustment 的本地化字符串。
         /// </summary>
         public static string menuProfileAutofitColumnWidth {
@@ -1209,6 +1182,33 @@ namespace ServiceLib.Resx {
         public static string menuRebootAsAdmin {
             get {
                 return ResourceManager.GetString("menuRebootAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Regional presets setting 的本地化字符串。
+        /// </summary>
+        public static string menuRegionalPresets {
+            get {
+                return ResourceManager.GetString("menuRegionalPresets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default 的本地化字符串。
+        /// </summary>
+        public static string menuRegionalPresetsDefault {
+            get {
+                return ResourceManager.GetString("menuRegionalPresetsDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Russia 的本地化字符串。
+        /// </summary>
+        public static string menuRegionalPresetsRussia {
+            get {
+                return ResourceManager.GetString("menuRegionalPresetsRussia", resourceCulture);
             }
         }
         

@@ -953,7 +953,7 @@
     <value>导入旧的配置文件guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>启用Tun模式</value>
+    <value>启用Tun</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>为局域网开启新的端口</value>
