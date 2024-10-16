@@ -163,13 +163,10 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
 
-            //if (Utils.IsWindows())
-            //{
-            //}
-            //else
-            //{
-            tabSystemproxy.IsVisible = false;
-            //}
+            if (!Utils.IsWindows())
+            {
+                tabSystemproxy.IsVisible = false;
+            }
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

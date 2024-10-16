@@ -44,10 +44,6 @@
 
         #region Init
 
-        public AppHandler()
-        {
-        }
-
         public bool InitApp()
         {
             if (ConfigHandler.LoadConfig(ref _config) != 0)
@@ -61,6 +57,13 @@
             {
                 Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0", EnvironmentVariableTarget.User);
             }
+
+            SQLiteHelper.Instance.CreateTable<SubItem>();
+            SQLiteHelper.Instance.CreateTable<ProfileItem>();
+            SQLiteHelper.Instance.CreateTable<ServerStatItem>();
+            SQLiteHelper.Instance.CreateTable<RoutingItem>();
+            SQLiteHelper.Instance.CreateTable<ProfileExItem>();
+            SQLiteHelper.Instance.CreateTable<DNSItem>();
             return true;
         }
 
@@ -71,13 +74,6 @@
             Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
             Logging.ClearLogs();
-
-            SQLiteHelper.Instance.CreateTable<SubItem>();
-            SQLiteHelper.Instance.CreateTable<ProfileItem>();
-            SQLiteHelper.Instance.CreateTable<ServerStatItem>();
-            SQLiteHelper.Instance.CreateTable<RoutingItem>();
-            SQLiteHelper.Instance.CreateTable<ProfileExItem>();
-            SQLiteHelper.Instance.CreateTable<DNSItem>();
 
             return true;
         }

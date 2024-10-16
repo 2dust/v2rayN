@@ -17,67 +17,59 @@ namespace ServiceLib.Handler.SysProxy
             {
                 var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
                 var portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
                 if (port <= 0)
                 {
                     return false;
                 }
-                if (type == ESysProxyType.ForcedChange)
+                switch (type)
                 {
-                    if (Utils.IsWindows())
-                    {
-                        var strExceptions = "";
-                        if (config.systemProxyItem.notProxyLocalAddress)
+                    case ESysProxyType.ForcedChange when Utils.IsWindows():
                         {
-                            strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyItem.systemProxyExceptions}";
+                            GetWindowsProxyString(config, port, portSocks, out var strProxy, out var strExceptions);
+                            ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
+                            break;
                         }
-
-                        var strProxy = string.Empty;
-                        if (Utils.IsNullOrEmpty(config.systemProxyItem.systemProxyAdvancedProtocol))
-                        {
-                            strProxy = $"{Global.Loopback}:{port}";
-                        }
-                        else
-                        {
-                            strProxy = config.systemProxyItem.systemProxyAdvancedProtocol
-                                .Replace("{ip}", Global.Loopback)
-                                .Replace("{http_port}", port.ToString())
-                                .Replace("{socks_port}", portSocks.ToString());
-                        }
-                        ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
-                    }
-                    else if (Utils.IsLinux())
-                    {
+                    case ESysProxyType.ForcedChange when Utils.IsLinux():
                         await ProxySettingLinux.SetProxy(Global.Loopback, port);
-                    }
-                    else if (Utils.IsOSX())
-                    {
-                        await ProxySettingOSX.SetProxy(Global.Loopback, port);
-                    }
-                }
-                else if (type == ESysProxyType.ForcedClear)
-                {
-                    if (Utils.IsWindows())
-                    {
+                        break;
+
+                    case ESysProxyType.ForcedChange:
+                        {
+                            if (Utils.IsOSX())
+                            {
+                                await ProxySettingOSX.SetProxy(Global.Loopback, port);
+                            }
+
+                            break;
+                        }
+                    case ESysProxyType.ForcedClear when Utils.IsWindows():
                         ProxySettingWindows.UnsetProxy();
-                    }
-                    else if (Utils.IsLinux())
-                    {
+                        break;
+
+                    case ESysProxyType.ForcedClear when Utils.IsLinux():
                         await ProxySettingLinux.UnsetProxy();
-                    }
-                    else if (Utils.IsOSX())
-                    {
-                        await ProxySettingOSX.UnsetProxy();
-                    }
-                }
-                else if (type == ESysProxyType.Pac)
-                {
-                    PacHandler.Start(Utils.GetConfigPath(), port, portPac);
-                    var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
-                    ProxySettingWindows.SetProxy(strProxy, "", 4);
+                        break;
+
+                    case ESysProxyType.ForcedClear:
+                        {
+                            if (Utils.IsOSX())
+                            {
+                                await ProxySettingOSX.UnsetProxy();
+                            }
+
+                            break;
+                        }
+                    case ESysProxyType.Pac when Utils.IsWindows():
+                        {
+                            var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
+                            PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+                            var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+                            ProxySettingWindows.SetProxy(strProxy, "", 4);
+                            break;
+                        }
                 }
 
-                if (type != ESysProxyType.Pac)
+                if (type != ESysProxyType.Pac && Utils.IsWindows())
                 {
                     PacHandler.Stop();
                 }
@@ -87,6 +79,28 @@ namespace ServiceLib.Handler.SysProxy
                 Logging.SaveLog(ex.Message, ex);
             }
             return true;
+        }
+
+        private static void GetWindowsProxyString(Config config, int port, int portSocks, out string strProxy, out string strExceptions)
+        {
+            strExceptions = "";
+            if (config.systemProxyItem.notProxyLocalAddress)
+            {
+                strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyItem.systemProxyExceptions}";
+            }
+
+            strProxy = string.Empty;
+            if (Utils.IsNullOrEmpty(config.systemProxyItem.systemProxyAdvancedProtocol))
+            {
+                strProxy = $"{Global.Loopback}:{port}";
+            }
+            else
+            {
+                strProxy = config.systemProxyItem.systemProxyAdvancedProtocol
+                    .Replace("{ip}", Global.Loopback)
+                    .Replace("{http_port}", port.ToString())
+                    .Replace("{socks_port}", portSocks.ToString());
+            }
         }
     }
 }
