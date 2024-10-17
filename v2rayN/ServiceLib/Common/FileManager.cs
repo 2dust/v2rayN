@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.Formats.Tar;
+using System.IO.Compression;
 using System.Text;
 
 namespace ServiceLib.Common
@@ -19,7 +20,7 @@ namespace ServiceLib.Common
             return false;
         }
 
-        public static void UncompressedFile(string fileName, byte[] content)
+        public static void DecompressFile(string fileName, byte[] content)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace ServiceLib.Common
             }
         }
 
-        public static void UncompressedFile(string fileName, string toPath, string? toName)
+        public static void DecompressFile(string fileName, string toPath, string? toName)
         {
             try
             {
@@ -42,6 +43,20 @@ namespace ServiceLib.Common
                 using var decompressedFileStream = File.Create(toName != null ? Path.Combine(toPath, toName) : toPath);
                 using GZipStream decompressionStream = new(originalFileStream, CompressionMode.Decompress);
                 decompressionStream.CopyTo(decompressedFileStream);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
+        }
+
+        public static void DecompressTarFile(string fileName, string toPath)
+        {
+            try
+            {
+                using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                using var gz = new GZipStream(fs, CompressionMode.Decompress, leaveOpen: true);
+                TarFile.ExtractToDirectory(gz, toPath, overwriteFiles: true);
             }
             catch (Exception ex)
             {
@@ -139,7 +154,7 @@ namespace ServiceLib.Common
             return true;
         }
 
-        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, string ignoredName)
+        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, string? ignoredName)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);
@@ -166,7 +181,7 @@ namespace ServiceLib.Common
                     continue;
                 }
                 var targetFilePath = Path.Combine(destinationDir, file.Name);
-                file.CopyTo(targetFilePath);
+                file.CopyTo(targetFilePath, true);
             }
 
             // If recursive and copying subdirectories, recursively call this method

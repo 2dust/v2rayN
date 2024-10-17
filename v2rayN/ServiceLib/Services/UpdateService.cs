@@ -107,7 +107,7 @@ namespace ServiceLib.Services
                 _updateFunc?.Invoke(false, args.Msg);
 
                 url = args.Url;
-                var ext = Path.GetExtension(url);
+                var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
                 fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }

@@ -66,15 +66,12 @@ namespace ServiceLib.ViewModels
                 CoreType = ECoreType.mihomo.ToString(),
                 Remarks = ResUI.menuCheckUpdate,
             });
-            if (Utils.IsWindows())
+            _checkUpdateItem.Add(new CheckUpdateItem()
             {
-                _checkUpdateItem.Add(new CheckUpdateItem()
-                {
-                    IsSelected = true,
-                    CoreType = ECoreType.sing_box.ToString(),
-                    Remarks = ResUI.menuCheckUpdate,
-                });
-            }
+                IsSelected = true,
+                CoreType = ECoreType.sing_box.ToString(),
+                Remarks = ResUI.menuCheckUpdate,
+            });
             _checkUpdateItem.Add(new CheckUpdateItem()
             {
                 IsSelected = true,
@@ -149,16 +146,6 @@ namespace ServiceLib.ViewModels
 
         private async Task CheckUpdateN(bool preRelease)
         {
-            ////Check for standalone windows .Net version
-            //if (Utils.IsWindows()
-            //    && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
-            //    && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
-            //    )
-            //{
-            //    UpdateView(_v2rayN, ResUI.UpdateStandalonePackageTip);
-            //    return;
-            //}
-
             void _updateUI(bool success, string msg)
             {
                 UpdateView(_v2rayN, msg);
@@ -262,15 +249,24 @@ namespace ServiceLib.ViewModels
                 {
                     continue;
                 }
-                string toPath = Utils.GetBinPath("", item.CoreType);
+                var toPath = Utils.GetBinPath("", item.CoreType);
 
                 if (fileName.Contains(".tar.gz"))
                 {
-                    //It's too complicated to unzip. TODO
+                    FileManager.DecompressTarFile(fileName, toPath);
+                    var dir = new DirectoryInfo(toPath);
+                    if (dir.Exists)
+                    {
+                        foreach (var subDir in dir.GetDirectories())
+                        {
+                            FileManager.CopyDirectory(subDir.FullName, toPath, false, null);
+                            subDir.Delete(true);
+                        }
+                    }
                 }
                 else if (fileName.Contains(".gz"))
                 {
-                    FileManager.UncompressedFile(fileName, toPath, item.CoreType);
+                    FileManager.DecompressFile(fileName, toPath, item.CoreType);
                 }
                 else
                 {
@@ -299,12 +295,10 @@ namespace ServiceLib.ViewModels
         public void UpdateViewResult(CheckUpdateItem item)
         {
             var found = _checkUpdateItem.FirstOrDefault(t => t.CoreType == item.CoreType);
-            if (found != null)
-            {
-                var itemCopy = JsonUtils.DeepCopy(found);
-                itemCopy.Remarks = item.Remarks;
-                _checkUpdateItem.Replace(found, itemCopy);
-            }
+            if (found == null) return;
+            var itemCopy = JsonUtils.DeepCopy(found);
+            itemCopy.Remarks = item.Remarks;
+            _checkUpdateItem.Replace(found, itemCopy);
         }
     }
 }
