@@ -1177,11 +1177,11 @@ namespace ServiceLib.Services.CoreConfig
                 var strDNS = string.Empty;
                 if (_config.tunModeItem.enableTun)
                 {
-                    strDNS = Utils.IsNullOrEmpty(item?.tunDNS) ? Utils.GetEmbedText(Global.TunSingboxDNSFileName) : item?.tunDNS;
+                    strDNS = Utils.IsNullOrEmpty(item?.tunDNS) ? ConfigHandler.GetDNSConfig(_config, Global.TunSingboxDNSFileName) : item?.tunDNS;
                 }
                 else
                 {
-                    strDNS = Utils.IsNullOrEmpty(item?.normalDNS) ? Utils.GetEmbedText(Global.DNSSingboxNormalFileName) : item?.normalDNS;
+                    strDNS = Utils.IsNullOrEmpty(item?.normalDNS) ? ConfigHandler.GetDNSConfig(_config, Global.DNSSingboxNormalFileName) : item?.normalDNS;
                 }
 
                 var dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(strDNS);

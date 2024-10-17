@@ -1034,7 +1034,7 @@ namespace ServiceLib.Services.CoreConfig
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
                 if (Utils.IsNullOrEmpty(normalDNS))
                 {
-                    normalDNS = Utils.GetEmbedText(Global.DNSV2rayNormalFileName);
+                    normalDNS = ConfigHandler.GetDNSConfig(_config, Global.DNSV2rayNormalFileName);
                 }
 
                 //Outbound Freedom domainStrategy

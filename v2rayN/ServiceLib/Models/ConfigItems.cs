@@ -143,6 +143,7 @@
         public string? geoSourceUrl { get; set; }
         public string? srsSourceUrl { get; set; }
         public string? routeRulesTemplateSourceUrl { get; set; }
+        public string? dnsTemplateSourceUrl { get; set; }
     }
 
     [Serializable]

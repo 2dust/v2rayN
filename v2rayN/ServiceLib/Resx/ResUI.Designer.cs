@@ -2879,6 +2879,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 TbSettingsDNSTemplatesSource 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDNSTemplatesSource {
+            get {
+                return ResourceManager.GetString("TbSettingsDNSTemplatesSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Outbound DNS address 的本地化字符串。
         /// </summary>
         public static string TbSettingsDomainDNSAddress {
