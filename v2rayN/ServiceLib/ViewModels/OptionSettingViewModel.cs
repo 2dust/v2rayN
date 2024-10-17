@@ -68,6 +68,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public string GeoFileSourceUrl { get; set; }
         [Reactive] public string SrsFileSourceUrl { get; set; }
         [Reactive] public string RoutingRulesSourceUrl { get; set; }
+        [Reactive] public string DNSTemplatesUrl { get; set; }
 
         #endregion UI
 
@@ -170,6 +171,7 @@ namespace ServiceLib.ViewModels
             GeoFileSourceUrl = _config.constItem.geoSourceUrl;
             SrsFileSourceUrl = _config.constItem.srsSourceUrl;
             RoutingRulesSourceUrl = _config.constItem.routeRulesTemplateSourceUrl;
+            DNSTemplatesUrl = _config.constItem.dnsTemplateSourceUrl;
 
             #endregion UI
 
@@ -325,6 +327,7 @@ namespace ServiceLib.ViewModels
             _config.constItem.geoSourceUrl = GeoFileSourceUrl;
             _config.constItem.srsSourceUrl = SrsFileSourceUrl;
             _config.constItem.routeRulesTemplateSourceUrl = RoutingRulesSourceUrl;
+            _config.constItem.dnsTemplateSourceUrl = DNSTemplatesUrl;
 
             //systemProxy
             _config.systemProxyItem.systemProxyExceptions = systemProxyExceptions;

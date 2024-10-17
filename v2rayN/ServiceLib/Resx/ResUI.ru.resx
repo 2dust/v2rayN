@@ -1048,4 +1048,7 @@
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>Используйте Настройки -> Региональные пресеты вместо изменения этого поля</value>
   </data>
+  <data name="TbSettingsDNSTemplatesSource" xml:space="preserve">
+    <value>Источник DNS шаблонов</value>
+  </data>
 </root>

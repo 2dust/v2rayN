@@ -95,6 +95,10 @@ namespace v2rayN.Desktop.Views
             {
                 cmbRoutingRulesSourceUrl.Items.Add(it);
             });
+            Global.DNSTemplateSources.ForEach(it =>
+            {
+                cmbDNSTemplatesUrl.Items.Add(it);
+            });
             foreach (EGirdOrientation it in Enum.GetValues(typeof(EGirdOrientation)))
             {
                 cmbMainGirdOrientation.Items.Add(it.ToString());
@@ -147,6 +151,7 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.RoutingRulesSourceUrl, v => v.cmbRoutingRulesSourceUrl.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DNSTemplatesUrl, v => v.cmbDNSTemplatesUrl.SelectedValue).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);

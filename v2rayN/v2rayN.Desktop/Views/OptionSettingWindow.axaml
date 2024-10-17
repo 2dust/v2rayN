@@ -369,6 +369,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -670,6 +671,26 @@
                             Classes="Margin8" />
                         <TextBlock
                             Grid.Row="24"
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="25"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsDNSTemplatesSource}" />
+                        <ComboBox
+                            x:Name="cmbDNSTemplatesUrl"
+                            Grid.Row="25"
+                            Grid.Column="1"
+                            Width="300"
+                            Classes="Margin8" />
+                        <TextBlock
+                            Grid.Row="25"
                             Grid.Column="2"
                             VerticalAlignment="Center"
                             Classes="Margin8"

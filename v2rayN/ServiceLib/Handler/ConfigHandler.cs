@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using ServiceLib.Common;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler
@@ -1633,7 +1634,7 @@ namespace ServiceLib.Handler
         public static int InitExternalRouting(Config config, bool blImportAdvancedRules = false)
         {
             var downloadHandle = new DownloadService();
-            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, false, "")).Result;
+            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, true, "")).Result;
             if (String.IsNullOrEmpty(templateContent))
                 return InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
@@ -1776,6 +1777,19 @@ namespace ServiceLib.Handler
             }
         }
 
+        public static string GetDNSConfig(Config config, string configName) 
+        {
+            if (!string.IsNullOrEmpty(config?.constItem.dnsTemplateSourceUrl)) 
+            {
+                var downloadHandle = new DownloadService();
+                var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.dnsTemplateSourceUrl + configName, true, "")).Result;
+                if (templateContent != null)
+                    return templateContent;
+            }
+
+            return Utils.GetEmbedText(Global.ServiceLibSamplePath + configName);
+        }
+
         #endregion DNS
 
         #region Regional Presets
@@ -1788,6 +1802,7 @@ namespace ServiceLib.Handler
                     config.constItem.geoSourceUrl = "";
                     config.constItem.srsSourceUrl = "";
                     config.constItem.routeRulesTemplateSourceUrl = "";
+                    config.constItem.dnsTemplateSourceUrl = "";
 
                     return true;
 
@@ -1795,6 +1810,7 @@ namespace ServiceLib.Handler
                     config.constItem.geoSourceUrl = Global.GeoFilesSources[1];
                     config.constItem.srsSourceUrl = Global.SingboxRulesetSources[1];
                     config.constItem.routeRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+                    config.constItem.dnsTemplateSourceUrl = Global.DNSTemplateSources[1];
 
                     return true;
             }

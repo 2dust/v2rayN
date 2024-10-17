@@ -27,8 +27,12 @@
         public const string CorePreConfigFileName = "configPre.json";
         public const string CoreSpeedtestConfigFileName = "configSpeedtest.json";
         public const string CoreMultipleLoadConfigFileName = "configMultipleLoad.json";
+        public const string TunSingboxDNSFileName = "tun_singbox_dns";
+        public const string DNSSingboxNormalFileName = "dns_singbox_normal";
+        public const string DNSV2rayNormalFileName = "dns_v2ray_normal";
         public const string ClashMixinConfigFileName = "Mixin.yaml";
         public const string V2raySampleClient = "ServiceLib.Sample.SampleClientConfig";
+        public const string ServiceLibSamplePath = "ServiceLib.Sample.";
         public const string SingboxSampleClient = "ServiceLib.Sample.SingboxSampleClientConfig";
         public const string V2raySampleHttpRequestFileName = "ServiceLib.Sample.SampleHttpRequest";
         public const string V2raySampleHttpResponseFileName = "ServiceLib.Sample.SampleHttpResponse";
@@ -36,11 +40,8 @@
         public const string V2raySampleOutbound = "ServiceLib.Sample.SampleOutbound";
         public const string SingboxSampleOutbound = "ServiceLib.Sample.SingboxSampleOutbound";
         public const string CustomRoutingFileName = "ServiceLib.Sample.custom_routing_";
-        public const string TunSingboxDNSFileName = "ServiceLib.Sample.tun_singbox_dns";
         public const string TunSingboxInboundFileName = "ServiceLib.Sample.tun_singbox_inbound";
         public const string TunSingboxRulesFileName = "ServiceLib.Sample.tun_singbox_rules";
-        public const string DNSV2rayNormalFileName = "ServiceLib.Sample.dns_v2ray_normal";
-        public const string DNSSingboxNormalFileName = "ServiceLib.Sample.dns_singbox_normal";
         public const string ClashMixinYaml = "ServiceLib.Sample.clash_mixin_yaml";
         public const string ClashTunYaml = "ServiceLib.Sample.clash_tun_yaml";
 
@@ -121,12 +122,17 @@
 
         public static readonly List<string> SingboxRulesetSources = new() {
             "",
-            @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/refs/heads/release/sing-box/rule-set-{0}/{1}.srs",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-rules-dat@release/sing-box/rule-set-{0}/{1}.srs",
         };
 
         public static readonly List<string> RoutingRulesSources = new() {
             "",
-            @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/refs/heads/main/template.json",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/template.json",
+        };
+
+        public static readonly List<string> DNSTemplateSources = new() {
+            "",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/",
         };
 
         public static readonly Dictionary<string, string> UserAgentTexts = new()

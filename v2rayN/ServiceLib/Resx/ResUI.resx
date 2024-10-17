@@ -1351,4 +1351,7 @@
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>Users in China region can ignore this item</value>
   </data>
+  <data name="TbSettingsDNSTemplatesSource" xml:space="preserve">
+    <value>DNS templates source (optional)</value>
+  </data>
 </root>
