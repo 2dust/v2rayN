@@ -170,10 +170,10 @@
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
                                         IsVisible="{Binding isActive}"
                                         Theme="{StaticResource TagLabel}" />
-                                    <Label
+                                    <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Content="{Binding remarks}" />
+                                        Text="{Binding remarks}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

@@ -27,46 +27,32 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-                        <ToggleSwitch
-                            x:Name="togDarkMode"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Classes="Margin8" />
+                        <ToggleSwitch x:Name="togDarkMode" Classes="Margin8" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
                         <ComboBox
                             x:Name="cmbCurrentFontSize"
-                            Grid.Row="1"
-                            Grid.Column="1"
                             Width="100"
                             Classes="Margin8" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="0"
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                         <ComboBox
                             x:Name="cmbCurrentLanguage"
-                            Grid.Row="2"
-                            Grid.Column="1"
                             Width="100"
                             Classes="Margin8" />
                     </StackPanel>

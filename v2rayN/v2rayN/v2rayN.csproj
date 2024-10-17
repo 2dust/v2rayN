@@ -8,7 +8,7 @@
 		<UseWPF>true</UseWPF>  
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
+		<ApplicationIcon>Resources\v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
@@ -24,15 +24,13 @@
 	
 	<ItemGroup>       
         <AdditionalFiles Include="app.manifest" />       
-        <EmbeddedResource Include="v2rayN.ico">
+        <EmbeddedResource Include="Resources\v2rayN.ico">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <Resource Include="Resources\NotifyIcon1.ico" />
         <Resource Include="Resources\NotifyIcon2.ico" />
         <Resource Include="Resources\NotifyIcon3.ico" />
-        <Resource Include="v2rayN.ico">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Resource>
+        <Resource Include="Resources\v2rayN.ico" />
     </ItemGroup> 	 
 	
 	<ItemGroup>

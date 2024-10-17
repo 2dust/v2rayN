@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ApplicationIcon>v2rayN.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\v2rayN.ico</ApplicationIcon>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
@@ -37,7 +37,7 @@
     </ItemGroup>
  
     <ItemGroup>
-      <EmbeddedResource Include="v2rayN.ico">
+      <EmbeddedResource Include="Assets\v2rayN.ico">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup> 
