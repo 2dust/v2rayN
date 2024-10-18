@@ -1761,6 +1761,11 @@ namespace ServiceLib.Handler
 
         public static int SaveDNSItems(Config config, DNSItem item)
         {
+            if (item == null)
+            {
+                return -1;
+            }
+
             if (Utils.IsNullOrEmpty(item.id))
             {
                 item.id = Utils.GetGuid(false);
@@ -1776,6 +1781,33 @@ namespace ServiceLib.Handler
             }
         }
 
+        public static DNSItem GetExternalDNSItem(ECoreType type, string url)
+        {
+            var currentItem = AppHandler.Instance.GetDNSItem(type);
+
+            var downloadHandle = new DownloadService();
+            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(url, true, "")).Result;
+            if (String.IsNullOrEmpty(templateContent))
+                return currentItem;
+
+            var template = JsonUtils.Deserialize<DNSItem>(templateContent);
+            if (template == null)
+                return currentItem;
+
+            if (!String.IsNullOrEmpty(template.normalDNS))
+                template.normalDNS = Task.Run(() => downloadHandle.TryDownloadString(template.normalDNS, true, "")).Result;
+
+            if (!String.IsNullOrEmpty(template.tunDNS))
+                template.tunDNS = Task.Run(() => downloadHandle.TryDownloadString(template.tunDNS, true, "")).Result;
+
+            template.id = currentItem.id;
+            template.enabled = currentItem.enabled;
+            template.remarks = currentItem.remarks;
+            template.coreType = type;
+
+            return template;
+        }
+
         #endregion DNS
 
         #region Regional Presets
@@ -1789,12 +1821,18 @@ namespace ServiceLib.Handler
                     config.constItem.srsSourceUrl = "";
                     config.constItem.routeRulesTemplateSourceUrl = "";
 
+                    SQLiteHelper.Instance.DeleteAll<DNSItem>();
+                    InitBuiltinDNS(config);
+
                     return true;
 
                 case EPresetType.Russia:
                     config.constItem.geoSourceUrl = Global.GeoFilesSources[1];
                     config.constItem.srsSourceUrl = Global.SingboxRulesetSources[1];
                     config.constItem.routeRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+
+                    SaveDNSItems(config, GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
+                    SaveDNSItems(config, GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
                     return true;
             }

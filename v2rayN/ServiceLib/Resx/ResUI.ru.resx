@@ -1027,4 +1027,25 @@
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>URL спидтеста</value>
   </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Источник geo файлов</value>
+  </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>Источник sing-box srs файлов</value>
+  </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Источник правил маршрутизации</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Региональные пресеты</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>По умолчанию (Китай)</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Россия</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Используйте Настройки -> Региональные пресеты вместо изменения этого поля</value>
+  </data>
 </root>
