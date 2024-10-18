@@ -257,6 +257,7 @@ namespace ServiceLib.Services
         {
             await UpdateGeoFile("geosite", config, updateFunc);
             await UpdateGeoFile("geoip", config, updateFunc);
+            await UpdateSrsFileAll(config, updateFunc);
             _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
@@ -454,24 +455,91 @@ namespace ServiceLib.Services
             var geoUrl = string.IsNullOrEmpty(config?.constItem.geoSourceUrl)
                 ? Global.GeoUrl
                 : config.constItem.geoSourceUrl;
+
+            var fileName = $"{geoName}.dat";
+            var targetPath = Utils.GetBinPath($"{fileName}");
             var url = string.Format(geoUrl, geoName);
-            var fileName = Utils.GetTempPath(Utils.GetGuid());
+
+            await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+        }
+
+        private async Task UpdateSrsFileAll(Config config, Action<bool, string> updateFunc)
+        {
+            _config = config;
+            _updateFunc = updateFunc;
+
+            var geoipFiles = new List<string>();
+            var geoSiteFiles = new List<string>();
+
+            //Collect used files list
+            var routingItems = AppHandler.Instance.RoutingItems();
+            foreach (var routing in routingItems)
+            {
+                var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
+                foreach (var item in rules ?? [])
+                {
+                    foreach (var ip in item.ip ?? [])
+                    {
+                        var prefix = "geoip:";
+                        if (ip.StartsWith(prefix))
+                        {
+                            geoipFiles.Add(ip.Substring(prefix.Length));
+                        }
+                    }
+
+                    foreach (var domain in item.domain ?? [])
+                    {
+                        var prefix = "geosite:";
+                        if (domain.StartsWith(prefix))
+                        {
+                            geoSiteFiles.Add(domain.Substring(prefix.Length));
+                        }
+                    }
+                }
+            }
+
+            foreach(var item in geoipFiles.Distinct()) 
+            {
+                await UpdateSrsFile("geoip", item, config, updateFunc);
+            }
+
+            foreach(var item in geoSiteFiles.Distinct()) 
+            {
+                await UpdateSrsFile("geosite", item, config, updateFunc);
+            }            
+        }
+
+        private async Task UpdateSrsFile(string type, string srsName, Config config, Action<bool, string> updateFunc)
+        {
+            var srsUrl = string.IsNullOrEmpty(_config.constItem.srsSourceUrl)
+                            ? Global.SingboxRulesetUrl
+                            : _config.constItem.srsSourceUrl;
+
+            var fileName = $"{type}-{srsName}.srs";
+            var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);
+            var url = string.Format(srsUrl, type, $"{type}-{srsName}");
+
+            await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+        }
+
+        private async Task DownloadGeoFile(string url, string fileName, string targetPath, Action<bool, string> updateFunc)
+        {
+            var tmpFileName = Utils.GetTempPath(Utils.GetGuid());
 
             DownloadService downloadHandle = new();
             downloadHandle.UpdateCompleted += (sender2, args) =>
             {
                 if (args.Success)
                 {
-                    _updateFunc?.Invoke(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, geoName));
+                    _updateFunc?.Invoke(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, fileName));
 
                     try
                     {
-                        if (File.Exists(fileName))
+                        if (File.Exists(tmpFileName))
                         {
-                            string targetPath = Utils.GetBinPath($"{geoName}.dat");
-                            File.Copy(fileName, targetPath, true);
+                            File.Copy(tmpFileName, targetPath, true);
 
-                            File.Delete(fileName);
+                            File.Delete(tmpFileName);
                             //_updateFunc?.Invoke(true, "");
                         }
                     }
@@ -490,7 +558,7 @@ namespace ServiceLib.Services
                 _updateFunc?.Invoke(false, args.GetException().Message);
             };
 
-            await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
+            await downloadHandle.DownloadFileAsync(url, tmpFileName, true, _timeout);
         }
 
         #endregion private
