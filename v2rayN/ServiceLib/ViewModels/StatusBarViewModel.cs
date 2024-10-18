@@ -211,7 +211,7 @@ namespace ServiceLib.ViewModels
         private async Task AddServerViaScan()
         {
             var service = Locator.Current.GetService<MainWindowViewModel>();
-            if (service != null) await service.AddServerViaScanTaskAsync();
+            if (service != null) await service.AddServerViaScanAsync();
         }
 
         private async Task UpdateSubscriptionProcess(bool blProxy)

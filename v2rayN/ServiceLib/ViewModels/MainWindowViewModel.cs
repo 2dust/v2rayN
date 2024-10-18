@@ -25,6 +25,7 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
+        public ReactiveCommand<Unit, Unit> AddServerViaImageCmd { get; }
 
         //Subscription
         public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
@@ -46,6 +47,7 @@ namespace ServiceLib.ViewModels
 
         //Presets
         public ReactiveCommand<Unit, Unit> RegionalPresetDefaultCmd { get; }
+
         public ReactiveCommand<Unit, Unit> RegionalPresetRussiaCmd { get; }
 
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
@@ -121,7 +123,11 @@ namespace ServiceLib.ViewModels
             });
             AddServerViaScanCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await AddServerViaScanTaskAsync();
+                await AddServerViaScanAsync();
+            });
+            AddServerViaImageCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await AddServerViaImageAsync();
             });
 
             //Subscription
@@ -386,12 +392,34 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public async Task AddServerViaScanTaskAsync()
+        public async Task AddServerViaScanAsync()
         {
             _updateView?.Invoke(EViewAction.ScanScreenTask, null);
         }
 
-        public void ScanScreenResult(string result)
+        public async Task ScanScreenResult(byte[]? bytes)
+        {
+            var result = QRCodeHelper.ParseBarcode(bytes);
+            await AddScanResultAsync(result);
+        }
+
+        public async Task AddServerViaImageAsync()
+        {
+            _updateView?.Invoke(EViewAction.ScanImageTask, null);
+        }
+
+        public async Task ScanImageResult(string fileName)
+        {
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            var result = QRCodeHelper.ParseBarcode(fileName);
+            await AddScanResultAsync(result);
+        }
+
+        private async Task AddScanResultAsync(string? result)
         {
             if (Utils.IsNullOrEmpty(result))
             {
@@ -571,6 +599,6 @@ namespace ServiceLib.ViewModels
             Reload();
         }
 
-        #endregion
+        #endregion Presets
     }
 }

@@ -4,10 +4,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ZXing;
-using ZXing.Common;
-using ZXing.QrCode;
-using ZXing.Windows.Compatibility;
 
 namespace v2rayN
 {
@@ -25,11 +21,7 @@ namespace v2rayN
             try
             {
                 var qrCodeImage = ServiceLib.Common.QRCodeHelper.GenQRCode(strContent);
-                if (qrCodeImage is null)
-                {
-                    return null;
-                }
-                return ByteToImage(qrCodeImage);
+                return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
             }
             catch
             {
@@ -37,82 +29,54 @@ namespace v2rayN
             }
         }
 
-        private static ImageSource ByteToImage(byte[] imageData)
-        {
-            BitmapImage biImg = new();
-            MemoryStream ms = new(imageData);
-            biImg.BeginInit();
-            biImg.StreamSource = ms;
-            biImg.EndInit();
-
-            ImageSource imgSrc = biImg as ImageSource;
-
-            return imgSrc;
-        }
-
-        public static string ScanScreen(float dpiX, float dpiY)
+        public static byte[]? CaptureScreen(Window window)
         {
             try
             {
+                GetDpi(window, out var dpiX, out var dpiY);
+
                 var left = (int)(SystemParameters.WorkArea.Left);
                 var top = (int)(SystemParameters.WorkArea.Top);
                 var width = (int)(SystemParameters.WorkArea.Width / dpiX);
                 var height = (int)(SystemParameters.WorkArea.Height / dpiY);
 
-                using Bitmap fullImage = new Bitmap(width, height);
-                using (Graphics g = Graphics.FromImage(fullImage))
-                {
-                    g.CopyFromScreen(left, top, 0, 0, fullImage.Size, CopyPixelOperation.SourceCopy);
-                }
-                int maxTry = 10;
-                for (int i = 0; i < maxTry; i++)
-                {
-                    int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
-                    int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                    Rectangle cropRect = new(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                    Bitmap target = new(width, height);
+                using var fullImage = new Bitmap(width, height);
+                using var g = Graphics.FromImage(fullImage);
 
-                    double imageScale = (double)width / (double)cropRect.Width;
-                    using (Graphics g = Graphics.FromImage(target))
-                    {
-                        g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
-                                        cropRect,
-                                        GraphicsUnit.Pixel);
-                    }
-
-                    BitmapLuminanceSource source = new(target);
-                    QRCodeReader reader = new();
-
-                    BinaryBitmap bitmap = new(new HybridBinarizer(source));
-                    var result = reader.decode(bitmap);
-                    if (result != null)
-                    {
-                        return result.Text;
-                    }
-                    else
-                    {
-                        BinaryBitmap bitmap2 = new(new HybridBinarizer(source.invert()));
-                        var result2 = reader.decode(bitmap2);
-                        if (result2 != null)
-                        {
-                            return result2.Text;
-                        }
-                    }
-                }
+                g.CopyFromScreen(left, top, 0, 0, fullImage.Size, CopyPixelOperation.SourceCopy);
+                //fullImage.Save("test1.png", ImageFormat.Png);
+                return ImageToByte(fullImage);
             }
-            catch (Exception ex)
+            catch
             {
-                Logging.SaveLog(ex.Message, ex);
+                return null;
             }
-            return string.Empty;
         }
 
-        public static Tuple<float, float> GetDpiXY(Window window)
+        private static void GetDpi(Window window, out float x, out float y)
         {
-            IntPtr hWnd = new WindowInteropHelper(window).EnsureHandle();
-            Graphics g = Graphics.FromHwnd(hWnd);
+            var hWnd = new WindowInteropHelper(window).EnsureHandle();
+            var g = Graphics.FromHwnd(hWnd);
 
-            return new(96 / g.DpiX, 96 / g.DpiY);
+            x = 96 / g.DpiX;
+            y = 96 / g.DpiY;
+        }
+
+        private static ImageSource ByteToImage(byte[] imageData)
+        {
+            BitmapImage biImg = new();
+            using MemoryStream ms = new(imageData);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+
+            return biImg as ImageSource;
+        }
+
+        private static byte[]? ImageToByte(Image img)
+        {
+            var converter = new ImageConverter();
+            return converter.ConvertTo(img, typeof(byte[])) as byte[];
         }
     }
 }

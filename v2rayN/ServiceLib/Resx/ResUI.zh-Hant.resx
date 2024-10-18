@@ -1228,4 +1228,7 @@
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>俄羅斯</value>
   </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>掃描圖片中的二維碼</value>
+  </data>
 </root>

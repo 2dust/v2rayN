@@ -82,6 +82,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.AddServerViaImageCmd, v => v.menuAddServerViaImage).DisposeWith(disposables);
 
                 //sub
                 this.BindCommand(ViewModel, vm => vm.SubSettingCmd, v => v.menuSubSetting).DisposeWith(disposables);
@@ -221,6 +222,10 @@ namespace v2rayN.Views
                     await ScanScreenTaskAsync();
                     break;
 
+                case EViewAction.ScanImageTask:
+                    await ScanImageTaskAsync();
+                    break;
+
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = WindowsUtils.GetClipboardData();
                     ViewModel?.AddServerViaClipboardAsync(clipboardData);
@@ -317,15 +322,26 @@ namespace v2rayN.Views
         {
             ShowHideWindow(false);
 
-            var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
-            string result = await Task.Run(() =>
+            if (Application.Current?.MainWindow is Window window)
             {
-                return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
-            });
+                var bytes = QRCodeHelper.CaptureScreen(window);
+                await ViewModel?.ScanScreenResult(bytes);
+            }
 
             ShowHideWindow(true);
+        }
 
-            ViewModel?.ScanScreenResult(result);
+        private async Task ScanImageTaskAsync()
+        {
+            if (UI.OpenFileDialog(out var fileName, "PNG|*.png|All|*.*") != true)
+            {
+                return;
+            }
+            if (fileName.IsNullOrEmpty())
+            {
+                return;
+            }
+            await ViewModel?.ScanImageResult(fileName);
         }
 
         private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)

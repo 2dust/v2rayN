@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
@@ -60,6 +61,7 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.AddServerViaImageCmd, v => v.menuAddServerViaImage).DisposeWith(disposables);
 
                 //sub
                 this.BindCommand(ViewModel, vm => vm.SubSettingCmd, v => v.menuSubSetting).DisposeWith(disposables);
@@ -224,6 +226,10 @@ namespace v2rayN.Desktop.Views
                     await ScanScreenTaskAsync();
                     break;
 
+                case EViewAction.ScanImageTask:
+                    await ScanImageTaskAsync();
+                    break;
+
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = await AvaUtils.GetClipboardData(this);
                     ViewModel?.AddServerViaClipboardAsync(clipboardData);
@@ -324,7 +330,16 @@ namespace v2rayN.Desktop.Views
 
             ShowHideWindow(true);
 
-            //ViewModel?.ScanScreenTaskAsync(result);
+            //ViewModel?.ScanScreenResult(result);
+        }
+        private async Task ScanImageTaskAsync()
+        {
+            var fileName = await UI.OpenFileDialog(this,null );
+            if (fileName.IsNullOrEmpty())
+            {
+                return;
+            }
+            await ViewModel?.ScanImageResult(fileName);
         }
 
         private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)

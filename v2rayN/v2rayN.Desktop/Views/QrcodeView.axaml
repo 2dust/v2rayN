@@ -17,8 +17,7 @@
         <Image
             Name="imgQrcode"
             Width="300"
-            Height="300"
-            Source="/Assets/close.png" />
+            Height="300" />
 
         <TextBox
             x:Name="txtContent"
@@ -29,6 +28,6 @@
             IsReadOnly="True"
             MaxLines="1" />
 
- 
+
     </Grid>
 </UserControl>

@@ -1351,4 +1351,7 @@
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>Users in China region can ignore this item</value>
   </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>Scan QR code in the image</value>
+  </data>
 </root>

@@ -1348,4 +1348,7 @@
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>俄罗斯</value>
   </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>扫描图片中的二维码</value>
+  </data>
 </root>

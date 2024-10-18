@@ -15,6 +15,7 @@
         ShareServer,
         ShowHideWindow,
         ScanScreenTask,
+        ScanImageTask,
         Shutdown,
         BrowseServer,
         ImportRulesFromFile,

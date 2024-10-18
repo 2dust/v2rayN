@@ -682,6 +682,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Scan QR code in the image 的本地化字符串。
+        /// </summary>
+        public static string menuAddServerViaImage {
+            get {
+                return ResourceManager.GetString("menuAddServerViaImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan QR code on the screen (Ctrl+S) 的本地化字符串。
         /// </summary>
         public static string menuAddServerViaScan {
