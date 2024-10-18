@@ -105,6 +105,11 @@ namespace ServiceLib.Common
             return _db.Execute(sql);
         }
 
+        public int DeleteAll<T>()
+        {
+            return _db.DeleteAll<T>();
+        }
+
         public async Task<int> ExecuteAsync(string sql)
         {
             return await _dbAsync.ExecuteAsync(sql);

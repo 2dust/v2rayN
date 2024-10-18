@@ -121,12 +121,17 @@
 
         public static readonly List<string> SingboxRulesetSources = new() {
             "",
-            @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/refs/heads/release/sing-box/rule-set-{0}/{1}.srs",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-rules-dat@release/sing-box/rule-set-{0}/{1}.srs",
         };
 
         public static readonly List<string> RoutingRulesSources = new() {
             "",
-            @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/refs/heads/main/template.json",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/template.json",
+        };
+
+        public static readonly List<string> DNSTemplateSources = new() {
+            "",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/",
         };
 
         public static readonly Dictionary<string, string> UserAgentTexts = new()
