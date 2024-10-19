@@ -17,9 +17,15 @@ namespace v2rayN.Desktop.Views
 
         private Bitmap? GetQRCode(string? url)
         {
-            var qrCodeImage = QRCodeHelper.GenQRCode(url);
-            if (qrCodeImage is null) return null;
-            var ms = new MemoryStream(qrCodeImage);
+            var bytes = QRCodeHelper.GenQRCode(url);
+            return ByteToBitmap(bytes);
+        }
+
+        private Bitmap? ByteToBitmap(byte[]? bytes)
+        {
+            if (bytes is null) return null;
+
+            using var ms = new MemoryStream(bytes);
             return new Bitmap(ms);
         }
     }

@@ -320,17 +320,17 @@ namespace v2rayN.Desktop.Views
 
         public async Task ScanScreenTaskAsync()
         {
-            ShowHideWindow(false);
-
-            //var dpiXY = QRCodeHelper.GetDpiXY(Application.Current.MainWindow);
-            //string result = await Task.Run(() =>
+            //ShowHideWindow(false);
+ 
+            NoticeHandler.Instance.SendMessageAndEnqueue("Not yet implemented.(还未实现)");
+            return;
+            //if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             //{
-            //    return QRCodeHelper.ScanScreen(dpiXY.Item1, dpiXY.Item2);
-            //});
+            //    //var bytes = QRCodeHelper.CaptureScreen(desktop);
+            //    //await ViewModel?.ScanScreenResult(bytes);
+            //}
 
-            ShowHideWindow(true);
-
-            //ViewModel?.ScanScreenResult(result);
+            //ShowHideWindow(true);
         }
         private async Task ScanImageTaskAsync()
         {

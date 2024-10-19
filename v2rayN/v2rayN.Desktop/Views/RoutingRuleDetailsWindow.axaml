@@ -158,13 +158,15 @@
                 x:Name="btnSave"
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
-                Cursor="Hand" />
+                Cursor="Hand"
+                IsDefault="True" />
             <Button
                 x:Name="btnCancel"
                 Width="100"
                 Margin="8,0"
                 Content="{x:Static resx:ResUI.TbCancel}"
-                Cursor="Hand" />
+                Cursor="Hand"
+                IsCancel="True" />
         </StackPanel>
 
         <Grid Classes="Margin8">

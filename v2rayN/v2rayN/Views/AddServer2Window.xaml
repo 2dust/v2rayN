@@ -33,6 +33,7 @@
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 Cursor="Hand"
+                IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"

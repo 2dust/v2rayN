@@ -6,14 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="vms:CheckUpdateViewModel"
     mc:Ignorable="d">
 
     <DockPanel Classes="Margin8">
         <StackPanel
-            HorizontalAlignment="Right"
+            HorizontalAlignment="Center"
             Classes="Margin8"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
@@ -67,14 +67,16 @@
                                     Grid.Column="0"
                                     Margin="8"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
+                                    VerticalAlignment="Top"
                                     IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding CoreType}" />
                                 <TextBlock
                                     Grid.Column="2"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />

@@ -37,7 +37,6 @@
                 Width="100"
                 Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckUpdate}"
-                IsCancel="True"
                 IsDefault="True"
                 Style="{StaticResource MaterialDesignFlatButton}" />
 
@@ -48,7 +47,6 @@
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="{x:Static resx:ResUI.menuClose}"
                 IsCancel="True"
-                IsDefault="True"
                 Style="{StaticResource MaterialDesignFlatButton}" />
         </StackPanel>
 
@@ -84,6 +82,7 @@
                                     Grid.Column="0"
                                     Margin="{StaticResource Margin8}"
                                     HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
                                     IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"
