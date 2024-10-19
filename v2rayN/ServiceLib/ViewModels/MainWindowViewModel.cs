@@ -554,11 +554,11 @@ namespace ServiceLib.ViewModels
         {
             await Task.Run(() =>
             {
-                //if (_config.tunModeItem.enableTun)
-                //{
-                //    Task.Delay(1000).Wait();
-                //    WindowsUtils.RemoveTunDevice();
-                //}
+                if (_config.tunModeItem.enableTun)
+                {
+                    Task.Delay(1000).Wait();
+                    WindowsUtils.RemoveTunDevice();
+                }
 
                 var node = ConfigHandler.GetDefaultServer(_config);
                 CoreHandler.Instance.LoadCore(node);
