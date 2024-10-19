@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Interop;
@@ -7,9 +8,6 @@ using System.Windows.Media.Imaging;
 
 namespace v2rayN
 {
-    /// <summary>
-    /// 含有QR码的描述类和包装编码和渲染
-    /// </summary>
     public class QRCodeHelper
     {
         public static ImageSource? GetQRCode(string? strContent)
@@ -62,21 +60,14 @@ namespace v2rayN
             y = 96 / g.DpiY;
         }
 
-        private static ImageSource ByteToImage(byte[] imageData)
+        private static ImageSource? ByteToImage(IEnumerable imageData)
         {
-            BitmapImage biImg = new();
-            using MemoryStream ms = new(imageData);
-            biImg.BeginInit();
-            biImg.StreamSource = ms;
-            biImg.EndInit();
-
-            return biImg as ImageSource;
+            return new ImageSourceConverter().ConvertFrom(imageData) as BitmapSource;
         }
 
         private static byte[]? ImageToByte(Image img)
         {
-            var converter = new ImageConverter();
-            return converter.ConvertTo(img, typeof(byte[])) as byte[];
+            return new ImageConverter().ConvertTo(img, typeof(byte[])) as byte[];
         }
     }
 }
