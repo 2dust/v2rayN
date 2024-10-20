@@ -120,7 +120,7 @@ namespace ServiceLib.ViewModels
 
         #region locked
 
-        private void BindingLockedData()
+        private async Task BindingLockedData()
         {
             _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
             if (_lockedItem == null)
@@ -131,7 +131,7 @@ namespace ServiceLib.ViewModels
                     url = string.Empty,
                     locked = true,
                 };
-                ConfigHandler.AddBatchRoutingRules(ref _lockedItem, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
+                await ConfigHandler.AddBatchRoutingRules(_lockedItem, Utils.GetEmbedText(Global.CustomRoutingFileName + "locked"));
             }
 
             if (_lockedItem != null)
@@ -208,7 +208,7 @@ namespace ServiceLib.ViewModels
 
             EndBindingLockedData();
 
-            if (ConfigHandler.SaveConfig(_config) == 0)
+            if (await ConfigHandler.SaveConfig(_config) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);
@@ -288,7 +288,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
+            if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
                 RefreshRoutingItems();
                 IsModified = true;
@@ -297,7 +297,7 @@ namespace ServiceLib.ViewModels
 
         private async Task RoutingAdvancedImportRules()
         {
-            if (ConfigHandler.InitRouting(_config, true) == 0)
+            if (await ConfigHandler.InitRouting(_config, true) == 0)
             {
                 RefreshRoutingItems();
                 IsModified = true;

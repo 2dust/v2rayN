@@ -100,17 +100,15 @@ namespace ServiceLib.ViewModels
               });
         }
 
-        private void GetClashConnections()
+        private async Task GetClashConnections()
         {
-            ClashApiHandler.Instance.GetClashConnections(_config, async (it) =>
+            var ret = await ClashApiHandler.Instance.GetClashConnectionsAsync(_config);
+            if (ret == null)
             {
-                if (it == null)
-                {
-                    return;
-                }
+                return;
+            }
 
-                _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, it?.connections);
-            });
+            _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, ret?.connections);
         }
 
         public void RefreshConnections(List<ConnectionItem>? connections)
@@ -140,7 +138,7 @@ namespace ServiceLib.ViewModels
                 model.uploadTraffic = $"{Utils.HumanFy((long)item.upload)}";
                 model.downloadTraffic = $"{Utils.HumanFy((long)item.download)}";
                 model.elapsed = sp.ToString(@"hh\:mm\:ss");
-                model.chain = item.chains?.Count > 0 ? item.chains[0] : String.Empty;
+                model.chain = item.chains?.Count > 0 ? item.chains[0] : string.Empty;
 
                 lstModel.Add(model);
             }
@@ -193,8 +191,8 @@ namespace ServiceLib.ViewModels
             {
                 _connectionItems.Clear();
             }
-            ClashApiHandler.Instance.ClashConnectionClose(id);
-            GetClashConnections();
+            await ClashApiHandler.Instance.ClashConnectionClose(id);
+            await GetClashConnections();
         }
     }
 }

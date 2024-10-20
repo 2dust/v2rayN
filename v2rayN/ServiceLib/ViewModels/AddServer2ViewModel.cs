@@ -64,7 +64,7 @@ namespace ServiceLib.ViewModels
             }
             SelectedSource.coreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
-            if (ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
+            if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);
@@ -75,7 +75,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void BrowseServer(string fileName)
+        public async Task BrowseServer(string fileName)
         {
             if (Utils.IsNullOrEmpty(fileName))
             {
@@ -85,7 +85,7 @@ namespace ServiceLib.ViewModels
             var item = AppHandler.Instance.GetProfileItem(SelectedSource.indexId);
             item ??= SelectedSource;
             item.address = fileName;
-            if (ConfigHandler.AddCustomServer(_config, item, false) == 0)
+            if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
                 if (Utils.IsNotEmpty(item.indexId))

@@ -41,7 +41,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
+            if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);

@@ -215,7 +215,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var index = _rules.IndexOf(item);
-            if (ConfigHandler.MoveRoutingRule(_rules, index, eMove) == 0)
+            if (await ConfigHandler.MoveRoutingRule(_rules, index, eMove) == 0)
             {
                 RefreshRulesItems();
             }
@@ -237,7 +237,7 @@ namespace ServiceLib.ViewModels
             item.ruleNum = _rules.Count;
             item.ruleSet = JsonUtils.Serialize(_rules, false);
 
-            if (ConfigHandler.SaveRoutingItem(_config, item) == 0)
+            if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);

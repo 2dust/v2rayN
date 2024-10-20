@@ -479,7 +479,7 @@ namespace ServiceLib.ViewModels
 
         private async Task RemoveDuplicateServer()
         {
-            var tuple = ConfigHandler.DedupServerList(_config, _config.subIndexId);
+            var tuple = await ConfigHandler.DedupServerList(_config, _config.subIndexId);
             RefreshServers();
             Reload();
             NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
@@ -491,7 +491,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (ConfigHandler.CopyServer(_config, lstSelecteds) == 0)
+            if (await ConfigHandler.CopyServer(_config, lstSelecteds) == 0)
             {
                 RefreshServers();
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
@@ -524,7 +524,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
+            if (await ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
             {
                 RefreshServers();
                 Reload();
@@ -572,19 +572,20 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, coreType, out string indexId) != 0)
+            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, coreType);
+            if (ret.Item1 != 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
                 return;
             }
-            if (indexId == _config.indexId)
+            if (ret.Item2 == _config.indexId)
             {
                 RefreshServers();
                 Reload();
             }
             else
             {
-                await SetDefaultServer(indexId);
+                await SetDefaultServer(ret.Item2);
             }
         }
 
@@ -597,7 +598,7 @@ namespace ServiceLib.ViewModels
 
             _dicHeaderSort.TryAdd(colName, true);
             _dicHeaderSort.TryGetValue(colName, out bool asc);
-            if (ConfigHandler.SortServers(_config, _config.subIndexId, colName, asc) != 0)
+            if (await ConfigHandler.SortServers(_config, _config.subIndexId, colName, asc) != 0)
             {
                 return;
             }
@@ -640,18 +641,18 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (ConfigHandler.MoveServer(_config, ref _lstProfile, index, eMove) == 0)
+            if (await ConfigHandler.MoveServer(_config, _lstProfile, index, eMove) == 0)
             {
                 RefreshServers();
             }
         }
 
-        public void MoveServerTo(int startIndex, ProfileItemModel targetItem)
+        public async Task MoveServerTo(int startIndex, ProfileItemModel targetItem)
         {
             var targetIndex = _profileItems.IndexOf(targetItem);
             if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
             {
-                if (ConfigHandler.MoveServer(_config, ref _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
+                if (await ConfigHandler.MoveServer(_config, _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
                 {
                     RefreshServers();
                 }

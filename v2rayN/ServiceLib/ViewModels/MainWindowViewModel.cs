@@ -286,8 +286,8 @@ namespace ServiceLib.ViewModels
                 await SysProxyHandler.UpdateSysProxy(_config, true);
 
                 ConfigHandler.SaveConfig(_config);
-                ProfileExHandler.Instance.SaveTo();
-                StatisticsHandler.Instance.SaveTo();
+                await ProfileExHandler.Instance.SaveTo();
+                await StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
                 CoreHandler.Instance.CoreStop();
 
@@ -383,7 +383,7 @@ namespace ServiceLib.ViewModels
                 await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
                 return;
             }
-            int ret = ConfigHandler.AddBatchServers(_config, clipboardData, _config.subIndexId, false);
+            int ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.subIndexId, false);
             if (ret > 0)
             {
                 RefreshSubscriptions();
@@ -427,7 +427,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                int ret = ConfigHandler.AddBatchServers(_config, result, _config.subIndexId, false);
+                int ret = await ConfigHandler.AddBatchServers(_config, result, _config.subIndexId, false);
                 if (ret > 0)
                 {
                     RefreshSubscriptions();
@@ -451,7 +451,7 @@ namespace ServiceLib.ViewModels
 
         public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
         {
-            (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
+            await (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
         }
 
         #endregion Subscription
@@ -552,7 +552,7 @@ namespace ServiceLib.ViewModels
 
         private async Task LoadCore()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 //if (_config.tunModeItem.enableTun)
                 //{
@@ -560,7 +560,7 @@ namespace ServiceLib.ViewModels
                 //    WindowsUtils.RemoveTunDevice();
                 //}
 
-                var node = ConfigHandler.GetDefaultServer(_config);
+                var node = await ConfigHandler.GetDefaultServer(_config);
                 CoreHandler.Instance.LoadCore(node);
             });
         }
@@ -590,7 +590,7 @@ namespace ServiceLib.ViewModels
 
         public async Task ApplyRegionalPreset(EPresetType type)
         {
-            ConfigHandler.ApplyRegionalPreset(_config, type);
+            await ConfigHandler.ApplyRegionalPreset(_config, type);
             ConfigHandler.InitRouting(_config);
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 

@@ -51,7 +51,7 @@ namespace ServiceLib.ViewModels
         {
             DisplayOperationMsg();
             _config.webDavItem = SelectedSource;
-            ConfigHandler.SaveConfig(_config);
+            await ConfigHandler.SaveConfig(_config);
 
             var result = await WebDavHandler.Instance.CheckConnection();
             if (result)

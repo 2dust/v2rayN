@@ -90,9 +90,9 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.DispatcherRefreshIcon:
-                    Application.Current?.Dispatcher.Invoke((() =>
+                    Application.Current?.Dispatcher.Invoke((async () =>
                     {
-                        tbNotify.Icon = WindowsHandler.Instance.GetNotifyIcon(_config);
+                        tbNotify.Icon = await WindowsHandler.Instance.GetNotifyIcon(_config);
                         Application.Current.MainWindow.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
                     break;

@@ -31,14 +31,14 @@
 
                 foreach (var item in lstSubs)
                 {
-                    updateHandle.UpdateSubscriptionProcess(config, item.id, true, (bool success, string msg) =>
-                    {
-                        updateFunc?.Invoke(success, msg);
-                        if (success)
-                            Logging.SaveLog("subscription" + msg);
-                    });
+                    await updateHandle.UpdateSubscriptionProcess(config, item.id, true, (bool success, string msg) =>
+                        {
+                            updateFunc?.Invoke(success, msg);
+                            if (success)
+                                Logging.SaveLog("subscription" + msg);
+                        });
                     item.updateTime = updateTime;
-                    ConfigHandler.AddSubItem(config, item);
+                    await ConfigHandler.AddSubItem(config, item);
 
                     await Task.Delay(5000);
                 }

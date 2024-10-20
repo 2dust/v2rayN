@@ -444,7 +444,7 @@ namespace ServiceLib.Services.CoreConfig
             return inbound;
         }
 
-        private int GenRouting(V2rayConfig v2rayConfig)
+        private async Task<int> GenRouting(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -455,7 +455,7 @@ namespace ServiceLib.Services.CoreConfig
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
-                        var routing = ConfigHandler.GetDefaultRouting(_config);
+                        var routing = await ConfigHandler.GetDefaultRouting(_config);
                         if (routing != null)
                         {
                             if (Utils.IsNotEmpty(routing.domainStrategy))

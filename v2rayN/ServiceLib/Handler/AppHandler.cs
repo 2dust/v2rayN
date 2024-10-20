@@ -46,7 +46,8 @@
 
         public bool InitApp()
         {
-            if (ConfigHandler.LoadConfig(ref _config) != 0)
+            _config = ConfigHandler.LoadConfig();
+            if (_config == null)
             {
                 return false;
             }
@@ -152,7 +153,7 @@
                 {
                     filter = filter.Replace("'", "");
                 }
-                sql += String.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
+                sql += string.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
             }
 
             return SQLiteHelper.Instance.Query<ProfileItemModel>(sql).ToList();

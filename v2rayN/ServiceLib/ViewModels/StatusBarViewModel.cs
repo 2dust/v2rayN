@@ -220,12 +220,12 @@ namespace ServiceLib.ViewModels
             if (service != null) await service.UpdateSubscriptionProcess("", blProxy);
         }
 
-        public void RefreshServersBiz()
+        public async Task RefreshServersBiz()
         {
             RefreshServersMenu();
 
             //display running server
-            var running = ConfigHandler.GetDefaultServer(_config);
+            var running = await ConfigHandler.GetDefaultServer(_config);
             if (running != null)
             {
                 RunningServerDisplay =
@@ -283,7 +283,7 @@ namespace ServiceLib.ViewModels
 
         public async Task TestServerAvailability()
         {
-            var item = ConfigHandler.GetDefaultServer(_config);
+            var item = await ConfigHandler.GetDefaultServer(_config);
             if (item == null)
             {
                 return;
@@ -379,7 +379,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (ConfigHandler.SetDefaultRouting(_config, item) == 0)
+            if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
             {
                 NoticeHandler.Instance.SendMessageEx(ResUI.TipChangeRouting);
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();

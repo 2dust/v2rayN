@@ -9,14 +9,14 @@ namespace v2rayN.Handler
         private static readonly Lazy<WindowsHandler> instance = new(() => new());
         public static WindowsHandler Instance => instance.Value;
 
-        public Icon GetNotifyIcon(Config config)
+        public async Task<Icon> GetNotifyIcon(Config config)
         {
             try
             {
                 int index = (int)config.systemProxyItem.sysProxyType;
 
                 //Load from routing setting
-                var createdIcon = GetNotifyIcon4Routing(config);
+                var createdIcon = await GetNotifyIcon4Routing(config);
                 if (createdIcon != null)
                 {
                     return createdIcon;
@@ -65,7 +65,7 @@ namespace v2rayN.Handler
             return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
         }
 
-        private Icon? GetNotifyIcon4Routing(Config config)
+        private async Task<Icon?>   GetNotifyIcon4Routing(Config config)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace v2rayN.Handler
                     return null;
                 }
 
-                var item = ConfigHandler.GetDefaultRouting(config);
+                var item = await ConfigHandler.GetDefaultRouting(config);
                 if (item == null || Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
                 {
                     return null;

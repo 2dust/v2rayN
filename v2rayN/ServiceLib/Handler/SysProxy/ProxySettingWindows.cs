@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using static ServiceLib.Handler.SysProxy.ProxySettingWindows.InternetConnectionOption;
 
 namespace ServiceLib.Handler.SysProxy

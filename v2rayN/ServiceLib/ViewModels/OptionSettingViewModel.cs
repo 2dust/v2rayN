@@ -341,7 +341,7 @@ namespace ServiceLib.ViewModels
             //coreType
             SaveCoreType();
 
-            if (ConfigHandler.SaveConfig(_config) == 0)
+            if (await ConfigHandler.SaveConfig(_config) == 0)
             {
                 if (needReboot)
                 {

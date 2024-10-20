@@ -25,8 +25,8 @@
 
             InitData();
 
-            _statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStat);
-            _statisticsSingbox = new StatisticsSingboxService(config, UpdateServerStat);
+            _statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStatHandler);
+            _statisticsSingbox = new StatisticsSingboxService(config, UpdateServerStatHandler);
         }
 
         public void Close()
@@ -42,20 +42,20 @@
             }
         }
 
-        public void ClearAllServerStatistics()
+        public async Task ClearAllServerStatistics()
         {
-            SQLiteHelper.Instance.Execute($"delete from ServerStatItem ");
+            await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem ");
             _serverStatItem = null;
             _lstServerStat = new();
         }
 
-        public void SaveTo()
+        public async Task SaveTo()
         {
             try
             {
                 if (_lstServerStat != null)
                 {
-                    SQLiteHelper.Instance.UpdateAll(_lstServerStat);
+                    await SQLiteHelper.Instance.UpdateAllAsync(_lstServerStat);
                 }
             }
             catch (Exception ex)
@@ -64,19 +64,24 @@
             }
         }
 
-        private void InitData()
+        private async Task InitData()
         {
-            SQLiteHelper.Instance.Execute($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
+            await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
 
             long ticks = DateTime.Now.Date.Ticks;
-            SQLiteHelper.Instance.Execute($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
+            await SQLiteHelper.Instance.ExecuteAsync($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
             _lstServerStat = SQLiteHelper.Instance.Table<ServerStatItem>().ToList();
         }
 
-        private void UpdateServerStat(ServerSpeedItem server)
+        private void UpdateServerStatHandler(ServerSpeedItem server)
         {
-            GetServerStatItem(_config.indexId);
+            UpdateServerStat(server);
+        }
+
+        private async Task UpdateServerStat(ServerSpeedItem server)
+        {
+            await GetServerStatItem(_config.indexId);
 
             if (_serverStatItem is null)
             {
@@ -98,7 +103,7 @@
             _updateFunc?.Invoke(server);
         }
 
-        private void GetServerStatItem(string indexId)
+        private async Task GetServerStatItem(string indexId)
         {
             long ticks = DateTime.Now.Date.Ticks;
             if (_serverStatItem != null && _serverStatItem.indexId != indexId)
@@ -120,7 +125,7 @@
                         todayDown = 0,
                         dateNow = ticks
                     };
-                    SQLiteHelper.Instance.Replace(_serverStatItem);
+                    await SQLiteHelper.Instance.ReplaceAsync(_serverStatItem);
                     _lstServerStat.Add(_serverStatItem);
                 }
             }

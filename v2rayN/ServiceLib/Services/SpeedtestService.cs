@@ -88,7 +88,7 @@ namespace ServiceLib.Services
             UpdateFunc("", ResUI.SpeedtestingStop);
         }
 
-        private Task RunTcping()
+        private async Task RunTcping()
         {
             try
             {
@@ -123,13 +123,11 @@ namespace ServiceLib.Services
             }
             finally
             {
-                ProfileExHandler.Instance.SaveTo();
+                await ProfileExHandler.Instance.SaveTo();
             }
-
-            return Task.CompletedTask;
         }
 
-        private Task RunRealPing()
+        private async Task RunRealPing()
         {
             int pid = -1;
             try
@@ -140,7 +138,7 @@ namespace ServiceLib.Services
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 DownloadService downloadHandle = new DownloadService();
@@ -186,10 +184,8 @@ namespace ServiceLib.Services
                 {
                     CoreHandler.Instance.CoreStopPid(pid);
                 }
-                ProfileExHandler.Instance.SaveTo();
+                await ProfileExHandler.Instance.SaveTo();
             }
-
-            return Task.CompletedTask;
         }
 
         private async Task RunSpeedTestAsync()
@@ -321,7 +317,7 @@ namespace ServiceLib.Services
                 CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
-            ProfileExHandler.Instance.SaveTo();
+            await ProfileExHandler.Instance.SaveTo();
         }
 
         private async Task RunMixedtestAsync()

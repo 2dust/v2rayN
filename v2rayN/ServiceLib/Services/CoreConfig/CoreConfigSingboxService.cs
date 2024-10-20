@@ -468,7 +468,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenInbounds(SingboxConfig singboxConfig)
+        private async Task<int> GenInbounds(SingboxConfig singboxConfig)
         {
             try
             {
@@ -493,7 +493,7 @@ namespace ServiceLib.Services.CoreConfig
 
                     if (_config.routingBasicItem.enableRoutingAdvanced)
                     {
-                        var routing = ConfigHandler.GetDefaultRouting(_config);
+                        var routing = await ConfigHandler.GetDefaultRouting(_config);
                         if (Utils.IsNotEmpty(routing.domainStrategy4Singbox))
                         {
                             inbound.domain_strategy = routing.domainStrategy4Singbox;
@@ -899,7 +899,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenRouting(SingboxConfig singboxConfig)
+        private async Task<int> GenRouting(SingboxConfig singboxConfig)
         {
             try
             {
@@ -952,7 +952,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 if (_config.routingBasicItem.enableRoutingAdvanced)
                 {
-                    var routing = ConfigHandler.GetDefaultRouting(_config);
+                    var routing = await ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
                     {
                         var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
@@ -1276,7 +1276,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int ConvertGeo2Ruleset(SingboxConfig singboxConfig)
+        private async Task<int> ConvertGeo2Ruleset(SingboxConfig singboxConfig)
         {
             static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
             {
@@ -1328,7 +1328,7 @@ namespace ServiceLib.Services.CoreConfig
             List<Ruleset4Sbox> customRulesets = [];
             if (_config.routingBasicItem.enableRoutingAdvanced)
             {
-                var routing = ConfigHandler.GetDefaultRouting(_config);
+                var routing = await ConfigHandler.GetDefaultRouting(_config);
                 if (Utils.IsNotEmpty(routing.customRulesetPath4Singbox))
                 {
                     var result = Utils.LoadResource(routing.customRulesetPath4Singbox);
