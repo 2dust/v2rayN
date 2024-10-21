@@ -1009,7 +1009,7 @@ namespace ServiceLib.Handler
             var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
 
             var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType);
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 return result;
             }
@@ -1642,7 +1642,7 @@ namespace ServiceLib.Handler
         public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
         {
             var downloadHandle = new DownloadService();
-            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, false, "")).Result;
+            var templateContent = await downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, true, "");
             if (string.IsNullOrEmpty(templateContent))
                 return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
@@ -1665,7 +1665,7 @@ namespace ServiceLib.Handler
 
                 var ruleSetsString = !string.IsNullOrEmpty(item.ruleSet)
                     ? item.ruleSet
-                    : Task.Run(() => downloadHandle.TryDownloadString(item.url, false, "")).Result;
+                    : await downloadHandle.TryDownloadString(item.url, true, "");
 
                 if (string.IsNullOrEmpty(ruleSetsString))
                     continue;
@@ -1795,7 +1795,7 @@ namespace ServiceLib.Handler
             var currentItem = await AppHandler.Instance.GetDNSItem(type);
 
             var downloadHandle = new DownloadService();
-            var templateContent = Task.Run(() => downloadHandle.TryDownloadString(url, true, "")).Result;
+            var templateContent = await downloadHandle.TryDownloadString(url, true, "");
             if (string.IsNullOrEmpty(templateContent))
                 return currentItem;
 
@@ -1804,10 +1804,10 @@ namespace ServiceLib.Handler
                 return currentItem;
 
             if (!string.IsNullOrEmpty(template.normalDNS))
-                template.normalDNS = Task.Run(() => downloadHandle.TryDownloadString(template.normalDNS, true, "")).Result;
+                template.normalDNS = await downloadHandle.TryDownloadString(template.normalDNS, true, "");
 
             if (!string.IsNullOrEmpty(template.tunDNS))
-                template.tunDNS = Task.Run(() => downloadHandle.TryDownloadString(template.tunDNS, true, "")).Result;
+                template.tunDNS = await downloadHandle.TryDownloadString(template.tunDNS, true, "");
 
             template.id = currentItem.id;
             template.enabled = currentItem.enabled;

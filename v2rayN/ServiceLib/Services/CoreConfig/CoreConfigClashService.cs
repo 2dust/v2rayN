@@ -21,7 +21,7 @@
         /// <returns></returns>
         public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             if (node == null || fileName is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -148,7 +148,7 @@
                 ClashApiHandler.Instance.ProfileContent = fileContent;
 
                 ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
-                ret.Code = 0;
+                ret.Success = true;
                 return ret;
             }
             catch (Exception ex)

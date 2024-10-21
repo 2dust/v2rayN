@@ -10,21 +10,9 @@ namespace ServiceLib.Services
     /// </summary>
     public class DownloadService
     {
-        public event EventHandler<ResultEventArgs>? UpdateCompleted;
+        public event EventHandler<RetResult>? UpdateCompleted;
 
         public event ErrorEventHandler? Error;
-
-        public class ResultEventArgs : EventArgs
-        {
-            public bool Success;
-            public string Msg;
-
-            public ResultEventArgs(bool success, string msg)
-            {
-                Success = success;
-                Msg = msg;
-            }
-        }
 
         public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
         {
@@ -63,12 +51,12 @@ namespace ServiceLib.Services
             try
             {
                 SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
-                UpdateCompleted?.Invoke(this, new ResultEventArgs(false, $"{ResUI.Downloading}   {url}"));
+                UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
                 progress.ProgressChanged += (sender, value) =>
                 {
-                    UpdateCompleted?.Invoke(this, new ResultEventArgs(value > 100, $"...{value}%"));
+                    UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
                 };
 
                 var webProxy = GetWebProxy(blProxy);

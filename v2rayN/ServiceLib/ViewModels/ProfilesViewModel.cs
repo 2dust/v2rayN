@@ -586,7 +586,7 @@ namespace ServiceLib.ViewModels
             }
 
             var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, coreType);
-            if (ret.Code != 0)
+            if (ret.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
                 return;
@@ -705,7 +705,7 @@ namespace ServiceLib.ViewModels
             if (blClipboard)
             {
                 var result = await CoreConfigHandler.GenerateClientConfig(item, null);
-                if (result.Code != 0)
+                if (result.Success != true)
                 {
                     NoticeHandler.Instance.Enqueue(result.Msg);
                 }
@@ -728,7 +728,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var result = await CoreConfigHandler.GenerateClientConfig(item, null);
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(result.Msg);
             }

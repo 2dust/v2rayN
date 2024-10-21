@@ -17,7 +17,7 @@ namespace ServiceLib.Services.CoreConfig
 
         public async Task<RetResult> GenerateClientConfigContent(ProfileItem node)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             try
             {
                 if (node == null
@@ -65,7 +65,7 @@ namespace ServiceLib.Services.CoreConfig
                 await ConvertGeo2Ruleset(singboxConfig);
 
                 ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
-                ret.Code = 0;
+                ret.Success = true;
                 ret.Data = JsonUtils.Serialize(singboxConfig);
                 return ret;
             }
@@ -79,7 +79,7 @@ namespace ServiceLib.Services.CoreConfig
 
         public async Task<RetResult> GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             try
             {
                 if (_config == null)
@@ -229,7 +229,7 @@ namespace ServiceLib.Services.CoreConfig
                 //}
 
                 //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
-                ret.Code = 0;
+                ret.Success = true;
                 ret.Data = JsonUtils.Serialize(singboxConfig);
                 return ret;
             }
@@ -243,7 +243,7 @@ namespace ServiceLib.Services.CoreConfig
 
         public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             try
             {
                 if (_config == null)
@@ -345,7 +345,7 @@ namespace ServiceLib.Services.CoreConfig
                 outSelector.outbounds.Insert(0, outUrltest.tag);
                 singboxConfig.outbounds.Add(outSelector);
 
-                ret.Code = 0;
+                ret.Success = true;
                 ret.Data = JsonUtils.Serialize(singboxConfig);
                 return ret;
             }
@@ -359,7 +359,7 @@ namespace ServiceLib.Services.CoreConfig
 
         public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             if (node == null || fileName is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -425,7 +425,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
-                ret.Code = 0;
+                ret.Success = true;
                 return ret;
             }
             catch (Exception ex)

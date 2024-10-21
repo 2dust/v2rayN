@@ -9,20 +9,6 @@ namespace ServiceLib.Services
         private Config _config;
         private int _timeout = 30;
 
-        private class ResultEventArgs
-        {
-            public bool Success;
-            public string Msg;
-            public string Url;
-
-            public ResultEventArgs(bool success, string msg, string url = "")
-            {
-                Success = success;
-                Msg = msg;
-                Url = url;
-            }
-        }
-
         public async Task CheckUpdateGuiN(Config config, Action<bool, string> updateFunc, bool preRelease)
         {
             _config = config;
@@ -55,7 +41,7 @@ namespace ServiceLib.Services
                 _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
                 _updateFunc?.Invoke(false, args.Msg);
 
-                url = args.Url;
+                url = args.Data?.ToString();
                 fileName = Utils.GetTempPath(Utils.GetGuid());
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
@@ -106,7 +92,7 @@ namespace ServiceLib.Services
                 _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, type));
                 _updateFunc?.Invoke(false, args.Msg);
 
-                url = args.Url;
+                url = args.Data?.ToString();
                 var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
                 fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
@@ -266,7 +252,7 @@ namespace ServiceLib.Services
 
         #region private
 
-        private async Task<ResultEventArgs> CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, bool preRelease)
+        private async Task<RetResult> CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, bool preRelease)
         {
             try
             {
@@ -280,14 +266,14 @@ namespace ServiceLib.Services
                 }
                 else
                 {
-                    return new ResultEventArgs(false, "");
+                    return new RetResult(false, "");
                 }
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
                 _updateFunc?.Invoke(false, ex.Message);
-                return new ResultEventArgs(false, ex.Message);
+                return new RetResult(false, ex.Message);
             }
         }
 
@@ -347,7 +333,7 @@ namespace ServiceLib.Services
             }
         }
 
-        private async Task<ResultEventArgs> ParseDownloadUrl(ECoreType type, string gitHubReleaseApi, bool preRelease)
+        private async Task<RetResult> ParseDownloadUrl(ECoreType type, string gitHubReleaseApi, bool preRelease)
         {
             try
             {
@@ -398,16 +384,16 @@ namespace ServiceLib.Services
 
                 if (curVersion >= version && version != new SemanticVersion(0, 0, 0))
                 {
-                    return new ResultEventArgs(false, message);
+                    return new RetResult(false, message);
                 }
 
-                return new ResultEventArgs(true, body, url);
+                return new RetResult(true, body, url);
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
                 _updateFunc?.Invoke(false, ex.Message);
-                return new ResultEventArgs(false, ex.Message);
+                return new RetResult(false, ex.Message);
             }
         }
 

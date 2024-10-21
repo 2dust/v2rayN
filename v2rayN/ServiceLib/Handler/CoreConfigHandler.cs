@@ -8,7 +8,7 @@
         public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
         {
             var config = AppHandler.Instance.Config;
-            var result = new RetResult(-1);
+            var result = new RetResult();
 
             if (node.configType == EConfigType.Custom)
             {
@@ -33,7 +33,7 @@
             {
                 result = await new CoreConfigV2rayService(config).GenerateClientConfigContent(node);
             }
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 return result;
             }
@@ -47,7 +47,7 @@
 
         private static async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
         {
-            var ret = new RetResult(-1);
+            var ret = new RetResult();
             try
             {
                 if (node == null || fileName is null)
@@ -83,7 +83,7 @@
                 }
 
                 ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
-                ret.Code = 0;
+                ret.Success = true;
                 return ret;
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@
 
         public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType)
         {
-            var result = new RetResult(-1);
+            var result = new RetResult();
             if (coreType == ECoreType.sing_box)
             {
                 result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(selecteds);
@@ -105,7 +105,7 @@
             {
                 result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(selecteds);
             }
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 return result;
             }
@@ -115,7 +115,7 @@
 
         public static async Task<RetResult> GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, ECoreType coreType)
         {
-            var result = new RetResult(-1);
+            var result = new RetResult();
             if (coreType == ECoreType.sing_box)
             {
                 result = await new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds);
@@ -125,7 +125,7 @@
                 result = await new CoreConfigV2rayService(config).GenerateClientMultipleLoadConfig(selecteds);
             }
 
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 return result;
             }

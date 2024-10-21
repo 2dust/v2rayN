@@ -2,13 +2,26 @@
 {
     public class RetResult
     {
-        public int Code { get; set; }
+        public bool Success { get; set; }
         public string? Msg { get; set; }
         public object? Data { get; set; }
 
-        public RetResult(int code)
+        public RetResult(bool success = false)
         {
-            Code = code;
+            Success = success;
+        }
+
+        public RetResult(bool success, string? msg)
+        {
+            Success = success;
+            Msg = msg;
+        }
+
+        public RetResult(bool success, string? msg, object? data)
+        {
+            Success = success;
+            Msg = msg;
+            Data = data;
         }
     }
 }

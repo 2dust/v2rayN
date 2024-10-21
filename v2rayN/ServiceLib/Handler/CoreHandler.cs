@@ -35,7 +35,7 @@ namespace ServiceLib.Handler
             var fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
             ShowMsg(false, result.Msg);
-            if (result.Code != 0)
+            if (result.Success != true)
             {
                 return;
             }
@@ -72,7 +72,7 @@ namespace ServiceLib.Handler
             var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
             ShowMsg(false, result.Msg);
-            if (result.Code == 0)
+            if (result.Success)
             {
                 pid = CoreStartSpeedtest(configPath, coreType);
             }
@@ -225,7 +225,7 @@ namespace ServiceLib.Handler
                 {
                     string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2);
-                    if (result.Code == 0)
+                    if (result.Success)
                     {
                         var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
                         var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
