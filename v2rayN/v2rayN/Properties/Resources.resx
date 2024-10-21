@@ -127,4 +127,7 @@
   <data name="NotifyIcon3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NotifyIcon3.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NotifyIcon4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NotifyIcon4.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
