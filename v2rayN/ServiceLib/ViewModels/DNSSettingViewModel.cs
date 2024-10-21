@@ -23,21 +23,7 @@ namespace ServiceLib.ViewModels
         public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
-
-            var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray).Result;
-            useSystemHosts = item.useSystemHosts;
-            domainStrategy4Freedom = item?.domainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress = item?.domainDNSAddress ?? string.Empty;
-            normalDNS = item?.normalDNS ?? string.Empty;
-
-            var item2 = AppHandler.Instance.GetDNSItem(ECoreType.sing_box).Result;
-            domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress2 = item2?.domainDNSAddress ?? string.Empty;
-            normalDNS2 = item2?.normalDNS ?? string.Empty;
-            tunDNS2 = item2?.tunDNS ?? string.Empty;
-
             SaveCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await SaveSettingAsync();
@@ -53,6 +39,23 @@ namespace ServiceLib.ViewModels
                 normalDNS2 = Utils.GetEmbedText(Global.DNSSingboxNormalFileName);
                 tunDNS2 = Utils.GetEmbedText(Global.TunSingboxDNSFileName);
             });
+
+            Init();
+        }
+
+        private async Task Init()
+        {
+            var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+            useSystemHosts = item.useSystemHosts;
+            domainStrategy4Freedom = item?.domainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress = item?.domainDNSAddress ?? string.Empty;
+            normalDNS = item?.normalDNS ?? string.Empty;
+
+            var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress2 = item2?.domainDNSAddress ?? string.Empty;
+            normalDNS2 = item2?.normalDNS ?? string.Empty;
+            tunDNS2 = item2?.tunDNS ?? string.Empty;
         }
 
         private async Task SaveSettingAsync()

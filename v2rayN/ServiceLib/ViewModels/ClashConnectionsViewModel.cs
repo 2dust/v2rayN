@@ -10,7 +10,6 @@ namespace ServiceLib.ViewModels
     public class ClashConnectionsViewModel : MyReactiveObject
     {
         private IObservableCollection<ClashConnectionModel> _connectionItems = new ObservableCollectionExtended<ClashConnectionModel>();
-
         public IObservableCollection<ClashConnectionModel> ConnectionItems => _connectionItems;
 
         [Reactive]
@@ -42,13 +41,12 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
               x => x.SortingSelected,
               y => y >= 0)
-                  .Subscribe(c => DoSortingSelected(c));
+                  .Subscribe(async c => await DoSortingSelected(c));
 
             this.WhenAnyValue(
                x => x.AutoRefresh,
                y => y == true)
                    .Subscribe(c => { _config.clashUIItem.connectionsAutoRefresh = AutoRefresh; });
-
             ConnectionCloseCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await ClashConnectionClose(false);
@@ -62,26 +60,12 @@ namespace ServiceLib.ViewModels
             Init();
         }
 
-        private void DoSortingSelected(bool c)
-        {
-            if (!c)
-            {
-                return;
-            }
-            if (SortingSelected != _config.clashUIItem.connectionsSorting)
-            {
-                _config.clashUIItem.connectionsSorting = SortingSelected;
-            }
-
-            GetClashConnections();
-        }
-
-        private void Init()
+        private async Task Init()
         {
             var lastTime = DateTime.Now;
 
             Observable.Interval(TimeSpan.FromSeconds(5))
-              .Subscribe(x =>
+              .Subscribe(async x =>
               {
                   if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
                   {
@@ -92,12 +76,26 @@ namespace ServiceLib.ViewModels
                   {
                       if ((dtNow - lastTime).Minutes % _config.clashUIItem.connectionsRefreshInterval == 0)
                       {
-                          GetClashConnections();
+                          await GetClashConnections();
                           lastTime = dtNow;
                       }
                       Task.Delay(1000).Wait();
                   }
               });
+        }
+
+        private async Task DoSortingSelected(bool c)
+        {
+            if (!c)
+            {
+                return;
+            }
+            if (SortingSelected != _config.clashUIItem.connectionsSorting)
+            {
+                _config.clashUIItem.connectionsSorting = SortingSelected;
+            }
+
+            await GetClashConnections();
         }
 
         private async Task GetClashConnections()

@@ -29,8 +29,12 @@ namespace ServiceLib.ViewModels
         public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
+
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SaveRulesAsync();
+            });
 
             if (rulesItem.id.IsNullOrEmpty())
             {
@@ -47,11 +51,6 @@ namespace ServiceLib.ViewModels
             Domain = Utils.List2String(SelectedSource.domain, true);
             IP = Utils.List2String(SelectedSource.ip, true);
             Process = Utils.List2String(SelectedSource.process, true);
-
-            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SaveRulesAsync();
-            });
         }
 
         private async Task SaveRulesAsync()

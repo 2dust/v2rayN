@@ -46,33 +46,6 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            SelectedGroup = new();
-            SelectedDetail = new();
-
-            AutoRefresh = _config.clashUIItem.proxiesAutoRefresh;
-            SortingSelected = _config.clashUIItem.proxiesSorting;
-            RuleModeSelected = (int)_config.clashUIItem.ruleMode;
-
-            this.WhenAnyValue(
-               x => x.SelectedGroup,
-               y => y != null && Utils.IsNotEmpty(y.name))
-                   .Subscribe(c => RefreshProxyDetails(c));
-
-            this.WhenAnyValue(
-               x => x.RuleModeSelected,
-               y => y >= 0)
-                   .Subscribe(c => DoRulemodeSelected(c));
-
-            this.WhenAnyValue(
-               x => x.SortingSelected,
-               y => y >= 0)
-                  .Subscribe(c => DoSortingSelected(c));
-
-            this.WhenAnyValue(
-            x => x.AutoRefresh,
-            y => y == true)
-                .Subscribe(c => { _config.clashUIItem.proxiesAutoRefresh = AutoRefresh; });
-
             ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await ProxiesReload();
@@ -91,11 +64,42 @@ namespace ServiceLib.ViewModels
                 await SetActiveProxy();
             });
 
-            ProxiesReload();
-            DelayTestTask();
+            SelectedGroup = new();
+            SelectedDetail = new();
+            AutoRefresh = _config.clashUIItem.proxiesAutoRefresh;
+            SortingSelected = _config.clashUIItem.proxiesSorting;
+            RuleModeSelected = (int)_config.clashUIItem.ruleMode;
+
+            this.WhenAnyValue(
+               x => x.SelectedGroup,
+               y => y != null && Utils.IsNotEmpty(y.name))
+                   .Subscribe(c => RefreshProxyDetails(c));
+
+            this.WhenAnyValue(
+               x => x.RuleModeSelected,
+               y => y >= 0)
+                   .Subscribe(async c => await DoRulemodeSelected(c));
+
+            this.WhenAnyValue(
+               x => x.SortingSelected,
+               y => y >= 0)
+                  .Subscribe(c => DoSortingSelected(c));
+
+            this.WhenAnyValue(
+            x => x.AutoRefresh,
+            y => y == true)
+                .Subscribe(c => { _config.clashUIItem.proxiesAutoRefresh = AutoRefresh; });
+
+            Init();
         }
 
-        private void DoRulemodeSelected(bool c)
+        private async Task Init()
+        {
+            await ProxiesReload();
+            await DelayTestTask();
+        }
+
+        private async Task DoRulemodeSelected(bool c)
         {
             if (!c)
             {
@@ -105,16 +109,16 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            SetRuleModeCheck((ERuleMode)RuleModeSelected);
+            await SetRuleModeCheck((ERuleMode)RuleModeSelected);
         }
 
-        public void SetRuleModeCheck(ERuleMode mode)
+        public async Task SetRuleModeCheck(ERuleMode mode)
         {
             if (_config.clashUIItem.ruleMode == mode)
             {
                 return;
             }
-            SetRuleMode(mode);
+            await SetRuleMode(mode);
         }
 
         private void DoSortingSelected(bool c)
@@ -385,7 +389,7 @@ namespace ServiceLib.ViewModels
             {
                 if (item == null)
                 {
-                    GetClashProxies(true);
+                    await GetClashProxies(true);
                     return;
                 }
                 if (Utils.IsNullOrEmpty(result))
@@ -427,7 +431,7 @@ namespace ServiceLib.ViewModels
 
         #region task
 
-        public void DelayTestTask()
+        public async Task DelayTestTask()
         {
             var lastTime = DateTime.Now;
 

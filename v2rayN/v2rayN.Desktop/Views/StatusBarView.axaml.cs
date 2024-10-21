@@ -21,7 +21,7 @@ namespace v2rayN.Desktop.Views
             //ViewModel = new StatusBarViewModel(UpdateViewHandler);
             //Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
             ViewModel = Locator.Current.GetService<StatusBarViewModel>();
-            ViewModel?.Init(UpdateViewHandler);
+            ViewModel?.InitUpdateView(UpdateViewHandler);
 
             txtRunningServerDisplay.Tapped += TxtRunningServerDisplay_Tapped;
             txtRunningInfoDisplay.Tapped += TxtRunningServerDisplay_Tapped;

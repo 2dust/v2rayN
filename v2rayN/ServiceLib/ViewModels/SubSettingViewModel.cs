@@ -25,12 +25,7 @@ namespace ServiceLib.ViewModels
         public SubSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
-
-            SelectedSource = new();
-
-            RefreshSubItems();
 
             var canEditRemove = this.WhenAnyValue(
                x => x.SelectedSource,
@@ -52,6 +47,15 @@ namespace ServiceLib.ViewModels
             {
                 await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.url);
             }, canEditRemove);
+
+            Init();
+        }
+
+        private async Task Init()
+        {
+            SelectedSource = new();
+
+            await RefreshSubItems();
         }
 
         public async Task RefreshSubItems()

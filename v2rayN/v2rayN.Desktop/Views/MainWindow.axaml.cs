@@ -4,7 +4,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
@@ -40,7 +39,7 @@ namespace v2rayN.Desktop.Views
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-            MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(x => DelegateSnackMsg(x));
+            MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(DelegateSnackMsg);
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
@@ -123,6 +122,7 @@ namespace v2rayN.Desktop.Views
                 menuSettingsSetUWP.IsVisible = false;
                 menuGlobalHotkeySetting.IsVisible = false;
             }
+            menuAddServerViaScan.IsVisible = false;
 
             switch (_config.uiItem.mainGirdOrientation)
             {
@@ -289,7 +289,7 @@ namespace v2rayN.Desktop.Views
                         break;
 
                     case Key.S:
-                        ScanScreenTaskAsync().ContinueWith(_ => { });
+                        await ScanScreenTaskAsync();
                         break;
                 }
             }

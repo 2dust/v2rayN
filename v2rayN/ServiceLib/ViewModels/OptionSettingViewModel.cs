@@ -105,9 +105,18 @@ namespace ServiceLib.ViewModels
         public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
 
+            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SaveSettingAsync();
+            });
+
+            Init();
+        }
+
+        private async Task Init()
+        {
             #region Core
 
             var inbound = _config.inbound[0];
@@ -191,15 +200,10 @@ namespace ServiceLib.ViewModels
 
             #endregion Tun mode
 
-            InitCoreType();
-
-            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SaveSettingAsync();
-            });
+            await InitCoreType();
         }
 
-        private void InitCoreType()
+        private async Task InitCoreType()
         {
             if (_config.coreTypeItem == null)
             {
@@ -339,7 +343,7 @@ namespace ServiceLib.ViewModels
             _config.tunModeItem.enableIPv6Address = TunEnableIPv6Address;
 
             //coreType
-            SaveCoreType();
+            await SaveCoreType();
 
             if (await ConfigHandler.SaveConfig(_config) == 0)
             {
@@ -359,7 +363,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private int SaveCoreType()
+        private async Task SaveCoreType()
         {
             for (int k = 1; k <= _config.coreTypeItem.Count; k++)
             {
@@ -396,7 +400,6 @@ namespace ServiceLib.ViewModels
                 }
                 item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
             }
-            return 0;
         }
     }
 }

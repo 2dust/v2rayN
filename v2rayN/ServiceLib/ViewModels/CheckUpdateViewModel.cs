@@ -17,31 +17,25 @@ namespace ServiceLib.ViewModels
         public IObservableCollection<CheckUpdateItem> CheckUpdateItems => _checkUpdateItem;
         public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
-        [Reactive] public bool IsCheckUpdate { get; set; }
-        [Reactive] public bool AutoRun { get; set; }
 
         public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            RefreshSubItems();
-
             CheckUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await CheckUpdate()
-                .ContinueWith(t =>
-                {
-                    _ = UpdateFinished();
-                });
+                await CheckUpdate();
             });
+
             EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
-            IsCheckUpdate = true;
 
             this.WhenAnyValue(
             x => x.EnableCheckPreReleaseUpdate,
             y => y == true)
                 .Subscribe(c => { _config.guiItem.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate; });
+
+            RefreshSubItems();
         }
 
         private void RefreshSubItems()
@@ -86,31 +80,31 @@ namespace ServiceLib.ViewModels
             _lstUpdated = _checkUpdateItem.Where(x => x.IsSelected == true)
                     .Select(x => new CheckUpdateItem() { CoreType = x.CoreType }).ToList();
 
-            for (int k = _checkUpdateItem.Count - 1; k >= 0; k--)
+            for (var k = _checkUpdateItem.Count - 1; k >= 0; k--)
             {
                 var item = _checkUpdateItem[k];
-                if (item.IsSelected == true)
+                if (item.IsSelected != true) continue;
+
+                UpdateView(item.CoreType, "...");
+                if (item.CoreType == _geo)
                 {
-                    IsCheckUpdate = false;
-                    UpdateView(item.CoreType, "...");
-                    if (item.CoreType == _geo)
-                    {
-                        await CheckUpdateGeo();
-                    }
-                    else if (item.CoreType == _v2rayN)
-                    {
-                        await CheckUpdateN(EnableCheckPreReleaseUpdate);
-                    }
-                    else if (item.CoreType == ECoreType.mihomo.ToString())
-                    {
-                        await CheckUpdateCore(item, false);
-                    }
-                    else
-                    {
-                        await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
-                    }
+                    await CheckUpdateGeo();
+                }
+                else if (item.CoreType == _v2rayN)
+                {
+                    await CheckUpdateN(EnableCheckPreReleaseUpdate);
+                }
+                else if (item.CoreType == ECoreType.mihomo.ToString())
+                {
+                    await CheckUpdateCore(item, false);
+                }
+                else
+                {
+                    await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
                 }
             }
+
+            await UpdateFinished();
         }
 
         private void UpdatedPlusPlus(string coreType, string fileName)
@@ -204,7 +198,6 @@ namespace ServiceLib.ViewModels
         {
             if (blReload)
             {
-                IsCheckUpdate = true;
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();
             }
             else

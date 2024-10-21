@@ -29,7 +29,6 @@ namespace ServiceLib.ViewModels
             {
                 await WebDavCheck();
             });
-
             RemoteBackupCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await RemoteBackup();

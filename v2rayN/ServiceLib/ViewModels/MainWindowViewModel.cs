@@ -70,10 +70,6 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            Init();
-
-            _config.uiItem.showInTaskbar = true;
-
             #region WhenAnyValue && ReactiveCommand
 
             //servers
@@ -203,11 +199,13 @@ namespace ServiceLib.ViewModels
 
             #endregion WhenAnyValue && ReactiveCommand
 
-            AutoHideStartup();
+            Init();
         }
 
         private async Task Init()
         {
+            _config.uiItem.showInTaskbar = true;
+
             await ConfigHandler.InitBuiltinRouting(_config);
             await ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
@@ -219,6 +217,7 @@ namespace ServiceLib.ViewModels
             }
 
             await Reload();
+            await AutoHideStartup();
         }
 
         #endregion Init
@@ -571,16 +570,11 @@ namespace ServiceLib.ViewModels
             CoreHandler.Instance.CoreStop();
         }
 
-        private void AutoHideStartup()
+        private async Task AutoHideStartup()
         {
             if (_config.uiItem.autoHideStartup)
             {
-                Observable.Range(1, 1)
-                    .Delay(TimeSpan.FromSeconds(1))
-                    .Subscribe(async x =>
-                    {
-                        ShowHideWindow(false);
-                    });
+                ShowHideWindow(false);
             }
         }
 

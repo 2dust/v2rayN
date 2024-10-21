@@ -19,7 +19,6 @@ namespace v2rayN.Views
 
                 this.Bind(ViewModel, vm => vm.EnableCheckPreReleaseUpdate, v => v.togEnableCheckPreReleaseUpdate.IsChecked).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.CheckUpdateCmd, v => v.btnCheckUpdate).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.IsCheckUpdate, v => v.btnCheckUpdate.IsEnabled).DisposeWith(disposables);
             });
         }
 

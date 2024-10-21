@@ -36,26 +36,11 @@ namespace ServiceLib.ViewModels
         public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
-
             _updateView = updateView;
-            SelectedSource = new();
-
-            if (routingItem.id.IsNullOrEmpty())
-            {
-                SelectedRouting = routingItem;
-                _rules = new();
-            }
-            else
-            {
-                SelectedRouting = routingItem;
-                _rules = JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
-            }
-
-            RefreshRulesItems();
 
             var canEditRemove = this.WhenAnyValue(
-               x => x.SelectedSource,
-               selectedSource => selectedSource != null && !selectedSource.outboundTag.IsNullOrEmpty());
+                x => x.SelectedSource,
+                selectedSource => selectedSource != null && !selectedSource.outboundTag.IsNullOrEmpty());
 
             RuleAddCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -104,6 +89,12 @@ namespace ServiceLib.ViewModels
             {
                 await SaveRoutingAsync();
             });
+
+            SelectedSource = new();
+            SelectedRouting = routingItem;
+            _rules = routingItem.id.IsNullOrEmpty() ? new() : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
+
+            RefreshRulesItems();
         }
 
         public void RefreshRulesItems()

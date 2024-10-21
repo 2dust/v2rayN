@@ -23,9 +23,6 @@ namespace ServiceLib.ViewModels
         {
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
-
-            MessageBus.Current.Listen<string>(EMsgCommand.SendMsgView.ToString()).Subscribe(async x => await AppendQueueMsg(x));
-
             MsgFilter = _config.msgUIItem.mainMsgFilter ?? string.Empty;
             AutoRefresh = _config.msgUIItem.autoRefresh ?? true;
 
@@ -37,6 +34,13 @@ namespace ServiceLib.ViewModels
               x => x.AutoRefresh,
               y => y == true)
                   .Subscribe(c => { _config.msgUIItem.autoRefresh = AutoRefresh; });
+
+            MessageBus.Current.Listen<string>(EMsgCommand.SendMsgView.ToString()).Subscribe(OnNext);
+        }
+
+        private async void OnNext(string x)
+        {
+            await AppendQueueMsg(x);
         }
 
         private async Task AppendQueueMsg(string msg)

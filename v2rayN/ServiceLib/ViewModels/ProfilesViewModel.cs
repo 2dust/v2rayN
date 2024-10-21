@@ -99,20 +99,6 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            if (_updateView != null)
-            {
-                MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString())
-                    .Subscribe(async x => await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null));
-            }
-
-            SelectedProfile = new();
-            SelectedSub = new();
-            SelectedMoveToGroup = new();
-            SelectedServer = new();
-
-            RefreshSubscriptions();
-            RefreshServers();
-
             #region WhenAnyValue && ReactiveCommand
 
             var canEditRemove = this.WhenAnyValue(
@@ -122,16 +108,16 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
                 x => x.SelectedSub,
                 y => y != null && !y.remarks.IsNullOrEmpty() && _config.subIndexId != y.id)
-                    .Subscribe(c => SubSelectedChangedAsync(c));
+                    .Subscribe(async c => await SubSelectedChangedAsync(c));
             this.WhenAnyValue(
                  x => x.SelectedMoveToGroup,
                  y => y != null && !y.remarks.IsNullOrEmpty())
-                     .Subscribe(c => MoveToGroup(c));
+                     .Subscribe(async c => await MoveToGroup(c));
 
             this.WhenAnyValue(
               x => x.SelectedServer,
               y => y != null && !y.Text.IsNullOrEmpty())
-                  .Subscribe(c => ServerSelectedChanged(c));
+                  .Subscribe(async c => await ServerSelectedChanged(c));
 
             this.WhenAnyValue(
               x => x.ServerFilter,
@@ -240,11 +226,34 @@ namespace ServiceLib.ViewModels
             });
 
             #endregion WhenAnyValue && ReactiveCommand
+
+            if (_updateView != null)
+            {
+                MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(OnNext);
+            }
+
+            Init();
+        }
+
+        private async Task Init()
+        {
+            SelectedProfile = new();
+            SelectedSub = new();
+            SelectedMoveToGroup = new();
+            SelectedServer = new();
+
+            await RefreshSubscriptions();
+            RefreshServers();
         }
 
         #endregion Init
 
         #region Actions
+
+        private async void OnNext(string x)
+        {
+            await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
+        }
 
         private void Reload()
         {
@@ -534,7 +543,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void ServerSelectedChanged(bool c)
+        private async Task ServerSelectedChanged(bool c)
         {
             if (!c)
             {
@@ -548,7 +557,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            SetDefaultServer(SelectedServer.ID);
+            await SetDefaultServer(SelectedServer.ID);
         }
 
         public async Task ShareServerAsync()

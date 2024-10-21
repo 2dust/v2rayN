@@ -22,30 +22,21 @@ namespace ServiceLib.ViewModels
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
 
-            if (profileItem.indexId.IsNullOrEmpty())
-            {
-                SelectedSource = profileItem;
-            }
-            else
-            {
-                SelectedSource = JsonUtils.DeepCopy(profileItem);
-            }
-            CoreType = SelectedSource?.coreType?.ToString();
-
             BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 _updateView?.Invoke(EViewAction.BrowseServer, null);
             });
-
             EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await EditServer();
             });
-
             SaveServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await SaveServerAsync();
             });
+
+            SelectedSource = profileItem.indexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
+            CoreType = SelectedSource?.coreType?.ToString();
         }
 
         private async Task SaveServerAsync()
