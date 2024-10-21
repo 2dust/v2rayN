@@ -24,7 +24,7 @@
             while (true)
             {
                 var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-                var lstSubs = AppHandler.Instance.SubItems()
+                var lstSubs = (await AppHandler.Instance.SubItems())
                             .Where(t => t.autoUpdateInterval > 0)
                             .Where(t => updateTime - t.updateTime >= t.autoUpdateInterval * 60)
                             .ToList();

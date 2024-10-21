@@ -29,7 +29,7 @@ namespace ServiceLib.Handler
         {
             await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
-            _lstProfileEx = new(SQLiteHelper.Instance.Table<ProfileExItem>());
+            _lstProfileEx = new(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
         }
 
         private void IndexIdEnqueue(string indexId)
@@ -45,7 +45,7 @@ namespace ServiceLib.Handler
             var cnt = _queIndexIds.Count;
             if (cnt > 0)
             {
-                var lstExists = SQLiteHelper.Instance.Table<ProfileExItem>();
+                var lstExists = await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync();
                 List<ProfileExItem> lstInserts = [];
                 List<ProfileExItem> lstUpdates = [];
 

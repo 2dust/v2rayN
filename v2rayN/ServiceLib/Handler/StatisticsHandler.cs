@@ -71,7 +71,7 @@
             long ticks = DateTime.Now.Date.Ticks;
             await SQLiteHelper.Instance.ExecuteAsync($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
-            _lstServerStat = SQLiteHelper.Instance.Table<ServerStatItem>().ToList();
+            _lstServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
         }
 
         private void UpdateServerStatHandler(ServerSpeedItem server)

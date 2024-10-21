@@ -102,41 +102,45 @@
 
         #region SqliteHelper
 
-        public List<SubItem> SubItems()
+        public async Task<List<SubItem>> SubItems()
         {
-            return SQLiteHelper.Instance.Table<SubItem>().ToList();
+            return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.sort).ToListAsync();
         }
 
-        public SubItem GetSubItem(string subid)
+        public async Task<SubItem> GetSubItem(string subid)
         {
-            return SQLiteHelper.Instance.Table<SubItem>().FirstOrDefault(t => t.id == subid);
+            return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.id == subid);
         }
 
-        public List<ProfileItem> ProfileItems(string subid)
-        {
-            if (Utils.IsNullOrEmpty(subid))
-            {
-                return SQLiteHelper.Instance.Table<ProfileItem>().ToList();
-            }
-            else
-            {
-                return SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).ToList();
-            }
-        }
-
-        public List<string> ProfileItemIndexes(string subid)
+        public async Task<List<ProfileItem>> ProfileItems(string subid)
         {
             if (Utils.IsNullOrEmpty(subid))
             {
-                return SQLiteHelper.Instance.Table<ProfileItem>().Select(t => t.indexId).ToList();
+                return await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync();
             }
             else
             {
-                return SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid).Select(t => t.indexId).ToList();
+                return await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid).ToListAsync();
             }
         }
 
-        public List<ProfileItemModel> ProfileItems(string subid, string filter)
+        public async Task<List<string>> ProfileItemIndexes(string subid)
+        {
+            if (Utils.IsNullOrEmpty(subid))
+            {
+                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync())
+                        .Select(t => t.indexId)
+                        .ToList();
+            }
+            else
+            {
+                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid).ToListAsync())
+                        .Select(t => t.indexId)
+                        .ToList();
+            }
+        }
+
+        public async Task<List<ProfileItemModel>> ProfileItems(string subid, string filter)
         {
             var sql = @$"select a.*
                            ,b.remarks subRemarks
@@ -156,14 +160,14 @@
                 sql += string.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
             }
 
-            return SQLiteHelper.Instance.Query<ProfileItemModel>(sql).ToList();
+            return await SQLiteHelper.Instance.QueryAsync<ProfileItemModel>(sql);
         }
 
-        public List<ProfileItemModel> ProfileItemsEx(string subid, string filter)
+        public async Task<List<ProfileItemModel>> ProfileItemsEx(string subid, string filter)
         {
-            var lstModel = ProfileItems(_config.subIndexId, filter);
+            var lstModel = await ProfileItems(_config.subIndexId, filter);
 
-            ConfigHandler.SetDefaultServer(_config, lstModel);
+            await ConfigHandler.SetDefaultServer(_config, lstModel);
 
             var lstServerStat = (_config.guiItem.enableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
             var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
@@ -198,42 +202,42 @@
             return lstModel;
         }
 
-        public ProfileItem? GetProfileItem(string indexId)
+        public async Task<ProfileItem?> GetProfileItem(string indexId)
         {
             if (Utils.IsNullOrEmpty(indexId))
             {
                 return null;
             }
-            return SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.indexId == indexId);
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.indexId == indexId);
         }
 
-        public ProfileItem? GetProfileItemViaRemarks(string? remarks)
+        public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
         {
             if (Utils.IsNullOrEmpty(remarks))
             {
                 return null;
             }
-            return SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault(it => it.remarks == remarks);
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.remarks == remarks);
         }
 
-        public List<RoutingItem> RoutingItems()
+        public async Task<List<RoutingItem>> RoutingItems()
         {
-            return SQLiteHelper.Instance.Table<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToList();
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToListAsync();
         }
 
-        public RoutingItem GetRoutingItem(string id)
+        public async Task<RoutingItem> GetRoutingItem(string id)
         {
-            return SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == false && it.id == id);
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.locked == false && it.id == id);
         }
 
-        public List<DNSItem> DNSItems()
+        public async Task<List<DNSItem>> DNSItems()
         {
-            return SQLiteHelper.Instance.Table<DNSItem>().ToList();
+            return await SQLiteHelper.Instance.TableAsync<DNSItem>().ToListAsync();
         }
 
-        public DNSItem GetDNSItem(ECoreType eCoreType)
+        public async Task<DNSItem> GetDNSItem(ECoreType eCoreType)
         {
-            return SQLiteHelper.Instance.Table<DNSItem>().FirstOrDefault(it => it.coreType == eCoreType);
+            return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.coreType == eCoreType);
         }
 
         #endregion SqliteHelper

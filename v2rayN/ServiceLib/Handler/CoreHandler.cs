@@ -24,7 +24,7 @@ namespace ServiceLib.Handler
             Environment.SetEnvironmentVariable("xray.location.asset", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
         }
 
-        public void LoadCore(ProfileItem? node)
+        public async Task LoadCore(ProfileItem? node)
         {
             if (node == null)
             {
@@ -32,18 +32,18 @@ namespace ServiceLib.Handler
                 return;
             }
 
-            string fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
-            if (CoreConfigHandler.GenerateClientConfig(node, fileName, out string msg, out string content) != 0)
+            var fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
+            var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
+            ShowMsg(false, result.Msg);
+            if (result.Code != 0)
             {
-                ShowMsg(false, msg);
                 return;
             }
             else
             {
-                ShowMsg(false, msg);
                 ShowMsg(true, $"{node.GetSummary()}");
                 CoreStop();
-                CoreStart(node);
+                await CoreStart(node);
 
                 //In tun mode, do a delay check and restart the core
                 //if (_config.tunModeItem.enableTun)
@@ -65,18 +65,15 @@ namespace ServiceLib.Handler
             }
         }
 
-        public int LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
+        public async Task<int> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
         {
-            int pid = -1;
-            var coreType = selecteds.Exists(t => t.ConfigType == EConfigType.Hysteria2 || t.ConfigType == EConfigType.TUIC || t.ConfigType == EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
-            string configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
-            if (CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType, out string msg) != 0)
+            var pid = -1;
+            var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
+            var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
+            var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
+            ShowMsg(false, result.Msg);
+            if (result.Code == 0)
             {
-                ShowMsg(false, msg);
-            }
-            else
-            {
-                ShowMsg(false, msg);
                 pid = CoreStartSpeedtest(configPath, coreType);
             }
             return pid;
@@ -170,7 +167,7 @@ namespace ServiceLib.Handler
             return fileName;
         }
 
-        private void CoreStart(ProfileItem node)
+        private async Task CoreStart(ProfileItem node)
         {
             ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
@@ -227,7 +224,8 @@ namespace ServiceLib.Handler
                 if (itemSocks != null)
                 {
                     string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
-                    if (CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2, out string msg2, out string configStr) == 0)
+                    var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2);
+                    if (result.Code == 0)
                     {
                         var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
                         var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);

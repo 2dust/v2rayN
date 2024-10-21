@@ -82,7 +82,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = AppHandler.Instance.GetProfileItem(SelectedSource.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(SelectedSource.indexId);
             item ??= SelectedSource;
             item.address = fileName;
             if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)

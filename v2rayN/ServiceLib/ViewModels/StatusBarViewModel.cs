@@ -222,7 +222,7 @@ namespace ServiceLib.ViewModels
 
         public async Task RefreshServersBiz()
         {
-            RefreshServersMenu();
+            await RefreshServersMenu();
 
             //display running server
             var running = await ConfigHandler.GetDefaultServer(_config);
@@ -238,9 +238,9 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void RefreshServersMenu()
+        private async Task RefreshServersMenu()
         {
-            var lstModel = AppHandler.Instance.ProfileItems(_config.subIndexId, "");
+            var lstModel = await AppHandler.Instance.ProfileItems(_config.subIndexId, "");
 
             _servers.Clear();
             if (lstModel.Count > _config.guiItem.trayMenuServersLimit)
@@ -309,11 +309,11 @@ namespace ServiceLib.ViewModels
                 return;
             }
             _config.systemProxyItem.sysProxyType = type;
-            ChangeSystemProxyAsync(type, true);
+            await ChangeSystemProxyAsync(type, true);
             NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
 
             SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
-            ConfigHandler.SaveConfig(_config, false);
+            await ConfigHandler.SaveConfig(_config, false);
         }
 
         public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
@@ -336,7 +336,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public void RefreshRoutingsMenu()
+        public async Task RefreshRoutingsMenu()
         {
             _routingItems.Clear();
             if (!_config.routingBasicItem.enableRoutingAdvanced)
@@ -346,7 +346,7 @@ namespace ServiceLib.ViewModels
             }
 
             BlRouting = true;
-            var routings = AppHandler.Instance.RoutingItems();
+            var routings = await AppHandler.Instance.RoutingItems();
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
@@ -369,7 +369,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = AppHandler.Instance.GetRoutingItem(SelectedRouting?.id);
+            var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.id);
             if (item is null)
             {
                 return;

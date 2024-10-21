@@ -122,7 +122,7 @@ namespace ServiceLib.ViewModels
 
         private async Task BindingLockedData()
         {
-            _lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
+            _lockedItem = await ConfigHandler.GetLockedRoutingItem(_config);
             if (_lockedItem == null)
             {
                 _lockedItem = new RoutingItem()
@@ -171,11 +171,11 @@ namespace ServiceLib.ViewModels
 
         #region Refresh Save
 
-        public void RefreshRoutingItems()
+        public async Task RefreshRoutingItems()
         {
             _routingItems.Clear();
 
-            var routings = AppHandler.Instance.RoutingItems();
+            var routings = await AppHandler.Instance.RoutingItems();
             foreach (var item in routings)
             {
                 bool def = false;
@@ -242,7 +242,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
+                item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
                 if (item is null)
                 {
                     return;
@@ -268,7 +268,7 @@ namespace ServiceLib.ViewModels
             }
             foreach (var it in SelectedSources ?? [SelectedSource])
             {
-                var item = AppHandler.Instance.GetRoutingItem(it?.id);
+                var item = await AppHandler.Instance.GetRoutingItem(it?.id);
                 if (item != null)
                 {
                     ConfigHandler.RemoveRoutingItem(item);
@@ -281,7 +281,7 @@ namespace ServiceLib.ViewModels
 
         public async Task RoutingAdvancedSetDefault()
         {
-            var item = AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
+            var item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.id);
             if (item is null)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);

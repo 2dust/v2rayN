@@ -134,7 +134,7 @@ namespace ServiceLib.Services
             {
                 string msg = string.Empty;
 
-                pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+                pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
@@ -196,7 +196,7 @@ namespace ServiceLib.Services
             //    _selecteds = _selecteds.OrderBy(t => t.delay).ToList();
             //}
 
-            pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -231,7 +231,7 @@ namespace ServiceLib.Services
                 ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "-1");
                 UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-                var item = AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.Port);
@@ -252,13 +252,13 @@ namespace ServiceLib.Services
                 CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
-            ProfileExHandler.Instance.SaveTo();
+            await ProfileExHandler.Instance.SaveTo();
         }
 
         private async Task RunSpeedTestMulti()
         {
             int pid = -1;
-            pid = CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -294,7 +294,7 @@ namespace ServiceLib.Services
                 ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "-1");
                 UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-                var item = AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
                 WebProxy webProxy = new(Global.Loopback, it.Port);

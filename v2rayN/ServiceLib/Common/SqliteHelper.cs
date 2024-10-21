@@ -64,19 +64,9 @@ namespace ServiceLib.Common
             return await _dbAsync.ExecuteAsync(sql);
         }
 
-        public List<T> Query<T>(string sql) where T : new()
-        {
-            return _db.Query<T>(sql);
-        }
-
         public async Task<List<T>> QueryAsync<T>(string sql) where T : new()
         {
             return await _dbAsync.QueryAsync<T>(sql);
-        }
-
-        public TableQuery<T> Table<T>() where T : new()
-        {
-            return _db.Table<T>();
         }
 
         public AsyncTableQuery<T> TableAsync<T>() where T : new()

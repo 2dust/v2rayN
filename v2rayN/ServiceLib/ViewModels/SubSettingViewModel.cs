@@ -54,10 +54,10 @@ namespace ServiceLib.ViewModels
             }, canEditRemove);
         }
 
-        public void RefreshSubItems()
+        public async Task RefreshSubItems()
         {
             _subItems.Clear();
-            _subItems.AddRange(AppHandler.Instance.SubItems().OrderBy(t => t.sort));
+            _subItems.AddRange(await AppHandler.Instance.SubItems());
         }
 
         public async Task EditSubAsync(bool blNew)
@@ -69,7 +69,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = AppHandler.Instance.GetSubItem(SelectedSource?.id);
+                item = await AppHandler.Instance.GetSubItem(SelectedSource?.id);
                 if (item is null)
                 {
                     return;
@@ -77,7 +77,7 @@ namespace ServiceLib.ViewModels
             }
             if (await _updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
             {
-                RefreshSubItems();
+                await RefreshSubItems();
                 IsModified = true;
             }
         }
@@ -91,9 +91,9 @@ namespace ServiceLib.ViewModels
 
             foreach (var it in SelectedSources ?? [SelectedSource])
             {
-                ConfigHandler.DeleteSubItem(_config, it.id);
+                await ConfigHandler.DeleteSubItem(_config, it.id);
             }
-            RefreshSubItems();
+            await RefreshSubItems();
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             IsModified = true;
         }

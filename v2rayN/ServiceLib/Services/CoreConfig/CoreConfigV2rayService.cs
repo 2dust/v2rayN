@@ -15,92 +15,95 @@ namespace ServiceLib.Services.CoreConfig
 
         #region public gen function
 
-        public int GenerateClientConfigContent(ProfileItem node, out V2rayConfig? v2rayConfig, out string msg)
+        public async Task<RetResult> GenerateClientConfigContent(ProfileItem node)
         {
-            v2rayConfig = null;
+            var ret = new RetResult(-1);
             try
             {
                 if (node == null
                     || node.port <= 0)
                 {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
                 }
 
-                msg = ResUI.InitialConfiguration;
+                ret.Msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(Global.V2raySampleClient);
+                var result = Utils.GetEmbedText(Global.V2raySampleClient);
                 if (Utils.IsNullOrEmpty(result))
                 {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                    return ret;
                 }
 
-                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+                var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                    return ret;
                 }
 
-                GenLog(v2rayConfig);
+                await GenLog(v2rayConfig);
 
-                GenInbounds(v2rayConfig);
+                await GenInbounds(v2rayConfig);
 
-                GenRouting(v2rayConfig);
+                await GenRouting(v2rayConfig);
 
-                GenOutbound(node, v2rayConfig.outbounds[0]);
+                await GenOutbound(node, v2rayConfig.outbounds[0]);
 
-                GenMoreOutbounds(node, v2rayConfig);
+                await GenMoreOutbounds(node, v2rayConfig);
 
-                GenDns(node, v2rayConfig);
+                await GenDns(node, v2rayConfig);
 
-                GenStatistic(v2rayConfig);
+                await GenStatistic(v2rayConfig);
 
-                msg = string.Format(ResUI.SuccessfulConfiguration, "");
+                ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
+                ret.Code = 0;
+                ret.Data = JsonUtils.Serialize(v2rayConfig);
+                return ret;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog("GenerateClientConfig4V2ray", ex);
-                msg = ResUI.FailedGenDefaultConfiguration;
-                return -1;
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
             }
-            return 0;
         }
 
-        public int GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
+        public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
         {
-            v2rayConfig = null;
+            var ret = new RetResult(-1);
+
             try
             {
                 if (_config == null)
                 {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
                 }
 
-                msg = ResUI.InitialConfiguration;
+                ret.Msg = ResUI.InitialConfiguration;
 
                 string result = Utils.GetEmbedText(Global.V2raySampleClient);
                 string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                    return ret;
                 }
 
-                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+                var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                    return ret;
                 }
 
-                GenLog(v2rayConfig);
-                GenInbounds(v2rayConfig);
-                GenRouting(v2rayConfig);
-                GenDns(null, v2rayConfig);
-                GenStatistic(v2rayConfig);
+                await GenLog(v2rayConfig);
+                await GenInbounds(v2rayConfig);
+                await GenRouting(v2rayConfig);
+                await GenDns(null, v2rayConfig);
+                await GenStatistic(v2rayConfig);
                 v2rayConfig.outbounds.RemoveAt(0);
 
                 var tagProxy = new List<string>();
@@ -118,7 +121,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         continue;
                     }
-                    var item = AppHandler.Instance.GetProfileItem(it.indexId);
+                    var item = await AppHandler.Instance.GetProfileItem(it.indexId);
                     if (item is null)
                     {
                         continue;
@@ -142,15 +145,15 @@ namespace ServiceLib.Services.CoreConfig
 
                     //outbound
                     var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(item, outbound);
+                    await GenOutbound(item, outbound);
                     outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
                     v2rayConfig.outbounds.Add(outbound);
                     tagProxy.Add(outbound.tag);
                 }
                 if (tagProxy.Count <= 0)
                 {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                    return ret;
                 }
 
                 //add balancers
@@ -182,42 +185,44 @@ namespace ServiceLib.Services.CoreConfig
                     });
                 }
 
-                return 0;
+                ret.Code = 0;
+                ret.Data = JsonUtils.Serialize(v2rayConfig);
+                return ret;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                msg = ResUI.FailedGenDefaultConfiguration;
-                return -1;
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
             }
         }
 
-        public int GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds, out V2rayConfig? v2rayConfig, out string msg)
+        public async Task<RetResult> GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
         {
-            v2rayConfig = null;
+            var ret = new RetResult(-1);
             try
             {
                 if (_config == null)
                 {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
                 }
 
-                msg = ResUI.InitialConfiguration;
+                ret.Msg = ResUI.InitialConfiguration;
 
                 string result = Utils.GetEmbedText(Global.V2raySampleClient);
                 string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                    return ret;
                 }
 
-                v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+                var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
                 if (v2rayConfig == null)
                 {
-                    msg = ResUI.FailedGenDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                    return ret;
                 }
                 List<IPEndPoint> lstIpEndPoints = new();
                 List<TcpConnectionInformation> lstTcpConns = new();
@@ -232,7 +237,7 @@ namespace ServiceLib.Services.CoreConfig
                     Logging.SaveLog(ex.Message, ex);
                 }
 
-                GenLog(v2rayConfig);
+                await GenLog(v2rayConfig);
                 v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
                 v2rayConfig.outbounds.RemoveAt(0);
 
@@ -248,7 +253,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         continue;
                     }
-                    var item = AppHandler.Instance.GetProfileItem(it.IndexId);
+                    var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                     if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                     {
                         if (item is null || Utils.IsNullOrEmpty(item.id) || !Utils.IsGuidByParse(item.id))
@@ -316,7 +321,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
 
                     var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(item, outbound);
+                    await GenOutbound(item, outbound);
                     outbound.tag = Global.ProxyTag + inbound.port.ToString();
                     v2rayConfig.outbounds.Add(outbound);
 
@@ -330,14 +335,16 @@ namespace ServiceLib.Services.CoreConfig
                     v2rayConfig.routing.rules.Add(rule);
                 }
 
-                //msg = string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
-                return 0;
+                //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
+                ret.Code = 0;
+                ret.Data = JsonUtils.Serialize(v2rayConfig);
+                return ret;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                msg = ResUI.FailedGenDefaultConfiguration;
-                return -1;
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
             }
         }
 
@@ -345,7 +352,7 @@ namespace ServiceLib.Services.CoreConfig
 
         #region private gen function
 
-        private int GenLog(V2rayConfig v2rayConfig)
+        public async Task<int> GenLog(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -370,7 +377,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenInbounds(V2rayConfig v2rayConfig)
+        public async Task<int> GenInbounds(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -468,21 +475,21 @@ namespace ServiceLib.Services.CoreConfig
                                 if (item.enabled)
                                 {
                                     var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                                    GenRoutingUserRule(item2, v2rayConfig);
+                                    await GenRoutingUserRule(item2, v2rayConfig);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        var lockedItem = ConfigHandler.GetLockedRoutingItem(_config);
+                        var lockedItem = await ConfigHandler.GetLockedRoutingItem(_config);
                         if (lockedItem != null)
                         {
                             var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.ruleSet);
                             foreach (var item in rules)
                             {
                                 var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                                GenRoutingUserRule(item2, v2rayConfig);
+                                await GenRoutingUserRule(item2, v2rayConfig);
                             }
                         }
                     }
@@ -495,7 +502,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenRoutingUserRule(RulesItem4Ray? rule, V2rayConfig v2rayConfig)
+        public async Task<int> GenRoutingUserRule(RulesItem4Ray? rule, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -573,7 +580,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenOutbound(ProfileItem node, Outbounds4Ray outbound)
+        public async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
         {
             try
             {
@@ -617,7 +624,7 @@ namespace ServiceLib.Services.CoreConfig
                                 usersItem.security = Global.DefaultSecurity;
                             }
 
-                            GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                            await GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                             outbound.settings.servers = null;
                             break;
@@ -642,7 +649,7 @@ namespace ServiceLib.Services.CoreConfig
                             serversItem.ota = false;
                             serversItem.level = 1;
 
-                            GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound, false);
 
                             outbound.settings.vnext = null;
                             break;
@@ -678,7 +685,7 @@ namespace ServiceLib.Services.CoreConfig
                                 serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
                             }
 
-                            GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound, false);
 
                             outbound.settings.vnext = null;
                             break;
@@ -712,7 +719,7 @@ namespace ServiceLib.Services.CoreConfig
                             usersItem.email = Global.UserEMail;
                             usersItem.encryption = node.security;
 
-                            GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                            await GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
 
                             if (node.streamSecurity == Global.StreamSecurityReality
                                 || node.streamSecurity == Global.StreamSecurity)
@@ -721,12 +728,12 @@ namespace ServiceLib.Services.CoreConfig
                                 {
                                     usersItem.flow = node.flow;
 
-                                    GenOutboundMux(node, outbound, false);
+                                    await GenOutboundMux(node, outbound, false);
                                 }
                             }
                             if (node.streamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.flow))
                             {
-                                GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
+                                await GenOutboundMux(node, outbound, _config.coreBasicItem.muxEnabled);
                             }
 
                             outbound.settings.servers = null;
@@ -751,7 +758,7 @@ namespace ServiceLib.Services.CoreConfig
                             serversItem.ota = false;
                             serversItem.level = 1;
 
-                            GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound, false);
 
                             outbound.settings.vnext = null;
                             break;
@@ -759,7 +766,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 outbound.protocol = Global.ProtocolTypes[node.configType];
-                GenBoundStreamSettings(node, outbound.streamSettings);
+                await GenBoundStreamSettings(node, outbound.streamSettings);
             }
             catch (Exception ex)
             {
@@ -768,7 +775,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        public async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
         {
             try
             {
@@ -792,7 +799,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+        public async Task<int> GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
         {
             try
             {
@@ -1025,11 +1032,11 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
+        public async Task<int> GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
         {
             try
             {
-                var item = AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+                var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
                 var normalDNS = item?.normalDNS;
                 var domainStrategy4Freedom = item?.domainStrategy4Freedom;
                 if (Utils.IsNullOrEmpty(normalDNS))
@@ -1077,7 +1084,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                 }
 
-                GenDnsDomains(node, obj, item);
+                await GenDnsDomains(node, obj, item);
 
                 v2rayConfig.dns = obj;
             }
@@ -1088,7 +1095,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
+        public async Task<int> GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
         {
             if (node == null)
             { return 0; }
@@ -1108,7 +1115,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenStatistic(V2rayConfig v2rayConfig)
+        public async Task<int> GenStatistic(V2rayConfig v2rayConfig)
         {
             if (_config.guiItem.enableStatistics)
             {
@@ -1158,7 +1165,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private int GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
+        private async Task<int> GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
         {
             //fragment proxy
             if (_config.coreBasicItem.enableFragment
@@ -1193,7 +1200,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             try
             {
-                var subItem = AppHandler.Instance.GetSubItem(node.subid);
+                var subItem = await AppHandler.Instance.GetSubItem(node.subid);
                 if (subItem is null)
                 {
                     return 0;
@@ -1204,7 +1211,7 @@ namespace ServiceLib.Services.CoreConfig
                 var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
 
                 //Previous proxy
-                var prevNode = AppHandler.Instance.GetProfileItemViaRemarks(subItem.prevProfile);
+                var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.prevProfile);
                 if (prevNode is not null
                     && prevNode.configType != EConfigType.Custom
                     && prevNode.configType != EConfigType.Hysteria2
@@ -1212,7 +1219,7 @@ namespace ServiceLib.Services.CoreConfig
                     && prevNode.configType != EConfigType.WireGuard)
                 {
                     var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(prevNode, prevOutbound);
+                    await GenOutbound(prevNode, prevOutbound);
                     prevOutbound.tag = $"{Global.ProxyTag}2";
                     v2rayConfig.outbounds.Add(prevOutbound);
 
@@ -1223,7 +1230,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 //Next proxy
-                var nextNode = AppHandler.Instance.GetProfileItemViaRemarks(subItem.nextProfile);
+                var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.nextProfile);
                 if (nextNode is not null
                     && nextNode.configType != EConfigType.Custom
                     && nextNode.configType != EConfigType.Hysteria2
@@ -1231,7 +1238,7 @@ namespace ServiceLib.Services.CoreConfig
                     && nextNode.configType != EConfigType.WireGuard)
                 {
                     var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    GenOutbound(nextNode, nextOutbound);
+                    await GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
                     v2rayConfig.outbounds.Insert(0, nextOutbound);
 

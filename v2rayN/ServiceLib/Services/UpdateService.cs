@@ -126,7 +126,7 @@ namespace ServiceLib.Services
             _updateFunc = updateFunc;
 
             _updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
-            var subItem = AppHandler.Instance.SubItems().OrderBy(t => t.sort).ToList();
+            var subItem = await AppHandler.Instance.SubItems();
 
             if (subItem == null || subItem.Count <= 0)
             {
@@ -469,7 +469,7 @@ namespace ServiceLib.Services
             var geoSiteFiles = new List<string>();
 
             //Collect used files list
-            var routingItems = AppHandler.Instance.RoutingItems();
+            var routingItems = await AppHandler.Instance.RoutingItems();
             foreach (var routing in routingItems)
             {
                 var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);

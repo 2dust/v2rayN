@@ -19,22 +19,23 @@
         /// <param name="fileName"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public int GenerateClientCustomConfig(ProfileItem node, string? fileName, out string msg)
+        public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
         {
+            var ret = new RetResult(-1);
             if (node == null || fileName is null)
             {
-                msg = ResUI.CheckServerSettings;
-                return -1;
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
             }
 
-            msg = ResUI.InitialConfiguration;
+            ret.Msg = ResUI.InitialConfiguration;
 
             try
             {
                 if (node == null)
                 {
-                    msg = ResUI.CheckServerSettings;
-                    return -1;
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
                 }
 
                 if (File.Exists(fileName))
@@ -45,8 +46,8 @@
                 string addressFileName = node.address;
                 if (Utils.IsNullOrEmpty(addressFileName))
                 {
-                    msg = ResUI.FailedGetDefaultConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                    return ret;
                 }
                 if (!File.Exists(addressFileName))
                 {
@@ -54,8 +55,8 @@
                 }
                 if (!File.Exists(addressFileName))
                 {
-                    msg = ResUI.FailedReadConfiguration + "1";
-                    return -1;
+                    ret.Msg = ResUI.FailedReadConfiguration + "1";
+                    return ret;
                 }
 
                 string tagYamlStr1 = "!<str>";
@@ -73,8 +74,8 @@
                 var fileContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
                 if (fileContent == null)
                 {
-                    msg = ResUI.FailedConversionConfiguration;
-                    return -1;
+                    ret.Msg = ResUI.FailedConversionConfiguration;
+                    return ret;
                 }
 
                 //port
@@ -136,25 +137,26 @@
                 }
 
                 var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
-                File.WriteAllText(fileName, txtFileNew);
+                await File.WriteAllTextAsync(fileName, txtFileNew);
                 //check again
                 if (!File.Exists(fileName))
                 {
-                    msg = ResUI.FailedReadConfiguration + "2";
-                    return -1;
+                    ret.Msg = ResUI.FailedReadConfiguration + "2";
+                    return ret;
                 }
 
                 ClashApiHandler.Instance.ProfileContent = fileContent;
 
-                msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
+                ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
+                ret.Code = 0;
+                return ret;
             }
             catch (Exception ex)
             {
                 Logging.SaveLog("GenerateClientConfigClash", ex);
-                msg = ResUI.FailedGenDefaultConfiguration;
-                return -1;
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
             }
-            return 0;
         }
 
         private void MixinContent(Dictionary<string, object> fileContent, ProfileItem node)

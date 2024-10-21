@@ -218,7 +218,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddServer(Config config, ProfileItem profileItem)
         {
-            var item = AppHandler.Instance.GetProfileItem(profileItem.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(profileItem.indexId);
             if (item is null)
             {
                 item = profileItem;
@@ -330,7 +330,7 @@ namespace ServiceLib.Handler
         {
             foreach (var it in indexes)
             {
-                var item = AppHandler.Instance.GetProfileItem(it.indexId);
+                var item = await AppHandler.Instance.GetProfileItem(it.indexId);
                 if (item is null)
                 {
                     continue;
@@ -382,23 +382,26 @@ namespace ServiceLib.Handler
             {
                 return 0;
             }
-            if (SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.indexId == config.indexId).Any())
+            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.indexId == config.indexId);
+            if (count > 0)
             {
                 return 0;
             }
             if (lstProfile.Count > 0)
             {
-                return await SetDefaultServerIndex(config, lstProfile.Where(t => t.port > 0).FirstOrDefault()?.indexId);
+                return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.port > 0)?.indexId);
             }
-            return await SetDefaultServerIndex(config, SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.port > 0).Select(t => t.indexId).FirstOrDefault());
+
+            var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.port > 0).FirstOrDefaultAsync();
+            return await SetDefaultServerIndex(config, item.indexId);
         }
 
         public static async Task<ProfileItem?> GetDefaultServer(Config config)
         {
-            var item = AppHandler.Instance.GetProfileItem(config.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(config.indexId);
             if (item is null)
             {
-                var item2 = SQLiteHelper.Instance.Table<ProfileItem>().FirstOrDefault();
+                var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
                 await SetDefaultServerIndex(config, item2?.indexId);
                 return item2;
             }
@@ -531,7 +534,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
         {
-            var item = AppHandler.Instance.GetProfileItem(profileItem.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(profileItem.indexId);
             if (item is null)
             {
                 item = profileItem;
@@ -748,7 +751,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SortServers(Config config, string subId, string colName, bool asc)
         {
-            var lstModel = AppHandler.Instance.ProfileItems(subId, "");
+            var lstModel = await AppHandler.Instance.ProfileItems(subId, "");
             if (lstModel.Count <= 0)
             {
                 return -1;
@@ -880,7 +883,7 @@ namespace ServiceLib.Handler
 
         public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
         {
-            var lstProfile = AppHandler.Instance.ProfileItems(subId);
+            var lstProfile = await AppHandler.Instance.ProfileItems(subId);
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
@@ -980,7 +983,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                var item = AppHandler.Instance.GetProfileItem(indexId);
+                var item = await AppHandler.Instance.GetProfileItem(indexId);
                 if (item == null)
                 {
                     return 0;
@@ -1000,22 +1003,24 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        public static async Task<Tuple<int, string>> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType)
+        public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType)
         {
             var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
-            string configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
-            if (CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, out string msg) != 0)
+            var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
+
+            var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType);
+            if (result.Code != 0)
             {
-                return new Tuple<int, string>(-1, "");
+                return result;
             }
 
             var fileName = configPath;
             if (!File.Exists(fileName))
             {
-                return new Tuple<int, string>(-1, "");
+                return result;
             }
 
-            var profileItem = AppHandler.Instance.GetProfileItem(indexId) ?? new();
+            var profileItem = await AppHandler.Instance.GetProfileItem(indexId) ?? new();
             profileItem.indexId = indexId;
             profileItem.remarks = coreType == ECoreType.sing_box ? ResUI.menuSetDefaultMultipleServer : ResUI.menuSetDefaultLoadBalanceServer;
             profileItem.address = Global.CoreMultipleLoadConfigFileName;
@@ -1024,7 +1029,8 @@ namespace ServiceLib.Handler
 
             await AddServerCommon(config, profileItem, true);
 
-            return new Tuple<int, string>(0, indexId);
+            result.Data = indexId;
+            return result;
         }
 
         #endregion Server
@@ -1050,7 +1056,7 @@ namespace ServiceLib.Handler
             if (isSub && Utils.IsNotEmpty(subid))
             {
                 await RemoveServerViaSubid(config, subid, isSub);
-                subFilter = AppHandler.Instance.GetSubItem(subid)?.filter ?? "";
+                subFilter = (await AppHandler.Instance.GetSubItem(subid))?.filter ?? "";
             }
 
             int countServers = 0;
@@ -1089,7 +1095,7 @@ namespace ServiceLib.Handler
                         //Check for duplicate indexId
                         if (lstDbIndexId is null)
                         {
-                            lstDbIndexId = AppHandler.Instance.ProfileItemIndexes("");
+                            lstDbIndexId = await AppHandler.Instance.ProfileItemIndexes("");
                         }
                         if (lstAdd.Any(t => t.indexId == existItem.indexId)
                             || lstDbIndexId.Any(t => t == existItem.indexId))
@@ -1149,7 +1155,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            var subItem = AppHandler.Instance.GetSubItem(subid);
+            var subItem = await AppHandler.Instance.GetSubItem(subid);
             var subRemarks = subItem?.remarks;
             var preSocksPort = subItem?.preSocksPort;
 
@@ -1284,7 +1290,7 @@ namespace ServiceLib.Handler
             List<ProfileItem>? lstOriSub = null;
             if (isSub && Utils.IsNotEmpty(subid))
             {
-                lstOriSub = AppHandler.Instance.ProfileItems(subid);
+                lstOriSub = await AppHandler.Instance.ProfileItems(subid);
             }
 
             var counter = 0;
@@ -1328,7 +1334,8 @@ namespace ServiceLib.Handler
         public static async Task<int> AddSubItem(Config config, string url)
         {
             //already exists
-            if (SQLiteHelper.Instance.Table<SubItem>().Any(e => e.url == url))
+            var count = await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync(e => e.url == url);
+            if (count > 0)
             {
                 return 0;
             }
@@ -1354,7 +1361,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddSubItem(Config config, SubItem subItem)
         {
-            var item = AppHandler.Instance.GetSubItem(subItem.id);
+            var item = await AppHandler.Instance.GetSubItem(subItem.id);
             if (item is null)
             {
                 item = subItem;
@@ -1383,9 +1390,10 @@ namespace ServiceLib.Handler
                 if (item.sort <= 0)
                 {
                     var maxSort = 0;
-                    if (SQLiteHelper.Instance.Table<SubItem>().Count() > 0)
+                    if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                     {
-                        maxSort = SQLiteHelper.Instance.Table<SubItem>().Max(t => t == null ? 0 : t.sort);
+                        var lstSubs = (await AppHandler.Instance.SubItems());
+                        maxSort = lstSubs.LastOrDefault()?.sort ?? 0;
                     }
                     item.sort = maxSort + 1;
                 }
@@ -1412,7 +1420,7 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            var customProfile = SQLiteHelper.Instance.Table<ProfileItem>().Where(t => t.subid == subid && t.configType == EConfigType.Custom).ToList();
+            var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid && t.configType == EConfigType.Custom).ToListAsync();
             if (isSub)
             {
                 await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");
@@ -1431,7 +1439,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> DeleteSubItem(Config config, string id)
         {
-            var item = AppHandler.Instance.GetSubItem(id);
+            var item = await AppHandler.Instance.GetSubItem(id);
             if (item is null)
             {
                 return 0;
@@ -1594,7 +1602,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
         {
-            if (SQLiteHelper.Instance.Table<RoutingItem>().Where(t => t.id == routingItem.id).Count() > 0)
+            if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.id == routingItem.id).CountAsync() > 0)
             {
                 config.routingBasicItem.routingIndexId = routingItem.id;
             }
@@ -1606,10 +1614,10 @@ namespace ServiceLib.Handler
 
         public static async Task<RoutingItem> GetDefaultRouting(Config config)
         {
-            var item = AppHandler.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
+            var item = await AppHandler.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
             if (item is null)
             {
-                var item2 = SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(t => t.locked == false);
+                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.locked == false);
                 await SetDefaultRouting(config, item2);
                 return item2;
             }
@@ -1642,7 +1650,7 @@ namespace ServiceLib.Handler
             if (template == null)
                 return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
-            var items = AppHandler.Instance.RoutingItems();
+            var items = await AppHandler.Instance.RoutingItems();
             var maxSort = items.Count;
             if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(template.version)).ToList().Count > 0)
             {
@@ -1682,7 +1690,7 @@ namespace ServiceLib.Handler
         public static async Task<int> InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
         {
             var ver = "V3-";
-            var items = AppHandler.Instance.RoutingItems();
+            var items = await AppHandler.Instance.RoutingItems();
             if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(ver)).ToList().Count > 0)
             {
                 return 0;
@@ -1723,9 +1731,9 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        public static RoutingItem? GetLockedRoutingItem(Config config)
+        public static async Task<RoutingItem?> GetLockedRoutingItem(Config config)
         {
-            return SQLiteHelper.Instance.Table<RoutingItem>().FirstOrDefault(it => it.locked == true);
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.locked == true);
         }
 
         public static async Task RemoveRoutingItem(RoutingItem routingItem)
@@ -1739,7 +1747,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> InitBuiltinDNS(Config config)
         {
-            var items = AppHandler.Instance.DNSItems();
+            var items = await AppHandler.Instance.DNSItems();
             if (items.Count <= 0)
             {
                 var item = new DNSItem()
@@ -1782,9 +1790,9 @@ namespace ServiceLib.Handler
             }
         }
 
-        public static DNSItem GetExternalDNSItem(ECoreType type, string url)
+        public static async Task<DNSItem> GetExternalDNSItem(ECoreType type, string url)
         {
-            var currentItem = AppHandler.Instance.GetDNSItem(type);
+            var currentItem = await AppHandler.Instance.GetDNSItem(type);
 
             var downloadHandle = new DownloadService();
             var templateContent = Task.Run(() => downloadHandle.TryDownloadString(url, true, "")).Result;
@@ -1832,8 +1840,8 @@ namespace ServiceLib.Handler
                     config.constItem.srsSourceUrl = Global.SingboxRulesetSources[1];
                     config.constItem.routeRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
-                    await SaveDNSItems(config, GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
-                    await SaveDNSItems(config, GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
+                    await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
+                    await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
                     return true;
             }
