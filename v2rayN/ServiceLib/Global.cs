@@ -126,12 +126,12 @@
 
         public static readonly List<string> RoutingRulesSources = new() {
             "",
-            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/template.json",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/v2rayN/template.json",
         };
 
         public static readonly List<string> DNSTemplateSources = new() {
             "",
-            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/",
+            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/v2rayN/",
         };
 
         public static readonly Dictionary<string, string> UserAgentTexts = new()
