@@ -95,6 +95,7 @@ namespace ServiceLib.Services
             }
             else
             {
+                Error?.Invoke(this, new ErrorEventArgs(new Exception("StatusCode error: " + response.StatusCode)));
                 Logging.SaveLog("StatusCode error: " + url);
                 return null;
             }

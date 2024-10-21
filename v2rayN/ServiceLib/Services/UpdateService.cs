@@ -35,19 +35,19 @@ namespace ServiceLib.Services
             };
 
             _updateFunc?.Invoke(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
-            var args = await CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
-            if (args.Success)
+            var result = await CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
+            if (result.Success)
             {
                 _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
-                _updateFunc?.Invoke(false, args.Msg);
+                _updateFunc?.Invoke(false, result.Msg);
 
-                url = args.Data?.ToString();
+                url = result.Data?.ToString();
                 fileName = Utils.GetTempPath(Utils.GetGuid());
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
             else
             {
-                _updateFunc?.Invoke(false, args.Msg);
+                _updateFunc?.Invoke(false, result.Msg);
             }
         }
 
@@ -86,22 +86,22 @@ namespace ServiceLib.Services
             };
 
             _updateFunc?.Invoke(false, string.Format(ResUI.MsgStartUpdating, type));
-            var args = await CheckUpdateAsync(downloadHandle, type, preRelease);
-            if (args.Success)
+            var result = await CheckUpdateAsync(downloadHandle, type, preRelease);
+            if (result.Success)
             {
                 _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, type));
-                _updateFunc?.Invoke(false, args.Msg);
+                _updateFunc?.Invoke(false, result.Msg);
 
-                url = args.Data?.ToString();
+                url = result.Data?.ToString();
                 var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
                 fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
                 await downloadHandle.DownloadFileAsync(url, fileName, true, _timeout);
             }
             else
             {
-                if (!args.Msg.IsNullOrEmpty())
+                if (!result.Msg.IsNullOrEmpty())
                 {
-                    _updateFunc?.Invoke(false, args.Msg);
+                    _updateFunc?.Invoke(false, result.Msg);
                 }
             }
         }
@@ -250,24 +250,18 @@ namespace ServiceLib.Services
             updateFunc?.Invoke(false, string.Format(ResUI.TestMeOutput, time));
         }
 
-        #region private
+        #region CheckUpdate private
 
         private async Task<RetResult> CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, bool preRelease)
         {
             try
             {
-                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
-                var url = coreInfo?.ReleaseApiUrl;
-
-                var result = await downloadHandle.TryDownloadString(url, true, Global.AppName);
-                if (Utils.IsNotEmpty(result))
+                var result = await GetRemoteVersion(downloadHandle, type, preRelease);
+                if (!result.Success || result.Data is null)
                 {
-                    return await ParseDownloadUrl(type, result, preRelease);
+                    return result;
                 }
-                else
-                {
-                    return new RetResult(false, "");
-                }
+                return await ParseDownloadUrl(type, (SemanticVersion)result.Data);
             }
             catch (Exception ex)
             {
@@ -277,9 +271,38 @@ namespace ServiceLib.Services
             }
         }
 
-        /// <summary>
-        /// 获取Core版本
-        /// </summary>
+        private async Task<RetResult> GetRemoteVersion(DownloadService downloadHandle, ECoreType type, bool preRelease)
+        {
+            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+            var tagName = string.Empty;
+            if (preRelease)
+            {
+                var url = coreInfo?.ReleaseApiUrl;
+                var result = await downloadHandle.TryDownloadString(url, true, Global.AppName);
+                if (Utils.IsNullOrEmpty(result))
+                {
+                    return new RetResult(false, "");
+                }
+
+                var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(result);
+                var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
+                tagName = gitHubRelease?.TagName;
+                //var body = gitHubRelease?.Body;
+            }
+            else
+            {
+                var url = Path.Combine(coreInfo.Url, "latest");
+                var lastUrl = await downloadHandle.UrlRedirectAsync(url, true);
+                if (lastUrl == null)
+                {
+                    return new RetResult(false, "");
+                }
+
+                tagName = lastUrl?.Split("/tag/").LastOrDefault();
+            }
+            return new RetResult(true, "", new SemanticVersion(tagName));
+        }
+
         private async Task<SemanticVersion> GetCoreVersion(ECoreType type)
         {
             try
@@ -333,15 +356,10 @@ namespace ServiceLib.Services
             }
         }
 
-        private async Task<RetResult> ParseDownloadUrl(ECoreType type, string gitHubReleaseApi, bool preRelease)
+        private async Task<RetResult> ParseDownloadUrl(ECoreType type, SemanticVersion version)
         {
             try
             {
-                var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(gitHubReleaseApi);
-                var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
-                var version = new SemanticVersion(gitHubRelease?.TagName);
-                var body = gitHubRelease?.Body;
-
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 SemanticVersion curVersion;
                 string message;
@@ -387,7 +405,7 @@ namespace ServiceLib.Services
                     return new RetResult(false, message);
                 }
 
-                return new RetResult(true, body, url);
+                return new RetResult(true, "", url);
             }
             catch (Exception ex)
             {
@@ -405,7 +423,7 @@ namespace ServiceLib.Services
                 if (coreInfo?.CoreType == ECoreType.v2rayN
                     && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
                     && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
-                    )
+                   )
                 {
                     return coreInfo?.DownloadUrlWin64?.Replace(".zip", "-SelfContained.zip");
                 }
@@ -429,6 +447,10 @@ namespace ServiceLib.Services
             }
             return null;
         }
+
+        #endregion CheckUpdate private
+
+        #region Geo private
 
         private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> updateFunc)
         {
@@ -544,6 +566,6 @@ namespace ServiceLib.Services
             await downloadHandle.DownloadFileAsync(url, tmpFileName, true, _timeout);
         }
 
-        #endregion private
+        #endregion Geo private
     }
 }
