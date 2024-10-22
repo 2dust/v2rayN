@@ -59,7 +59,7 @@ namespace ServiceLib.Services
                     UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
                 };
 
-                var webProxy = GetWebProxy(blProxy);
+                var webProxy = await GetWebProxy(blProxy);
                 await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                     url,
                     fileName,
@@ -84,7 +84,7 @@ namespace ServiceLib.Services
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
-                Proxy = GetWebProxy(blProxy)
+                Proxy = await GetWebProxy(blProxy)
             };
             HttpClient client = new(webRequestHandler);
 
@@ -151,7 +151,7 @@ namespace ServiceLib.Services
             try
             {
                 SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
-                var webProxy = GetWebProxy(blProxy);
+                var webProxy = await GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
                     Proxy = webProxy,
@@ -197,7 +197,7 @@ namespace ServiceLib.Services
             {
                 SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
 
-                var webProxy = GetWebProxy(blProxy);
+                var webProxy = await GetWebProxy(blProxy);
 
                 if (Utils.IsNullOrEmpty(userAgent))
                 {
@@ -222,7 +222,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                webProxy ??= GetWebProxy(true);
+                webProxy ??= await GetWebProxy(true);
 
                 try
                 {
@@ -274,14 +274,14 @@ namespace ServiceLib.Services
             return responseTime;
         }
 
-        private WebProxy? GetWebProxy(bool blProxy)
+        private async Task<WebProxy?> GetWebProxy(bool blProxy)
         {
             if (!blProxy)
             {
                 return null;
             }
             var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-            if (!SocketCheck(Global.Loopback, httpPort))
+            if (await SocketCheck(Global.Loopback, httpPort) == false)
             {
                 return null;
             }
@@ -289,13 +289,13 @@ namespace ServiceLib.Services
             return new WebProxy(Global.Loopback, httpPort);
         }
 
-        private bool SocketCheck(string ip, int port)
+        private async Task<bool> SocketCheck(string ip, int port)
         {
             try
             {
                 IPEndPoint point = new(IPAddress.Parse(ip), port);
                 using Socket? sock = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                sock.Connect(point);
+                await sock.ConnectAsync(point);
                 return true;
             }
             catch (Exception)

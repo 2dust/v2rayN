@@ -41,9 +41,9 @@
             Margin="{StaticResource Margin8}"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-            Content="{x:Static resx:ResUI.TbConfirm}"
+            Content="{x:Static resx:ResUI.menuClose}"
             IsCancel="True"
             IsDefault="True"
-            Style="{StaticResource MaterialDesignFlatButton}" />
+            Style="{StaticResource DefButton}" />
     </Grid>
 </UserControl>

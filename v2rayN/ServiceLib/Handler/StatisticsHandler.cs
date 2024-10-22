@@ -14,7 +14,7 @@
 
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
-        public void Init(Config config, Action<ServerSpeedItem> updateFunc)
+        public async Task Init(Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;
             _updateFunc = updateFunc;
@@ -23,7 +23,7 @@
                 return;
             }
 
-            InitData();
+            await InitData();
 
             _statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStatHandler);
             _statisticsSingbox = new StatisticsSingboxService(config, UpdateServerStatHandler);

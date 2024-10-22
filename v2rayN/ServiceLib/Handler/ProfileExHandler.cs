@@ -14,9 +14,14 @@ namespace ServiceLib.Handler
 
         public ProfileExHandler()
         {
+            Init();
+        }
+
+        private async Task Init()
+        {
+            await InitData();
             Task.Run(async () =>
             {
-                await Init();
                 while (true)
                 {
                     await SaveQueueIndexIds();
@@ -25,7 +30,7 @@ namespace ServiceLib.Handler
             });
         }
 
-        private async Task Init()
+        private async Task InitData()
         {
             await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 

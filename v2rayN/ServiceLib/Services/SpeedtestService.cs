@@ -99,11 +99,11 @@ namespace ServiceLib.Services
                     {
                         continue;
                     }
-                    tasks.Add(Task.Run(() =>
+                    tasks.Add(Task.Run(async () =>
                     {
                         try
                         {
-                            int time = GetTcpingTime(it.Address, it.Port);
+                            int time = await GetTcpingTime(it.Address, it.Port);
                             var output = FormatOut(time, Global.DelayUnit);
 
                             ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
@@ -336,7 +336,7 @@ namespace ServiceLib.Services
             return FormatOut(responseTime, Global.DelayUnit);
         }
 
-        private int GetTcpingTime(string url, int port)
+        private async Task<int> GetTcpingTime(string url, int port)
         {
             int responseTime = -1;
 
@@ -370,10 +370,6 @@ namespace ServiceLib.Services
 
         private string FormatOut(object time, string unit)
         {
-            //if (time.ToString().Equals("-1"))
-            //{
-            //    return "Timeout";
-            //}
             return $"{time}";
         }
 

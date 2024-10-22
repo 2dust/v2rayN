@@ -5,10 +5,6 @@
         private static readonly Lazy<TaskHandler> _instance = new(() => new());
         public static TaskHandler Instance => _instance.Value;
 
-        public TaskHandler()
-        {
-        }
-
         public void RegUpdateTask(Config config, Action<bool, string> updateFunc)
         {
             Task.Run(() => UpdateTaskRunSubscription(config, updateFunc));

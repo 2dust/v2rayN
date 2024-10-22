@@ -30,7 +30,7 @@
                 Content="{x:Static resx:ResUI.menuClose}"
                 DockPanel.Dock="Right"
                 IsCancel="True"
-                Style="{StaticResource MaterialDesignFlatButton}" />
+                Style="{StaticResource DefButton}" />
 
             <TextBlock
                 x:Name="txtMsg"

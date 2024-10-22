@@ -17,7 +17,7 @@ namespace ServiceLib.Services.Statistics
             _updateFunc = updateFunc;
             _exitFlag = false;
 
-            Task.Run(() => Run());
+            Task.Run(Run);
         }
 
         private async void Init()

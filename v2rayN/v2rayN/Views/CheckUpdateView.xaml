@@ -38,7 +38,7 @@
                 Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckUpdate}"
                 IsDefault="True"
-                Style="{StaticResource MaterialDesignFlatButton}" />
+                Style="{StaticResource DefButton}" />
 
             <Button
                 Width="100"
@@ -47,7 +47,7 @@
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="{x:Static resx:ResUI.menuClose}"
                 IsCancel="True"
-                Style="{StaticResource MaterialDesignFlatButton}" />
+                Style="{StaticResource DefButton}" />
         </StackPanel>
 
         <StackPanel>

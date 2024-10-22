@@ -213,7 +213,7 @@ namespace ServiceLib.ViewModels
 
             if (_config.guiItem.enableStatistics)
             {
-                StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
+                await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
 
             await Reload();
