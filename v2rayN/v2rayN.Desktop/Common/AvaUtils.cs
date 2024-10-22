@@ -40,25 +40,7 @@ namespace v2rayN.Desktop.Common
 
         public static WindowIcon GetAppIcon(ESysProxyType sysProxyType)
         {
-            int index = 1;
-            switch (sysProxyType)
-            {
-                case ESysProxyType.ForcedClear:
-                    index = 1;
-                    break;
-
-                case ESysProxyType.ForcedChange:
-                    index = 2;
-                    break;
-
-                case ESysProxyType.Unchanged:
-                    index = 3;
-                    break;
-
-                case ESysProxyType.Pac:
-                    index = 4;
-                    break;
-            }
+            var index = (int)sysProxyType + 1;
             var uri = new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Assets/NotifyIcon{index}.ico");
             using var bitmap = new Bitmap(AssetLoader.Open(uri));
             return new(bitmap);

@@ -105,7 +105,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                var result1 = await DownloadStringAsync(url, blProxy, userAgent);
+                var result1 = await DownloadStringAsync(url, blProxy, userAgent, 15);
                 if (Utils.IsNotEmpty(result1))
                 {
                     return result1;
@@ -123,30 +123,10 @@ namespace ServiceLib.Services
 
             try
             {
-                var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent);
+                var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent, 15);
                 if (Utils.IsNotEmpty(result2))
                 {
                     return result2;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                Error?.Invoke(this, new ErrorEventArgs(ex));
-                if (ex.InnerException != null)
-                {
-                    Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
-                }
-            }
-
-            try
-            {
-                using var wc = new WebClient();
-                wc.Proxy = GetWebProxy(blProxy);
-                var result3 = await wc.DownloadStringTaskAsync(url);
-                if (Utils.IsNotEmpty(result3))
-                {
-                    return result3;
                 }
             }
             catch (Exception ex)
@@ -166,7 +146,7 @@ namespace ServiceLib.Services
         /// DownloadString
         /// </summary>
         /// <param name="url"></param>
-        public async Task<string?> DownloadStringAsync(string url, bool blProxy, string userAgent)
+        private async Task<string?> DownloadStringAsync(string url, bool blProxy, string userAgent, int timeout)
         {
             try
             {
@@ -192,7 +172,7 @@ namespace ServiceLib.Services
                 }
 
                 using var cts = new CancellationTokenSource();
-                var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(30), cts.Token);
+                var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
                 return result;
             }
             catch (Exception ex)
@@ -211,7 +191,7 @@ namespace ServiceLib.Services
         /// DownloadString
         /// </summary>
         /// <param name="url"></param>
-        public async Task<string?> DownloadStringViaDownloader(string url, bool blProxy, string userAgent)
+        private async Task<string?> DownloadStringViaDownloader(string url, bool blProxy, string userAgent, int timeout)
         {
             try
             {
@@ -223,7 +203,7 @@ namespace ServiceLib.Services
                 {
                     userAgent = Utils.GetVersion(false);
                 }
-                var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, 30);
+                var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, timeout);
                 return result;
             }
             catch (Exception ex)
