@@ -182,7 +182,7 @@ namespace ServiceLib.ViewModels
             {
                 _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, false);
                 await Task.Delay(2000);
-                UpgradeCore();
+                await UpgradeCore();
 
                 if (_lstUpdated.Any(x => x.CoreType == _v2rayN && x.IsFinished == true))
                 {
@@ -228,7 +228,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        private void UpgradeCore()
+        private async Task UpgradeCore()
         {
             foreach (var item in _lstUpdated)
             {
@@ -264,6 +264,15 @@ namespace ServiceLib.ViewModels
                 else
                 {
                     FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
+                }
+
+                if (Utils.IsLinux())
+                {
+                    var filesList = (new DirectoryInfo(toPath)).GetFiles().Select(u => u.FullName).ToList();
+                    foreach (var file in filesList)
+                    {
+                        await Utils.SetLinuxChmod(Path.Combine(toPath, item.CoreType));
+                    }
                 }
 
                 UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);

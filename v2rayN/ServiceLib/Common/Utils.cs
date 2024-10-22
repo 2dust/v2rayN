@@ -806,6 +806,13 @@ namespace ServiceLib.Common
             return await GetCliWrapOutput("/bin/bash", arg);
         }
 
+        public static async Task<string?> SetLinuxChmod(string? fileName)
+        {
+            if (fileName.IsNullOrEmpty()) return null;
+            var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
+            return await GetCliWrapOutput("/bin/bash", arg);
+        }
+
         #endregion Platform
     }
 }
