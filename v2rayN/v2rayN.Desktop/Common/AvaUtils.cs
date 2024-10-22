@@ -48,12 +48,15 @@ namespace v2rayN.Desktop.Common
                     break;
 
                 case ESysProxyType.ForcedChange:
-                case ESysProxyType.Pac:
                     index = 2;
                     break;
 
                 case ESysProxyType.Unchanged:
                     index = 3;
+                    break;
+
+                case ESysProxyType.Pac:
+                    index = 4;
                     break;
             }
             var uri = new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Assets/NotifyIcon{index}.ico");

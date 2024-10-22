@@ -33,7 +33,7 @@ namespace v2rayN.Handler
                     0 => Properties.Resources.NotifyIcon1,
                     1 => Properties.Resources.NotifyIcon2,
                     2 => Properties.Resources.NotifyIcon3,
-                    3 => Properties.Resources.NotifyIcon2,
+                    3 => Properties.Resources.NotifyIcon4,
                     _ => Properties.Resources.NotifyIcon1, // default
                 };
             }
@@ -54,12 +54,15 @@ namespace v2rayN.Handler
                     break;
 
                 case ESysProxyType.ForcedChange:
-                case ESysProxyType.Pac:
                     index = 2;
                     break;
 
                 case ESysProxyType.Unchanged:
                     index = 3;
+                    break;
+
+                case ESysProxyType.Pac:
+                    index = 4;
                     break;
             }
             return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
