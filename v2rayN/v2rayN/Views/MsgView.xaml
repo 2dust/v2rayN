@@ -70,7 +70,7 @@
         <TextBox
             Name="txtMsg"
             BorderThickness="0"
-            FontSize="{DynamicResource StdFontSizeMsg}"
+            FontSize="{DynamicResource StdFontSize-1}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             IsReadOnlyCaretVisible="True"
