@@ -6,34 +6,16 @@ namespace ServiceLib.Models
     public class ServerStatItem
     {
         [PrimaryKey]
-        public string indexId
-        {
-            get; set;
-        }
+        public string IndexId { get; set; }
 
-        public long totalUp
-        {
-            get; set;
-        }
+        public long TotalUp { get; set; }
 
-        public long totalDown
-        {
-            get; set;
-        }
+        public long TotalDown { get; set; }
 
-        public long todayUp
-        {
-            get; set;
-        }
+        public long TodayUp { get; set; }
 
-        public long todayDown
-        {
-            get; set;
-        }
+        public long TodayDown { get; set; }
 
-        public long dateNow
-        {
-            get; set;
-        }
+        public long DateNow { get; set; }
     }
 }

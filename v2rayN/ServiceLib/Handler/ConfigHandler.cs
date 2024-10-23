@@ -107,10 +107,8 @@ namespace ServiceLib.Handler
             {
                 EnableAutoAdjustMainLvColWidth = true
             };
-            if (config.UiItem.MainColumnItem == null)
-            {
-                config.UiItem.MainColumnItem = new();
-            }
+            config.UiItem.MainColumnItem ??= new();
+            
             if (Utils.IsNullOrEmpty(config.UiItem.CurrentLanguage))
             {
                 if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
@@ -218,40 +216,40 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddServer(Config config, ProfileItem profileItem)
         {
-            var item = await AppHandler.Instance.GetProfileItem(profileItem.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
             if (item is null)
             {
                 item = profileItem;
             }
             else
             {
-                item.coreType = profileItem.coreType;
-                item.remarks = profileItem.remarks;
-                item.address = profileItem.address;
-                item.port = profileItem.port;
+                item.CoreType = profileItem.CoreType;
+                item.Remarks = profileItem.Remarks;
+                item.Address = profileItem.Address;
+                item.Port = profileItem.Port;
 
-                item.id = profileItem.id;
-                item.alterId = profileItem.alterId;
-                item.security = profileItem.security;
-                item.flow = profileItem.flow;
+                item.Id = profileItem.Id;
+                item.AlterId = profileItem.AlterId;
+                item.Security = profileItem.Security;
+                item.Flow = profileItem.Flow;
 
-                item.network = profileItem.network;
-                item.headerType = profileItem.headerType;
-                item.requestHost = profileItem.requestHost;
-                item.path = profileItem.path;
+                item.Network = profileItem.Network;
+                item.HeaderType = profileItem.HeaderType;
+                item.RequestHost = profileItem.RequestHost;
+                item.Path = profileItem.Path;
 
-                item.streamSecurity = profileItem.streamSecurity;
-                item.sni = profileItem.sni;
-                item.allowInsecure = profileItem.allowInsecure;
-                item.fingerprint = profileItem.fingerprint;
-                item.alpn = profileItem.alpn;
+                item.StreamSecurity = profileItem.StreamSecurity;
+                item.Sni = profileItem.Sni;
+                item.AllowInsecure = profileItem.AllowInsecure;
+                item.Fingerprint = profileItem.Fingerprint;
+                item.Alpn = profileItem.Alpn;
 
-                item.publicKey = profileItem.publicKey;
-                item.shortId = profileItem.shortId;
-                item.spiderX = profileItem.spiderX;
+                item.PublicKey = profileItem.PublicKey;
+                item.ShortId = profileItem.ShortId;
+                item.SpiderX = profileItem.SpiderX;
             }
 
-            var ret = item.configType switch
+            var ret = item.ConfigType switch
             {
                 EConfigType.VMess => await AddVMessServer(config, item),
                 EConfigType.Shadowsocks => await AddShadowsocksServer(config, item),
@@ -275,22 +273,22 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddVMessServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.VMess;
+            profileItem.ConfigType = EConfigType.VMess;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.security = profileItem.security.TrimEx();
-            profileItem.network = profileItem.network.TrimEx();
-            profileItem.headerType = profileItem.headerType.TrimEx();
-            profileItem.requestHost = profileItem.requestHost.TrimEx();
-            profileItem.path = profileItem.path.TrimEx();
-            profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.Security = profileItem.Security.TrimEx();
+            profileItem.Network = profileItem.Network.TrimEx();
+            profileItem.HeaderType = profileItem.HeaderType.TrimEx();
+            profileItem.RequestHost = profileItem.RequestHost.TrimEx();
+            profileItem.Path = profileItem.Path.TrimEx();
+            profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-            if (!Global.VmessSecurities.Contains(profileItem.security))
+            if (!Global.VmessSecurities.Contains(profileItem.Security))
             {
                 return -1;
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -311,7 +309,7 @@ namespace ServiceLib.Handler
             var subid = "TempRemoveSubId";
             foreach (var item in indexes)
             {
-                item.subid = subid;
+                item.Subid = subid;
             }
 
             await SQLiteHelper.Instance.UpdateAllAsync(indexes);
@@ -330,19 +328,19 @@ namespace ServiceLib.Handler
         {
             foreach (var it in indexes)
             {
-                var item = await AppHandler.Instance.GetProfileItem(it.indexId);
+                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null)
                 {
                     continue;
                 }
 
                 var profileItem = JsonUtils.DeepCopy(item);
-                profileItem.indexId = string.Empty;
-                profileItem.remarks = $"{item.remarks}-clone";
+                profileItem.IndexId = string.Empty;
+                profileItem.Remarks = $"{item.Remarks}-clone";
 
-                if (profileItem.configType == EConfigType.Custom)
+                if (profileItem.ConfigType == EConfigType.Custom)
                 {
-                    profileItem.address = Utils.GetConfigPath(profileItem.address);
+                    profileItem.Address = Utils.GetConfigPath(profileItem.Address);
                     if (await AddCustomServer(config, profileItem, false) == 0)
                     {
                     }
@@ -378,22 +376,22 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
         {
-            if (lstProfile.Exists(t => t.indexId == config.IndexId))
+            if (lstProfile.Exists(t => t.IndexId == config.IndexId))
             {
                 return 0;
             }
-            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.indexId == config.IndexId);
+            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.IndexId == config.IndexId);
             if (count > 0)
             {
                 return 0;
             }
             if (lstProfile.Count > 0)
             {
-                return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.port > 0)?.indexId);
+                return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
             }
 
-            var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.port > 0).FirstOrDefaultAsync();
-            return await SetDefaultServerIndex(config, item.indexId);
+            var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Port > 0).FirstOrDefaultAsync();
+            return await SetDefaultServerIndex(config, item.IndexId);
         }
 
         public static async Task<ProfileItem?> GetDefaultServer(Config config)
@@ -402,7 +400,7 @@ namespace ServiceLib.Handler
             if (item is null)
             {
                 var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
-                await SetDefaultServerIndex(config, item2?.indexId);
+                await SetDefaultServerIndex(config, item2?.IndexId);
                 return item2;
             }
 
@@ -427,7 +425,7 @@ namespace ServiceLib.Handler
 
             for (int i = 0; i < lstProfile.Count; i++)
             {
-                ProfileExHandler.Instance.SetSort(lstProfile[i].indexId, (i + 1) * 10);
+                ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
             }
 
             var sort = 0;
@@ -439,7 +437,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[0].indexId) - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[0].IndexId) - 1;
 
                         break;
                     }
@@ -449,7 +447,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index - 1].indexId) - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index - 1].IndexId) - 1;
 
                         break;
                     }
@@ -460,7 +458,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index + 1].indexId) + 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[index + 1].IndexId) + 1;
 
                         break;
                     }
@@ -470,7 +468,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[^1].indexId) + 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile[^1].IndexId) + 1;
 
                         break;
                     }
@@ -479,7 +477,7 @@ namespace ServiceLib.Handler
                     break;
             }
 
-            ProfileExHandler.Instance.SetSort(lstProfile[index].indexId, sort);
+            ProfileExHandler.Instance.SetSort(lstProfile[index].IndexId, sort);
             return 0;
         }
 
@@ -491,7 +489,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddCustomServer(Config config, ProfileItem profileItem, bool blDelete)
         {
-            var fileName = profileItem.address;
+            var fileName = profileItem.Address;
             if (!File.Exists(fileName))
             {
                 return -1;
@@ -514,11 +512,11 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            profileItem.address = newFileName;
-            profileItem.configType = EConfigType.Custom;
-            if (Utils.IsNullOrEmpty(profileItem.remarks))
+            profileItem.Address = newFileName;
+            profileItem.ConfigType = EConfigType.Custom;
+            if (Utils.IsNullOrEmpty(profileItem.Remarks))
             {
-                profileItem.remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+                profileItem.Remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
             }
 
             await AddServerCommon(config, profileItem, true);
@@ -534,18 +532,18 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
         {
-            var item = await AppHandler.Instance.GetProfileItem(profileItem.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
             if (item is null)
             {
                 item = profileItem;
             }
             else
             {
-                item.remarks = profileItem.remarks;
-                item.address = profileItem.address;
-                item.coreType = profileItem.coreType;
-                item.displayLog = profileItem.displayLog;
-                item.preSocksPort = profileItem.preSocksPort;
+                item.Remarks = profileItem.Remarks;
+                item.Address = profileItem.Address;
+                item.CoreType = profileItem.CoreType;
+                item.DisplayLog = profileItem.DisplayLog;
+                item.PreSocksPort = profileItem.PreSocksPort;
             }
 
             if (await SQLiteHelper.Instance.UpdateAsync(item) > 0)
@@ -568,17 +566,17 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddShadowsocksServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Shadowsocks;
+            profileItem.ConfigType = EConfigType.Shadowsocks;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.security = profileItem.security.TrimEx();
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.Security = profileItem.Security.TrimEx();
 
-            if (!AppHandler.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.security))
+            if (!AppHandler.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
             {
                 return -1;
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -596,9 +594,9 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddSocksServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.SOCKS;
+            profileItem.ConfigType = EConfigType.SOCKS;
 
-            profileItem.address = profileItem.address.TrimEx();
+            profileItem.Address = profileItem.Address.TrimEx();
 
             await AddServerCommon(config, profileItem, toFile);
 
@@ -613,9 +611,9 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddHttpServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.HTTP;
+            profileItem.ConfigType = EConfigType.HTTP;
 
-            profileItem.address = profileItem.address.TrimEx();
+            profileItem.Address = profileItem.Address.TrimEx();
 
             await AddServerCommon(config, profileItem, toFile);
 
@@ -630,15 +628,15 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddTrojanServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Trojan;
+            profileItem.ConfigType = EConfigType.Trojan;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
             {
-                profileItem.streamSecurity = Global.StreamSecurity;
+                profileItem.StreamSecurity = Global.StreamSecurity;
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -656,19 +654,19 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.Hysteria2;
-            profileItem.coreType = ECoreType.sing_box;
+            profileItem.ConfigType = EConfigType.Hysteria2;
+            profileItem.CoreType = ECoreType.sing_box;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.path = profileItem.path.TrimEx();
-            profileItem.network = string.Empty;
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.Path = profileItem.Path.TrimEx();
+            profileItem.Network = string.Empty;
 
-            if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
+            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
             {
-                profileItem.streamSecurity = Global.StreamSecurity;
+                profileItem.StreamSecurity = Global.StreamSecurity;
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -686,28 +684,28 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddTuicServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.TUIC;
-            profileItem.coreType = ECoreType.sing_box;
+            profileItem.ConfigType = EConfigType.TUIC;
+            profileItem.CoreType = ECoreType.sing_box;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.security = profileItem.security.TrimEx();
-            profileItem.network = string.Empty;
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.Security = profileItem.Security.TrimEx();
+            profileItem.Network = string.Empty;
 
-            if (!Global.TuicCongestionControls.Contains(profileItem.headerType))
+            if (!Global.TuicCongestionControls.Contains(profileItem.HeaderType))
             {
-                profileItem.headerType = Global.TuicCongestionControls.FirstOrDefault()!;
+                profileItem.HeaderType = Global.TuicCongestionControls.FirstOrDefault()!;
             }
 
-            if (Utils.IsNullOrEmpty(profileItem.streamSecurity))
+            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
             {
-                profileItem.streamSecurity = Global.StreamSecurity;
+                profileItem.StreamSecurity = Global.StreamSecurity;
             }
-            if (Utils.IsNullOrEmpty(profileItem.alpn))
+            if (Utils.IsNullOrEmpty(profileItem.Alpn))
             {
-                profileItem.alpn = "h3";
+                profileItem.Alpn = "h3";
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -725,21 +723,21 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.WireGuard;
-            profileItem.coreType = ECoreType.sing_box;
+            profileItem.ConfigType = EConfigType.WireGuard;
+            profileItem.CoreType = ECoreType.sing_box;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.publicKey = profileItem.publicKey.TrimEx();
-            profileItem.path = profileItem.path.TrimEx();
-            profileItem.requestHost = profileItem.requestHost.TrimEx();
-            profileItem.network = string.Empty;
-            if (profileItem.shortId.IsNullOrEmpty())
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.PublicKey = profileItem.PublicKey.TrimEx();
+            profileItem.Path = profileItem.Path.TrimEx();
+            profileItem.RequestHost = profileItem.RequestHost.TrimEx();
+            profileItem.Network = string.Empty;
+            if (profileItem.ShortId.IsNullOrEmpty())
             {
-                profileItem.shortId = Global.TunMtus.FirstOrDefault();
+                profileItem.ShortId = Global.TunMtus.FirstOrDefault();
             }
 
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -758,46 +756,46 @@ namespace ServiceLib.Handler
             }
             var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
             var lstProfile = (from t in lstModel
-                              join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
+                              join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
                               from t33 in t3b.DefaultIfEmpty()
                               select new ProfileItemModel
                               {
-                                  indexId = t.indexId,
-                                  configType = t.configType,
-                                  remarks = t.remarks,
-                                  address = t.address,
-                                  port = t.port,
-                                  security = t.security,
-                                  network = t.network,
-                                  streamSecurity = t.streamSecurity,
-                                  delay = t33 == null ? 0 : t33.delay,
-                                  speed = t33 == null ? 0 : t33.speed,
-                                  sort = t33 == null ? 0 : t33.sort
+                                  IndexId = t.IndexId,
+                                  ConfigType = t.ConfigType,
+                                  Remarks = t.Remarks,
+                                  Address = t.Address,
+                                  Port = t.Port,
+                                  Security = t.Security,
+                                  Network = t.Network,
+                                  StreamSecurity = t.StreamSecurity,
+                                  Delay = t33 == null ? 0 : t33.Delay,
+                                  Speed = t33 == null ? 0 : t33.Speed,
+                                  Sort = t33 == null ? 0 : t33.Sort
                               }).ToList();
 
             Enum.TryParse(colName, true, out EServerColName name);
             var propertyName = string.Empty;
             switch (name)
             {
-                case EServerColName.configType:
-                case EServerColName.remarks:
-                case EServerColName.address:
-                case EServerColName.port:
-                case EServerColName.network:
-                case EServerColName.streamSecurity:
+                case EServerColName.ConfigType:
+                case EServerColName.Remarks:
+                case EServerColName.Address:
+                case EServerColName.Port:
+                case EServerColName.Network:
+                case EServerColName.StreamSecurity:
                     propertyName = name.ToString();
                     break;
 
-                case EServerColName.delayVal:
-                    propertyName = "delay";
+                case EServerColName.DelayVal:
+                    propertyName = "Delay";
                     break;
 
-                case EServerColName.speedVal:
-                    propertyName = "speed";
+                case EServerColName.SpeedVal:
+                    propertyName = "Speed";
                     break;
 
-                case EServerColName.subRemarks:
-                    propertyName = "subid";
+                case EServerColName.SubRemarks:
+                    propertyName = "Subid";
                     break;
 
                 default:
@@ -816,27 +814,27 @@ namespace ServiceLib.Handler
             }
             for (int i = 0; i < lstProfile.Count; i++)
             {
-                ProfileExHandler.Instance.SetSort(lstProfile[i].indexId, (i + 1) * 10);
+                ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
             }
-            if (name == EServerColName.delayVal)
+            if (name == EServerColName.DelayVal)
             {
-                var maxSort = lstProfile.Max(t => t.sort) + 10;
+                var maxSort = lstProfile.Max(t => t.Sort) + 10;
                 foreach (var item in lstProfile)
                 {
-                    if (item.delay <= 0)
+                    if (item.Delay <= 0)
                     {
-                        ProfileExHandler.Instance.SetSort(item.indexId, maxSort);
+                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
                     }
                 }
             }
-            if (name == EServerColName.speedVal)
+            if (name == EServerColName.SpeedVal)
             {
-                var maxSort = lstProfile.Max(t => t.sort) + 10;
+                var maxSort = lstProfile.Max(t => t.Sort) + 10;
                 foreach (var item in lstProfile)
                 {
-                    if (item.speed <= 0)
+                    if (item.Speed <= 0)
                     {
-                        ProfileExHandler.Instance.SetSort(item.indexId, maxSort);
+                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
                     }
                 }
             }
@@ -852,28 +850,28 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddVlessServer(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configType = EConfigType.VLESS;
+            profileItem.ConfigType = EConfigType.VLESS;
 
-            profileItem.address = profileItem.address.TrimEx();
-            profileItem.id = profileItem.id.TrimEx();
-            profileItem.security = profileItem.security.TrimEx();
-            profileItem.network = profileItem.network.TrimEx();
-            profileItem.headerType = profileItem.headerType.TrimEx();
-            profileItem.requestHost = profileItem.requestHost.TrimEx();
-            profileItem.path = profileItem.path.TrimEx();
-            profileItem.streamSecurity = profileItem.streamSecurity.TrimEx();
+            profileItem.Address = profileItem.Address.TrimEx();
+            profileItem.Id = profileItem.Id.TrimEx();
+            profileItem.Security = profileItem.Security.TrimEx();
+            profileItem.Network = profileItem.Network.TrimEx();
+            profileItem.HeaderType = profileItem.HeaderType.TrimEx();
+            profileItem.RequestHost = profileItem.RequestHost.TrimEx();
+            profileItem.Path = profileItem.Path.TrimEx();
+            profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-            if (!Global.Flows.Contains(profileItem.flow))
+            if (!Global.Flows.Contains(profileItem.Flow))
             {
-                profileItem.flow = Global.Flows.First();
+                profileItem.Flow = Global.Flows.First();
             }
-            if (profileItem.id.IsNullOrEmpty())
+            if (profileItem.Id.IsNullOrEmpty())
             {
                 return -1;
             }
-            if (Utils.IsNotEmpty(profileItem.security) && profileItem.security != Global.None)
+            if (Utils.IsNotEmpty(profileItem.Security) && profileItem.Security != Global.None)
             {
-                profileItem.security = Global.None;
+                profileItem.Security = Global.None;
             }
 
             await AddServerCommon(config, profileItem, toFile);
@@ -907,37 +905,37 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddServerCommon(Config config, ProfileItem profileItem, bool toFile = true)
         {
-            profileItem.configVersion = 2;
+            profileItem.ConfigVersion = 2;
 
-            if (Utils.IsNotEmpty(profileItem.streamSecurity))
+            if (Utils.IsNotEmpty(profileItem.StreamSecurity))
             {
-                if (profileItem.streamSecurity != Global.StreamSecurity
-                     && profileItem.streamSecurity != Global.StreamSecurityReality)
+                if (profileItem.StreamSecurity != Global.StreamSecurity
+                     && profileItem.StreamSecurity != Global.StreamSecurityReality)
                 {
-                    profileItem.streamSecurity = string.Empty;
+                    profileItem.StreamSecurity = string.Empty;
                 }
                 else
                 {
-                    if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
+                    if (Utils.IsNullOrEmpty(profileItem.AllowInsecure))
                     {
-                        profileItem.allowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
+                        profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
                     }
-                    if (Utils.IsNullOrEmpty(profileItem.fingerprint) && profileItem.streamSecurity == Global.StreamSecurityReality)
+                    if (Utils.IsNullOrEmpty(profileItem.Fingerprint) && profileItem.StreamSecurity == Global.StreamSecurityReality)
                     {
-                        profileItem.fingerprint = config.CoreBasicItem.DefFingerprint;
+                        profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;
                     }
                 }
             }
 
-            if (Utils.IsNotEmpty(profileItem.network) && !Global.Networks.Contains(profileItem.network))
+            if (Utils.IsNotEmpty(profileItem.Network) && !Global.Networks.Contains(profileItem.Network))
             {
-                profileItem.network = Global.DefaultNetwork;
+                profileItem.Network = Global.DefaultNetwork;
             }
 
             var maxSort = -1;
-            if (Utils.IsNullOrEmpty(profileItem.indexId))
+            if (Utils.IsNullOrEmpty(profileItem.IndexId))
             {
-                profileItem.indexId = Utils.GetGuid(false);
+                profileItem.IndexId = Utils.GetGuid(false);
                 maxSort = ProfileExHandler.Instance.GetMaxSort();
             }
             if (!toFile && maxSort < 0)
@@ -946,7 +944,7 @@ namespace ServiceLib.Handler
             }
             if (maxSort > 0)
             {
-                ProfileExHandler.Instance.SetSort(profileItem.indexId, maxSort + 1);
+                ProfileExHandler.Instance.SetSort(profileItem.IndexId, maxSort + 1);
             }
 
             if (toFile)
@@ -963,20 +961,20 @@ namespace ServiceLib.Handler
                 return false;
             }
 
-            return o.configType == n.configType
-                && o.address == n.address
-                && o.port == n.port
-                && o.id == n.id
-                && o.alterId == n.alterId
-                && o.security == n.security
-                && o.network == n.network
-                && o.headerType == n.headerType
-                && o.requestHost == n.requestHost
-                && o.path == n.path
-                && (o.configType == EConfigType.Trojan || o.streamSecurity == n.streamSecurity)
-                && o.flow == n.flow
-                && o.sni == n.sni
-                && (!remarks || o.remarks == n.remarks);
+            return o.ConfigType == n.ConfigType
+                && o.Address == n.Address
+                && o.Port == n.Port
+                && o.Id == n.Id
+                && o.AlterId == n.AlterId
+                && o.Security == n.Security
+                && o.Network == n.Network
+                && o.HeaderType == n.HeaderType
+                && o.RequestHost == n.RequestHost
+                && o.Path == n.Path
+                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
+                && o.Flow == n.Flow
+                && o.Sni == n.Sni
+                && (!remarks || o.Remarks == n.Remarks);
         }
 
         private static async Task<int> RemoveProfileItem(Config config, string indexId)
@@ -988,9 +986,9 @@ namespace ServiceLib.Handler
                 {
                     return 0;
                 }
-                if (item.configType == EConfigType.Custom)
+                if (item.ConfigType == EConfigType.Custom)
                 {
-                    File.Delete(Utils.GetConfigPath(item.address));
+                    File.Delete(Utils.GetConfigPath(item.Address));
                 }
 
                 await SQLiteHelper.Instance.DeleteAsync(item);
@@ -1021,11 +1019,11 @@ namespace ServiceLib.Handler
             }
 
             var profileItem = await AppHandler.Instance.GetProfileItem(indexId) ?? new();
-            profileItem.indexId = indexId;
-            profileItem.remarks = coreType == ECoreType.sing_box ? ResUI.menuSetDefaultMultipleServer : ResUI.menuSetDefaultLoadBalanceServer;
-            profileItem.address = Global.CoreMultipleLoadConfigFileName;
-            profileItem.configType = EConfigType.Custom;
-            profileItem.coreType = coreType;
+            profileItem.IndexId = indexId;
+            profileItem.Remarks = coreType == ECoreType.sing_box ? ResUI.menuSetDefaultMultipleServer : ResUI.menuSetDefaultLoadBalanceServer;
+            profileItem.Address = Global.CoreMultipleLoadConfigFileName;
+            profileItem.ConfigType = EConfigType.Custom;
+            profileItem.CoreType = coreType;
 
             await AddServerCommon(config, profileItem, true);
 
@@ -1056,7 +1054,7 @@ namespace ServiceLib.Handler
             if (isSub && Utils.IsNotEmpty(subid))
             {
                 await RemoveServerViaSubid(config, subid, isSub);
-                subFilter = (await AppHandler.Instance.GetSubItem(subid))?.filter ?? "";
+                subFilter = (await AppHandler.Instance.GetSubItem(subid))?.Filter ?? "";
             }
 
             int countServers = 0;
@@ -1088,8 +1086,8 @@ namespace ServiceLib.Handler
                 //exist sub items
                 if (isSub && Utils.IsNotEmpty(subid))
                 {
-                    var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub
-                                                && config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
+                    var existItem = lstOriSub?.FirstOrDefault(t => t.IsSub == isSub
+                                                && config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == profileItem.Remarks : CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
                         //Check for duplicate indexId
@@ -1097,29 +1095,29 @@ namespace ServiceLib.Handler
                         {
                             lstDbIndexId = await AppHandler.Instance.ProfileItemIndexes("");
                         }
-                        if (lstAdd.Any(t => t.indexId == existItem.indexId)
-                            || lstDbIndexId.Any(t => t == existItem.indexId))
+                        if (lstAdd.Any(t => t.IndexId == existItem.IndexId)
+                            || lstDbIndexId.Any(t => t == existItem.IndexId))
                         {
-                            profileItem.indexId = string.Empty;
+                            profileItem.IndexId = string.Empty;
                         }
                         else
                         {
-                            profileItem.indexId = existItem.indexId;
+                            profileItem.IndexId = existItem.IndexId;
                         }
                     }
                     //filter
                     if (Utils.IsNotEmpty(subFilter))
                     {
-                        if (!Regex.IsMatch(profileItem.remarks, subFilter))
+                        if (!Regex.IsMatch(profileItem.Remarks, subFilter))
                         {
                             continue;
                         }
                     }
                 }
-                profileItem.subid = subid;
-                profileItem.isSub = isSub;
+                profileItem.Subid = subid;
+                profileItem.IsSub = isSub;
 
-                var addStatus = profileItem.configType switch
+                var addStatus = profileItem.ConfigType switch
                 {
                     EConfigType.VMess => await AddVMessServer(config, profileItem, false),
                     EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
@@ -1156,8 +1154,8 @@ namespace ServiceLib.Handler
             }
 
             var subItem = await AppHandler.Instance.GetSubItem(subid);
-            var subRemarks = subItem?.remarks;
-            var preSocksPort = subItem?.preSocksPort;
+            var subRemarks = subItem?.Remarks;
+            var preSocksPort = subItem?.PreSocksPort;
 
             List<ProfileItem>? lstProfiles = null;
             //Is sing-box array configuration
@@ -1179,9 +1177,9 @@ namespace ServiceLib.Handler
                 int count = 0;
                 foreach (var it in lstProfiles)
                 {
-                    it.subid = subid;
-                    it.isSub = isSub;
-                    it.preSocksPort = preSocksPort;
+                    it.Subid = subid;
+                    it.IsSub = isSub;
+                    it.PreSocksPort = preSocksPort;
                     if (await AddCustomServer(config, it, true) == 0)
                     {
                         count++;
@@ -1223,7 +1221,7 @@ namespace ServiceLib.Handler
             {
                 profileItem = NaiveproxyFmt.ResolveFull(strData, subRemarks);
             }
-            if (profileItem is null || Utils.IsNullOrEmpty(profileItem.address))
+            if (profileItem is null || Utils.IsNullOrEmpty(profileItem.Address))
             {
                 return -1;
             }
@@ -1234,11 +1232,11 @@ namespace ServiceLib.Handler
             }
             if (isSub && lstOriSub?.Count == 1)
             {
-                profileItem.indexId = lstOriSub[0].indexId;
+                profileItem.IndexId = lstOriSub[0].IndexId;
             }
-            profileItem.subid = subid;
-            profileItem.isSub = isSub;
-            profileItem.preSocksPort = preSocksPort;
+            profileItem.Subid = subid;
+            profileItem.IsSub = isSub;
+            profileItem.PreSocksPort = preSocksPort;
             if (await AddCustomServer(config, profileItem, true) == 0)
             {
                 return 1;
@@ -1267,8 +1265,8 @@ namespace ServiceLib.Handler
                 int counter = 0;
                 foreach (var ssItem in lstSsServer)
                 {
-                    ssItem.subid = subid;
-                    ssItem.isSub = isSub;
+                    ssItem.Subid = subid;
+                    ssItem.IsSub = isSub;
                     if (await AddShadowsocksServer(config, ssItem) == 0)
                     {
                         counter++;
@@ -1334,22 +1332,22 @@ namespace ServiceLib.Handler
         public static async Task<int> AddSubItem(Config config, string url)
         {
             //already exists
-            var count = await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync(e => e.url == url);
+            var count = await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync(e => e.Url == url);
             if (count > 0)
             {
                 return 0;
             }
             SubItem subItem = new()
             {
-                id = string.Empty,
-                url = url
+                Id = string.Empty,
+                Url = url
             };
 
             try
             {
                 var uri = new Uri(url);
                 var queryVars = Utils.ParseQueryString(uri.Query);
-                subItem.remarks = queryVars["remarks"] ?? "import_sub";
+                subItem.Remarks = queryVars["remarks"] ?? "import_sub";
             }
             catch (UriFormatException)
             {
@@ -1361,41 +1359,41 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddSubItem(Config config, SubItem subItem)
         {
-            var item = await AppHandler.Instance.GetSubItem(subItem.id);
+            var item = await AppHandler.Instance.GetSubItem(subItem.Id);
             if (item is null)
             {
                 item = subItem;
             }
             else
             {
-                item.remarks = subItem.remarks;
-                item.url = subItem.url;
-                item.moreUrl = subItem.moreUrl;
-                item.enabled = subItem.enabled;
-                item.autoUpdateInterval = subItem.autoUpdateInterval;
-                item.userAgent = subItem.userAgent;
-                item.sort = subItem.sort;
-                item.filter = subItem.filter;
-                item.updateTime = subItem.updateTime;
-                item.convertTarget = subItem.convertTarget;
-                item.prevProfile = subItem.prevProfile;
-                item.nextProfile = subItem.nextProfile;
-                item.preSocksPort = subItem.preSocksPort;
+                item.Remarks = subItem.Remarks;
+                item.Url = subItem.Url;
+                item.MoreUrl = subItem.MoreUrl;
+                item.Enabled = subItem.Enabled;
+                item.AutoUpdateInterval = subItem.AutoUpdateInterval;
+                item.UserAgent = subItem.UserAgent;
+                item.Sort = subItem.Sort;
+                item.Filter = subItem.Filter;
+                item.UpdateTime = subItem.UpdateTime;
+                item.ConvertTarget = subItem.ConvertTarget;
+                item.PrevProfile = subItem.PrevProfile;
+                item.NextProfile = subItem.NextProfile;
+                item.PreSocksPort = subItem.PreSocksPort;
             }
 
-            if (Utils.IsNullOrEmpty(item.id))
+            if (Utils.IsNullOrEmpty(item.Id))
             {
-                item.id = Utils.GetGuid(false);
+                item.Id = Utils.GetGuid(false);
 
-                if (item.sort <= 0)
+                if (item.Sort <= 0)
                 {
                     var maxSort = 0;
                     if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                     {
                         var lstSubs = (await AppHandler.Instance.SubItems());
-                        maxSort = lstSubs.LastOrDefault()?.sort ?? 0;
+                        maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
                     }
-                    item.sort = maxSort + 1;
+                    item.Sort = maxSort + 1;
                 }
             }
             if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
@@ -1420,7 +1418,7 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid && t.configType == EConfigType.Custom).ToListAsync();
+            var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && t.ConfigType == EConfigType.Custom).ToListAsync();
             if (isSub)
             {
                 await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");
@@ -1431,7 +1429,7 @@ namespace ServiceLib.Handler
             }
             foreach (var item in customProfile)
             {
-                File.Delete(Utils.GetConfigPath(item.address));
+                File.Delete(Utils.GetConfigPath(item.Address));
             }
 
             return 0;
@@ -1454,7 +1452,7 @@ namespace ServiceLib.Handler
         {
             foreach (var item in lstProfile)
             {
-                item.subid = subid;
+                item.Subid = subid;
             }
             await SQLiteHelper.Instance.UpdateAllAsync(lstProfile);
 
@@ -1467,9 +1465,9 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SaveRoutingItem(Config config, RoutingItem item)
         {
-            if (Utils.IsNullOrEmpty(item.id))
+            if (Utils.IsNullOrEmpty(item.Id))
             {
-                item.id = Utils.GetGuid(false);
+                item.Id = Utils.GetGuid(false);
             }
 
             if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
@@ -1505,12 +1503,12 @@ namespace ServiceLib.Handler
             {
                 item.id = Utils.GetGuid(false);
             }
-            routingItem.ruleNum = lstRules.Count;
-            routingItem.ruleSet = JsonUtils.Serialize(lstRules, false);
+            routingItem.RuleNum = lstRules.Count;
+            routingItem.RuleSet = JsonUtils.Serialize(lstRules, false);
 
-            if (Utils.IsNullOrEmpty(routingItem.id))
+            if (Utils.IsNullOrEmpty(routingItem.Id))
             {
-                routingItem.id = Utils.GetGuid(false);
+                routingItem.Id = Utils.GetGuid(false);
             }
 
             if (await SQLiteHelper.Instance.ReplaceAsync(routingItem) > 0)
@@ -1602,9 +1600,9 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
         {
-            if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.id == routingItem.id).CountAsync() > 0)
+            if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.Id == routingItem.Id).CountAsync() > 0)
             {
-                config.RoutingBasicItem.RoutingIndexId = routingItem.id;
+                config.RoutingBasicItem.RoutingIndexId = routingItem.Id;
             }
 
             await ToJsonFile(config);
@@ -1617,7 +1615,7 @@ namespace ServiceLib.Handler
             var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
             if (item is null)
             {
-                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.locked == false);
+                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.Locked == false);
                 await SetDefaultRouting(config, item2);
                 return item2;
             }
@@ -1652,7 +1650,7 @@ namespace ServiceLib.Handler
 
             var items = await AppHandler.Instance.RoutingItems();
             var maxSort = items.Count;
-            if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(template.version)).ToList().Count > 0)
+            if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.version)).ToList().Count > 0)
             {
                 return 0;
             }
@@ -1660,20 +1658,20 @@ namespace ServiceLib.Handler
             {
                 var item = template.routingItems[i];
 
-                if (string.IsNullOrEmpty(item.url) && string.IsNullOrEmpty(item.ruleSet))
+                if (string.IsNullOrEmpty(item.Url) && string.IsNullOrEmpty(item.RuleSet))
                     continue;
 
-                var ruleSetsString = !string.IsNullOrEmpty(item.ruleSet)
-                    ? item.ruleSet
-                    : await downloadHandle.TryDownloadString(item.url, true, "");
+                var ruleSetsString = !string.IsNullOrEmpty(item.RuleSet)
+                    ? item.RuleSet
+                    : await downloadHandle.TryDownloadString(item.Url, true, "");
 
                 if (string.IsNullOrEmpty(ruleSetsString))
                     continue;
 
-                item.remarks = $"{template.version}-{item.remarks}";
-                item.enabled = true;
-                item.sort = ++maxSort;
-                item.url = string.Empty;
+                item.Remarks = $"{template.version}-{item.Remarks}";
+                item.Enabled = true;
+                item.Sort = ++maxSort;
+                item.Url = string.Empty;
 
                 await AddBatchRoutingRules(item, ruleSetsString);
 
@@ -1691,7 +1689,7 @@ namespace ServiceLib.Handler
         {
             var ver = "V3-";
             var items = await AppHandler.Instance.RoutingItems();
-            if (!blImportAdvancedRules && items.Where(t => t.remarks.StartsWith(ver)).ToList().Count > 0)
+            if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(ver)).ToList().Count > 0)
             {
                 return 0;
             }
@@ -1700,27 +1698,27 @@ namespace ServiceLib.Handler
             //Bypass the mainland
             var item2 = new RoutingItem()
             {
-                remarks = $"{ver}绕过大陆(Whitelist)",
-                url = string.Empty,
-                sort = maxSort + 1,
+                Remarks = $"{ver}绕过大陆(Whitelist)",
+                Url = string.Empty,
+                Sort = maxSort + 1,
             };
             await AddBatchRoutingRules(item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
 
             //Blacklist
             var item3 = new RoutingItem()
             {
-                remarks = $"{ver}黑名单(Blacklist)",
-                url = string.Empty,
-                sort = maxSort + 2,
+                Remarks = $"{ver}黑名单(Blacklist)",
+                Url = string.Empty,
+                Sort = maxSort + 2,
             };
             await AddBatchRoutingRules(item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
 
             //Global
             var item1 = new RoutingItem()
             {
-                remarks = $"{ver}全局(Global)",
-                url = string.Empty,
-                sort = maxSort + 3,
+                Remarks = $"{ver}全局(Global)",
+                Url = string.Empty,
+                Sort = maxSort + 3,
             };
             await AddBatchRoutingRules(item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
 
@@ -1733,7 +1731,7 @@ namespace ServiceLib.Handler
 
         public static async Task<RoutingItem?> GetLockedRoutingItem(Config config)
         {
-            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.locked == true);
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Locked == true);
         }
 
         public static async Task RemoveRoutingItem(RoutingItem routingItem)
@@ -1752,15 +1750,15 @@ namespace ServiceLib.Handler
             {
                 var item = new DNSItem()
                 {
-                    remarks = "V2ray",
-                    coreType = ECoreType.Xray,
+                    Remarks = "V2ray",
+                    CoreType = ECoreType.Xray,
                 };
                 await SaveDNSItems(config, item);
 
                 var item2 = new DNSItem()
                 {
-                    remarks = "sing-box",
-                    coreType = ECoreType.sing_box,
+                    Remarks = "sing-box",
+                    CoreType = ECoreType.sing_box,
                 };
                 await SaveDNSItems(config, item2);
             }
@@ -1775,9 +1773,9 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (Utils.IsNullOrEmpty(item.id))
+            if (Utils.IsNullOrEmpty(item.Id))
             {
-                item.id = Utils.GetGuid(false);
+                item.Id = Utils.GetGuid(false);
             }
 
             if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
@@ -1803,16 +1801,16 @@ namespace ServiceLib.Handler
             if (template == null)
                 return currentItem;
 
-            if (!string.IsNullOrEmpty(template.normalDNS))
-                template.normalDNS = await downloadHandle.TryDownloadString(template.normalDNS, true, "");
+            if (!string.IsNullOrEmpty(template.NormalDNS))
+                template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
 
-            if (!string.IsNullOrEmpty(template.tunDNS))
-                template.tunDNS = await downloadHandle.TryDownloadString(template.tunDNS, true, "");
+            if (!string.IsNullOrEmpty(template.TunDNS))
+                template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
 
-            template.id = currentItem.id;
-            template.enabled = currentItem.enabled;
-            template.remarks = currentItem.remarks;
-            template.coreType = type;
+            template.Id = currentItem.Id;
+            template.Enabled = currentItem.Enabled;
+            template.Remarks = currentItem.Remarks;
+            template.CoreType = type;
 
             return template;
         }

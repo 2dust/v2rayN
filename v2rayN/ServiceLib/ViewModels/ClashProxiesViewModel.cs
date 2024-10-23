@@ -273,7 +273,7 @@ namespace ServiceLib.ViewModels
             var lstDetails = new List<ClashProxyModel>();
             foreach (var item in proxy.all)
             {
-                var isActive = item == proxy.now;
+                var IsActive = item == proxy.now;
 
                 var proxy2 = TryGetProxy(item);
                 if (proxy2 == null)
@@ -288,7 +288,7 @@ namespace ServiceLib.ViewModels
 
                 lstDetails.Add(new ClashProxyModel()
                 {
-                    isActive = isActive,
+                    IsActive = IsActive,
                     name = item,
                     type = proxy2.type,
                     delay = delay <= 0 ? _delayTimeout : delay,

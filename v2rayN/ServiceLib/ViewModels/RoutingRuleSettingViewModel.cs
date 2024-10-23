@@ -92,7 +92,7 @@ namespace ServiceLib.ViewModels
 
             SelectedSource = new();
             SelectedRouting = routingItem;
-            _rules = routingItem.id.IsNullOrEmpty() ? new() : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.ruleSet);
+            _rules = routingItem.Id.IsNullOrEmpty() ? new() : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.RuleSet);
 
             RefreshRulesItems();
         }
@@ -109,12 +109,12 @@ namespace ServiceLib.ViewModels
                     outboundTag = item.outboundTag,
                     port = item.port,
                     network = item.network,
-                    protocols = Utils.List2String(item.protocol),
-                    inboundTags = Utils.List2String(item.inboundTag),
-                    domains = Utils.List2String(item.domain),
-                    ips = Utils.List2String(item.ip),
-                    enabled = item.enabled,
-                    remarks = item.remarks,
+                    Protocols = Utils.List2String(item.protocol),
+                    InboundTags = Utils.List2String(item.inboundTag),
+                    Domains = Utils.List2String(item.domain),
+                    Ips = Utils.List2String(item.ip),
+                    Enabled = item.Enabled,
+                    Remarks = item.Remarks,
                 };
                 _rulesItems.Add(it);
             }
@@ -214,7 +214,7 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveRoutingAsync()
         {
-            string remarks = SelectedRouting.remarks;
+            string remarks = SelectedRouting.Remarks;
             if (Utils.IsNullOrEmpty(remarks))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
@@ -225,8 +225,8 @@ namespace ServiceLib.ViewModels
             {
                 it.id = Utils.GetGuid(false);
             }
-            item.ruleNum = _rules.Count;
-            item.ruleSet = JsonUtils.Serialize(_rules, false);
+            item.RuleNum = _rules.Count;
+            item.RuleSet = JsonUtils.Serialize(_rules, false);
 
             if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
             {
@@ -278,7 +278,7 @@ namespace ServiceLib.ViewModels
 
         private async Task ImportRulesFromUrl()
         {
-            var url = SelectedRouting.url;
+            var url = SelectedRouting.Url;
             if (Utils.IsNullOrEmpty(url))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.MsgNeedUrl);

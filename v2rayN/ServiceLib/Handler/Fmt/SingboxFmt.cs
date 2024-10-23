@@ -20,9 +20,9 @@
 
                         var profileIt = new ProfileItem
                         {
-                            coreType = ECoreType.sing_box,
-                            address = fileName,
-                            remarks = subRemarks ?? "singbox_custom",
+                            CoreType = ECoreType.sing_box,
+                            Address = fileName,
+                            Remarks = subRemarks ?? "singbox_custom",
                         };
                         lstResult.Add(profileIt);
                     }
@@ -42,9 +42,9 @@
                 var fileName = WriteAllText(strData);
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.sing_box,
-                    address = fileName,
-                    remarks = subRemarks ?? "singbox_custom"
+                    CoreType = ECoreType.sing_box,
+                    Address = fileName,
+                    Remarks = subRemarks ?? "singbox_custom"
                 };
 
                 return profileItem;

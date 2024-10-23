@@ -14,12 +14,12 @@ namespace ServiceLib.Handler.Fmt
             {
                 return null;
             }
-            if (item.address.Length == 0 || item.port == 0 || item.security.Length == 0 || item.id.Length == 0)
+            if (item.Address.Length == 0 || item.Port == 0 || item.Security.Length == 0 || item.Id.Length == 0)
             {
                 return null;
             }
 
-            item.configType = EConfigType.Shadowsocks;
+            item.ConfigType = EConfigType.Shadowsocks;
 
             return item;
         }
@@ -30,9 +30,9 @@ namespace ServiceLib.Handler.Fmt
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             //url = string.Format("{0}:{1}@{2}:{3}",
             //    item.security,
@@ -41,8 +41,8 @@ namespace ServiceLib.Handler.Fmt
             //    item.port);
             //url = Utile.Base64Encode(url);
             //new Sip002
-            var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            return ToUri(EConfigType.Shadowsocks, item.address, item.port, pw, null, remark);
+            var pw = Utils.Base64Encode($"{item.Security}:{item.Id}");
+            return ToUri(EConfigType.Shadowsocks, item.Address, item.Port, pw, null, remark);
         }
 
         private static readonly Regex UrlFinder = new(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -59,7 +59,7 @@ namespace ServiceLib.Handler.Fmt
             var tag = match.Groups["tag"].Value;
             if (Utils.IsNotEmpty(tag))
             {
-                item.remarks = Utils.UrlDecode(tag);
+                item.Remarks = Utils.UrlDecode(tag);
             }
             Match details;
             try
@@ -72,10 +72,10 @@ namespace ServiceLib.Handler.Fmt
             }
             if (!details.Success)
                 return null;
-            item.security = details.Groups["method"].Value;
-            item.id = details.Groups["password"].Value;
-            item.address = details.Groups["hostname"].Value;
-            item.port = Utils.ToInt(details.Groups["port"].Value);
+            item.Security = details.Groups["method"].Value;
+            item.Id = details.Groups["password"].Value;
+            item.Address = details.Groups["hostname"].Value;
+            item.Port = Utils.ToInt(details.Groups["port"].Value);
             return item;
         }
 
@@ -92,9 +92,9 @@ namespace ServiceLib.Handler.Fmt
             }
             ProfileItem item = new()
             {
-                remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
-                address = parsedUrl.IdnHost,
-                port = parsedUrl.Port,
+                Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
+                Address = parsedUrl.IdnHost,
+                Port = parsedUrl.Port,
             };
             var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
             //2022-blake3
@@ -105,8 +105,8 @@ namespace ServiceLib.Handler.Fmt
                 {
                     return null;
                 }
-                item.security = userInfoParts[0];
-                item.id = Utils.UrlDecode(userInfoParts[1]);
+                item.Security = userInfoParts[0];
+                item.Id = Utils.UrlDecode(userInfoParts[1]);
             }
             else
             {
@@ -117,8 +117,8 @@ namespace ServiceLib.Handler.Fmt
                 {
                     return null;
                 }
-                item.security = userInfoParts[0];
-                item.id = userInfoParts[1];
+                item.Security = userInfoParts[0];
+                item.Id = userInfoParts[1];
             }
 
             var queryParameters = Utils.ParseQueryString(parsedUrl.Query);
@@ -129,9 +129,9 @@ namespace ServiceLib.Handler.Fmt
                 if (queryParameters["plugin"].Contains("obfs=http") && Utils.IsNotEmpty(obfsHost))
                 {
                     obfsHost = obfsHost?.Replace("obfs-host=", "");
-                    item.network = Global.DefaultNetwork;
-                    item.headerType = Global.TcpHeaderHttp;
-                    item.requestHost = obfsHost ?? "";
+                    item.Network = Global.DefaultNetwork;
+                    item.HeaderType = Global.TcpHeaderHttp;
+                    item.RequestHost = obfsHost ?? "";
                 }
                 else
                 {
@@ -162,11 +162,11 @@ namespace ServiceLib.Handler.Fmt
                 {
                     var ssItem = new ProfileItem()
                     {
-                        remarks = it.remarks,
-                        security = it.method,
-                        id = it.password,
-                        address = it.server,
-                        port = Utils.ToInt(it.server_port)
+                        Remarks = it.remarks,
+                        Security = it.method,
+                        Id = it.password,
+                        Address = it.server,
+                        Port = Utils.ToInt(it.server_port)
                     };
                     lst.Add(ssItem);
                 }

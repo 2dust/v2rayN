@@ -21,12 +21,12 @@ namespace ServiceLib.ViewModels
                 await SaveSubAsync();
             });
 
-            SelectedSource = subItem.id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
+            SelectedSource = subItem.Id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
         }
 
         private async Task SaveSubAsync()
         {
-            var remarks = SelectedSource.remarks;
+            var remarks = SelectedSource.Remarks;
             if (Utils.IsNullOrEmpty(remarks))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);

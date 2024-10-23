@@ -16,14 +16,14 @@ namespace ServiceLib.Handler.Fmt
 
         protected static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
         {
-            if (Utils.IsNotEmpty(item.flow))
+            if (Utils.IsNotEmpty(item.Flow))
             {
-                dicQuery.Add("flow", item.flow);
+                dicQuery.Add("flow", item.Flow);
             }
 
-            if (Utils.IsNotEmpty(item.streamSecurity))
+            if (Utils.IsNotEmpty(item.StreamSecurity))
             {
-                dicQuery.Add("security", item.streamSecurity);
+                dicQuery.Add("security", item.StreamSecurity);
             }
             else
             {
@@ -32,95 +32,95 @@ namespace ServiceLib.Handler.Fmt
                     dicQuery.Add("security", securityDef);
                 }
             }
-            if (Utils.IsNotEmpty(item.sni))
+            if (Utils.IsNotEmpty(item.Sni))
             {
-                dicQuery.Add("sni", item.sni);
+                dicQuery.Add("sni", item.Sni);
             }
-            if (Utils.IsNotEmpty(item.alpn))
+            if (Utils.IsNotEmpty(item.Alpn))
             {
-                dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+                dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
             }
-            if (Utils.IsNotEmpty(item.fingerprint))
+            if (Utils.IsNotEmpty(item.Fingerprint))
             {
-                dicQuery.Add("fp", Utils.UrlEncode(item.fingerprint));
+                dicQuery.Add("fp", Utils.UrlEncode(item.Fingerprint));
             }
-            if (Utils.IsNotEmpty(item.publicKey))
+            if (Utils.IsNotEmpty(item.PublicKey))
             {
-                dicQuery.Add("pbk", Utils.UrlEncode(item.publicKey));
+                dicQuery.Add("pbk", Utils.UrlEncode(item.PublicKey));
             }
-            if (Utils.IsNotEmpty(item.shortId))
+            if (Utils.IsNotEmpty(item.ShortId))
             {
-                dicQuery.Add("sid", Utils.UrlEncode(item.shortId));
+                dicQuery.Add("sid", Utils.UrlEncode(item.ShortId));
             }
-            if (Utils.IsNotEmpty(item.spiderX))
+            if (Utils.IsNotEmpty(item.SpiderX))
             {
-                dicQuery.Add("spx", Utils.UrlEncode(item.spiderX));
+                dicQuery.Add("spx", Utils.UrlEncode(item.SpiderX));
             }
-            if (item.allowInsecure.Equals("true"))
+            if (item.AllowInsecure.Equals("true"))
             {
                 dicQuery.Add("allowInsecure", "1");
             }
 
-            dicQuery.Add("type", Utils.IsNotEmpty(item.network) ? item.network : nameof(ETransport.tcp));
+            dicQuery.Add("type", Utils.IsNotEmpty(item.Network) ? item.Network : nameof(ETransport.tcp));
 
-            switch (item.network)
+            switch (item.Network)
             {
                 case nameof(ETransport.tcp):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.headerType) ? item.headerType : Global.None);
-                    if (Utils.IsNotEmpty(item.requestHost))
+                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
+                    if (Utils.IsNotEmpty(item.RequestHost))
                     {
-                        dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
+                        dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
                     break;
 
                 case nameof(ETransport.kcp):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.headerType) ? item.headerType : Global.None);
-                    if (Utils.IsNotEmpty(item.path))
+                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
+                    if (Utils.IsNotEmpty(item.Path))
                     {
-                        dicQuery.Add("seed", Utils.UrlEncode(item.path));
+                        dicQuery.Add("seed", Utils.UrlEncode(item.Path));
                     }
                     break;
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
                 case nameof(ETransport.splithttp):
-                    if (Utils.IsNotEmpty(item.requestHost))
+                    if (Utils.IsNotEmpty(item.RequestHost))
                     {
-                        dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
+                        dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
-                    if (Utils.IsNotEmpty(item.path))
+                    if (Utils.IsNotEmpty(item.Path))
                     {
-                        dicQuery.Add("path", Utils.UrlEncode(item.path));
+                        dicQuery.Add("path", Utils.UrlEncode(item.Path));
                     }
                     break;
 
                 case nameof(ETransport.http):
                 case nameof(ETransport.h2):
                     dicQuery["type"] = nameof(ETransport.http);
-                    if (Utils.IsNotEmpty(item.requestHost))
+                    if (Utils.IsNotEmpty(item.RequestHost))
                     {
-                        dicQuery.Add("host", Utils.UrlEncode(item.requestHost));
+                        dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
-                    if (Utils.IsNotEmpty(item.path))
+                    if (Utils.IsNotEmpty(item.Path))
                     {
-                        dicQuery.Add("path", Utils.UrlEncode(item.path));
+                        dicQuery.Add("path", Utils.UrlEncode(item.Path));
                     }
                     break;
 
                 case nameof(ETransport.quic):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.headerType) ? item.headerType : Global.None);
-                    dicQuery.Add("quicSecurity", Utils.UrlEncode(item.requestHost));
-                    dicQuery.Add("key", Utils.UrlEncode(item.path));
+                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
+                    dicQuery.Add("quicSecurity", Utils.UrlEncode(item.RequestHost));
+                    dicQuery.Add("key", Utils.UrlEncode(item.Path));
                     break;
 
                 case nameof(ETransport.grpc):
-                    if (Utils.IsNotEmpty(item.path))
+                    if (Utils.IsNotEmpty(item.Path))
                     {
-                        dicQuery.Add("authority", Utils.UrlEncode(item.requestHost));
-                        dicQuery.Add("serviceName", Utils.UrlEncode(item.path));
-                        if (item.headerType is Global.GrpcGunMode or Global.GrpcMultiMode)
+                        dicQuery.Add("authority", Utils.UrlEncode(item.RequestHost));
+                        dicQuery.Add("serviceName", Utils.UrlEncode(item.Path));
+                        if (item.HeaderType is Global.GrpcGunMode or Global.GrpcMultiMode)
                         {
-                            dicQuery.Add("mode", Utils.UrlEncode(item.headerType));
+                            dicQuery.Add("mode", Utils.UrlEncode(item.HeaderType));
                         }
                     }
                     break;
@@ -130,54 +130,54 @@ namespace ServiceLib.Handler.Fmt
 
         protected static int ResolveStdTransport(NameValueCollection query, ref ProfileItem item)
         {
-            item.flow = query["flow"] ?? "";
-            item.streamSecurity = query["security"] ?? "";
-            item.sni = query["sni"] ?? "";
-            item.alpn = Utils.UrlDecode(query["alpn"] ?? "");
-            item.fingerprint = Utils.UrlDecode(query["fp"] ?? "");
-            item.publicKey = Utils.UrlDecode(query["pbk"] ?? "");
-            item.shortId = Utils.UrlDecode(query["sid"] ?? "");
-            item.spiderX = Utils.UrlDecode(query["spx"] ?? "");
-            item.allowInsecure = (query["allowInsecure"] ?? "") == "1" ? "true" : "";
+            item.Flow = query["flow"] ?? "";
+            item.StreamSecurity = query["security"] ?? "";
+            item.Sni = query["sni"] ?? "";
+            item.Alpn = Utils.UrlDecode(query["alpn"] ?? "");
+            item.Fingerprint = Utils.UrlDecode(query["fp"] ?? "");
+            item.PublicKey = Utils.UrlDecode(query["pbk"] ?? "");
+            item.ShortId = Utils.UrlDecode(query["sid"] ?? "");
+            item.SpiderX = Utils.UrlDecode(query["spx"] ?? "");
+            item.AllowInsecure = (query["allowInsecure"] ?? "") == "1" ? "true" : "";
 
-            item.network = query["type"] ?? nameof(ETransport.tcp);
-            switch (item.network)
+            item.Network = query["type"] ?? nameof(ETransport.tcp);
+            switch (item.Network)
             {
                 case nameof(ETransport.tcp):
-                    item.headerType = query["headerType"] ?? Global.None;
-                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
+                    item.HeaderType = query["headerType"] ?? Global.None;
+                    item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
 
                     break;
 
                 case nameof(ETransport.kcp):
-                    item.headerType = query["headerType"] ?? Global.None;
-                    item.path = Utils.UrlDecode(query["seed"] ?? "");
+                    item.HeaderType = query["headerType"] ?? Global.None;
+                    item.Path = Utils.UrlDecode(query["seed"] ?? "");
                     break;
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
                 case nameof(ETransport.splithttp):
-                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
-                    item.path = Utils.UrlDecode(query["path"] ?? "/");
+                    item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
+                    item.Path = Utils.UrlDecode(query["path"] ?? "/");
                     break;
 
                 case nameof(ETransport.http):
                 case nameof(ETransport.h2):
-                    item.network = nameof(ETransport.h2);
-                    item.requestHost = Utils.UrlDecode(query["host"] ?? "");
-                    item.path = Utils.UrlDecode(query["path"] ?? "/");
+                    item.Network = nameof(ETransport.h2);
+                    item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
+                    item.Path = Utils.UrlDecode(query["path"] ?? "/");
                     break;
 
                 case nameof(ETransport.quic):
-                    item.headerType = query["headerType"] ?? Global.None;
-                    item.requestHost = query["quicSecurity"] ?? Global.None;
-                    item.path = Utils.UrlDecode(query["key"] ?? "");
+                    item.HeaderType = query["headerType"] ?? Global.None;
+                    item.RequestHost = query["quicSecurity"] ?? Global.None;
+                    item.Path = Utils.UrlDecode(query["key"] ?? "");
                     break;
 
                 case nameof(ETransport.grpc):
-                    item.requestHost = Utils.UrlDecode(query["authority"] ?? "");
-                    item.path = Utils.UrlDecode(query["serviceName"] ?? "");
-                    item.headerType = Utils.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
+                    item.RequestHost = Utils.UrlDecode(query["authority"] ?? "");
+                    item.Path = Utils.UrlDecode(query["serviceName"] ?? "");
+                    item.HeaderType = Utils.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
                     break;
 
                 default:

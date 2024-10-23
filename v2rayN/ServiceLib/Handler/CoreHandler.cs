@@ -181,11 +181,11 @@ namespace ServiceLib.Handler
             //{
             //    coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
             //}
-            var coreType = AppHandler.Instance.GetCoreType(node, node.configType);
+            var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
             _config.RunningCoreType = coreType;
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
-            var displayLog = node.configType != EConfigType.Custom || node.displayLog;
+            var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
             var proc = RunProcess(node, coreInfo, "", displayLog);
             if (proc is null)
             {
@@ -198,26 +198,26 @@ namespace ServiceLib.Handler
             {
                 ProfileItem? itemSocks = null;
                 var preCoreType = ECoreType.sing_box;
-                if (node.configType != EConfigType.Custom && coreType != ECoreType.sing_box && _config.TunModeItem.EnableTun)
+                if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && _config.TunModeItem.EnableTun)
                 {
                     itemSocks = new ProfileItem()
                     {
-                        coreType = preCoreType,
-                        configType = EConfigType.SOCKS,
-                        address = Global.Loopback,
-                        sni = node.address, //Tun2SocksAddress
-                        port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
+                        CoreType = preCoreType,
+                        ConfigType = EConfigType.SOCKS,
+                        Address = Global.Loopback,
+                        Sni = node.Address, //Tun2SocksAddress
+                        Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
                     };
                 }
-                else if ((node.configType == EConfigType.Custom && node.preSocksPort > 0))
+                else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
                 {
                     preCoreType = _config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
                     itemSocks = new ProfileItem()
                     {
-                        coreType = preCoreType,
-                        configType = EConfigType.SOCKS,
-                        address = Global.Loopback,
-                        port = node.preSocksPort.Value,
+                        CoreType = preCoreType,
+                        ConfigType = EConfigType.SOCKS,
+                        Address = Global.Loopback,
+                        Port = node.PreSocksPort.Value,
                     };
                     _config.RunningCoreType = preCoreType;
                 }

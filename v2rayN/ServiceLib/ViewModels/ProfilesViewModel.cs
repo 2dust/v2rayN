@@ -103,15 +103,15 @@ namespace ServiceLib.ViewModels
 
             var canEditRemove = this.WhenAnyValue(
                x => x.SelectedProfile,
-               selectedSource => selectedSource != null && !selectedSource.indexId.IsNullOrEmpty());
+               selectedSource => selectedSource != null && !selectedSource.IndexId.IsNullOrEmpty());
 
             this.WhenAnyValue(
                 x => x.SelectedSub,
-                y => y != null && !y.remarks.IsNullOrEmpty() && _config.SubIndexId != y.id)
+                y => y != null && !y.Remarks.IsNullOrEmpty() && _config.SubIndexId != y.Id)
                     .Subscribe(async c => await SubSelectedChangedAsync(c));
             this.WhenAnyValue(
                  x => x.SelectedMoveToGroup,
-                 y => y != null && !y.remarks.IsNullOrEmpty())
+                 y => y != null && !y.Remarks.IsNullOrEmpty())
                      .Subscribe(async c => await MoveToGroup(c));
 
             this.WhenAnyValue(
@@ -195,7 +195,7 @@ namespace ServiceLib.ViewModels
             }, canEditRemove);
             SortServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await SortServer(EServerColName.delayVal.ToString());
+                await SortServer(EServerColName.DelayVal.ToString());
             });
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -273,18 +273,18 @@ namespace ServiceLib.ViewModels
                 NoticeHandler.Instance.Enqueue(result.Delay);
                 return;
             }
-            var item = _profileItems.Where(it => it.indexId == result.IndexId).FirstOrDefault();
+            var item = _profileItems.Where(it => it.IndexId == result.IndexId).FirstOrDefault();
             if (item != null)
             {
                 if (Utils.IsNotEmpty(result.Delay))
                 {
                     int.TryParse(result.Delay, out int temp);
-                    item.delay = temp;
-                    item.delayVal = $"{result.Delay} {Global.DelayUnit}";
+                    item.Delay = temp;
+                    item.DelayVal = $"{result.Delay} {Global.DelayUnit}";
                 }
                 if (Utils.IsNotEmpty(result.Speed))
                 {
-                    item.speedVal = $"{result.Speed} {Global.SpeedUnit}";
+                    item.SpeedVal = $"{result.Speed} {Global.SpeedUnit}";
                 }
                 _profileItems.Replace(item, JsonUtils.DeepCopy(item));
             }
@@ -294,15 +294,15 @@ namespace ServiceLib.ViewModels
         {
             try
             {
-                var item = _profileItems.Where(it => it.indexId == update.indexId).FirstOrDefault();
+                var item = _profileItems.Where(it => it.IndexId == update.IndexId).FirstOrDefault();
                 if (item != null)
                 {
-                    item.todayDown = Utils.HumanFy(update.todayDown);
-                    item.todayUp = Utils.HumanFy(update.todayUp);
-                    item.totalDown = Utils.HumanFy(update.totalDown);
-                    item.totalUp = Utils.HumanFy(update.totalUp);
+                    item.TodayDown = Utils.HumanFy(update.TodayDown);
+                    item.TodayUp = Utils.HumanFy(update.TodayUp);
+                    item.TotalDown = Utils.HumanFy(update.TotalDown);
+                    item.TotalUp = Utils.HumanFy(update.TotalUp);
 
-                    if (SelectedProfile?.indexId == item.indexId)
+                    if (SelectedProfile?.IndexId == item.IndexId)
                     {
                         var temp = JsonUtils.DeepCopy(item);
                         _profileItems.Replace(item, temp);
@@ -334,7 +334,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            _config.SubIndexId = SelectedSub?.id;
+            _config.SubIndexId = SelectedSub?.Id;
 
             RefreshServers();
 
@@ -368,7 +368,7 @@ namespace ServiceLib.ViewModels
             _profileItems.AddRange(lstModel);
             if (lstModel.Count > 0)
             {
-                var selected = lstModel.FirstOrDefault(t => t.indexId == _config.IndexId);
+                var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
                 if (selected != null)
                 {
                     SelectedProfile = selected;
@@ -384,15 +384,15 @@ namespace ServiceLib.ViewModels
         {
             _subItems.Clear();
 
-            _subItems.Add(new SubItem { remarks = ResUI.AllGroupServers });
+            _subItems.Add(new SubItem { Remarks = ResUI.AllGroupServers });
 
             foreach (var item in await AppHandler.Instance.SubItems())
             {
                 _subItems.Add(item);
             }
-            if (_config.SubIndexId != null && _subItems.FirstOrDefault(t => t.id == _config.SubIndexId) != null)
+            if (_config.SubIndexId != null && _subItems.FirstOrDefault(t => t.Id == _config.SubIndexId) != null)
             {
-                SelectedSub = _subItems.FirstOrDefault(t => t.id == _config.SubIndexId);
+                SelectedSub = _subItems.FirstOrDefault(t => t.Id == _config.SubIndexId);
             }
             else
             {
@@ -412,12 +412,12 @@ namespace ServiceLib.ViewModels
                 return null;
             }
 
-            var orderProfiles = SelectedProfiles?.OrderBy(t => t.sort);
+            var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort);
             if (latest)
             {
                 foreach (var profile in orderProfiles)
                 {
-                    var item = await AppHandler.Instance.GetProfileItem(profile.indexId);
+                    var item = await AppHandler.Instance.GetProfileItem(profile.IndexId);
                     if (item is not null)
                     {
                         lstSelecteds.Add(item);
@@ -434,17 +434,17 @@ namespace ServiceLib.ViewModels
 
         public async Task EditServerAsync(EConfigType eConfigType)
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
+            if (Utils.IsNullOrEmpty(SelectedProfile?.IndexId))
             {
                 return;
             }
-            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
             if (item is null)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
                 return;
             }
-            eConfigType = item.configType;
+            eConfigType = item.ConfigType;
 
             bool? ret = false;
             if (eConfigType == EConfigType.Custom)
@@ -458,7 +458,7 @@ namespace ServiceLib.ViewModels
             if (ret == true)
             {
                 RefreshServers();
-                if (item.indexId == _config.IndexId)
+                if (item.IndexId == _config.IndexId)
                 {
                     Reload();
                 }
@@ -476,7 +476,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var exists = lstSelecteds.Exists(t => t.indexId == _config.IndexId);
+            var exists = lstSelecteds.Exists(t => t.IndexId == _config.IndexId);
 
             await ConfigHandler.RemoveServer(_config, lstSelecteds);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
@@ -512,11 +512,11 @@ namespace ServiceLib.ViewModels
 
         public async Task SetDefaultServer()
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.indexId))
+            if (Utils.IsNullOrEmpty(SelectedProfile?.IndexId))
             {
                 return;
             }
-            await SetDefaultServer(SelectedProfile.indexId);
+            await SetDefaultServer(SelectedProfile.IndexId);
         }
 
         public async Task SetDefaultServer(string indexId)
@@ -562,7 +562,7 @@ namespace ServiceLib.ViewModels
 
         public async Task ShareServerAsync()
         {
-            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
             if (item is null)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
@@ -633,7 +633,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            await ConfigHandler.MoveToGroup(_config, lstSelecteds, SelectedMoveToGroup.id);
+            await ConfigHandler.MoveToGroup(_config, lstSelecteds, SelectedMoveToGroup.Id);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
 
             RefreshServers();
@@ -643,7 +643,7 @@ namespace ServiceLib.ViewModels
 
         public async Task MoveServer(EMove eMove)
         {
-            var item = _lstProfile.FirstOrDefault(t => t.indexId == SelectedProfile.indexId);
+            var item = _lstProfile.FirstOrDefault(t => t.IndexId == SelectedProfile.IndexId);
             if (item is null)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
@@ -696,7 +696,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Export2ClientConfigAsync(bool blClipboard)
         {
-            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
             if (item is null)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);

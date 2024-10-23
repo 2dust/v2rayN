@@ -10,13 +10,13 @@
             var config = AppHandler.Instance.Config;
             var result = new RetResult();
 
-            if (node.configType == EConfigType.Custom)
+            if (node.ConfigType == EConfigType.Custom)
             {
-                if (node.coreType is ECoreType.mihomo)
+                if (node.CoreType is ECoreType.mihomo)
                 {
                     result = await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName);
                 }
-                if (node.coreType is ECoreType.sing_box)
+                if (node.CoreType is ECoreType.sing_box)
                 {
                     result = await new CoreConfigSingboxService(config).GenerateClientCustomConfig(node, fileName);
                 }
@@ -25,7 +25,7 @@
                     result = await GenerateClientCustomConfig(node, fileName);
                 }
             }
-            else if (AppHandler.Instance.GetCoreType(node, node.configType) == ECoreType.sing_box)
+            else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
             {
                 result = await new CoreConfigSingboxService(config).GenerateClientConfigContent(node);
             }
@@ -62,7 +62,7 @@
                     File.Delete(fileName);
                 }
 
-                string addressFileName = node.address;
+                string addressFileName = node.Address;
                 if (!File.Exists(addressFileName))
                 {
                     addressFileName = Utils.GetConfigPath(addressFileName);

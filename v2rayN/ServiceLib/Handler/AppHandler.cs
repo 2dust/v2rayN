@@ -104,12 +104,12 @@
 
         public async Task<List<SubItem>> SubItems()
         {
-            return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.sort).ToListAsync();
+            return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.Sort).ToListAsync();
         }
 
         public async Task<SubItem> GetSubItem(string subid)
         {
-            return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.id == subid);
+            return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.Id == subid);
         }
 
         public async Task<List<ProfileItem>> ProfileItems(string subid)
@@ -120,7 +120,7 @@
             }
             else
             {
-                return await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid).ToListAsync();
+                return await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid).ToListAsync();
             }
         }
 
@@ -129,13 +129,13 @@
             if (Utils.IsNullOrEmpty(subid))
             {
                 return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync())
-                        .Select(t => t.indexId)
+                        .Select(t => t.IndexId)
                         .ToList();
             }
             else
             {
-                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.subid == subid).ToListAsync())
-                        .Select(t => t.indexId)
+                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid).ToListAsync())
+                        .Select(t => t.IndexId)
                         .ToList();
             }
         }
@@ -172,32 +172,32 @@
             var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
             var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
             lstModel = (from t in lstModel
-                        join t2 in lstServerStat on t.indexId equals t2.indexId into t2b
+                        join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
                         from t22 in t2b.DefaultIfEmpty()
-                        join t3 in lstProfileExs on t.indexId equals t3.indexId into t3b
+                        join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
                         from t33 in t3b.DefaultIfEmpty()
                         select new ProfileItemModel
                         {
-                            indexId = t.indexId,
-                            configType = t.configType,
-                            remarks = t.remarks,
-                            address = t.address,
-                            port = t.port,
-                            security = t.security,
-                            network = t.network,
-                            streamSecurity = t.streamSecurity,
-                            subid = t.subid,
-                            subRemarks = t.subRemarks,
-                            isActive = t.indexId == _config.IndexId,
-                            sort = t33 == null ? 0 : t33.sort,
-                            delay = t33 == null ? 0 : t33.delay,
-                            delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
-                            speedVal = t33?.speed != 0 ? $"{t33?.speed} {Global.SpeedUnit}" : string.Empty,
-                            todayDown = t22 == null ? "" : Utils.HumanFy(t22.todayDown),
-                            todayUp = t22 == null ? "" : Utils.HumanFy(t22.todayUp),
-                            totalDown = t22 == null ? "" : Utils.HumanFy(t22.totalDown),
-                            totalUp = t22 == null ? "" : Utils.HumanFy(t22.totalUp)
-                        }).OrderBy(t => t.sort).ToList();
+                            IndexId = t.IndexId,
+                            ConfigType = t.ConfigType,
+                            Remarks = t.Remarks,
+                            Address = t.Address,
+                            Port = t.Port,
+                            Security = t.Security,
+                            Network = t.Network,
+                            StreamSecurity = t.StreamSecurity,
+                            Subid = t.Subid,
+                            SubRemarks = t.SubRemarks,
+                            IsActive = t.IndexId == _config.IndexId,
+                            Sort = t33 == null ? 0 : t33.Sort,
+                            Delay = t33 == null ? 0 : t33.Delay,
+                            DelayVal = t33?.Delay != 0 ? $"{t33?.Delay} {Global.DelayUnit}" : string.Empty,
+                            SpeedVal = t33?.Speed != 0 ? $"{t33?.Speed} {Global.SpeedUnit}" : string.Empty,
+                            TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
+                            TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
+                            TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
+                            TotalUp = t22 == null ? "" : Utils.HumanFy(t22.TotalUp)
+                        }).OrderBy(t => t.Sort).ToList();
 
             return lstModel;
         }
@@ -208,7 +208,7 @@
             {
                 return null;
             }
-            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.indexId == indexId);
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
         }
 
         public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
@@ -217,17 +217,17 @@
             {
                 return null;
             }
-            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.remarks == remarks);
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
         }
 
         public async Task<List<RoutingItem>> RoutingItems()
         {
-            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(it => it.locked == false).OrderBy(t => t.sort).ToListAsync();
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(it => it.Locked == false).OrderBy(t => t.Sort).ToListAsync();
         }
 
         public async Task<RoutingItem> GetRoutingItem(string id)
         {
-            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.locked == false && it.id == id);
+            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Locked == false && it.Id == id);
         }
 
         public async Task<List<DNSItem>> DNSItems()
@@ -237,7 +237,7 @@
 
         public async Task<DNSItem> GetDNSItem(ECoreType eCoreType)
         {
-            return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.coreType == eCoreType);
+            return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
         }
 
         #endregion SqliteHelper
@@ -263,9 +263,9 @@
 
         public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
         {
-            if (profileItem?.coreType != null)
+            if (profileItem?.CoreType != null)
             {
-                return (ECoreType)profileItem.coreType;
+                return (ECoreType)profileItem.CoreType;
             }
 
             if (_config.CoreTypeItem == null)

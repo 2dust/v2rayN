@@ -154,7 +154,7 @@
                                     Background="YellowGreen"
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
-                                    IsVisible="{Binding isActive}" />
+                                    IsVisible="{Binding IsActive}" />
                                 <Grid Classes="Margin8">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1*" />

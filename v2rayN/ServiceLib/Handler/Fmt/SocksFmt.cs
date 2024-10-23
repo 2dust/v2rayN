@@ -12,12 +12,12 @@
             {
                 return null;
             }
-            if (item.address.Length == 0 || item.port == 0)
+            if (item.Address.Length == 0 || item.Port == 0)
             {
                 return null;
             }
 
-            item.configType = EConfigType.SOCKS;
+            item.ConfigType = EConfigType.SOCKS;
 
             return item;
         }
@@ -28,9 +28,9 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             //url = string.Format("{0}:{1}@{2}:{3}",
             //    item.security,
@@ -39,15 +39,15 @@
             //    item.port);
             //url = Utile.Base64Encode(url);
             //new
-            var pw = Utils.Base64Encode($"{item.security}:{item.id}");
-            return ToUri(EConfigType.SOCKS, item.address, item.port, pw, null, remark);
+            var pw = Utils.Base64Encode($"{item.Security}:{item.Id}");
+            return ToUri(EConfigType.SOCKS, item.Address, item.Port, pw, null, remark);
         }
 
         private static ProfileItem? ResolveSocks(string result)
         {
             ProfileItem item = new()
             {
-                configType = EConfigType.SOCKS
+                ConfigType = EConfigType.SOCKS
             };
             result = result[Global.ProtocolShares[EConfigType.SOCKS].Length..];
             //remark
@@ -56,7 +56,7 @@
             {
                 try
                 {
-                    item.remarks = Utils.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
+                    item.Remarks = Utils.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
                 }
                 catch { }
                 result = result[..indexRemark];
@@ -83,10 +83,10 @@
             {
                 return null;
             }
-            item.address = arr1[1][..indexPort];
-            item.port = Utils.ToInt(arr1[1][(indexPort + 1)..]);
-            item.security = arr21[0];
-            item.id = arr21[1];
+            item.Address = arr1[1][..indexPort];
+            item.Port = Utils.ToInt(arr1[1][(indexPort + 1)..]);
+            item.Security = arr21[0];
+            item.Id = arr21[1];
 
             return item;
         }
@@ -104,9 +104,9 @@
             }
             ProfileItem item = new()
             {
-                remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
-                address = parsedUrl.IdnHost,
-                port = parsedUrl.Port,
+                Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
+                Address = parsedUrl.IdnHost,
+                Port = parsedUrl.Port,
             };
 
             // parse base64 UserInfo
@@ -115,8 +115,8 @@
             var userInfoParts = userInfo.Split(new[] { ':' }, 2);
             if (userInfoParts.Length == 2)
             {
-                item.security = userInfoParts[0];
-                item.id = userInfoParts[1];
+                item.Security = userInfoParts[0];
+                item.Id = userInfoParts[1];
             }
 
             return item;

@@ -8,15 +8,15 @@
 
             ProfileItem item = new()
             {
-                configType = EConfigType.Trojan
+                ConfigType = EConfigType.Trojan
             };
 
             Uri url = new(str);
 
-            item.address = url.IdnHost;
-            item.port = url.Port;
-            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            item.id = Utils.UrlDecode(url.UserInfo);
+            item.Address = url.IdnHost;
+            item.Port = url.Port;
+            item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.Id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
@@ -30,14 +30,14 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             var dicQuery = new Dictionary<string, string>();
             GetStdTransport(item, null, ref dicQuery);
 
-            return ToUri(EConfigType.Trojan, item.address, item.port, item.id, dicQuery, remark);
+            return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Id, dicQuery, remark);
         }
     }
 }

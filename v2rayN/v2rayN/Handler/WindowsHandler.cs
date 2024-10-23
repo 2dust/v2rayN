@@ -60,7 +60,7 @@ namespace v2rayN.Handler
                 }
 
                 var item = await ConfigHandler.GetDefaultRouting(config);
-                if (item == null || Utils.IsNullOrEmpty(item.customIcon) || !File.Exists(item.customIcon))
+                if (item == null || Utils.IsNullOrEmpty(item.CustomIcon) || !File.Exists(item.CustomIcon))
                 {
                     return null;
                 }
@@ -81,7 +81,7 @@ namespace v2rayN.Handler
 
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 //graphics.FillRectangle(drawBrush, new Rectangle(0, 0, width, height));
-                graphics.DrawImage(new Bitmap(item.customIcon), 0, 0, width, height);
+                graphics.DrawImage(new Bitmap(item.CustomIcon), 0, 0, width, height);
                 graphics.FillEllipse(drawBrush, width / 2, width / 2, width / 2, width / 2);
 
                 Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());

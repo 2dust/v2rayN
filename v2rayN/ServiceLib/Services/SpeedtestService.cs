@@ -22,20 +22,20 @@ namespace ServiceLib.Services
             _selecteds = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
-                if (it.configType == EConfigType.Custom)
+                if (it.ConfigType == EConfigType.Custom)
                 {
                     continue;
                 }
-                if (it.port <= 0)
+                if (it.Port <= 0)
                 {
                     continue;
                 }
                 _selecteds.Add(new ServerTestItem()
                 {
-                    IndexId = it.indexId,
-                    Address = it.address,
-                    Port = it.port,
-                    ConfigType = it.configType
+                    IndexId = it.IndexId,
+                    Address = it.Address,
+                    Port = it.Port,
+                    ConfigType = it.ConfigType
                 });
             }
             //clear test result

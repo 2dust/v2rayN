@@ -109,7 +109,7 @@ namespace ServiceLib.ViewModels
 
             this.WhenAnyValue(
                     x => x.SelectedRouting,
-                    y => y != null && !y.remarks.IsNullOrEmpty())
+                    y => y != null && !y.Remarks.IsNullOrEmpty())
                 .Subscribe(async c => await RoutingSelectedChangedAsync(c));
 
             this.WhenAnyValue(
@@ -263,9 +263,9 @@ namespace ServiceLib.ViewModels
                 ProfileItem it = lstModel[k];
                 string name = it.GetSummary();
 
-                var item = new ComboItem() { ID = it.indexId, Text = name };
+                var item = new ComboItem() { ID = it.IndexId, Text = name };
                 _servers.Add(item);
-                if (_config.IndexId == it.indexId)
+                if (_config.IndexId == it.IndexId)
                 {
                     SelectedServer = item;
                 }
@@ -358,7 +358,7 @@ namespace ServiceLib.ViewModels
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
-                if (item.id == _config.RoutingBasicItem.RoutingIndexId)
+                if (item.Id == _config.RoutingBasicItem.RoutingIndexId)
                 {
                     SelectedRouting = item;
                 }
@@ -377,12 +377,12 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.id);
+            var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.Id);
             if (item is null)
             {
                 return;
             }
-            if (_config.RoutingBasicItem.RoutingIndexId == item.id)
+            if (_config.RoutingBasicItem.RoutingIndexId == item.Id)
             {
                 return;
             }

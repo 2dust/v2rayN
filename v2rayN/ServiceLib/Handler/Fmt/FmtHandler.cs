@@ -6,7 +6,7 @@
         {
             try
             {
-                var url = item.configType switch
+                var url = item.ConfigType switch
                 {
                     EConfigType.VMess => VmessFmt.ToUri(item),
                     EConfigType.Shadowsocks => ShadowsocksFmt.ToUri(item),

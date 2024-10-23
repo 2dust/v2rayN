@@ -3,9 +3,9 @@
     [Serializable]
     public class RulesItemModel : RulesItem
     {
-        public string inboundTags { get; set; }
-        public string ips { get; set; }
-        public string domains { get; set; }
-        public string protocols { get; set; }
+        public string InboundTags { get; set; }
+        public string Ips { get; set; }
+        public string Domains { get; set; }
+        public string Protocols { get; set; }
     }
 }

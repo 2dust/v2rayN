@@ -122,11 +122,11 @@ namespace ServiceLib.Services
 
             foreach (var item in subItem)
             {
-                string id = item.id.TrimEx();
-                string url = item.url.TrimEx();
-                string userAgent = item.userAgent.TrimEx();
-                string hashCode = $"{item.remarks}->";
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || Utils.IsNotEmpty(subId) && item.id != subId)
+                string id = item.Id.TrimEx();
+                string url = item.Url.TrimEx();
+                string userAgent = item.UserAgent.TrimEx();
+                string hashCode = $"{item.Remarks}->";
+                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || Utils.IsNotEmpty(subId) && item.Id != subId)
                 {
                     //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                     continue;
@@ -135,7 +135,7 @@ namespace ServiceLib.Services
                 {
                     continue;
                 }
-                if (item.enabled == false)
+                if (item.Enabled == false)
                 {
                     _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
                     continue;
@@ -152,13 +152,13 @@ namespace ServiceLib.Services
                 //one url
                 url = Utils.GetPunycode(url);
                 //convert
-                if (Utils.IsNotEmpty(item.convertTarget))
+                if (Utils.IsNotEmpty(item.ConvertTarget))
                 {
                     var subConvertUrl = Utils.IsNullOrEmpty(config.ConstItem.SubConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
                     url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
                     if (!url.Contains("target="))
                     {
-                        url += string.Format("&target={0}", item.convertTarget);
+                        url += string.Format("&target={0}", item.ConvertTarget);
                     }
                     if (!url.Contains("config="))
                     {
@@ -172,14 +172,14 @@ namespace ServiceLib.Services
                 }
 
                 //more url
-                if (Utils.IsNullOrEmpty(item.convertTarget) && Utils.IsNotEmpty(item.moreUrl.TrimEx()))
+                if (Utils.IsNullOrEmpty(item.ConvertTarget) && Utils.IsNotEmpty(item.MoreUrl.TrimEx()))
                 {
                     if (Utils.IsNotEmpty(result) && Utils.IsBase64String(result))
                     {
                         result = Utils.Base64Decode(result);
                     }
 
-                    var lstUrl = item.moreUrl.TrimEx().Split(",") ?? [];
+                    var lstUrl = item.MoreUrl.TrimEx().Split(",") ?? [];
                     foreach (var it in lstUrl)
                     {
                         var url2 = Utils.GetPunycode(it);
@@ -480,7 +480,7 @@ namespace ServiceLib.Services
             var routingItems = await AppHandler.Instance.RoutingItems();
             foreach (var routing in routingItems)
             {
-                var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.ruleSet);
+                var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                 foreach (var item in rules ?? [])
                 {
                     foreach (var ip in item.ip ?? [])

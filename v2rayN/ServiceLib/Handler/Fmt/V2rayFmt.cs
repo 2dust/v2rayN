@@ -20,9 +20,9 @@
 
                         var profileIt = new ProfileItem
                         {
-                            coreType = ECoreType.Xray,
-                            address = fileName,
-                            remarks = v2rayCon.remarks ?? subRemarks ?? "v2ray_custom",
+                            CoreType = ECoreType.Xray,
+                            Address = fileName,
+                            Remarks = v2rayCon.remarks ?? subRemarks ?? "v2ray_custom",
                         };
                         lstResult.Add(profileIt);
                     }
@@ -43,9 +43,9 @@
 
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.Xray,
-                    address = fileName,
-                    remarks = v2rayConfig.remarks ?? subRemarks ?? "v2ray_custom"
+                    CoreType = ECoreType.Xray,
+                    Address = fileName,
+                    Remarks = v2rayConfig.remarks ?? subRemarks ?? "v2ray_custom"
                 };
 
                 return profileItem;

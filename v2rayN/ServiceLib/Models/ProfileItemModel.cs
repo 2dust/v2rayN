@@ -3,16 +3,16 @@
     [Serializable]
     public class ProfileItemModel : ProfileItem
     {
-        public bool isActive { get; set; }
-        public string subRemarks { get; set; }
-        public int delay { get; set; }
-        public decimal speed { get; set; }
-        public int sort { get; set; }
-        public string delayVal { get; set; }
-        public string speedVal { get; set; }
-        public string todayUp { get; set; }
-        public string todayDown { get; set; }
-        public string totalUp { get; set; }
-        public string totalDown { get; set; }
+        public bool IsActive { get; set; }
+        public string SubRemarks { get; set; }
+        public int Delay { get; set; }
+        public decimal Speed { get; set; }
+        public int Sort { get; set; }
+        public string DelayVal { get; set; }
+        public string SpeedVal { get; set; }
+        public string TodayUp { get; set; }
+        public string TodayDown { get; set; }
+        public string TotalUp { get; set; }
+        public string TotalDown { get; set; }
     }
 }

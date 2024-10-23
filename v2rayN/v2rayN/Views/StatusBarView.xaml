@@ -77,7 +77,7 @@
                         Width="160"
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                        DisplayMemberPath="remarks"
+                        DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                 </StackPanel>
@@ -155,7 +155,7 @@
                                     x:Name="cmbRoutings"
                                     MaxWidth="300"
                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                    DisplayMemberPath="remarks"
+                                    DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
                                     Style="{StaticResource MaterialDesignFilledComboBox}" />
                             </DockPanel>

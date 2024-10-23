@@ -351,9 +351,9 @@ namespace ServiceLib.ViewModels
         {
             ProfileItem item = new()
             {
-                subid = _config.SubIndexId,
-                configType = eConfigType,
-                isSub = false,
+                Subid = _config.SubIndexId,
+                ConfigType = eConfigType,
+                IsSub = false,
             };
 
             bool? ret = false;
@@ -368,7 +368,7 @@ namespace ServiceLib.ViewModels
             if (ret == true)
             {
                 RefreshServers();
-                if (item.indexId == _config.IndexId)
+                if (item.IndexId == _config.IndexId)
                 {
                     await Reload();
                 }

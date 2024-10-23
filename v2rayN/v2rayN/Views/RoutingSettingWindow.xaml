@@ -197,7 +197,7 @@
                         <DataGrid.Resources>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding isActive}" Value="True">
+                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
                                         <Setter Property="Foreground" Value="Black" />
                                         <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
@@ -208,23 +208,23 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Width="250"
-                                Binding="{Binding remarks}"
+                                Binding="{Binding Remarks}"
                                 Header="{x:Static resx:ResUI.LvRemarks}" />
                             <DataGridTextColumn
                                 Width="60"
-                                Binding="{Binding ruleNum}"
+                                Binding="{Binding RuleNum}"
                                 Header="{x:Static resx:ResUI.LvCount}" />
                             <DataGridTextColumn
                                 Width="60"
-                                Binding="{Binding sort}"
+                                Binding="{Binding Sort}"
                                 Header="{x:Static resx:ResUI.LvSort}" />
                             <DataGridTextColumn
                                 Width="300"
-                                Binding="{Binding url}"
+                                Binding="{Binding Url}"
                                 Header="{x:Static resx:ResUI.LvUrl}" />
                             <DataGridTextColumn
                                 Width="300"
-                                Binding="{Binding customIcon}"
+                                Binding="{Binding CustomIcon}"
                                 Header="{x:Static resx:ResUI.LvCustomIcon}" />
                         </DataGrid.Columns>
                     </DataGrid>

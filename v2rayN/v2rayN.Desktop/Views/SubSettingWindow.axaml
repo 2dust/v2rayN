@@ -50,27 +50,27 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="120"
-                        Binding="{Binding remarks}"
+                        Binding="{Binding Remarks}"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <DataGridTextColumn
                         Width="150"
-                        Binding="{Binding url}"
+                        Binding="{Binding Url}"
                         Header="{x:Static resx:ResUI.LvUrl}" />
                     <DataGridCheckBoxColumn
                         Width="100"
-                        Binding="{Binding enabled}"
+                        Binding="{Binding Enabled}"
                         Header="{x:Static resx:ResUI.LvEnabled}" />
                     <DataGridTextColumn
                         Width="150"
-                        Binding="{Binding autoUpdateInterval}"
+                        Binding="{Binding AutoUpdateInterval}"
                         Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
                     <DataGridTextColumn
                         Width="150"
-                        Binding="{Binding userAgent}"
+                        Binding="{Binding UserAgent}"
                         Header="{x:Static resx:ResUI.LvUserAgent}" />
                     <DataGridTextColumn
                         Width="80"
-                        Binding="{Binding sort}"
+                        Binding="{Binding Sort}"
                         Header="{x:Static resx:ResUI.LvSort}" />
                 </DataGrid.Columns>
             </DataGrid>

@@ -89,52 +89,52 @@
             }
             if (server.proxyUp != 0 || server.proxyDown != 0)
             {
-                _serverStatItem.todayUp += server.proxyUp;
-                _serverStatItem.todayDown += server.proxyDown;
-                _serverStatItem.totalUp += server.proxyUp;
-                _serverStatItem.totalDown += server.proxyDown;
+                _serverStatItem.TodayUp += server.proxyUp;
+                _serverStatItem.TodayDown += server.proxyDown;
+                _serverStatItem.TotalUp += server.proxyUp;
+                _serverStatItem.TotalDown += server.proxyDown;
             }
 
-            server.indexId = _config.IndexId;
-            server.todayUp = _serverStatItem.todayUp;
-            server.todayDown = _serverStatItem.todayDown;
-            server.totalUp = _serverStatItem.totalUp;
-            server.totalDown = _serverStatItem.totalDown;
+            server.IndexId = _config.IndexId;
+            server.TodayUp = _serverStatItem.TodayUp;
+            server.TodayDown = _serverStatItem.TodayDown;
+            server.TotalUp = _serverStatItem.TotalUp;
+            server.TotalDown = _serverStatItem.TotalDown;
             _updateFunc?.Invoke(server);
         }
 
         private async Task GetServerStatItem(string indexId)
         {
             long ticks = DateTime.Now.Date.Ticks;
-            if (_serverStatItem != null && _serverStatItem.indexId != indexId)
+            if (_serverStatItem != null && _serverStatItem.IndexId != indexId)
             {
                 _serverStatItem = null;
             }
 
             if (_serverStatItem == null)
             {
-                _serverStatItem = _lstServerStat.FirstOrDefault(t => t.indexId == indexId);
+                _serverStatItem = _lstServerStat.FirstOrDefault(t => t.IndexId == indexId);
                 if (_serverStatItem == null)
                 {
                     _serverStatItem = new ServerStatItem
                     {
-                        indexId = indexId,
-                        totalUp = 0,
-                        totalDown = 0,
-                        todayUp = 0,
-                        todayDown = 0,
-                        dateNow = ticks
+                        IndexId = indexId,
+                        TotalUp = 0,
+                        TotalDown = 0,
+                        TodayUp = 0,
+                        TodayDown = 0,
+                        DateNow = ticks
                     };
                     await SQLiteHelper.Instance.ReplaceAsync(_serverStatItem);
                     _lstServerStat.Add(_serverStatItem);
                 }
             }
 
-            if (_serverStatItem.dateNow != ticks)
+            if (_serverStatItem.DateNow != ticks)
             {
-                _serverStatItem.todayUp = 0;
-                _serverStatItem.todayDown = 0;
-                _serverStatItem.dateNow = ticks;
+                _serverStatItem.TodayUp = 0;
+                _serverStatItem.TodayDown = 0;
+                _serverStatItem.DateNow = ticks;
             }
         }
     }

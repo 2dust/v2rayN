@@ -29,7 +29,7 @@ namespace ServiceLib.ViewModels
 
             var canEditRemove = this.WhenAnyValue(
                x => x.SelectedSource,
-               selectedSource => selectedSource != null && !selectedSource.id.IsNullOrEmpty());
+               selectedSource => selectedSource != null && !selectedSource.Id.IsNullOrEmpty());
 
             SubAddCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -45,7 +45,7 @@ namespace ServiceLib.ViewModels
             }, canEditRemove);
             SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.url);
+                await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
             }, canEditRemove);
 
             Init();
@@ -73,7 +73,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = await AppHandler.Instance.GetSubItem(SelectedSource?.id);
+                item = await AppHandler.Instance.GetSubItem(SelectedSource?.Id);
                 if (item is null)
                 {
                     return;
@@ -95,7 +95,7 @@ namespace ServiceLib.ViewModels
 
             foreach (var it in SelectedSources ?? [SelectedSource])
             {
-                await ConfigHandler.DeleteSubItem(_config, it.id);
+                await ConfigHandler.DeleteSubItem(_config, it.Id);
             }
             await RefreshSubItems();
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

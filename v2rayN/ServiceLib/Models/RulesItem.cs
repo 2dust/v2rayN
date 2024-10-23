@@ -13,7 +13,7 @@
         public List<string>? domain { get; set; }
         public List<string>? protocol { get; set; }
         public List<string>? process { get; set; }
-        public bool enabled { get; set; } = true;
-        public string? remarks { get; set; }
+        public bool Enabled { get; set; } = true;
+        public string? Remarks { get; set; }
     }
 }

@@ -300,11 +300,11 @@
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn
                             Width="60"
-                            Binding="{Binding enabled}"
+                            Binding="{Binding Enabled}"
                             Header="" />
                         <DataGridTextColumn
                             Width="150"
-                            Binding="{Binding remarks}"
+                            Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
                             Width="120"
@@ -316,11 +316,11 @@
                             Header="port" />
                         <DataGridTextColumn
                             Width="100"
-                            Binding="{Binding protocols}"
+                            Binding="{Binding Protocols}"
                             Header="protocol" />
                         <DataGridTextColumn
                             Width="120"
-                            Binding="{Binding inboundTags}"
+                            Binding="{Binding InboundTags}"
                             Header="inboundTag" />
                         <DataGridTextColumn
                             Width="90"
@@ -328,11 +328,11 @@
                             Header="network" />
                         <DataGridTextColumn
                             Width="200"
-                            Binding="{Binding domains}"
+                            Binding="{Binding Domains}"
                             Header="domain" />
                         <DataGridTextColumn
                             Width="200"
-                            Binding="{Binding ips}"
+                            Binding="{Binding Ips}"
                             Header="ip" />
                     </DataGrid.Columns>
                 </DataGrid>

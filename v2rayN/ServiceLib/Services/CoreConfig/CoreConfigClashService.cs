@@ -43,7 +43,7 @@
                     File.Delete(fileName);
                 }
 
-                string addressFileName = node.address;
+                string addressFileName = node.Address;
                 if (Utils.IsNullOrEmpty(addressFileName))
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;

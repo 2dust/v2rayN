@@ -24,21 +24,21 @@
 
             VmessQRCode vmessQRCode = new()
             {
-                v = item.configVersion,
-                ps = item.remarks.TrimEx(),
-                add = item.address,
-                port = item.port,
-                id = item.id,
-                aid = item.alterId,
-                scy = item.security,
-                net = item.network,
-                type = item.headerType,
-                host = item.requestHost,
-                path = item.path,
-                tls = item.streamSecurity,
-                sni = item.sni,
-                alpn = item.alpn,
-                fp = item.fingerprint
+                v = item.ConfigVersion,
+                ps = item.Remarks.TrimEx(),
+                add = item.Address,
+                port = item.Port,
+                id = item.Id,
+                aid = item.AlterId,
+                scy = item.Security,
+                net = item.Network,
+                type = item.HeaderType,
+                host = item.RequestHost,
+                path = item.Path,
+                tls = item.StreamSecurity,
+                sni = item.Sni,
+                alpn = item.Alpn,
+                fp = item.Fingerprint
             };
 
             url = JsonUtils.Serialize(vmessQRCode);
@@ -53,7 +53,7 @@
             msg = string.Empty;
             var item = new ProfileItem
             {
-                configType = EConfigType.VMess
+                ConfigType = EConfigType.VMess
             };
 
             result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
@@ -66,33 +66,33 @@
                 return null;
             }
 
-            item.network = Global.DefaultNetwork;
-            item.headerType = Global.None;
+            item.Network = Global.DefaultNetwork;
+            item.HeaderType = Global.None;
 
-            item.configVersion = vmessQRCode.v;
-            item.remarks = Utils.ToString(vmessQRCode.ps);
-            item.address = Utils.ToString(vmessQRCode.add);
-            item.port = vmessQRCode.port;
-            item.id = Utils.ToString(vmessQRCode.id);
-            item.alterId = vmessQRCode.aid;
-            item.security = Utils.ToString(vmessQRCode.scy);
+            item.ConfigVersion = vmessQRCode.v;
+            item.Remarks = Utils.ToString(vmessQRCode.ps);
+            item.Address = Utils.ToString(vmessQRCode.add);
+            item.Port = vmessQRCode.port;
+            item.Id = Utils.ToString(vmessQRCode.id);
+            item.AlterId = vmessQRCode.aid;
+            item.Security = Utils.ToString(vmessQRCode.scy);
 
-            item.security = Utils.IsNotEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;
+            item.Security = Utils.IsNotEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;
             if (Utils.IsNotEmpty(vmessQRCode.net))
             {
-                item.network = vmessQRCode.net;
+                item.Network = vmessQRCode.net;
             }
             if (Utils.IsNotEmpty(vmessQRCode.type))
             {
-                item.headerType = vmessQRCode.type;
+                item.HeaderType = vmessQRCode.type;
             }
 
-            item.requestHost = Utils.ToString(vmessQRCode.host);
-            item.path = Utils.ToString(vmessQRCode.path);
-            item.streamSecurity = Utils.ToString(vmessQRCode.tls);
-            item.sni = Utils.ToString(vmessQRCode.sni);
-            item.alpn = Utils.ToString(vmessQRCode.alpn);
-            item.fingerprint = Utils.ToString(vmessQRCode.fp);
+            item.RequestHost = Utils.ToString(vmessQRCode.host);
+            item.Path = Utils.ToString(vmessQRCode.path);
+            item.StreamSecurity = Utils.ToString(vmessQRCode.tls);
+            item.Sni = Utils.ToString(vmessQRCode.sni);
+            item.Alpn = Utils.ToString(vmessQRCode.alpn);
+            item.Fingerprint = Utils.ToString(vmessQRCode.fp);
 
             return item;
         }
@@ -101,16 +101,16 @@
         {
             ProfileItem item = new()
             {
-                configType = EConfigType.VMess,
-                security = "auto"
+                ConfigType = EConfigType.VMess,
+                Security = "auto"
             };
 
             Uri url = new(str);
 
-            item.address = url.IdnHost;
-            item.port = url.Port;
-            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            item.id = Utils.UrlDecode(url.UserInfo);
+            item.Address = url.IdnHost;
+            item.Port = url.Port;
+            item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.Id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);

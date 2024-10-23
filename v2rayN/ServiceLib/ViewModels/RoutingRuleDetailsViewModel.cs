@@ -40,7 +40,7 @@ namespace ServiceLib.ViewModels
             {
                 rulesItem.id = Utils.GetGuid(false);
                 rulesItem.outboundTag = Global.ProxyTag;
-                rulesItem.enabled = true;
+                rulesItem.Enabled = true;
                 SelectedSource = rulesItem;
             }
             else

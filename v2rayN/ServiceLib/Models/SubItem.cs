@@ -6,32 +6,32 @@ namespace ServiceLib.Models
     public class SubItem
     {
         [PrimaryKey]
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string remarks { get; set; }
+        public string Remarks { get; set; }
 
-        public string url { get; set; }
+        public string Url { get; set; }
 
-        public string moreUrl { get; set; }
+        public string MoreUrl { get; set; }
 
-        public bool enabled { get; set; } = true;
+        public bool Enabled { get; set; } = true;
 
-        public string userAgent { get; set; } = string.Empty;
+        public string UserAgent { get; set; } = string.Empty;
 
-        public int sort { get; set; }
+        public int Sort { get; set; }
 
-        public string? filter { get; set; }
+        public string? Filter { get; set; }
 
-        public int autoUpdateInterval { get; set; }
+        public int AutoUpdateInterval { get; set; }
 
-        public long updateTime { get; set; }
+        public long UpdateTime { get; set; }
 
-        public string? convertTarget { get; set; }
+        public string? ConvertTarget { get; set; }
 
-        public string? prevProfile { get; set; }
+        public string? PrevProfile { get; set; }
 
-        public string? nextProfile { get; set; }
+        public string? NextProfile { get; set; }
 
-        public int? preSocksPort { get; set; }
+        public int? PreSocksPort { get; set; }
     }
 }

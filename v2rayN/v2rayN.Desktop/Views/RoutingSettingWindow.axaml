@@ -109,26 +109,26 @@
                         </DataGrid.ContextMenu>
 
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Width="40" Binding="{Binding isActive}" />
+                            <DataGridCheckBoxColumn Width="40" Binding="{Binding IsActive}" />
                             <DataGridTextColumn
                                 Width="250"
-                                Binding="{Binding remarks}"
+                                Binding="{Binding Remarks}"
                                 Header="{x:Static resx:ResUI.LvRemarks}" />
                             <DataGridTextColumn
                                 Width="60"
-                                Binding="{Binding ruleNum}"
+                                Binding="{Binding RuleNum}"
                                 Header="{x:Static resx:ResUI.LvCount}" />
                             <DataGridTextColumn
                                 Width="60"
-                                Binding="{Binding sort}"
+                                Binding="{Binding Sort}"
                                 Header="{x:Static resx:ResUI.LvSort}" />
                             <DataGridTextColumn
                                 Width="300"
-                                Binding="{Binding url}"
+                                Binding="{Binding Url}"
                                 Header="{x:Static resx:ResUI.LvUrl}" />
                             <DataGridTextColumn
                                 Width="300"
-                                Binding="{Binding customIcon}"
+                                Binding="{Binding CustomIcon}"
                                 Header="{x:Static resx:ResUI.LvCustomIcon}" />
                         </DataGrid.Columns>
                     </DataGrid>

@@ -8,25 +8,25 @@
 
             ProfileItem item = new()
             {
-                configType = EConfigType.TUIC
+                ConfigType = EConfigType.TUIC
             };
 
             Uri url = new(str);
 
-            item.address = url.IdnHost;
-            item.port = url.Port;
-            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.Address = url.IdnHost;
+            item.Port = url.Port;
+            item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
             var rawUserInfo = Utils.UrlDecode(url.UserInfo);
             var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
             if (userInfoParts.Length == 2)
             {
-                item.id = userInfoParts[0];
-                item.security = userInfoParts[1];
+                item.Id = userInfoParts[0];
+                item.Security = userInfoParts[1];
             }
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
-            item.headerType = query["congestion_control"] ?? "";
+            item.HeaderType = query["congestion_control"] ?? "";
 
             return item;
         }
@@ -37,22 +37,22 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (Utils.IsNotEmpty(item.sni))
+            if (Utils.IsNotEmpty(item.Sni))
             {
-                dicQuery.Add("sni", item.sni);
+                dicQuery.Add("sni", item.Sni);
             }
-            if (Utils.IsNotEmpty(item.alpn))
+            if (Utils.IsNotEmpty(item.Alpn))
             {
-                dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+                dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
             }
-            dicQuery.Add("congestion_control", item.headerType);
+            dicQuery.Add("congestion_control", item.HeaderType);
 
-            return ToUri(EConfigType.TUIC, item.address, item.port, $"{item.id}:{item.security}", dicQuery, remark);
+            return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Id}:{item.Security}", dicQuery, remark);
         }
     }
 }

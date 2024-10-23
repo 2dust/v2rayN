@@ -7,20 +7,20 @@
             msg = ResUI.ConfigurationFormatIncorrect;
             ProfileItem item = new()
             {
-                configType = EConfigType.Hysteria2
+                ConfigType = EConfigType.Hysteria2
             };
 
             Uri url = new(str);
 
-            item.address = url.IdnHost;
-            item.port = url.Port;
-            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            item.id = Utils.UrlDecode(url.UserInfo);
+            item.Address = url.IdnHost;
+            item.Port = url.Port;
+            item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.Id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
             ResolveStdTransport(query, ref item);
-            item.path = Utils.UrlDecode(query["obfs-password"] ?? "");
-            item.allowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
+            item.Path = Utils.UrlDecode(query["obfs-password"] ?? "");
+            item.AllowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
             return item;
         }
@@ -31,27 +31,27 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (Utils.IsNotEmpty(item.sni))
+            if (Utils.IsNotEmpty(item.Sni))
             {
-                dicQuery.Add("sni", item.sni);
+                dicQuery.Add("sni", item.Sni);
             }
-            if (Utils.IsNotEmpty(item.alpn))
+            if (Utils.IsNotEmpty(item.Alpn))
             {
-                dicQuery.Add("alpn", Utils.UrlEncode(item.alpn));
+                dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
             }
-            if (Utils.IsNotEmpty(item.path))
+            if (Utils.IsNotEmpty(item.Path))
             {
                 dicQuery.Add("obfs", "salamander");
-                dicQuery.Add("obfs-password", Utils.UrlEncode(item.path));
+                dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
             }
-            dicQuery.Add("insecure", item.allowInsecure.ToLower() == "true" ? "1" : "0");
+            dicQuery.Add("insecure", item.AllowInsecure.ToLower() == "true" ? "1" : "0");
 
-            return ToUri(EConfigType.Hysteria2, item.address, item.port, item.id, dicQuery, remark);
+            return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
         }
 
         public static ProfileItem? ResolveFull(string strData, string? subRemarks)
@@ -62,9 +62,9 @@
 
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.hysteria,
-                    address = fileName,
-                    remarks = subRemarks ?? "hysteria_custom"
+                    CoreType = ECoreType.hysteria,
+                    Address = fileName,
+                    Remarks = subRemarks ?? "hysteria_custom"
                 };
                 return profileItem;
             }
@@ -80,9 +80,9 @@
 
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.hysteria2,
-                    address = fileName,
-                    remarks = subRemarks ?? "hysteria2_custom"
+                    CoreType = ECoreType.hysteria2,
+                    Address = fileName,
+                    Remarks = subRemarks ?? "hysteria2_custom"
                 };
                 return profileItem;
             }

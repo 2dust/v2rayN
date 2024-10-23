@@ -10,9 +10,9 @@
 
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.naiveproxy,
-                    address = fileName,
-                    remarks = subRemarks ?? "naiveproxy_custom"
+                    CoreType = ECoreType.naiveproxy,
+                    Address = fileName,
+                    Remarks = subRemarks ?? "naiveproxy_custom"
                 };
                 return profileItem;
             }

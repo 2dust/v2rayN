@@ -35,25 +35,25 @@ namespace ServiceLib.ViewModels
                 await SaveServerAsync();
             });
 
-            SelectedSource = profileItem.indexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
-            CoreType = SelectedSource?.coreType?.ToString();
+            SelectedSource = profileItem.IndexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
+            CoreType = SelectedSource?.CoreType?.ToString();
         }
 
         private async Task SaveServerAsync()
         {
-            string remarks = SelectedSource.remarks;
+            string remarks = SelectedSource.Remarks;
             if (Utils.IsNullOrEmpty(remarks))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
-            if (Utils.IsNullOrEmpty(SelectedSource.address))
+            if (Utils.IsNullOrEmpty(SelectedSource.Address))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FillServerAddressCustom);
                 return;
             }
-            SelectedSource.coreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
+            SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
             if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
             {
@@ -73,13 +73,13 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var item = await AppHandler.Instance.GetProfileItem(SelectedSource.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(SelectedSource.IndexId);
             item ??= SelectedSource;
-            item.address = fileName;
+            item.Address = fileName;
             if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
-                if (Utils.IsNotEmpty(item.indexId))
+                if (Utils.IsNotEmpty(item.IndexId))
                 {
                     SelectedSource = JsonUtils.DeepCopy(item);
                 }
@@ -93,7 +93,7 @@ namespace ServiceLib.ViewModels
 
         private async Task EditServer()
         {
-            var address = SelectedSource.address;
+            var address = SelectedSource.Address;
             if (Utils.IsNullOrEmpty(address))
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FillServerAddressCustom);

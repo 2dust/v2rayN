@@ -7,31 +7,31 @@ namespace ServiceLib.Models
     {
         public ProfileItem()
         {
-            indexId = string.Empty;
-            configType = EConfigType.VMess;
-            configVersion = 2;
-            address = string.Empty;
-            port = 0;
-            id = string.Empty;
-            alterId = 0;
-            security = string.Empty;
-            network = string.Empty;
-            remarks = string.Empty;
-            headerType = string.Empty;
-            requestHost = string.Empty;
-            path = string.Empty;
-            streamSecurity = string.Empty;
-            allowInsecure = string.Empty;
-            subid = string.Empty;
-            flow = string.Empty;
+            IndexId = string.Empty;
+            ConfigType = EConfigType.VMess;
+            ConfigVersion = 2;
+            Address = string.Empty;
+            Port = 0;
+            Id = string.Empty;
+            AlterId = 0;
+            Security = string.Empty;
+            Network = string.Empty;
+            Remarks = string.Empty;
+            HeaderType = string.Empty;
+            RequestHost = string.Empty;
+            Path = string.Empty;
+            StreamSecurity = string.Empty;
+            AllowInsecure = string.Empty;
+            Subid = string.Empty;
+            Flow = string.Empty;
         }
 
         #region function
 
         public string GetSummary()
         {
-            string summary = string.Format("[{0}] ", (configType).ToString());
-            string[] arrAddr = address.Split('.');
+            string summary = string.Format("[{0}] ", (ConfigType).ToString());
+            string[] arrAddr = Address.Split('.');
             string addr;
             if (arrAddr.Length > 2)
             {
@@ -43,16 +43,16 @@ namespace ServiceLib.Models
             }
             else
             {
-                addr = address;
+                addr = Address;
             }
-            switch (configType)
+            switch (ConfigType)
             {
                 case EConfigType.Custom:
-                    summary += string.Format("[{1}]{0}", remarks, coreType.ToString());
+                    summary += string.Format("[{1}]{0}", Remarks, CoreType.ToString());
                     break;
 
                 default:
-                    summary += string.Format("{0}({1}:{2})", remarks, addr, port);
+                    summary += string.Format("{0}({1}:{2})", Remarks, addr, Port);
                     break;
             }
             return summary;
@@ -60,131 +60,55 @@ namespace ServiceLib.Models
 
         public List<string>? GetAlpn()
         {
-            if (Utils.IsNullOrEmpty(alpn))
+            if (Utils.IsNullOrEmpty(Alpn))
             {
                 return null;
             }
             else
             {
-                return Utils.String2List(alpn);
+                return Utils.String2List(Alpn);
             }
         }
 
         public string GetNetwork()
         {
-            if (Utils.IsNullOrEmpty(network) || !Global.Networks.Contains(network))
+            if (Utils.IsNullOrEmpty(Network) || !Global.Networks.Contains(Network))
             {
                 return Global.DefaultNetwork;
             }
-            return network.TrimEx();
+            return Network.TrimEx();
         }
 
         #endregion function
 
         [PrimaryKey]
-        public string indexId { get; set; }
+        public string IndexId { get; set; }
 
-        /// <summary>
-        /// config type(1=normal,2=custom)
-        /// </summary>
-        public EConfigType configType { get; set; }
-
-        /// <summary>
-        /// 版本(现在=2)
-        /// </summary>
-        public int configVersion { get; set; }
-
-        /// <summary>
-        /// 远程服务器地址
-        /// </summary>
-        public string address { get; set; }
-
-        /// <summary>
-        /// 远程服务器端口
-        /// </summary>
-        public int port { get; set; }
-
-        /// <summary>
-        /// 远程服务器ID
-        /// </summary>
-        public string id { get; set; }
-
-        /// <summary>
-        /// 远程服务器额外ID
-        /// </summary>
-        public int alterId { get; set; }
-
-        /// <summary>
-        /// 本地安全策略
-        /// </summary>
-        public string security { get; set; }
-
-        /// <summary>
-        /// tcp,kcp,ws,h2,quic
-        /// </summary>
-        public string network { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string remarks { get; set; }
-
-        /// <summary>
-        /// 伪装类型
-        /// </summary>
-        public string headerType { get; set; }
-
-        /// <summary>
-        /// 伪装的域名
-        /// </summary>
-        public string requestHost { get; set; }
-
-        /// <summary>
-        /// ws h2 path
-        /// </summary>
-        public string path { get; set; }
-
-        /// <summary>
-        /// 传输层安全
-        /// </summary>
-        public string streamSecurity { get; set; }
-
-        /// <summary>
-        /// 是否允许不安全连接（用于客户端）
-        /// </summary>
-        public string allowInsecure { get; set; }
-
-        /// <summary>
-        /// SubItem id
-        /// </summary>
-        public string subid { get; set; }
-
-        public bool isSub { get; set; } = true;
-
-        /// <summary>
-        /// VLESS flow
-        /// </summary>
-        public string flow { get; set; }
-
-        /// <summary>
-        /// tls sni
-        /// </summary>
-        public string sni { get; set; }
-
-        /// <summary>
-        /// tls alpn
-        /// </summary>
-        public string alpn { get; set; } = string.Empty;
-
-        public ECoreType? coreType { get; set; }
-
-        public int? preSocksPort { get; set; }
-
-        public string fingerprint { get; set; }
-
-        public bool displayLog { get; set; } = true;
-        public string publicKey { get; set; }
-        public string shortId { get; set; }
-        public string spiderX { get; set; }
+        public EConfigType ConfigType { get; set; }
+        public int ConfigVersion { get; set; }
+        public string Address { get; set; }
+        public int Port { get; set; }
+        public string Id { get; set; }
+        public int AlterId { get; set; }
+        public string Security { get; set; }
+        public string Network { get; set; }
+        public string Remarks { get; set; }
+        public string HeaderType { get; set; }
+        public string RequestHost { get; set; }
+        public string Path { get; set; }
+        public string StreamSecurity { get; set; }
+        public string AllowInsecure { get; set; }
+        public string Subid { get; set; }
+        public bool IsSub { get; set; } = true;
+        public string Flow { get; set; }
+        public string Sni { get; set; }
+        public string Alpn { get; set; } = string.Empty;
+        public ECoreType? CoreType { get; set; }
+        public int? PreSocksPort { get; set; }
+        public string Fingerprint { get; set; }
+        public bool DisplayLog { get; set; } = true;
+        public string PublicKey { get; set; }
+        public string ShortId { get; set; }
+        public string SpiderX { get; set; }
     }
 }

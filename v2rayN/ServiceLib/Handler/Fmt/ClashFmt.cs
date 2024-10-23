@@ -10,9 +10,9 @@
 
                 var profileItem = new ProfileItem
                 {
-                    coreType = ECoreType.mihomo,
-                    address = fileName,
-                    remarks = subRemarks ?? "clash_custom"
+                    CoreType = ECoreType.mihomo,
+                    Address = fileName,
+                    Remarks = subRemarks ?? "clash_custom"
                 };
                 return profileItem;
             }

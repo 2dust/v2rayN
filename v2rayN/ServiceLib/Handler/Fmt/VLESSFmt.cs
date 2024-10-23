@@ -8,20 +8,20 @@
 
             ProfileItem item = new()
             {
-                configType = EConfigType.VLESS,
-                security = Global.None
+                ConfigType = EConfigType.VLESS,
+                Security = Global.None
             };
 
             Uri url = new(str);
 
-            item.address = url.IdnHost;
-            item.port = url.Port;
-            item.remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-            item.id = Utils.UrlDecode(url.UserInfo);
+            item.Address = url.IdnHost;
+            item.Port = url.Port;
+            item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+            item.Id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
-            item.security = query["encryption"] ?? Global.None;
-            item.streamSecurity = query["security"] ?? "";
+            item.Security = query["encryption"] ?? Global.None;
+            item.StreamSecurity = query["security"] ?? "";
             ResolveStdTransport(query, ref item);
 
             return item;
@@ -33,14 +33,14 @@
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.remarks))
+            if (Utils.IsNotEmpty(item.Remarks))
             {
-                remark = "#" + Utils.UrlEncode(item.remarks);
+                remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            if (Utils.IsNotEmpty(item.security))
+            if (Utils.IsNotEmpty(item.Security))
             {
-                dicQuery.Add("encryption", item.security);
+                dicQuery.Add("encryption", item.Security);
             }
             else
             {
@@ -48,7 +48,7 @@
             }
             GetStdTransport(item, Global.None, ref dicQuery);
 
-            return ToUri(EConfigType.VLESS, item.address, item.port, item.id, dicQuery, remark);
+            return ToUri(EConfigType.VLESS, item.Address, item.Port, item.Id, dicQuery, remark);
         }
     }
 }

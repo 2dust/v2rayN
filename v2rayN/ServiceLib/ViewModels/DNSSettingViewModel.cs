@@ -46,16 +46,16 @@ namespace ServiceLib.ViewModels
         private async Task Init()
         {
             var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
-            useSystemHosts = item.useSystemHosts;
-            domainStrategy4Freedom = item?.domainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress = item?.domainDNSAddress ?? string.Empty;
-            normalDNS = item?.normalDNS ?? string.Empty;
+            useSystemHosts = item.UseSystemHosts;
+            domainStrategy4Freedom = item?.DomainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress = item?.DomainDNSAddress ?? string.Empty;
+            normalDNS = item?.NormalDNS ?? string.Empty;
 
             var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
-            domainStrategy4Freedom2 = item2?.domainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress2 = item2?.domainDNSAddress ?? string.Empty;
-            normalDNS2 = item2?.normalDNS ?? string.Empty;
-            tunDNS2 = item2?.tunDNS ?? string.Empty;
+            domainStrategy4Freedom2 = item2?.DomainStrategy4Freedom ?? string.Empty;
+            domainDNSAddress2 = item2?.DomainDNSAddress ?? string.Empty;
+            normalDNS2 = item2?.NormalDNS ?? string.Empty;
+            tunDNS2 = item2?.TunDNS ?? string.Empty;
         }
 
         private async Task SaveSettingAsync()
@@ -95,17 +95,17 @@ namespace ServiceLib.ViewModels
             }
 
             var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
-            item.domainStrategy4Freedom = domainStrategy4Freedom;
-            item.domainDNSAddress = domainDNSAddress;
-            item.useSystemHosts = useSystemHosts;
-            item.normalDNS = normalDNS;
+            item.DomainStrategy4Freedom = domainStrategy4Freedom;
+            item.DomainDNSAddress = domainDNSAddress;
+            item.UseSystemHosts = useSystemHosts;
+            item.NormalDNS = normalDNS;
             await ConfigHandler.SaveDNSItems(_config, item);
 
             var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
-            item2.domainStrategy4Freedom = domainStrategy4Freedom2;
-            item2.domainDNSAddress = domainDNSAddress2;
-            item2.normalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
-            item2.tunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2)); ;
+            item2.DomainStrategy4Freedom = domainStrategy4Freedom2;
+            item2.DomainDNSAddress = domainDNSAddress2;
+            item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
+            item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2)); ;
             await ConfigHandler.SaveDNSItems(_config, item2);
 
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

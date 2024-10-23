@@ -13,6 +13,6 @@
 
         public string? delayName { get; set; }
 
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

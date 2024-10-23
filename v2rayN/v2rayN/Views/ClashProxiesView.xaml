@@ -161,7 +161,7 @@
                                     Background="{DynamicResource MaterialDesign.Brush.Primary.Light}"
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
-                                    Visibility="{Binding Path=isActive, Converter={StaticResource BoolToVisConverter}}" />
+                                    Visibility="{Binding Path=IsActive, Converter={StaticResource BoolToVisConverter}}" />
                                 <Grid Margin="{StaticResource Margin4}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="2*" />

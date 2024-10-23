@@ -30,7 +30,7 @@
                     Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding remarks}" />
+                            <TextBlock Text="{Binding Remarks}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -162,7 +162,7 @@
                                             x:Name="cmbMoveToGroup"
                                             Width="200"
                                             materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSubscription}"
-                                            DisplayMemberPath="remarks"
+                                            DisplayMemberPath="Remarks"
                                             FontSize="{DynamicResource StdFontSize}"
                                             Style="{StaticResource MaterialDesignFilledComboBox}" />
                                     </DockPanel>
@@ -224,7 +224,7 @@
 
                     <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding isActive}" Value="True">
+                            <DataTrigger Binding="{Binding IsActive}" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
                                 <Setter Property="Foreground" Value="Black" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
@@ -235,55 +235,56 @@
                 <DataGrid.Columns>
                     <base:MyDGTextColumn
                         Width="80"
-                        Binding="{Binding configType}"
-                        ExName="configType"
+                        Binding="{Binding ConfigType}"
+                        ExName="ConfigType"
                         Header="{x:Static resx:ResUI.LvServiceType}" />
                     <base:MyDGTextColumn
                         Width="150"
-                        Binding="{Binding remarks}"
-                        ExName="remarks"
+                        Binding="{Binding Remarks}"
+                        ExName="Remarks"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <base:MyDGTextColumn
                         Width="120"
-                        Binding="{Binding address}"
-                        ExName="address"
+                        Binding="{Binding Address}"
+                        ExName="Address"
                         Header="{x:Static resx:ResUI.LvAddress}" />
                     <base:MyDGTextColumn
                         Width="60"
-                        Binding="{Binding port}"
-                        ExName="port"
+                        Binding="{Binding Port}"
+                        ExName="Port"
                         Header="{x:Static resx:ResUI.LvPort}" />
                     <base:MyDGTextColumn
                         Width="100"
-                        Binding="{Binding network}"
-                        ExName="network"
+                        Binding="{Binding Network}"
+                        ExName="Network"
                         Header="{x:Static resx:ResUI.LvTransportProtocol}" />
                     <base:MyDGTextColumn
                         Width="100"
-                        Binding="{Binding streamSecurity}"
-                        ExName="streamSecurity"
+                        Binding="{Binding StreamSecurity}"
+                        ExName="StreamSecurity"
                         Header="{x:Static resx:ResUI.LvTLS}" />
                     <base:MyDGTextColumn
                         Width="100"
-                        Binding="{Binding subRemarks}"
-                        ExName="subRemarks"
+                        Binding="{Binding SubRemarks}"
+                        ExName="SubRemarks"
                         Header="{x:Static resx:ResUI.LvSubscription}" />
                     <base:MyDGTextColumn
                         Width="100"
-                        Binding="{Binding delayVal}"
-                        ExName="delayVal"
-                        Header="{x:Static resx:ResUI.LvTestDelay}">
+                        Binding="{Binding DelayVal}"
+                        ExName="DelayVal"
+                        Header="{x:Static resx:ResUI.LvTestDelay}"
+                        SortMemberPath="Delay">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="HorizontalAlignment" Value="Right" />
-                                <Setter Property="Foreground" Value="{Binding delay, Converter={StaticResource DelayColorConverter}}" />
+                                <Setter Property="Foreground" Value="{Binding Delay, Converter={StaticResource DelayColorConverter}}" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </base:MyDGTextColumn>
                     <base:MyDGTextColumn
                         Width="100"
-                        Binding="{Binding speedVal}"
-                        ExName="speedVal"
+                        Binding="{Binding SpeedVal}"
+                        ExName="SpeedVal"
                         Header="{x:Static resx:ResUI.LvTestSpeed}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
@@ -295,26 +296,26 @@
                     <base:MyDGTextColumn
                         x:Name="colTodayUp"
                         Width="100"
-                        Binding="{Binding todayUp}"
-                        ExName="todayUp"
+                        Binding="{Binding TodayUp}"
+                        ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"
                         Width="100"
-                        Binding="{Binding todayDown}"
-                        ExName="todayDown"
+                        Binding="{Binding TodayDown}"
+                        ExName="TodayDown"
                         Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
                     <base:MyDGTextColumn
                         x:Name="colTotalUp"
                         Width="100"
-                        Binding="{Binding totalUp}"
-                        ExName="totalUp"
+                        Binding="{Binding TotalUp}"
+                        ExName="TotalUp"
                         Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
                     <base:MyDGTextColumn
                         x:Name="colTotalDown"
                         Width="100"
-                        Binding="{Binding totalDown}"
-                        ExName="totalDown"
+                        Binding="{Binding TotalDown}"
+                        ExName="TotalDown"
                         Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
                 </DataGrid.Columns>
             </DataGrid>

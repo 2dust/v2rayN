@@ -6,10 +6,10 @@ namespace ServiceLib.Models
     public class ProfileExItem
     {
         [PrimaryKey]
-        public string indexId { get; set; }
+        public string IndexId { get; set; }
 
-        public int delay { get; set; }
-        public decimal speed { get; set; }
-        public int sort { get; set; }
+        public int Delay { get; set; }
+        public decimal Speed { get; set; }
+        public int Sort { get; set; }
     }
 }
