@@ -503,6 +503,11 @@ namespace ServiceLib.Services
                 }
             }
 
+            var path = Utils.GetBinPath("srss");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             foreach (var item in geoipFiles.Distinct())
             {
                 await UpdateSrsFile("geoip", item, config, updateFunc);

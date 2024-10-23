@@ -77,8 +77,9 @@ public class PacHandler
                           stream.Flush();
                       });
                 }
-                catch (Exception e)
+                catch
                 {
+                    // ignored
                 }
             }
         }, TaskCreationOptions.LongRunning);
@@ -86,17 +87,16 @@ public class PacHandler
 
     public static void Stop()
     {
-        if (_tcpListener != null)
+        if (_tcpListener == null) return;
+        try
         {
-            try
-            {
-                _isRunning = false;
-                _tcpListener.Stop();
-                _tcpListener = null;
-            }
-            catch (Exception e)
-            {
-            }
+            _isRunning = false;
+            _tcpListener.Stop();
+            _tcpListener = null;
+        }
+        catch
+        {
+            // ignored
         }
     }
 }
