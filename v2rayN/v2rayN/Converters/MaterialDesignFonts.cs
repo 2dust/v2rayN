@@ -10,7 +10,7 @@ namespace v2rayN.Converters
         {
             try
             {
-                var fontFamily = AppHandler.Instance.Config.uiItem.currentFontFamily;
+                var fontFamily = AppHandler.Instance.Config.UiItem.CurrentFontFamily;
                 if (Utils.IsNotEmpty(fontFamily))
                 {
                     var fontPath = Utils.GetFontsPath();

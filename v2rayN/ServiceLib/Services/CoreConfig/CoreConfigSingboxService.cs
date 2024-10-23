@@ -444,12 +444,12 @@ namespace ServiceLib.Services.CoreConfig
         {
             try
             {
-                switch (_config.coreBasicItem.loglevel)
+                switch (_config.CoreBasicItem.Loglevel)
                 {
                     case "debug":
                     case "info":
                     case "error":
-                        singboxConfig.log.level = _config.coreBasicItem.loglevel;
+                        singboxConfig.log.level = _config.CoreBasicItem.Loglevel;
                         break;
 
                     case "warning":
@@ -459,11 +459,11 @@ namespace ServiceLib.Services.CoreConfig
                     default:
                         break;
                 }
-                if (_config.coreBasicItem.loglevel == Global.None)
+                if (_config.CoreBasicItem.Loglevel == Global.None)
                 {
                     singboxConfig.log.disabled = true;
                 }
-                if (_config.coreBasicItem.logEnabled)
+                if (_config.CoreBasicItem.LogEnabled)
                 {
                     var dtNow = DateTime.Now;
                     singboxConfig.log.output = Utils.GetLogPath($"sbox_{dtNow:yyyy-MM-dd}.txt");
@@ -483,8 +483,8 @@ namespace ServiceLib.Services.CoreConfig
                 var listen = "::";
                 singboxConfig.inbounds = [];
 
-                if (!_config.tunModeItem.enableTun
-                    || _config.tunModeItem.enableTun && _config.tunModeItem.enableExInbound && _config.runningCoreType == ECoreType.sing_box)
+                if (!_config.TunModeItem.EnableTun
+                    || _config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box)
                 {
                     var inbound = new Inbound4Sbox()
                     {
@@ -495,11 +495,11 @@ namespace ServiceLib.Services.CoreConfig
                     singboxConfig.inbounds.Add(inbound);
 
                     inbound.listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                    inbound.sniff = _config.inbound[0].sniffingEnabled;
-                    inbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
-                    inbound.domain_strategy = Utils.IsNullOrEmpty(_config.routingBasicItem.domainStrategy4Singbox) ? null : _config.routingBasicItem.domainStrategy4Singbox;
+                    inbound.sniff = _config.Inbound[0].SniffingEnabled;
+                    inbound.sniff_override_destination = _config.Inbound[0].RouteOnly ? false : _config.Inbound[0].SniffingEnabled;
+                    inbound.domain_strategy = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainStrategy4Singbox) ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-                    if (_config.routingBasicItem.enableRoutingAdvanced)
+                    if (_config.RoutingBasicItem.EnableRoutingAdvanced)
                     {
                         var routing = await ConfigHandler.GetDefaultRouting(_config);
                         if (Utils.IsNotEmpty(routing.domainStrategy4Singbox))
@@ -512,9 +512,9 @@ namespace ServiceLib.Services.CoreConfig
                     var inbound2 = GetInbound(inbound, EInboundProtocol.http, false);
                     singboxConfig.inbounds.Add(inbound2);
 
-                    if (_config.inbound[0].allowLANConn)
+                    if (_config.Inbound[0].AllowLANConn)
                     {
-                        if (_config.inbound[0].newPort4LAN)
+                        if (_config.Inbound[0].NewPort4LAN)
                         {
                             var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
                             inbound3.listen = listen;
@@ -525,10 +525,10 @@ namespace ServiceLib.Services.CoreConfig
                             singboxConfig.inbounds.Add(inbound4);
 
                             //auth
-                            if (Utils.IsNotEmpty(_config.inbound[0].user) && Utils.IsNotEmpty(_config.inbound[0].pass))
+                            if (Utils.IsNotEmpty(_config.Inbound[0].User) && Utils.IsNotEmpty(_config.Inbound[0].Pass))
                             {
-                                inbound3.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
-                                inbound4.users = new() { new() { username = _config.inbound[0].user, password = _config.inbound[0].pass } };
+                                inbound3.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
+                                inbound4.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
                             }
                         }
                         else
@@ -539,24 +539,24 @@ namespace ServiceLib.Services.CoreConfig
                     }
                 }
 
-                if (_config.tunModeItem.enableTun)
+                if (_config.TunModeItem.EnableTun)
                 {
-                    if (_config.tunModeItem.mtu <= 0)
+                    if (_config.TunModeItem.Mtu <= 0)
                     {
-                        _config.tunModeItem.mtu = Utils.ToInt(Global.TunMtus[0]);
+                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus[0]);
                     }
-                    if (Utils.IsNullOrEmpty(_config.tunModeItem.stack))
+                    if (Utils.IsNullOrEmpty(_config.TunModeItem.Stack))
                     {
-                        _config.tunModeItem.stack = Global.TunStacks[0];
+                        _config.TunModeItem.Stack = Global.TunStacks[0];
                     }
 
                     var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
-                    tunInbound.mtu = _config.tunModeItem.mtu;
-                    tunInbound.strict_route = _config.tunModeItem.strictRoute;
-                    tunInbound.stack = _config.tunModeItem.stack;
-                    tunInbound.sniff = _config.inbound[0].sniffingEnabled;
+                    tunInbound.mtu = _config.TunModeItem.Mtu;
+                    tunInbound.strict_route = _config.TunModeItem.StrictRoute;
+                    tunInbound.stack = _config.TunModeItem.Stack;
+                    tunInbound.sniff = _config.Inbound[0].SniffingEnabled;
                     //tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
-                    if (_config.tunModeItem.enableIPv6Address == false)
+                    if (_config.TunModeItem.EnableIPv6Address == false)
                     {
                         tunInbound.inet6_address = null;
                     }
@@ -671,8 +671,8 @@ namespace ServiceLib.Services.CoreConfig
                                 };
                             }
 
-                            outbound.up_mbps = _config.hysteriaItem.up_mbps > 0 ? _config.hysteriaItem.up_mbps : null;
-                            outbound.down_mbps = _config.hysteriaItem.down_mbps > 0 ? _config.hysteriaItem.down_mbps : null;
+                            outbound.up_mbps = _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
+                            outbound.down_mbps = _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
                             break;
                         }
                     case EConfigType.TUIC:
@@ -708,14 +708,14 @@ namespace ServiceLib.Services.CoreConfig
         {
             try
             {
-                if (_config.coreBasicItem.muxEnabled && Utils.IsNotEmpty(_config.mux4SboxItem.protocol))
+                if (_config.CoreBasicItem.MuxEnabled && Utils.IsNotEmpty(_config.Mux4SboxItem.Protocol))
                 {
                     var mux = new Multiplex4Sbox()
                     {
                         enabled = true,
-                        protocol = _config.mux4SboxItem.protocol,
-                        max_connections = _config.mux4SboxItem.max_connections,
-                        padding = _config.mux4SboxItem.padding,
+                        protocol = _config.Mux4SboxItem.Protocol,
+                        max_connections = _config.Mux4SboxItem.MaxConnections,
+                        padding = _config.Mux4SboxItem.Padding,
                     };
                     outbound.multiplex = mux;
                 }
@@ -746,7 +746,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         enabled = true,
                         server_name = server_name,
-                        insecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.coreBasicItem.defAllowInsecure.ToString().ToLower() : node.allowInsecure),
+                        insecure = Utils.ToBool(node.allowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.allowInsecure),
                         alpn = node.GetAlpn(),
                     };
                     if (Utils.IsNotEmpty(node.fingerprint))
@@ -754,7 +754,7 @@ namespace ServiceLib.Services.CoreConfig
                         tls.utls = new Utls4Sbox()
                         {
                             enabled = true,
-                            fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.coreBasicItem.defFingerprint : node.fingerprint
+                            fingerprint = node.fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.fingerprint
                         };
                     }
                     if (node.streamSecurity == Global.StreamSecurityReality)
@@ -834,9 +834,9 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.grpc):
                         transport.type = nameof(ETransport.grpc);
                         transport.service_name = node.path;
-                        transport.idle_timeout = _config.grpcItem.idle_timeout.ToString("##s");
-                        transport.ping_timeout = _config.grpcItem.health_check_timeout.ToString("##s");
-                        transport.permit_without_stream = _config.grpcItem.permit_without_stream;
+                        transport.idle_timeout = _config.GrpcItem.IdleTimeout.ToString("##s");
+                        transport.ping_timeout = _config.GrpcItem.HealthCheckTimeout.ToString("##s");
+                        transport.permit_without_stream = _config.GrpcItem.PermitWithoutStream;
                         break;
 
                     default:
@@ -912,7 +912,7 @@ namespace ServiceLib.Services.CoreConfig
             try
             {
                 var dnsOutbound = "dns_out";
-                if (!_config.inbound[0].sniffingEnabled)
+                if (!_config.Inbound[0].SniffingEnabled)
                 {
                     singboxConfig.route.rules.Add(new()
                     {
@@ -933,7 +933,7 @@ namespace ServiceLib.Services.CoreConfig
                     clash_mode = ERuleMode.Global.ToString()
                 });
 
-                if (_config.tunModeItem.enableTun)
+                if (_config.TunModeItem.EnableTun)
                 {
                     singboxConfig.route.auto_detect_interface = true;
 
@@ -958,7 +958,7 @@ namespace ServiceLib.Services.CoreConfig
                     });
                 }
 
-                if (_config.routingBasicItem.enableRoutingAdvanced)
+                if (_config.RoutingBasicItem.EnableRoutingAdvanced)
                 {
                     var routing = await ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
@@ -1089,7 +1089,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                 }
 
-                if (_config.tunModeItem.enableTun && item.process?.Count > 0)
+                if (_config.TunModeItem.EnableTun && item.process?.Count > 0)
                 {
                     rule3.process_name = item.process;
                     rules.Add(rule3);
@@ -1183,7 +1183,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
                 var strDNS = string.Empty;
-                if (_config.tunModeItem.enableTun)
+                if (_config.TunModeItem.EnableTun)
                 {
                     strDNS = Utils.IsNullOrEmpty(item?.tunDNS) ? Utils.GetEmbedText(Global.TunSingboxDNSFileName) : item?.tunDNS;
                 }
@@ -1248,7 +1248,7 @@ namespace ServiceLib.Services.CoreConfig
             }
 
             //Tun2SocksAddress
-            if (_config.tunModeItem.enableTun && node?.configType == EConfigType.SOCKS && Utils.IsDomain(node?.sni))
+            if (_config.TunModeItem.EnableTun && node?.configType == EConfigType.SOCKS && Utils.IsDomain(node?.sni))
             {
                 dns4Sbox.rules.Insert(0, new()
                 {
@@ -1272,7 +1272,7 @@ namespace ServiceLib.Services.CoreConfig
                 };
             }
 
-            if (_config.coreBasicItem.enableCacheFile4Sbox)
+            if (_config.CoreBasicItem.EnableCacheFile4Sbox)
             {
                 singboxConfig.experimental ??= new Experimental4Sbox();
                 singboxConfig.experimental.cache_file = new CacheFile4Sbox()
@@ -1334,7 +1334,7 @@ namespace ServiceLib.Services.CoreConfig
 
             //load custom ruleset file
             List<Ruleset4Sbox> customRulesets = [];
-            if (_config.routingBasicItem.enableRoutingAdvanced)
+            if (_config.RoutingBasicItem.EnableRoutingAdvanced)
             {
                 var routing = await ConfigHandler.GetDefaultRouting(_config);
                 if (Utils.IsNotEmpty(routing.customRulesetPath4Singbox))
@@ -1375,9 +1375,9 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     else
                     {
-                        var srsUrl = string.IsNullOrEmpty(_config.constItem.srsSourceUrl)
+                        var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
                             ? Global.SingboxRulesetUrl
-                            : _config.constItem.srsSourceUrl;
+                            : _config.ConstItem.SrsSourceUrl;
 
                         customRuleset = new()
                         {

@@ -31,8 +31,8 @@ namespace ServiceLib.ViewModels
         {
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
-            SortingSelected = _config.clashUIItem.connectionsSorting;
-            AutoRefresh = _config.clashUIItem.connectionsAutoRefresh;
+            SortingSelected = _config.ClashUIItem.ConnectionsSorting;
+            AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
 
             var canEditRemove = this.WhenAnyValue(
              x => x.SelectedSource,
@@ -46,7 +46,7 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
                x => x.AutoRefresh,
                y => y == true)
-                   .Subscribe(c => { _config.clashUIItem.connectionsAutoRefresh = AutoRefresh; });
+                   .Subscribe(c => { _config.ClashUIItem.ConnectionsAutoRefresh = AutoRefresh; });
             ConnectionCloseCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await ClashConnectionClose(false);
@@ -67,14 +67,14 @@ namespace ServiceLib.ViewModels
             Observable.Interval(TimeSpan.FromSeconds(5))
               .Subscribe(async x =>
               {
-                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                  if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
                   {
                       return;
                   }
                   var dtNow = DateTime.Now;
-                  if (_config.clashUIItem.connectionsRefreshInterval > 0)
+                  if (_config.ClashUIItem.ConnectionsRefreshInterval > 0)
                   {
-                      if ((dtNow - lastTime).Minutes % _config.clashUIItem.connectionsRefreshInterval == 0)
+                      if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ConnectionsRefreshInterval == 0)
                       {
                           await GetClashConnections();
                           lastTime = dtNow;
@@ -90,9 +90,9 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (SortingSelected != _config.clashUIItem.connectionsSorting)
+            if (SortingSelected != _config.ClashUIItem.ConnectionsSorting)
             {
-                _config.clashUIItem.connectionsSorting = SortingSelected;
+                _config.ClashUIItem.ConnectionsSorting = SortingSelected;
             }
 
             await GetClashConnections();

@@ -66,9 +66,9 @@ namespace ServiceLib.ViewModels
 
             SelectedGroup = new();
             SelectedDetail = new();
-            AutoRefresh = _config.clashUIItem.proxiesAutoRefresh;
-            SortingSelected = _config.clashUIItem.proxiesSorting;
-            RuleModeSelected = (int)_config.clashUIItem.ruleMode;
+            AutoRefresh = _config.ClashUIItem.ProxiesAutoRefresh;
+            SortingSelected = _config.ClashUIItem.ProxiesSorting;
+            RuleModeSelected = (int)_config.ClashUIItem.RuleMode;
 
             this.WhenAnyValue(
                x => x.SelectedGroup,
@@ -88,7 +88,7 @@ namespace ServiceLib.ViewModels
             this.WhenAnyValue(
             x => x.AutoRefresh,
             y => y == true)
-                .Subscribe(c => { _config.clashUIItem.proxiesAutoRefresh = AutoRefresh; });
+                .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
 
             Init();
         }
@@ -105,7 +105,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (_config.clashUIItem.ruleMode == (ERuleMode)RuleModeSelected)
+            if (_config.ClashUIItem.RuleMode == (ERuleMode)RuleModeSelected)
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace ServiceLib.ViewModels
 
         public async Task SetRuleModeCheck(ERuleMode mode)
         {
-            if (_config.clashUIItem.ruleMode == mode)
+            if (_config.ClashUIItem.RuleMode == mode)
             {
                 return;
             }
@@ -127,9 +127,9 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (SortingSelected != _config.clashUIItem.proxiesSorting)
+            if (SortingSelected != _config.ClashUIItem.ProxiesSorting)
             {
-                _config.clashUIItem.proxiesSorting = SortingSelected;
+                _config.ClashUIItem.ProxiesSorting = SortingSelected;
             }
 
             RefreshProxyDetails(c);
@@ -155,7 +155,7 @@ namespace ServiceLib.ViewModels
 
         private async Task SetRuleMode(ERuleMode mode)
         {
-            _config.clashUIItem.ruleMode = mode;
+            _config.ClashUIItem.RuleMode = mode;
 
             if (mode != ERuleMode.Unchanged)
             {
@@ -438,14 +438,14 @@ namespace ServiceLib.ViewModels
             Observable.Interval(TimeSpan.FromSeconds(60))
               .Subscribe(async x =>
               {
-                  if (!(AutoRefresh && _config.uiItem.showInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                  if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
                   {
                       return;
                   }
                   var dtNow = DateTime.Now;
-                  if (_config.clashUIItem.proxiesAutoDelayTestInterval > 0)
+                  if (_config.ClashUIItem.ProxiesAutoDelayTestInterval > 0)
                   {
-                      if ((dtNow - lastTime).Minutes % _config.clashUIItem.proxiesAutoDelayTestInterval == 0)
+                      if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ProxiesAutoDelayTestInterval == 0)
                       {
                           await ProxiesDelayTest();
                           lastTime = dtNow;

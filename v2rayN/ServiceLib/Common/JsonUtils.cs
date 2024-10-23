@@ -31,7 +31,11 @@ namespace ServiceLib.Common
                 {
                     return default;
                 }
-                return JsonSerializer.Deserialize<T>(strJson);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                return JsonSerializer.Deserialize<T>(strJson, options);
             }
             catch
             {

@@ -37,133 +37,133 @@ namespace ServiceLib.Handler
 
             config ??= new Config();
 
-            config.coreBasicItem ??= new()
+            config.CoreBasicItem ??= new()
             {
-                logEnabled = false,
-                loglevel = "warning",
-                muxEnabled = false,
+                LogEnabled = false,
+                Loglevel = "warning",
+                MuxEnabled = false,
             };
 
-            if (config.inbound == null)
+            if (config.Inbound == null)
             {
-                config.inbound = new List<InItem>();
+                config.Inbound = new List<InItem>();
                 InItem inItem = new()
                 {
-                    protocol = EInboundProtocol.socks.ToString(),
-                    localPort = 10808,
-                    udpEnabled = true,
-                    sniffingEnabled = true,
-                    routeOnly = false,
+                    Protocol = EInboundProtocol.socks.ToString(),
+                    LocalPort = 10808,
+                    UdpEnabled = true,
+                    SniffingEnabled = true,
+                    RouteOnly = false,
                 };
 
-                config.inbound.Add(inItem);
+                config.Inbound.Add(inItem);
             }
             else
             {
-                if (config.inbound.Count > 0)
+                if (config.Inbound.Count > 0)
                 {
-                    config.inbound[0].protocol = EInboundProtocol.socks.ToString();
+                    config.Inbound[0].Protocol = EInboundProtocol.socks.ToString();
                 }
             }
-            config.routingBasicItem ??= new()
+            config.RoutingBasicItem ??= new()
             {
-                enableRoutingAdvanced = true
+                EnableRoutingAdvanced = true
             };
 
-            if (Utils.IsNullOrEmpty(config.routingBasicItem.domainStrategy))
+            if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
-                config.routingBasicItem.domainStrategy = Global.DomainStrategies[0];//"IPIfNonMatch";
+                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies[0];//"IPIfNonMatch";
             }
 
-            config.kcpItem ??= new KcpItem
+            config.KcpItem ??= new KcpItem
             {
-                mtu = 1350,
-                tti = 50,
-                uplinkCapacity = 12,
-                downlinkCapacity = 100,
-                readBufferSize = 2,
-                writeBufferSize = 2,
-                congestion = false
+                Mtu = 1350,
+                Tti = 50,
+                UplinkCapacity = 12,
+                DownlinkCapacity = 100,
+                ReadBufferSize = 2,
+                WriteBufferSize = 2,
+                Congestion = false
             };
-            config.grpcItem ??= new GrpcItem
+            config.GrpcItem ??= new GrpcItem
             {
-                idle_timeout = 60,
-                health_check_timeout = 20,
-                permit_without_stream = false,
-                initial_windows_size = 0,
+                IdleTimeout = 60,
+                HealthCheckTimeout = 20,
+                PermitWithoutStream = false,
+                InitialWindowsSize = 0,
             };
-            config.tunModeItem ??= new TunModeItem
+            config.TunModeItem ??= new TunModeItem
             {
-                enableTun = false,
-                mtu = 9000,
+                EnableTun = false,
+                Mtu = 9000,
             };
-            config.guiItem ??= new()
+            config.GuiItem ??= new()
             {
-                enableStatistics = false,
+                EnableStatistics = false,
             };
-            config.msgUIItem ??= new();
+            config.MsgUIItem ??= new();
 
-            config.uiItem ??= new UIItem()
+            config.UiItem ??= new UIItem()
             {
-                enableAutoAdjustMainLvColWidth = true
+                EnableAutoAdjustMainLvColWidth = true
             };
-            if (config.uiItem.mainColumnItem == null)
+            if (config.UiItem.MainColumnItem == null)
             {
-                config.uiItem.mainColumnItem = new();
+                config.UiItem.MainColumnItem = new();
             }
-            if (Utils.IsNullOrEmpty(config.uiItem.currentLanguage))
+            if (Utils.IsNullOrEmpty(config.UiItem.CurrentLanguage))
             {
                 if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    config.uiItem.currentLanguage = Global.Languages[0];
+                    config.UiItem.CurrentLanguage = Global.Languages[0];
                 }
                 else
                 {
-                    config.uiItem.currentLanguage = Global.Languages[2];
+                    config.UiItem.CurrentLanguage = Global.Languages[2];
                 }
             }
 
-            config.constItem ??= new ConstItem();
-            if (Utils.IsNullOrEmpty(config.constItem.defIEProxyExceptions))
+            config.ConstItem ??= new ConstItem();
+            if (Utils.IsNullOrEmpty(config.ConstItem.DefIEProxyExceptions))
             {
-                config.constItem.defIEProxyExceptions = Global.IEProxyExceptions;
+                config.ConstItem.DefIEProxyExceptions = Global.IEProxyExceptions;
             }
 
-            config.speedTestItem ??= new();
-            if (config.speedTestItem.speedTestTimeout < 10)
+            config.SpeedTestItem ??= new();
+            if (config.SpeedTestItem.SpeedTestTimeout < 10)
             {
-                config.speedTestItem.speedTestTimeout = 10;
+                config.SpeedTestItem.SpeedTestTimeout = 10;
             }
-            if (Utils.IsNullOrEmpty(config.speedTestItem.speedTestUrl))
+            if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedTestUrl))
             {
-                config.speedTestItem.speedTestUrl = Global.SpeedTestUrls[0];
+                config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls[0];
             }
-            if (Utils.IsNullOrEmpty(config.speedTestItem.speedPingTestUrl))
+            if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedPingTestUrl))
             {
-                config.speedTestItem.speedPingTestUrl = Global.SpeedPingTestUrl;
+                config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrl;
             }
 
-            config.mux4RayItem ??= new()
+            config.Mux4RayItem ??= new()
             {
-                concurrency = 8,
-                xudpConcurrency = 16,
-                xudpProxyUDP443 = "reject"
+                Concurrency = 8,
+                XudpConcurrency = 16,
+                XudpProxyUDP443 = "reject"
             };
 
-            config.mux4SboxItem ??= new()
+            config.Mux4SboxItem ??= new()
             {
-                protocol = Global.SingboxMuxs[0],
-                max_connections = 8
+                Protocol = Global.SingboxMuxs[0],
+                MaxConnections = 8
             };
 
-            config.hysteriaItem ??= new()
+            config.HysteriaItem ??= new()
             {
-                up_mbps = 100,
-                down_mbps = 100
+                UpMbps = 100,
+                DownMbps = 100
             };
-            config.clashUIItem ??= new();
-            config.systemProxyItem ??= new();
-            config.webDavItem ??= new();
+            config.ClashUIItem ??= new();
+            config.SystemProxyItem ??= new();
+            config.WebDavItem ??= new();
 
             return config;
         }
@@ -369,7 +369,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            config.indexId = indexId;
+            config.IndexId = indexId;
 
             await ToJsonFile(config);
 
@@ -378,11 +378,11 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
         {
-            if (lstProfile.Exists(t => t.indexId == config.indexId))
+            if (lstProfile.Exists(t => t.indexId == config.IndexId))
             {
                 return 0;
             }
-            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.indexId == config.indexId);
+            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.indexId == config.IndexId);
             if (count > 0)
             {
                 return 0;
@@ -398,7 +398,7 @@ namespace ServiceLib.Handler
 
         public static async Task<ProfileItem?> GetDefaultServer(Config config)
         {
-            var item = await AppHandler.Instance.GetProfileItem(config.indexId);
+            var item = await AppHandler.Instance.GetProfileItem(config.IndexId);
             if (item is null)
             {
                 var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
@@ -887,7 +887,7 @@ namespace ServiceLib.Handler
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
-            if (!config.guiItem.keepOlderDedupl) lstProfile.Reverse();
+            if (!config.GuiItem.KeepOlderDedupl) lstProfile.Reverse();
 
             foreach (ProfileItem item in lstProfile)
             {
@@ -920,11 +920,11 @@ namespace ServiceLib.Handler
                 {
                     if (Utils.IsNullOrEmpty(profileItem.allowInsecure))
                     {
-                        profileItem.allowInsecure = config.coreBasicItem.defAllowInsecure.ToString().ToLower();
+                        profileItem.allowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
                     }
                     if (Utils.IsNullOrEmpty(profileItem.fingerprint) && profileItem.streamSecurity == Global.StreamSecurityReality)
                     {
-                        profileItem.fingerprint = config.coreBasicItem.defFingerprint;
+                        profileItem.fingerprint = config.CoreBasicItem.DefFingerprint;
                     }
                 }
             }
@@ -1089,7 +1089,7 @@ namespace ServiceLib.Handler
                 if (isSub && Utils.IsNotEmpty(subid))
                 {
                     var existItem = lstOriSub?.FirstOrDefault(t => t.isSub == isSub
-                                                && config.uiItem.enableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
+                                                && config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.remarks == profileItem.remarks : CompareProfileItem(t, profileItem, true));
                     if (existItem != null)
                     {
                         //Check for duplicate indexId
@@ -1604,7 +1604,7 @@ namespace ServiceLib.Handler
         {
             if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.id == routingItem.id).CountAsync() > 0)
             {
-                config.routingBasicItem.routingIndexId = routingItem.id;
+                config.RoutingBasicItem.RoutingIndexId = routingItem.id;
             }
 
             await ToJsonFile(config);
@@ -1614,7 +1614,7 @@ namespace ServiceLib.Handler
 
         public static async Task<RoutingItem> GetDefaultRouting(Config config)
         {
-            var item = await AppHandler.Instance.GetRoutingItem(config.routingBasicItem.routingIndexId);
+            var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
             if (item is null)
             {
                 var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.locked == false);
@@ -1627,7 +1627,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> InitRouting(Config config, bool blImportAdvancedRules = false)
         {
-            if (string.IsNullOrEmpty(config.constItem.routeRulesTemplateSourceUrl))
+            if (string.IsNullOrEmpty(config.ConstItem.RouteRulesTemplateSourceUrl))
             {
                 await InitBuiltinRouting(config, blImportAdvancedRules);
             }
@@ -1642,7 +1642,7 @@ namespace ServiceLib.Handler
         public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
         {
             var downloadHandle = new DownloadService();
-            var templateContent = await downloadHandle.TryDownloadString(config.constItem.routeRulesTemplateSourceUrl, true, "");
+            var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl, true, "");
             if (string.IsNullOrEmpty(templateContent))
                 return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
@@ -1826,9 +1826,9 @@ namespace ServiceLib.Handler
             switch (type)
             {
                 case EPresetType.Default:
-                    config.constItem.geoSourceUrl = "";
-                    config.constItem.srsSourceUrl = "";
-                    config.constItem.routeRulesTemplateSourceUrl = "";
+                    config.ConstItem.GeoSourceUrl = "";
+                    config.ConstItem.SrsSourceUrl = "";
+                    config.ConstItem.RouteRulesTemplateSourceUrl = "";
 
                     await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                     await InitBuiltinDNS(config);
@@ -1836,9 +1836,9 @@ namespace ServiceLib.Handler
                     return true;
 
                 case EPresetType.Russia:
-                    config.constItem.geoSourceUrl = Global.GeoFilesSources[1];
-                    config.constItem.srsSourceUrl = Global.SingboxRulesetSources[1];
-                    config.constItem.routeRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+                    config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
+                    config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
+                    config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
                     await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
                     await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));

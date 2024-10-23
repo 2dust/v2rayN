@@ -18,7 +18,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
                 progress.ProgressChanged += (sender, value) =>
@@ -50,7 +50,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
                 UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
@@ -80,7 +80,7 @@ namespace ServiceLib.Services
 
         public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
         {
-            SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+            SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
@@ -150,7 +150,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
                 var webProxy = await GetWebProxy(blProxy);
                 var client = new HttpClient(new SocketsHttpHandler()
                 {
@@ -195,7 +195,7 @@ namespace ServiceLib.Services
         {
             try
             {
-                SetSecurityProtocol(AppHandler.Instance.Config.guiItem.enableSecurityProtocolTls13);
+                SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
 
                 var webProxy = await GetWebProxy(blProxy);
 
@@ -227,7 +227,7 @@ namespace ServiceLib.Services
                 try
                 {
                     var config = AppHandler.Instance.Config;
-                    var responseTime = await GetRealPingTime(config.speedTestItem.speedPingTestUrl, webProxy, 10);
+                    var responseTime = await GetRealPingTime(config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
                     return responseTime;
                 }
                 catch (Exception ex)

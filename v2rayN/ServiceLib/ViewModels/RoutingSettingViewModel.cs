@@ -111,10 +111,10 @@ namespace ServiceLib.ViewModels
         {
             SelectedSource = new();
 
-            enableRoutingAdvanced = _config.routingBasicItem.enableRoutingAdvanced;
-            domainStrategy = _config.routingBasicItem.domainStrategy;
-            domainMatcher = _config.routingBasicItem.domainMatcher;
-            domainStrategy4Singbox = _config.routingBasicItem.domainStrategy4Singbox;
+            enableRoutingAdvanced = _config.RoutingBasicItem.EnableRoutingAdvanced;
+            domainStrategy = _config.RoutingBasicItem.DomainStrategy;
+            domainMatcher = _config.RoutingBasicItem.DomainMatcher;
+            domainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
             await ConfigHandler.InitBuiltinRouting(_config);
             await RefreshRoutingItems();
@@ -182,7 +182,7 @@ namespace ServiceLib.ViewModels
             foreach (var item in routings)
             {
                 bool def = false;
-                if (item.id == _config.routingBasicItem.routingIndexId)
+                if (item.id == _config.RoutingBasicItem.RoutingIndexId)
                 {
                     def = true;
                 }
@@ -204,10 +204,10 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveRoutingAsync()
         {
-            _config.routingBasicItem.domainStrategy = domainStrategy;
-            _config.routingBasicItem.enableRoutingAdvanced = enableRoutingAdvanced;
-            _config.routingBasicItem.domainMatcher = domainMatcher;
-            _config.routingBasicItem.domainStrategy4Singbox = domainStrategy4Singbox;
+            _config.RoutingBasicItem.DomainStrategy = domainStrategy;
+            _config.RoutingBasicItem.EnableRoutingAdvanced = enableRoutingAdvanced;
+            _config.RoutingBasicItem.DomainMatcher = domainMatcher;
+            _config.RoutingBasicItem.DomainStrategy4Singbox = domainStrategy4Singbox;
 
             await EndBindingLockedData();
 

@@ -3,152 +3,137 @@
     [Serializable]
     public class CoreBasicItem
     {
-        /// <summary>
-        /// 允许日志
-        /// </summary>
-        public bool logEnabled { get; set; }
+        public bool LogEnabled { get; set; }
 
-        /// <summary>
-        /// 日志等级
-        /// </summary>
-        public string loglevel { get; set; }
+        public string Loglevel { get; set; }
 
-        /// <summary>
-        /// 允许Mux多路复用
-        /// </summary>
-        public bool muxEnabled { get; set; }
+        public bool MuxEnabled { get; set; }
 
-        /// <summary>
-        /// 是否允许不安全连接
-        /// </summary>
-        public bool defAllowInsecure { get; set; }
+        public bool DefAllowInsecure { get; set; }
 
-        public string defFingerprint { get; set; }
+        public string DefFingerprint { get; set; }
 
-        /// <summary>
-        /// 默认用户代理
-        /// </summary>
-        public string defUserAgent { get; set; }
+        public string DefUserAgent { get; set; }
 
-        public bool enableFragment { get; set; }
+        public bool EnableFragment { get; set; }
 
-        public bool enableCacheFile4Sbox { get; set; } = true;
+        public bool EnableCacheFile4Sbox { get; set; } = true;
     }
 
     [Serializable]
     public class InItem
     {
-        public int localPort { get; set; }
+        public int LocalPort { get; set; }
 
-        public string protocol { get; set; }
+        public string Protocol { get; set; }
 
-        public bool udpEnabled { get; set; }
+        public bool UdpEnabled { get; set; }
 
-        public bool sniffingEnabled { get; set; } = true;
-        public List<string>? destOverride { get; set; } = ["http", "tls"];
-        public bool routeOnly { get; set; }
-        public bool allowLANConn { get; set; }
+        public bool SniffingEnabled { get; set; } = true;
+        public List<string>? DestOverride { get; set; } = ["http", "tls"];
+        public bool RouteOnly { get; set; }
+        public bool AllowLANConn { get; set; }
 
-        public bool newPort4LAN { get; set; }
+        public bool NewPort4LAN { get; set; }
 
-        public string user { get; set; }
+        public string User { get; set; }
 
-        public string pass { get; set; }
+        public string Pass { get; set; }
     }
 
     [Serializable]
     public class KcpItem
     {
-        public int mtu { get; set; }
+        public int Mtu { get; set; }
 
-        public int tti { get; set; }
+        public int Tti { get; set; }
 
-        public int uplinkCapacity { get; set; }
+        public int UplinkCapacity { get; set; }
 
-        public int downlinkCapacity { get; set; }
+        public int DownlinkCapacity { get; set; }
 
-        public bool congestion { get; set; }
+        public bool Congestion { get; set; }
 
-        public int readBufferSize { get; set; }
+        public int ReadBufferSize { get; set; }
 
-        public int writeBufferSize { get; set; }
+        public int WriteBufferSize { get; set; }
     }
 
     [Serializable]
     public class GrpcItem
     {
-        public int idle_timeout { get; set; }
-        public int health_check_timeout { get; set; }
-        public bool permit_without_stream { get; set; }
-        public int initial_windows_size { get; set; }
+        public int IdleTimeout { get; set; }
+        public int HealthCheckTimeout { get; set; }
+        public bool PermitWithoutStream { get; set; }
+        public int InitialWindowsSize { get; set; }
     }
 
     [Serializable]
     public class GUIItem
     {
-        public bool autoRun { get; set; }
+        public bool AutoRun { get; set; }
 
-        public bool enableStatistics { get; set; }
+        public bool EnableStatistics { get; set; }
 
-        public bool keepOlderDedupl { get; set; }
+        public bool KeepOlderDedupl { get; set; }
 
-        public bool ignoreGeoUpdateCore { get; set; } = true;
+        public bool IgnoreGeoUpdateCore { get; set; } = true;
 
-        public int autoUpdateInterval { get; set; }
+        public int AutoUpdateInterval { get; set; }
 
-        public bool checkPreReleaseUpdate { get; set; } = false;
+        public bool CheckPreReleaseUpdate { get; set; } = false;
 
-        public bool enableSecurityProtocolTls13 { get; set; }
+        public bool EnableSecurityProtocolTls13 { get; set; }
 
-        public int trayMenuServersLimit { get; set; } = 20;
+        public int TrayMenuServersLimit { get; set; } = 20;
 
-        public bool enableHWA { get; set; } = false;
+        public bool EnableHWA { get; set; } = false;
     }
 
     [Serializable]
     public class MsgUIItem
     {
-        public string? mainMsgFilter { get; set; }
-        public bool? autoRefresh { get; set; }
+        public string? MainMsgFilter { get; set; }
+        public bool? AutoRefresh { get; set; }
     }
 
     [Serializable]
     public class UIItem
     {
-        public bool enableAutoAdjustMainLvColWidth { get; set; }
-        public bool enableUpdateSubOnlyRemarksExist { get; set; }
-        public double mainWidth { get; set; }
-        public double mainHeight { get; set; }
-        public double mainGirdHeight1 { get; set; }
-        public double mainGirdHeight2 { get; set; }
-        public EGirdOrientation mainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
-        public bool colorModeDark { get; set; }
-        public bool followSystemTheme { get; set; }
-        public string? colorPrimaryName { get; set; }
-        public string currentLanguage { get; set; }
-        public string currentFontFamily { get; set; }
-        public int currentFontSize { get; set; }
-        public bool enableDragDropSort { get; set; }
-        public bool doubleClick2Activate { get; set; }
-        public bool autoHideStartup { get; set; }
-        public List<ColumnItem> mainColumnItem { get; set; }
-        public bool showInTaskbar { get; set; }
+        public bool EnableAutoAdjustMainLvColWidth { get; set; }
+        public bool EnableUpdateSubOnlyRemarksExist { get; set; }
+        public double MainWidth { get; set; }
+        public double MainHeight { get; set; }
+        public double MainGirdHeight1 { get; set; }
+        public double MainGirdHeight2 { get; set; }
+        public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
+        public bool ColorModeDark { get; set; }
+        public bool FollowSystemTheme { get; set; }
+        public string? ColorPrimaryName { get; set; }
+        public string CurrentLanguage { get; set; }
+        public string CurrentFontFamily { get; set; }
+        public int CurrentFontSize { get; set; }
+        public bool EnableDragDropSort { get; set; }
+        public bool DoubleClick2Activate { get; set; }
+        public bool AutoHideStartup { get; set; }
+        public List<ColumnItem> MainColumnItem { get; set; }
+        public bool ShowInTaskbar { get; set; }
     }
 
     [Serializable]
     public class ConstItem
     {
-        public string defIEProxyExceptions { get; set; }
-        public string subConvertUrl { get; set; } = string.Empty;
-        public string? geoSourceUrl { get; set; }
-        public string? srsSourceUrl { get; set; }
-        public string? routeRulesTemplateSourceUrl { get; set; }
+        public string DefIEProxyExceptions { get; set; }
+        public string SubConvertUrl { get; set; } = string.Empty;
+        public string? GeoSourceUrl { get; set; }
+        public string? SrsSourceUrl { get; set; }
+        public string? RouteRulesTemplateSourceUrl { get; set; }
     }
 
     [Serializable]
     public class KeyEventItem
     {
-        public EGlobalHotkey eGlobalHotkey { get; set; }
+        public EGlobalHotkey EGlobalHotkey { get; set; }
 
         public bool Alt { get; set; }
 
@@ -162,38 +147,38 @@
     [Serializable]
     public class CoreTypeItem
     {
-        public EConfigType configType { get; set; }
+        public EConfigType ConfigType { get; set; }
 
-        public ECoreType coreType { get; set; }
+        public ECoreType CoreType { get; set; }
     }
 
     [Serializable]
     public class TunModeItem
     {
-        public bool enableTun { get; set; }
-        public bool strictRoute { get; set; } = true;
-        public string stack { get; set; }
-        public int mtu { get; set; }
-        public bool enableExInbound { get; set; }
-        public bool enableIPv6Address { get; set; }
+        public bool EnableTun { get; set; }
+        public bool StrictRoute { get; set; } = true;
+        public string Stack { get; set; }
+        public int Mtu { get; set; }
+        public bool EnableExInbound { get; set; }
+        public bool EnableIPv6Address { get; set; }
     }
 
     [Serializable]
     public class SpeedTestItem
     {
-        public int speedTestTimeout { get; set; }
-        public string speedTestUrl { get; set; }
-        public string speedPingTestUrl { get; set; }
+        public int SpeedTestTimeout { get; set; }
+        public string SpeedTestUrl { get; set; }
+        public string SpeedPingTestUrl { get; set; }
     }
 
     [Serializable]
     public class RoutingBasicItem
     {
-        public string domainStrategy { get; set; }
-        public string domainStrategy4Singbox { get; set; }
-        public string domainMatcher { get; set; }
-        public string routingIndexId { get; set; }
-        public bool enableRoutingAdvanced { get; set; }
+        public string DomainStrategy { get; set; }
+        public string DomainStrategy4Singbox { get; set; }
+        public string DomainMatcher { get; set; }
+        public string RoutingIndexId { get; set; }
+        public bool EnableRoutingAdvanced { get; set; }
     }
 
     [Serializable]
@@ -207,55 +192,55 @@
     [Serializable]
     public class Mux4RayItem
     {
-        public int? concurrency { get; set; }
-        public int? xudpConcurrency { get; set; }
-        public string? xudpProxyUDP443 { get; set; }
+        public int? Concurrency { get; set; }
+        public int? XudpConcurrency { get; set; }
+        public string? XudpProxyUDP443 { get; set; }
     }
 
     [Serializable]
     public class Mux4SboxItem
     {
-        public string protocol { get; set; }
-        public int max_connections { get; set; }
-        public bool? padding { get; set; }
+        public string Protocol { get; set; }
+        public int MaxConnections { get; set; }
+        public bool? Padding { get; set; }
     }
 
     [Serializable]
     public class HysteriaItem
     {
-        public int up_mbps { get; set; }
-        public int down_mbps { get; set; }
+        public int UpMbps { get; set; }
+        public int DownMbps { get; set; }
     }
 
     [Serializable]
     public class ClashUIItem
     {
-        public ERuleMode ruleMode { get; set; }
-        public bool enableIPv6 { get; set; }
-        public bool enableMixinContent { get; set; }
-        public int proxiesSorting { get; set; }
-        public bool proxiesAutoRefresh { get; set; }
-        public int proxiesAutoDelayTestInterval { get; set; } = 10;
-        public int connectionsSorting { get; set; }
-        public bool connectionsAutoRefresh { get; set; }
-        public int connectionsRefreshInterval { get; set; } = 2;
+        public ERuleMode RuleMode { get; set; }
+        public bool EnableIPv6 { get; set; }
+        public bool EnableMixinContent { get; set; }
+        public int ProxiesSorting { get; set; }
+        public bool ProxiesAutoRefresh { get; set; }
+        public int ProxiesAutoDelayTestInterval { get; set; } = 10;
+        public int ConnectionsSorting { get; set; }
+        public bool ConnectionsAutoRefresh { get; set; }
+        public int ConnectionsRefreshInterval { get; set; } = 2;
     }
 
     [Serializable]
     public class SystemProxyItem
     {
-        public ESysProxyType sysProxyType { get; set; }
-        public string systemProxyExceptions { get; set; }
-        public bool notProxyLocalAddress { get; set; } = true;
-        public string systemProxyAdvancedProtocol { get; set; }
+        public ESysProxyType SysProxyType { get; set; }
+        public string SystemProxyExceptions { get; set; }
+        public bool NotProxyLocalAddress { get; set; } = true;
+        public string SystemProxyAdvancedProtocol { get; set; }
     }
 
     [Serializable]
     public class WebDavItem
     {
-        public string? url { get; set; }
-        public string? userName { get; set; }
-        public string? password { get; set; }
-        public string? dirName { get; set; }
+        public string? Url { get; set; }
+        public string? UserName { get; set; }
+        public string? Password { get; set; }
+        public string? DirName { get; set; }
     }
 }

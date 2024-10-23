@@ -76,7 +76,7 @@ namespace v2rayN.Desktop.Views
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow.Icon = AvaUtils.GetAppIcon(_config.systemProxyItem.sysProxyType);
+                desktop.MainWindow.Icon = AvaUtils.GetAppIcon(_config.SystemProxyItem.SysProxyType);
             }
         }
 

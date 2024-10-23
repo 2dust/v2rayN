@@ -24,7 +24,7 @@ namespace v2rayN.Desktop.Views
             {
                 clbdestOverride.Items.Add(it);
             });
-            _config.inbound[0].destOverride?.ForEach(it =>
+            _config.Inbound[0].DestOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
             });

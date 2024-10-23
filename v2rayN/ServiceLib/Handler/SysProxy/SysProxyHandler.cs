@@ -6,7 +6,7 @@ namespace ServiceLib.Handler.SysProxy
     {
         public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
         {
-            var type = config.systemProxyItem.sysProxyType;
+            var type = config.SystemProxyItem.SysProxyType;
 
             if (forceDisable && type != ESysProxyType.Unchanged)
             {
@@ -84,19 +84,19 @@ namespace ServiceLib.Handler.SysProxy
         private static void GetWindowsProxyString(Config config, int port, int portSocks, out string strProxy, out string strExceptions)
         {
             strExceptions = "";
-            if (config.systemProxyItem.notProxyLocalAddress)
+            if (config.SystemProxyItem.NotProxyLocalAddress)
             {
-                strExceptions = $"<local>;{config.constItem.defIEProxyExceptions};{config.systemProxyItem.systemProxyExceptions}";
+                strExceptions = $"<local>;{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
             }
 
             strProxy = string.Empty;
-            if (Utils.IsNullOrEmpty(config.systemProxyItem.systemProxyAdvancedProtocol))
+            if (Utils.IsNullOrEmpty(config.SystemProxyItem.SystemProxyAdvancedProtocol))
             {
                 strProxy = $"{Global.Loopback}:{port}";
             }
             else
             {
-                strProxy = config.systemProxyItem.systemProxyAdvancedProtocol
+                strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
                     .Replace("{ip}", Global.Loopback)
                     .Replace("{http_port}", port.ToString())
                     .Replace("{socks_port}", portSocks.ToString());

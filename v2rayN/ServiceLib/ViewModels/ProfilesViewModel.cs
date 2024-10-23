@@ -107,7 +107,7 @@ namespace ServiceLib.ViewModels
 
             this.WhenAnyValue(
                 x => x.SelectedSub,
-                y => y != null && !y.remarks.IsNullOrEmpty() && _config.subIndexId != y.id)
+                y => y != null && !y.remarks.IsNullOrEmpty() && _config.SubIndexId != y.id)
                     .Subscribe(async c => await SubSelectedChangedAsync(c));
             this.WhenAnyValue(
                  x => x.SelectedMoveToGroup,
@@ -334,7 +334,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            _config.subIndexId = SelectedSub?.id;
+            _config.SubIndexId = SelectedSub?.id;
 
             RefreshServers();
 
@@ -361,14 +361,14 @@ namespace ServiceLib.ViewModels
 
         public async Task RefreshServersBiz()
         {
-            var lstModel = await AppHandler.Instance.ProfileItemsEx(_config.subIndexId, _serverFilter);
+            var lstModel = await AppHandler.Instance.ProfileItemsEx(_config.SubIndexId, _serverFilter);
             _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
             _profileItems.Clear();
             _profileItems.AddRange(lstModel);
             if (lstModel.Count > 0)
             {
-                var selected = lstModel.FirstOrDefault(t => t.indexId == _config.indexId);
+                var selected = lstModel.FirstOrDefault(t => t.indexId == _config.IndexId);
                 if (selected != null)
                 {
                     SelectedProfile = selected;
@@ -390,9 +390,9 @@ namespace ServiceLib.ViewModels
             {
                 _subItems.Add(item);
             }
-            if (_config.subIndexId != null && _subItems.FirstOrDefault(t => t.id == _config.subIndexId) != null)
+            if (_config.SubIndexId != null && _subItems.FirstOrDefault(t => t.id == _config.SubIndexId) != null)
             {
-                SelectedSub = _subItems.FirstOrDefault(t => t.id == _config.subIndexId);
+                SelectedSub = _subItems.FirstOrDefault(t => t.id == _config.SubIndexId);
             }
             else
             {
@@ -458,7 +458,7 @@ namespace ServiceLib.ViewModels
             if (ret == true)
             {
                 RefreshServers();
-                if (item.indexId == _config.indexId)
+                if (item.indexId == _config.IndexId)
                 {
                     Reload();
                 }
@@ -476,7 +476,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var exists = lstSelecteds.Exists(t => t.indexId == _config.indexId);
+            var exists = lstSelecteds.Exists(t => t.indexId == _config.IndexId);
 
             await ConfigHandler.RemoveServer(_config, lstSelecteds);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
@@ -490,7 +490,7 @@ namespace ServiceLib.ViewModels
 
         private async Task RemoveDuplicateServer()
         {
-            var tuple = await ConfigHandler.DedupServerList(_config, _config.subIndexId);
+            var tuple = await ConfigHandler.DedupServerList(_config, _config.SubIndexId);
             RefreshServers();
             Reload();
             NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
@@ -525,7 +525,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (indexId == _config.indexId)
+            if (indexId == _config.IndexId)
             {
                 return;
             }
@@ -591,7 +591,7 @@ namespace ServiceLib.ViewModels
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
                 return;
             }
-            if (ret?.Data?.ToString() == _config.indexId)
+            if (ret?.Data?.ToString() == _config.IndexId)
             {
                 RefreshServers();
                 Reload();
@@ -611,7 +611,7 @@ namespace ServiceLib.ViewModels
 
             _dicHeaderSort.TryAdd(colName, true);
             _dicHeaderSort.TryGetValue(colName, out bool asc);
-            if (await ConfigHandler.SortServers(_config, _config.subIndexId, colName, asc) != 0)
+            if (await ConfigHandler.SortServers(_config, _config.SubIndexId, colName, asc) != 0)
             {
                 return;
             }
@@ -784,7 +784,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                item = await AppHandler.Instance.GetSubItem(_config.subIndexId);
+                item = await AppHandler.Instance.GetSubItem(_config.SubIndexId);
                 if (item is null)
                 {
                     return;

@@ -189,7 +189,7 @@ namespace v2rayN.Desktop.Views
 
         private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
         {
-            if (_config.uiItem.doubleClick2Activate)
+            if (_config.UiItem.DoubleClick2Activate)
             {
                 ViewModel?.SetDefaultServer();
             }
@@ -325,7 +325,7 @@ namespace v2rayN.Desktop.Views
 
         private void RestoreUI()
         {
-            var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
+            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
             var displayIndex = 0;
             foreach (var item in lvColumnItem)
             {
@@ -348,7 +348,7 @@ namespace v2rayN.Desktop.Views
                         }
                         if (item.Name.StartsWith("to"))
                         {
-                            if (!_config.guiItem.enableStatistics)
+                            if (!_config.GuiItem.EnableStatistics)
                             {
                                 item2.IsVisible = false;
                             }
@@ -375,7 +375,7 @@ namespace v2rayN.Desktop.Views
                     Index = item2.DisplayIndex
                 });
             }
-            _config.uiItem.mainColumnItem = lvColumnItem;
+            _config.UiItem.MainColumnItem = lvColumnItem;
             ConfigHandler.SaveConfig(_config);
         }
 

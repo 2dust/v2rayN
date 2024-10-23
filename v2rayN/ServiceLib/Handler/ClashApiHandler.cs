@@ -72,7 +72,7 @@ namespace ServiceLib.Handler
                 return;
             }
             var urlBase = $"{GetApiUrl()}/proxies";
-            urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.speedTestItem.speedPingTestUrl;
+            urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
 
             List<Task> tasks = new List<Task>();
             foreach (var it in lstProxy)

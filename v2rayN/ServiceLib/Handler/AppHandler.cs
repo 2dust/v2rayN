@@ -51,7 +51,7 @@
             {
                 return false;
             }
-            Thread.CurrentThread.CurrentUICulture = new(_config.uiItem.currentLanguage);
+            Thread.CurrentThread.CurrentUICulture = new(_config.UiItem.CurrentLanguage);
 
             //Under Win10
             if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
@@ -85,7 +85,7 @@
 
         public int GetLocalPort(EInboundProtocol protocol)
         {
-            var localPort = _config.inbound.FirstOrDefault(t => t.protocol == nameof(EInboundProtocol.socks))?.localPort ?? 10808;
+            var localPort = _config.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
             return localPort + (int)protocol;
         }
 
@@ -165,11 +165,11 @@
 
         public async Task<List<ProfileItemModel>> ProfileItemsEx(string subid, string filter)
         {
-            var lstModel = await ProfileItems(_config.subIndexId, filter);
+            var lstModel = await ProfileItems(_config.SubIndexId, filter);
 
             await ConfigHandler.SetDefaultServer(_config, lstModel);
 
-            var lstServerStat = (_config.guiItem.enableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
+            var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
             var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
             lstModel = (from t in lstModel
                         join t2 in lstServerStat on t.indexId equals t2.indexId into t2b
@@ -188,7 +188,7 @@
                             streamSecurity = t.streamSecurity,
                             subid = t.subid,
                             subRemarks = t.subRemarks,
-                            isActive = t.indexId == _config.indexId,
+                            isActive = t.indexId == _config.IndexId,
                             sort = t33 == null ? 0 : t33.sort,
                             delay = t33 == null ? 0 : t33.delay,
                             delayVal = t33?.delay != 0 ? $"{t33?.delay} {Global.DelayUnit}" : string.Empty,
@@ -268,16 +268,16 @@
                 return (ECoreType)profileItem.coreType;
             }
 
-            if (_config.coreTypeItem == null)
+            if (_config.CoreTypeItem == null)
             {
                 return ECoreType.Xray;
             }
-            var item = _config.coreTypeItem.FirstOrDefault(it => it.configType == eConfigType);
+            var item = _config.CoreTypeItem.FirstOrDefault(it => it.ConfigType == eConfigType);
             if (item == null)
             {
                 return ECoreType.Xray;
             }
-            return item.coreType;
+            return item.CoreType;
         }
 
         #endregion Core Type

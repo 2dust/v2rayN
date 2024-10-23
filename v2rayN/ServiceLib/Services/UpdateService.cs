@@ -154,7 +154,7 @@ namespace ServiceLib.Services
                 //convert
                 if (Utils.IsNotEmpty(item.convertTarget))
                 {
-                    var subConvertUrl = Utils.IsNullOrEmpty(config.constItem.subConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.constItem.subConvertUrl;
+                    var subConvertUrl = Utils.IsNullOrEmpty(config.ConstItem.SubConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
                     url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
                     if (!url.Contains("target="))
                     {
@@ -457,9 +457,9 @@ namespace ServiceLib.Services
             _config = config;
             _updateFunc = updateFunc;
 
-            var geoUrl = string.IsNullOrEmpty(config?.constItem.geoSourceUrl)
+            var geoUrl = string.IsNullOrEmpty(config?.ConstItem.GeoSourceUrl)
                 ? Global.GeoUrl
-                : config.constItem.geoSourceUrl;
+                : config.ConstItem.GeoSourceUrl;
 
             var fileName = $"{geoName}.dat";
             var targetPath = Utils.GetBinPath($"{fileName}");
@@ -521,9 +521,9 @@ namespace ServiceLib.Services
 
         private async Task UpdateSrsFile(string type, string srsName, Config config, Action<bool, string> updateFunc)
         {
-            var srsUrl = string.IsNullOrEmpty(_config.constItem.srsSourceUrl)
+            var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
                             ? Global.SingboxRulesetUrl
-                            : _config.constItem.srsSourceUrl;
+                            : _config.ConstItem.SrsSourceUrl;
 
             var fileName = $"{type}-{srsName}.srs";
             var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);

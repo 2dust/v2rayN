@@ -52,12 +52,12 @@ namespace v2rayN.ViewModels
             }
             else
             {
-                ModifyTheme(_config.uiItem.colorModeDark);
+                ModifyTheme(_config.UiItem.ColorModeDark);
             }
 
-            if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
+            if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
-                var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName);
+                var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
                 if (swatch != null
                    && swatch.ExemplarHue != null
                    && swatch.ExemplarHue?.Color != null)
@@ -69,24 +69,24 @@ namespace v2rayN.ViewModels
 
         private void BindingUI()
         {
-            ColorModeDark = _config.uiItem.colorModeDark;
-            FollowSystemTheme = _config.uiItem.followSystemTheme;
+            ColorModeDark = _config.UiItem.ColorModeDark;
+            FollowSystemTheme = _config.UiItem.FollowSystemTheme;
             _swatches.AddRange(new SwatchesProvider().Swatches);
-            if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
+            if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
-                SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName);
+                SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
             }
-            CurrentFontSize = _config.uiItem.currentFontSize;
-            CurrentLanguage = _config.uiItem.currentLanguage;
+            CurrentFontSize = _config.UiItem.CurrentFontSize;
+            CurrentLanguage = _config.UiItem.CurrentLanguage;
 
             this.WhenAnyValue(
                   x => x.ColorModeDark,
                   y => y == true)
                       .Subscribe(c =>
                       {
-                          if (_config.uiItem.colorModeDark != ColorModeDark)
+                          if (_config.UiItem.ColorModeDark != ColorModeDark)
                           {
-                              _config.uiItem.colorModeDark = ColorModeDark;
+                              _config.UiItem.ColorModeDark = ColorModeDark;
                               ModifyTheme(ColorModeDark);
                               ConfigHandler.SaveConfig(_config);
                           }
@@ -96,9 +96,9 @@ namespace v2rayN.ViewModels
                 y => y == true)
                     .Subscribe(c =>
                     {
-                        if (_config.uiItem.followSystemTheme != FollowSystemTheme)
+                        if (_config.UiItem.FollowSystemTheme != FollowSystemTheme)
                         {
-                            _config.uiItem.followSystemTheme = FollowSystemTheme;
+                            _config.UiItem.FollowSystemTheme = FollowSystemTheme;
                             ConfigHandler.SaveConfig(_config);
                             if (FollowSystemTheme)
                             {
@@ -123,9 +123,9 @@ namespace v2rayN.ViewModels
                      {
                          return;
                      }
-                     if (_config.uiItem.colorPrimaryName != SelectedSwatch?.Name)
+                     if (_config.UiItem.ColorPrimaryName != SelectedSwatch?.Name)
                      {
-                         _config.uiItem.colorPrimaryName = SelectedSwatch?.Name;
+                         _config.UiItem.ColorPrimaryName = SelectedSwatch?.Name;
                          ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
                          ConfigHandler.SaveConfig(_config);
                      }
@@ -138,7 +138,7 @@ namespace v2rayN.ViewModels
                   {
                       if (CurrentFontSize >= Global.MinFontSize)
                       {
-                          _config.uiItem.currentFontSize = CurrentFontSize;
+                          _config.UiItem.CurrentFontSize = CurrentFontSize;
                           double size = (long)CurrentFontSize;
                           Application.Current.Resources["StdFontSize"] = size;
                           Application.Current.Resources["StdFontSize1"] = size + 1;
@@ -153,9 +153,9 @@ namespace v2rayN.ViewModels
              y => y != null && !y.IsNullOrEmpty())
                 .Subscribe(c =>
                 {
-                    if (Utils.IsNotEmpty(CurrentLanguage) && _config.uiItem.currentLanguage != CurrentLanguage)
+                    if (Utils.IsNotEmpty(CurrentLanguage) && _config.UiItem.CurrentLanguage != CurrentLanguage)
                     {
-                        _config.uiItem.currentLanguage = CurrentLanguage;
+                        _config.UiItem.CurrentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                         ConfigHandler.SaveConfig(_config);
                         NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
@@ -189,7 +189,7 @@ namespace v2rayN.ViewModels
             var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
             hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
             {
-                if (config.uiItem.followSystemTheme)
+                if (config.UiItem.FollowSystemTheme)
                 {
                     const int WM_SETTINGCHANGE = 0x001A;
                     if (msg == WM_SETTINGCHANGE)

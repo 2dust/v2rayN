@@ -142,11 +142,11 @@ namespace ServiceLib.ViewModels
             });
             SubGroupUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await UpdateSubscriptionProcess(_config.subIndexId, false);
+                await UpdateSubscriptionProcess(_config.SubIndexId, false);
             });
             SubGroupUpdateViaProxyCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await UpdateSubscriptionProcess(_config.subIndexId, true);
+                await UpdateSubscriptionProcess(_config.SubIndexId, true);
             });
 
             //Setting
@@ -204,14 +204,14 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            _config.uiItem.showInTaskbar = true;
+            _config.UiItem.ShowInTaskbar = true;
 
             await ConfigHandler.InitBuiltinRouting(_config);
             await ConfigHandler.InitBuiltinDNS(_config);
             CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
-            if (_config.guiItem.enableStatistics)
+            if (_config.GuiItem.EnableStatistics)
             {
                 await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
@@ -238,13 +238,13 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.SendMessageEx(msg);
             if (success)
             {
-                var indexIdOld = _config.indexId;
+                var indexIdOld = _config.IndexId;
                 RefreshServers();
-                if (indexIdOld != _config.indexId)
+                if (indexIdOld != _config.IndexId)
                 {
                     Reload();
                 }
-                if (_config.uiItem.enableAutoAdjustMainLvColWidth)
+                if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
                 {
                     _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
                 }
@@ -253,7 +253,7 @@ namespace ServiceLib.ViewModels
 
         private void UpdateStatisticsHandler(ServerSpeedItem update)
         {
-            if (!_config.uiItem.showInTaskbar)
+            if (!_config.UiItem.ShowInTaskbar)
             {
                 return;
             }
@@ -351,7 +351,7 @@ namespace ServiceLib.ViewModels
         {
             ProfileItem item = new()
             {
-                subid = _config.subIndexId,
+                subid = _config.SubIndexId,
                 configType = eConfigType,
                 isSub = false,
             };
@@ -368,7 +368,7 @@ namespace ServiceLib.ViewModels
             if (ret == true)
             {
                 RefreshServers();
-                if (item.indexId == _config.indexId)
+                if (item.indexId == _config.IndexId)
                 {
                     await Reload();
                 }
@@ -382,7 +382,7 @@ namespace ServiceLib.ViewModels
                 await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
                 return;
             }
-            int ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.subIndexId, false);
+            int ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.SubIndexId, false);
             if (ret > 0)
             {
                 RefreshSubscriptions();
@@ -426,7 +426,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                int ret = await ConfigHandler.AddBatchServers(_config, result, _config.subIndexId, false);
+                int ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
                 if (ret > 0)
                 {
                     RefreshSubscriptions();
@@ -572,7 +572,7 @@ namespace ServiceLib.ViewModels
 
         private async Task AutoHideStartup()
         {
-            if (_config.uiItem.autoHideStartup)
+            if (_config.UiItem.AutoHideStartup)
             {
                 ShowHideWindow(false);
             }

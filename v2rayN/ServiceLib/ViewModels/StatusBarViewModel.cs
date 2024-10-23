@@ -117,7 +117,7 @@ namespace ServiceLib.ViewModels
                     y => y != null && !y.Text.IsNullOrEmpty())
                 .Subscribe(c => ServerSelectedChanged(c));
 
-            SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
+            SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
             this.WhenAnyValue(
                     x => x.SystemProxySelected,
                     y => y >= 0)
@@ -182,18 +182,18 @@ namespace ServiceLib.ViewModels
             SelectedRouting = new();
             SelectedServer = new();
 
-            if (_config.tunModeItem.enableTun && AppHandler.Instance.IsAdministrator)
+            if (_config.TunModeItem.EnableTun && AppHandler.Instance.IsAdministrator)
             {
                 EnableTun = true;
             }
             else
             {
-                _config.tunModeItem.enableTun = EnableTun = false;
+                _config.TunModeItem.EnableTun = EnableTun = false;
             }
 
             await RefreshRoutingsMenu();
             await InboundDisplayStatus();
-            await ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, true);
+            await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
         }
 
         public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -248,10 +248,10 @@ namespace ServiceLib.ViewModels
 
         private async Task RefreshServersMenu()
         {
-            var lstModel = await AppHandler.Instance.ProfileItems(_config.subIndexId, "");
+            var lstModel = await AppHandler.Instance.ProfileItems(_config.SubIndexId, "");
 
             _servers.Clear();
-            if (lstModel.Count > _config.guiItem.trayMenuServersLimit)
+            if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
             {
                 BlServers = false;
                 return;
@@ -265,7 +265,7 @@ namespace ServiceLib.ViewModels
 
                 var item = new ComboItem() { ID = it.indexId, Text = name };
                 _servers.Add(item);
-                if (_config.indexId == it.indexId)
+                if (_config.IndexId == it.indexId)
                 {
                     SelectedServer = item;
                 }
@@ -312,15 +312,15 @@ namespace ServiceLib.ViewModels
 
         public async Task SetListenerType(ESysProxyType type)
         {
-            if (_config.systemProxyItem.sysProxyType == type)
+            if (_config.SystemProxyItem.SysProxyType == type)
             {
                 return;
             }
-            _config.systemProxyItem.sysProxyType = type;
+            _config.SystemProxyItem.SysProxyType = type;
             await ChangeSystemProxyAsync(type, true);
-            NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.systemProxyItem.sysProxyType.ToString()}");
+            NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
 
-            SystemProxySelected = (int)_config.systemProxyItem.sysProxyType;
+            SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
             await ConfigHandler.SaveConfig(_config, false);
         }
 
@@ -347,7 +347,7 @@ namespace ServiceLib.ViewModels
         public async Task RefreshRoutingsMenu()
         {
             _routingItems.Clear();
-            if (!_config.routingBasicItem.enableRoutingAdvanced)
+            if (!_config.RoutingBasicItem.EnableRoutingAdvanced)
             {
                 BlRouting = false;
                 return;
@@ -358,7 +358,7 @@ namespace ServiceLib.ViewModels
             foreach (var item in routings)
             {
                 _routingItems.Add(item);
-                if (item.id == _config.routingBasicItem.routingIndexId)
+                if (item.id == _config.RoutingBasicItem.RoutingIndexId)
                 {
                     SelectedRouting = item;
                 }
@@ -382,7 +382,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (_config.routingBasicItem.routingIndexId == item.id)
+            if (_config.RoutingBasicItem.RoutingIndexId == item.id)
             {
                 return;
             }
@@ -401,7 +401,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (_config.systemProxyItem.sysProxyType == (ESysProxyType)SystemProxySelected)
+            if (_config.SystemProxyItem.SysProxyType == (ESysProxyType)SystemProxySelected)
             {
                 return;
             }
@@ -410,13 +410,13 @@ namespace ServiceLib.ViewModels
 
         private async Task DoEnableTun(bool c)
         {
-            if (_config.tunModeItem.enableTun != EnableTun)
+            if (_config.TunModeItem.EnableTun != EnableTun)
             {
-                _config.tunModeItem.enableTun = EnableTun;
+                _config.TunModeItem.EnableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
                 if (EnableTun && !AppHandler.Instance.IsAdministrator)
                 {
-                    _config.tunModeItem.enableTun = false;
+                    _config.TunModeItem.EnableTun = false;
                     Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                     return;
                 }
@@ -437,9 +437,9 @@ namespace ServiceLib.ViewModels
             sb.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http)}]");
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
-            if (_config.inbound[0].allowLANConn)
+            if (_config.Inbound[0].AllowLANConn)
             {
-                if (_config.inbound[0].newPort4LAN)
+                if (_config.Inbound[0].NewPort4LAN)
                 {
                     StringBuilder sb2 = new();
                     sb2.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");

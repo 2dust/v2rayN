@@ -26,7 +26,7 @@ namespace v2rayN.Views
             {
                 clbdestOverride.Items.Add(it);
             });
-            _config.inbound[0].destOverride?.ForEach(it =>
+            _config.Inbound[0].DestOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
             });
@@ -180,7 +180,7 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.UiItem.ColorModeDark);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -206,7 +206,7 @@ namespace v2rayN.Views
                 {
                     files.AddRange(Directory.GetFiles(path, pattern));
                 }
-                var culture = _config.uiItem.currentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
+                var culture = _config.UiItem.CurrentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var ttf in files)
                 {

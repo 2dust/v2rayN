@@ -119,26 +119,26 @@ namespace ServiceLib.ViewModels
         {
             #region Core
 
-            var inbound = _config.inbound[0];
-            localPort = inbound.localPort;
-            udpEnabled = inbound.udpEnabled;
-            sniffingEnabled = inbound.sniffingEnabled;
-            routeOnly = inbound.routeOnly;
-            allowLANConn = inbound.allowLANConn;
-            newPort4LAN = inbound.newPort4LAN;
-            user = inbound.user;
-            pass = inbound.pass;
-            muxEnabled = _config.coreBasicItem.muxEnabled;
-            logEnabled = _config.coreBasicItem.logEnabled;
-            loglevel = _config.coreBasicItem.loglevel;
-            defAllowInsecure = _config.coreBasicItem.defAllowInsecure;
-            defFingerprint = _config.coreBasicItem.defFingerprint;
-            defUserAgent = _config.coreBasicItem.defUserAgent;
-            mux4SboxProtocol = _config.mux4SboxItem.protocol;
-            enableCacheFile4Sbox = _config.coreBasicItem.enableCacheFile4Sbox;
-            hyUpMbps = _config.hysteriaItem.up_mbps;
-            hyDownMbps = _config.hysteriaItem.down_mbps;
-            enableFragment = _config.coreBasicItem.enableFragment;
+            var inbound = _config.Inbound[0];
+            localPort = inbound.LocalPort;
+            udpEnabled = inbound.UdpEnabled;
+            sniffingEnabled = inbound.SniffingEnabled;
+            routeOnly = inbound.RouteOnly;
+            allowLANConn = inbound.AllowLANConn;
+            newPort4LAN = inbound.NewPort4LAN;
+            user = inbound.User;
+            pass = inbound.Pass;
+            muxEnabled = _config.CoreBasicItem.MuxEnabled;
+            logEnabled = _config.CoreBasicItem.LogEnabled;
+            loglevel = _config.CoreBasicItem.Loglevel;
+            defAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
+            defFingerprint = _config.CoreBasicItem.DefFingerprint;
+            defUserAgent = _config.CoreBasicItem.DefUserAgent;
+            mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
+            enableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
+            hyUpMbps = _config.HysteriaItem.UpMbps;
+            hyDownMbps = _config.HysteriaItem.DownMbps;
+            enableFragment = _config.CoreBasicItem.EnableFragment;
 
             #endregion Core
 
@@ -156,47 +156,47 @@ namespace ServiceLib.ViewModels
 
             #region UI
 
-            AutoRun = _config.guiItem.autoRun;
-            EnableStatistics = _config.guiItem.enableStatistics;
-            KeepOlderDedupl = _config.guiItem.keepOlderDedupl;
-            IgnoreGeoUpdateCore = _config.guiItem.ignoreGeoUpdateCore;
-            EnableAutoAdjustMainLvColWidth = _config.uiItem.enableAutoAdjustMainLvColWidth;
-            EnableUpdateSubOnlyRemarksExist = _config.uiItem.enableUpdateSubOnlyRemarksExist;
-            EnableSecurityProtocolTls13 = _config.guiItem.enableSecurityProtocolTls13;
-            AutoHideStartup = _config.uiItem.autoHideStartup;
-            EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
-            EnableDragDropSort = _config.uiItem.enableDragDropSort;
-            DoubleClick2Activate = _config.uiItem.doubleClick2Activate;
-            AutoUpdateInterval = _config.guiItem.autoUpdateInterval;
-            TrayMenuServersLimit = _config.guiItem.trayMenuServersLimit;
-            CurrentFontFamily = _config.uiItem.currentFontFamily;
-            SpeedTestTimeout = _config.speedTestItem.speedTestTimeout;
-            SpeedTestUrl = _config.speedTestItem.speedTestUrl;
-            SpeedPingTestUrl = _config.speedTestItem.speedPingTestUrl;
-            EnableHWA = _config.guiItem.enableHWA;
-            SubConvertUrl = _config.constItem.subConvertUrl;
-            MainGirdOrientation = (int)_config.uiItem.mainGirdOrientation;
-            GeoFileSourceUrl = _config.constItem.geoSourceUrl;
-            SrsFileSourceUrl = _config.constItem.srsSourceUrl;
-            RoutingRulesSourceUrl = _config.constItem.routeRulesTemplateSourceUrl;
+            AutoRun = _config.GuiItem.AutoRun;
+            EnableStatistics = _config.GuiItem.EnableStatistics;
+            KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
+            IgnoreGeoUpdateCore = _config.GuiItem.IgnoreGeoUpdateCore;
+            EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
+            EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
+            EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
+            AutoHideStartup = _config.UiItem.AutoHideStartup;
+            EnableCheckPreReleaseUpdate = _config.GuiItem.CheckPreReleaseUpdate;
+            EnableDragDropSort = _config.UiItem.EnableDragDropSort;
+            DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
+            AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
+            TrayMenuServersLimit = _config.GuiItem.TrayMenuServersLimit;
+            CurrentFontFamily = _config.UiItem.CurrentFontFamily;
+            SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
+            SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
+            SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
+            EnableHWA = _config.GuiItem.EnableHWA;
+            SubConvertUrl = _config.ConstItem.SubConvertUrl;
+            MainGirdOrientation = (int)_config.UiItem.MainGirdOrientation;
+            GeoFileSourceUrl = _config.ConstItem.GeoSourceUrl;
+            SrsFileSourceUrl = _config.ConstItem.SrsSourceUrl;
+            RoutingRulesSourceUrl = _config.ConstItem.RouteRulesTemplateSourceUrl;
 
             #endregion UI
 
             #region System proxy
 
-            notProxyLocalAddress = _config.systemProxyItem.notProxyLocalAddress;
-            systemProxyAdvancedProtocol = _config.systemProxyItem.systemProxyAdvancedProtocol;
-            systemProxyExceptions = _config.systemProxyItem.systemProxyExceptions;
+            notProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
+            systemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
+            systemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
 
             #endregion System proxy
 
             #region Tun mode
 
-            TunStrictRoute = _config.tunModeItem.strictRoute;
-            TunStack = _config.tunModeItem.stack;
-            TunMtu = _config.tunModeItem.mtu;
-            TunEnableExInbound = _config.tunModeItem.enableExInbound;
-            TunEnableIPv6Address = _config.tunModeItem.enableIPv6Address;
+            TunStrictRoute = _config.TunModeItem.StrictRoute;
+            TunStack = _config.TunModeItem.Stack;
+            TunMtu = _config.TunModeItem.Mtu;
+            TunEnableExInbound = _config.TunModeItem.EnableExInbound;
+            TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
 
             #endregion Tun mode
 
@@ -205,28 +205,28 @@ namespace ServiceLib.ViewModels
 
         private async Task InitCoreType()
         {
-            if (_config.coreTypeItem == null)
+            if (_config.CoreTypeItem == null)
             {
-                _config.coreTypeItem = new List<CoreTypeItem>();
+                _config.CoreTypeItem = new List<CoreTypeItem>();
             }
 
             foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
             {
-                if (_config.coreTypeItem.FindIndex(t => t.configType == it) >= 0)
+                if (_config.CoreTypeItem.FindIndex(t => t.ConfigType == it) >= 0)
                 {
                     continue;
                 }
 
-                _config.coreTypeItem.Add(new CoreTypeItem()
+                _config.CoreTypeItem.Add(new CoreTypeItem()
                 {
-                    configType = it,
-                    coreType = ECoreType.Xray
+                    ConfigType = it,
+                    CoreType = ECoreType.Xray
                 });
             }
-            _config.coreTypeItem.ForEach(it =>
+            _config.CoreTypeItem.ForEach(it =>
             {
-                var type = it.coreType.ToString();
-                switch ((int)it.configType)
+                var type = it.CoreType.ToString();
+                switch ((int)it.ConfigType)
                 {
                     case 1:
                         CoreType1 = type;
@@ -263,11 +263,11 @@ namespace ServiceLib.ViewModels
                 NoticeHandler.Instance.Enqueue(ResUI.FillLocalListeningPort);
                 return;
             }
-            var needReboot = (EnableStatistics != _config.guiItem.enableStatistics
-                            || EnableDragDropSort != _config.uiItem.enableDragDropSort
-                            || EnableHWA != _config.guiItem.enableHWA
-                            || CurrentFontFamily != _config.uiItem.currentFontFamily
-                            || MainGirdOrientation != (int)_config.uiItem.mainGirdOrientation);
+            var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
+                            || EnableDragDropSort != _config.UiItem.EnableDragDropSort
+                            || EnableHWA != _config.GuiItem.EnableHWA
+                            || CurrentFontFamily != _config.UiItem.CurrentFontFamily
+                            || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation);
 
             //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
             //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -281,66 +281,66 @@ namespace ServiceLib.ViewModels
             //}
 
             //Core
-            _config.inbound[0].localPort = localPort;
-            _config.inbound[0].udpEnabled = udpEnabled;
-            _config.inbound[0].sniffingEnabled = sniffingEnabled;
-            _config.inbound[0].destOverride = destOverride?.ToList();
-            _config.inbound[0].routeOnly = routeOnly;
-            _config.inbound[0].allowLANConn = allowLANConn;
-            _config.inbound[0].newPort4LAN = newPort4LAN;
-            _config.inbound[0].user = user;
-            _config.inbound[0].pass = pass;
-            if (_config.inbound.Count > 1)
+            _config.Inbound[0].LocalPort = localPort;
+            _config.Inbound[0].UdpEnabled = udpEnabled;
+            _config.Inbound[0].SniffingEnabled = sniffingEnabled;
+            _config.Inbound[0].DestOverride = destOverride?.ToList();
+            _config.Inbound[0].RouteOnly = routeOnly;
+            _config.Inbound[0].AllowLANConn = allowLANConn;
+            _config.Inbound[0].NewPort4LAN = newPort4LAN;
+            _config.Inbound[0].User = user;
+            _config.Inbound[0].Pass = pass;
+            if (_config.Inbound.Count > 1)
             {
-                _config.inbound.RemoveAt(1);
+                _config.Inbound.RemoveAt(1);
             }
-            _config.coreBasicItem.logEnabled = logEnabled;
-            _config.coreBasicItem.loglevel = loglevel;
-            _config.coreBasicItem.muxEnabled = muxEnabled;
-            _config.coreBasicItem.defAllowInsecure = defAllowInsecure;
-            _config.coreBasicItem.defFingerprint = defFingerprint;
-            _config.coreBasicItem.defUserAgent = defUserAgent;
-            _config.mux4SboxItem.protocol = mux4SboxProtocol;
-            _config.coreBasicItem.enableCacheFile4Sbox = enableCacheFile4Sbox;
-            _config.hysteriaItem.up_mbps = hyUpMbps;
-            _config.hysteriaItem.down_mbps = hyDownMbps;
-            _config.coreBasicItem.enableFragment = enableFragment;
+            _config.CoreBasicItem.LogEnabled = logEnabled;
+            _config.CoreBasicItem.Loglevel = loglevel;
+            _config.CoreBasicItem.MuxEnabled = muxEnabled;
+            _config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
+            _config.CoreBasicItem.DefFingerprint = defFingerprint;
+            _config.CoreBasicItem.DefUserAgent = defUserAgent;
+            _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
+            _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
+            _config.HysteriaItem.UpMbps = hyUpMbps;
+            _config.HysteriaItem.DownMbps = hyDownMbps;
+            _config.CoreBasicItem.EnableFragment = enableFragment;
 
-            _config.guiItem.autoRun = AutoRun;
-            _config.guiItem.enableStatistics = EnableStatistics;
-            _config.guiItem.keepOlderDedupl = KeepOlderDedupl;
-            _config.guiItem.ignoreGeoUpdateCore = IgnoreGeoUpdateCore;
-            _config.uiItem.enableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
-            _config.uiItem.enableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
-            _config.guiItem.enableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
-            _config.uiItem.autoHideStartup = AutoHideStartup;
-            _config.guiItem.autoUpdateInterval = AutoUpdateInterval;
-            _config.guiItem.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate;
-            _config.uiItem.enableDragDropSort = EnableDragDropSort;
-            _config.uiItem.doubleClick2Activate = DoubleClick2Activate;
-            _config.guiItem.trayMenuServersLimit = TrayMenuServersLimit;
-            _config.uiItem.currentFontFamily = CurrentFontFamily;
-            _config.speedTestItem.speedTestTimeout = SpeedTestTimeout;
-            _config.speedTestItem.speedTestUrl = SpeedTestUrl;
-            _config.speedTestItem.speedPingTestUrl = SpeedPingTestUrl;
-            _config.guiItem.enableHWA = EnableHWA;
-            _config.constItem.subConvertUrl = SubConvertUrl;
-            _config.uiItem.mainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
-            _config.constItem.geoSourceUrl = GeoFileSourceUrl;
-            _config.constItem.srsSourceUrl = SrsFileSourceUrl;
-            _config.constItem.routeRulesTemplateSourceUrl = RoutingRulesSourceUrl;
+            _config.GuiItem.AutoRun = AutoRun;
+            _config.GuiItem.EnableStatistics = EnableStatistics;
+            _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
+            _config.GuiItem.IgnoreGeoUpdateCore = IgnoreGeoUpdateCore;
+            _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
+            _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
+            _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
+            _config.UiItem.AutoHideStartup = AutoHideStartup;
+            _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
+            _config.GuiItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate;
+            _config.UiItem.EnableDragDropSort = EnableDragDropSort;
+            _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
+            _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
+            _config.UiItem.CurrentFontFamily = CurrentFontFamily;
+            _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
+            _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
+            _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
+            _config.GuiItem.EnableHWA = EnableHWA;
+            _config.ConstItem.SubConvertUrl = SubConvertUrl;
+            _config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
+            _config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
+            _config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
+            _config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
 
             //systemProxy
-            _config.systemProxyItem.systemProxyExceptions = systemProxyExceptions;
-            _config.systemProxyItem.notProxyLocalAddress = notProxyLocalAddress;
-            _config.systemProxyItem.systemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
+            _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
+            _config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
+            _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
 
             //tun mode
-            _config.tunModeItem.strictRoute = TunStrictRoute;
-            _config.tunModeItem.stack = TunStack;
-            _config.tunModeItem.mtu = TunMtu;
-            _config.tunModeItem.enableExInbound = TunEnableExInbound;
-            _config.tunModeItem.enableIPv6Address = TunEnableIPv6Address;
+            _config.TunModeItem.StrictRoute = TunStrictRoute;
+            _config.TunModeItem.Stack = TunStack;
+            _config.TunModeItem.Mtu = TunMtu;
+            _config.TunModeItem.EnableExInbound = TunEnableExInbound;
+            _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
 
             //coreType
             await SaveCoreType();
@@ -365,11 +365,11 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveCoreType()
         {
-            for (int k = 1; k <= _config.coreTypeItem.Count; k++)
+            for (int k = 1; k <= _config.CoreTypeItem.Count; k++)
             {
-                var item = _config.coreTypeItem[k - 1];
+                var item = _config.CoreTypeItem[k - 1];
                 var type = string.Empty;
-                switch ((int)item.configType)
+                switch ((int)item.ConfigType)
                 {
                     case 1:
                         type = CoreType1;
@@ -398,7 +398,7 @@ namespace ServiceLib.ViewModels
                     default:
                         continue;
                 }
-                item.coreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
+                item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
             }
         }
     }

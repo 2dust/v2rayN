@@ -41,7 +41,7 @@ namespace v2rayN.Views
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
             WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
-            switch (_config.uiItem.mainGirdOrientation)
+            switch (_config.UiItem.MainGirdOrientation)
             {
                 case EGirdOrientation.Horizontal:
                     tabProfiles.Content ??= new ProfilesView();
@@ -105,7 +105,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
 
-                switch (_config.uiItem.mainGirdOrientation)
+                switch (_config.UiItem.MainGirdOrientation)
                 {
                     case EGirdOrientation.Horizontal:
                         gridMain.Visibility = Visibility.Visible;
@@ -135,7 +135,7 @@ namespace v2rayN.Views
 
             this.Title = $"{Utils.GetVersion()} - {(AppHandler.Instance.IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
-            if (!_config.guiItem.enableHWA)
+            if (!_config.GuiItem.EnableHWA)
             {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             }
@@ -362,7 +362,7 @@ namespace v2rayN.Views
 
         public void ShowHideWindow(bool? blShow)
         {
-            var bl = blShow ?? !_config.uiItem.showInTaskbar;
+            var bl = blShow ?? !_config.UiItem.ShowInTaskbar;
             if (bl)
             {
                 Application.Current.MainWindow.Show();
@@ -377,50 +377,50 @@ namespace v2rayN.Views
             {
                 Application.Current.MainWindow.Hide();
             }
-            _config.uiItem.showInTaskbar = bl;
+            _config.UiItem.ShowInTaskbar = bl;
         }
 
         private void RestoreUI()
         {
-            if (_config.uiItem.mainWidth > 0 && _config.uiItem.mainHeight > 0)
+            if (_config.UiItem.MainWidth > 0 && _config.UiItem.MainHeight > 0)
             {
-                Width = _config.uiItem.mainWidth;
-                Height = _config.uiItem.mainHeight;
+                Width = _config.UiItem.MainWidth;
+                Height = _config.UiItem.MainHeight;
             }
 
             var maxWidth = SystemParameters.WorkArea.Width;
             var maxHeight = SystemParameters.WorkArea.Height;
             if (Width > maxWidth) Width = maxWidth;
             if (Height > maxHeight) Height = maxHeight;
-            if (_config.uiItem.mainGirdHeight1 > 0 && _config.uiItem.mainGirdHeight2 > 0)
+            if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
             {
-                if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+                if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
                 {
-                    gridMain.ColumnDefinitions[0].Width = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
-                    gridMain.ColumnDefinitions[2].Width = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+                    gridMain.ColumnDefinitions[0].Width = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
+                    gridMain.ColumnDefinitions[2].Width = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
                 }
-                else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+                else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
                 {
-                    gridMain1.RowDefinitions[0].Height = new GridLength(_config.uiItem.mainGirdHeight1, GridUnitType.Star);
-                    gridMain1.RowDefinitions[2].Height = new GridLength(_config.uiItem.mainGirdHeight2, GridUnitType.Star);
+                    gridMain1.RowDefinitions[0].Height = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
+                    gridMain1.RowDefinitions[2].Height = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
                 }
             }
         }
 
         private void StorageUI()
         {
-            _config.uiItem.mainWidth = Utils.ToInt(this.Width);
-            _config.uiItem.mainHeight = Utils.ToInt(this.Height);
+            _config.UiItem.MainWidth = Utils.ToInt(this.Width);
+            _config.UiItem.MainHeight = Utils.ToInt(this.Height);
 
-            if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Horizontal)
+            if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
             {
-                _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
-                _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+                _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
+                _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
             }
-            else if (_config.uiItem.mainGirdOrientation == EGirdOrientation.Vertical)
+            else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
             {
-                _config.uiItem.mainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
-                _config.uiItem.mainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
+                _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
+                _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
             }
         }
 

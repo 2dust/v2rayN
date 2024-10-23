@@ -34,7 +34,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.UiItem.ColorModeDark);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

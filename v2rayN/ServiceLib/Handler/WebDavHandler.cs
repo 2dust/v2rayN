@@ -24,9 +24,9 @@ namespace ServiceLib.Handler
         {
             try
             {
-                if (_config.webDavItem.url.IsNullOrEmpty()
-                || _config.webDavItem.userName.IsNullOrEmpty()
-                || _config.webDavItem.password.IsNullOrEmpty())
+                if (_config.WebDavItem.Url.IsNullOrEmpty()
+                || _config.WebDavItem.UserName.IsNullOrEmpty()
+                || _config.WebDavItem.Password.IsNullOrEmpty())
                 {
                     throw new ArgumentException("webdav parameter error or null");
                 }
@@ -35,19 +35,19 @@ namespace ServiceLib.Handler
                     _client?.Dispose();
                     _client = null;
                 }
-                if (_config.webDavItem.dirName.IsNullOrEmpty())
+                if (_config.WebDavItem.DirName.IsNullOrEmpty())
                 {
                     _webDir = Global.AppName + "_backup";
                 }
                 else
                 {
-                    _webDir = _config.webDavItem.dirName.TrimEx();
+                    _webDir = _config.WebDavItem.DirName.TrimEx();
                 }
 
                 var clientParams = new WebDavClientParams
                 {
-                    BaseAddress = new Uri(_config.webDavItem.url),
-                    Credentials = new NetworkCredential(_config.webDavItem.userName, _config.webDavItem.password)
+                    BaseAddress = new Uri(_config.WebDavItem.Url),
+                    Credentials = new NetworkCredential(_config.WebDavItem.UserName, _config.WebDavItem.Password)
                 };
                 _client = new WebDavClient(clientParams);
             }

@@ -55,9 +55,9 @@
                 await Task.Delay(1000 * 3600);
 
                 var dtNow = DateTime.Now;
-                if (config.guiItem.autoUpdateInterval > 0)
+                if (config.GuiItem.AutoUpdateInterval > 0)
                 {
-                    if ((dtNow - autoUpdateGeoTime).Hours % config.guiItem.autoUpdateInterval == 0)
+                    if ((dtNow - autoUpdateGeoTime).Hours % config.GuiItem.AutoUpdateInterval == 0)
                     {
                         await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                         {

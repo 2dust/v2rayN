@@ -17,7 +17,7 @@ namespace v2rayN.Views
 
             this.Owner = Application.Current.MainWindow;
             _config = AppHandler.Instance.Config;
-            _config.globalHotkeys ??= new List<KeyEventItem>();
+            _config.GlobalHotkeys ??= new List<KeyEventItem>();
 
             btnReset.Click += btnReset_Click;
             btnSave.Click += btnSave_Click;
@@ -30,7 +30,7 @@ namespace v2rayN.Views
 
             HotkeyHandler.Instance.IsPause = true;
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
-            WindowsUtils.SetDarkBorder(this, _config.uiItem.followSystemTheme ? !WindowsUtils.IsLightTheme() : _config.uiItem.colorModeDark);
+            WindowsUtils.SetDarkBorder(this, _config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : _config.UiItem.ColorModeDark);
             InitData();
         }
 
@@ -38,11 +38,11 @@ namespace v2rayN.Views
         {
             _TextBoxKeyEventItem = new()
             {
-                { txtGlobalHotkey0,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.ShowForm) },
-                { txtGlobalHotkey1,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyClear) },
-                { txtGlobalHotkey2,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxySet) },
-                { txtGlobalHotkey3,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyUnchanged)},
-                { txtGlobalHotkey4,GetKeyEventItemByEGlobalHotkey(_config.globalHotkeys,EGlobalHotkey.SystemProxyPac)}
+                { txtGlobalHotkey0,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.ShowForm) },
+                { txtGlobalHotkey1,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyClear) },
+                { txtGlobalHotkey2,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxySet) },
+                { txtGlobalHotkey3,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyUnchanged)},
+                { txtGlobalHotkey4,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyPac)}
             };
             BindingData();
         }
@@ -61,9 +61,9 @@ namespace v2rayN.Views
 
         private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> KEList, EGlobalHotkey eg)
         {
-            return JsonUtils.DeepCopy(KEList.Find((it) => it.eGlobalHotkey == eg) ?? new()
+            return JsonUtils.DeepCopy(KEList.Find((it) => it.EGlobalHotkey == eg) ?? new()
             {
-                eGlobalHotkey = eg,
+                EGlobalHotkey = eg,
                 Control = false,
                 Alt = false,
                 Shift = false,
@@ -101,7 +101,7 @@ namespace v2rayN.Views
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            _config.globalHotkeys = _TextBoxKeyEventItem.Values.ToList();
+            _config.GlobalHotkeys = _TextBoxKeyEventItem.Values.ToList();
 
             if (  ConfigHandler.SaveConfig(_config, false).Result == 0)
             {

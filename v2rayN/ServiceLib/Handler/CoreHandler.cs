@@ -182,7 +182,7 @@ namespace ServiceLib.Handler
             //    coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
             //}
             var coreType = AppHandler.Instance.GetCoreType(node, node.configType);
-            _config.runningCoreType = coreType;
+            _config.RunningCoreType = coreType;
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.configType != EConfigType.Custom || node.displayLog;
@@ -198,7 +198,7 @@ namespace ServiceLib.Handler
             {
                 ProfileItem? itemSocks = null;
                 var preCoreType = ECoreType.sing_box;
-                if (node.configType != EConfigType.Custom && coreType != ECoreType.sing_box && _config.tunModeItem.enableTun)
+                if (node.configType != EConfigType.Custom && coreType != ECoreType.sing_box && _config.TunModeItem.EnableTun)
                 {
                     itemSocks = new ProfileItem()
                     {
@@ -211,7 +211,7 @@ namespace ServiceLib.Handler
                 }
                 else if ((node.configType == EConfigType.Custom && node.preSocksPort > 0))
                 {
-                    preCoreType = _config.tunModeItem.enableTun ? ECoreType.sing_box : ECoreType.Xray;
+                    preCoreType = _config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
                     itemSocks = new ProfileItem()
                     {
                         coreType = preCoreType,
@@ -219,7 +219,7 @@ namespace ServiceLib.Handler
                         address = Global.Loopback,
                         port = node.preSocksPort.Value,
                     };
-                    _config.runningCoreType = preCoreType;
+                    _config.RunningCoreType = preCoreType;
                 }
                 if (itemSocks != null)
                 {

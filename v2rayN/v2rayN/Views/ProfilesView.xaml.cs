@@ -32,7 +32,7 @@ namespace v2rayN.Views
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
             menuSelectAll.Click += menuSelectAll_Click;
 
-            if (_config.uiItem.enableDragDropSort)
+            if (_config.UiItem.EnableDragDropSort)
             {
                 lstProfiles.AllowDrop = true;
                 lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
@@ -195,7 +195,7 @@ namespace v2rayN.Views
 
         private void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (_config.uiItem.doubleClick2Activate)
+            if (_config.UiItem.DoubleClick2Activate)
             {
                 ViewModel?.SetDefaultServer();
             }
@@ -321,7 +321,7 @@ namespace v2rayN.Views
 
         private void RestoreUI()
         {
-            var lvColumnItem = _config.uiItem.mainColumnItem.OrderBy(t => t.Index).ToList();
+            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
             var displayIndex = 0;
             foreach (var item in lvColumnItem)
             {
@@ -340,7 +340,7 @@ namespace v2rayN.Views
                         }
                         if (item.Name.StartsWith("to"))
                         {
-                            if (!_config.guiItem.enableStatistics)
+                            if (!_config.GuiItem.EnableStatistics)
                             {
                                 item2.Visibility = Visibility.Hidden;
                             }
@@ -363,7 +363,7 @@ namespace v2rayN.Views
                     Index = item2.DisplayIndex
                 });
             }
-            _config.uiItem.mainColumnItem = lvColumnItem;
+            _config.UiItem.MainColumnItem = lvColumnItem;
             ConfigHandler.SaveConfig(_config);
         }
 

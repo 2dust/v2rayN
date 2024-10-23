@@ -38,7 +38,7 @@ namespace ServiceLib.ViewModels
                 await RemoteRestore();
             });
 
-            SelectedSource = JsonUtils.DeepCopy(_config.webDavItem);
+            SelectedSource = JsonUtils.DeepCopy(_config.WebDavItem);
         }
 
         private void DisplayOperationMsg(string msg = "")
@@ -49,7 +49,7 @@ namespace ServiceLib.ViewModels
         private async Task WebDavCheck()
         {
             DisplayOperationMsg();
-            _config.webDavItem = SelectedSource;
+            _config.WebDavItem = SelectedSource;
             await ConfigHandler.SaveConfig(_config);
 
             var result = await WebDavHandler.Instance.CheckConnection();

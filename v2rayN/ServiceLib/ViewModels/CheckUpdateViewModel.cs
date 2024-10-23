@@ -28,12 +28,12 @@ namespace ServiceLib.ViewModels
                 await CheckUpdate();
             });
 
-            EnableCheckPreReleaseUpdate = _config.guiItem.checkPreReleaseUpdate;
+            EnableCheckPreReleaseUpdate = _config.GuiItem.CheckPreReleaseUpdate;
 
             this.WhenAnyValue(
             x => x.EnableCheckPreReleaseUpdate,
             y => y == true)
-                .Subscribe(c => { _config.guiItem.checkPreReleaseUpdate = EnableCheckPreReleaseUpdate; });
+                .Subscribe(c => { _config.GuiItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate; });
 
             RefreshSubItems();
         }
@@ -263,7 +263,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    FileManager.ZipExtractToFile(fileName, toPath, _config.guiItem.ignoreGeoUpdateCore ? "geo" : "");
+                    FileManager.ZipExtractToFile(fileName, toPath, _config.GuiItem.IgnoreGeoUpdateCore ? "geo" : "");
                 }
 
                 if (Utils.IsLinux())

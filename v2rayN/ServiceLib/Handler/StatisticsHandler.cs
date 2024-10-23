@@ -18,7 +18,7 @@
         {
             _config = config;
             _updateFunc = updateFunc;
-            if (!config.guiItem.enableStatistics)
+            if (!config.GuiItem.EnableStatistics)
             {
                 return;
             }
@@ -81,7 +81,7 @@
 
         private async Task UpdateServerStat(ServerSpeedItem server)
         {
-            await GetServerStatItem(_config.indexId);
+            await GetServerStatItem(_config.IndexId);
 
             if (_serverStatItem is null)
             {
@@ -95,7 +95,7 @@
                 _serverStatItem.totalDown += server.proxyDown;
             }
 
-            server.indexId = _config.indexId;
+            server.indexId = _config.IndexId;
             server.todayUp = _serverStatItem.todayUp;
             server.todayDown = _serverStatItem.todayDown;
             server.totalUp = _serverStatItem.totalUp;

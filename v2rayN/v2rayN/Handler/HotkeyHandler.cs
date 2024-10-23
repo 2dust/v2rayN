@@ -37,8 +37,8 @@ namespace v2rayN.Handler
         private void Init()
         {
             _hotkeyTriggerDic.Clear();
-            if (_config.globalHotkeys == null) return;
-            foreach (var item in _config.globalHotkeys)
+            if (_config.GlobalHotkeys == null) return;
+            foreach (var item in _config.GlobalHotkeys)
             {
                 if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
                 {
@@ -50,12 +50,12 @@ namespace v2rayN.Handler
                     key = (key << 16) | (int)modifiers;
                     if (!_hotkeyTriggerDic.ContainsKey(key))
                     {
-                        _hotkeyTriggerDic.Add(key, new() { item.eGlobalHotkey });
+                        _hotkeyTriggerDic.Add(key, new() { item.EGlobalHotkey });
                     }
                     else
                     {
-                        if (!_hotkeyTriggerDic[key].Contains(item.eGlobalHotkey))
-                            _hotkeyTriggerDic[key].Add(item.eGlobalHotkey);
+                        if (!_hotkeyTriggerDic[key].Contains(item.EGlobalHotkey))
+                            _hotkeyTriggerDic[key].Add(item.EGlobalHotkey);
                     }
                 }
             }

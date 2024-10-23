@@ -83,12 +83,12 @@
                 //socks-port
                 fileContent["socks-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
                 //log-level
-                fileContent["log-level"] = GetLogLevel(_config.coreBasicItem.loglevel);
+                fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
 
                 //external-controller
                 fileContent["external-controller"] = $"{Global.Loopback}:{AppHandler.Instance.StatePort2}";
                 //allow-lan
-                if (_config.inbound[0].allowLANConn)
+                if (_config.Inbound[0].AllowLANConn)
                 {
                     fileContent["allow-lan"] = "true";
                     fileContent["bind-address"] = "*";
@@ -99,7 +99,7 @@
                 }
 
                 //ipv6
-                fileContent["ipv6"] = _config.clashUIItem.enableIPv6;
+                fileContent["ipv6"] = _config.ClashUIItem.EnableIPv6;
 
                 //mode
                 if (!fileContent.ContainsKey("mode"))
@@ -108,14 +108,14 @@
                 }
                 else
                 {
-                    if (_config.clashUIItem.ruleMode != ERuleMode.Unchanged)
+                    if (_config.ClashUIItem.RuleMode != ERuleMode.Unchanged)
                     {
-                        fileContent["mode"] = _config.clashUIItem.ruleMode.ToString().ToLower();
+                        fileContent["mode"] = _config.ClashUIItem.RuleMode.ToString().ToLower();
                     }
                 }
 
                 //enable tun mode
-                if (_config.tunModeItem.enableTun)
+                if (_config.TunModeItem.EnableTun)
                 {
                     string tun = Utils.GetEmbedText(Global.ClashTunYaml);
                     if (Utils.IsNotEmpty(tun))
@@ -181,7 +181,7 @@
             }
             foreach (var item in mixinContent)
             {
-                if (!_config.tunModeItem.enableTun && item.Key == "tun")
+                if (!_config.TunModeItem.EnableTun && item.Key == "tun")
                 {
                     continue;
                 }

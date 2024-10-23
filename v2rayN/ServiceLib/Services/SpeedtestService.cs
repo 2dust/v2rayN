@@ -203,8 +203,8 @@ namespace ServiceLib.Services
                 return;
             }
 
-            string url = _config.speedTestItem.speedTestUrl;
-            var timeout = _config.speedTestItem.speedTestTimeout;
+            string url = _config.SpeedTestItem.SpeedTestUrl;
+            var timeout = _config.SpeedTestItem.SpeedTestTimeout;
 
             DownloadService downloadHandle = new();
 
@@ -265,8 +265,8 @@ namespace ServiceLib.Services
                 return;
             }
 
-            string url = _config.speedTestItem.speedTestUrl;
-            var timeout = _config.speedTestItem.speedTestTimeout;
+            string url = _config.SpeedTestItem.SpeedTestUrl;
+            var timeout = _config.SpeedTestItem.SpeedTestTimeout;
 
             DownloadService downloadHandle = new();
 
@@ -331,7 +331,7 @@ namespace ServiceLib.Services
 
         private async Task<string> GetRealPingTime(DownloadService downloadHandle, IWebProxy webProxy)
         {
-            int responseTime = await downloadHandle.GetRealPingTime(_config.speedTestItem.speedPingTestUrl, webProxy, 10);
+            int responseTime = await downloadHandle.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
             //string output = Utile.IsNullOrEmpty(status) ? FormatOut(responseTime, "ms") : status;
             return FormatOut(responseTime, Global.DelayUnit);
         }

@@ -13,7 +13,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                var index = (int)config.systemProxyItem.sysProxyType;
+                var index = (int)config.SystemProxyItem.SysProxyType;
 
                 //Load from routing setting
                 var createdIcon = await GetNotifyIcon4Routing(config);
@@ -46,7 +46,7 @@ namespace v2rayN.Handler
 
         public System.Windows.Media.ImageSource GetAppIcon(Config config)
         {
-            var index = (int)config.systemProxyItem.sysProxyType + 1;
+            var index = (int)config.SystemProxyItem.SysProxyType + 1;
             return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
         }
 
@@ -54,7 +54,7 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (!config.routingBasicItem.enableRoutingAdvanced)
+                if (!config.RoutingBasicItem.EnableRoutingAdvanced)
                 {
                     return null;
                 }
@@ -66,7 +66,7 @@ namespace v2rayN.Handler
                 }
 
                 Color color = ColorTranslator.FromHtml("#3399CC");
-                int index = (int)config.systemProxyItem.sysProxyType;
+                int index = (int)config.SystemProxyItem.SysProxyType;
                 if (index > 0)
                 {
                     color = (new[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];

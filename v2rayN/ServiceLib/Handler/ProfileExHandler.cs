@@ -20,7 +20,7 @@ namespace ServiceLib.Handler
         private async Task Init()
         {
             await InitData();
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 while (true)
                 {
