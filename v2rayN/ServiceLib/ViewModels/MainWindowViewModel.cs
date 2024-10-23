@@ -265,7 +265,7 @@ namespace ServiceLib.ViewModels
             try
             {
                 Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-                if ((update.proxyUp + update.proxyDown) > 0 && DateTime.Now.Second % 3 == 0)
+                if ((update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 3 == 0)
                 {
                     Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
                 }

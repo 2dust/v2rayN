@@ -483,7 +483,7 @@ namespace ServiceLib.Services
                 var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                 foreach (var item in rules ?? [])
                 {
-                    foreach (var ip in item.ip ?? [])
+                    foreach (var ip in item.Ip ?? [])
                     {
                         var prefix = "geoip:";
                         if (ip.StartsWith(prefix))
@@ -492,7 +492,7 @@ namespace ServiceLib.Services
                         }
                     }
 
-                    foreach (var domain in item.domain ?? [])
+                    foreach (var domain in item.Domain ?? [])
                     {
                         var prefix = "geosite:";
                         if (domain.StartsWith(prefix))

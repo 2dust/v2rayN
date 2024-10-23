@@ -32,13 +32,13 @@ namespace v2rayN.Views
                 cmbNetwork.Items.Add(it);
             });
 
-            if (!rulesItem.id.IsNullOrEmpty())
+            if (!rulesItem.Id.IsNullOrEmpty())
             {
-                rulesItem.protocol?.ForEach(it =>
+                rulesItem.Protocol?.ForEach(it =>
                 {
                     clbProtocol.SelectedItems.Add(it);
                 });
-                rulesItem.inboundTag?.ForEach(it =>
+                rulesItem.InboundTag?.ForEach(it =>
                 {
                     clbInboundTag.SelectedItems.Add(it);
                 });
@@ -47,9 +47,9 @@ namespace v2rayN.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedSource.outboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedSource.port, v => v.txtPort.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedSource.network, v => v.cmbNetwork.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.Port, v => v.txtPort.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.Enabled, v => v.togEnabled.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.Domain, v => v.txtDomain.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.IP, v => v.txtIP.Text).DisposeWith(disposables);

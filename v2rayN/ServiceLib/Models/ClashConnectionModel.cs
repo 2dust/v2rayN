@@ -2,16 +2,16 @@
 {
     public class ClashConnectionModel
     {
-        public string? id { get; set; }
-        public string? network { get; set; }
-        public string? type { get; set; }
-        public string? host { get; set; }
-        public ulong upload { get; set; }
-        public ulong download { get; set; }
-        public string? uploadTraffic { get; set; }
-        public string? downloadTraffic { get; set; }
-        public double time { get; set; }
-        public string? elapsed { get; set; }
-        public string? chain { get; set; }
+        public string? Id { get; set; }
+        public string? Network { get; set; }
+        public string? Type { get; set; }
+        public string? Host { get; set; }
+        public ulong Upload { get; set; }
+        public ulong Download { get; set; }
+        public string? UploadTraffic { get; set; }
+        public string? DownloadTraffic { get; set; }
+        public double Time { get; set; }
+        public string? Elapsed { get; set; }
+        public string? Chain { get; set; }
     }
 }

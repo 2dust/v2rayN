@@ -3,15 +3,15 @@
     [Serializable]
     public class ClashProxyModel
     {
-        public string? name { get; set; }
+        public string? Name { get; set; }
 
-        public string? type { get; set; }
+        public string? Type { get; set; }
 
-        public string? now { get; set; }
+        public string? Now { get; set; }
 
-        public int delay { get; set; }
+        public int Delay { get; set; }
 
-        public string? delayName { get; set; }
+        public string? DelayName { get; set; }
 
         public bool IsActive { get; set; }
     }

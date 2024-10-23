@@ -1501,7 +1501,7 @@ namespace ServiceLib.Handler
 
             foreach (var item in lstRules)
             {
-                item.id = Utils.GetGuid(false);
+                item.Id = Utils.GetGuid(false);
             }
             routingItem.RuleNum = lstRules.Count;
             routingItem.RuleSet = JsonUtils.Serialize(lstRules, false);
@@ -1650,13 +1650,13 @@ namespace ServiceLib.Handler
 
             var items = await AppHandler.Instance.RoutingItems();
             var maxSort = items.Count;
-            if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.version)).ToList().Count > 0)
+            if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.Version)).ToList().Count > 0)
             {
                 return 0;
             }
-            for (var i = 0; i < template.routingItems.Length; i++)
+            for (var i = 0; i < template.RoutingItems.Length; i++)
             {
-                var item = template.routingItems[i];
+                var item = template.RoutingItems[i];
 
                 if (string.IsNullOrEmpty(item.Url) && string.IsNullOrEmpty(item.RuleSet))
                     continue;
@@ -1668,7 +1668,7 @@ namespace ServiceLib.Handler
                 if (string.IsNullOrEmpty(ruleSetsString))
                     continue;
 
-                item.Remarks = $"{template.version}-{item.Remarks}";
+                item.Remarks = $"{template.Version}-{item.Remarks}";
                 item.Enabled = true;
                 item.Sort = ++maxSort;
                 item.Url = string.Empty;

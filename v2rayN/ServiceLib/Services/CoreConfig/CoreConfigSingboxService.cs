@@ -1030,41 +1030,41 @@ namespace ServiceLib.Services.CoreConfig
 
                 var rule = new Rule4Sbox()
                 {
-                    outbound = item.outboundTag,
+                    outbound = item.OutboundTag,
                 };
 
-                if (Utils.IsNotEmpty(item.port))
+                if (Utils.IsNotEmpty(item.Port))
                 {
-                    if (item.port.Contains("-"))
+                    if (item.Port.Contains("-"))
                     {
-                        rule.port_range = new List<string> { item.port.Replace("-", ":") };
+                        rule.port_range = new List<string> { item.Port.Replace("-", ":") };
                     }
                     else
                     {
-                        rule.port = new List<int> { Utils.ToInt(item.port) };
+                        rule.port = new List<int> { Utils.ToInt(item.Port) };
                     }
                 }
-                if (Utils.IsNotEmpty(item.network))
+                if (Utils.IsNotEmpty(item.Network))
                 {
-                    rule.network = Utils.String2List(item.network);
+                    rule.network = Utils.String2List(item.Network);
                 }
-                if (item.protocol?.Count > 0)
+                if (item.Protocol?.Count > 0)
                 {
-                    rule.protocol = item.protocol;
+                    rule.protocol = item.Protocol;
                 }
-                if (item.inboundTag?.Count >= 0)
+                if (item.InboundTag?.Count >= 0)
                 {
-                    rule.inbound = item.inboundTag;
+                    rule.inbound = item.InboundTag;
                 }
                 var rule1 = JsonUtils.DeepCopy(rule);
                 var rule2 = JsonUtils.DeepCopy(rule);
                 var rule3 = JsonUtils.DeepCopy(rule);
 
                 var hasDomainIp = false;
-                if (item.domain?.Count > 0)
+                if (item.Domain?.Count > 0)
                 {
                     var countDomain = 0;
-                    foreach (var it in item.domain)
+                    foreach (var it in item.Domain)
                     {
                         if (ParseV2Domain(it, rule1)) countDomain++;
                     }
@@ -1075,10 +1075,10 @@ namespace ServiceLib.Services.CoreConfig
                     }
                 }
 
-                if (item.ip?.Count > 0)
+                if (item.Ip?.Count > 0)
                 {
                     var countIp = 0;
-                    foreach (var it in item.ip)
+                    foreach (var it in item.Ip)
                     {
                         if (ParseV2Address(it, rule2)) countIp++;
                     }
@@ -1089,9 +1089,9 @@ namespace ServiceLib.Services.CoreConfig
                     }
                 }
 
-                if (_config.TunModeItem.EnableTun && item.process?.Count > 0)
+                if (_config.TunModeItem.EnableTun && item.Process?.Count > 0)
                 {
-                    rule3.process_name = item.process;
+                    rule3.process_name = item.Process;
                     rules.Add(rule3);
                     hasDomainIp = true;
                 }

@@ -1,11 +1,11 @@
 <reactiveui:ReactiveUserControl
     x:Class="v2rayN.Views.ClashConnectionsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:reactiveui="http://reactiveui.net"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     d:DesignHeight="450"
@@ -89,31 +89,31 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="240"
-                    Binding="{Binding host}"
+                    Binding="{Binding Host}"
                     Header="{x:Static resx:ResUI.TbSortingHost}" />
                 <DataGridTextColumn
                     Width="160"
-                    Binding="{Binding chain}"
+                    Binding="{Binding Chain}"
                     Header="{x:Static resx:ResUI.TbSortingChain}" />
                 <DataGridTextColumn
                     Width="80"
-                    Binding="{Binding network}"
+                    Binding="{Binding Network}"
                     Header="{x:Static resx:ResUI.TbSortingNetwork}" />
                 <DataGridTextColumn
                     Width="100"
-                    Binding="{Binding type}"
+                    Binding="{Binding Type}"
                     Header="{x:Static resx:ResUI.TbSortingType}" />
                 <DataGridTextColumn
                     Width="100"
-                    Binding="{Binding uploadTraffic}"
+                    Binding="{Binding UploadTraffic}"
                     Header="{x:Static resx:ResUI.TbSortingUpTraffic}" />
                 <DataGridTextColumn
                     Width="100"
-                    Binding="{Binding downloadTraffic}"
+                    Binding="{Binding DownloadTraffic}"
                     Header="{x:Static resx:ResUI.TbSortingDownTraffic}" />
                 <DataGridTextColumn
                     Width="100"
-                    Binding="{Binding elapsed}"
+                    Binding="{Binding Elapsed}"
                     Header="{x:Static resx:ResUI.TbSortingTime}" />
             </DataGrid.Columns>
         </DataGrid>

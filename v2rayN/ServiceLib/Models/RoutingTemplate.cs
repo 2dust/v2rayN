@@ -3,7 +3,7 @@
     [Serializable]
     public class RoutingTemplate
     {
-        public string version { get; set; }
-        public RoutingItem[] routingItems { get; set; }
+        public string Version { get; set; }
+        public RoutingItem[] RoutingItems { get; set; }
     }
 }

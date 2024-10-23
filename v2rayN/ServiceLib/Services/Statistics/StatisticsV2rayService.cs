@@ -116,16 +116,16 @@ namespace ServiceLib.Services.Statistics
                     {
                         if (type == "uplink")
                         {
-                            server.directUp = value;
+                            server.DirectUp = value;
                         }
                         else if (type == "downlink")
                         {
-                            server.directDown = value;
+                            server.DirectDown = value;
                         }
                     }
                 }
-                server.proxyUp = aggregateProxyUp;
-                server.proxyDown = aggregateProxyDown;
+                server.ProxyUp = aggregateProxyUp;
+                server.ProxyDown = aggregateProxyDown;
             }
             catch
             {

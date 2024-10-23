@@ -3,16 +3,16 @@
     [Serializable]
     public class RulesItem
     {
-        public string id { get; set; }
-        public string? type { get; set; }
-        public string? port { get; set; }
-        public string? network { get; set; }
-        public List<string>? inboundTag { get; set; }
-        public string? outboundTag { get; set; }
-        public List<string>? ip { get; set; }
-        public List<string>? domain { get; set; }
-        public List<string>? protocol { get; set; }
-        public List<string>? process { get; set; }
+        public string Id { get; set; }
+        public string? Type { get; set; }
+        public string? Port { get; set; }
+        public string? Network { get; set; }
+        public List<string>? InboundTag { get; set; }
+        public string? OutboundTag { get; set; }
+        public List<string>? Ip { get; set; }
+        public List<string>? Domain { get; set; }
+        public List<string>? Protocol { get; set; }
+        public List<string>? Process { get; set; }
         public bool Enabled { get; set; } = true;
         public string? Remarks { get; set; }
     }

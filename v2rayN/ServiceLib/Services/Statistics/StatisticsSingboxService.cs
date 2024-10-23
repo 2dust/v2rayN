@@ -94,8 +94,8 @@ namespace ServiceLib.Services.Statistics
 
                                 _updateFunc?.Invoke(new ServerSpeedItem()
                                 {
-                                    proxyUp = (long)(up / 1000),
-                                    proxyDown = (long)(down / 1000)
+                                    ProxyUp = (long)(up / 1000),
+                                    ProxyDown = (long)(down / 1000)
                                 });
                             }
                             res = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -116,8 +116,8 @@ namespace ServiceLib.Services.Statistics
                 var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
                 if (trafficItem != null)
                 {
-                    up = trafficItem.up;
-                    down = trafficItem.down;
+                    up = trafficItem.Up;
+                    down = trafficItem.Down;
                 }
             }
             catch

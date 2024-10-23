@@ -87,12 +87,12 @@
             {
                 return;
             }
-            if (server.proxyUp != 0 || server.proxyDown != 0)
+            if (server.ProxyUp != 0 || server.ProxyDown != 0)
             {
-                _serverStatItem.TodayUp += server.proxyUp;
-                _serverStatItem.TodayDown += server.proxyDown;
-                _serverStatItem.TotalUp += server.proxyUp;
-                _serverStatItem.TotalDown += server.proxyDown;
+                _serverStatItem.TodayUp += server.ProxyUp;
+                _serverStatItem.TodayDown += server.ProxyDown;
+                _serverStatItem.TotalUp += server.ProxyUp;
+                _serverStatItem.TotalDown += server.ProxyDown;
             }
 
             server.IndexId = _config.IndexId;

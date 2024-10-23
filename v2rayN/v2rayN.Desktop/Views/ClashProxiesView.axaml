@@ -116,10 +116,10 @@
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <DockPanel Grid.Row="0">
-                                        <TextBlock DockPanel.Dock="Right" Text="{Binding type}" />
-                                        <TextBlock Text="{Binding name}" />
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
+                                        <TextBlock Text="{Binding Name}" />
                                     </DockPanel>
-                                    <TextBlock Grid.Row="2" Text="{Binding now}" />
+                                    <TextBlock Grid.Row="2" Text="{Binding Now}" />
                                 </Grid>
                             </DockPanel>
                         </Border>
@@ -163,14 +163,14 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock
                                         Grid.Row="0"
-                                        Text="{Binding name}"
+                                        Text="{Binding Name}"
                                         TextWrapping="WrapWithOverflow" />
                                     <DockPanel Grid.Row="2">
                                         <TextBlock
                                             DockPanel.Dock="Right"
-                                            Foreground="{Binding Path=delay, Converter={StaticResource DelayColorConverter}}"
-                                            Text="{Binding delayName}" />
-                                        <TextBlock Text="{Binding type}" />
+                                            Foreground="{Binding Path=Delay, Converter={StaticResource DelayColorConverter}}"
+                                            Text="{Binding DelayName}" />
+                                        <TextBlock Text="{Binding Type}" />
                                     </DockPanel>
                                 </Grid>
                             </DockPanel>

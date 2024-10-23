@@ -140,14 +140,14 @@ namespace ServiceLib.ViewModels
             if (_lockedItem != null)
             {
                 _lockedRules = JsonUtils.Deserialize<List<RulesItem>>(_lockedItem.RuleSet);
-                ProxyDomain = Utils.List2String(_lockedRules[0].domain, true);
-                ProxyIP = Utils.List2String(_lockedRules[0].ip, true);
+                ProxyDomain = Utils.List2String(_lockedRules[0].Domain, true);
+                ProxyIP = Utils.List2String(_lockedRules[0].Ip, true);
 
-                DirectDomain = Utils.List2String(_lockedRules[1].domain, true);
-                DirectIP = Utils.List2String(_lockedRules[1].ip, true);
+                DirectDomain = Utils.List2String(_lockedRules[1].Domain, true);
+                DirectIP = Utils.List2String(_lockedRules[1].Ip, true);
 
-                BlockDomain = Utils.List2String(_lockedRules[2].domain, true);
-                BlockIP = Utils.List2String(_lockedRules[2].ip, true);
+                BlockDomain = Utils.List2String(_lockedRules[2].Domain, true);
+                BlockIP = Utils.List2String(_lockedRules[2].Ip, true);
             }
         }
 
@@ -155,14 +155,14 @@ namespace ServiceLib.ViewModels
         {
             if (_lockedItem != null)
             {
-                _lockedRules[0].domain = Utils.String2List(Utils.Convert2Comma(ProxyDomain.TrimEx()));
-                _lockedRules[0].ip = Utils.String2List(Utils.Convert2Comma(ProxyIP.TrimEx()));
+                _lockedRules[0].Domain = Utils.String2List(Utils.Convert2Comma(ProxyDomain.TrimEx()));
+                _lockedRules[0].Ip = Utils.String2List(Utils.Convert2Comma(ProxyIP.TrimEx()));
 
-                _lockedRules[1].domain = Utils.String2List(Utils.Convert2Comma(DirectDomain.TrimEx()));
-                _lockedRules[1].ip = Utils.String2List(Utils.Convert2Comma(DirectIP.TrimEx()));
+                _lockedRules[1].Domain = Utils.String2List(Utils.Convert2Comma(DirectDomain.TrimEx()));
+                _lockedRules[1].Ip = Utils.String2List(Utils.Convert2Comma(DirectIP.TrimEx()));
 
-                _lockedRules[2].domain = Utils.String2List(Utils.Convert2Comma(BlockDomain.TrimEx()));
-                _lockedRules[2].ip = Utils.String2List(Utils.Convert2Comma(BlockIP.TrimEx()));
+                _lockedRules[2].Domain = Utils.String2List(Utils.Convert2Comma(BlockDomain.TrimEx()));
+                _lockedRules[2].Ip = Utils.String2List(Utils.Convert2Comma(BlockIP.TrimEx()));
 
                 _lockedItem.RuleSet = JsonUtils.Serialize(_lockedRules, false);
 

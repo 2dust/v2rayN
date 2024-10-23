@@ -218,11 +218,11 @@
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
                             Width="120"
-                            Binding="{Binding outboundTag}"
+                            Binding="{Binding OutboundTag}"
                             Header="outboundTag" />
                         <DataGridTextColumn
                             Width="100"
-                            Binding="{Binding port}"
+                            Binding="{Binding Port}"
                             Header="port" />
                         <DataGridTextColumn
                             Width="100"
@@ -234,7 +234,7 @@
                             Header="inboundTag" />
                         <DataGridTextColumn
                             Width="90"
-                            Binding="{Binding network}"
+                            Binding="{Binding Network}"
                             Header="network" />
                         <DataGridTextColumn
                             Width="200"
