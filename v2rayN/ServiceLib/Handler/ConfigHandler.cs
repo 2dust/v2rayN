@@ -171,18 +171,7 @@ namespace ServiceLib.Handler
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static async Task<int> SaveConfig(Config config, bool reload = true)
-        {
-            await ToJsonFile(config);
-
-            return 0;
-        }
-
-        /// <summary>
-        /// 存储文件
-        /// </summary>
-        /// <param name="config"></param>
-        private static async Task ToJsonFile(Config config)
+        public static async Task<int> SaveConfig(Config config)
         {
             lock (_objLock)
             {
@@ -193,7 +182,7 @@ namespace ServiceLib.Handler
                     var tempPath = $"{resPath}_temp";
                     if (JsonUtils.ToFile(config, tempPath) != 0)
                     {
-                        return;
+                        return -1;
                     }
 
                     if (File.Exists(resPath))
@@ -206,8 +195,11 @@ namespace ServiceLib.Handler
                 catch (Exception ex)
                 {
                     Logging.SaveLog("ToJsonFile", ex);
+                    return -1;
                 }
             }
+
+            return 0;
         }
 
         #endregion ConfigHandler
@@ -369,7 +361,7 @@ namespace ServiceLib.Handler
 
             config.IndexId = indexId;
 
-            await ToJsonFile(config);
+            await SaveConfig(config);
 
             return 0;
         }
@@ -1142,7 +1134,7 @@ namespace ServiceLib.Handler
                 await SQLiteHelper.Instance.InsertAllAsync(lstAdd);
             }
 
-            await ToJsonFile(config);
+            await SaveConfig(config);
             return countServers;
         }
 
@@ -1272,7 +1264,7 @@ namespace ServiceLib.Handler
                         counter++;
                     }
                 }
-                await ToJsonFile(config);
+                await SaveConfig(config);
                 return counter;
             }
 
@@ -1605,7 +1597,7 @@ namespace ServiceLib.Handler
                 config.RoutingBasicItem.RoutingIndexId = routingItem.Id;
             }
 
-            await ToJsonFile(config);
+            await SaveConfig(config);
 
             return 0;
         }

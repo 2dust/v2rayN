@@ -5,8 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<Copyright>Copyright © 2019-2024 (GPLv3)</Copyright>
-	<FileVersion>1.2.0.0</FileVersion>
+	<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
+	<FileVersion>1.3.0</FileVersion>
   </PropertyGroup>
 
 </Project>

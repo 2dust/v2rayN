@@ -566,8 +566,8 @@ namespace ServiceLib.ViewModels
 
         public async Task CloseCore()
         {
-            await ConfigHandler.SaveConfig(_config, false);
-            CoreHandler.Instance.CoreStop();
+            await ConfigHandler.SaveConfig(_config);
+            await CoreHandler.Instance.CoreStop();
         }
 
         private async Task AutoHideStartup()
@@ -588,7 +588,7 @@ namespace ServiceLib.ViewModels
             await ConfigHandler.InitRouting(_config);
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
-            await ConfigHandler.SaveConfig(_config, false);
+            await ConfigHandler.SaveConfig(_config);
             await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
             await Reload();
         }

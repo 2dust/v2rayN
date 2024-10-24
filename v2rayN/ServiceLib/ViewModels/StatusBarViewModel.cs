@@ -321,7 +321,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
 
             SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
-            await ConfigHandler.SaveConfig(_config, false);
+            await ConfigHandler.SaveConfig(_config);
         }
 
         public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)

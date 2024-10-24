@@ -102,17 +102,17 @@
 
         #region SqliteHelper
 
-        public async Task<List<SubItem>> SubItems()
+        public async Task<List<SubItem>?> SubItems()
         {
             return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.Sort).ToListAsync();
         }
 
-        public async Task<SubItem> GetSubItem(string subid)
+        public async Task<SubItem?> GetSubItem(string subid)
         {
             return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.Id == subid);
         }
 
-        public async Task<List<ProfileItem>> ProfileItems(string subid)
+        public async Task<List<ProfileItem>?> ProfileItems(string subid)
         {
             if (Utils.IsNullOrEmpty(subid))
             {
@@ -124,12 +124,12 @@
             }
         }
 
-        public async Task<List<string>> ProfileItemIndexes(string subid)
+        public async Task<List<string>?> ProfileItemIndexes(string subid)
         {
-            return (await ProfileItems(subid)).Select(t => t.IndexId).ToList();
+            return (await ProfileItems(subid))?.Select(t => t.IndexId)?.ToList();
         }
 
-        public async Task<List<ProfileItemModel>> ProfileItems(string subid, string filter)
+        public async Task<List<ProfileItemModel>?> ProfileItems(string subid, string filter)
         {
             var sql = @$"select a.*
                            ,b.remarks subRemarks
@@ -152,7 +152,7 @@
             return await SQLiteHelper.Instance.QueryAsync<ProfileItemModel>(sql);
         }
 
-        public async Task<List<ProfileItemModel>> ProfileItemsEx(string subid, string filter)
+        public async Task<List<ProfileItemModel>?> ProfileItemsEx(string subid, string filter)
         {
             var lstModel = await ProfileItems(_config.SubIndexId, filter);
 
@@ -209,22 +209,22 @@
             return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
         }
 
-        public async Task<List<RoutingItem>> RoutingItems()
+        public async Task<List<RoutingItem>?> RoutingItems()
         {
             return await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(it => it.Locked == false).OrderBy(t => t.Sort).ToListAsync();
         }
 
-        public async Task<RoutingItem> GetRoutingItem(string id)
+        public async Task<RoutingItem?> GetRoutingItem(string id)
         {
             return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Locked == false && it.Id == id);
         }
 
-        public async Task<List<DNSItem>> DNSItems()
+        public async Task<List<DNSItem>?> DNSItems()
         {
             return await SQLiteHelper.Instance.TableAsync<DNSItem>().ToListAsync();
         }
 
-        public async Task<DNSItem> GetDNSItem(ECoreType eCoreType)
+        public async Task<DNSItem?> GetDNSItem(ECoreType eCoreType)
         {
             return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
         }
