@@ -42,7 +42,7 @@ namespace ServiceLib.Handler
             else
             {
                 ShowMsg(true, $"{node.GetSummary()}");
-                CoreStop();
+                await CoreStop();
                 await CoreStart(node);
 
                 //In tun mode, do a delay check and restart the core
@@ -74,19 +74,19 @@ namespace ServiceLib.Handler
             ShowMsg(false, result.Msg);
             if (result.Success)
             {
-                pid = CoreStartSpeedtest(configPath, coreType);
+                pid = await CoreStartSpeedtest(configPath, coreType);
             }
             return pid;
         }
 
-        public void CoreStop()
+        public async Task CoreStop()
         {
             try
             {
                 bool hasProc = false;
                 if (_process != null)
                 {
-                    KillProcess(_process);
+                    await KillProcess(_process);
                     _process.Dispose();
                     _process = null;
                     hasProc = true;
@@ -94,7 +94,7 @@ namespace ServiceLib.Handler
 
                 if (_processPre != null)
                 {
-                    KillProcess(_processPre);
+                    await KillProcess(_processPre);
                     _processPre.Dispose();
                     _processPre = null;
                     hasProc = true;
@@ -117,7 +117,7 @@ namespace ServiceLib.Handler
                                 string? path = p.MainModule?.FileName;
                                 if (path == Utils.GetExeName(Utils.GetBinPath(vName, it.CoreType.ToString())))
                                 {
-                                    KillProcess(p);
+                                    await KillProcess(p);
                                 }
                             }
                         }
@@ -130,12 +130,12 @@ namespace ServiceLib.Handler
             }
         }
 
-        public void CoreStopPid(int pid)
+        public async Task CoreStopPid(int pid)
         {
             try
             {
                 var _p = Process.GetProcessById(pid);
-                KillProcess(_p);
+                await KillProcess(_p);
             }
             catch (Exception ex)
             {
@@ -186,7 +186,7 @@ namespace ServiceLib.Handler
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-            var proc = RunProcess(node, coreInfo, "", displayLog);
+            var proc = await RunProcess(node, coreInfo, "", displayLog);
             if (proc is null)
             {
                 return;
@@ -228,7 +228,7 @@ namespace ServiceLib.Handler
                     if (result.Success)
                     {
                         var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
-                        var proc2 = RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
+                        var proc2 = await RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -238,7 +238,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        private int CoreStartSpeedtest(string configPath, ECoreType coreType)
+        private async Task<int> CoreStartSpeedtest(string configPath, ECoreType coreType)
         {
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
 
@@ -246,7 +246,7 @@ namespace ServiceLib.Handler
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
-                var proc = RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true);
+                var proc = await RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true);
                 if (proc is null)
                 {
                     return -1;
@@ -272,7 +272,7 @@ namespace ServiceLib.Handler
 
         #region Process
 
-        private Process? RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog)
+        private async Task<Process?> RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog)
         {
             try
             {
@@ -351,7 +351,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        private void KillProcess(Process? proc)
+        private async Task KillProcess(Process? proc)
         {
             if (proc is null)
             {

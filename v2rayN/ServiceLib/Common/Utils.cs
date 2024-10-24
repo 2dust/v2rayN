@@ -495,7 +495,7 @@ namespace ServiceLib.Common
             {
                 if (blFull)
                 {
-                    return $"{Global.AppName} - V{GetVersionInfo()} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
+                    return $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
                 }
                 else
                 {

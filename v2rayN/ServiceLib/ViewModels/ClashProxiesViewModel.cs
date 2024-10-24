@@ -11,8 +11,8 @@ namespace ServiceLib.ViewModels
 {
     public class ClashProxiesViewModel : MyReactiveObject
     {
-        private Dictionary<String, ProxiesItem>? _proxies;
-        private Dictionary<String, ProvidersItem>? _providers;
+        private Dictionary<string, ProxiesItem>? _proxies;
+        private Dictionary<string, ProvidersItem>? _providers;
         private int _delayTimeout = 99999999;
 
         private IObservableCollection<ClashProxyModel> _proxyGroups = new ObservableCollectionExtended<ClashProxyModel>();

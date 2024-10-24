@@ -108,7 +108,7 @@ namespace ServiceLib.Handler
                 EnableAutoAdjustMainLvColWidth = true
             };
             config.UiItem.MainColumnItem ??= new();
-            
+
             if (Utils.IsNullOrEmpty(config.UiItem.CurrentLanguage))
             {
                 if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
@@ -380,8 +380,8 @@ namespace ServiceLib.Handler
             {
                 return 0;
             }
-            var count = await SQLiteHelper.Instance.TableAsync<ProfileItem>().CountAsync(t => t.IndexId == config.IndexId);
-            if (count > 0)
+
+            if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == config.IndexId) != null)
             {
                 return 0;
             }
@@ -390,7 +390,7 @@ namespace ServiceLib.Handler
                 return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
             }
 
-            var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Port > 0).FirstOrDefaultAsync();
+            var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
             return await SetDefaultServerIndex(config, item.IndexId);
         }
 

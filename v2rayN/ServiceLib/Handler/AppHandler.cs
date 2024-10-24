@@ -126,18 +126,7 @@
 
         public async Task<List<string>> ProfileItemIndexes(string subid)
         {
-            if (Utils.IsNullOrEmpty(subid))
-            {
-                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync())
-                        .Select(t => t.IndexId)
-                        .ToList();
-            }
-            else
-            {
-                return (await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid).ToListAsync())
-                        .Select(t => t.IndexId)
-                        .ToList();
-            }
+            return (await ProfileItems(subid)).Select(t => t.IndexId).ToList();
         }
 
         public async Task<List<ProfileItemModel>> ProfileItems(string subid, string filter)

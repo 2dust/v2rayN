@@ -7,7 +7,7 @@ namespace ServiceLib.Handler
         private static readonly Lazy<ClashApiHandler> instance = new(() => new());
         public static ClashApiHandler Instance => instance.Value;
 
-        private Dictionary<String, ProxiesItem>? _proxies;
+        private Dictionary<string, ProxiesItem>? _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
 
         public async Task<Tuple<ClashProxies, ClashProviders>?> GetClashProxiesAsync(Config config)
