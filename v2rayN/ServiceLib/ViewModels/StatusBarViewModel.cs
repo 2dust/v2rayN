@@ -181,6 +181,7 @@ namespace ServiceLib.ViewModels
         {
             SelectedRouting = new();
             SelectedServer = new();
+            RunningServerToolTipText = "-";
 
             if (_config.TunModeItem.EnableTun && AppHandler.Instance.IsAdministrator)
             {

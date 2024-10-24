@@ -7,6 +7,7 @@ namespace ServiceLib.Models
     {
         [PrimaryKey]
         public string Id { get; set; }
+
         public string Remarks { get; set; }
         public string Url { get; set; }
         public string RuleSet { get; set; }

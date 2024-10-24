@@ -321,7 +321,7 @@ namespace v2rayN.Desktop.Views
         public async Task ScanScreenTaskAsync()
         {
             //ShowHideWindow(false);
- 
+
             NoticeHandler.Instance.SendMessageAndEnqueue("Not yet implemented.(还未实现)");
             return;
             //if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -332,9 +332,10 @@ namespace v2rayN.Desktop.Views
 
             //ShowHideWindow(true);
         }
+
         private async Task ScanImageTaskAsync()
         {
-            var fileName = await UI.OpenFileDialog(this,null );
+            var fileName = await UI.OpenFileDialog(this, null);
             if (fileName.IsNullOrEmpty())
             {
                 return;

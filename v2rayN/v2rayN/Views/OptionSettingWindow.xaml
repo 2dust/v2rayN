@@ -923,7 +923,6 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
                             TextWrapping="Wrap" />
-
                     </Grid>
                 </ScrollViewer>
             </TabItem>

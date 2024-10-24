@@ -10,7 +10,7 @@
             {
                 ConfigType = EConfigType.Trojan
             };
-            
+
             var url = Utils.TryUri(str);
             if (url == null) return null;
 
