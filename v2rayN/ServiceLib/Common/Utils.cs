@@ -427,6 +427,30 @@ namespace ServiceLib.Common
             return false;
         }
 
+        public static Uri? TryUri(string url)
+        {
+            try
+            {
+                return new Uri(url);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+        }
+
+        public static bool IsPrivateNetwork(string ip)
+        {
+            if (IPAddress.TryParse(ip, out var address))
+            {
+                var ipBytes = address.GetAddressBytes();
+                if (ipBytes[0] == 10) return true;
+                if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31) return true;
+                if (ipBytes[0] == 192 && ipBytes[1] == 168) return true;
+            }
+            return false;
+        }
+
         #endregion 数据检查
 
         #region 测速
@@ -632,7 +656,7 @@ namespace ServiceLib.Common
             }
             return Path.Combine(startupPath, fileName);
         }
-        
+
         public static string GetExePath()
         {
             return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;

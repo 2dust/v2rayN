@@ -11,7 +11,8 @@
                 ConfigType = EConfigType.TUIC
             };
 
-            Uri url = new(str);
+            var url = Utils.TryUri(str);
+            if (url == null) return null;
 
             item.Address = url.IdnHost;
             item.Port = url.Port;

@@ -33,6 +33,23 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
+            var url = SelectedSource.Url;
+            if (url.IsNotEmpty())
+            {
+                var uri = Utils.TryUri(url);
+                if (uri == null)
+                {
+                    NoticeHandler.Instance.Enqueue(ResUI.LvUrl);
+                    return;
+                }
+                //Do not allow http protocol
+                if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
+                {
+                    NoticeHandler.Instance.Enqueue(ResUI.LvUrl);
+                    return;
+                }
+            }
+
             if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

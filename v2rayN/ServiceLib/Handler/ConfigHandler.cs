@@ -1335,16 +1335,16 @@ namespace ServiceLib.Handler
                 Url = url
             };
 
-            try
+            var uri = Utils.TryUri(url);
+            if (uri == null) return -1;
+            //Do not allow http protocol
+            if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
             {
-                var uri = new Uri(url);
-                var queryVars = Utils.ParseQueryString(uri.Query);
-                subItem.Remarks = queryVars["remarks"] ?? "import_sub";
+                return -1;
             }
-            catch (UriFormatException)
-            {
-                return 0;
-            }
+
+            var queryVars = Utils.ParseQueryString(uri.Query);
+            subItem.Remarks = queryVars["remarks"] ?? "import_sub";
 
             return await AddSubItem(config, subItem);
         }

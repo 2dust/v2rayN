@@ -93,15 +93,9 @@
 
         private static ProfileItem? ResolveSocksNew(string result)
         {
-            Uri parsedUrl;
-            try
-            {
-                parsedUrl = new Uri(result);
-            }
-            catch (UriFormatException)
-            {
-                return null;
-            }
+            var parsedUrl = Utils.TryUri(result);
+            if (parsedUrl == null) return null;
+
             ProfileItem item = new()
             {
                 Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
