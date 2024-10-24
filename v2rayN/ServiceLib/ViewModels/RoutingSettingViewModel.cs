@@ -111,7 +111,7 @@ namespace ServiceLib.ViewModels
         {
             SelectedSource = new();
 
-            enableRoutingAdvanced = _config.RoutingBasicItem.EnableRoutingAdvanced;
+            enableRoutingAdvanced = true;//TODO _config.RoutingBasicItem.EnableRoutingAdvanced;
             domainStrategy = _config.RoutingBasicItem.DomainStrategy;
             domainMatcher = _config.RoutingBasicItem.DomainMatcher;
             domainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;

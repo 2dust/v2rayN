@@ -72,7 +72,7 @@
                             Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
                     </MenuItem>
                 </Menu>
-                <Separator />
+                <!--<Separator />
                 <TextBlock
                     Margin="{StaticResource MarginLeft8}"
                     VerticalAlignment="Center"
@@ -81,7 +81,7 @@
                 <ToggleButton
                     x:Name="togenableRoutingAdvanced"
                     Margin="{StaticResource MarginLeft8}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left" />-->
                 <Separator />
                 <TextBlock
                     Margin="{StaticResource MarginLeft8}"
