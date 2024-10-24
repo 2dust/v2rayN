@@ -8,7 +8,6 @@
         public string? Arguments { get; set; }
         public string? Url { get; set; }
         public string? ReleaseApiUrl { get; set; }
-        public string? DownloadUrlWin32 { get; set; }
         public string? DownloadUrlWin64 { get; set; }
         public string? DownloadUrlWinArm64 { get; set; }
         public string? DownloadUrlLinux64 { get; set; }

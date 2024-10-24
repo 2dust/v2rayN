@@ -431,7 +431,6 @@ namespace ServiceLib.Services
                 return RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.Arm64 => coreInfo?.DownloadUrlWinArm64,
-                    Architecture.X86 => coreInfo?.DownloadUrlWin32,
                     Architecture.X64 => coreInfo?.DownloadUrlWin64,
                     _ => null,
                 };

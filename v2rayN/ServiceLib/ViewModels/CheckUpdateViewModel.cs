@@ -4,6 +4,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Reactive;
+using System.Runtime.InteropServices;
 
 namespace ServiceLib.ViewModels
 {
@@ -42,30 +43,34 @@ namespace ServiceLib.ViewModels
         {
             _checkUpdateItem.Clear();
 
-            _checkUpdateItem.Add(new CheckUpdateItem()
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
             {
-                IsSelected = false,
-                CoreType = _v2rayN,
-                Remarks = ResUI.menuCheckUpdate,
-            });
-            _checkUpdateItem.Add(new CheckUpdateItem()
-            {
-                IsSelected = true,
-                CoreType = ECoreType.Xray.ToString(),
-                Remarks = ResUI.menuCheckUpdate,
-            });
-            _checkUpdateItem.Add(new CheckUpdateItem()
-            {
-                IsSelected = true,
-                CoreType = ECoreType.mihomo.ToString(),
-                Remarks = ResUI.menuCheckUpdate,
-            });
-            _checkUpdateItem.Add(new CheckUpdateItem()
-            {
-                IsSelected = true,
-                CoreType = ECoreType.sing_box.ToString(),
-                Remarks = ResUI.menuCheckUpdate,
-            });
+                _checkUpdateItem.Add(new CheckUpdateItem()
+                {
+                    IsSelected = false,
+                    CoreType = _v2rayN,
+                    Remarks = ResUI.menuCheckUpdate,
+                });
+                _checkUpdateItem.Add(new CheckUpdateItem()
+                {
+                    IsSelected = true,
+                    CoreType = ECoreType.Xray.ToString(),
+                    Remarks = ResUI.menuCheckUpdate,
+                });
+                _checkUpdateItem.Add(new CheckUpdateItem()
+                {
+                    IsSelected = true,
+                    CoreType = ECoreType.mihomo.ToString(),
+                    Remarks = ResUI.menuCheckUpdate,
+                });
+                _checkUpdateItem.Add(new CheckUpdateItem()
+                {
+                    IsSelected = true,
+                    CoreType = ECoreType.sing_box.ToString(),
+                    Remarks = ResUI.menuCheckUpdate,
+                });
+            }
+
             _checkUpdateItem.Add(new CheckUpdateItem()
             {
                 IsSelected = true,
