@@ -30,6 +30,10 @@ namespace ServiceLib.Handler
                 {
                     if (it.CoreType == ECoreType.v2rayN)
                     {
+                        if (Utils.UpgradeAppExists(out var fileName))
+                        {
+                            await Utils.SetLinuxChmod(fileName);
+                        }
                         continue;
                     }
 
