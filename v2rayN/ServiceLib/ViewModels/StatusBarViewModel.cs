@@ -104,6 +104,18 @@ namespace ServiceLib.ViewModels
         public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
+            SelectedRouting = new();
+            SelectedServer = new();
+            RunningServerToolTipText = "-";
+
+            if (_config.TunModeItem.EnableTun && AppHandler.Instance.IsAdministrator)
+            {
+                EnableTun = true;
+            }
+            else
+            {
+                _config.TunModeItem.EnableTun = EnableTun = false;
+            }
 
             #region WhenAnyValue && ReactiveCommand
 
@@ -179,19 +191,6 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            SelectedRouting = new();
-            SelectedServer = new();
-            RunningServerToolTipText = "-";
-
-            if (_config.TunModeItem.EnableTun && AppHandler.Instance.IsAdministrator)
-            {
-                EnableTun = true;
-            }
-            else
-            {
-                _config.TunModeItem.EnableTun = EnableTun = false;
-            }
-
             await RefreshRoutingsMenu();
             await InboundDisplayStatus();
             await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
