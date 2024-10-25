@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO.Compression;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AmazTool
@@ -22,11 +21,11 @@ namespace AmazTool
 
             try
             {
-                Process[] existing = Process.GetProcessesByName(V2rayN());
+                Process[] existing = Process.GetProcessesByName(V2rayN);
                 foreach (Process p in existing)
                 {
                     var path = p.MainModule?.FileName ?? "";
-                    if (path.StartsWith(GetPath(V2rayN())))
+                    if (path.StartsWith(GetPath(V2rayN)))
                     {
                         p.Kill();
                         p.WaitForExit(100);
@@ -96,7 +95,7 @@ namespace AmazTool
             {
                 StartInfo = new()
                 {
-                    FileName = V2rayN(),
+                    FileName = V2rayN,
                     WorkingDirectory = StartupPath()
                 }
             };
@@ -123,19 +122,6 @@ namespace AmazTool
             return Path.Combine(startupPath, fileName);
         }
 
-        private static string V2rayN()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                if (File.Exists(GetPath("v2rayN.exe")))
-                    return "v2rayN";
-                else
-                    return "v2rayN.Desktop";
-            }
-            else
-            {
-                return "v2rayN.Desktop";
-            }
-        }
+        private static string V2rayN => "v2rayN";
     }
 }
