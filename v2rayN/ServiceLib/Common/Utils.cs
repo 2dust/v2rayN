@@ -720,7 +720,7 @@ namespace ServiceLib.Common
             }
             if (coreType != null)
             {
-                tempPath = Path.Combine(tempPath, coreType.ToString());
+                tempPath = Path.Combine(tempPath, coreType.ToLower().ToString());
                 if (!Directory.Exists(tempPath))
                 {
                     Directory.CreateDirectory(tempPath);
