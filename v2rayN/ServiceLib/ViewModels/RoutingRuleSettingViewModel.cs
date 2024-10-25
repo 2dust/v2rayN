@@ -176,13 +176,14 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var lst = new List<RulesItem4Ray>();
+            var lst = new List<RulesItem>();
             foreach (var it in SelectedSources ?? [SelectedSource])
             {
                 var item = _rules.FirstOrDefault(t => t.Id == it?.Id);
                 if (item != null)
                 {
-                    var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                    var item2 = JsonUtils.DeepCopy(item); //JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                    item2.Id = null;
                     lst.Add(item2 ?? new());
                 }
             }
