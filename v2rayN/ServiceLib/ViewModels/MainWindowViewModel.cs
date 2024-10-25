@@ -208,6 +208,7 @@ namespace ServiceLib.ViewModels
 
             await ConfigHandler.InitBuiltinRouting(_config);
             await ConfigHandler.InitBuiltinDNS(_config);
+            await ProfileExHandler.Instance.Init();
             await CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 

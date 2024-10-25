@@ -9,25 +9,29 @@ namespace ServiceLib.Handler
         private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
         private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
         private Queue<string> _queIndexIds = new();
-        public ConcurrentBag<ProfileExItem> ProfileExs => _lstProfileEx;
         public static ProfileExHandler Instance => _instance.Value;
 
         public ProfileExHandler()
         {
-            Init();
+            //Init();
         }
 
-        private async Task Init()
+        public async Task Init()
         {
             await InitData();
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
-                    await SaveQueueIndexIds();
                     await Task.Delay(1000 * 600);
+                    await SaveQueueIndexIds();
                 }
             });
+        }
+
+        public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()
+        {
+            return _lstProfileEx;
         }
 
         private async Task InitData()

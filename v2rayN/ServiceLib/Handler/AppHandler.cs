@@ -159,7 +159,7 @@
             await ConfigHandler.SetDefaultServer(_config, lstModel);
 
             var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
-            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
+            var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
             lstModel = (from t in lstModel
                         join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
                         from t22 in t2b.DefaultIfEmpty()

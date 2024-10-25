@@ -746,7 +746,7 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            var lstProfileExs = ProfileExHandler.Instance.ProfileExs;
+            var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
             var lstProfile = (from t in lstModel
                               join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
                               from t33 in t3b.DefaultIfEmpty()
