@@ -15,13 +15,34 @@ namespace ServiceLib.Handler
         private Process? _processPre;
         private Action<bool, string>? _updateFunc;
 
-        public void Init(Config config, Action<bool, string> updateFunc)
+        public async Task Init(Config config, Action<bool, string> updateFunc)
         {
             _config = config;
             _updateFunc = updateFunc;
 
             Environment.SetEnvironmentVariable("V2RAY_LOCATION_ASSET", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("XRAY_LOCATION_ASSET", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
+
+            if (Utils.IsLinux())
+            {
+                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
+                foreach (var it in coreInfo)
+                {
+                    if (it.CoreType == ECoreType.v2rayN)
+                    {
+                        continue;
+                    }
+
+                    foreach (var vName in it.CoreExes)
+                    {
+                        var exe = Utils.GetExeName(Utils.GetBinPath(vName, it.CoreType.ToString()));
+                        if (File.Exists(exe))
+                        {
+                            await Utils.SetLinuxChmod(exe);
+                        }
+                    }
+                }
+            }
         }
 
         public async Task LoadCore(ProfileItem? node)
