@@ -295,6 +295,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please do not use the insecure HTTP protocol subscription address 的本地化字符串。
+        /// </summary>
+        public static string InsecureUrlProtocol {
+            get {
+                return ResourceManager.GetString("InsecureUrlProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid address (Url) 的本地化字符串。
+        /// </summary>
+        public static string InvalidUrlTip {
+            get {
+                return ResourceManager.GetString("InvalidUrlTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0} {1} already up to date. 的本地化字符串。
         /// </summary>
         public static string IsLatestCore {

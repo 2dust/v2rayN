@@ -39,14 +39,14 @@ namespace ServiceLib.ViewModels
                 var uri = Utils.TryUri(url);
                 if (uri == null)
                 {
-                    NoticeHandler.Instance.Enqueue(ResUI.LvUrl);
+                    NoticeHandler.Instance.Enqueue(ResUI.InvalidUrlTip);
                     return;
                 }
                 //Do not allow http protocol
                 if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
                 {
-                    NoticeHandler.Instance.Enqueue(ResUI.LvUrl);
-                    return;
+                    NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
+                    //return;
                 }
             }
 

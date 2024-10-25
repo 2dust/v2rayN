@@ -1351,4 +1351,10 @@
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>扫描图片中的二维码</value>
   </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>地址(Url)无效</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>请不要使用不安全的HTTP协议订阅地址</value>
+  </data>
 </root>

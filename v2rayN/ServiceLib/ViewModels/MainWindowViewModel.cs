@@ -389,6 +389,10 @@ namespace ServiceLib.ViewModels
                 RefreshServers();
                 NoticeHandler.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
             }
+            else
+            {
+                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            }
         }
 
         public async Task AddServerViaScanAsync()
@@ -432,6 +436,10 @@ namespace ServiceLib.ViewModels
                     RefreshSubscriptions();
                     RefreshServers();
                     NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
+                }
+                else
+                {
+                    NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
                 }
             }
         }

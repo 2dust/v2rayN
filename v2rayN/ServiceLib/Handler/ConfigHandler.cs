@@ -1340,7 +1340,9 @@ namespace ServiceLib.Handler
             //Do not allow http protocol
             if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
             {
-                return -1;
+                //TODO Temporary reminder to be removed later
+                NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
+                //return -1;
             }
 
             var queryVars = Utils.ParseQueryString(uri.Query);

@@ -1354,4 +1354,10 @@
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>Scan QR code in the image</value>
   </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>Invalid address (Url)</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>Please do not use the insecure HTTP protocol subscription address</value>
+  </data>
 </root>

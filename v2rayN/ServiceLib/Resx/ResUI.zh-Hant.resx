@@ -1231,4 +1231,10 @@
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>掃描圖片中的二維碼</value>
   </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>地址(Url)無效</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>請不要使用不安全的HTTP協定訂閱位址</value>
+  </data>
 </root>
