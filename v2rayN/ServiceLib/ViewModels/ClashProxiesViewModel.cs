@@ -96,7 +96,7 @@ namespace ServiceLib.ViewModels
         private async Task Init()
         {
             await ProxiesReload();
-            await DelayTestTask();
+            DelayTestTask();
         }
 
         private async Task DoRulemodeSelected(bool c)
@@ -434,25 +434,29 @@ namespace ServiceLib.ViewModels
         public async Task DelayTestTask()
         {
             var lastTime = DateTime.Now;
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(1000 * 60);
 
-            Observable.Interval(TimeSpan.FromSeconds(60))
-              .Subscribe(async x =>
-              {
-                  if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
-                  {
-                      return;
-                  }
-                  var dtNow = DateTime.Now;
-                  if (_config.ClashUIItem.ProxiesAutoDelayTestInterval > 0)
-                  {
-                      if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ProxiesAutoDelayTestInterval == 0)
-                      {
-                          await ProxiesDelayTest();
-                          lastTime = dtNow;
-                      }
-                      Task.Delay(1000).Wait();
-                  }
-              });
+                    if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                    {
+                        continue;
+                    }
+                    if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
+                    {
+                        continue;
+                    }
+                    var dtNow = DateTime.Now;
+                    if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
+                    {
+                        continue;
+                    }
+                    await ProxiesDelayTest();
+                    lastTime = dtNow;
+                }
+            });
         }
 
         #endregion task

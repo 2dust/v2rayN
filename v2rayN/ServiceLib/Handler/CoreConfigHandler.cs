@@ -12,18 +12,12 @@
 
             if (node.ConfigType == EConfigType.Custom)
             {
-                if (node.CoreType is ECoreType.mihomo)
+                result = node.CoreType switch
                 {
-                    result = await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName);
-                }
-                if (node.CoreType is ECoreType.sing_box)
-                {
-                    result = await new CoreConfigSingboxService(config).GenerateClientCustomConfig(node, fileName);
-                }
-                else
-                {
-                    result = await GenerateClientCustomConfig(node, fileName);
-                }
+                    ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
+                    ECoreType.sing_box => await new CoreConfigSingboxService(config).GenerateClientCustomConfig(node, fileName),
+                    _ => await GenerateClientCustomConfig(node, fileName)
+                };
             }
             else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
             {
