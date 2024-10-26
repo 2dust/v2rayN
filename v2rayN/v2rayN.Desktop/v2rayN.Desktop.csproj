@@ -8,6 +8,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	    <Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AssemblyName>v2rayN</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

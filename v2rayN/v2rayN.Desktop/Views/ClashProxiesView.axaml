@@ -161,10 +161,7 @@
                                         <RowDefinition Height="8" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Text="{Binding Name}"
-                                        TextWrapping="WrapWithOverflow" />
+                                    <TextBlock Grid.Row="0" Text="{Binding Name}" />
                                     <DockPanel Grid.Row="2">
                                         <TextBlock
                                             DockPanel.Dock="Right"
