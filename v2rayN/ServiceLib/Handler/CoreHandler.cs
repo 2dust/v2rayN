@@ -37,9 +37,9 @@ namespace ServiceLib.Handler
                         continue;
                     }
 
-                    foreach (var vName in it.CoreExes)
+                    foreach (var name in it.CoreExes)
                     {
-                        var exe = Utils.GetExeName(Utils.GetBinPath(vName, it.CoreType.ToString()));
+                        var exe = Utils.GetBinPath(Utils.GetExeName(name), it.CoreType.ToString());
                         if (File.Exists(exe))
                         {
                             await Utils.SetLinuxChmod(exe);
@@ -134,17 +134,12 @@ namespace ServiceLib.Handler
                         {
                             continue;
                         }
-                        foreach (string vName in it.CoreExes)
+                        foreach (var name in it.CoreExes)
                         {
-                            var existing = Process.GetProcessesByName(vName);
-                            foreach (Process p in existing)
-                            {
-                                string? path = p.MainModule?.FileName;
-                                if (path == Utils.GetExeName(Utils.GetBinPath(vName, it.CoreType.ToString())))
-                                {
-                                    await KillProcess(p);
-                                }
-                            }
+                            var path = Utils.GetBinPath(Utils.GetExeName(name), it.CoreType.ToString());
+                            var existing = Process.GetProcessesByName(name);
+                            var pp = existing.FirstOrDefault(p => p.MainModule?.FileName != null && p.MainModule?.FileName.Contains(path) == true);
+                            await KillProcess(pp);
                         }
                     }
                 }
@@ -173,10 +168,9 @@ namespace ServiceLib.Handler
         private string CoreFindExe(CoreInfo coreInfo)
         {
             string fileName = string.Empty;
-            foreach (string name in coreInfo.CoreExes)
+            foreach (var name in coreInfo.CoreExes)
             {
-                string vName = Utils.GetExeName(name);
-                vName = Utils.GetBinPath(vName, coreInfo.CoreType.ToString());
+                var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
                 if (File.Exists(vName))
                 {
                     fileName = vName;

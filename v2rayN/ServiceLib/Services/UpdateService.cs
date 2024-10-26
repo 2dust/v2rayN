@@ -309,10 +309,9 @@ namespace ServiceLib.Services
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
                 string filePath = string.Empty;
-                foreach (string name in coreInfo.CoreExes)
+                foreach (var name in coreInfo.CoreExes)
                 {
-                    string vName = Utils.GetExeName(name);
-                    vName = Utils.GetBinPath(vName, coreInfo.CoreType.ToString());
+                    var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
                     if (File.Exists(vName))
                     {
                         filePath = vName;

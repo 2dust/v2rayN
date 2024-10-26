@@ -45,16 +45,12 @@ namespace ServiceLib.ViewModels
 
             if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
             {
-                if (Utils.IsWindows())
+                _checkUpdateItem.Add(new CheckUpdateItem()
                 {
-                    _checkUpdateItem.Add(new CheckUpdateItem()
-                    {
-                        IsSelected = false,
-                        CoreType = _v2rayN,
-                        Remarks = ResUI.menuCheckUpdate,
-                    });
-                }
-
+                    IsSelected = false,
+                    CoreType = _v2rayN,
+                    Remarks = ResUI.menuCheckUpdate,
+                });
                 _checkUpdateItem.Add(new CheckUpdateItem()
                 {
                     IsSelected = true,
