@@ -11,7 +11,7 @@ namespace AmazTool
             Console.WriteLine(fileName);
             Console.WriteLine("In progress, please wait...(正在进行中，请等待)");
 
-            Thread.Sleep(5000);
+            Thread.Sleep(9000);
 
             if (!File.Exists(fileName))
             {
@@ -25,7 +25,7 @@ namespace AmazTool
                 var path = GetPath(V2rayN);
                 Console.WriteLine(path);
                 var existing = Process.GetProcessesByName(V2rayN);
-                var pp = existing.FirstOrDefault(p => p.MainModule?.FileName != null && p.MainModule?.FileName == path);
+                var pp = existing.FirstOrDefault(p => p.MainModule?.FileName != null && p.MainModule?.FileName.Contains(path) == true);
                 pp?.Kill();
                 pp?.WaitForExit(1000);
             }
@@ -54,6 +54,8 @@ namespace AmazTool
                             continue;
                         }
 
+                        Console.WriteLine(entry.FullName);
+
                         var lst = entry.FullName.Split(splitKey);
                         if (lst.Length == 1) continue;
                         string fullName = string.Join(splitKey, lst[1..lst.Length]);
@@ -78,12 +80,12 @@ namespace AmazTool
             catch (Exception ex)
             {
                 Console.WriteLine("Upgrade Failed(升级失败)." + ex.StackTrace);
-                return;
+                //return;
             }
             if (sb.Length > 0)
             {
                 Console.WriteLine("Upgrade Failed(升级失败)." + sb.ToString());
-                return;
+                //return;
             }
 
             Console.WriteLine("Start v2rayN, please wait...(正在重启，请等待)");
@@ -92,6 +94,7 @@ namespace AmazTool
             {
                 StartInfo = new()
                 {
+                    UseShellExecute = true,
                     FileName = V2rayN,
                     WorkingDirectory = StartupPath()
                 }
