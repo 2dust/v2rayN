@@ -19,18 +19,15 @@ namespace AmazTool
                 return;
             }
 
+            Console.WriteLine("Try to end the process(尝试结束进程).");
             try
             {
-                Process[] existing = Process.GetProcessesByName(V2rayN);
-                foreach (Process p in existing)
-                {
-                    var path = p.MainModule?.FileName ?? "";
-                    if (path.StartsWith(GetPath(V2rayN)))
-                    {
-                        p.Kill();
-                        p.WaitForExit(100);
-                    }
-                }
+                var path = GetPath(V2rayN);
+                Console.WriteLine(path);
+                var existing = Process.GetProcessesByName(V2rayN);
+                var pp = existing.FirstOrDefault(p => p.MainModule?.FileName != null && p.MainModule?.FileName == path);
+                pp?.Kill();
+                pp?.WaitForExit(1000);
             }
             catch (Exception ex)
             {
@@ -39,6 +36,7 @@ namespace AmazTool
                     "Close it manually, or the upgrade may fail.(请手动关闭正在运行的v2rayN，否则可能升级失败。\n\n" + ex.StackTrace);
             }
 
+            Console.WriteLine("Start extracting files(开始解压文件).");
             StringBuilder sb = new();
             try
             {
@@ -84,13 +82,12 @@ namespace AmazTool
             }
             if (sb.Length > 0)
             {
-                Console.WriteLine("Upgrade Failed.\n" +
-                    "(升级失败)." + sb.ToString());
+                Console.WriteLine("Upgrade Failed(升级失败)." + sb.ToString());
                 return;
             }
 
             Console.WriteLine("Start v2rayN, please wait...(正在重启，请等待)");
-            Thread.Sleep(3000);
+            Thread.Sleep(9000);
             Process process = new()
             {
                 StartInfo = new()
