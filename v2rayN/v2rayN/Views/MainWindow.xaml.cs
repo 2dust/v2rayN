@@ -284,6 +284,8 @@ namespace v2rayN.Views
                 switch (e.Key)
                 {
                     case Key.V:
+                        if (_backupAndRestoreView?.IsVisible == true) return;
+
                         var clipboardData = WindowsUtils.GetClipboardData();
                         ViewModel?.AddServerViaClipboardAsync(clipboardData);
                         break;
