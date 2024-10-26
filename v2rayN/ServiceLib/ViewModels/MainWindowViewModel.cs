@@ -313,6 +313,7 @@ namespace ServiceLib.ViewModels
             {
                 StartInfo = new ProcessStartInfo
                 {
+                    UseShellExecute = true,
                     FileName = fileName,
                     Arguments = arg.AppendQuotes(),
                     WorkingDirectory = Utils.StartupPath()
