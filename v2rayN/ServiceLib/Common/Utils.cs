@@ -818,6 +818,13 @@ namespace ServiceLib.Common
             return await GetCliWrapOutput("/bin/bash", arg);
         }
 
+        public static async Task<string?> GetLinuxFontFamily(string lang)
+        {
+           // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
+            var arg = new List<string>() { "-c", $"fc-list : family" };
+            return await GetCliWrapOutput("/bin/bash", arg);
+        }
+
         #endregion Platform
     }
 }

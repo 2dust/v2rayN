@@ -15,7 +15,6 @@ namespace v2rayN.Desktop.Views
 
             btnCancel.Click += (s, e) => this.Close();
             _config = AppHandler.Instance.Config;
-            // var lstFonts = GetFonts(Utils.GetFontsPath());
 
             ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
@@ -100,9 +99,6 @@ namespace v2rayN.Desktop.Views
                 cmbMainGirdOrientation.Items.Add(it.ToString());
             }
 
-            //lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-            //cmbcurrentFontFamily.Items.Add(string.Empty);
-
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.localPort, v => v.txtlocalPort.Text).DisposeWith(disposables);
@@ -182,58 +178,53 @@ namespace v2rayN.Desktop.Views
                     //  WindowsUtils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, togAutoRun.IsChecked ?? false);
                     this.Close(true);
                     break;
+
+                case EViewAction.InitSettingFont:
+                    await InitSettingFont();
+                    break;
             }
             return await Task.FromResult(true);
         }
 
-        //private List<string> GetFonts(string path)
-        //{
-        //    var lstFonts = new List<string>();
-        //    try
-        //    {
-        //        string[] searchPatterns = { "*.ttf", "*.ttc" };
-        //        var files = new List<string>();
-        //        foreach (var pattern in searchPatterns)
-        //        {
-        //            files.AddRange(Directory.GetFiles(path, pattern));
-        //        }
-        //        var culture = _config.uiItem.currentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
-        //        var culture2 = "en-us";
-        //        foreach (var ttf in files)
-        //        {
-        //            var families = Fonts.GetFontFamilies(Utils.GetFontsPath(ttf));
-        //            foreach (FontFamily family in families)
-        //            {
-        //                var typefaces = family.GetTypefaces();
-        //                foreach (Typeface typeface in typefaces)
-        //                {
-        //                    typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
-        //                    //var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
-        //                    //if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
-        //                    //{
-        //                    //    continue;
-        //                    //}
-        //                    var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
-        //                    if (Utils.IsNullOrEmpty(fontFamily))
-        //                    {
-        //                        fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture2)];
-        //                        if (Utils.IsNullOrEmpty(fontFamily))
-        //                        {
-        //                            continue;
-        //                        }
-        //                    }
-        //                    lstFonts.Add(fontFamily);
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logging.SaveLog("fill fonts error", ex);
-        //    }
-        //    return lstFonts;
-        //}
+        private async Task InitSettingFont()
+        {
+            var lstFonts = await GetFonts();
+            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
+            cmbcurrentFontFamily.Items.Add(string.Empty);
+        }
+
+        private async Task<List<string>> GetFonts()
+        {
+            var lstFonts = new List<string>();
+            try
+            {
+                if (Utils.IsWindows())
+                {
+                    return lstFonts;
+                }
+                else if (Utils.IsLinux())
+                {
+                    var result = await Utils.GetLinuxFontFamily("zh");
+                    if (result.IsNullOrEmpty())
+                    {
+                        return lstFonts;
+                    }
+
+                    var lst = result.Split(Environment.NewLine)
+                        .Where(t => t.IsNotEmpty())
+                        .ToList()
+                        .Select(t => t.Split(",").FirstOrDefault() ?? "")
+                        .OrderBy(t => t)
+                        .ToList();
+                    return lst;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("fill fonts error", ex);
+            }
+            return lstFonts;
+        }
 
         private void ClbdestOverride_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {

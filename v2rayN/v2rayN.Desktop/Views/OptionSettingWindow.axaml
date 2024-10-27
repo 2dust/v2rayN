@@ -533,7 +533,6 @@
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            IsVisible="False"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
                         <ComboBox
                             x:Name="cmbcurrentFontFamily"
@@ -541,15 +540,13 @@
                             Grid.Column="1"
                             Width="200"
                             Classes="Margin8"
-                            IsVisible="False"
                             MaxDropDownHeight="1000" />
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="2"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            IsVisible="False"
-                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyLinuxTip}"
                             TextWrapping="Wrap" />
 
                         <TextBlock
@@ -677,7 +674,6 @@
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
                             TextWrapping="Wrap" />
-
                     </Grid>
                 </ScrollViewer>
             </TabItem>

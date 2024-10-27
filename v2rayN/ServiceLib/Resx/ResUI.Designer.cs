@@ -2861,6 +2861,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Install the font to the system and restart the settings 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCurrentFontFamilyLinuxTip {
+            get {
+                return ResourceManager.GetString("TbSettingsCurrentFontFamilyLinuxTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Copy the font TTF/TTC file to the directory guiFonts, restart the settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamilyTip {

@@ -1237,4 +1237,7 @@
   <data name="InsecureUrlProtocol" xml:space="preserve">
     <value>請不要使用不安全的HTTP協定訂閱位址</value>
   </data>
+  <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
+    <value>安裝字體到系統中，重新啟動設定</value>
+  </data>
 </root>
