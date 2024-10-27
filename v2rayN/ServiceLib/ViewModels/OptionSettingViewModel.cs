@@ -117,6 +117,8 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
+            await _updateView?.Invoke(EViewAction.InitSettingFont, null);
+
             #region Core
 
             var inbound = _config.Inbound[0];

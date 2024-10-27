@@ -19,6 +19,7 @@
         Shutdown,
         BrowseServer,
         ImportRulesFromFile,
+        InitSettingFont,
         SubEditWindow,
         RoutingRuleSettingWindow,
         RoutingRuleDetailsWindow,

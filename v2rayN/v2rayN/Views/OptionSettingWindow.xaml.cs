@@ -17,7 +17,6 @@ namespace v2rayN.Views
 
             this.Owner = Application.Current.MainWindow;
             _config = AppHandler.Instance.Config;
-            var lstFonts = GetFonts(Utils.GetFontsPath());
 
             ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
@@ -101,9 +100,6 @@ namespace v2rayN.Views
             {
                 cmbMainGirdOrientation.Items.Add(it.ToString());
             }
-
-            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-            cmbcurrentFontFamily.Items.Add(string.Empty);
 
             this.WhenActivated(disposables =>
             {
@@ -191,11 +187,22 @@ namespace v2rayN.Views
                     WindowsUtils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, togAutoRun.IsChecked ?? false);
                     this.DialogResult = true;
                     break;
+
+                case EViewAction.InitSettingFont:
+                    await InitSettingFont();
+                    break;
             }
             return await Task.FromResult(true);
         }
 
-        private List<string> GetFonts(string path)
+        private async Task InitSettingFont()
+        {
+            var lstFonts = await GetFonts(Utils.GetFontsPath());
+            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
+            cmbcurrentFontFamily.Items.Add(string.Empty);
+        }
+
+        private async Task<List<string>> GetFonts(string path)
         {
             var lstFonts = new List<string>();
             try
@@ -241,7 +248,7 @@ namespace v2rayN.Views
             {
                 Logging.SaveLog("fill fonts error", ex);
             }
-            return lstFonts;
+            return lstFonts.OrderBy(t => t).ToList();
         }
 
         private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
