@@ -88,6 +88,8 @@
         public int TrayMenuServersLimit { get; set; } = 20;
 
         public bool EnableHWA { get; set; } = false;
+
+        public bool EnableLog { get; set; } = true;
     }
 
     [Serializable]
