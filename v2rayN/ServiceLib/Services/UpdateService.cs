@@ -114,7 +114,7 @@ namespace ServiceLib.Services
             _updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
             var subItem = await AppHandler.Instance.SubItems();
 
-            if (subItem == null || subItem.Count <= 0)
+            if (subItem is not { Count: > 0 })
             {
                 _updateFunc?.Invoke(false, ResUI.MsgNoValidSubscription);
                 return;
@@ -122,10 +122,10 @@ namespace ServiceLib.Services
 
             foreach (var item in subItem)
             {
-                string id = item.Id.TrimEx();
-                string url = item.Url.TrimEx();
-                string userAgent = item.UserAgent.TrimEx();
-                string hashCode = $"{item.Remarks}->";
+                var id = item.Id.TrimEx();
+                var url = item.Url.TrimEx();
+                var userAgent = item.UserAgent.TrimEx();
+                var hashCode = $"{item.Remarks}->";
                 if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || Utils.IsNotEmpty(subId) && item.Id != subId)
                 {
                     //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
@@ -219,7 +219,7 @@ namespace ServiceLib.Services
                         _updateFunc?.Invoke(false, $"{hashCode}{result}");
                     }
 
-                    int ret = await ConfigHandler.AddBatchServers(config, result, id, true);
+                    var ret = await ConfigHandler.AddBatchServers(config, result, id, true);
                     if (ret <= 0)
                     {
                         Logging.SaveLog("FailedImportSubscription");
@@ -231,6 +231,8 @@ namespace ServiceLib.Services
                             : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
                 }
                 _updateFunc?.Invoke(false, "-------------------------------------------------------");
+
+                await ConfigHandler.DedupServerList(config, id);
             }
 
             _updateFunc?.Invoke(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
