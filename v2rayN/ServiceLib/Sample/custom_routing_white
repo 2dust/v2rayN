@@ -35,19 +35,6 @@
     ]
   },
   {
-    "remarks": "绕过中国域名",
-    "outboundTag": "direct",
-    "domain": [
-      "domain:dns.alidns.com",
-      "domain:doh.pub",
-      "domain:dot.pub",
-      "domain:doh.360.cn",
-      "domain:dot.360.cn",
-      "geosite:cn",
-      "geosite:geolocation-cn"
-    ]
-  },
-  {
     "remarks": "绕过中国IP",
     "outboundTag": "direct",
     "ip": [
@@ -71,6 +58,19 @@
       "123.125.81.6/32",
       "140.207.198.6/32",
       "geoip:cn"
+    ]
+  },
+  {
+    "remarks": "绕过中国域名",
+    "outboundTag": "direct",
+    "domain": [
+      "domain:dns.alidns.com",
+      "domain:doh.pub",
+      "domain:dot.pub",
+      "domain:doh.360.cn",
+      "domain:dot.360.cn",
+      "geosite:cn",
+      "geosite:geolocation-cn"
     ]
   },
   {

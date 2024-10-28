@@ -42,15 +42,7 @@
     ]
   },
   {
-    "remarks": "代理GFW",
-    "outboundTag": "proxy",
-    "domain": [
-      "geosite:gfw",
-      "geosite:greatfire"
-    ]
-  },
-  {
-    "remarks": "代理Google等",
+    "remarks": "代理IP",
     "outboundTag": "proxy",
     "ip": [
       "1.0.0.1",
@@ -63,6 +55,14 @@
       "geoip:netflix",
       "geoip:telegram",
       "geoip:twitter"
+    ]
+  },
+  {
+    "remarks": "代理GFW",
+    "outboundTag": "proxy",
+    "domain": [
+      "geosite:gfw",
+      "geosite:greatfire"
     ]
   },
   {
