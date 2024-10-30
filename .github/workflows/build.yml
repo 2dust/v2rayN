@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     # - name: 删除工作流运行
     #   uses: Mattraks/delete-workflow-runs@v2
@@ -36,7 +36,7 @@ jobs:
     #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: v2rayN
         path: |
