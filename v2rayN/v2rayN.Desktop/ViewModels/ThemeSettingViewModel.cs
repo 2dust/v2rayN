@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -94,6 +95,7 @@ namespace v2rayN.Desktop.ViewModels
                 x.OfType<TextBox>(),
                 x.OfType<TextBlock>(),
                 x.OfType<Menu>(),
+                x.OfType<ContextMenu>(),
                 x.OfType<DataGridRow>(),
                 x.OfType<ListBoxItem>()
             ));
@@ -120,8 +122,10 @@ namespace v2rayN.Desktop.ViewModels
                     x.OfType<TextBox>(),
                     x.OfType<TextBlock>(),
                     x.OfType<Menu>(),
+                    x.OfType<ContextMenu>(),
                     x.OfType<DataGridRow>(),
-                    x.OfType<ListBoxItem>()
+                    x.OfType<ListBoxItem>(),
+                    x.OfType<WindowNotificationManager>()
                 ));
                 style.Add(new Setter()
                 {
