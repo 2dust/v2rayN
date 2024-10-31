@@ -4,7 +4,7 @@
 	<TargetFramework>net8.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<Version>7.0.3</Version>
+	<Version>7.0.4</Version>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -16,7 +16,7 @@
 		<PackageReference Include="WebDav.Client" Version="2.8.0" />
 		<PackageReference Include="YamlDotNet" Version="16.1.3" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
-		<PackageReference Include="CliWrap" Version="3.6.6" /> 
+		<PackageReference Include="CliWrap" Version="3.6.7" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
 	</ItemGroup>
