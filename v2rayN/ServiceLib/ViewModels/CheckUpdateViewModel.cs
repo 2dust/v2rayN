@@ -99,13 +99,13 @@ namespace ServiceLib.ViewModels
                 {
                     await CheckUpdateN(EnableCheckPreReleaseUpdate);
                 }
-                else if (item.CoreType == ECoreType.mihomo.ToString())
+                else if (item.CoreType == ECoreType.Xray.ToString())
                 {
-                    await CheckUpdateCore(item, false);
+                    await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
                 }
                 else
                 {
-                    await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
+                    await CheckUpdateCore(item, false);
                 }
             }
 
