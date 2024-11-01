@@ -377,7 +377,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <!--
+
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
@@ -390,7 +390,8 @@
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             Classes="Margin8" />
-                        <TextBlock
+                        <!--
+						<TextBlock
                             Grid.Row="1"
                             Grid.Column="2"
                             VerticalAlignment="Center"

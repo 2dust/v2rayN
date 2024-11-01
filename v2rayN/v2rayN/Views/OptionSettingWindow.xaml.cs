@@ -184,7 +184,6 @@ namespace v2rayN.Views
             switch (action)
             {
                 case EViewAction.CloseWindow:
-                    WindowsUtils.SetAutoRun(Global.AutoRunRegPath, Global.AutoRunName, togAutoRun.IsChecked ?? false);
                     this.DialogResult = true;
                     break;
 

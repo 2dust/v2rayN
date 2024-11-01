@@ -38,6 +38,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return result;
         }
 
@@ -58,6 +59,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return null;
         }
 
@@ -92,6 +94,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return string.Empty;
         }
 
@@ -116,6 +119,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return null;
         }
 
@@ -137,6 +141,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return null;
         }
 
@@ -156,6 +161,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog("Base64Encode", ex);
             }
+
             return string.Empty;
         }
 
@@ -170,12 +176,12 @@ namespace ServiceLib.Common
             {
                 if (plainText.IsNullOrEmpty()) return "";
                 plainText = plainText.Trim()
-                  .Replace(Environment.NewLine, "")
-                  .Replace("\n", "")
-                  .Replace("\r", "")
-                  .Replace('_', '/')
-                  .Replace('-', '+')
-                  .Replace(" ", "");
+                    .Replace(Environment.NewLine, "")
+                    .Replace("\n", "")
+                    .Replace("\r", "")
+                    .Replace('_', '/')
+                    .Replace('-', '+')
+                    .Replace(" ", "");
 
                 if (plainText.Length % 4 > 0)
                 {
@@ -189,6 +195,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog("Base64Decode", ex);
             }
+
             return string.Empty;
         }
 
@@ -251,14 +258,17 @@ namespace ServiceLib.Common
                             unit = "TB";
                             return;
                         }
+
                         result = GBs + ((MBs % factor) / (factor + 0.0));
                         unit = "GB";
                         return;
                     }
+
                     result = MBs + ((KBs % factor) / (factor + 0.0));
                     unit = "MB";
                     return;
                 }
+
                 result = KBs + ((amount % factor) / (factor + 0.0));
                 unit = "KB";
                 return;
@@ -302,6 +312,7 @@ namespace ServiceLib.Common
                 {
                     continue;
                 }
+
                 var key = Uri.UnescapeDataString(keyValue[0]);
                 var val = Uri.UnescapeDataString(keyValue[1]);
 
@@ -323,6 +334,7 @@ namespace ServiceLib.Common
             {
                 sb.Append(b.ToString("x2"));
             }
+
             return sb.ToString();
         }
 
@@ -337,6 +349,7 @@ namespace ServiceLib.Common
             {
                 return url;
             }
+
             try
             {
                 Uri uri = new(url);
@@ -368,6 +381,7 @@ namespace ServiceLib.Common
             {
                 return text;
             }
+
             return text.Replace("，", ",").Replace(Environment.NewLine, ",");
         }
 
@@ -391,6 +405,7 @@ namespace ServiceLib.Common
             {
                 return true;
             }
+
             return text == "null";
         }
 
@@ -424,6 +439,7 @@ namespace ServiceLib.Common
                     _ => false,
                 };
             }
+
             return false;
         }
 
@@ -448,6 +464,7 @@ namespace ServiceLib.Common
                 if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31) return true;
                 if (ipBytes[0] == 192 && ipBytes[1] == 168) return true;
             }
+
             return false;
         }
 
@@ -468,6 +485,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return false;
         }
 
@@ -489,6 +507,7 @@ namespace ServiceLib.Common
             catch
             {
             }
+
             return 59090;
         }
 
@@ -512,7 +531,8 @@ namespace ServiceLib.Common
             {
                 if (blFull)
                 {
-                    return $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
+                    return
+                        $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
                 }
                 else
                 {
@@ -523,6 +543,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return Global.AppName;
         }
 
@@ -560,6 +581,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return string.Empty;
         }
 
@@ -572,7 +594,11 @@ namespace ServiceLib.Common
         {
             try
             {
-                if (fileName.IsNullOrEmpty()) { return; }
+                if (fileName.IsNullOrEmpty())
+                {
+                    return;
+                }
+
                 Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -605,6 +631,7 @@ namespace ServiceLib.Common
             {
                 Logging.SaveLog(ex.Message, ex);
             }
+
             return systemHosts;
         }
 
@@ -629,17 +656,20 @@ namespace ServiceLib.Common
                         cmd = cmd.WithArguments(args);
                     }
                 }
+
                 var result = await cmd.ExecuteBufferedAsync();
                 if (result.IsSuccess)
                 {
                     return result.StandardOutput.ToString();
                 }
+
                 Logging.SaveLog(result.ToString() ?? "");
             }
             catch (Exception ex)
             {
                 Logging.SaveLog("GetCliWrapOutput", ex);
             }
+
             return null;
         }
 
@@ -654,6 +684,7 @@ namespace ServiceLib.Common
             {
                 return startupPath;
             }
+
             return Path.Combine(startupPath, fileName);
         }
 
@@ -674,6 +705,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             if (IsNullOrEmpty(filename))
             {
                 return tempPath;
@@ -691,6 +723,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             return Path.Combine(tempPath, filename);
         }
 
@@ -701,6 +734,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             if (Utils.IsNullOrEmpty(filename))
             {
                 return tempPath;
@@ -718,6 +752,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             if (coreType != null)
             {
                 tempPath = Path.Combine(tempPath, coreType.ToLower().ToString());
@@ -726,6 +761,7 @@ namespace ServiceLib.Common
                     Directory.CreateDirectory(tempPath);
                 }
             }
+
             if (IsNullOrEmpty(filename))
             {
                 return tempPath;
@@ -743,6 +779,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             if (Utils.IsNullOrEmpty(filename))
             {
                 return tempPath;
@@ -760,6 +797,7 @@ namespace ServiceLib.Common
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             if (Utils.IsNullOrEmpty(filename))
             {
                 return tempPath;
@@ -820,9 +858,16 @@ namespace ServiceLib.Common
 
         public static async Task<string?> GetLinuxFontFamily(string lang)
         {
-           // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
+            // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
             var arg = new List<string>() { "-c", $"fc-list : family" };
             return await GetCliWrapOutput("/bin/bash", arg);
+        }
+
+        public static string? GetHomePath()
+        {
+            return IsWindows()
+                ? Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%")
+                : Environment.GetEnvironmentVariable("HOME");
         }
 
         #endregion Platform

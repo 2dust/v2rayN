@@ -349,14 +349,9 @@ namespace ServiceLib.ViewModels
 
             if (await ConfigHandler.SaveConfig(_config) == 0)
             {
-                if (needReboot)
-                {
-                    NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
-                }
-                else
-                {
-                    NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                }
+                await AutoStartupHandler.UpdateTask(_config);
+
+                NoticeHandler.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);
             }
             else

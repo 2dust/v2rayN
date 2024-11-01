@@ -6,7 +6,7 @@
 	<Nullable>enable</Nullable>
 	<Version>7.0.4</Version>
   </PropertyGroup>
-
+ 
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.2.1" />
 		<PackageReference Include="ReactiveUI" Version="20.1.63" />
@@ -19,6 +19,8 @@
 		<PackageReference Include="CliWrap" Version="3.6.7" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+		<PackageReference Include="TaskScheduler" Version="2.11.0" />
+
 	</ItemGroup>
 	
   <ItemGroup>
@@ -41,6 +43,7 @@
     <EmbeddedResource Include="Sample\tun_singbox_dns" />
     <EmbeddedResource Include="Sample\tun_singbox_inbound" />
     <EmbeddedResource Include="Sample\tun_singbox_rules" />
+    <EmbeddedResource Include="Sample\linux_autostart_config" />
   </ItemGroup>
 
 
