@@ -1034,14 +1034,14 @@ namespace ServiceLib.Handler
         /// <param name="strData"></param>
         /// <param name="subid"></param>
         /// <returns>成功导入的数量</returns>
-        private static async Task<int> AddBatchServers(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static async Task<int> AddBatchServersCommon(Config config, string strData, string subid, bool isSub)
         {
             if (Utils.IsNullOrEmpty(strData))
             {
                 return -1;
             }
 
-            string subFilter = string.Empty;
+            var subFilter = string.Empty;
             //remove sub items
             if (isSub && Utils.IsNotEmpty(subid))
             {
@@ -1049,16 +1049,14 @@ namespace ServiceLib.Handler
                 subFilter = (await AppHandler.Instance.GetSubItem(subid))?.Filter ?? "";
             }
 
-            int countServers = 0;
-            //Check for duplicate indexId
-            List<string>? lstDbIndexId = null;
+            var countServers = 0;
             List<ProfileItem> lstAdd = new();
             var arrData = strData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty());
             if (isSub)
             {
                 arrData = arrData.Distinct();
             }
-            foreach (string str in arrData)
+            foreach (var str in arrData)
             {
                 //maybe sub
                 if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
@@ -1075,35 +1073,12 @@ namespace ServiceLib.Handler
                     continue;
                 }
 
-                //exist sub items
-                if (isSub && Utils.IsNotEmpty(subid))
+                //exist sub items //filter
+                if (isSub && Utils.IsNotEmpty(subid) && Utils.IsNotEmpty(subFilter))
                 {
-                    var existItem = lstOriSub?.FirstOrDefault(t => t.IsSub == isSub
-                                                && config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == profileItem.Remarks : CompareProfileItem(t, profileItem, true));
-                    if (existItem != null)
+                    if (!Regex.IsMatch(profileItem.Remarks, subFilter))
                     {
-                        //Check for duplicate indexId
-                        if (lstDbIndexId is null)
-                        {
-                            lstDbIndexId = await AppHandler.Instance.ProfileItemIndexes("");
-                        }
-                        if (lstAdd.Any(t => t.IndexId == existItem.IndexId)
-                            || lstDbIndexId.Any(t => t == existItem.IndexId))
-                        {
-                            profileItem.IndexId = string.Empty;
-                        }
-                        else
-                        {
-                            profileItem.IndexId = existItem.IndexId;
-                        }
-                    }
-                    //filter
-                    if (Utils.IsNotEmpty(subFilter))
-                    {
-                        if (!Regex.IsMatch(profileItem.Remarks, subFilter))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
                 }
                 profileItem.Subid = subid;
@@ -1138,7 +1113,7 @@ namespace ServiceLib.Handler
             return countServers;
         }
 
-        private static async Task<int> AddBatchServers4Custom(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static async Task<int> AddBatchServers4Custom(Config config, string strData, string subid, bool isSub)
         {
             if (Utils.IsNullOrEmpty(strData))
             {
@@ -1222,10 +1197,7 @@ namespace ServiceLib.Handler
             {
                 await RemoveServerViaSubid(config, subid, isSub);
             }
-            if (isSub && lstOriSub?.Count == 1)
-            {
-                profileItem.IndexId = lstOriSub[0].IndexId;
-            }
+       
             profileItem.Subid = subid;
             profileItem.IsSub = isSub;
             profileItem.PreSocksPort = preSocksPort;
@@ -1239,7 +1211,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        private static async Task<int> AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub, List<ProfileItem> lstOriSub)
+        private static async Task<int> AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub)
         {
             if (Utils.IsNullOrEmpty(strData))
             {
@@ -1278,34 +1250,47 @@ namespace ServiceLib.Handler
                 return -1;
             }
             List<ProfileItem>? lstOriSub = null;
+            ProfileItem? activeProfile = null;
             if (isSub && Utils.IsNotEmpty(subid))
             {
                 lstOriSub = await AppHandler.Instance.ProfileItems(subid);
+                activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
             }
 
             var counter = 0;
             if (Utils.IsBase64String(strData))
             {
-                counter = await AddBatchServers(config, Utils.Base64Decode(strData), subid, isSub, lstOriSub);
+                counter = await AddBatchServersCommon(config, Utils.Base64Decode(strData), subid, isSub);
             }
             if (counter < 1)
             {
-                counter = await AddBatchServers(config, strData, subid, isSub, lstOriSub);
+                counter = await AddBatchServersCommon(config, strData, subid, isSub);
             }
             if (counter < 1)
             {
-                counter = await AddBatchServers(config, Utils.Base64Decode(strData), subid, isSub, lstOriSub);
+                counter = await AddBatchServersCommon(config, Utils.Base64Decode(strData), subid, isSub);
             }
 
             if (counter < 1)
             {
-                counter = await AddBatchServers4SsSIP008(config, strData, subid, isSub, lstOriSub);
+                counter = await AddBatchServers4SsSIP008(config, strData, subid, isSub);
             }
 
             //maybe other sub
             if (counter < 1)
             {
-                counter = await AddBatchServers4Custom(config, strData, subid, isSub, lstOriSub);
+                counter = await AddBatchServers4Custom(config, strData, subid, isSub);
+            }
+
+            //Select active node
+            if (activeProfile != null)
+            {
+                var lstSub = await AppHandler.Instance.ProfileItems(subid);
+                var existItem = lstSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == activeProfile.Remarks : CompareProfileItem(t, activeProfile, true));
+                if (existItem != null)
+                {
+                    await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
+                }
             }
 
             return counter;
