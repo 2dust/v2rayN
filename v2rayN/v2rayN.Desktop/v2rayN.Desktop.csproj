@@ -20,16 +20,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.1.4" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.1.4" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.4" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.4" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.4" />
+        <PackageReference Include="Avalonia" Version="11.2.0" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.0" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.0" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.0" />
         <PackageReference Include="DialogHost.Avalonia" Version="0.8.1" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />		
-        <PackageReference Include="Semi.Avalonia" Version="11.1.0.4" />
-        <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.1.0.4" />
+        <PackageReference Include="Semi.Avalonia" Version="11.2.0" />
+        <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.0" />
         <PackageReference Include="ReactiveUI" Version="20.1.63" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 	</ItemGroup>
