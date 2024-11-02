@@ -83,6 +83,7 @@
             Classes="TextArea"
             IsReadOnly="True"
             TextAlignment="Left"
+            VerticalAlignment="Stretch"
             TextWrapping="Wrap">
             <TextBox.ContextMenu>
                 <ContextMenu>
