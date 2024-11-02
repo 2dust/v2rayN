@@ -16,7 +16,6 @@ namespace ServiceLib.ViewModels
         private List<ProfileItem> _lstProfile;
         private string _serverFilter = string.Empty;
         private Dictionary<string, bool> _dicHeaderSort = new();
-        private SpeedtestService? _speedtestHandler;
 
         #endregion private prop
 
@@ -686,12 +685,13 @@ namespace ServiceLib.ViewModels
             }
             //ClearTestResult();
 
-            _speedtestHandler = new SpeedtestService(_config, lstSelecteds, actionType, UpdateSpeedtestHandler);
+            _ = new SpeedtestService(_config, lstSelecteds, actionType, UpdateSpeedtestHandler);
+
         }
 
         public void ServerSpeedtestStop()
         {
-            _speedtestHandler?.ExitLoop();
+            MessageBus.Current.SendMessage("", EMsgCommand.StopSpeedtest.ToString());
         }
 
         private async Task Export2ClientConfigAsync(bool blClipboard)
