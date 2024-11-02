@@ -6,12 +6,10 @@ namespace ServiceLib.Services
     public class UpdateService
     {
         private Action<bool, string>? _updateFunc;
-        private Config _config;
         private int _timeout = 30;
 
         public async Task CheckUpdateGuiN(Config config, Action<bool, string> updateFunc, bool preRelease)
         {
-            _config = config;
             _updateFunc = updateFunc;
             var url = string.Empty;
             var fileName = string.Empty;
@@ -53,7 +51,6 @@ namespace ServiceLib.Services
 
         public async Task CheckUpdateCore(ECoreType type, Config config, Action<bool, string> updateFunc, bool preRelease)
         {
-            _config = config;
             _updateFunc = updateFunc;
             var url = string.Empty;
             var fileName = string.Empty;
@@ -108,7 +105,6 @@ namespace ServiceLib.Services
 
         public async Task UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> updateFunc)
         {
-            _config = config;
             _updateFunc = updateFunc;
 
             _updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
@@ -454,7 +450,6 @@ namespace ServiceLib.Services
 
         private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> updateFunc)
         {
-            _config = config;
             _updateFunc = updateFunc;
 
             var geoUrl = string.IsNullOrEmpty(config?.ConstItem.GeoSourceUrl)
@@ -470,7 +465,6 @@ namespace ServiceLib.Services
 
         private async Task UpdateSrsFileAll(Config config, Action<bool, string> updateFunc)
         {
-            _config = config;
             _updateFunc = updateFunc;
 
             var geoipFiles = new List<string>();
@@ -521,9 +515,9 @@ namespace ServiceLib.Services
 
         private async Task UpdateSrsFile(string type, string srsName, Config config, Action<bool, string> updateFunc)
         {
-            var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
+            var srsUrl = string.IsNullOrEmpty(config.ConstItem.SrsSourceUrl)
                             ? Global.SingboxRulesetUrl
-                            : _config.ConstItem.SrsSourceUrl;
+                            : config.ConstItem.SrsSourceUrl;
 
             var fileName = $"{type}-{srsName}.srs";
             var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);
