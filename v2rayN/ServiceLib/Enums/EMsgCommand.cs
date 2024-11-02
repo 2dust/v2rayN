@@ -5,6 +5,7 @@
         ClearMsg,
         SendMsgView,
         SendSnackMsg,
-        RefreshProfiles
+        RefreshProfiles,
+        StopSpeedtest
     }
 }
