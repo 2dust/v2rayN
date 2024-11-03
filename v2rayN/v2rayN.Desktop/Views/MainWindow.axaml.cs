@@ -28,9 +28,7 @@ namespace v2rayN.Desktop.Views
 
             _config = AppHandler.Instance.Config;
             _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.BottomRight };
-
-            //ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
-
+            
             this.Closing += MainWindow_Closing;
             this.KeyDown += MainWindow_KeyDown;
             menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
@@ -114,6 +112,8 @@ namespace v2rayN.Desktop.Views
             this.Title = $"{Utils.GetVersion()} - {(AppHandler.Instance.IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
             if (Utils.IsWindows())
             {
+                ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
+
                 menuGlobalHotkeySetting.IsVisible = false;
             }
             else
@@ -158,7 +158,9 @@ namespace v2rayN.Desktop.Views
 
         private void OnProgramStarted(object state, bool timeout)
         {
-            ShowHideWindow(true);
+            Dispatcher.UIThread.Post(() =>
+                    ShowHideWindow(true),
+                DispatcherPriority.Default);
         }
 
         private void DelegateSnackMsg(string content)
