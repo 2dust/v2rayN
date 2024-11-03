@@ -289,7 +289,7 @@ namespace ServiceLib.ViewModels
                 await ProfileExHandler.Instance.SaveTo();
                 await StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
-                CoreHandler.Instance.CoreStop();
+                await CoreHandler.Instance.CoreStop();
 
                 Logging.SaveLog("MyAppExit End");
             }
