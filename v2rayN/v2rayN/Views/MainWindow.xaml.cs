@@ -367,17 +367,17 @@ namespace v2rayN.Views
             var bl = blShow ?? !_config.UiItem.ShowInTaskbar;
             if (bl)
             {
-                Application.Current.MainWindow.Show();
-                if (Application.Current.MainWindow.WindowState == WindowState.Minimized)
+                this?.Show();
+                if (this?.WindowState == WindowState.Minimized)
                 {
-                    Application.Current.MainWindow.WindowState = WindowState.Normal;
+                    this.WindowState = WindowState.Normal;
                 }
-                Application.Current.MainWindow.Activate();
-                Application.Current.MainWindow.Focus();
+                this?.Activate();
+                this?.Focus();
             }
             else
             {
-                Application.Current.MainWindow.Hide();
+                this?.Hide();
             }
             _config.UiItem.ShowInTaskbar = bl;
         }

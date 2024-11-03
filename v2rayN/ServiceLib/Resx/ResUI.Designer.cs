@@ -871,6 +871,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Are you sure to exit? 的本地化字符串。
+        /// </summary>
+        public static string menuExitTips {
+            get {
+                return ResourceManager.GetString("menuExitTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export selected server for complete configuration 的本地化字符串。
         /// </summary>
         public static string menuExport2ClientConfig {
