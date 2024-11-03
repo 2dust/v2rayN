@@ -113,7 +113,14 @@ namespace ServiceLib.Handler
 
         private static async Task ClearTaskLinux()
         {
-            File.Delete(GetHomePathLinux());
+            try
+            {
+                File.Delete(GetHomePathLinux());
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(ex.Message, ex);
+            }
         }
 
         private static async Task SetTaskLinux()
@@ -127,8 +134,6 @@ namespace ServiceLib.Handler
                     Logging.SaveLog(linuxConfig);
 
                     var homePath = GetHomePathLinux();
-                    Directory.CreateDirectory(Path.GetDirectoryName(homePath));
-
                     await File.WriteAllTextAsync(homePath, linuxConfig);
                 }
             }
@@ -140,7 +145,9 @@ namespace ServiceLib.Handler
 
         private static string GetHomePathLinux()
         {
-            return Path.Combine(Utils.GetHomePath(), ".config", "autostart", $"{Global.AppName}.desktop");
+            var homePath = Path.Combine(Utils.GetHomePath(), ".config", "autostart", $"{Global.AppName}.desktop");
+            Directory.CreateDirectory(Path.GetDirectoryName(homePath));
+            return homePath;
         }
 
         #endregion Linux
