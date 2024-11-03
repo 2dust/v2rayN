@@ -2,9 +2,15 @@
 A GUI client for Windows, support [Xray core](https://github.com/XTLS/Xray-core) and [v2fly core](https://github.com/v2fly/v2ray-core) and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
 
 
+![License](https://img.shields.io/badge/GPL-3.0-License)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/2dust/v2rayN)](https://github.com/2dust/v2rayN/commits/master)
 [![CodeFactor](https://www.codefactor.io/repository/github/2dust/v2rayn/badge)](https://www.codefactor.io/repository/github/2dust/v2rayn)
+![Contributors](https://img.shields.io/github/contributors/2dust/v2rayN?logo=github)
+![Downloads](https://img.shields.io/github/downloads/2dust/v2rayN/total?logo=download)
 [![GitHub Releases](https://img.shields.io/github/downloads/2dust/v2rayN/latest/total?logo=github)](https://github.com/2dust/v2rayN/releases)
+![Platform](https://img.shields.io/badge/Platform-Windows-green?logo=windows&logoColor=white)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?logo=git)
+![Version](https://img.shields.io/github/v/release/2dust/v2rayn?logo=semver&logoColor=white)
 [![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/v2rayn)
 
 
