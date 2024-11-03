@@ -686,7 +686,6 @@ namespace ServiceLib.ViewModels
             //ClearTestResult();
 
             _ = new SpeedtestService(_config, lstSelecteds, actionType, UpdateSpeedtestHandler);
-
         }
 
         public void ServerSpeedtestStop()

@@ -174,7 +174,7 @@ namespace v2rayN.Desktop.Views
         {
             switch (action)
             {
-                case EViewAction.CloseWindow: 
+                case EViewAction.CloseWindow:
                     this.Close(true);
                     break;
 

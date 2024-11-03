@@ -75,7 +75,7 @@ namespace ServiceLib.Handler
             {
                 return;
             }
-            
+
             var logonUser = WindowsIdentity.GetCurrent().Name;
             using var taskService = new Microsoft.Win32.TaskScheduler.TaskService();
             var tasks = taskService.RootFolder.GetTasks(new Regex(taskName));
