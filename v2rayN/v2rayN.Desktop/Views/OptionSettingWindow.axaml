@@ -489,18 +489,7 @@
                             HorizontalAlignment="Left"
                             Classes="Margin8" />
 
-                        <TextBlock
-                            Grid.Row="9"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
-                        <ToggleSwitch
-                            x:Name="togEnableCheckPreReleaseUpdate"
-                            Grid.Row="9"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            Classes="Margin8" />
+            
 
                         <TextBlock
                             Grid.Row="11"

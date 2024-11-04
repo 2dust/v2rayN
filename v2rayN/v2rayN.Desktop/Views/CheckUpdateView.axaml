@@ -39,7 +39,7 @@
             <ListBox
                 x:Name="lstCheckUpdates"
                 BorderThickness="1"
-                ItemsSource="{Binding CheckUpdateItems}">
+                ItemsSource="{Binding CheckUpdateModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />

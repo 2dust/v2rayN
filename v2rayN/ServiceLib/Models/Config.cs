@@ -15,15 +15,14 @@
 
         public bool IsRunningCore(ECoreType type)
         {
-            if (type == ECoreType.Xray && RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5)
+            switch (type)
             {
-                return true;
+                case ECoreType.Xray when RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5:
+                case ECoreType.sing_box when RunningCoreType is ECoreType.sing_box or ECoreType.mihomo:
+                    return true;
+                default:
+                    return false;
             }
-            if (type == ECoreType.sing_box && RunningCoreType is ECoreType.sing_box or ECoreType.mihomo)
-            {
-                return true;
-            }
-            return false;
         }
 
         #endregion property
@@ -46,6 +45,7 @@
         public ClashUIItem ClashUIItem { get; set; }
         public SystemProxyItem SystemProxyItem { get; set; }
         public WebDavItem WebDavItem { get; set; }
+        public CheckUpdateItem CheckUpdateItem { get; set; }
         public List<InItem> Inbound { get; set; }
         public List<KeyEventItem> GlobalHotkeys { get; set; }
         public List<CoreTypeItem> CoreTypeItem { get; set; }

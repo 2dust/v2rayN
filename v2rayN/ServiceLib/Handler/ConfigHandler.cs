@@ -162,6 +162,7 @@ namespace ServiceLib.Handler
             config.ClashUIItem ??= new();
             config.SystemProxyItem ??= new();
             config.WebDavItem ??= new();
+            config.CheckUpdateItem ??= new();
 
             return config;
         }
