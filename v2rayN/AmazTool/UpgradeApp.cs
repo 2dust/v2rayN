@@ -22,12 +22,12 @@ namespace AmazTool
             Console.WriteLine("Try to end the process(尝试结束进程).");
             try
             {
-                var path = GetPath(V2rayN);
-                Console.WriteLine(path);
                 var existing = Process.GetProcessesByName(V2rayN);
-                var pp = existing.FirstOrDefault(p => p.MainModule?.FileName != null && p.MainModule?.FileName.Contains(path) == true);
-                pp?.Kill();
-                pp?.WaitForExit(1000);
+                foreach (var pp in existing)
+                {
+                    pp?.Kill();
+                    pp?.WaitForExit(1000);
+                }
             }
             catch (Exception ex)
             {

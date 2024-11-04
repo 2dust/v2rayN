@@ -114,7 +114,7 @@
                     <MenuItem x:Name="menuClose" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuClose}" />
+                                <TextBlock Text="{x:Static resx:ResUI.menuExit}" />
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>

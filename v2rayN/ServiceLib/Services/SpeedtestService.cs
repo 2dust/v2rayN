@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+
 namespace ServiceLib.Services
 {
     public class SpeedtestService
@@ -85,7 +86,7 @@ namespace ServiceLib.Services
 
         private void ExitLoop(string x)
         {
-            if(_exitLoop) return;
+            if (_exitLoop) return;
             _exitLoop = true;
             UpdateFunc("", ResUI.SpeedtestingStop);
         }

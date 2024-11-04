@@ -52,6 +52,8 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
+        public ReactiveCommand<Unit, Unit> ExitCmd { get; }
+
         [Reactive]
         public bool BlReloadEnabled { get; set; }
 
@@ -187,6 +189,11 @@ namespace ServiceLib.ViewModels
                 await Reload();
             });
 
+            ExitCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await Exit();
+            });
+
             RegionalPresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await ApplyRegionalPreset(EPresetType.Default);
@@ -266,7 +273,7 @@ namespace ServiceLib.ViewModels
             try
             {
                 Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-                if ((update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 3 == 0)
+                if ((update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
                 {
                     Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
                 }
@@ -289,7 +296,7 @@ namespace ServiceLib.ViewModels
                 await ProfileExHandler.Instance.SaveTo();
                 await StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
-                CoreHandler.Instance.CoreStop();
+                await CoreHandler.Instance.CoreStop();
 
                 Logging.SaveLog("MyAppExit End");
             }
@@ -586,6 +593,16 @@ namespace ServiceLib.ViewModels
             {
                 ShowHideWindow(false);
             }
+        }
+
+        private async Task Exit()
+        {
+            if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+            {
+                return;
+            }
+
+            await MyAppExitAsync(false);
         }
 
         #endregion core job

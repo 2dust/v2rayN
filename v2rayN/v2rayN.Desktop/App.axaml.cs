@@ -9,8 +9,6 @@ namespace v2rayN.Desktop;
 
 public partial class App : Application
 {
-    //public static EventWaitHandle ProgramStarted;
-
     public override void Initialize()
     {
         if (!AppHandler.Instance.InitApp())
@@ -32,29 +30,13 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            OnStartup(desktop.Args);
+            AppHandler.Instance.InitComponents();
 
             desktop.Exit += OnExit;
             desktop.MainWindow = new MainWindow();
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    private void OnStartup(string[]? Args)
-    {
-        var exePathKey = Utils.GetMd5(Utils.GetExePath());
-
-        var rebootas = (Args ?? new string[] { }).Any(t => t == Global.RebootAs);
-        //ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
-        //if (!rebootas && !bCreatedNew)
-        //{
-        //    ProgramStarted.Set();
-        //    Environment.Exit(0);
-        //    return;
-        //}
-
-        AppHandler.Instance.InitComponents();
     }
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
