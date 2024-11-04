@@ -1366,4 +1366,7 @@
   <data name="menuExitTips" xml:space="preserve">
     <value>Are you sure to exit?</value>
   </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Remarks Memo</value>
+  </data>
 </root>

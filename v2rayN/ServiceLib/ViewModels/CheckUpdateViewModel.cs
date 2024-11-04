@@ -12,10 +12,10 @@ namespace ServiceLib.ViewModels
     {
         private const string _geo = "GeoFiles";
         private string _v2rayN = ECoreType.v2rayN.ToString();
-        private List<CheckUpdateItem> _lstUpdated = [];
+        private List<CheckUpdateModel> _lstUpdated = [];
 
-        private IObservableCollection<CheckUpdateItem> _checkUpdateItem = new ObservableCollectionExtended<CheckUpdateItem>();
-        public IObservableCollection<CheckUpdateItem> CheckUpdateItems => _checkUpdateItem;
+        private IObservableCollection<CheckUpdateModel> _checkUpdateModel = new ObservableCollectionExtended<CheckUpdateModel>();
+        public IObservableCollection<CheckUpdateModel> CheckUpdateModels => _checkUpdateModel;
         public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
         [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
 
@@ -29,65 +29,56 @@ namespace ServiceLib.ViewModels
                 await CheckUpdate();
             });
 
-            EnableCheckPreReleaseUpdate = _config.GuiItem.CheckPreReleaseUpdate;
+            EnableCheckPreReleaseUpdate = _config.CheckUpdateItem.CheckPreReleaseUpdate;
 
             this.WhenAnyValue(
             x => x.EnableCheckPreReleaseUpdate,
             y => y == true)
-                .Subscribe(c => { _config.GuiItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate; });
+                .Subscribe(c => { _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate; });
 
-            RefreshSubItems();
+            RefreshCheckUpdateItems();
         }
 
-        private void RefreshSubItems()
+        private void RefreshCheckUpdateItems()
         {
-            _checkUpdateItem.Clear();
+            _checkUpdateModel.Clear();
 
             if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
             {
-                _checkUpdateItem.Add(new CheckUpdateItem()
-                {
-                    IsSelected = false,
-                    CoreType = _v2rayN,
-                    Remarks = ResUI.menuCheckUpdate,
-                });
-                _checkUpdateItem.Add(new CheckUpdateItem()
-                {
-                    IsSelected = true,
-                    CoreType = ECoreType.Xray.ToString(),
-                    Remarks = ResUI.menuCheckUpdate,
-                });
-                _checkUpdateItem.Add(new CheckUpdateItem()
-                {
-                    IsSelected = true,
-                    CoreType = ECoreType.mihomo.ToString(),
-                    Remarks = ResUI.menuCheckUpdate,
-                });
-                _checkUpdateItem.Add(new CheckUpdateItem()
-                {
-                    IsSelected = true,
-                    CoreType = ECoreType.sing_box.ToString(),
-                    Remarks = ResUI.menuCheckUpdate,
-                });
+                _checkUpdateModel.Add(GetCheckUpdateModel(_v2rayN));
+                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
+                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
+                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
             }
+            _checkUpdateModel.Add(GetCheckUpdateModel(_geo));
+        }
 
-            _checkUpdateItem.Add(new CheckUpdateItem()
+        private CheckUpdateModel GetCheckUpdateModel(string coreType)
+        {
+            return new()
             {
-                IsSelected = true,
-                CoreType = _geo,
+                IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
+                CoreType = coreType,
                 Remarks = ResUI.menuCheckUpdate,
-            });
+            };
+        }
+
+        private async Task SaveSelectedCoreTypes()
+        {
+            _config.CheckUpdateItem.SelectedCoreTypes = _checkUpdateModel.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
+            await ConfigHandler.SaveConfig(_config);
         }
 
         private async Task CheckUpdate()
         {
             _lstUpdated.Clear();
-            _lstUpdated = _checkUpdateItem.Where(x => x.IsSelected == true)
-                    .Select(x => new CheckUpdateItem() { CoreType = x.CoreType }).ToList();
+            _lstUpdated = _checkUpdateModel.Where(x => x.IsSelected == true)
+                    .Select(x => new CheckUpdateModel() { CoreType = x.CoreType }).ToList();
+            await SaveSelectedCoreTypes();
 
-            for (var k = _checkUpdateItem.Count - 1; k >= 0; k--)
+            for (var k = _checkUpdateModel.Count - 1; k >= 0; k--)
             {
-                var item = _checkUpdateItem[k];
+                var item = _checkUpdateModel[k];
                 if (item.IsSelected != true) continue;
 
                 UpdateView(item.CoreType, "...");
@@ -161,23 +152,23 @@ namespace ServiceLib.ViewModels
                 });
         }
 
-        private async Task CheckUpdateCore(CheckUpdateItem item, bool preRelease)
+        private async Task CheckUpdateCore(CheckUpdateModel model, bool preRelease)
         {
             void _updateUI(bool success, string msg)
             {
-                UpdateView(item.CoreType, msg);
+                UpdateView(model.CoreType, msg);
                 if (success)
                 {
-                    UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
+                    UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
-                    UpdatedPlusPlus(item.CoreType, msg);
+                    UpdatedPlusPlus(model.CoreType, msg);
                 }
             }
-            var type = (ECoreType)Enum.Parse(typeof(ECoreType), item.CoreType);
+            var type = (ECoreType)Enum.Parse(typeof(ECoreType), model.CoreType);
             await (new UpdateService()).CheckUpdateCore(type, _config, _updateUI, preRelease)
                 .ContinueWith(t =>
                 {
-                    UpdatedPlusPlus(item.CoreType, "");
+                    UpdatedPlusPlus(model.CoreType, "");
                 });
         }
 
@@ -291,7 +282,7 @@ namespace ServiceLib.ViewModels
 
         private void UpdateView(string coreType, string msg)
         {
-            var item = new CheckUpdateItem()
+            var item = new CheckUpdateModel()
             {
                 CoreType = coreType,
                 Remarks = msg,
@@ -299,13 +290,13 @@ namespace ServiceLib.ViewModels
             _updateView?.Invoke(EViewAction.DispatcherCheckUpdate, item);
         }
 
-        public void UpdateViewResult(CheckUpdateItem item)
+        public void UpdateViewResult(CheckUpdateModel model)
         {
-            var found = _checkUpdateItem.FirstOrDefault(t => t.CoreType == item.CoreType);
+            var found = _checkUpdateModel.FirstOrDefault(t => t.CoreType == model.CoreType);
             if (found == null) return;
             var itemCopy = JsonUtils.DeepCopy(found);
-            itemCopy.Remarks = item.Remarks;
-            _checkUpdateItem.Replace(found, itemCopy);
+            itemCopy.Remarks = model.Remarks;
+            _checkUpdateModel.Replace(found, itemCopy);
         }
     }
 }

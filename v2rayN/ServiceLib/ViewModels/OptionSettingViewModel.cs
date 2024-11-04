@@ -53,7 +53,6 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
-        [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
         [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public bool DoubleClick2Activate { get; set; }
         [Reactive] public int AutoUpdateInterval { get; set; }
@@ -166,7 +165,6 @@ namespace ServiceLib.ViewModels
             EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
             AutoHideStartup = _config.UiItem.AutoHideStartup;
-            EnableCheckPreReleaseUpdate = _config.GuiItem.CheckPreReleaseUpdate;
             EnableDragDropSort = _config.UiItem.EnableDragDropSort;
             DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
             AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
@@ -317,7 +315,6 @@ namespace ServiceLib.ViewModels
             _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.UiItem.AutoHideStartup = AutoHideStartup;
             _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
-            _config.GuiItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate;
             _config.UiItem.EnableDragDropSort = EnableDragDropSort;
             _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
             _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;

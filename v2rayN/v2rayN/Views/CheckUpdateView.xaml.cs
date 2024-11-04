@@ -15,7 +15,7 @@ namespace v2rayN.Views
 
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel, vm => vm.CheckUpdateItems, v => v.lstCheckUpdates.ItemsSource).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.CheckUpdateModels, v => v.lstCheckUpdates.ItemsSource).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.EnableCheckPreReleaseUpdate, v => v.togEnableCheckPreReleaseUpdate.IsChecked).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.CheckUpdateCmd, v => v.btnCheckUpdate).DisposeWith(disposables);
@@ -30,7 +30,7 @@ namespace v2rayN.Views
                     if (obj is null) return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
-                        ViewModel?.UpdateViewResult((CheckUpdateItem)obj);
+                        ViewModel?.UpdateViewResult((CheckUpdateModel)obj);
                     }), DispatcherPriority.Normal);
                     break;
 

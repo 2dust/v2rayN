@@ -1,14 +1,14 @@
 ﻿<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.SubEditWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:reactiveui="http://reactiveui.net"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:v2rayN.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    xmlns:conv="clr-namespace:v2rayN.Converters"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"
     Height="600"
@@ -58,6 +58,7 @@
 
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -165,7 +166,7 @@
 
                     <TextBox
                         x:Name="txtAutoUpdateInterval"
-                        Width="200"
+                        Width="100"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Top"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
@@ -300,6 +301,24 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}"
                     ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
+
+
+                <TextBlock
+                    Grid.Row="12"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvMemo}" />
+                <TextBox
+                    x:Name="txtMemo"
+                    Grid.Row="12"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Top"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>
     </DockPanel>

@@ -1,6 +1,6 @@
 ﻿namespace ServiceLib.Models
 {
-    public class CheckUpdateItem
+    public class CheckUpdateModel
     {
         public bool? IsSelected { get; set; }
         public string? CoreType { get; set; }

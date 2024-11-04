@@ -80,9 +80,7 @@
         public bool IgnoreGeoUpdateCore { get; set; } = true;
 
         public int AutoUpdateInterval { get; set; }
-
-        public bool CheckPreReleaseUpdate { get; set; } = false;
-
+        
         public bool EnableSecurityProtocolTls13 { get; set; }
 
         public int TrayMenuServersLimit { get; set; } = 20;
@@ -244,5 +242,12 @@
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? DirName { get; set; }
+    }
+
+    [Serializable]
+    public class CheckUpdateItem
+    {
+        public bool CheckPreReleaseUpdate { get; set; }
+        public List<string>? SelectedCoreTypes { get; set; }
     }
 }
