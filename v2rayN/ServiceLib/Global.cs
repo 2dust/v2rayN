@@ -105,9 +105,9 @@
 
         public static readonly List<string> SpeedTestUrls = new() {
             @"https://speed.cloudflare.com/__down?bytes=100000000",
+            @"https://speed.cloudflare.com/__down?bytes=50000000",
             @"https://speed.cloudflare.com/__down?bytes=10000000",
-            @"http://cachefly.cachefly.net/50mb.test",
-            @"http://cachefly.cachefly.net/10mb.test"
+            @"https://cachefly.cachefly.net/50mb.test",
         };
 
         public static readonly List<string> SpeedPingTestUrls = new() {
