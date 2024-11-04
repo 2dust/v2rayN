@@ -189,6 +189,8 @@ namespace v2rayN.Desktop.Views
 
         private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
         {
+            var source = e.Source as Border;
+            if (source == null || source.Name != "CellBorder") return;
             if (_config.UiItem.DoubleClick2Activate)
             {
                 ViewModel?.SetDefaultServer();
