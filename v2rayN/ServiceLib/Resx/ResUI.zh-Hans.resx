@@ -1363,4 +1363,7 @@
   <data name="menuExitTips" xml:space="preserve">
     <value>是否确定退出？</value>
   </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>备注备忘</value>
+  </data>
 </root>

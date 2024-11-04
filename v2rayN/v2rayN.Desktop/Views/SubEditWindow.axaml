@@ -52,6 +52,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -114,7 +115,7 @@
 
                     <TextBox
                         x:Name="txtAutoUpdateInterval"
-                        Width="200"
+                        Width="100"
                         VerticalAlignment="Center"
                         Classes="Margin8"
                         DockPanel.Dock="Right"
@@ -233,13 +234,27 @@
                 <TextBlock
                     Grid.Row="12"
                     Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Classes="Margin8"
+                    Text="{x:Static resx:ResUI.LvMemo}" />
+                <TextBox
+                    x:Name="txtMemo"
+                    Grid.Row="12"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Classes="Margin8"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Grid.Row="13"
+                    Grid.Column="0"
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Center"
                     Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvMoreUrl}" />
                 <TextBox
                     x:Name="txtMoreUrl"
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="1"
                     MinHeight="100"
                     HorizontalAlignment="Stretch"

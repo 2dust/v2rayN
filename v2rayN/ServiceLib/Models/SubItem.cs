@@ -33,5 +33,7 @@ namespace ServiceLib.Models
         public string? NextProfile { get; set; }
 
         public int? PreSocksPort { get; set; }
+
+        public string? Memo { get; set; }
     }
 }

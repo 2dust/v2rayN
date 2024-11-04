@@ -1358,6 +1358,7 @@ namespace ServiceLib.Handler
                 item.PrevProfile = subItem.PrevProfile;
                 item.NextProfile = subItem.NextProfile;
                 item.PreSocksPort = subItem.PreSocksPort;
+                item.Memo = subItem.Memo;
             }
 
             if (Utils.IsNullOrEmpty(item.Id))

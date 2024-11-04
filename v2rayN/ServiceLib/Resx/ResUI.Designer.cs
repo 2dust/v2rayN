@@ -448,6 +448,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remarks Memo 的本地化字符串。
+        /// </summary>
+        public static string LvMemo {
+            get {
+                return ResourceManager.GetString("LvMemo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 More URLs, separated by commas; Subscription conversion will be invalid 的本地化字符串。
         /// </summary>
         public static string LvMoreUrl {
