@@ -228,7 +228,7 @@ namespace ServiceLib.Services
                 }
                 _updateFunc?.Invoke(false, "-------------------------------------------------------");
 
-                await ConfigHandler.DedupServerList(config, id);
+                //await ConfigHandler.DedupServerList(config, id);
             }
 
             _updateFunc?.Invoke(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
