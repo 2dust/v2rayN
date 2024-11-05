@@ -69,6 +69,8 @@
         </WrapPanel>
         <TextBox
             Name="txtMsg"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
             BorderThickness="0"
             FontSize="{DynamicResource StdFontSize-1}"
             HorizontalScrollBarVisibility="Auto"
