@@ -1,4 +1,4 @@
-﻿using CliWrap;
+using CliWrap;
 using CliWrap.Buffered;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -185,7 +185,7 @@ namespace ServiceLib.Common
 
                 if (plainText.Length % 4 > 0)
                 {
-                    plainText = plainText.PadRight(plainText.Length + 4 - plainText.Length % 4, '=');
+                    plainText = plainText.PadRight(plainText.Length + 4 - (plainText.Length % 4), '=');
                 }
 
                 var data = Convert.FromBase64String(plainText);

@@ -1,4 +1,4 @@
-﻿using ReactiveUI;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 
@@ -105,7 +105,7 @@ namespace ServiceLib.ViewModels
             item2.DomainStrategy4Freedom = domainStrategy4Freedom2;
             item2.DomainDNSAddress = domainDNSAddress2;
             item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
-            item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2)); ;
+            item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2));
             await ConfigHandler.SaveDNSItems(_config, item2);
 
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

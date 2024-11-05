@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 
@@ -98,7 +98,7 @@ namespace ServiceLib.Common
                 totalRead += read;
 
                 if (read == 0) break;
-                await file.WriteAsync(buffer, 0, read, token);
+                await file.WriteAsync(buffer.AsMemory(0, read), token);
 
                 if (canReportProgress)
                 {

@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.ReactiveUI;
 
 namespace v2rayN.Desktop;
@@ -24,7 +24,7 @@ internal class Program
         if (Utils.IsWindows())
         {
             var exePathKey = Utils.GetMd5(Utils.GetExePath());
-            var rebootas = (Args ?? new string[] { }).Any(t => t == Global.RebootAs);
+            var rebootas = (Args ?? Array.Empty<string>()).Any(t => t == Global.RebootAs);
             ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
             if (!rebootas && !bCreatedNew)
             {
