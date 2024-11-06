@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop;
 
@@ -48,7 +49,8 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
     => AppBuilder.Configure<App>()
         .UsePlatformDetect()
-        .WithInterFont()
+        //.WithInterFont()
+        .WithFontByDefault()
         .LogToTrace()
         .UseReactiveUI();
 }
