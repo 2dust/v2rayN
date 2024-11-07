@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ServiceLib.Models
 {
@@ -50,7 +50,7 @@ namespace ServiceLib.Models
     }
 
     public class Stats4Ray
-    { };
+    { }
 
     public class API4Ray
     {

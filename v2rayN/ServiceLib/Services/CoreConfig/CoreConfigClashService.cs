@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Services.CoreConfig
+namespace ServiceLib.Services.CoreConfig
 {
     /// <summary>
     /// Core configuration file processing class
@@ -66,7 +66,7 @@
                 txtFile = txtFile.Replace(tagYamlStr1, tagYamlStr2);
 
                 //YAML anchors
-                if (txtFile.Contains("<<:") && txtFile.Contains("*") && txtFile.Contains("&"))
+                if (txtFile.Contains("<<:") && txtFile.Contains('*') && txtFile.Contains('&'))
                 {
                     txtFile = YamlUtils.PreprocessYaml(txtFile);
                 }

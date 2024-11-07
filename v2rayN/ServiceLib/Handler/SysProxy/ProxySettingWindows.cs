@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using static ServiceLib.Handler.SysProxy.ProxySettingWindows.InternetConnectionOption;
 
 namespace ServiceLib.Handler.SysProxy
@@ -144,12 +144,12 @@ namespace ServiceLib.Handler.SysProxy
             {
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    nint opt = new(optionsPtr.ToInt64() + i * optSize);
+                    nint opt = new(optionsPtr.ToInt64() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
                 else
                 {
-                    nint opt = new(optionsPtr.ToInt32() + i * optSize);
+                    nint opt = new(optionsPtr.ToInt32() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
             }
@@ -247,7 +247,7 @@ namespace ServiceLib.Handler.SysProxy
 
             //[MarshalAs(UnmanagedType.)]
             public nint options;
-        };
+        }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public struct InternetConnectionOption
