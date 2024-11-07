@@ -6,7 +6,7 @@ name: WinGet submission on release
 on:
   workflow_dispatch:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   winget:
