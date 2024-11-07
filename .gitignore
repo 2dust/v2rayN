@@ -1,19 +1,27 @@
-﻿################################################################################
+################################################################################
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
+# Ignore Visual Studio temporary files
+/.vs/
 /v2rayN/.vs/
-/v2rayN/v2rayN/bin/Debug/app.publish
-/v2rayN/v2rayN/bin/Debug
-/v2rayN/v2rayN/bin/Release
+/v2rayN/v2rayN/bin/Debug/
+/v2rayN/v2rayN/bin/Release/
 /v2rayN/v2rayN/obj/
-/v2rayN/.vs/v2rayN/DesignTimeBuild
+/v2rayN/.vs/v2rayN/DesignTimeBuild/
 /v2rayN/packages
+
+# Ignore project-specific files
 .vs/ProjectSettings.json
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
-/v2rayN/v2rayUpgrade/bin/Debug
-/v2rayN/v2rayUpgrade/bin/Release
+
+# Ignore v2rayUpgrade build directories
+/v2rayN/v2rayUpgrade/bin/Debug/
+/v2rayN/v2rayUpgrade/bin/Release/
 /v2rayN/v2rayUpgrade/obj/
+
+# User-specific files
 *.user
-/.vs/v2rayN
+
+# Ignore any other temporary files or directories you may want to exclude
