@@ -32,6 +32,7 @@ namespace v2rayN.Desktop.Views
             lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
             lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
             lstProfiles.LoadingRow += LstProfiles_LoadingRow;
+            lstProfiles.Sorting += LstProfiles_Sorting;
             //if (_config.uiItem.enableDragDropSort)
             //{
             //    lstProfiles.AllowDrop = true;
@@ -90,6 +91,13 @@ namespace v2rayN.Desktop.Views
 
             RestoreUI();
             ViewModel?.RefreshServers();
+        }
+
+        private async void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
+        {
+            e.Handled = true;
+            await ViewModel?.SortServer(e.Column.Tag.ToString());
+            e.Handled = false;
         }
 
         //#region Event
