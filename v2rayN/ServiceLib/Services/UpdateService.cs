@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Services
@@ -122,7 +122,7 @@ namespace ServiceLib.Services
                 var url = item.Url.TrimEx();
                 var userAgent = item.UserAgent.TrimEx();
                 var hashCode = $"{item.Remarks}->";
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || Utils.IsNotEmpty(subId) && item.Id != subId)
+                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (Utils.IsNotEmpty(subId) && item.Id != subId))
                 {
                     //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                     continue;

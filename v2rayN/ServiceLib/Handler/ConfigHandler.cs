@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler
@@ -466,7 +466,7 @@ namespace ServiceLib.Handler
                         break;
                     }
                 case EMove.Position:
-                    sort = pos * 10 + 1;
+                    sort = (pos * 10) + 1;
                     break;
             }
 

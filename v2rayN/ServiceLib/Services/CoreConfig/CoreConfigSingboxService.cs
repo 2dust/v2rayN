@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
 
@@ -484,7 +484,7 @@ namespace ServiceLib.Services.CoreConfig
                 singboxConfig.inbounds = [];
 
                 if (!_config.TunModeItem.EnableTun
-                    || _config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box)
+                    || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box))
                 {
                     var inbound = new Inbound4Sbox()
                     {

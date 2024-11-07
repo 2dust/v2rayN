@@ -345,7 +345,7 @@ namespace v2rayN.Desktop.Views
                         }
                         else
                         {
-                            item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel); ;
+                            item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
                             item2.DisplayIndex = displayIndex++;
                         }
                         if (item.Name.StartsWith("to"))
