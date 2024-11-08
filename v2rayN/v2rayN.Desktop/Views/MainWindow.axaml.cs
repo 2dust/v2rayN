@@ -10,7 +10,6 @@ using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
-using System.ComponentModel;
 using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
@@ -30,7 +29,6 @@ namespace v2rayN.Desktop.Views
             _config = AppHandler.Instance.Config;
             _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.BottomRight };
 
-            this.Closing += MainWindow_Closing;
             this.KeyDown += MainWindow_KeyDown;
             menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
             menuPromotion.Click += menuPromotion_Click;
@@ -274,10 +272,22 @@ namespace v2rayN.Desktop.Views
             }
         }
 
-        private void MainWindow_Closing(object? sender, CancelEventArgs e)
+        protected override async void OnClosing(WindowClosingEventArgs e)
         {
-            e.Cancel = true;
-            ShowHideWindow(false);
+            Logging.SaveLog("OnClosing -> " + e.CloseReason.ToString());
+
+            switch (e.CloseReason)
+            {
+                case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
+                    e.Cancel = true;
+                    ShowHideWindow(false);
+                    break;
+                case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
+                    await ViewModel?.MyAppExitAsync(true);
+                    break;
+            }
+
+            base.OnClosing(e);
         }
 
         private async void MainWindow_KeyDown(object? sender, KeyEventArgs e)
