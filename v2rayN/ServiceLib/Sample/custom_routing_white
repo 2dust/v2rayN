@@ -69,8 +69,7 @@
       "domain:dot.pub",
       "domain:doh.360.cn",
       "domain:dot.360.cn",
-      "geosite:cn",
-      "geosite:geolocation-cn"
+      "geosite:cn"
     ]
   },
   {
