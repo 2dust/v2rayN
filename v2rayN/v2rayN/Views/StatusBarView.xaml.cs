@@ -100,11 +100,11 @@ namespace v2rayN.Views
             return await Task.FromResult(true);
         }
 
-        private void menuExit_Click(object sender, RoutedEventArgs e)
+        private async void menuExit_Click(object sender, RoutedEventArgs e)
         {
             tbNotify.Dispose();
             var service = Locator.Current.GetService<MainWindowViewModel>();
-            if (service != null) service.MyAppExitAsync(false);
+            if (service != null) await service.MyAppExitAsync(false);
         }
 
         private void txtRunningInfoDisplay_MouseDoubleClick(object sender, MouseButtonEventArgs e)

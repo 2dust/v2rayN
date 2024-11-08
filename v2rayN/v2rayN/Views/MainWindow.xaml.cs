@@ -270,11 +270,11 @@ namespace v2rayN.Views
             StorageUI();
         }
 
-        private void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+        private async void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             Logging.SaveLog("Current_SessionEnding");
             StorageUI();
-            ViewModel?.MyAppExitAsync(true);
+            await ViewModel?.MyAppExitAsync(true);
         }
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
