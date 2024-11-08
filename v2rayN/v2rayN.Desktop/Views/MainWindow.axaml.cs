@@ -36,6 +36,7 @@ namespace v2rayN.Desktop.Views
             menuPromotion.Click += menuPromotion_Click;
             menuCheckUpdate.Click += MenuCheckUpdate_Click;
             menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
+            menuClose.Click += MenuClose_Click;
 
             MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(DelegateSnackMsg);
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
@@ -80,7 +81,6 @@ namespace v2rayN.Desktop.Views
 
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.ExitCmd, v => v.menuClose).DisposeWith(disposables);
 
                 switch (_config.UiItem.MainGirdOrientation)
                 {
@@ -243,14 +243,6 @@ namespace v2rayN.Desktop.Views
                        Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidthAsync(),
                         DispatcherPriority.Default);
                     break;
-
-                case EViewAction.ShowYesNo:
-                    if (await UI.ShowYesNo(this, ResUI.menuExitTips) == ButtonResult.No)
-                    {
-                        return false;
-                    }
-                    StorageUI();
-                    break;
             }
 
             return await Task.FromResult(true);
@@ -358,6 +350,17 @@ namespace v2rayN.Desktop.Views
         {
             _backupAndRestoreView ??= new BackupAndRestoreView(this);
             DialogHost.Show(_backupAndRestoreView);
+        }
+
+        private async void MenuClose_Click(object? sender, RoutedEventArgs e)
+        {
+            if (await UI.ShowYesNo(this, ResUI.menuExitTips) == ButtonResult.No)
+            {
+                return;
+            }
+            StorageUI();
+
+            await ViewModel?.MyAppExitAsync(false);
         }
 
         #endregion Event
