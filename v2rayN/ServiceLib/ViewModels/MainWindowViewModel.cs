@@ -52,8 +52,6 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
-        public ReactiveCommand<Unit, Unit> ExitCmd { get; }
-
         [Reactive]
         public bool BlReloadEnabled { get; set; }
 
@@ -187,11 +185,6 @@ namespace ServiceLib.ViewModels
             ReloadCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await Reload();
-            });
-
-            ExitCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await Exit();
             });
 
             RegionalPresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -593,16 +586,6 @@ namespace ServiceLib.ViewModels
             {
                 ShowHideWindow(false);
             }
-        }
-
-        private async Task Exit()
-        {
-            if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
-            {
-                return;
-            }
-
-            await MyAppExitAsync(false);
         }
 
         #endregion core job
