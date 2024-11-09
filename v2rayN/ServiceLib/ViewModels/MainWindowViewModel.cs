@@ -219,6 +219,7 @@ namespace ServiceLib.ViewModels
 
             await Reload();
             await AutoHideStartup();
+            Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
         }
 
         #endregion Init
