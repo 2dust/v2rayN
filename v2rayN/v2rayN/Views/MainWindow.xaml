@@ -14,6 +14,7 @@
     Height="700"
     MinWidth="900"
     x:TypeArguments="vms:MainWindowViewModel"
+    ResizeMode="CanResizeWithGrip"
     ShowInTaskbar="True"
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
