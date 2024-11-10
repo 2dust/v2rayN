@@ -119,7 +119,6 @@
                             Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
                         <materialDesign:PopupBox
-                            Padding="8,0"
                             HorizontalAlignment="Right"
                             StaysOpen="True"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
