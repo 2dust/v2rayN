@@ -1246,4 +1246,124 @@
   <data name="LvMemo" xml:space="preserve">
     <value>備註備忘</value>
   </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>拥塞控制算法</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>设为活动节点 (Enter)</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>延迟测试</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>规则</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>随原配置</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>全局</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>直连</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>规则模式</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>当前代理</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>关闭所有连接</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Outbound默认解析策略</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>关闭连接</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>上传流量</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>上传速度</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>主机</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>下载流量</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>下载速度</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>延迟</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>当前连接</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>多服务器最低延迟 (多选)</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>当前部分节点延迟测试</value>
+  </data>
+  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
+    <value>多服务器负载均衡 (多选)</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>添加[Hysteria2]服务器</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria 最大带宽(Up/Dw)</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>主界面布局方向(需重启)</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>添加[WireGuard]服务器</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved(2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address(Ip,Ipv6)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>使用系统hosts</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>路由链</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Outbound域名解析地址</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>混淆密码(obfs password)</value>
+  </data>
 </root>

@@ -277,7 +277,7 @@
                         </Menu>
 
                         <materialDesign:PopupBox
-                            Padding="8,0"
+                            Padding="-2"
                             HorizontalAlignment="Right"
                             StaysOpen="True"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
