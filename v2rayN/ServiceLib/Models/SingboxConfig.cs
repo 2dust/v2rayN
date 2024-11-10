@@ -78,8 +78,7 @@
         public int? listen_port { get; set; }
         public string? domain_strategy { get; set; }
         public string interface_name { get; set; }
-        public string inet4_address { get; set; }
-        public string? inet6_address { get; set; }
+        public List<string>? address { get; set; }
         public int? mtu { get; set; }
         public bool? auto_route { get; set; }
         public bool? strict_route { get; set; }
