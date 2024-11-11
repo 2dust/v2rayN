@@ -479,7 +479,10 @@ namespace ServiceLib.ViewModels
 
             await ConfigHandler.RemoveServer(_config, lstSelecteds);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-
+            if (lstSelecteds.Count == _profileItems.Count)
+            {
+                _profileItems.Clear();
+            }
             RefreshServers();
             if (exists)
             {
