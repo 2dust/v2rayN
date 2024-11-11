@@ -145,7 +145,7 @@ namespace ServiceLib.Handler
 
         private string CoreFindExe(CoreInfo coreInfo)
         {
-            string fileName = string.Empty;
+            var fileName = string.Empty;
             foreach (var name in coreInfo.CoreExes)
             {
                 var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
@@ -157,7 +157,7 @@ namespace ServiceLib.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
+                var msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
                 Logging.SaveLog(msg);
                 ShowMsg(false, msg);
             }
@@ -183,7 +183,7 @@ namespace ServiceLib.Handler
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-            var proc = await RunProcess(node, coreInfo, "", displayLog);
+            var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog);
             if (proc is null)
             {
                 return;
@@ -220,12 +220,12 @@ namespace ServiceLib.Handler
                 }
                 if (itemSocks != null)
                 {
-                    string fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
+                    var fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2);
                     if (result.Success)
                     {
                         var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
-                        var proc2 = await RunProcess(node, coreInfo2, $" -c {Global.CorePreConfigFileName}", true);
+                        var proc2 = await RunProcess(coreInfo2, Global.CorePreConfigFileName, true);
                         if (proc2 is not null)
                         {
                             _processPre = proc2;
@@ -243,7 +243,7 @@ namespace ServiceLib.Handler
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
-                var proc = await RunProcess(new(), coreInfo, $" -c {Global.CoreSpeedtestConfigFileName}", true);
+                var proc = await RunProcess(coreInfo, Global.CoreSpeedtestConfigFileName, true);
                 if (proc is null)
                 {
                     return -1;
@@ -254,8 +254,7 @@ namespace ServiceLib.Handler
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                string msg = ex.Message;
-                ShowMsg(false, msg);
+                ShowMsg(false, ex.Message);
                 return -1;
             }
         }
@@ -269,15 +268,15 @@ namespace ServiceLib.Handler
 
         #region Process
 
-        private async Task<Process?> RunProcess(ProfileItem node, CoreInfo coreInfo, string configPath, bool displayLog)
+        private async Task<Process?> RunProcess(CoreInfo coreInfo, string configPath, bool displayLog)
         {
+            var fileName = CoreFindExe(coreInfo);
+            if (Utils.IsNullOrEmpty(fileName))
+            {
+                return null;
+            }
             try
             {
-                string fileName = CoreFindExe(coreInfo);
-                if (Utils.IsNullOrEmpty(fileName))
-                {
-                    return null;
-                }
                 Process proc = new()
                 {
                     StartInfo = new()
@@ -299,23 +298,17 @@ namespace ServiceLib.Handler
                 {
                     proc.OutputDataReceived += (sender, e) =>
                     {
-                        if (Utils.IsNotEmpty(e.Data))
-                        {
-                            string msg = e.Data + Environment.NewLine;
-                            ShowMsg(false, msg);
-                        }
+                        if (Utils.IsNullOrEmpty(e.Data)) return;
+                        ShowMsg(false, e.Data + Environment.NewLine);
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
-                        if (Utils.IsNotEmpty(e.Data))
-                        {
-                            string msg = e.Data + Environment.NewLine;
-                            ShowMsg(false, msg);
+                        if (Utils.IsNullOrEmpty(e.Data)) return;
+                        ShowMsg(false, e.Data + Environment.NewLine);
 
-                            if (!startUpSuccessful)
-                            {
-                                startUpErrorMessage.Append(msg);
-                            }
+                        if (!startUpSuccessful)
+                        {
+                            startUpErrorMessage.Append(e.Data + Environment.NewLine);
                         }
                     };
                 }
@@ -342,8 +335,7 @@ namespace ServiceLib.Handler
             catch (Exception ex)
             {
                 Logging.SaveLog(ex.Message, ex);
-                string msg = ex.Message;
-                ShowMsg(true, msg);
+                ShowMsg(true, ex.Message);
                 return null;
             }
         }
@@ -354,19 +346,25 @@ namespace ServiceLib.Handler
             {
                 return;
             }
+            var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(1));
             try
             {
+                await proc.WaitForExitAsync(timeout.Token);
+            }
+            catch (OperationCanceledException)
+            {
                 proc.Kill();
-                proc.WaitForExit(100);
-                if (!proc.HasExited)
+            }
+            if (!proc.HasExited)
+            {
+                try
+                {
+                    await proc.WaitForExitAsync(timeout.Token);
+                }
+                catch (Exception)
                 {
                     proc.Kill();
-                    proc.WaitForExit(100);
                 }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
             }
         }
 

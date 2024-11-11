@@ -1271,7 +1271,7 @@
     <value>显示或隐藏主界面</value>
   </data>
   <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>您当前运行的是独立包，请手动下载 SelfContained.7z文件解压覆盖</value>
+    <value>您当前运行的是独立包，请手动下载 SelfContained.7z文件解压覆盖！</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>自定义配置的Socks端口</value>

@@ -43,11 +43,11 @@ namespace v2rayN.Desktop.Views
             {
                 rulesItem.Protocol?.ForEach(it =>
                 {
-                    clbProtocol.SelectedItems.Add(it);
+                    clbProtocol?.SelectedItems?.Add(it);
                 });
                 rulesItem.InboundTag?.ForEach(it =>
                 {
-                    clbInboundTag.SelectedItems.Add(it);
+                    clbInboundTag?.SelectedItems?.Add(it);
                 });
             }
 

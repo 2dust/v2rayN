@@ -86,7 +86,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            await _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }
 }
