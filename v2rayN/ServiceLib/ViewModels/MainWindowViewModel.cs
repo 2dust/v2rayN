@@ -532,6 +532,10 @@ namespace ServiceLib.ViewModels
             {
                 Utils.ProcessStart("nautilus", Utils.GetConfigPath());
             }
+            else if (Utils.IsOSX())
+            {
+                Utils.ProcessStart("open", Utils.GetConfigPath());
+            }
         }
 
         #endregion Setting
