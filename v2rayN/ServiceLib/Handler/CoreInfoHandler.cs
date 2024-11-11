@@ -1,6 +1,4 @@
-﻿using System.Runtime.Intrinsics.X86;
-
-namespace ServiceLib.Handler
+﻿namespace ServiceLib.Handler
 {
     public sealed class CoreInfoHandler
     {
@@ -89,7 +87,7 @@ namespace ServiceLib.Handler
             _coreInfo.Add(new CoreInfo
             {
                 CoreType = ECoreType.mihomo,
-                CoreExes = new List<string> { $"mihomo-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-windows-386", "mihomo", "clash" },
+                CoreExes = new List<string> { "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-linux-amd64", "mihomo", "clash" },
                 Arguments = "-f config.json" + PortableMode(),
                 Url = Global.MihomoCoreUrl,
                 ReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
@@ -105,7 +103,7 @@ namespace ServiceLib.Handler
             _coreInfo.Add(new CoreInfo
             {
                 CoreType = ECoreType.hysteria,
-                CoreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },
+                CoreExes = new List<string> { "hysteria-windows-amd64", "hysteria" },
                 Arguments = "",
                 Url = Global.HysteriaCoreUrl,
                 ReleaseApiUrl = Global.HysteriaCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
@@ -157,7 +155,7 @@ namespace ServiceLib.Handler
             _coreInfo.Add(new CoreInfo
             {
                 CoreType = ECoreType.hysteria2,
-                CoreExes = new List<string> { "hysteria-windows-amd64", "hysteria-windows-386", "hysteria" },
+                CoreExes = new List<string> { "hysteria-windows-amd64", "hysteria-linux-amd64", "hysteria" },
                 Arguments = "",
                 Url = Global.HysteriaCoreUrl,
                 ReleaseApiUrl = Global.HysteriaCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
