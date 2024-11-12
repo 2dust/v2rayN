@@ -72,7 +72,7 @@
             {
                 CoreType = ECoreType.Xray,
                 CoreExes = new List<string> { "xray", "wxray" },
-                Arguments = "run {0}",
+                Arguments = "run -c {0}",
                 Url = Global.XrayCoreUrl,
                 ReleaseApiUrl = Global.XrayCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                 DownloadUrlWin64 = Global.XrayCoreUrl + "/download/{0}/Xray-windows-64.zip",
@@ -132,7 +132,7 @@
             {
                 CoreType = ECoreType.sing_box,
                 CoreExes = new List<string> { "sing-box-client", "sing-box" },
-                Arguments = "run {0} --disable-color",
+                Arguments = "run -c {0} --disable-color",
                 Url = Global.SingboxCoreUrl,
                 RedirectInfo = true,
                 ReleaseApiUrl = Global.SingboxCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
