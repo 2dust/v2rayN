@@ -116,8 +116,9 @@
             "domain:dns.google",
             "domain:adguard-dns.com",
             "domain:opendns.com",
+            "domain:umbrella.com",
             "domain:quad9.net",
-            "domain:dns.yandex.ru"
+            "domain:yandex.net"
         ]
     },
     {
