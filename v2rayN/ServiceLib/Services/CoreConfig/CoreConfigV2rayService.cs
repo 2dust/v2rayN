@@ -366,8 +366,8 @@ namespace ServiceLib.Services.CoreConfig
                 else
                 {
                     v2rayConfig.log.loglevel = _config.CoreBasicItem.Loglevel;
-                    v2rayConfig.log.access = "";
-                    v2rayConfig.log.error = "";
+                    v2rayConfig.log.access = null;
+                    v2rayConfig.log.error = null;
                 }
             }
             catch (Exception ex)
@@ -1120,17 +1120,14 @@ namespace ServiceLib.Services.CoreConfig
             if (_config.GuiItem.EnableStatistics)
             {
                 string tag = EInboundProtocol.api.ToString();
-                API4Ray apiObj = new();
+                Metrics4Ray apiObj = new();
                 Policy4Ray policyObj = new();
                 SystemPolicy4Ray policySystemSetting = new();
-
-                string[] services = { "StatsService" };
 
                 v2rayConfig.stats = new Stats4Ray();
 
                 apiObj.tag = tag;
-                apiObj.services = services.ToList();
-                v2rayConfig.api = apiObj;
+                v2rayConfig.metrics = apiObj;
 
                 policySystemSetting.statsOutboundDownlink = true;
                 policySystemSetting.statsOutboundUplink = true;
