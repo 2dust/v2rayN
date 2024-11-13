@@ -247,7 +247,7 @@
                 case ECoreType.sing_box:
                     return Global.SsSecuritiesInSingbox;
             }
-            return Global.SsSecuritiesInSagerNet;
+            return Global.SsSecuritiesInSingbox;
         }
 
         public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
