@@ -59,7 +59,7 @@ namespace ServiceLib.Handler
 
             var fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
-            ShowMsg(false, result.Msg);
+            ShowMsg(true, result.Msg);
             if (result.Success != true)
             {
                 return;

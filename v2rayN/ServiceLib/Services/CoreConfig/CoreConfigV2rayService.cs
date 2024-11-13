@@ -27,6 +27,12 @@ namespace ServiceLib.Services.CoreConfig
                     return ret;
                 }
 
+                if (node.GetNetwork() is nameof(ETransport.quic))
+                {
+                    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                    return ret;
+                }
+
                 ret.Msg = ResUI.InitialConfiguration;
 
                 var result = Utils.GetEmbedText(Global.V2raySampleClient);
