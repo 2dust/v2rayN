@@ -41,7 +41,7 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
             });
 
-            spEnableTun.IsVisible = (Utils.IsWindows() || AppHandler.Instance.IsAdministrator);
+            //spEnableTun.IsVisible = (Utils.IsWindows() || AppHandler.Instance.IsAdministrator);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

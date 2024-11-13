@@ -1369,4 +1369,16 @@
   <data name="TbRuleMatchingTips" xml:space="preserve">
     <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
   </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Linux system sudo password</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>The password will only be stored in the local file.</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
+    <value>Please set the sudo password in Tun mode settings first</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
+    <value>Please do not run this app with sudo</value>
+  </data>
 </root>

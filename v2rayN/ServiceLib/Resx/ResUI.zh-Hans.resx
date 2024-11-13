@@ -1366,4 +1366,16 @@
   <data name="LvMemo" xml:space="preserve">
     <value>备注备忘</value>
   </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Linux系统的sudo密码</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>密码只会存储在本地文件中，没有密码无法开启Tun</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
+    <value>请先在Tun模式设置中设置sudo密码</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
+    <value>请不要用sudo运行本app</value>
+  </data>
 </root>

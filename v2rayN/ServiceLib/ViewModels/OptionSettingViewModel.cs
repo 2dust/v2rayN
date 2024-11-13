@@ -85,6 +85,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public int TunMtu { get; set; }
         [Reactive] public bool TunEnableExInbound { get; set; }
         [Reactive] public bool TunEnableIPv6Address { get; set; }
+        [Reactive] public string TunLinuxSudoPassword { get; set; }
 
         #endregion Tun mode
 
@@ -197,6 +198,7 @@ namespace ServiceLib.ViewModels
             TunMtu = _config.TunModeItem.Mtu;
             TunEnableExInbound = _config.TunModeItem.EnableExInbound;
             TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
+            TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPassword;
 
             #endregion Tun mode
 
@@ -340,6 +342,7 @@ namespace ServiceLib.ViewModels
             _config.TunModeItem.Mtu = TunMtu;
             _config.TunModeItem.EnableExInbound = TunEnableExInbound;
             _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
+            _config.TunModeItem.LinuxSudoPassword = TunLinuxSudoPassword;
 
             //coreType
             await SaveCoreType();

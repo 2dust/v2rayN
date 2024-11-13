@@ -108,7 +108,7 @@ namespace ServiceLib.ViewModels
             SelectedServer = new();
             RunningServerToolTipText = "-";
 
-            if (_config.TunModeItem.EnableTun && AppHandler.Instance.IsAdministrator)
+            if (_config.TunModeItem.EnableTun && AllowEnableTun())
             {
                 EnableTun = true;
             }
@@ -414,15 +414,35 @@ namespace ServiceLib.ViewModels
             {
                 _config.TunModeItem.EnableTun = EnableTun;
                 // When running as a non-administrator, reboot to administrator mode
-                if (EnableTun && !AppHandler.Instance.IsAdministrator)
+                if (EnableTun && AllowEnableTun() == false)
                 {
                     _config.TunModeItem.EnableTun = false;
-                    Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                    if (Utils.IsWindows())
+                    {
+                        Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                    }
+                    else if (Utils.IsLinux())
+                    {
+                        NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
+                    }
                     return;
                 }
                 await ConfigHandler.SaveConfig(_config);
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();
             }
+        }
+
+        private bool AllowEnableTun()
+        {
+            if (Utils.IsWindows())
+            {
+                return AppHandler.Instance.IsAdministrator;
+            }
+            else if (Utils.IsLinux())
+            {
+                return _config.TunModeItem.LinuxSudoPassword.IsNotEmpty();
+            }
+            return false;
         }
 
         #endregion System proxy and Routings

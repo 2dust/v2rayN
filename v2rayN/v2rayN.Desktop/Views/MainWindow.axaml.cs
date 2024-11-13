@@ -117,6 +117,11 @@ namespace v2rayN.Desktop.Views
             }
             else
             {
+                if (AppHandler.Instance.IsAdministrator)
+                {
+                    this.Title = $"{Utils.GetVersion()} - {ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp}";
+                    NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp);
+                }
                 menuRebootAsAdmin.IsVisible = false;
                 menuSettingsSetUWP.IsVisible = false;
                 menuGlobalHotkeySetting.IsVisible = false;
@@ -282,6 +287,7 @@ namespace v2rayN.Desktop.Views
                     e.Cancel = true;
                     ShowHideWindow(false);
                     break;
+
                 case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
                     await ViewModel?.MyAppExitAsync(true);
                     break;

@@ -1366,4 +1366,16 @@
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密碼(obfs password)</value>
   </data>
+    <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Linux系統的sudo密碼</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>密碼只會儲存在本機檔案中，沒有密碼無法開啟Tun</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
+    <value>請先在Tun模式設定中設定sudo密碼</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
+    <value>請不要用sudo來運行本app</value>
+  </data>
 </root>
