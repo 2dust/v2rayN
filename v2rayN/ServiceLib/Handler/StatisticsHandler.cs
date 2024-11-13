@@ -9,7 +9,8 @@
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
         private Action<ServerSpeedItem>? _updateFunc;
-        private StatisticsV2rayService? _statisticsV2Ray;
+        //private StatisticsV2rayService? _statisticsV2Ray;
+        private StatisticsXrayService? _statisticsXray;
         private StatisticsSingboxService? _statisticsSingbox;
 
         public List<ServerStatItem> ServerStat => _lstServerStat;
@@ -25,7 +26,8 @@
 
             await InitData();
 
-            _statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStatHandler);
+            //_statisticsV2Ray = new StatisticsV2rayService(config, UpdateServerStatHandler);
+            _statisticsXray = new StatisticsXrayService(config, UpdateServerStatHandler);
             _statisticsSingbox = new StatisticsSingboxService(config, UpdateServerStatHandler);
         }
 
@@ -33,7 +35,8 @@
         {
             try
             {
-                _statisticsV2Ray?.Close();
+                //_statisticsV2Ray?.Close();
+                _statisticsXray?.Close();
                 _statisticsSingbox?.Close();
             }
             catch (Exception ex)

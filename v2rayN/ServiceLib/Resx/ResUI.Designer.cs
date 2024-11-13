@@ -3149,6 +3149,42 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Linux system sudo password 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPassword {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please set the sudo password in Tun mode settings first 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPasswordIsEmpty {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please do not run this app with sudo 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPasswordNotSudoRunApp {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordNotSudoRunApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The password will only be stored in the local file. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPasswordTip {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable Log 的本地化字符串。
         /// </summary>
         public static string TbSettingsLogEnabled {
