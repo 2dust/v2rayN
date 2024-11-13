@@ -344,7 +344,7 @@
     <value>Please fill in the correct custom DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*ws/httpupgrade/splithttp path</value>
+    <value>*ws/httpupgrade/xhttp path</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
     <value>*h2 path</value>
@@ -359,7 +359,7 @@
     <value>*http host Separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*ws/httpupgrade/splithttp host</value>
+    <value>*ws/httpupgrade/xhttp host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
     <value>*h2 host Separated by commas (,)</value>

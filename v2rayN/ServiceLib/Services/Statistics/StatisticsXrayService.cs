@@ -31,7 +31,7 @@
                 await Task.Delay(1000);
                 try
                 {
-                    if (!_config.IsRunningCore(ECoreType.Xray))
+                    if (_config.RunningCoreType != ECoreType.Xray)
                     {
                         continue;
                     }

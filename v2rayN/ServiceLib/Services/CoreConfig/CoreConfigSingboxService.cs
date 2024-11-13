@@ -26,7 +26,7 @@ namespace ServiceLib.Services.CoreConfig
                     ret.Msg = ResUI.CheckServerSettings;
                     return ret;
                 }
-                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.splithttp))
+                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.splithttp) or nameof(ETransport.xhttp))
                 {
                     ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
                     return ret;

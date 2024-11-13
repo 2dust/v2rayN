@@ -926,23 +926,26 @@ namespace ServiceLib.Services.CoreConfig
                         streamSettings.httpupgradeSettings = httpupgradeSettings;
 
                         break;
-                    //splithttp
+                    //splithttp //xhttp
                     case nameof(ETransport.splithttp):
-                        SplithttpSettings4Ray splithttpSettings = new()
+                    case nameof(ETransport.xhttp):
+                        streamSettings.network = ETransport.xhttp.ToString();
+                        XhttpSettings4Ray xhttpSettings = new()
                         {
-                            maxUploadSize = 1000000,
-                            maxConcurrentUploads = 10
+                            scMaxEachPostBytes = "500000-1000000",
+                            scMaxConcurrentPosts = "50-100",
+                            scMinPostsIntervalMs = "30-50"
                         };
 
                         if (Utils.IsNotEmpty(node.Path))
                         {
-                            splithttpSettings.path = node.Path;
+                            xhttpSettings.path = node.Path;
                         }
                         if (Utils.IsNotEmpty(host))
                         {
-                            splithttpSettings.host = host;
+                            xhttpSettings.host = host;
                         }
-                        streamSettings.splithttpSettings = splithttpSettings;
+                        streamSettings.xhttpSettings = xhttpSettings;
 
                         break;
                     //h2

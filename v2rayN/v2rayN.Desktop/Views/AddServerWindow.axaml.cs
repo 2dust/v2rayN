@@ -338,6 +338,7 @@ namespace v2rayN.Desktop.Views
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
                 case nameof(ETransport.splithttp):
+                case nameof(ETransport.xhttp):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
                     break;
