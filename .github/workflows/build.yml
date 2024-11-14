@@ -8,6 +8,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
     runs-on: windows-latest 
 
     steps:
@@ -17,13 +21,51 @@ jobs:
     - name: Build v2rayN
       run: |
         cd v2rayN
-        dotnet publish v2rayN.csproj -c Release -o ./bin
+        dotnet publish v2rayN.csproj -c Release -r win-x64 --self-contained false -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/win-x64
+
+    - name: Build v2rayN.Desktop
+      run: |
+        cd v2rayN.Desktop
+        dotnet publish v2rayN.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/linux-x64
+
+    # Optional cleanup of .pdb files if needed
+    - name: Clean up PDB files
+      run: |
+        rm -f ./bin/win-x64/*.pdb
+        rm -f ./bin/linux-x64/*.pdb
 
     - name: List Output Files
-      run: dir .\v2rayN\bin
+      run: |
+        echo "Windows Build Output:"
+        dir ./bin/win-x64
+        echo "Linux Build Output:"
+        dir ./bin/linux-x64
+
+    # Create a zip package of the builds (optional)
+    - name: Package Artifacts
+      run: |
+        7z a v2rayN.zip ./bin/win-x64/* ./bin/linux-x64/*
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN
-        path: .\v2rayN\bin\*
+        path: v2rayN.zip
+
+    # Uncomment to create a release on GitHub after building
+    # - name: Release
+    #   uses: softprops/action-gh-release@v1
+    #   env:
+    #       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    #   with:
+    #     prerelease: ${{ contains(github.ref, '-') }}
+    #     draft: false
+    #     files: |
+    #         v2rayN.zip
+    #     body: |
+    #         [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
+    #         ## Changelogs
+    #         * This is an automated deployment of GitHub Actions, the change log should be updated manually soon
+            
+    #         ## 更新日志
+    #         * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新
