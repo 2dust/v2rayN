@@ -20,14 +20,12 @@ jobs:
 
     - name: Build v2rayN
       run: |
-        cd v2rayN && 
-        .\build.cs
+        cd v2rayN && .\build.cs
         dotnet publish v2rayN.csproj -c Release -r win-x64 --self-contained false -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/win-x64
 
     - name: Build v2rayN.Desktop
       run: |
-        cd v2rayN Desktop && 
-        .\build.cs
+        cd v2rayN Desktop && .\build.cs
         dotnet publish v2rayN.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/linux-x64
 
     # Optional cleanup of .pdb files if needed
