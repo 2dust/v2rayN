@@ -30,12 +30,6 @@ jobs:
       - name: Build v2rayN
         run: |
           cd v2rayN && .\build.ps1
-        
-      # Optional cleanup of .pdb files after builds
-      - name: Clean Up PDB Files
-        run: |
-          Remove-Item -Path ./bin/win-x64/*.pdb -Force
-          Remove-Item -Path ./bin/linux-x64/*.pdb -Force
 
       # List output files for verification
       - name: List Output Files
