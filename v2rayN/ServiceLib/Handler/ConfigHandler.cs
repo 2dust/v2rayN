@@ -240,6 +240,7 @@ namespace ServiceLib.Handler
                 item.PublicKey = profileItem.PublicKey;
                 item.ShortId = profileItem.ShortId;
                 item.SpiderX = profileItem.SpiderX;
+                item.Extra = profileItem.Extra;
             }
 
             var ret = item.ConfigType switch

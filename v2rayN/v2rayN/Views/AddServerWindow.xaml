@@ -17,6 +17,13 @@
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
@@ -128,7 +135,7 @@
                         x:Name="txtPort"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
@@ -188,7 +195,7 @@
                         x:Name="txtAlterId"
                         Grid.Row="2"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
@@ -513,7 +520,7 @@
                         x:Name="cmbHeaderType8"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
@@ -606,7 +613,7 @@
                         x:Name="txtShortId9"
                         Grid.Row="5"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
@@ -653,7 +660,7 @@
                         x:Name="cmbNetwork"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                     <TextBlock
@@ -672,13 +679,40 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbHeaderType}" />
-                    <ComboBox
-                        x:Name="cmbHeaderType"
+                    <StackPanel
                         Grid.Row="2"
                         Grid.Column="1"
-                        Width="100"
-                        Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefComboBox}" />
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ComboBox
+                            x:Name="cmbHeaderType"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <materialDesign:PopupBox
+                            x:Name="popExtra"
+                            HorizontalAlignment="Right"
+                            StaysOpen="True"
+                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TransportExtraTip}" />
+                                <TextBox
+                                    x:Name="txtExtra"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Top"
+                                    AcceptsReturn="True"
+                                    MinLines="6"
+                                    Style="{StaticResource MyOutlinedTextBox}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </StackPanel>
                     <TextBlock
                         x:Name="tipHeaderType"
                         Grid.Row="2"
@@ -764,7 +798,7 @@
                         x:Name="cmbStreamSecurity"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
@@ -842,7 +876,7 @@
                         x:Name="cmbAllowInsecure"
                         Grid.Row="4"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>

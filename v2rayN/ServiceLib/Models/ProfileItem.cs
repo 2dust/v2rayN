@@ -30,44 +30,25 @@ namespace ServiceLib.Models
 
         public string GetSummary()
         {
-            string summary = string.Format("[{0}] ", (ConfigType).ToString());
-            string[] arrAddr = Address.Split('.');
-            string addr;
-            if (arrAddr.Length > 2)
+            var summary = $"[{(ConfigType).ToString()}] ";
+            var arrAddr = Address.Split('.');
+            var addr = arrAddr.Length switch
             {
-                addr = $"{arrAddr.First()}***{arrAddr.Last()}";
-            }
-            else if (arrAddr.Length > 1)
+                > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
+                > 1 => $"***{arrAddr.Last()}",
+                _ => Address
+            };
+            summary += ConfigType switch
             {
-                addr = $"***{arrAddr.Last()}";
-            }
-            else
-            {
-                addr = Address;
-            }
-            switch (ConfigType)
-            {
-                case EConfigType.Custom:
-                    summary += string.Format("[{1}]{0}", Remarks, CoreType.ToString());
-                    break;
-
-                default:
-                    summary += string.Format("{0}({1}:{2})", Remarks, addr, Port);
-                    break;
-            }
+                EConfigType.Custom => $"[{CoreType.ToString()}]{Remarks}",
+                _ => $"{Remarks}({addr}:{Port})"
+            };
             return summary;
         }
 
         public List<string>? GetAlpn()
         {
-            if (Utils.IsNullOrEmpty(Alpn))
-            {
-                return null;
-            }
-            else
-            {
-                return Utils.String2List(Alpn);
-            }
+            return Utils.IsNullOrEmpty(Alpn) ? null : Utils.String2List(Alpn);
         }
 
         public string GetNetwork()
@@ -110,5 +91,6 @@ namespace ServiceLib.Models
         public string PublicKey { get; set; }
         public string ShortId { get; set; }
         public string SpiderX { get; set; }
+        public string Extra { get; set; }
     }
 }

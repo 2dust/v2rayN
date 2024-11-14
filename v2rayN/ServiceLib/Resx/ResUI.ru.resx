@@ -1384,4 +1384,7 @@
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp mode</value>
   </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>XHTTP Extra raw JSON, format: { XHTTPObject }</value>
+  </data>
 </root>
