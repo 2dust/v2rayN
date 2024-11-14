@@ -34,8 +34,8 @@ jobs:
       # Optional cleanup of .pdb files after builds
       - name: Clean Up PDB Files
         run: |
-          rm -f ./bin/win-x64/*.pdb
-          rm -f ./bin/linux-x64/*.pdb
+          Remove-Item -Path ./bin/win-x64/*.pdb -Force
+          Remove-Item -Path ./bin/linux-x64/*.pdb -Force
 
       # List output files for verification
       - name: List Output Files
