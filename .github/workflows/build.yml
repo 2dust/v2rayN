@@ -18,30 +18,23 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # - name: 删除工作流运行
-    #   uses: Mattraks/delete-workflow-runs@v2
-    #   with:
-    #     token: ${{ github.token }}
-    #     repository: ${{ github.repository }}
-    #     retain_days: 0
-    #     keep_minimum_runs: 1
-
     - name: Build
-      run:  cd v2rayN && 
-        .\build.cs
-        
-    # - name: Package
-    #   shell: pwsh
-    #   run: |
-    #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
+      run: cd v2rayN && dotnet publish v2rayN.csproj -c Release -o ./bin
+
+    - name: List Output Files
+      run: dir .\v2rayN\bin
+
+    - name: Create Zip Archive
+      run: |
+        7z a v2rayN.zip .\v2rayN\bin\*
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN
-        path: |
-          .\v2rayN\v2rayN.zip
+        path: v2rayN.zip
 
+    # Uncomment if release is needed
     # - name: Release
     #   uses: softprops/action-gh-release@v1
     #   env:
@@ -50,11 +43,11 @@ jobs:
     #     prerelease: ${{ contains(github.ref, '-') }}
     #     draft: false
     #     files: |
-    #         .\v2rayN\v2rayN.zip
+    #         v2rayN.zip
     #     body: |
     #         [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
     #         ## Changelogs
     #         * This is an automated deployment of GitHub Actions, the change log should be updated manually soon
-            
+           
     #         ## 更新日志
     #         * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新
