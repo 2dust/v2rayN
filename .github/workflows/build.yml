@@ -18,20 +18,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # - name: 删除工作流运行
-    #   uses: Mattraks/delete-workflow-runs@v2
-    #   with:
-    #     token: ${{ github.token }}
-    #     repository: ${{ github.repository }}
-    #     retain_days: 0
-    #     keep_minimum_runs: 1
-
     - name: Build
-      run:  cd v2rayN && 
-        .\build.cs
+      run: |
+        cd v2rayN && dotnet build build.csproj --configuration Release
         
+    # Uncomment if packaging is needed
     # - name: Package
-    #   shell: pwsh
     #   run: |
     #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
 
@@ -41,7 +33,8 @@ jobs:
         name: v2rayN
         path: |
           .\v2rayN\v2rayN.zip
-
+          
+    # Uncomment if release is needed
     # - name: Release
     #   uses: softprops/action-gh-release@v1
     #   env:
