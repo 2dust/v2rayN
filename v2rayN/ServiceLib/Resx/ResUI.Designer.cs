@@ -3734,7 +3734,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws/httpupgrade/splithttp path 的本地化字符串。
+        ///   查找类似 *ws/httpupgrade/xhttp path 的本地化字符串。
         /// </summary>
         public static string TransportPathTip1 {
             get {
@@ -3788,7 +3788,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws/httpupgrade/splithttp host 的本地化字符串。
+        ///   查找类似 *ws/httpupgrade/xhttp host 的本地化字符串。
         /// </summary>
         public static string TransportRequestHostTip2 {
             get {

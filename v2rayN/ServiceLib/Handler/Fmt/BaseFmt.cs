@@ -84,6 +84,7 @@ namespace ServiceLib.Handler.Fmt
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
                 case nameof(ETransport.splithttp):
+                case nameof(ETransport.xhttp):
                     if (Utils.IsNotEmpty(item.RequestHost))
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
@@ -157,6 +158,7 @@ namespace ServiceLib.Handler.Fmt
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
                 case nameof(ETransport.splithttp):
+                case nameof(ETransport.xhttp):
                     item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
                     item.Path = Utils.UrlDecode(query["path"] ?? "/");
                     break;

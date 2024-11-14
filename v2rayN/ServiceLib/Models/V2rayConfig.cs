@@ -258,7 +258,7 @@ namespace ServiceLib.Models
 
         public HttpupgradeSettings4Ray? httpupgradeSettings { get; set; }
 
-        public SplithttpSettings4Ray? splithttpSettings { get; set; }
+        public XhttpSettings4Ray? xhttpSettings { get; set; }
 
         public HttpSettings4Ray? httpSettings { get; set; }
 
@@ -344,15 +344,22 @@ namespace ServiceLib.Models
         public string? host { get; set; }
     }
 
-    public class SplithttpSettings4Ray
+    public class XhttpSettings4Ray
     {
         public string? path { get; set; }
-
         public string? host { get; set; }
+        public string? scMaxEachPostBytes { get; set; }
+        public string? scMaxConcurrentPosts { get; set; }
+        public string? scMinPostsIntervalMs { get; set; }
+        public Xmux4Ray? xmux { get; set; }
+    }
 
-        public int? maxUploadSize { get; set; }
-
-        public int? maxConcurrentUploads { get; set; }
+    public class Xmux4Ray
+    {
+        public int? maxConcurrency { get; set; }
+        public int? maxConnections { get; set; }
+        public int? cMaxReuseTimes { get; set; }
+        public int? cMaxLifetimeMs { get; set; }
     }
 
     public class HttpSettings4Ray
