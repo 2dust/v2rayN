@@ -353,6 +353,7 @@ namespace ServiceLib.Models
         public string? scMaxConcurrentPosts { get; set; }
         public string? scMinPostsIntervalMs { get; set; }
         public Xmux4Ray? xmux { get; set; }
+        public object? extra { get; set; }
     }
 
     public class Xmux4Ray

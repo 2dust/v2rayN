@@ -3698,6 +3698,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 XHTTP Extra raw JSON, format: { XHTTPObject } 的本地化字符串。
+        /// </summary>
+        public static string TransportExtraTip {
+            get {
+                return ResourceManager.GetString("TransportExtraTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 *tcp camouflage type 的本地化字符串。
         /// </summary>
         public static string TransportHeaderTypeTip1 {

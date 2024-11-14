@@ -1381,4 +1381,7 @@
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp 模式</value>
   </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
+  </data>
 </root>

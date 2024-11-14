@@ -202,7 +202,8 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedSource.HeaderType, v => v.cmbHeaderType.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.RequestHost, v => v.txtRequestHost.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.Path, v => v.txtPath.Text).DisposeWith(disposables);
-
+                this.Bind(ViewModel, vm => vm.SelectedSource.Extra, v => v.txtExtra.Text).DisposeWith(disposables);
+                
                 this.Bind(ViewModel, vm => vm.SelectedSource.StreamSecurity, v => v.cmbStreamSecurity.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource.AllowInsecure, v => v.cmbAllowInsecure.Text).DisposeWith(disposables);
@@ -321,6 +322,7 @@ namespace v2rayN.Views
                 network = Global.DefaultNetwork;
             }
             labHeaderType.Visibility = Visibility.Visible;
+            popExtra.Visibility = Visibility.Hidden;
             tipRequestHost.Text =
             tipPath.Text =
             tipHeaderType.Text = string.Empty;
@@ -349,6 +351,7 @@ namespace v2rayN.Views
                     tipPath.Text = ResUI.TransportPathTip1;
                     tipHeaderType.Text = ResUI.TransportHeaderTypeTip5;
                     labHeaderType.Visibility = Visibility.Hidden;
+                    popExtra.Visibility = Visibility.Visible;
                     break;
 
                 case nameof(ETransport.h2):

@@ -107,6 +107,10 @@ namespace ServiceLib.Handler.Fmt
                     {
                         dicQuery.Add("mode", Utils.UrlEncode(item.HeaderType));
                     }
+                    if (Utils.IsNotEmpty(item.Extra))
+                    {
+                        dicQuery.Add("extra", Utils.UrlEncode(item.Extra));
+                    }
                     break;
 
                 case nameof(ETransport.http):
@@ -180,6 +184,7 @@ namespace ServiceLib.Handler.Fmt
                     item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
                     item.Path = Utils.UrlDecode(query["path"] ?? "/");
                     item.HeaderType = Utils.UrlDecode(query["mode"] ?? "");
+                    item.Extra = Utils.UrlDecode(query["extra"] ?? "");
                     break;
 
                 case nameof(ETransport.http):

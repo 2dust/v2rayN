@@ -112,7 +112,7 @@
                         x:Name="txtPort"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         HorizontalAlignment="Left"
                         Classes="Margin8" />
                 </Grid>
@@ -164,7 +164,7 @@
                         x:Name="txtAlterId"
                         Grid.Row="2"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         HorizontalAlignment="Left"
                         Classes="Margin8" />
 
@@ -458,7 +458,7 @@
                         x:Name="cmbHeaderType8"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Classes="Margin8" />
                 </Grid>
                 <Grid
@@ -541,7 +541,7 @@
                         x:Name="txtShortId9"
                         Grid.Row="5"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         HorizontalAlignment="Left"
                         Classes="Margin8" />
                 </Grid>
@@ -584,7 +584,7 @@
                         x:Name="cmbNetwork"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Classes="Margin8" />
                     <TextBlock
                         Grid.Row="1"
@@ -600,12 +600,50 @@
                         VerticalAlignment="Center"
                         Classes="Margin8"
                         Text="{x:Static resx:ResUI.TbHeaderType}" />
-                    <ComboBox
-                        x:Name="cmbHeaderType"
+                    <StackPanel
                         Grid.Row="2"
                         Grid.Column="1"
-                        Width="100"
-                        Classes="Margin8" />
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ComboBox
+                            x:Name="cmbHeaderType"
+                            Width="200"
+                            Classes="Margin8" />
+
+                        <Button
+                            x:Name="btnExtra"
+                            Width="30"
+                            Height="30"
+                            Margin="10,0"
+                            Theme="{DynamicResource BorderlessButton}">
+                            <Button.Content>
+                                <PathIcon
+                                    Width="20"
+                                    Height="20"
+                                    Data="{StaticResource building_more}"
+                                    Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Classes="Margin8"
+                                            Text="{x:Static resx:ResUI.TransportExtraTip}" />
+                                        <TextBox
+                                            x:Name="txtExtra"
+                                            Width="400"
+                                            MinHeight="100"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            Classes="TextArea Margin8"
+                                            MinLines="6"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
                     <TextBlock
                         x:Name="tipHeaderType"
                         Grid.Row="2"
@@ -680,7 +718,7 @@
                         x:Name="cmbStreamSecurity"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Classes="Margin8" />
                 </Grid>
                 <Grid
@@ -749,7 +787,7 @@
                         x:Name="cmbAllowInsecure"
                         Grid.Row="4"
                         Grid.Column="1"
-                        Width="100"
+                        Width="200"
                         Classes="Margin8" />
                 </Grid>
                 <Grid
