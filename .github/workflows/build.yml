@@ -18,31 +18,30 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Build v2rayN
-      run: |
-        cd v2rayN && .\build.cs
-        dotnet publish v2rayN.csproj -c Release -r win-x64 --self-contained false -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/win-x64
+    # - name: 删除工作流运行
+    #   uses: Mattraks/delete-workflow-runs@v2
+    #   with:
+    #     token: ${{ github.token }}
+    #     repository: ${{ github.repository }}
+    #     retain_days: 0
+    #     keep_minimum_runs: 1
 
-    - name: Build v2rayN.Desktop
-      run: |
-        cd v2rayN Desktop && .\build.cs
-        dotnet publish v2rayN.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishReadyToRun=false -p:PublishSingleFile=true -o ./bin/linux-x64
-
-    # Optional cleanup of .pdb files if needed
-    - name: Clean up PDB files
-      run: |
-        rm -f ./bin/win-x64/*.pdb
-        rm -f ./bin/linux-x64/*.pdb
+    - name: Build
+      run:  cd v2rayN && 
+        .\build.cs
+        
+    # - name: Package
+    #   shell: pwsh
+    #   run: |
+    #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN
         path: |
-          ./bin/win-x64/v2rayN.zip
-          ./bin/linux-x64/v2rayN.zip
+          .\v2rayN\v2rayN.zip
 
-    # Uncomment to create a release on GitHub after building
     # - name: Release
     #   uses: softprops/action-gh-release@v1
     #   env:
@@ -51,8 +50,7 @@ jobs:
     #     prerelease: ${{ contains(github.ref, '-') }}
     #     draft: false
     #     files: |
-    #         ./bin/win-x64/v2rayN.zip
-    #         ./bin/linux-x64/v2rayN.zip
+    #         .\v2rayN\v2rayN.zip
     #     body: |
     #         [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
     #         ## Changelogs
