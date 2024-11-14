@@ -3734,6 +3734,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 *xhttp mode 的本地化字符串。
+        /// </summary>
+        public static string TransportHeaderTypeTip5 {
+            get {
+                return ResourceManager.GetString("TransportHeaderTypeTip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 *ws/httpupgrade/xhttp path 的本地化字符串。
         /// </summary>
         public static string TransportPathTip1 {
