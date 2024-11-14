@@ -31,14 +31,6 @@ jobs:
         run: |
           cd v2rayN && .\build.ps1
 
-      # List output files for verification
-      - name: List Output Files
-        run: |
-          echo "Windows Build Output:"
-          dir ./bin/win-x64
-          echo "Linux Build Output:"
-          dir ./bin/linux-x64
-
       # Package the outputs into a zip file
       - name: Package Artifacts
         run: |
