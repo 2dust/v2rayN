@@ -187,6 +187,7 @@
         public static readonly List<string> DomainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> Fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
         public static readonly List<string> UserAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
+        public static readonly List<string> XhttpMode = new() { "auto", "packet-up", "stream-up" };
 
         public static readonly List<string> AllowInsecure = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
@@ -206,9 +207,9 @@
         public static readonly List<string> SingboxMuxs = new() { "h2mux", "smux", "yamux", "" };
         public static readonly List<string> TuicCongestionControls = new() { "cubic", "new_reno", "bbr" };
 
-        public static readonly List<string> allowSelectType = new List<string> { "selector", "urltest", "loadbalance", "fallback" };
-        public static readonly List<string> notAllowTestType = new List<string> { "selector", "urltest", "direct", "reject", "compatible", "pass", "loadbalance", "fallback" };
-        public static readonly List<string> proxyVehicleType = new List<string> { "file", "http" };
+        public static readonly List<string> allowSelectType = new() { "selector", "urltest", "loadbalance", "fallback" };
+        public static readonly List<string> notAllowTestType = new() { "selector", "urltest", "direct", "reject", "compatible", "pass", "loadbalance", "fallback" };
+        public static readonly List<string> proxyVehicleType = new() { "file", "http" };
 
         #endregion const
     }

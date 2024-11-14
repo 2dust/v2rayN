@@ -299,6 +299,13 @@ namespace v2rayN.Desktop.Views
                     cmbHeaderType.Items.Add(it);
                 });
             }
+            else if (network is nameof(ETransport.splithttp) or nameof(ETransport.xhttp))
+            {
+                Global.XhttpMode.ForEach(it =>
+                {
+                    cmbHeaderType.Items.Add(it);
+                });
+            }
             else if (network == nameof(ETransport.grpc))
             {
                 cmbHeaderType.Items.Add(Global.GrpcGunMode);
@@ -337,10 +344,16 @@ namespace v2rayN.Desktop.Views
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
+                    tipRequestHost.Text = ResUI.TransportRequestHostTip2;
+                    tipPath.Text = ResUI.TransportPathTip1;
+                    break;
+
                 case nameof(ETransport.splithttp):
                 case nameof(ETransport.xhttp):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
+                    tipHeaderType.Text = ResUI.TransportHeaderTypeTip5;
+                    labHeaderType.IsVisible = false;
                     break;
 
                 case nameof(ETransport.h2):

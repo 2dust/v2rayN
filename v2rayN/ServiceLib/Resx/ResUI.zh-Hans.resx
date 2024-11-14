@@ -1378,4 +1378,7 @@
   <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
     <value>请不要用sudo运行本app</value>
   </data>
+  <data name="TransportHeaderTypeTip5" xml:space="preserve">
+    <value>*xhttp 模式</value>
+  </data>
 </root>

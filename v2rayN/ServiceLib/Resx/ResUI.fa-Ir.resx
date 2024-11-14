@@ -1381,4 +1381,7 @@
   <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
     <value>Please do not run this app with sudo</value>
   </data>
+  <data name="TransportHeaderTypeTip5" xml:space="preserve">
+    <value>*xhttp mode</value>
+  </data>
 </root>

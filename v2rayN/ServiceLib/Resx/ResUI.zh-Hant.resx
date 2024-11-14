@@ -1366,7 +1366,7 @@
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密碼(obfs password)</value>
   </data>
-    <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>Linux系統的sudo密碼</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
@@ -1377,5 +1377,8 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
     <value>請不要用sudo來運行本app</value>
+  </data>
+  <data name="TransportHeaderTypeTip5" xml:space="preserve">
+    <value>*xhttp 模式</value>
   </data>
 </root>
