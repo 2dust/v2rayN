@@ -2,9 +2,9 @@ name: Release
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Uncomment the following step if you want to delete old workflow runs
+      # Uncomment to delete previous workflow runs
       # - name: Delete Workflow Runs
       #   uses: Mattraks/delete-workflow-runs@v2
       #   with:
@@ -27,31 +27,37 @@ jobs:
       #     retain_days: 0
       #     keep_minimum_runs: 1
 
-      - name: Build v2rayN
+      - name: Build
         run: |
           cd v2rayN && .\build.ps1
 
-      # Upload the zip file as an artifact
+      # Uncomment to package the build artifacts
+      # - name: Package
+      #   shell: pwsh
+      #   run: |
+      #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: v2rayN
-          path: v2rayN.zip
+          path: .\v2rayN\v2rayN.zip
 
-      # Uncomment to create a release on GitHub after building
-      # - name: Create Release
+      # Uncomment to create a release on GitHub
+      # - name: Release
       #   uses: softprops/action-gh-release@v1
       #   env:
-      #       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       #   with:
       #     prerelease: ${{ contains(github.ref, '-') }}
       #     draft: false
-      #     files: |
-      #         v2rayN.zip
+      #     files: .\v2rayN\v2rayN.zip
       #     body: |
-      #         [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
-      #         ## Changelogs
-      #         * This is an automated deployment of GitHub Actions; the change log should be updated manually soon.
-            
-      #         ## 更新日志
-      #         * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新。
+      #       [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) 
+      #       [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
+      #
+      #       ## Changelogs
+      #       * This is an automated deployment of GitHub Actions; the changelog should be updated manually soon.
+      #
+      #       ## 更新日志
+      #       * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新。
