@@ -1,10 +1,10 @@
-name: release
+name: Release
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -15,46 +15,49 @@ jobs:
     runs-on: windows-latest 
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    # - name: 删除工作流运行
-    #   uses: Mattraks/delete-workflow-runs@v2
-    #   with:
-    #     token: ${{ github.token }}
-    #     repository: ${{ github.repository }}
-    #     retain_days: 0
-    #     keep_minimum_runs: 1
+      # Uncomment to delete previous workflow runs
+      # - name: Delete Workflow Runs
+      #   uses: Mattraks/delete-workflow-runs@v2
+      #   with:
+      #     token: ${{ github.token }}
+      #     repository: ${{ github.repository }}
+      #     retain_days: 0
+      #     keep_minimum_runs: 1
 
-    - name: Build
-      run:  cd v2rayN && 
-        .\build.ps1
-        
-    # - name: Package
-    #   shell: pwsh
-    #   run: |
-    #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
+      - name: Build
+        run: |
+          cd v2rayN && .\build.ps1
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: v2rayN
-        path: |
-          .\v2rayN\v2rayN.zip
+      # Uncomment to package the build artifacts
+      # - name: Package
+      #   shell: pwsh
+      #   run: |
+      #     7z a -mx9 ..\v2rayN.7z $env:Wap_Project_Directory
 
-    # - name: Release
-    #   uses: softprops/action-gh-release@v1
-    #   env:
-    #       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-    #   with:
-    #     prerelease: ${{ contains(github.ref, '-') }}
-    #     draft: false
-    #     files: |
-    #         .\v2rayN\v2rayN.zip
-    #     body: |
-    #         [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
-    #         ## Changelogs
-    #         * This is an automated deployment of GitHub Actions, the change log should be updated manually soon
-            
-    #         ## 更新日志
-    #         * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2rayN
+          path: .\v2rayN\v2rayN.zip
+
+      # Uncomment to create a release on GitHub
+      # - name: Release
+      #   uses: softprops/action-gh-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #   with:
+      #     prerelease: ${{ contains(github.ref, '-') }}
+      #     draft: false
+      #     files: .\v2rayN\v2rayN.zip
+      #     body: |
+      #       [![](https://img.shields.io/badge/Telegram-Channel-blue)](https://t.me/netch_channel) 
+      #       [![](https://img.shields.io/badge/Telegram-Group-green)](https://t.me/netch_group)
+      #
+      #       ## Changelogs
+      #       * This is an automated deployment of GitHub Actions; the changelog should be updated manually soon.
+      #
+      #       ## 更新日志
+      #       * 这是 GitHub Actions 自动化部署，更新日志应该很快会手动更新。
