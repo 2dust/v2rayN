@@ -31,11 +31,6 @@ jobs:
         run: |
           cd v2rayN && .\build.ps1
 
-      # Package the outputs into a zip file
-      - name: Package Artifacts
-        run: |
-          7z a v2rayN.zip ./bin/win-x64/* ./bin/linux-x64/*
-
       # Upload the zip file as an artifact
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
