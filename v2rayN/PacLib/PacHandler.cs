@@ -11,11 +11,11 @@ public class PacHandler
     private static int _httpPort;
     private static int _pacPort;
     private static TcpListener? _tcpListener;
-    private static string _pacText;
+    private static byte[] _writeContent;
     private static bool _isRunning;
     private static bool _needRestart = true;
 
-    public static void Start(string configPath, int httpPort, int pacPort)
+    public static async Task Start(string configPath, int httpPort, int pacPort)
     {
         _needRestart = (configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning);
 
@@ -23,7 +23,7 @@ public class PacHandler
         _httpPort = httpPort;
         _pacPort = pacPort;
 
-        InitText();
+        await InitText();
 
         if (_needRestart)
         {
@@ -32,15 +32,24 @@ public class PacHandler
         }
     }
 
-    private static void InitText()
+    private static async Task InitText()
     {
         var path = Path.Combine(_configPath, "pac.txt");
         if (!File.Exists(path))
         {
-            File.AppendAllText(path, Resources.ResourceManager.GetString("pac"));
+            await File.AppendAllTextAsync(path, Resources.ResourceManager.GetString("pac"));
         }
 
-        _pacText = File.ReadAllText(path).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
+        var pacText = (await File.ReadAllTextAsync(path)).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
+
+        var sb = new StringBuilder();
+        sb.AppendLine("HTTP/1.0 200 OK");
+        sb.AppendLine("Content-type:application/x-ns-proxy-autoconfig");
+        sb.AppendLine("Connection:close");
+        sb.AppendLine("Content-Length:" + Encoding.UTF8.GetByteCount(pacText));
+        sb.AppendLine();
+        sb.Append(pacText);
+        _writeContent = Encoding.UTF8.GetBytes(sb.ToString());
     }
 
     private static void RunListener()
@@ -60,21 +69,8 @@ public class PacHandler
                         continue;
                     }
 
-                    var client = _tcpListener.AcceptTcpClient();
-                    await Task.Run(() =>
-                      {
-                          var stream = client.GetStream();
-                          var sb = new StringBuilder();
-                          sb.AppendLine("HTTP/1.0 200 OK");
-                          sb.AppendLine("Content-type:application/x-ns-proxy-autoconfig");
-                          sb.AppendLine("Connection:close");
-                          sb.AppendLine("Content-Length:" + Encoding.UTF8.GetByteCount(_pacText));
-                          sb.AppendLine();
-                          sb.Append(_pacText);
-                          var content = Encoding.UTF8.GetBytes(sb.ToString());
-                          stream.Write(content, 0, content.Length);
-                          stream.Flush();
-                      });
+                    var client = await _tcpListener.AcceptTcpClientAsync();
+                    await Task.Run(() => { WriteContent(client); });
                 }
                 catch
                 {
@@ -82,6 +78,13 @@ public class PacHandler
                 }
             }
         }, TaskCreationOptions.LongRunning);
+    }
+
+    private static void WriteContent(TcpClient client)
+    {
+        var stream = client.GetStream();
+        stream.Write(_writeContent, 0, _writeContent.Length);
+        stream.Flush();
     }
 
     public static void Stop()

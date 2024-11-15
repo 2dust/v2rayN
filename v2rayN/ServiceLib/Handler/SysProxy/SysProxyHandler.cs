@@ -33,15 +33,10 @@ namespace ServiceLib.Handler.SysProxy
                         await ProxySettingLinux.SetProxy(Global.Loopback, port);
                         break;
 
-                    case ESysProxyType.ForcedChange:
-                        {
-                            if (Utils.IsOSX())
-                            {
-                                await ProxySettingOSX.SetProxy(Global.Loopback, port);
-                            }
+                    case ESysProxyType.ForcedChange when Utils.IsOSX():
+                        await ProxySettingOSX.SetProxy(Global.Loopback, port);
+                        break;
 
-                            break;
-                        }
                     case ESysProxyType.ForcedClear when Utils.IsWindows():
                         ProxySettingWindows.UnsetProxy();
                         break;
@@ -50,23 +45,13 @@ namespace ServiceLib.Handler.SysProxy
                         await ProxySettingLinux.UnsetProxy();
                         break;
 
-                    case ESysProxyType.ForcedClear:
-                        {
-                            if (Utils.IsOSX())
-                            {
-                                await ProxySettingOSX.UnsetProxy();
-                            }
+                    case ESysProxyType.ForcedClear when Utils.IsOSX():
+                        await ProxySettingOSX.UnsetProxy();
+                        break;
 
-                            break;
-                        }
                     case ESysProxyType.Pac when Utils.IsWindows():
-                        {
-                            var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
-                            PacHandler.Start(Utils.GetConfigPath(), port, portPac);
-                            var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
-                            ProxySettingWindows.SetProxy(strProxy, "", 4);
-                            break;
-                        }
+                        await SetWindowsProxyPac(port);
+                        break;
                 }
 
                 if (type != ESysProxyType.Pac && Utils.IsWindows())
@@ -101,6 +86,14 @@ namespace ServiceLib.Handler.SysProxy
                     .Replace("{http_port}", port.ToString())
                     .Replace("{socks_port}", portSocks.ToString());
             }
+        }
+
+        private static async Task SetWindowsProxyPac(int port)
+        {
+            var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
+            await PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+            var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+            ProxySettingWindows.SetProxy(strProxy, "", 4);
         }
     }
 }
