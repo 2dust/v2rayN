@@ -808,8 +808,7 @@
                             Grid.Column="1"
                             Width="200"
                             HorizontalAlignment="Left"
-                            Classes="Margin8"
-                            PasswordChar="*" />
+                            Classes="Margin8" />
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="2"

@@ -1370,7 +1370,7 @@
     <value>Linux系統的sudo密碼</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>密碼只會儲存在本機檔案中，沒有密碼無法開啟Tun</value>
+    <value>密碼已加密且只儲存在本機檔案中，無密碼無法開啟Tun</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>請先在Tun模式設定中設定sudo密碼</value>

@@ -1373,7 +1373,7 @@
     <value>Linux system sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password will only be stored in the local file.</value>
+    <value>The password is encrypted and stored only in local files.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Please set the sudo password in Tun mode settings first</value>

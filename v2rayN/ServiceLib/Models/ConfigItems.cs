@@ -161,7 +161,7 @@
         public int Mtu { get; set; }
         public bool EnableExInbound { get; set; }
         public bool EnableIPv6Address { get; set; }
-        public string? LinuxSudoPassword { get; set; }
+        public string? LinuxSudoPwd { get; set; }
     }
 
     [Serializable]

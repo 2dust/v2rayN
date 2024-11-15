@@ -198,7 +198,7 @@ namespace ServiceLib.ViewModels
             TunMtu = _config.TunModeItem.Mtu;
             TunEnableExInbound = _config.TunModeItem.EnableExInbound;
             TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
-            TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPassword;
+            TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPwd;
 
             #endregion Tun mode
 
@@ -342,7 +342,10 @@ namespace ServiceLib.ViewModels
             _config.TunModeItem.Mtu = TunMtu;
             _config.TunModeItem.EnableExInbound = TunEnableExInbound;
             _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
-            _config.TunModeItem.LinuxSudoPassword = TunLinuxSudoPassword;
+            if (TunLinuxSudoPassword != _config.TunModeItem.LinuxSudoPwd)
+            {
+                _config.TunModeItem.LinuxSudoPwd = DesUtils.Encrypt(TunLinuxSudoPassword);
+            }
 
             //coreType
             await SaveCoreType();
