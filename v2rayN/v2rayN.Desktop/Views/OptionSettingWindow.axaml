@@ -489,6 +489,18 @@
                             HorizontalAlignment="Left"
                             Classes="Margin8" />
 
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenClose}" />
+                        <ToggleSwitch
+                            x:Name="togHide2TrayWhenClose"
+                            Grid.Row="9"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Classes="Margin8" />
 
 
                         <TextBlock

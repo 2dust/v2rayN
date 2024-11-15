@@ -80,7 +80,7 @@
         public bool IgnoreGeoUpdateCore { get; set; } = true;
 
         public int AutoUpdateInterval { get; set; }
-        
+
         public bool EnableSecurityProtocolTls13 { get; set; }
 
         public int TrayMenuServersLimit { get; set; } = 20;
@@ -116,6 +116,7 @@
         public bool EnableDragDropSort { get; set; }
         public bool DoubleClick2Activate { get; set; }
         public bool AutoHideStartup { get; set; }
+        public bool Hide2TrayWhenClose { get; set; }
         public List<ColumnItem> MainColumnItem { get; set; }
         public bool ShowInTaskbar { get; set; }
     }

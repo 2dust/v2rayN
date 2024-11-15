@@ -1384,4 +1384,7 @@
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
   </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>關閉視窗時隱藏至托盤</value>
+  </data>
 </root>

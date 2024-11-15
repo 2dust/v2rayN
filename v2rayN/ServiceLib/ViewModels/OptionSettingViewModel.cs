@@ -53,6 +53,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
+        [Reactive] public bool Hide2TrayWhenClose { get; set; }
         [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public bool DoubleClick2Activate { get; set; }
         [Reactive] public int AutoUpdateInterval { get; set; }
@@ -166,6 +167,7 @@ namespace ServiceLib.ViewModels
             EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
             AutoHideStartup = _config.UiItem.AutoHideStartup;
+            Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
             EnableDragDropSort = _config.UiItem.EnableDragDropSort;
             DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
             AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
@@ -316,6 +318,7 @@ namespace ServiceLib.ViewModels
             _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.UiItem.AutoHideStartup = AutoHideStartup;
+            _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
             _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
             _config.UiItem.EnableDragDropSort = EnableDragDropSort;
             _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
