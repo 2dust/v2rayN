@@ -1370,7 +1370,7 @@
     <value>Linux系统的sudo密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>密码只会存储在本地文件中，没有密码无法开启Tun</value>
+    <value>密码已加密且只存储在本地文件中，无密码无法开启Tun</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>请先在Tun模式设置中设置sudo密码</value>
@@ -1383,5 +1383,8 @@
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>关闭窗口时隐藏至托盘</value>
   </data>
 </root>

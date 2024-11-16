@@ -440,7 +440,7 @@ namespace ServiceLib.ViewModels
             }
             else if (Utils.IsLinux())
             {
-                return _config.TunModeItem.LinuxSudoPassword.IsNotEmpty();
+                return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
             }
             return false;
         }

@@ -267,7 +267,7 @@ namespace ServiceLib.ViewModels
                     var filesList = (new DirectoryInfo(toPath)).GetFiles().Select(u => u.FullName).ToList();
                     foreach (var file in filesList)
                     {
-                        await Utils.SetLinuxChmod(Path.Combine(toPath, item.CoreType));
+                        await Utils.SetLinuxChmod(Path.Combine(toPath, item.CoreType.ToLower()));
                     }
                 }
 

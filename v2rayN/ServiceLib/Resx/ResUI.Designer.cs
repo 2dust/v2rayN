@@ -3104,6 +3104,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Hide to tray when closing the window 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsHide2TrayWhenClose {
+            get {
+                return ResourceManager.GetString("TbSettingsHide2TrayWhenClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 HTTP Port 的本地化字符串。
         /// </summary>
         public static string TbSettingsHttpPort {
@@ -3176,7 +3185,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The password will only be stored in the local file. 的本地化字符串。
+        ///   查找类似 The password is encrypted and stored only in local files. 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {
             get {

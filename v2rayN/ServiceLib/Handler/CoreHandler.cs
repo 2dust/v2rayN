@@ -261,7 +261,7 @@ namespace ServiceLib.Handler
             return _config.TunModeItem.EnableTun
                    && eCoreType == ECoreType.sing_box
                    && Utils.IsLinux()
-                   && _config.TunModeItem.LinuxSudoPassword.IsNotEmpty()
+                   && _config.TunModeItem.LinuxSudoPwd.IsNotEmpty()
                 ;
         }
 
@@ -299,7 +299,8 @@ namespace ServiceLib.Handler
                 if (isNeedSudo)
                 {
                     proc.StartInfo.FileName = $"/bin/sudo";
-                    proc.StartInfo.Arguments = $"-S {fileName} {string.Format(coreInfo.Arguments, configPath)}";
+                    proc.StartInfo.Arguments = $"-S {fileName} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath))}";
+                    proc.StartInfo.WorkingDirectory = null;
                     proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
                     proc.StartInfo.RedirectStandardInput = true;
                 }
@@ -328,10 +329,11 @@ namespace ServiceLib.Handler
 
                 if (isNeedSudo)
                 {
+                    var pwd = DesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
                     await Task.Delay(10);
-                    await proc.StandardInput.WriteLineAsync(_config.TunModeItem.LinuxSudoPassword);
+                    await proc.StandardInput.WriteLineAsync(pwd);
                     await Task.Delay(10);
-                    await proc.StandardInput.WriteLineAsync(_config.TunModeItem.LinuxSudoPassword);
+                    await proc.StandardInput.WriteLineAsync(pwd);
                 }
 
                 if (displayLog)

@@ -53,6 +53,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
         [Reactive] public bool AutoHideStartup { get; set; }
+        [Reactive] public bool Hide2TrayWhenClose { get; set; }
         [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public bool DoubleClick2Activate { get; set; }
         [Reactive] public int AutoUpdateInterval { get; set; }
@@ -166,6 +167,7 @@ namespace ServiceLib.ViewModels
             EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
             AutoHideStartup = _config.UiItem.AutoHideStartup;
+            Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
             EnableDragDropSort = _config.UiItem.EnableDragDropSort;
             DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
             AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
@@ -198,7 +200,7 @@ namespace ServiceLib.ViewModels
             TunMtu = _config.TunModeItem.Mtu;
             TunEnableExInbound = _config.TunModeItem.EnableExInbound;
             TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
-            TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPassword;
+            TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPwd;
 
             #endregion Tun mode
 
@@ -316,6 +318,7 @@ namespace ServiceLib.ViewModels
             _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
             _config.UiItem.AutoHideStartup = AutoHideStartup;
+            _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
             _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
             _config.UiItem.EnableDragDropSort = EnableDragDropSort;
             _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
@@ -342,7 +345,10 @@ namespace ServiceLib.ViewModels
             _config.TunModeItem.Mtu = TunMtu;
             _config.TunModeItem.EnableExInbound = TunEnableExInbound;
             _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
-            _config.TunModeItem.LinuxSudoPassword = TunLinuxSudoPassword;
+            if (TunLinuxSudoPassword != _config.TunModeItem.LinuxSudoPwd)
+            {
+                _config.TunModeItem.LinuxSudoPwd = DesUtils.Encrypt(TunLinuxSudoPassword);
+            }
 
             //coreType
             await SaveCoreType();

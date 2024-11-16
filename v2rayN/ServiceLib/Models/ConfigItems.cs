@@ -80,7 +80,7 @@
         public bool IgnoreGeoUpdateCore { get; set; } = true;
 
         public int AutoUpdateInterval { get; set; }
-        
+
         public bool EnableSecurityProtocolTls13 { get; set; }
 
         public int TrayMenuServersLimit { get; set; } = 20;
@@ -116,6 +116,7 @@
         public bool EnableDragDropSort { get; set; }
         public bool DoubleClick2Activate { get; set; }
         public bool AutoHideStartup { get; set; }
+        public bool Hide2TrayWhenClose { get; set; }
         public List<ColumnItem> MainColumnItem { get; set; }
         public bool ShowInTaskbar { get; set; }
     }
@@ -161,7 +162,7 @@
         public int Mtu { get; set; }
         public bool EnableExInbound { get; set; }
         public bool EnableIPv6Address { get; set; }
-        public string? LinuxSudoPassword { get; set; }
+        public string? LinuxSudoPwd { get; set; }
     }
 
     [Serializable]
