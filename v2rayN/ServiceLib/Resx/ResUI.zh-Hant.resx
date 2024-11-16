@@ -127,7 +127,7 @@
     <value>設定格式不正確</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意，自訂設定完全依賴您自己的設定，不能使用所有設定功能。如需使用系統代理請手動修改監聽埠。</value>
+    <value>注意，自訂設定完全依賴您自己的設定，不能使用所有設定功能。如需使用系統代理請手動修改偵聽埠。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
@@ -157,7 +157,7 @@
     <value>請填寫正確格式伺服器埠</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
-    <value>請填寫本機監聽埠</value>
+    <value>請填寫本機偵聽埠</value>
   </data>
   <data name="FillPassword" xml:space="preserve">
     <value>請填寫密碼</value>
@@ -722,7 +722,7 @@
     <value>例外. 對於下列字元開頭的位址不使用代理設定檔:使用分號(;)分隔</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>本機HTTP監聽埠</value>
+    <value>本機HTTP偵聽埠</value>
   </data>
   <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
     <value>更新Core時忽略Geo檔案</value>
@@ -755,7 +755,7 @@
     <value>開啟流量探測</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>本機SOCKS監聽埠</value>
+    <value>本機SOCKS偵聽埠</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>開機啟動(可能會不成功)</value>
@@ -998,7 +998,7 @@
     <value>複製字型TTF/TTC檔案到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http端口= +1；Pac端口= +4；*ray API端口= +5；mihomo API端口= +6；</value>
+    <value>http連接埠= +1；Pac連接埠= +4；*ray API連接埠= +5；mihomo API連接埠= +6；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理員權限設定此項，在啟動後獲得管理員權限</value>
@@ -1094,7 +1094,7 @@
     <value>請確保別名存在並且唯一</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>啟用額外監聽端口</value>
+    <value>啟用額外偵聽連接埠</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>啟用IPv6</value>
@@ -1154,7 +1154,7 @@
     <value>您目前運行的是獨立包，請手動下載 SelfContained.7z檔案解壓縮覆蓋！</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>自訂設定的Socks端口</value>
+    <value>自訂設定的Socks連接埠</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>備份和還原</value>
