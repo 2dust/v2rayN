@@ -4,10 +4,12 @@
  * 如果当前语言不被支持，则默认使用英语。
  * 
  * 库:
+ *  - System
  *  - System.Collections.Generic
  *  - System.Globalization
  *  - System.IO
  *  - System.Text.Json
+ *  - System.Threading
  * 
  * 用法:
  *  - 为每种支持的语言创建JSON文件（例如，en.json，zh.json）。
@@ -32,6 +34,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 
 public class Localization
 {
@@ -71,6 +74,7 @@ public class Localization
         catch (Exception ex)
         {
             Console.WriteLine($"Failed to load JSON file: {ex.Message}");
+            Thread.Sleep(5000);
             Environment.Exit(1);
             return false; // 读取或解析JSON文件失败
         }

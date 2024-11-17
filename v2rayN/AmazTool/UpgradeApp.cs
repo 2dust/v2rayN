@@ -10,7 +10,7 @@
  *  - System.Text.Json
  * 
  * 用法:
- *  - 为每种支持的语言创建JSON文件（例如，en.json，zh.json）。
+ *  - 为每种支持的语言创建JSON文件（例如，en-US.json，zh-CN.json）。
  *  - 将JSON文件放置程序同目录中。
  *  - 运行程序，它将根据系统当前的语言加载翻译。
  *  - 调用方式： localization.Translate("Try_Terminate_Process") //返回一个 string 字符串
