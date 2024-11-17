@@ -165,7 +165,7 @@
 
         private string PortableMode()
         {
-            return $" -d \"{Utils.GetBinPath("")}\"";
+            return $" -d {Utils.GetBinPath("").AppendQuotes()}";
         }
     }
 }

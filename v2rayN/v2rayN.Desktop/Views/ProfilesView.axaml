@@ -61,6 +61,7 @@
                     Width="54"
                     Height="30"
                     Margin="20,0"
+                    Padding="2"
                     Classes="Tertiary"
                     Theme="{DynamicResource BorderlessSplitButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">

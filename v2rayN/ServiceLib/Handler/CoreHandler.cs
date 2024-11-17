@@ -59,14 +59,16 @@ namespace ServiceLib.Handler
 
             var fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
-            ShowMsg(true, result.Msg);
             if (result.Success != true)
             {
+                ShowMsg(true, result.Msg);
                 return;
             }
             else
             {
                 ShowMsg(true, $"{node.GetSummary()}");
+                ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
+                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
                 await CoreStop();
                 await Task.Delay(100);
                 await CoreStart(node);
@@ -100,6 +102,8 @@ namespace ServiceLib.Handler
             ShowMsg(false, result.Msg);
             if (result.Success)
             {
+                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+                ShowMsg(false, configPath);
                 pid = await CoreStartSpeedtest(configPath, coreType);
             }
             return pid;
@@ -167,9 +171,6 @@ namespace ServiceLib.Handler
 
         private async Task CoreStart(ProfileItem node)
         {
-            ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-
             var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
             _config.RunningCoreType = coreType;
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
@@ -229,9 +230,6 @@ namespace ServiceLib.Handler
 
         private async Task<int> CoreStartSpeedtest(string configPath, ECoreType coreType)
         {
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-
-            ShowMsg(false, configPath);
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
@@ -299,10 +297,11 @@ namespace ServiceLib.Handler
                 if (isNeedSudo)
                 {
                     proc.StartInfo.FileName = $"/bin/sudo";
-                    proc.StartInfo.Arguments = $"-S {fileName} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath))}";
+                    proc.StartInfo.Arguments = $"-S {fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath).AppendQuotes())}";
                     proc.StartInfo.WorkingDirectory = null;
                     proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
                     proc.StartInfo.RedirectStandardInput = true;
+                    Logging.SaveLog(proc.StartInfo.Arguments);
                 }
 
                 var startUpErrorMessage = new StringBuilder();

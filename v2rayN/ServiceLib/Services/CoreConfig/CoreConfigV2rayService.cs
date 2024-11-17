@@ -1024,18 +1024,17 @@ namespace ServiceLib.Services.CoreConfig
                             //request Host
                             string request = Utils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
                             string[] arrHost = host.Split(',');
-                            string host2 = string.Join("\",\"", arrHost);
-                            request = request.Replace("$requestHost$", $"\"{host2}\"");
-                            //request = request.Replace("$requestHost$", string.Format("\"{0}\"", config.requestHost()));
-                            request = request.Replace("$requestUserAgent$", $"\"{useragent}\"");
+                            string host2 = string.Join(",".AppendQuotes(), arrHost);
+                            request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
+                            request = request.Replace("$requestUserAgent$", $"{useragent.AppendQuotes()}");
                             //Path
                             string pathHttp = @"/";
                             if (Utils.IsNotEmpty(node.Path))
                             {
                                 string[] arrPath = node.Path.Split(',');
-                                pathHttp = string.Join("\",\"", arrPath);
+                                pathHttp = string.Join(",".AppendQuotes(), arrPath);
                             }
-                            request = request.Replace("$requestPath$", $"\"{pathHttp}\"");
+                            request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
                             tcpSettings.header.request = JsonUtils.Deserialize<object>(request);
 
                             streamSettings.tcpSettings = tcpSettings;

@@ -50,7 +50,7 @@
                         <Border
                             Width="500"
                             Height="80"
-                            Margin="0"
+                            Margin="-2"
                             VerticalAlignment="Center"
                             Theme="{StaticResource CardBorder}">
                             <Grid>
