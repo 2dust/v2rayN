@@ -59,14 +59,16 @@ namespace ServiceLib.Handler
 
             var fileName = Utils.GetConfigPath(Global.CoreConfigFileName);
             var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
-            ShowMsg(true, result.Msg);
             if (result.Success != true)
             {
+                ShowMsg(true, result.Msg);
                 return;
             }
             else
             {
                 ShowMsg(true, $"{node.GetSummary()}");
+                ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
+                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
                 await CoreStop();
                 await Task.Delay(100);
                 await CoreStart(node);
@@ -97,9 +99,11 @@ namespace ServiceLib.Handler
             var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
             var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
-            ShowMsg(false, result.Msg);
+            ShowMsg(false, result.Msg); 
             if (result.Success)
             {
+                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+                ShowMsg(false, configPath);
                 pid = await CoreStartSpeedtest(configPath, coreType);
             }
             return pid;
@@ -167,9 +171,6 @@ namespace ServiceLib.Handler
 
         private async Task CoreStart(ProfileItem node)
         {
-            ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-
             var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
             _config.RunningCoreType = coreType;
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
@@ -229,9 +230,6 @@ namespace ServiceLib.Handler
 
         private async Task<int> CoreStartSpeedtest(string configPath, ECoreType coreType)
         {
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-
-            ShowMsg(false, configPath);
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
