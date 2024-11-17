@@ -99,7 +99,7 @@ namespace ServiceLib.Handler
             var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
             var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
-            ShowMsg(false, result.Msg); 
+            ShowMsg(false, result.Msg);
             if (result.Success)
             {
                 ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
@@ -297,10 +297,11 @@ namespace ServiceLib.Handler
                 if (isNeedSudo)
                 {
                     proc.StartInfo.FileName = $"/bin/sudo";
-                    proc.StartInfo.Arguments = $"-S {fileName} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath))}";
+                    proc.StartInfo.Arguments = $"-S {fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath).AppendQuotes())}";
                     proc.StartInfo.WorkingDirectory = null;
                     proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
                     proc.StartInfo.RedirectStandardInput = true;
+                    Logging.SaveLog(proc.StartInfo.Arguments);
                 }
 
                 var startUpErrorMessage = new StringBuilder();
