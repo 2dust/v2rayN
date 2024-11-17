@@ -7,7 +7,7 @@
  *  - System.Collections.Generic
  *  - System.Globalization
  *  - System.IO
- *  - Newtonsoft.Json
+ *  - System.Text.Json
  * 
  * 用法:
  *  - 为每种支持的语言创建JSON文件（例如，en.json，zh.json）。
@@ -25,16 +25,13 @@
  *     "Restart_v2rayN": "正在重启，请等待...",
  *     "Guidelines": "请从主应用运行！"
  * }
- * 
- * 注意:
- *  - 确保通过NuGet安装了Newtonsoft.Json库。
  */
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.Json;
 
 public class Localization
 {
@@ -68,7 +65,7 @@ public class Localization
             // 读取JSON文件内容
             var json = File.ReadAllText(jsonFilePath);
             // 解析JSON内容
-            translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            translations = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
             return true; // 成功读取和解析JSON文件
         }
         catch (Exception ex)

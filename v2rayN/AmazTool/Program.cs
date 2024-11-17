@@ -4,8 +4,10 @@
  * 如果当前语言不被支持，则默认使用英语。
  * 
  * 库:
- *  - System
- *  - System.Threading
+ *  - System.Collections.Generic
+ *  - System.Globalization
+ *  - System.IO
+ *  - System.Text.Json
  * 
  * 用法:
  *  - 为每种支持的语言创建JSON文件（例如，en.json，zh.json）。
@@ -23,9 +25,6 @@
  *     "Restart_v2rayN": "正在重启，请等待...",
  *     "Guidelines": "请从主应用运行！"
  * }
- * 
- * 注意:
- *  - 确保通过NuGet安装了Newtonsoft.Json库。
  */
 
 using System;
