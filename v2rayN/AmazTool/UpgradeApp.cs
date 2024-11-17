@@ -1,72 +1,46 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.IO.Compression;
 using System.Text;
-using System.Threading;
 
 namespace AmazTool
 {
     internal class UpgradeApp
     {
-        // 定义常量
-        private static readonly string V2rayN = "v2rayN";
-        private static readonly string SplitKey = "/";
-
         public static void Upgrade(string fileName)
         {
-            var localization = new Localization();
-
-            Console.WriteLine(fileName);
+            Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
+            
             Thread.Sleep(9000);
 
             if (!File.Exists(fileName))
             {
-                // 如果文件不存在，输出相应的本地化信息
-                Console.WriteLine(localization.Translate("Upgrade_File_Not_Found"));
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Upgrade_File_Not_Found"));
                 return;
             }
 
-            // 尝试终止进程
-            TerminateProcess(localization);
-
-            // 解压缩更新包
-            ExtractUpdatePackage(fileName, localization);
-
-            // 重启进程
-            Console.WriteLine(localization.Translate("Restart_v2rayN"));
-            Thread.Sleep(9000);
-            RestartProcess();
-        }
-
-        private static void TerminateProcess(Localization localization)
-        {
-            Console.WriteLine(localization.Translate("Try_Terminate_Process"));
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Try_Terminate_Process"));
             try
             {
-                var processes = Process.GetProcessesByName(V2rayN);
-                foreach (var process in processes)
+                var existing = Process.GetProcessesByName(V2rayN);
+                foreach (var pp in existing)
                 {
-                    process?.Kill();
-                    process?.WaitForExit(1000);
+                    pp?.Kill();
+                    pp?.WaitForExit(1000);
                 }
             }
             catch (Exception ex)
             {
-                // 如果无法终止进程，输出相应的本地化信息和错误堆栈
-                Console.WriteLine(localization.Translate("Failed_Terminate_Process") + ex.StackTrace);
+                // Access may be denied without admin right. The user may not be an administrator.
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Terminate_Process") + ex.StackTrace);
             }
-        }
 
-        private static void ExtractUpdatePackage(string fileName, Localization localization)
-        {
-            Console.WriteLine(localization.Translate("Start_Unzipping"));
-            StringBuilder errorLog = new();
-
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Start_Unzipping"));
+            StringBuilder sb = new();
             try
             {
-                string backupFilePath = $"{GetExePath()}.tmp";
-                File.Delete(backupFilePath);
+                string thisAppOldFile = $"{GetExePath()}.tmp";
+                File.Delete(thisAppOldFile);
+                string splitKey = "/";
 
                 using ZipArchive archive = ZipFile.OpenRead(fileName);
                 foreach (ZipArchiveEntry entry in archive.Entries)
@@ -74,14 +48,22 @@ namespace AmazTool
                     try
                     {
                         if (entry.Length == 0)
+                        {
                             continue;
+                        }
 
                         Console.WriteLine(entry.FullName);
 
-                        string fullPath = GetEntryFullPath(entry.FullName);
-                        BackupExistingFile(fullPath, backupFilePath);
+                        var lst = entry.FullName.Split(splitKey);
+                        if (lst.Length == 1) continue;
+                        string fullName = string.Join(splitKey, lst[1..lst.Length]);
 
-                        string entryOutputPath = GetPath(fullPath);
+                        if (string.Equals(GetExePath(), GetPath(fullName), StringComparison.OrdinalIgnoreCase))
+                        {
+                            File.Move(GetExePath(), thisAppOldFile);
+                        }
+
+                        string entryOutputPath = GetPath(fullName);
                         Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
                         entry.ExtractToFile(entryOutputPath, true);
 
@@ -89,39 +71,23 @@ namespace AmazTool
                     }
                     catch (Exception ex)
                     {
-                        errorLog.Append(ex.StackTrace);
+                        sb.Append(ex.StackTrace);
                     }
                 }
             }
             catch (Exception ex)
             {
-                // 如果解压失败，输出相应的本地化信息和错误堆栈
-                Console.WriteLine(localization.Translate("Failed_Upgrade") + ex.StackTrace);
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + ex.StackTrace);
+                //return;
             }
-
-            if (errorLog.Length > 0)
+            if (sb.Length > 0)
             {
-                // 如果有任何错误记录，输出相应的本地化信息和错误日志
-                Console.WriteLine(localization.Translate("Failed_Upgrade") + errorLog.ToString());
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + sb.ToString());
+                //return;
             }
-        }
 
-        private static void BackupExistingFile(string fullPath, string backupFilePath)
-        {
-            if (string.Equals(GetExePath(), fullPath, StringComparison.OrdinalIgnoreCase))
-            {
-                File.Move(GetExePath(), backupFilePath);
-            }
-        }
-
-        private static string GetEntryFullPath(string entryName)
-        {
-            var parts = entryName.Split(SplitKey);
-            return parts.Length > 1 ? string.Join(SplitKey, parts[1..]) : entryName;
-        }
-
-        private static void RestartProcess()
-        {
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Restart_v2rayN"));
+            Thread.Sleep(9000);
             Process process = new()
             {
                 StartInfo = new()
@@ -146,7 +112,14 @@ namespace AmazTool
 
         private static string GetPath(string fileName)
         {
-            return string.IsNullOrEmpty(fileName) ? StartupPath() : Path.Combine(StartupPath(), fileName);
+            string startupPath = StartupPath();
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return startupPath;
+            }
+            return Path.Combine(startupPath, fileName);
         }
+
+        private static string V2rayN => "v2rayN";
     }
 }
