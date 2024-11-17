@@ -1,131 +1,86 @@
-﻿using System.Collections.Generic;
+﻿/**
+ * 该程序使用JSON文件对C#应用程序进行本地化。
+ * 程序根据系统当前的语言加载相应的语言文件。
+ * 如果当前语言不被支持，则默认使用英语。
+ * 
+ * 库:
+ *  - System.Collections.Generic
+ *  - System.Globalization
+ *  - System.IO
+ *  - Newtonsoft.Json
+ * 
+ * 用法:
+ *  - 为每种支持的语言创建JSON文件（例如，en.json，zh.json）。
+ *  - 将JSON文件放置程序同目录中。
+ *  - 运行程序，它将根据系统当前的语言加载翻译。
+ *  - 调用方式： localization.Translate("Try_Terminate_Process") //返回一个 string 字符串
+ * 示例JSON文件（en.json）：
+ * {
+ *     "Restart_v2rayN": "Start v2rayN, please wait...",
+ *     "Guidelines": "Please run it from the main application."
+ * }
+ * 
+ * 示例JSON文件（zh.json）：
+ * {
+ *     "Restart_v2rayN": "正在重启，请等待...",
+ *     "Guidelines": "请从主应用运行！"
+ * }
+ * 
+ * 注意:
+ *  - 确保通过NuGet安装了Newtonsoft.Json库。
+ */
+
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
-namespace AmazTool
+public class Localization
 {
-    public class LocalizationHelper
+    private Dictionary<string, string> translations;
+
+    public Localization()
     {
-        /// <summary>
-        /// 获取系统当前语言的本地化字符串
-        /// </summary>
-        /// <param name="key">要翻译的关键字</param>
-        /// <returns>对应语言的本地化字符串，如果没有找到则返回关键字</returns>
-        public static string GetLocalizedValue(string key)
+        // 获取当前系统的完整文化名称 例：zh-CN en-US
+        string currentLanguage = CultureInfo.CurrentCulture.Name;
+
+        // 如果当前语言不是"zh-CN"或"en-US"，默认使用英文
+        if (currentLanguage != "zh-CN" && currentLanguage != "en-US")
         {
-            // 定义支持的语言
-            HashSet<string> supportedLanguages = ["zh", "en"];
-
-            // 获取当前系统语言的 ISO 两字母代码
-            string currentLanguage = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-
-            // 如果当前语言不在支持的语言列表中，默认使用英文
-            if (!supportedLanguages.Contains(currentLanguage))
-            {
-                currentLanguage = "en";
-            }
-
-            // 尝试获取对应语言的翻译
-            if (languageResources.TryGetValue(key, out var translations))
-            {
-                if (translations.TryGetValue(currentLanguage, out var translation))
-                {
-                    return translation;
-                }
-            }
-
-            // 如果未找到翻译，返回关键字本身
-            return key;
+            currentLanguage = "en-US";
         }
 
-        /// <summary>
-        /// 存储不同语言的本地化资源
-        /// </summary>
-        public static Dictionary<string, Dictionary<string, string>> languageResources = new()
+        // 加载相应语言的JSON文件
+        string jsonFilePath = $"{currentLanguage}.json";
+        if (!LoadTranslations(jsonFilePath))
         {
-            {
-                "Guidelines", new Dictionary<string, string>
-                {
-                    { "en", "Please run it from the main application." },
-                    { "zh", "请从主应用运行！" }
-                }
-            },
-            {
-                "Upgrade_File_Not_Found", new Dictionary<string, string>
-                {
-                    { "en", "Upgrade failed, file not found." },
-                    { "zh", "升级失败，文件不存在！" }
-                }
-            },
-            {
-                "In_Progress", new Dictionary<string, string>
-                {
-                    { "en", "In progress, please wait..." },
-                    { "zh", "正在进行中，请等待..." }
-                }
-            },
-            {
-                "Try_Terminate_Process", new Dictionary<string, string>
-                {
-                    { "en", "Try to terminate the v2rayN process." },
-                    { "zh", "尝试结束 v2rayN 进程..." }
-                }
-            },
-            {
-                "Failed_Terminate_Process", new Dictionary<string, string>
-                {
-                    { "en", "Failed to terminate the v2rayN.Close it manually,or the upgrade may fail." },
-                    { "zh", "请手动关闭正在运行的v2rayN，否则可能升级失败。" }
-                }
-            },
-            {
-                "Start_Unzipping", new Dictionary<string, string>
-                {
-                    { "en", "Start extracting the update package." },
-                    { "zh", "开始解压缩更新包..." }
-                }
-            },
-            {
-                "Success_Unzipping", new Dictionary<string, string>
-                {
-                    { "en", "Successfully extracted the update package!" },
-                    { "zh", "解压缩更新包成功！" }
-                }
-            },
-            {
-                "Failed_Unzipping", new Dictionary<string, string>
-                {
-                    { "en", "Failed to extract the update package!" },
-                    { "zh", "解压缩更新包失败！" }
-                }
-            },
-            {
-                "Failed_Upgrade", new Dictionary<string, string>
-                {
-                    { "en", "Upgrade failed!" },
-                    { "zh", "升级失败！" }
-                }
-            },
-            {
-                "Success_Upgrade", new Dictionary<string, string>
-                {
-                    { "en", "Upgrade success!" },
-                    { "zh", "升级成功！" }
-                }
-            },
-            {
-                "Information", new Dictionary<string, string>
-                {
-                    { "en", "Information" },
-                    { "zh", "提示" }
-                }
-            },
-            {
-                "Restart_v2rayN", new Dictionary<string, string>
-                {
-                    { "en", "Start v2rayN, please wait..." },
-                    { "zh", "正在重启，请等待..." }
-                }
-            }
-        };
+            // 如果加载失败，则使用默认语言
+            jsonFilePath = "en-US.json";
+            LoadTranslations(jsonFilePath);
+        }
+    }
+
+    private bool LoadTranslations(string jsonFilePath)
+    {
+        try
+        {
+            // 读取JSON文件内容
+            var json = File.ReadAllText(jsonFilePath);
+            // 解析JSON内容
+            translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return true; // 成功读取和解析JSON文件
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to load JSON file: {ex.Message}");
+            Environment.Exit(1);
+            return false; // 读取或解析JSON文件失败
+        }
+    }
+
+    public string Translate(string key)
+    {
+        return translations != null && translations.TryGetValue(key, out string value) ? value : key;
     }
 }
