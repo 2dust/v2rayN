@@ -8,13 +8,14 @@
  *  - 将JSON文件放置程序同目录中。
  *  - 运行程序，它将根据系统当前的语言加载翻译。
  *  - 调用方式： localization.Translate("Try_Terminate_Process") //返回一个 string 字符串
- * 示例JSON文件（en.json）：
+ * 
+ * 示例JSON文件（en-US.json）：
  * {
  *     "Restart_v2rayN": "Start v2rayN, please wait...",
  *     "Guidelines": "Please run it from the main application."
  * }
  * 
- * 示例JSON文件（zh.json）：
+ * 示例JSON文件（zh-CN.json）：
  * {
  *     "Restart_v2rayN": "正在重启，请等待...",
  *     "Guidelines": "请从主应用运行！"
