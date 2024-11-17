@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.IO.Compression;
 using System.Text;
-using System.Threading;
 
 namespace AmazTool
 {
@@ -11,8 +8,8 @@ namespace AmazTool
     {
         public static void Upgrade(string fileName)
         {
-            Console.WriteLine(fileName);
-
+            Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
+            
             Thread.Sleep(9000);
 
             if (!File.Exists(fileName))

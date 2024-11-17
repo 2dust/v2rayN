@@ -729,7 +729,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var result = await CoreConfigHandler.GenerateClientConfig(item, null);
+            var result = await CoreConfigHandler.GenerateClientConfig(item, fileName);
             if (result.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(result.Msg);

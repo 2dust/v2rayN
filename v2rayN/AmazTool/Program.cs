@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace AmazTool
+﻿namespace AmazTool
 {
     internal static class Program
     {
