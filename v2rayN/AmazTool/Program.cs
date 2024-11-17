@@ -1,4 +1,7 @@
-﻿namespace AmazTool
+﻿using System;
+using System.Threading;
+
+namespace AmazTool
 {
     internal static class Program
     {
@@ -10,7 +13,7 @@
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Please run it from the main application.(请从主应用运行)");
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Guidelines"));
                 Thread.Sleep(5000);
                 return;
             }

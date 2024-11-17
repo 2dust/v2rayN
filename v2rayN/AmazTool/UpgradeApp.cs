@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Threading;
 
 namespace AmazTool
 {
@@ -9,17 +12,16 @@ namespace AmazTool
         public static void Upgrade(string fileName)
         {
             Console.WriteLine(fileName);
-            Console.WriteLine("In progress, please wait...(正在进行中，请等待)");
 
             Thread.Sleep(9000);
 
             if (!File.Exists(fileName))
             {
-                Console.WriteLine("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Upgrade_File_Not_Found"));
                 return;
             }
 
-            Console.WriteLine("Try to end the process(尝试结束进程).");
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Try_Terminate_Process"));
             try
             {
                 var existing = Process.GetProcessesByName(V2rayN);
@@ -32,11 +34,10 @@ namespace AmazTool
             catch (Exception ex)
             {
                 // Access may be denied without admin right. The user may not be an administrator.
-                Console.WriteLine("Failed to close v2rayN(关闭v2rayN失败).\n" +
-                    "Close it manually, or the upgrade may fail.(请手动关闭正在运行的v2rayN，否则可能升级失败。\n\n" + ex.StackTrace);
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Terminate_Process") + ex.StackTrace);
             }
 
-            Console.WriteLine("Start extracting files(开始解压文件).");
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Start_Unzipping"));
             StringBuilder sb = new();
             try
             {
@@ -79,16 +80,16 @@ namespace AmazTool
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Upgrade Failed(升级失败)." + ex.StackTrace);
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + ex.StackTrace);
                 //return;
             }
             if (sb.Length > 0)
             {
-                Console.WriteLine("Upgrade Failed(升级失败)." + sb.ToString());
+                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + sb.ToString());
                 //return;
             }
 
-            Console.WriteLine("Start v2rayN, please wait...(正在重启，请等待)");
+            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Restart_v2rayN"));
             Thread.Sleep(9000);
             Process process = new()
             {
