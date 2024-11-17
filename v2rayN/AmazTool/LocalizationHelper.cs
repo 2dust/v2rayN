@@ -9,7 +9,7 @@ public class Localization
 {
     private Dictionary<string, string> translations;
 
-    public Localization()
+    private Localization()
     {
         // 获取当前系统的完整文化名称 例：zh-CN en-US
         string currentLanguage = CultureInfo.CurrentCulture.Name;
