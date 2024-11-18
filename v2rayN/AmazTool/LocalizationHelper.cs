@@ -6,7 +6,7 @@ namespace AmazTool
 {
     public class LocalizationHelper
     {
-        private static Dictionary<string, string> languageResources = [];
+        private static Dictionary<string, string> _languageResources = [];
 
         static LocalizationHelper()
         {
@@ -18,26 +18,23 @@ namespace AmazTool
         {
             try
             {
-                string currentLanguage = CultureInfo.CurrentCulture.Name;
+                var currentLanguage = CultureInfo.CurrentCulture.Name;
                 if (currentLanguage != "zh-CN" && currentLanguage != "en-US")
                 {
                     currentLanguage = "en-US";
                 }
 
-                string resourceName = $"AmazTool.{currentLanguage}.json";
+                var resourceName = $"AmazTool.Assets.{currentLanguage}.json";
                 var assembly = Assembly.GetExecutingAssembly();
 
-                using Stream? stream = assembly.GetManifestResourceStream(resourceName);
-                if (stream != null)
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream == null) return;
+                
+                using StreamReader reader = new(stream);
+                var json = reader.ReadToEnd();
+                if (!string.IsNullOrEmpty(json))
                 {
-                    using StreamReader reader = new(stream);
-
-                    var json = reader.ReadToEnd();
-
-                    if (!string.IsNullOrEmpty(json))
-                    {
-                        languageResources = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
-                    }
+                    _languageResources = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
                 }
             }
             catch (IOException ex)
@@ -56,12 +53,7 @@ namespace AmazTool
 
         public static string GetLocalizedValue(string key)
         {
-            if (languageResources.TryGetValue(key, out var translation))
-            {
-                return translation;
-            }
-
-            return key;
+            return _languageResources.TryGetValue(key, out var translation) ? translation : key;
         }
     }
 }
