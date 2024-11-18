@@ -338,7 +338,7 @@ namespace v2rayN.Views
                             item2.Width = item.Width;
                             item2.DisplayIndex = displayIndex++;
                         }
-                        if (item.Name.StartsWith("to"))
+                        if (item.Name.ToLower().StartsWith("to"))
                         {
                             if (!_config.GuiItem.EnableStatistics)
                             {
