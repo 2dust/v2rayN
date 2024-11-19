@@ -6,6 +6,14 @@
 	<Nullable>enable</Nullable>
 	<Version>7.1.3</Version>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
  
 	<ItemGroup>
 		<PackageReference Include="Downloader" Version="3.2.1" />

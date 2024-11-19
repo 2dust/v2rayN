@@ -430,9 +430,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>تنظیمات پارامتر</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>ترفیع</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>بارگذاری مجدد</value>
   </data>

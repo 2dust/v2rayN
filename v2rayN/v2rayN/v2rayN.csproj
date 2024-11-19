@@ -12,6 +12,14 @@
 		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />

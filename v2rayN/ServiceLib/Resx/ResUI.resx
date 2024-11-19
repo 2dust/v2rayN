@@ -430,9 +430,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>Option Setting</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>Promotion</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>Reload</value>
   </data>

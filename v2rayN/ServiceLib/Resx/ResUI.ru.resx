@@ -430,9 +430,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>Настройка параметров</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>Содействие</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>Перезагрузка</value>
   </data>

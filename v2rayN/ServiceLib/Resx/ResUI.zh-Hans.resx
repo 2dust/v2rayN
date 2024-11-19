@@ -430,9 +430,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>参数设置</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>推广</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>重启服务</value>
   </data>
