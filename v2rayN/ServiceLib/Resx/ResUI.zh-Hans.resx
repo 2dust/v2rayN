@@ -302,7 +302,7 @@
     <value>扫描导入分享链接成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>当前服务的真连接延迟: {0} ms</value>
+    <value>当前延迟: {0} ms，{1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>操作成功</value>

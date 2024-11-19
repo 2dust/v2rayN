@@ -302,7 +302,7 @@
     <value>Сканирование URL-адреса импорта успешна.</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>Задержка текущего сервера: {0} мс</value>
+    <value>Задержка текущего сервера: {0} мс, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>Операция успешна</value>

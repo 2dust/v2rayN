@@ -244,8 +244,17 @@ namespace ServiceLib.Services
 
         public async Task RunAvailabilityCheck(Action<bool, string> updateFunc)
         {
-            var time = await new DownloadService().RunAvailabilityCheck(null);
-            updateFunc?.Invoke(false, string.Format(ResUI.TestMeOutput, time));
+            var downloadHandle = new DownloadService();
+            var time = await downloadHandle.RunAvailabilityCheck(null);
+            var ip = Global.None;
+            if (time > 0)
+            {
+                var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, "ipapi");
+                var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
+                ip = $"({ipInfo?.country}) {ipInfo?.ip}";
+            }
+
+            updateFunc?.Invoke(false, string.Format(ResUI.TestMeOutput, time, ip));
         }
 
         #region CheckUpdate private
