@@ -416,16 +416,16 @@ namespace ServiceLib.ViewModels
                 // When running as a non-administrator, reboot to administrator mode
                 if (EnableTun && AllowEnableTun() == false)
                 {
-                    _config.TunModeItem.EnableTun = false;
                     if (Utils.IsWindows())
                     {
+                        _config.TunModeItem.EnableTun = false;
                         Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                        return;
                     }
-                    else if (Utils.IsLinux())
-                    {
-                        NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
-                    }
-                    return;
+                    //else if (Utils.IsLinux())
+                    //{
+                    //    NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
+                    //}
                 }
                 await ConfigHandler.SaveConfig(_config);
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();

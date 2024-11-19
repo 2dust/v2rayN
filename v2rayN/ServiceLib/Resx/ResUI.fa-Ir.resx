@@ -302,7 +302,7 @@
     <value>اسکن URL وارد کردن با موفقیت</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>پینگ سرویس فعلی: {0} ms</value>
+    <value>پینگ سرویس فعلی: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>موفقیت عملیات</value>

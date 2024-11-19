@@ -382,7 +382,7 @@ namespace v2rayN.Desktop.Views
         #endregion Event
 
         #region UI
-         
+
         public void ShowHideWindow(bool? blShow)
         {
             var bl = blShow ?? !_config.UiItem.ShowInTaskbar;

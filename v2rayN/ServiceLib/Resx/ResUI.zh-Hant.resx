@@ -301,7 +301,7 @@
     <value>掃描匯入分享链接成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>目前服務的真連線延遲: {0} ms</value>
+    <value>目前延遲: {0} ms，{1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>操作成功</value>
@@ -1370,7 +1370,7 @@
     <value>Linux系統的sudo密碼</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>密碼已加密且只儲存在本機檔案中，無密碼無法開啟Tun</value>
+    <value>密碼已加密且只儲存在本機檔案中，無密碼則每次都要輸入</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>請先在Tun模式設定中設定sudo密碼</value>

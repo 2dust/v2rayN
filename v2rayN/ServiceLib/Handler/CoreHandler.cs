@@ -259,7 +259,7 @@ namespace ServiceLib.Handler
             return _config.TunModeItem.EnableTun
                    && eCoreType == ECoreType.sing_box
                    && Utils.IsLinux()
-                   && _config.TunModeItem.LinuxSudoPwd.IsNotEmpty()
+                //&& _config.TunModeItem.LinuxSudoPwd.IsNotEmpty()
                 ;
         }
 
@@ -275,7 +275,6 @@ namespace ServiceLib.Handler
                 return null;
             }
 
-            var isNeedSudo = mayNeedSudo && IsNeedSudo(coreInfo.CoreType);
             try
             {
                 Process proc = new()
@@ -294,14 +293,10 @@ namespace ServiceLib.Handler
                     }
                 };
 
+                var isNeedSudo = mayNeedSudo && IsNeedSudo(coreInfo.CoreType);
                 if (isNeedSudo)
                 {
-                    proc.StartInfo.FileName = $"/bin/sudo";
-                    proc.StartInfo.Arguments = $"-S {fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath).AppendQuotes())}";
-                    proc.StartInfo.WorkingDirectory = null;
-                    proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
-                    proc.StartInfo.RedirectStandardInput = true;
-                    Logging.SaveLog(proc.StartInfo.Arguments);
+                    await RunProcessAsLinuxRoot(proc, fileName, coreInfo, configPath);
                 }
 
                 var startUpErrorMessage = new StringBuilder();
@@ -326,7 +321,7 @@ namespace ServiceLib.Handler
                 }
                 proc.Start();
 
-                if (isNeedSudo)
+                if (isNeedSudo && _config.TunModeItem.LinuxSudoPwd.IsNotEmpty())
                 {
                     var pwd = DesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
                     await Task.Delay(10);
@@ -360,6 +355,37 @@ namespace ServiceLib.Handler
                 ShowMsg(true, ex.Message);
                 return null;
             }
+        }
+
+        private async Task RunProcessAsLinuxRoot(Process proc, string fileName, CoreInfo coreInfo, string configPath)
+        {
+            var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath).AppendQuotes())}";
+
+            //Prefer shell scripts
+            var shFilePath = Utils.GetBinPath("run_as_root.sh");
+            File.Delete(shFilePath);
+            var sb = new StringBuilder();
+            sb.AppendLine("#!/bin/sh");
+            sb.AppendLine(cmdLine);
+            await File.WriteAllTextAsync(shFilePath, sb.ToString());
+            await Utils.SetLinuxChmod(shFilePath);
+
+            //Replace command
+            var args = File.Exists(shFilePath) ? shFilePath : cmdLine;
+            if (_config.TunModeItem.LinuxSudoPwd.IsNotEmpty())
+            {
+                proc.StartInfo.FileName = $"/bin/sudo";
+                proc.StartInfo.Arguments = $"-S {args}";
+            }
+            else
+            {
+                proc.StartInfo.FileName = $"/bin/pkexec";
+                proc.StartInfo.Arguments = $"{args}";
+            }
+            proc.StartInfo.WorkingDirectory = null;
+            proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
+            proc.StartInfo.RedirectStandardInput = true;
+            Logging.SaveLog(proc.StartInfo.Arguments);
         }
 
         private async Task KillProcess(Process? proc)

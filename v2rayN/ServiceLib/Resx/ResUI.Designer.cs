@@ -3644,7 +3644,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The ping of current service: {0} ms 的本地化字符串。
+        ///   查找类似 The delay : {0} ms, {1} 的本地化字符串。
         /// </summary>
         public static string TestMeOutput {
             get {
