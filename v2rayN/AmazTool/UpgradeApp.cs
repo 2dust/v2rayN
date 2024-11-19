@@ -9,7 +9,7 @@ namespace AmazTool
         public static void Upgrade(string fileName)
         {
             Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
-            
+
             Thread.Sleep(9000);
 
             if (!File.Exists(fileName))

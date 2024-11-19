@@ -20,6 +20,7 @@
                 case ECoreType.Xray when RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5:
                 case ECoreType.sing_box when RunningCoreType is ECoreType.sing_box or ECoreType.mihomo:
                     return true;
+
                 default:
                     return false;
             }

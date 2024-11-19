@@ -29,7 +29,7 @@ namespace AmazTool
 
                 using var stream = assembly.GetManifestResourceStream(resourceName);
                 if (stream == null) return;
-                
+
                 using StreamReader reader = new(stream);
                 var json = reader.ReadToEnd();
                 if (!string.IsNullOrEmpty(json))

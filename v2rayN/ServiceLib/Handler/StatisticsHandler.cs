@@ -9,8 +9,10 @@
         private ServerStatItem? _serverStatItem;
         private List<ServerStatItem> _lstServerStat;
         private Action<ServerSpeedItem>? _updateFunc;
+
         //private StatisticsV2rayService? _statisticsV2Ray;
         private StatisticsXrayService? _statisticsXray;
+
         private StatisticsSingboxService? _statisticsSingbox;
 
         public List<ServerStatItem> ServerStat => _lstServerStat;

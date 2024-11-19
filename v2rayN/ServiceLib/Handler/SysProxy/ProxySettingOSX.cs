@@ -5,6 +5,7 @@
         /*
          * 仅测试了，MacOS 13.7.1 x86 版本，其他版本有待确认
          */
+
         /// <summary>
         /// 应用接口类型
         /// </summary>
@@ -21,13 +22,11 @@
             await ExecCmd(lstCmd);
         }
 
-
         public static async Task UnsetProxy()
         {
             var lstCmd = GetUnsetCmds();
             await ExecCmd(lstCmd);
         }
-
 
         private static async Task ExecCmd(List<CmdItem> lstCmd)
         {
