@@ -10,7 +10,7 @@ namespace AmazTool
         {
             Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
 
-            Thread.Sleep(9000);
+            Waiting(9);
 
             if (!File.Exists(fileName))
             {
@@ -24,8 +24,12 @@ namespace AmazTool
                 var existing = Process.GetProcessesByName(V2rayN);
                 foreach (var pp in existing)
                 {
-                    pp?.Kill();
-                    pp?.WaitForExit(1000);
+                    var path = pp.MainModule?.FileName ?? "";
+                    if (path.StartsWith(GetPath(V2rayN)))
+                    {
+                        pp?.Kill();
+                        pp?.WaitForExit(1000);
+                    }
                 }
             }
             catch (Exception ex)
@@ -87,7 +91,7 @@ namespace AmazTool
             }
 
             Console.WriteLine(LocalizationHelper.GetLocalizedValue("Restart_v2rayN"));
-            Thread.Sleep(9000);
+            Waiting(9);
             Process process = new()
             {
                 StartInfo = new()
@@ -118,6 +122,15 @@ namespace AmazTool
                 return startupPath;
             }
             return Path.Combine(startupPath, fileName);
+        }
+
+        private static void Waiting(int second)
+        {
+            for (var i = second; i > 0; i--)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(1000);
+            }
         }
 
         private static string V2rayN => "v2rayN";
