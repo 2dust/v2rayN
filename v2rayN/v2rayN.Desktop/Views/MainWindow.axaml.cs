@@ -407,7 +407,8 @@ namespace v2rayN.Desktop.Views
                     this.WindowState = WindowState.Minimized;
                 }
             }
-
+            // Windows 生效，MacOS 无效，Linux 未测试
+            this.ShowInTaskbar = bl;
             _config.UiItem.ShowInTaskbar = bl;
         }
 
