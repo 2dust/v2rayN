@@ -1296,6 +1296,20 @@ namespace ServiceLib.Handler
                 }
             }
 
+            //Keep the last traffic statistics
+            if (lstOriSub != null)
+            {
+                var lstSub = await AppHandler.Instance.ProfileItems(subid);
+                foreach (var item in lstSub)
+                {
+                    var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
+                    if (existItem != null)
+                    {
+                        await StatisticsHandler.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
+                    }
+                }
+            }
+
             return counter;
         }
 
