@@ -856,12 +856,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Установить как активное правило</value>
   </data>
-  <data name="menuRoutingBasic" xml:space="preserve">
-    <value>Основные функции</value>
-  </data>
-  <data name="menuRoutingBasicImportRules" xml:space="preserve">
-    <value>Импорт основных правил</value>
-  </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>Сопоставитель доменов</value>
   </data>

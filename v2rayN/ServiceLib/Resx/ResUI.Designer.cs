@@ -1366,24 +1366,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Basic Function 的本地化字符串。
-        /// </summary>
-        public static string menuRoutingBasic {
-            get {
-                return ResourceManager.GetString("menuRoutingBasic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Import Basic Rules 的本地化字符串。
-        /// </summary>
-        public static string menuRoutingBasicImportRules {
-            get {
-                return ResourceManager.GetString("menuRoutingBasicImportRules", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 RoutingRuleDetailsSetting 的本地化字符串。
         /// </summary>
         public static string menuRoutingRuleDetailsSetting {

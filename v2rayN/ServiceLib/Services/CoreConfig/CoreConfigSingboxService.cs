@@ -119,7 +119,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 await GenLog(singboxConfig);
                 //GenDns(new(), singboxConfig);
-                singboxConfig.inbounds.Clear();  
+                singboxConfig.inbounds.Clear();
                 singboxConfig.outbounds.RemoveAt(0);
 
                 var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
@@ -499,13 +499,10 @@ namespace ServiceLib.Services.CoreConfig
                     inbound.sniff_override_destination = _config.Inbound[0].RouteOnly ? false : _config.Inbound[0].SniffingEnabled;
                     inbound.domain_strategy = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainStrategy4Singbox) ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-                    if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+                    var routing = await ConfigHandler.GetDefaultRouting(_config);
+                    if (Utils.IsNotEmpty(routing.DomainStrategy4Singbox))
                     {
-                        var routing = await ConfigHandler.GetDefaultRouting(_config);
-                        if (Utils.IsNotEmpty(routing.DomainStrategy4Singbox))
-                        {
-                            inbound.domain_strategy = routing.DomainStrategy4Singbox;
-                        }
+                        inbound.domain_strategy = routing.DomainStrategy4Singbox;
                     }
 
                     //http
@@ -958,28 +955,13 @@ namespace ServiceLib.Services.CoreConfig
                     });
                 }
 
-                if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+                var routing = await ConfigHandler.GetDefaultRouting(_config);
+                if (routing != null)
                 {
-                    var routing = await ConfigHandler.GetDefaultRouting(_config);
-                    if (routing != null)
+                    var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
+                    foreach (var item in rules ?? [])
                     {
-                        var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
-                        foreach (var item in rules ?? [])
-                        {
-                            if (item.Enabled)
-                            {
-                                await GenRoutingUserRule(item, singboxConfig.route.rules);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    var lockedItem = await ConfigHandler.GetLockedRoutingItem(_config);
-                    if (lockedItem != null)
-                    {
-                        var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.RuleSet);
-                        foreach (var item in rules ?? [])
+                        if (item.Enabled)
                         {
                             await GenRoutingUserRule(item, singboxConfig.route.rules);
                         }
@@ -1334,20 +1316,18 @@ namespace ServiceLib.Services.CoreConfig
 
             //load custom ruleset file
             List<Ruleset4Sbox> customRulesets = [];
-            if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+
+            var routing = await ConfigHandler.GetDefaultRouting(_config);
+            if (Utils.IsNotEmpty(routing.CustomRulesetPath4Singbox))
             {
-                var routing = await ConfigHandler.GetDefaultRouting(_config);
-                if (Utils.IsNotEmpty(routing.CustomRulesetPath4Singbox))
+                var result = Utils.LoadResource(routing.CustomRulesetPath4Singbox);
+                if (Utils.IsNotEmpty(result))
                 {
-                    var result = Utils.LoadResource(routing.CustomRulesetPath4Singbox);
-                    if (Utils.IsNotEmpty(result))
-                    {
-                        customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
-                            .Where(t => t.tag != null)
-                            .Where(t => t.type != null)
-                            .Where(t => t.format != null)
-                            .ToList();
-                    }
+                    customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
+                        .Where(t => t.tag != null)
+                        .Where(t => t.type != null)
+                        .Where(t => t.format != null)
+                        .ToList();
                 }
             }
 

@@ -15,7 +15,6 @@
     mc:Ignorable="d">
 
     <DockPanel>
-
         <StackPanel
             Classes="Margin8"
             DockPanel.Dock="Top"
@@ -54,7 +53,6 @@
                 Width="100"
                 Margin="8,0,0,0" />
         </StackPanel>
-
 
         <StackPanel
             HorizontalAlignment="Right"
@@ -134,9 +132,6 @@
                     </DataGrid>
                 </TabItem>
             </TabControl>
-
-
         </DockPanel>
-
     </DockPanel>
 </Window>

@@ -850,12 +850,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>设为活动规则 (Enter)</value>
   </data>
-  <data name="menuRoutingBasic" xml:space="preserve">
-    <value>基础功能</value>
-  </data>
-  <data name="menuRoutingBasicImportRules" xml:space="preserve">
-    <value>一键导入基础规则</value>
-  </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>域名匹配算法</value>
   </data>

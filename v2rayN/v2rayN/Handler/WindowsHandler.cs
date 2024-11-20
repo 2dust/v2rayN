@@ -54,11 +54,6 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (!config.RoutingBasicItem.EnableRoutingAdvanced)
-                {
-                    return null;
-                }
-
                 var item = await ConfigHandler.GetDefaultRouting(config);
                 if (item == null || Utils.IsNullOrEmpty(item.CustomIcon) || !File.Exists(item.CustomIcon))
                 {
