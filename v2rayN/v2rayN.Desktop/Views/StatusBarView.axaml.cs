@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
@@ -77,6 +78,9 @@ namespace v2rayN.Desktop.Views
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow.Icon = AvaUtils.GetAppIcon(_config.SystemProxyItem.SysProxyType);
+                var iconslist = TrayIcon.GetIcons(Application.Current);
+                iconslist[0].Icon = desktop.MainWindow.Icon;
+                TrayIcon.SetIcons(Application.Current, iconslist);
             }
         }
 
