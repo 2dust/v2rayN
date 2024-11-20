@@ -90,8 +90,8 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(Global.SingboxSampleClient);
-                string txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
+                var result = Utils.GetEmbedText(Global.SingboxSampleClient);
+                var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -119,10 +119,10 @@ namespace ServiceLib.Services.CoreConfig
 
                 await GenLog(singboxConfig);
                 //GenDns(new(), singboxConfig);
-                singboxConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
+                singboxConfig.inbounds.Clear();  
                 singboxConfig.outbounds.RemoveAt(0);
 
-                int httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
