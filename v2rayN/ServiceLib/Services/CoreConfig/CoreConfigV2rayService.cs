@@ -216,8 +216,8 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(Global.V2raySampleClient);
-                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                var result = Utils.GetEmbedText(Global.V2raySampleClient);
+                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -244,10 +244,11 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 await GenLog(v2rayConfig);
-                v2rayConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
-                v2rayConfig.outbounds.RemoveAt(0);
+                v2rayConfig.inbounds.Clear();
+                v2rayConfig.outbounds.Clear();
+                v2rayConfig.routing.rules.Clear();
 
-                int httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
@@ -270,7 +271,7 @@ namespace ServiceLib.Services.CoreConfig
 
                     //find unused port
                     var port = httpPort;
-                    for (int k = httpPort; k < Global.MaxPort; k++)
+                    for (var k = httpPort; k < Global.MaxPort; k++)
                     {
                         if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                         {
@@ -294,16 +295,6 @@ namespace ServiceLib.Services.CoreConfig
                     it.Port = port;
                     it.AllowTest = true;
 
-                    //inbound
-                    Inbounds4Ray inbound = new()
-                    {
-                        listen = Global.Loopback,
-                        port = port,
-                        protocol = EInboundProtocol.http.ToString(),
-                    };
-                    inbound.tag = inbound.protocol + inbound.port.ToString();
-                    v2rayConfig.inbounds.Add(inbound);
-
                     //outbound
                     if (item is null)
                     {
@@ -325,6 +316,16 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         continue;
                     }
+
+                    //inbound
+                    Inbounds4Ray inbound = new()
+                    {
+                        listen = Global.Loopback,
+                        port = port,
+                        protocol = EInboundProtocol.http.ToString(),
+                    };
+                    inbound.tag = inbound.protocol + inbound.port.ToString();
+                    v2rayConfig.inbounds.Add(inbound);
 
                     var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     await GenOutbound(item, outbound);
@@ -466,33 +467,17 @@ namespace ServiceLib.Services.CoreConfig
                     v2rayConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
                     v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainMatcher) ? null : _config.RoutingBasicItem.DomainMatcher;
 
-                    if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+                    var routing = await ConfigHandler.GetDefaultRouting(_config);
+                    if (routing != null)
                     {
-                        var routing = await ConfigHandler.GetDefaultRouting(_config);
-                        if (routing != null)
+                        if (Utils.IsNotEmpty(routing.DomainStrategy))
                         {
-                            if (Utils.IsNotEmpty(routing.DomainStrategy))
-                            {
-                                v2rayConfig.routing.domainStrategy = routing.DomainStrategy;
-                            }
-                            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
-                            foreach (var item in rules)
-                            {
-                                if (item.Enabled)
-                                {
-                                    var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                                    await GenRoutingUserRule(item2, v2rayConfig);
-                                }
-                            }
+                            v2rayConfig.routing.domainStrategy = routing.DomainStrategy;
                         }
-                    }
-                    else
-                    {
-                        var lockedItem = await ConfigHandler.GetLockedRoutingItem(_config);
-                        if (lockedItem != null)
+                        var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
+                        foreach (var item in rules)
                         {
-                            var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.RuleSet);
-                            foreach (var item in rules)
+                            if (item.Enabled)
                             {
                                 var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
                                 await GenRoutingUserRule(item2, v2rayConfig);

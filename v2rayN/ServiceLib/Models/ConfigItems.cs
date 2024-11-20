@@ -180,7 +180,6 @@
         public string DomainStrategy4Singbox { get; set; }
         public string DomainMatcher { get; set; }
         public string RoutingIndexId { get; set; }
-        public bool EnableRoutingAdvanced { get; set; }
     }
 
     [Serializable]

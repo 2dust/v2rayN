@@ -850,12 +850,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Set as active rule(Enter)</value>
   </data>
-  <data name="menuRoutingBasic" xml:space="preserve">
-    <value>Basic Function</value>
-  </data>
-  <data name="menuRoutingBasicImportRules" xml:space="preserve">
-    <value>Import Basic Rules</value>
-  </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>Domain Matcher</value>
   </data>

@@ -65,10 +65,8 @@ namespace ServiceLib.Handler
                     config.Inbound[0].Protocol = EInboundProtocol.socks.ToString();
                 }
             }
-            config.RoutingBasicItem ??= new()
-            {
-                EnableRoutingAdvanced = true
-            };
+
+            config.RoutingBasicItem ??= new();
 
             if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
@@ -1298,6 +1296,20 @@ namespace ServiceLib.Handler
                 }
             }
 
+            //Keep the last traffic statistics
+            if (lstOriSub != null)
+            {
+                var lstSub = await AppHandler.Instance.ProfileItems(subid);
+                foreach (var item in lstSub)
+                {
+                    var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
+                    if (existItem != null)
+                    {
+                        await StatisticsHandler.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
+                    }
+                }
+            }
+
             return counter;
         }
 
@@ -1600,7 +1612,7 @@ namespace ServiceLib.Handler
             var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
             if (item is null)
             {
-                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.Locked == false);
+                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
                 await SetDefaultRouting(config, item2);
                 return item2;
             }
@@ -1674,6 +1686,15 @@ namespace ServiceLib.Handler
         {
             var ver = "V3-";
             var items = await AppHandler.Instance.RoutingItems();
+
+            //TODO Temporary code to be removed later
+            var lockItem = items?.FirstOrDefault(t => t.Locked == true);
+            if (lockItem != null)
+            {
+                await ConfigHandler.RemoveRoutingItem(lockItem);
+                items = await AppHandler.Instance.RoutingItems();
+            }
+
             if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(ver)).ToList().Count > 0)
             {
                 return 0;
@@ -1712,11 +1733,6 @@ namespace ServiceLib.Handler
                 await SetDefaultRouting(config, item2);
             }
             return 0;
-        }
-
-        public static async Task<RoutingItem?> GetLockedRoutingItem(Config config)
-        {
-            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Locked == true);
         }
 
         public static async Task RemoveRoutingItem(RoutingItem routingItem)

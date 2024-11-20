@@ -847,12 +847,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Set as active rule</value>
   </data>
-  <data name="menuRoutingBasic" xml:space="preserve">
-    <value>عملکرد پایه</value>
-  </data>
-  <data name="menuRoutingBasicImportRules" xml:space="preserve">
-    <value>واردات قوانین اساسی</value>
-  </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>تطبیق دامنه</value>
   </data>

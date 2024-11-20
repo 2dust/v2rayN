@@ -65,6 +65,25 @@
             }
         }
 
+        public async Task CloneServerStatItem(string indexId, string toIndexId)
+        {
+            if (_lstServerStat == null)
+            {
+                return;
+            }
+
+            var stat = _lstServerStat.FirstOrDefault(t => t.IndexId == indexId);
+            if (stat == null)
+            {
+                return;
+            }
+
+            var toStat = JsonUtils.DeepCopy(stat);
+            toStat.IndexId = toIndexId;
+            await SQLiteHelper.Instance.ReplaceAsync(toStat);
+            _lstServerStat.Add(toStat);
+        }
+
         private async Task InitData()
         {
             await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");

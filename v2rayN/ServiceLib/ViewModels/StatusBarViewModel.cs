@@ -347,11 +347,6 @@ namespace ServiceLib.ViewModels
         public async Task RefreshRoutingsMenu()
         {
             _routingItems.Clear();
-            if (!_config.RoutingBasicItem.EnableRoutingAdvanced)
-            {
-                BlRouting = false;
-                return;
-            }
 
             BlRouting = true;
             var routings = await AppHandler.Instance.RoutingItems();
@@ -474,7 +469,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                InboundLanDisplay = $"{ResUI.LabLAN}:None";
+                InboundLanDisplay = $"{ResUI.LabLAN}:{Global.None}";
             }
         }
 

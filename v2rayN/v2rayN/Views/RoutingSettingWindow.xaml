@@ -29,23 +29,6 @@
                 ClipToBounds="True"
                 Style="{StaticResource MaterialDesignToolBar}">
                 <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                    <MenuItem x:Name="menuRoutingBasic" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon
-                                    Margin="{StaticResource MarginRight8}"
-                                    VerticalAlignment="Center"
-                                    Kind="Server" />
-                                <TextBlock Text="{x:Static resx:ResUI.menuRoutingBasic}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                        <MenuItem
-                            x:Name="menuRoutingBasicImportRules"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuRoutingBasicImportRules}" />
-                    </MenuItem>
-                </Menu>
-                <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                     <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
@@ -66,16 +49,6 @@
                             Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
                     </MenuItem>
                 </Menu>
-                <!--<Separator />
-                <TextBlock
-                    Margin="{StaticResource MarginLeft8}"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.TbenableRoutingAdvanced}" />
-                <ToggleButton
-                    x:Name="togenableRoutingAdvanced"
-                    Margin="{StaticResource MarginLeft8}"
-                    HorizontalAlignment="Left" />-->
                 <Separator />
                 <TextBlock
                     Margin="{StaticResource MarginLeft8}"
@@ -222,107 +195,6 @@
                                 Header="{x:Static resx:ResUI.LvCustomIcon}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </TabItem>
-            </TabControl>
-
-            <TabControl x:Name="tabBasic">
-                <TabItem Header="{x:Static resx:ResUI.TbRoutingTabProxy}">
-                    <Grid Margin="{StaticResource Margin8}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox
-                            Grid.Column="0"
-                            Header="Domain"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtProxyDomain"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="2"
-                            Header="IP"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtProxyIP"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                    </Grid>
-                </TabItem>
-
-                <TabItem Header="{x:Static resx:ResUI.TbRoutingTabDirect}">
-                    <Grid Margin="{StaticResource Margin8}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox
-                            Grid.Column="0"
-                            Header="Domain"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtDirectDomain"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="2"
-                            Header="IP"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtDirectIP"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                    </Grid>
-                </TabItem>
-
-                <TabItem Header="{x:Static resx:ResUI.TbRoutingTabBlock}">
-                    <Grid Margin="{StaticResource Margin8}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <GroupBox
-                            Grid.Column="0"
-                            Header="Domain"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtBlockDomain"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                        <GroupBox
-                            Grid.Column="2"
-                            Header="IP"
-                            Style="{StaticResource MyGroupBox}">
-                            <TextBox
-                                Name="txtBlockIP"
-                                AcceptsReturn="True"
-                                Style="{StaticResource DefTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-                        </GroupBox>
-                    </Grid>
                 </TabItem>
             </TabControl>
         </DockPanel>
