@@ -324,6 +324,7 @@ namespace ServiceLib.ViewModels
             if (process.Id > 0)
             {
                 await MyAppExitAsync(false);
+                await MyAppExitAsync(false);
             }
         }
 
