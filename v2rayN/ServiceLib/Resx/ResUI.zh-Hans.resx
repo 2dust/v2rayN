@@ -481,8 +481,8 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>颜色</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>暗黑模式</value>
+  <data name="TbSettingsThemeMode" xml:space="preserve">
+    <value>主题模式</value>
   </data>
   <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
     <value>是否跟随系统主题</value>
@@ -1069,11 +1069,11 @@
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>进程名全称 (Tun模式)</value>
   </data>
-  <data name="TbRoutingRuleDomain" xml:space="preserve">
-    <value>Domain</value>
-  </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
     <value>添加[Hysteria2]服务器</value>
@@ -1141,11 +1141,11 @@
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>添加[HTTP]服务器</value>
   </data>
-  <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>启用分片（Fragment）</value>
-  </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>使用Xray且非Tun模式启用，和分组前置代理冲突</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>启用分片（Fragment）</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>启用sing-box（规则集文件）的缓存文件</value>
@@ -1291,17 +1291,17 @@
   <data name="menuRemoteBackupAndRestore" xml:space="preserve">
     <value>远程 (WebDAV)</value>
   </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav 服务器地址</value>
+  </data>
   <data name="LvWebDavUserName" xml:space="preserve">
     <value>WebDav 账户</value>
-  </data>
-  <data name="LvWebDavCheck" xml:space="preserve">
-    <value>WebDav 可用检查</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
     <value>WebDav 密码</value>
   </data>
-  <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav 服务器地址</value>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDav 可用检查</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>远程文件夹名称(可选)</value>
@@ -1321,17 +1321,14 @@
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo文件来源(可选)</value>
   </data>
-  <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>升级工具App不存在</value>
-  </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
     <value>sing-box ruleset文件来源(可选)</value>
   </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>升级工具App不存在</value>
+  </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
     <value>路由规则集来源(可选)</value>
-  </data>
-  <data name="TbSettingsChinaUserTip" xml:space="preserve">
-    <value>中国区域用户可忽略此项</value>
   </data>
   <data name="menuRegionalPresets" xml:space="preserve">
     <value>区域预置设置</value>
@@ -1341,6 +1338,9 @@
   </data>
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>俄罗斯</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>中国区域用户可忽略此项</value>
   </data>
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>扫描图片中的二维码</value>

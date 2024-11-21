@@ -12,7 +12,7 @@ namespace v2rayN.Desktop.ViewModels
 {
     public class ThemeSettingViewModel : MyReactiveObject
     {
-        [Reactive] public bool ColorModeDark { get; set; }
+        [Reactive] public string ThemeMode { get; set; }
 
         [Reactive] public int CurrentFontSize { get; set; }
 
@@ -28,23 +28,23 @@ namespace v2rayN.Desktop.ViewModels
 
         private void RestoreUI()
         {
-            ModifyTheme(_config.UiItem.ColorModeDark);
+            ModifyTheme(_config.UiItem.ThemeMode);
             ModifyFontFamily();
         }
 
         private void BindingUI()
         {
-            ColorModeDark = _config.UiItem.ColorModeDark;
+            ThemeMode = _config.UiItem.ThemeMode;
             CurrentFontSize = _config.UiItem.CurrentFontSize;
             CurrentLanguage = _config.UiItem.CurrentLanguage;
 
-            this.WhenAnyValue(x => x.ColorModeDark)
+            this.WhenAnyValue(x => x.ThemeMode)
                 .Subscribe(c =>
                 {
-                    if (_config.UiItem.ColorModeDark != ColorModeDark)
+                    if (_config.UiItem.ThemeMode != ThemeMode)
                     {
-                        _config.UiItem.ColorModeDark = ColorModeDark;
-                        ModifyTheme(ColorModeDark);
+                        _config.UiItem.ThemeMode = ThemeMode;
+                        ModifyTheme(ThemeMode);
                         ConfigHandler.SaveConfig(_config);
                     }
                 });
@@ -79,12 +79,19 @@ namespace v2rayN.Desktop.ViewModels
                 });
         }
 
-        private void ModifyTheme(bool isDarkTheme)
+        private void ModifyTheme(string themeMode)
         {
             var app = Application.Current;
             if (app is not null)
             {
-                app.RequestedThemeVariant = isDarkTheme ? ThemeVariant.Dark : ThemeVariant.Light;
+                ThemeVariant tv = ThemeVariant.Default;
+                switch (themeMode)
+                {
+                    case "dark": tv = ThemeVariant.Dark; break;
+                    case "light": tv = ThemeVariant.Light; break;
+                    default: tv = ThemeVariant.Default; break;
+                }
+                app.RequestedThemeVariant = tv;
             }
         }
 

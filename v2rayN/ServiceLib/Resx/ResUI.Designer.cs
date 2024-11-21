@@ -2798,15 +2798,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Dark Mode 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsColorMode {
-            get {
-                return ResourceManager.GetString("TbSettingsColorMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Core: basic settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCore {
@@ -3406,6 +3397,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsSystemproxy {
             get {
                 return ResourceManager.GetString("TbSettingsSystemproxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Theme mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsThemeMode {
+            get {
+                return ResourceManager.GetString("TbSettingsThemeMode", resourceCulture);
             }
         }
         

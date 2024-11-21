@@ -107,7 +107,7 @@
         public double MainGirdHeight1 { get; set; }
         public double MainGirdHeight2 { get; set; }
         public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
-        public bool ColorModeDark { get; set; }
+        public string ThemeMode { get; set; }
         public bool FollowSystemTheme { get; set; }
         public string? ColorPrimaryName { get; set; }
         public string CurrentLanguage { get; set; }

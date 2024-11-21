@@ -10,54 +10,57 @@
     d:DesignWidth="800"
     x:DataType="vms:ThemeSettingViewModel"
     mc:Ignorable="d">
-    <Button
+	<Button
         Width="30"
         Height="30"
         Margin="10,0"
         Theme="{DynamicResource BorderlessButton}">
-        <Button.Content>
-            <PathIcon
+		<Button.Content>
+			<PathIcon
                 Width="20"
                 Height="20"
                 Data="{StaticResource building_more}"
                 Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
-        </Button.Content>
-        <Button.Flyout>
-            <Flyout>
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
+		</Button.Content>
+		<Button.Flyout>
+			<Flyout>
+				<StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-                        <ToggleSwitch x:Name="togDarkMode" Classes="Margin8" />
-                    </StackPanel>
+                            Text="{x:Static resx:ResUI.TbSettingsThemeMode}" />
+						<ComboBox
+						   x:Name="cmbThemeMode"
+						   Width="100"
+						   Classes="Margin8" />
+					</StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
+					<StackPanel Orientation="Horizontal">
+						<TextBlock
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
-                        <ComboBox
+						<ComboBox
                             x:Name="cmbCurrentFontSize"
                             Width="100"
                             Classes="Margin8" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock
                             Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
-                        <ComboBox
+						<ComboBox
                             x:Name="cmbCurrentLanguage"
                             Width="100"
                             Classes="Margin8" />
-                    </StackPanel>
-                </StackPanel>
-            </Flyout>
-        </Button.Flyout>
-    </Button>
+					</StackPanel>
+				</StackPanel>
+			</Flyout>
+		</Button.Flyout>
+	</Button>
 </UserControl>

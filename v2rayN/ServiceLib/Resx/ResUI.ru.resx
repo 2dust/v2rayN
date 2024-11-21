@@ -481,9 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Цвет</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>Тёмный режим</value>
-  </data>
   <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
     <value>Следить за системной темой</value>
   </data>
@@ -691,17 +688,11 @@
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Интервал автоматического обновления Geo в часах</value>
   </data>
-  <data name="LvAutoUpdateInterval" xml:space="preserve">
-    <value>Интервал автоматического обновления в минутах</value>
-  </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
     <value>Настройки DNS V2ray</value>
-  </data>
-  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>Настройки DNS sing-box</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Ядро: настройки KCP</value>
@@ -997,23 +988,14 @@
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
     <value>Скопируйте файл шрифта TTF/TTC в каталог guiFonts, перезапустите настройки</value>
   </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6;</value>
+  </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Установите это с правами администратора</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>Размер шрифта</value>
-  </data>
-  <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
-  </data>
-  <data name="menuRebootAsAdmin" xml:space="preserve">
-    <value>Перезагрузить как администратор</value>
-  </data>
-  <data name="menuDNSSetting" xml:space="preserve">
-    <value>Настройки DNS</value>
-  </data>
-  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
-    <value>Включить логгирование в файл</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>Таймаут одиночного спидтеста</value>
@@ -1021,110 +1003,131 @@
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>URL спидтеста</value>
   </data>
-  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
-    <value>Источник geo файлов</value>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Move up and down</value>
   </data>
-  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
-    <value>Источник sing-box srs файлов</value>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
   </data>
-  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
-    <value>Источник правил маршрутизации</value>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
   </data>
-  <data name="menuRegionalPresets" xml:space="preserve">
-    <value>Региональные пресеты</value>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
   </data>
-  <data name="menuRegionalPresetsDefault" xml:space="preserve">
-    <value>По умолчанию (Китай)</value>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
-  <data name="menuRegionalPresetsRussia" xml:space="preserve">
-    <value>Россия</value>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Waiting for testing (press ESC to terminate)...</value>
   </data>
-  <data name="TbSettingsChinaUserTip" xml:space="preserve">
-    <value>Используйте Настройки -&gt; Региональные пресеты вместо изменения этого поля</value>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Please turn off when there is an abnormal disconnection</value>
   </data>
-  <data name="LvMemo" xml:space="preserve">
-    <value>Remarks Memo</value>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Updates are not enabled, skip this subscription</value>
   </data>
-  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>Speed Ping Test URL</value>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Перезагрузить как администратор</value>
   </data>
-  <data name="menuProxiesDelaytestPart" xml:space="preserve">
-    <value>Part Node Latency Test</value>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>More URLs, separated by commas; Subscription conversion will be invalid</value>
   </data>
-  <data name="menuProxiesReload" xml:space="preserve">
-    <value>Refresh Proxies</value>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
   </data>
-  <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Auto ScrollToEnd</value>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Интервал автоматического обновления в минутах</value>
   </data>
-  <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>Select active node (Enter)</value>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Включить логгирование в файл</value>
   </data>
-  <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Convert target type</value>
   </data>
-  <data name="TbPath7" xml:space="preserve">
-    <value>obfs password</value>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Please leave blank if no conversion is required</value>
   </data>
-  <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>Настройки DNS</value>
   </data>
-  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
-    <value>Default domain strategy for outbound</value>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>Настройки DNS sing-box</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-Server lowest latency</value>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Please fill in DNS Structure, Click to view the document</value>
   </data>
-  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Main layout orientation(Require restart)</value>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Click to import default DNS config</value>
   </data>
-  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
-    <value>Multi-server load balancing</value>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>sing-box domain strategy</value>
   </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
-    <value>Latency Test</value>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>sing-box Mux Protocol</value>
   </data>
-  <data name="TbReserved" xml:space="preserve">
-    <value>Reserved(2,3,4)</value>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Full process name (Tun mode)</value>
   </data>
-  <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP or IP CIDR</value>
   </data>
-  <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [WireGuard] server</value>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
   </data>
-  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
-    <value>Auto column width adjustment</value>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>Add [Hysteria2] server</value>
   </data>
-  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
-    <value>Export Base64-encoded Share Links to Clipboard</value>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria Max bandwidth (Up/Dw)</value>
   </data>
-  <data name="TbSortingDelay" xml:space="preserve">
-    <value>Delay</value>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Use System Hosts</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>Enable additional Inbound</value>
-  </data>
-  <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exists and is unique</value>
-  </data>
-  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Export selected server for complete configuration to clipboard</value>
-  </data>
-  <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy remarks</value>
-  </data>
-  <data name="menuShowOrHideMainWindow" xml:space="preserve">
-    <value>Show or hide the main window</value>
-  </data>
-  <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy remarks</value>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>Add [TUIC] server</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
   </data>
-  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
-    <value>Outbound DNS address</value>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Previous proxy remarks</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Next proxy remarks</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Please make sure the remarks exists and is unique</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>Enable additional Inbound</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>Enable IPv6 Address</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>Add [WireGuard] server</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved(2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address(Ip,Ipv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>obfs password</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Auto ScrollToEnd</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Speed Ping Test URL</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
     <value>Updating subscription, only determine remarks exists</value>
@@ -1135,23 +1138,41 @@
   <data name="TransportRequestHostTip5" xml:space="preserve">
     <value>*grpc Authority</value>
   </data>
-  <data name="TbSortingDefault" xml:space="preserve">
-    <value>Default</value>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>Add [HTTP] server</value>
   </data>
-  <data name="TbSortingChain" xml:space="preserve">
-    <value>Chain</value>
+  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
+    <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
   </data>
-  <data name="TbSorting" xml:space="preserve">
-    <value>Sorting</value>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>Enable fragment</value>
   </data>
-  <data name="menuOpenTheFileLocation" xml:space="preserve">
-    <value>Open the storage location</value>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>Enable cache file for sing-box (ruleset files)</value>
+  </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>Custom the rule-set of sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>Successful operation. Click the settings menu to reboot the app.</value>
   </data>
-  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>Custom the rule-set of sing-box</value>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Open the storage location</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Chain</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Download Speed</value>
   </data>
   <data name="TbSortingDownTraffic" xml:space="preserve">
     <value>Download Traffic</value>
@@ -1170,9 +1191,6 @@
   </data>
   <data name="TbSortingType" xml:space="preserve">
     <value>Type</value>
-  </data>
-  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>Enable cache file for sing-box (ruleset files)</value>
   </data>
   <data name="TbSortingUpSpeed" xml:space="preserve">
     <value>Upload Speed</value>
@@ -1204,98 +1222,128 @@
   <data name="menuModeNothing" xml:space="preserve">
     <value>Do not change</value>
   </data>
-  <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>Enable fragment</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
-  </data>
   <data name="menuModeRule" xml:space="preserve">
     <value>Rule</value>
   </data>
-  <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [HTTP] server</value>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>Latency Test</value>
   </data>
-  <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [TUIC] server</value>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Part Node Latency Test</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Refresh Proxies</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Select active node (Enter)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Default domain strategy for outbound</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-Server lowest latency</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Main layout orientation(Require restart)</value>
+  </data>
+  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
+    <value>Multi-server load balancing</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Outbound DNS address</value>
+  </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Auto column width adjustment</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Export Base64-encoded Share Links to Clipboard</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Export selected server for complete configuration to clipboard</value>
+  </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Show or hide the main window</value>
   </data>
   <data name="UpdateStandalonePackageTip" xml:space="preserve">
     <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
   </data>
-  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
-    <value>Enable IPv6 Address</value>
-  </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Custom config socks port</value>
+  </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Backup and Restore</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Backup to local</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Restore from local</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Backup to remote (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Restore from remote (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Remote (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav Url</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>WebDav User Name</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>WebDav Password</value>
   </data>
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDav Check</value>
   </data>
-  <data name="TbRoutingRuleDomain" xml:space="preserve">
-    <value>Domain</value>
-  </data>
-  <data name="TbRoutingRuleIP" xml:space="preserve">
-    <value>IP or IP CIDR</value>
-  </data>
-  <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Full process name (Tun mode)</value>
-  </data>
-  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
-    <value>sing-box Mux Protocol</value>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Remote folder name (optional)</value>
   </data>
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
     <value>Invalid backup file</value>
   </data>
-  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>sing-box domain strategy</value>
-  </data>
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
     <value>Host filter</value>
-  </data>
-  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>Click to import default DNS config</value>
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>Please fill in DNS Structure, Click to view the document</value>
-  </data>
-  <data name="LvConvertTargetTip" xml:space="preserve">
-    <value>Please leave blank if no conversion is required</value>
-  </data>
-  <data name="LvConvertTarget" xml:space="preserve">
-    <value>Convert target type</value>
-  </data>
   <data name="menuStorageUI" xml:space="preserve">
     <value>Save Interface Layout</value>
   </data>
-  <data name="SpeedDisplayText" xml:space="preserve">
-    <value>{0} : {1}/s↑ | {2}/s↓</value>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Источник geo файлов</value>
   </data>
-  <data name="LvMoreUrl" xml:space="preserve">
-    <value>More URLs, separated by commas; Subscription conversion will be invalid</value>
-  </data>
-  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
-    <value>Updates are not enabled, skip this subscription</value>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>Источник sing-box srs файлов</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
     <value>UpgradeApp does not exist</value>
   </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Источник правил маршрутизации</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Региональные пресеты</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>По умолчанию (Китай)</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Россия</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Используйте Настройки -&gt; Региональные пресеты вместо изменения этого поля</value>
+  </data>
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>Scan QR code in the image</value>
-  </data>
-  <data name="TipDisplayLog" xml:space="preserve">
-    <value>Please turn off when there is an abnormal disconnection</value>
-  </data>
-  <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Waiting for testing (press ESC to terminate)...</value>
-  </data>
-  <data name="TbSpiderX" xml:space="preserve">
-    <value>SpiderX</value>
-  </data>
-  <data name="TbShortId" xml:space="preserve">
-    <value>ShortId</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
     <value>Invalid address (Url)</value>
@@ -1303,65 +1351,14 @@
   <data name="InsecureUrlProtocol" xml:space="preserve">
     <value>Please do not use the insecure HTTP protocol subscription address</value>
   </data>
-  <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
-  </data>
-  <data name="menuMoveTo" xml:space="preserve">
-    <value>Move up and down</value>
-  </data>
-  <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6;</value>
-  </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
     <value>Install the font to the system and restart the settings</value>
-  </data>
-  <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Hysteria2] server</value>
-  </data>
-  <data name="LvWebDavPassword" xml:space="preserve">
-    <value>WebDav Password</value>
-  </data>
-  <data name="LvWebDavDirName" xml:space="preserve">
-    <value>Remote folder name (optional)</value>
-  </data>
-  <data name="TbSortingDownSpeed" xml:space="preserve">
-    <value>Download Speed</value>
-  </data>
-  <data name="menuRemoteRestore" xml:space="preserve">
-    <value>Restore from remote (WebDAV)</value>
-  </data>
-  <data name="menuRemoteBackup" xml:space="preserve">
-    <value>Backup to remote (WebDAV)</value>
-  </data>
-  <data name="LvWebDavUserName" xml:space="preserve">
-    <value>WebDav User Name</value>
-  </data>
-  <data name="menuLocalRestore" xml:space="preserve">
-    <value>Restore from local</value>
-  </data>
-  <data name="menuLocalBackup" xml:space="preserve">
-    <value>Backup to local</value>
-  </data>
-  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>Use System Hosts</value>
-  </data>
-  <data name="menuBackupAndRestore" xml:space="preserve">
-    <value>Backup and Restore</value>
-  </data>
-  <data name="menuLocalBackupAndRestore" xml:space="preserve">
-    <value>Local</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>Are you sure to exit?</value>
   </data>
-  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria Max bandwidth (Up/Dw)</value>
-  </data>
-  <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav Url</value>
-  </data>
-  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
-    <value>Remote (WebDAV)</value>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Remarks Memo</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>Linux system sudo password</value>
@@ -1383,5 +1380,8 @@
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>
+  </data>
+  <data name="TbSettingsThemeMode" xml:space="preserve">
+    <value>Theme mode</value>
   </data>
 </root>

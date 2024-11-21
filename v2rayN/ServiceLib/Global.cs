@@ -196,6 +196,7 @@
         public static readonly List<string> DomainDNSAddress = ["223.5.5.5", "223.6.6.6", "localhost"];
         public static readonly List<string> SingboxDomainDNSAddress = ["223.5.5.5", "223.6.6.6", "dhcp://auto"];
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
+        public static readonly List<string> ThemeModes = new() { "system", "dark", "light" };
         public static readonly List<string> Alpns = new() { "h3", "h2", "http/1.1", "h3,h2", "h2,http/1.1", "h3,h2,http/1.1", "" };
         public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };
         public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };

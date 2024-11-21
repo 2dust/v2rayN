@@ -25,10 +25,13 @@ namespace v2rayN.Desktop.Views
             {
                 cmbCurrentLanguage.Items.Add(it);
             });
-
+            Global.ThemeModes.ForEach(it =>
+            {
+                cmbThemeMode.Items.Add(it);
+            });
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.ThemeMode, v => v.cmbThemeMode.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.SelectedValue).DisposeWith(disposables);
             });
