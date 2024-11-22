@@ -911,8 +911,7 @@ namespace ServiceLib.Services.CoreConfig
                         streamSettings.httpupgradeSettings = httpupgradeSettings;
 
                         break;
-                    //splithttp //xhttp
-                    case nameof(ETransport.splithttp):
+                    //xhttp
                     case nameof(ETransport.xhttp):
                         streamSettings.network = ETransport.xhttp.ToString();
                         XhttpSettings4Ray xhttpSettings = new()

@@ -295,7 +295,7 @@ namespace v2rayN.Views
                     cmbHeaderType.Items.Add(it);
                 });
             }
-            else if (network is nameof(ETransport.splithttp) or nameof(ETransport.xhttp))
+            else if (network is nameof(ETransport.xhttp))
             {
                 Global.XhttpMode.ForEach(it =>
                 {
@@ -345,7 +345,6 @@ namespace v2rayN.Views
                     tipPath.Text = ResUI.TransportPathTip1;
                     break;
 
-                case nameof(ETransport.splithttp):
                 case nameof(ETransport.xhttp):
                     tipRequestHost.Text = ResUI.TransportRequestHostTip2;
                     tipPath.Text = ResUI.TransportPathTip1;
