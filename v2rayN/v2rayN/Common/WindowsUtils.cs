@@ -62,11 +62,12 @@ namespace v2rayN
                 BitmapSizeOptions.FromEmptyOptions());
         }
 
-        public static bool IsLightTheme()
+        public static bool IsDarkTheme()
         {
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            var value = key?.GetValue("AppsUseLightTheme");
-            return value is int i && i > 0;
+            var obj = key?.GetValue("AppsUseLightTheme");
+            int.TryParse(obj?.ToString(), out var value);
+            return value == 0;
         }
 
         public static void RemoveTunDevice()

@@ -38,7 +38,7 @@ namespace v2rayN.ViewModels
         {
             _config = AppHandler.Instance.Config;
 
-            RegisterSystemColorSet(_config, Application.Current.MainWindow, (bool bl) => { ModifyTheme(bl); });
+            RegisterSystemColorSet(_config, Application.Current.MainWindow, ModifyTheme);
 
             BindingUI();
             RestoreUI();
@@ -46,15 +46,7 @@ namespace v2rayN.ViewModels
 
         private void RestoreUI()
         {
-            if (FollowSystemTheme)
-            {
-                ModifyTheme(!WindowsUtils.IsLightTheme());
-            }
-            else
-            {
-                ModifyTheme(_config.UiItem.ColorModeDark);
-            }
-
+            ModifyTheme();
             if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
                 var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
@@ -87,7 +79,7 @@ namespace v2rayN.ViewModels
                           if (_config.UiItem.ColorModeDark != ColorModeDark)
                           {
                               _config.UiItem.ColorModeDark = ColorModeDark;
-                              ModifyTheme(ColorModeDark);
+                              ModifyTheme();
                               ConfigHandler.SaveConfig(_config);
                           }
                       });
@@ -99,15 +91,8 @@ namespace v2rayN.ViewModels
                         if (_config.UiItem.FollowSystemTheme != FollowSystemTheme)
                         {
                             _config.UiItem.FollowSystemTheme = FollowSystemTheme;
+                            ModifyTheme();
                             ConfigHandler.SaveConfig(_config);
-                            if (FollowSystemTheme)
-                            {
-                                ModifyTheme(!WindowsUtils.IsLightTheme());
-                            }
-                            else
-                            {
-                                ModifyTheme(ColorModeDark);
-                            }
                         }
                     });
 
@@ -163,10 +148,11 @@ namespace v2rayN.ViewModels
                 });
         }
 
-        public void ModifyTheme(bool isDarkTheme)
+        public void ModifyTheme()
         {
             var theme = _paletteHelper.GetTheme();
 
+            var isDarkTheme = FollowSystemTheme ? WindowsUtils.IsDarkTheme() : ColorModeDark;
             theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
             _paletteHelper.SetTheme(theme);
             WindowsUtils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
@@ -183,7 +169,7 @@ namespace v2rayN.ViewModels
             _paletteHelper.SetTheme(theme);
         }
 
-        public void RegisterSystemColorSet(Config config, Window window, Action<bool> updateFunc)
+        public void RegisterSystemColorSet(Config config, Window window, Action updateFunc)
         {
             var helper = new WindowInteropHelper(window);
             var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
@@ -196,7 +182,7 @@ namespace v2rayN.ViewModels
                     {
                         if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
                         {
-                            updateFunc?.Invoke(!WindowsUtils.IsLightTheme());
+                            updateFunc?.Invoke();
                         }
                     }
                 }

@@ -30,7 +30,7 @@ namespace v2rayN.Views
 
             HotkeyHandler.Instance.IsPause = true;
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
-            WindowsUtils.SetDarkBorder(this, _config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : _config.UiItem.ColorModeDark);
+            WindowsUtils.SetDarkBorder(this, _config.UiItem.FollowSystemTheme ? WindowsUtils.IsDarkTheme() : _config.UiItem.ColorModeDark);
             InitData();
         }
 
