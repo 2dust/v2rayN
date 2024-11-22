@@ -488,7 +488,7 @@
     <value>Follow System Theme</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>Language (Restart)</value>
+    <value>Language</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>Import Share Links from clipboard (Ctrl+V)</value>

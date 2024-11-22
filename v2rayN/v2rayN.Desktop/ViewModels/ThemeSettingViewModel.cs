@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -7,6 +8,7 @@ using Avalonia.Styling;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive.Linq;
+using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop.ViewModels
 {
@@ -86,7 +88,11 @@ namespace v2rayN.Desktop.ViewModels
                         _config.UiItem.CurrentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                         ConfigHandler.SaveConfig(_config);
-                        NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
+
+                        Window oldMainWindow = (Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow!;
+                        (Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow = new MainWindow();
+                        oldMainWindow.Close();
+                        (Application.Current!.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow!.Show();
                     }
                 });
         }

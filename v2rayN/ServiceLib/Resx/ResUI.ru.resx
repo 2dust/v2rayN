@@ -488,7 +488,7 @@
     <value>Следить за системной темой</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>Язык (требуется перезапуск)</value>
+    <value>Язык</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>Импорт массива URL из буфера обмена (Ctrl+V)</value>

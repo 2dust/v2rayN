@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using v2rayN.Views;
 
 namespace v2rayN.ViewModels
 {
@@ -143,7 +144,11 @@ namespace v2rayN.ViewModels
                         _config.UiItem.CurrentLanguage = CurrentLanguage;
                         Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                         ConfigHandler.SaveConfig(_config);
-                        NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
+
+                        Window oldMainWindow = Application.Current.MainWindow;
+                        Application.Current.MainWindow = new MainWindow();
+                        oldMainWindow.Close();
+                        Application.Current.MainWindow.Show();
                     }
                 });
         }

@@ -488,7 +488,7 @@
     <value>是否跟随系统主题</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>语言(重启)</value>
+    <value>语言</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>从剪贴板导入分享链接 (Ctrl+V)</value>
