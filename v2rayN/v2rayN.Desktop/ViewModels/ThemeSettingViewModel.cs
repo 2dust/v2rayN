@@ -13,6 +13,7 @@ namespace v2rayN.Desktop.ViewModels
     public class ThemeSettingViewModel : MyReactiveObject
     {
         [Reactive] public bool ColorModeDark { get; set; }
+        [Reactive] public bool FollowSystemTheme { get; set; }
 
         [Reactive] public int CurrentFontSize { get; set; }
 
@@ -28,13 +29,14 @@ namespace v2rayN.Desktop.ViewModels
 
         private void RestoreUI()
         {
-            ModifyTheme(_config.UiItem.ColorModeDark);
+            ModifyTheme();
             ModifyFontFamily();
         }
 
         private void BindingUI()
         {
             ColorModeDark = _config.UiItem.ColorModeDark;
+            FollowSystemTheme = _config.UiItem.FollowSystemTheme;
             CurrentFontSize = _config.UiItem.CurrentFontSize;
             CurrentLanguage = _config.UiItem.CurrentLanguage;
 
@@ -44,7 +46,18 @@ namespace v2rayN.Desktop.ViewModels
                     if (_config.UiItem.ColorModeDark != ColorModeDark)
                     {
                         _config.UiItem.ColorModeDark = ColorModeDark;
-                        ModifyTheme(ColorModeDark);
+                        ModifyTheme();
+                        ConfigHandler.SaveConfig(_config);
+                    }
+                });
+            this.WhenAnyValue(x => x.FollowSystemTheme,
+                    y => y == true)
+                .Subscribe(c =>
+                {
+                    if (_config.UiItem.FollowSystemTheme != FollowSystemTheme)
+                    {
+                        _config.UiItem.FollowSystemTheme = FollowSystemTheme;
+                        ModifyTheme();
                         ConfigHandler.SaveConfig(_config);
                     }
                 });
@@ -59,7 +72,6 @@ namespace v2rayN.Desktop.ViewModels
                         _config.UiItem.CurrentFontSize = CurrentFontSize;
                         double size = CurrentFontSize;
                         ModifyFontSize(size);
-
                         ConfigHandler.SaveConfig(_config);
                     }
                 });
@@ -79,12 +91,12 @@ namespace v2rayN.Desktop.ViewModels
                 });
         }
 
-        private void ModifyTheme(bool isDarkTheme)
+        private void ModifyTheme()
         {
             var app = Application.Current;
             if (app is not null)
             {
-                app.RequestedThemeVariant = isDarkTheme ? ThemeVariant.Dark : ThemeVariant.Light;
+                app.RequestedThemeVariant = FollowSystemTheme ? ThemeVariant.Default : (ColorModeDark ? ThemeVariant.Dark : ThemeVariant.Light);
             }
         }
 

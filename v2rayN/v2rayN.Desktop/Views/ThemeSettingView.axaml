@@ -33,7 +33,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
                         <ToggleSwitch x:Name="togDarkMode" Classes="Margin8" />
                     </StackPanel>
-
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Width="100"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsFollowSystemTheme}" />
+                        <ToggleSwitch x:Name="togFollowSystemTheme" Classes="Margin8" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             Width="100"

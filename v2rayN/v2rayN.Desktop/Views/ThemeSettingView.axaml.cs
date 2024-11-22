@@ -29,6 +29,7 @@ namespace v2rayN.Desktop.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.FollowSystemTheme, v => v.togFollowSystemTheme.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.SelectedValue).DisposeWith(disposables);
             });
