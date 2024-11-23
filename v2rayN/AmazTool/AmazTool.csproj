@@ -10,8 +10,18 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <EmbeddedResource Include="Assets\en-US.json" />
-    <EmbeddedResource Include="Assets\zh-CN.json" />
+    <Compile Update="Resx\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <EmbeddedResource Update="Resx\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

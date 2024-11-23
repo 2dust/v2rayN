@@ -10,7 +10,7 @@
         {
             if (args.Length == 0)
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Guidelines"));
+                Console.WriteLine(Resx.Resource.Guidelines);
                 Thread.Sleep(5000);
                 return;
             }

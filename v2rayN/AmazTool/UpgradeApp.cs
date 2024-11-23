@@ -8,17 +8,17 @@ namespace AmazTool
     {
         public static void Upgrade(string fileName)
         {
-            Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
+            Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
 
             Waiting(9);
 
             if (!File.Exists(fileName))
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Upgrade_File_Not_Found"));
+                Console.WriteLine(Resx.Resource.UpgradeFileNotFound);
                 return;
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Try_Terminate_Process"));
+            Console.WriteLine(Resx.Resource.TryTerminateProcess);
             try
             {
                 var existing = Process.GetProcessesByName(V2rayN);
@@ -35,10 +35,10 @@ namespace AmazTool
             catch (Exception ex)
             {
                 // Access may be denied without admin right. The user may not be an administrator.
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Terminate_Process") + ex.StackTrace);
+                Console.WriteLine(Resx.Resource.FailedTerminateProcess + ex.StackTrace);
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Start_Unzipping"));
+            Console.WriteLine(Resx.Resource.StartUnzipping);
             StringBuilder sb = new();
             try
             {
@@ -81,16 +81,16 @@ namespace AmazTool
             }
             catch (Exception ex)
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + ex.StackTrace);
+                Console.WriteLine(Resx.Resource.FailedUpgrade + ex.StackTrace);
                 //return;
             }
             if (sb.Length > 0)
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + sb.ToString());
+                Console.WriteLine(Resx.Resource.FailedUpgrade + sb.ToString());
                 //return;
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Restart_v2rayN"));
+            Console.WriteLine(Resx.Resource.Restartv2rayN);
             Waiting(9);
             Process process = new()
             {
