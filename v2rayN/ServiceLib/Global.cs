@@ -47,6 +47,7 @@
         public const string ClashMixinYaml = NamespaceSample + "clash_mixin_yaml";
         public const string ClashTunYaml = NamespaceSample + "clash_tun_yaml";
         public const string LinuxAutostartConfig = NamespaceSample + "linux_autostart_config";
+        public const string PacFileName = NamespaceSample + "pac";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";

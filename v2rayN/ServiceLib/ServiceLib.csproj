@@ -33,6 +33,7 @@
     <EmbeddedResource Include="Sample\custom_routing_white" />
     <EmbeddedResource Include="Sample\dns_singbox_normal" />
     <EmbeddedResource Include="Sample\dns_v2ray_normal" />
+    <EmbeddedResource Include="Sample\pac" />
     <EmbeddedResource Include="Sample\SampleClientConfig" />
     <EmbeddedResource Include="Sample\SampleHttpRequest" />
     <EmbeddedResource Include="Sample\SampleHttpResponse" />
@@ -45,11 +46,6 @@
     <EmbeddedResource Include="Sample\tun_singbox_rules" />
     <EmbeddedResource Include="Sample\linux_autostart_config" />
   </ItemGroup>
-
-
-	<ItemGroup>
-	  <ProjectReference Include="..\PacLib\PacLib.csproj" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Resx\ResUI.Designer.cs">

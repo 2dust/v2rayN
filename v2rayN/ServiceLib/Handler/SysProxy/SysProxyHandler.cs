@@ -1,6 +1,4 @@
-﻿using PacLib;
-
-namespace ServiceLib.Handler.SysProxy
+﻿namespace ServiceLib.Handler.SysProxy
 {
     public static class SysProxyHandler
     {
