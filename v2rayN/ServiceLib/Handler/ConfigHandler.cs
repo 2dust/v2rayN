@@ -383,7 +383,7 @@ namespace ServiceLib.Handler
             }
 
             var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
-            return await SetDefaultServerIndex(config, item.IndexId);
+            return await SetDefaultServerIndex(config, item?.IndexId);
         }
 
         public static async Task<ProfileItem?> GetDefaultServer(Config config)

@@ -53,7 +53,7 @@
                         Binding="{Binding Remarks}"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <DataGridTextColumn
-                        Width="150"
+                        Width="*"
                         Binding="{Binding Url}"
                         Header="{x:Static resx:ResUI.LvUrl}" />
                     <DataGridCheckBoxColumn
