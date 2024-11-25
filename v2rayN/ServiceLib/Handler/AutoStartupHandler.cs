@@ -25,6 +25,10 @@ namespace ServiceLib.Handler
                     await SetTaskLinux();
                 }
             }
+            else if(Utils.IsOSX())
+            {
+                //TODO
+            }
 
             return true;
         }

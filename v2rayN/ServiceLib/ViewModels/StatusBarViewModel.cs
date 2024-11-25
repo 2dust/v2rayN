@@ -437,6 +437,11 @@ namespace ServiceLib.ViewModels
             {
                 return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
             }
+            else if (Utils.IsOSX())
+            {
+                //TODO
+                return false;
+            }
             return false;
         }
 

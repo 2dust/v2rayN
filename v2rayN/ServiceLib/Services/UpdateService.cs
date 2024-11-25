@@ -450,6 +450,15 @@ namespace ServiceLib.Services
                     _ => null,
                 };
             }
+            else if (Utils.IsOSX())
+            {
+                return RuntimeInformation.ProcessArchitecture switch
+                {
+                    Architecture.Arm64 => coreInfo?.DownloadUrlOSXArm64,
+                    Architecture.X64 => coreInfo?.DownloadUrlOSX64,
+                    _ => null,
+                };
+            }
             return null;
         }
 

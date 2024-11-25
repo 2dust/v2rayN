@@ -42,6 +42,8 @@
                 DownloadUrlWinArm64 = Global.NUrl + "/download/{0}/v2rayN-windows-arm64.zip",
                 DownloadUrlLinux64 = Global.NUrl + "/download/{0}/v2rayN-linux-64.zip",
                 DownloadUrlLinuxArm64 = Global.NUrl + "/download/{0}/v2rayN-linux-arm64.zip",
+                DownloadUrlOSX64 = Global.NUrl + "/download/{0}/v2rayN-macos-64.zip",
+                DownloadUrlOSXArm64 = Global.NUrl + "/download/{0}/v2rayN-macos-arm64.zip",
             });
 
             _coreInfo.Add(new CoreInfo
@@ -79,6 +81,8 @@
                 DownloadUrlWinArm64 = Global.XrayCoreUrl + "/download/{0}/Xray-windows-arm64-v8a.zip",
                 DownloadUrlLinux64 = Global.XrayCoreUrl + "/download/{0}/Xray-linux-64.zip",
                 DownloadUrlLinuxArm64 = Global.XrayCoreUrl + "/download/{0}/Xray-linux-arm64-v8a.zip",
+                DownloadUrlOSX64 = Global.XrayCoreUrl + "/download/{0}/Xray-macos-64.zip",
+                DownloadUrlOSXArm64 = Global.XrayCoreUrl + "/download/{0}/Xray-macos-arm64-v8a.zip",
                 Match = "Xray",
                 VersionArg = "-version",
                 RedirectInfo = true,
@@ -95,6 +99,8 @@
                 DownloadUrlWinArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-windows-arm64-{0}.zip",
                 DownloadUrlLinux64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-linux-amd64-compatible-{0}.gz",
                 DownloadUrlLinuxArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-linux-arm64-{0}.gz",
+                DownloadUrlOSX64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-darwin-amd64-compatible-{0}.gz",
+                DownloadUrlOSXArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-darwin-arm64-{0}.gz",
                 Match = "Mihomo",
                 VersionArg = "-v",
                 RedirectInfo = true,
@@ -140,6 +146,8 @@
                 DownloadUrlWinArm64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-windows-arm64.zip",
                 DownloadUrlLinux64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-linux-amd64.tar.gz",
                 DownloadUrlLinuxArm64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-linux-arm64.tar.gz",
+                DownloadUrlOSX64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-darwin-amd64.tar.gz",
+                DownloadUrlOSXArm64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-darwin-arm64.tar.gz",
                 Match = "sing-box",
                 VersionArg = "version",
             });

@@ -218,6 +218,11 @@ namespace v2rayN.Desktop.Views
                         .ToList();
                     return lst;
                 }
+                else if (Utils.IsOSX())
+                {
+                    //TODO
+                    return lstFonts;
+                }
             }
             catch (Exception ex)
             {

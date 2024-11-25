@@ -262,7 +262,7 @@ namespace ServiceLib.ViewModels
                     FileManager.ZipExtractToFile(fileName, toPath, _config.GuiItem.IgnoreGeoUpdateCore ? "geo" : "");
                 }
 
-                if (Utils.IsLinux())
+                if (Utils.IsLinux() || Utils.IsOSX())
                 {
                     var filesList = (new DirectoryInfo(toPath)).GetFiles().Select(u => u.FullName).ToList();
                     foreach (var file in filesList)
