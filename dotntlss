@@ -1,0 +1,105 @@
+using System;
+using System.IO;
+using System.Linq;
+
+namespace DotNetLs
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = Directory.GetCurrentDirectory();
+            bool showHidden = false;
+            bool detailed = false;
+
+            // Parse command-line arguments
+            foreach (var arg in args)
+            {
+                if (arg == "-a")
+                {
+                    showHidden = true;
+                }
+                else if (arg == "-l")
+                {
+                    detailed = true;
+                }
+                else
+                {
+                    path = arg; // assume the last argument is the path
+                }
+            }
+
+            try
+            {
+                var files = Directory.GetFileSystemEntries(path);
+
+                foreach (var file in files)
+                {
+                    var fileInfo = new FileInfo(file);
+                    if (!showHidden && fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        continue; // skip hidden files
+                    }
+
+                    if (detailed)
+                    {
+                        Console.WriteLine($"{fileInfo.Attributes} {fileInfo.Length} bytes {fileInfo.LastWriteTime} {fileInfo.Name}");
+                    }
+                    else
+                    {
+                        Console.WriteLine(fileInfo.Name);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+    }
+}
+
+dotnet new xunit -n DotNetLs.Tests
+cd DotNetLs.Tests
+dotnet add reference ../DotNetLs/DotNetLs.csproj
+
+using System;
+using System.IO;
+using Xunit;
+
+namespace DotNetLs.Tests
+{
+    public class LsTests
+    {
+        [Fact]
+        public void TestListFiles()
+        {
+            // Arrange
+            string testDir = Path.Combine(Directory.GetCurrentDirectory(), "TestDir");
+            Directory.CreateDirectory(testDir);
+            File.Create(Path.Combine(testDir, "file1.txt")).Dispose();
+            File.Create(Path.Combine(testDir, ".hiddenfile")).Dispose();
+
+            // Act
+            var output = RunLsCommand(testDir);
+
+            // Assert
+            Assert.Contains("file1.txt", output);
+            Assert.DoesNotContain(".hiddenfile", output); // Without -a option
+        }
+
+        [Fact]
+        public void TestListAllFiles()
+        {
+            // Arrange
+            string testDir = Path.Combine(Directory.GetCurrentDirectory(), "TestDir");
+            Directory.CreateDirectory(testDir);
+            File.Create(Path.Combine(testDir, "file1.txt")).Dispose();
+            File.Create(Path.Combine(testDir, ".hiddenfile")).Dispose();
+
+            // Act
+            var output = RunLsCommand(testDir, "-a");
+
+            // Assert
+            Assert.Contains("file1.txt", output);
+            Assert.Contains(".hiddenfile", output); // With -a option
