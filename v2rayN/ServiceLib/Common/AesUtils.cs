@@ -11,24 +11,23 @@ namespace ServiceLib.Common
         private const int IvSize = 16;   // AES block size
         private const int Iterations = 10000;
 
-        private static readonly byte[] Salt = Encoding.ASCII.GetBytes("saltysalt".PadRight(16, ' '));//google浏览器默认盐值
+        private static readonly byte[] Salt = Encoding.ASCII.GetBytes("saltysalt".PadRight(16, ' ')); // google浏览器默认盐值
+
+        private static readonly string DefaultPassword =Utils.GetHomePath() + "AesUtils";
 
         /// <summary>
         /// Encrypt
         /// </summary>
         /// <param name="text">Plain text</param>
-        /// <param name="password">Password for key derivation</param>
+        /// <param name="password">Password for key derivation or direct key in ASCII bytes</param>
         /// <returns>Base64 encoded cipher text with IV</returns>
-        public static string Encrypt(string text, string password)
+        public static string Encrypt(string text, string password = null)
         {
             if (string.IsNullOrEmpty(text))
                 return string.Empty;
 
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("Password cannot be null.");
-
             byte[] plaintext = Encoding.UTF8.GetBytes(text);
-            byte[] key = GetDefaultKey(password);
+            byte[] key = GetKey(password);
             byte[] iv = GenerateIv();
 
             using (Aes aes = Aes.Create())
@@ -56,24 +55,21 @@ namespace ServiceLib.Common
         /// Decrypt
         /// </summary>
         /// <param name="cipherTextWithIv">Base64 encoded cipher text with IV</param>
-        /// <param name="password">Password for key derivation</param>
+        /// <param name="password">Password for key derivation or direct key in ASCII bytes</param>
         /// <returns>Plain text</returns>
-        public static string Decrypt(string cipherTextWithIv, string password)
+        public static string Decrypt(string cipherTextWithIv, string password = null)
         {
             if (string.IsNullOrEmpty(cipherTextWithIv))
                 return string.Empty;
 
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("Password cannot be null.");
-
             byte[] cipherTextWithIvBytes = Convert.FromBase64String(cipherTextWithIv);
-            byte[] key = GetDefaultKey(password);
+            byte[] key = GetKey(password);
 
             byte[] iv = new byte[IvSize];
             Buffer.BlockCopy(cipherTextWithIvBytes, 0, iv, 0, IvSize);
 
             byte[] cipherText = new byte[cipherTextWithIvBytes.Length - IvSize];
-            Buffer.BlockCopy(cipherTextWithIvBytes, IvSize, cipherText, 0, cipherText.Length - IvSize);
+            Buffer.BlockCopy(cipherTextWithIvBytes, IvSize, cipherText, 0, cipherText.Length);
 
             using (Aes aes = Aes.Create())
             {
@@ -94,9 +90,26 @@ namespace ServiceLib.Common
             }
         }
 
-        private static byte[] GetDefaultKey(string password)
+        private static byte[] GetKey(string password)
         {
-            using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, Salt, Iterations, HashAlgorithmName.SHA256))
+            if (string.IsNullOrEmpty(password))
+            {
+                return GetDefaultKey();
+            }
+            else
+            {
+                byte[] key = Encoding.ASCII.GetBytes(password);
+                if (key.Length != KeySize / 8)
+                {
+                    throw new ArgumentException($"Password bytes length must be {KeySize / 8} bytes.");
+                }
+                return key;
+            }
+        }
+
+        private static byte[] GetDefaultKey()
+        {
+            using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(DefaultPassword, Salt, Iterations, HashAlgorithmName.SHA256))
             {
                 return pbkdf2.GetBytes(KeySize / 8);
             }
