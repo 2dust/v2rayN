@@ -379,6 +379,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
+                            x:Name="tbAutoRun"
                             Grid.Row="1"
                             Grid.Column="0"
                             VerticalAlignment="Center"

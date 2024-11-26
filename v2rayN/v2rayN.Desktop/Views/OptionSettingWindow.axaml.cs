@@ -172,6 +172,7 @@ namespace v2rayN.Desktop.Views
 
             if (Utils.IsOSX())
             {
+                tbAutoRun.IsVisible = false;
                 togAutoRun.IsVisible = false;
                 //TODO
             }

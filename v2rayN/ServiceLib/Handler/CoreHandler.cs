@@ -323,7 +323,7 @@ namespace ServiceLib.Handler
 
                 if (isNeedSudo && _config.TunModeItem.LinuxSudoPwd.IsNotEmpty())
                 {
-                    var pwd = AesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
+                    var pwd = DesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
                     await Task.Delay(10);
                     await proc.StandardInput.WriteLineAsync(pwd);
                     await Task.Delay(10);

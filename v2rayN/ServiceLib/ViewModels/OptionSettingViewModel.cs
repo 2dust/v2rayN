@@ -347,7 +347,7 @@ namespace ServiceLib.ViewModels
             _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
             if (TunLinuxSudoPassword != _config.TunModeItem.LinuxSudoPwd)
             {
-                _config.TunModeItem.LinuxSudoPwd = AesUtils.Encrypt(TunLinuxSudoPassword);
+                _config.TunModeItem.LinuxSudoPwd = DesUtils.Encrypt(TunLinuxSudoPassword);
             }
 
             //coreType
