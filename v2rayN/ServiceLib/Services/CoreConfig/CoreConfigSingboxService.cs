@@ -548,6 +548,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
 
                     var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
+                    tunInbound.interface_name = Utils.IsOSX()?  $"utun{new Random().Next(99)}": "singbox_tun";
                     tunInbound.mtu = _config.TunModeItem.Mtu;
                     tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                     tunInbound.stack = _config.TunModeItem.Stack;
