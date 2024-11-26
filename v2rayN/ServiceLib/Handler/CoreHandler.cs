@@ -361,31 +361,28 @@ namespace ServiceLib.Handler
         {
             var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetConfigPath(configPath).AppendQuotes())}";
 
-            //Prefer shell scripts
+            //Shell scripts
             var shFilePath = Utils.GetBinPath("run_as_root.sh");
             File.Delete(shFilePath);
             var sb = new StringBuilder();
             sb.AppendLine("#!/bin/sh");
-            sb.AppendLine(cmdLine);
-            await File.WriteAllTextAsync(shFilePath, sb.ToString());
-            await Utils.SetLinuxChmod(shFilePath);
-
-            //Replace command
-            var args = File.Exists(shFilePath) ? shFilePath : cmdLine;
-            if (_config.TunModeItem.LinuxSudoPwd.IsNotEmpty())
+            if (_config.TunModeItem.LinuxSudoPwd.IsNullOrEmpty())
             {
-                proc.StartInfo.FileName = $"/bin/sudo";
-                proc.StartInfo.Arguments = $"-S {args}";
+                sb.AppendLine($"pkexec {cmdLine}");
             }
             else
             {
-                proc.StartInfo.FileName = $"/bin/pkexec";
-                proc.StartInfo.Arguments = $"{args}";
+                sb.AppendLine($"sudo -S {cmdLine}");
+                proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
+                proc.StartInfo.RedirectStandardInput = true;
             }
-            proc.StartInfo.WorkingDirectory = null;
-            proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
-            proc.StartInfo.RedirectStandardInput = true;
-            Logging.SaveLog(proc.StartInfo.Arguments);
+            await File.WriteAllTextAsync(shFilePath, sb.ToString());
+            await Utils.SetLinuxChmod(shFilePath);
+ 
+            proc.StartInfo.FileName = shFilePath;
+            proc.StartInfo.Arguments = "";
+            proc.StartInfo.WorkingDirectory = "";
+            Logging.SaveLog(shFilePath);
         }
 
         private async Task KillProcess(Process? proc)
