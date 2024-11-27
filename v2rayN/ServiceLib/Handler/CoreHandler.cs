@@ -64,49 +64,30 @@ namespace ServiceLib.Handler
                 ShowMsg(true, result.Msg);
                 return;
             }
-            else
-            {
-                ShowMsg(true, $"{node.GetSummary()}");
-                ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
-                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-                await CoreStop();
-                await Task.Delay(100);
-                await CoreStart(node);
 
-                //In tun mode, do a delay check and restart the core
-                //if (_config.tunModeItem.enableTun)
-                //{
-                //    Observable.Range(1, 1)
-                //    .Delay(TimeSpan.FromSeconds(15))
-                //    .Subscribe(x =>
-                //    {
-                //        {
-                //            if (_process == null || _process.HasExited)
-                //            {
-                //                CoreStart(node);
-                //                ShowMsg(false, "Tun mode restart the core once");
-                //                Logging.SaveLog("Tun mode restart the core once");
-                //            }
-                //        }
-                //    });
-                //}
-            }
+            ShowMsg(true, $"{node.GetSummary()}");
+            ShowMsg(false, $"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+            await CoreStop();
+            await Task.Delay(100);
+            await CoreStart(node);
+            await CoreStartPreService(node);
         }
 
         public async Task<int> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
         {
-            var pid = -1;
             var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
             var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
             ShowMsg(false, result.Msg);
-            if (result.Success)
+            if (result.Success != true)
             {
-                ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-                ShowMsg(false, configPath);
-                pid = await CoreStartSpeedtest(configPath, coreType);
+                return -1;
             }
-            return pid;
+
+            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+            ShowMsg(false, configPath);
+            return await CoreStartSpeedtest(configPath, coreType);
         }
 
         public async Task CoreStop()
@@ -171,8 +152,7 @@ namespace ServiceLib.Handler
 
         private async Task CoreStart(ProfileItem node)
         {
-            var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
-            _config.RunningCoreType = coreType;
+            var coreType = _config.RunningCoreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
 
             var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
@@ -182,47 +162,28 @@ namespace ServiceLib.Handler
                 return;
             }
             _process = proc;
+        }
 
-            //start a pre service
+        private async Task CoreStartPreService(ProfileItem node)
+        {
             if (_process != null && !_process.HasExited)
             {
-                ProfileItem? itemSocks = null;
-                var preCoreType = ECoreType.sing_box;
-                if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && _config.TunModeItem.EnableTun)
-                {
-                    itemSocks = new ProfileItem()
-                    {
-                        CoreType = preCoreType,
-                        ConfigType = EConfigType.SOCKS,
-                        Address = Global.Loopback,
-                        Sni = node.Address, //Tun2SocksAddress
-                        Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
-                    };
-                }
-                else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
-                {
-                    preCoreType = _config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
-                    itemSocks = new ProfileItem()
-                    {
-                        CoreType = preCoreType,
-                        ConfigType = EConfigType.SOCKS,
-                        Address = Global.Loopback,
-                        Port = node.PreSocksPort.Value,
-                    };
-                    _config.RunningCoreType = preCoreType;
-                }
+                var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
+                var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
                 if (itemSocks != null)
                 {
-                    var fileName2 = Utils.GetConfigPath(Global.CorePreConfigFileName);
-                    var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName2);
+                    var preCoreType = _config.RunningCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
+                    var fileName = Utils.GetConfigPath(Global.CorePreConfigFileName);
+                    var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
                     if (result.Success)
                     {
-                        var coreInfo2 = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
-                        var proc2 = await RunProcess(coreInfo2, Global.CorePreConfigFileName, true, true);
-                        if (proc2 is not null)
+                        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
+                        var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
+                        if (proc is null)
                         {
-                            _processPre = proc2;
+                            return;
                         }
+                        _processPre = proc;
                     }
                 }
             }
@@ -378,7 +339,7 @@ namespace ServiceLib.Handler
             }
             await File.WriteAllTextAsync(shFilePath, sb.ToString());
             await Utils.SetLinuxChmod(shFilePath);
- 
+
             proc.StartInfo.FileName = shFilePath;
             proc.StartInfo.Arguments = "";
             proc.StartInfo.WorkingDirectory = "";
@@ -391,24 +352,24 @@ namespace ServiceLib.Handler
             {
                 return;
             }
-            var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(1));
             try
             {
-                await proc.WaitForExitAsync(timeout.Token);
+                proc?.Kill();
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
-                proc.Kill();
+                // ignored
             }
-            if (!proc.HasExited)
+            await Task.Delay(100);
+            if (proc?.HasExited == false)
             {
                 try
                 {
-                    await proc.WaitForExitAsync(timeout.Token);
+                    proc?.Kill();
                 }
                 catch (Exception)
                 {
-                    proc.Kill();
+                    // ignored
                 }
             }
         }

@@ -1026,6 +1026,36 @@ namespace ServiceLib.Handler
             return result;
         }
 
+        public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
+        {
+            ProfileItem? itemSocks = null;
+            var preCoreType = ECoreType.sing_box;
+            if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
+            {
+                itemSocks = new ProfileItem()
+                {
+                    CoreType = preCoreType,
+                    ConfigType = EConfigType.SOCKS,
+                    Address = Global.Loopback,
+                    Sni = node.Address, //Tun2SocksAddress
+                    Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
+                };
+            }
+            else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
+            {
+                preCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
+                itemSocks = new ProfileItem()
+                {
+                    CoreType = preCoreType,
+                    ConfigType = EConfigType.SOCKS,
+                    Address = Global.Loopback,
+                    Port = node.PreSocksPort.Value,
+                };
+            }
+
+            return itemSocks;
+        }
+
         #endregion Server
 
         #region Batch add servers
