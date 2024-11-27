@@ -1,0 +1,32 @@
+name: release
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: macos-latest 
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run:  cd v2rayN && 
+        ./build-osx.sh
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: v2rayN
+        path: |
+          ./v2rayN/v2rayN-osx.zip
+
+     
