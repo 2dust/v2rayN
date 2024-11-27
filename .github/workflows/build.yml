@@ -28,7 +28,7 @@ jobs:
 
     - name: Build
       run:  cd v2rayN && 
-        .\build.ps1
+        ./build.ps1
         
     # - name: Package
     #   shell: pwsh
@@ -40,7 +40,7 @@ jobs:
       with:
         name: v2rayN
         path: |
-          .\v2rayN\v2rayN.zip
+          ./v2rayN/v2rayN.zip
 
     # - name: Release
     #   uses: softprops/action-gh-release@v1
