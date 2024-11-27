@@ -1,4 +1,4 @@
-name: release
+name: release macos
 
 on:
   push:
