@@ -1361,7 +1361,7 @@
     <value>备注备忘</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
-    <value>Linux系统的sudo密码</value>
+    <value>系统的sudo密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密码已加密且只存储在本地文件中，无密码则每次都要输入</value>
