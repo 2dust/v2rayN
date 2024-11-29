@@ -98,15 +98,11 @@ namespace ServiceLib.Handler
                 if (_process != null)
                 {
                     await KillProcess(_process);
-                    _process.Dispose();
-                    _process = null;
                 }
 
                 if (_processPre != null)
                 {
                     await KillProcess(_processPre);
-                    _processPre.Dispose();
-                    _processPre = null;
                 }
 
                 if (_linuxSudoPid > 0)
@@ -125,8 +121,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                var _p = Process.GetProcessById(pid);
-                await KillProcess(_p);
+                await KillProcess(Process.GetProcessById(pid));
             }
             catch (Exception ex)
             {
@@ -332,26 +327,11 @@ namespace ServiceLib.Handler
             {
                 return;
             }
-            try
-            {
-                proc?.Kill(true);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            try { proc?.Kill(true); } catch { }
+            try { proc?.Close(); } catch { }
+            try { proc?.Dispose(); } catch { }
+            proc = null;
             await Task.Delay(100);
-            if (proc?.HasExited == false)
-            {
-                try
-                {
-                    proc?.Kill();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
         }
 
         #endregion Process
@@ -408,7 +388,7 @@ namespace ServiceLib.Handler
 
             var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
             await proc.WaitForExitAsync(timeout.Token);
-            await Task.Delay(1000);
+            await Task.Delay(3000);
         }
 
         private async Task<string> CreateLinuxShellFile(string cmdLine, string fileName)
