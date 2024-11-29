@@ -334,7 +334,7 @@ namespace ServiceLib.Handler
             }
             try
             {
-                proc?.Kill();
+                proc?.Kill(true);
             }
             catch (Exception)
             {
@@ -375,7 +375,7 @@ namespace ServiceLib.Handler
 
         private async Task KillProcessAsLinuxSudo()
         {
-            var cmdLine = $"kill -9 {_linuxSudoPid}";
+            var cmdLine = $"kill {_linuxSudoPid}";
             var shFilePath = await CreateLinuxShellFile(cmdLine, "kill_as_sudo.sh");
             Process proc = new()
             {
@@ -392,11 +392,18 @@ namespace ServiceLib.Handler
 
             if (_config.TunModeItem.LinuxSudoPwd.IsNotEmpty())
             {
-                var pwd = DesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
-                await Task.Delay(10);
-                await proc.StandardInput.WriteLineAsync(pwd);
-                await Task.Delay(10);
-                await proc.StandardInput.WriteLineAsync(pwd);
+                try
+                {
+                    var pwd = DesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
+                    await Task.Delay(10);
+                    await proc.StandardInput.WriteLineAsync(pwd);
+                    await Task.Delay(10);
+                    await proc.StandardInput.WriteLineAsync(pwd);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
 
             var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
@@ -411,7 +418,11 @@ namespace ServiceLib.Handler
             File.Delete(shFilePath);
             var sb = new StringBuilder();
             sb.AppendLine("#!/bin/sh");
-            if (_config.TunModeItem.LinuxSudoPwd.IsNullOrEmpty())
+            if (AppHandler.Instance.IsAdministrator)
+            {
+                sb.AppendLine($"{cmdLine}");
+            }
+            else if (_config.TunModeItem.LinuxSudoPwd.IsNullOrEmpty())
             {
                 sb.AppendLine($"pkexec {cmdLine}");
             }
