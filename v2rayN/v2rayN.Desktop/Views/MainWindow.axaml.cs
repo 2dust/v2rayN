@@ -207,6 +207,11 @@ namespace v2rayN.Desktop.Views
                     DispatcherPriority.Default);
                     break;
 
+                case EViewAction.ShowInTaskbar:
+                    Dispatcher.UIThread.Post(() =>
+                        showInTaskbar((bool?)obj),
+                    DispatcherPriority.Default);
+                    break;
                 case EViewAction.DispatcherStatistics:
                     if (obj is null) return false;
                     Dispatcher.UIThread.Post(() =>
@@ -382,6 +387,12 @@ namespace v2rayN.Desktop.Views
         #endregion Event
 
         #region UI
+
+        private void showInTaskbar(bool? blShow)
+        {
+            var bl = blShow ?? this.WindowState == WindowState.Normal;
+            this.ShowInTaskbar = bl;
+        }
 
         public void ShowHideWindow(bool? blShow)
         {

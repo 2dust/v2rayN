@@ -218,7 +218,6 @@ namespace ServiceLib.ViewModels
             }
 
             await Reload();
-            await AutoHideStartup();
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
         }
 
@@ -331,6 +330,7 @@ namespace ServiceLib.ViewModels
         public void ShowHideWindow(bool? blShow)
         {
             _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
+            _updateView?.Invoke(EViewAction.ShowInTaskbar, blShow);
         }
 
         #endregion Actions
@@ -584,14 +584,6 @@ namespace ServiceLib.ViewModels
         {
             await ConfigHandler.SaveConfig(_config);
             await CoreHandler.Instance.CoreStop();
-        }
-
-        private async Task AutoHideStartup()
-        {
-            if (_config.UiItem.AutoHideStartup)
-            {
-                ShowHideWindow(false);
-            }
         }
 
         #endregion core job

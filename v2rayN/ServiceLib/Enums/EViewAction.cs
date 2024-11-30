@@ -14,6 +14,7 @@
         ShareSub,
         ShareServer,
         ShowHideWindow,
+        ShowInTaskbar,
         ScanScreenTask,
         ScanImageTask,
         Shutdown,

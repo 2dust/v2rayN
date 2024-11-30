@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Splat;
@@ -30,10 +31,20 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AppHandler.Instance.InitComponents();
-
             desktop.Exit += OnExit;
-            desktop.MainWindow = new MainWindow();
+
+            // 先完成组件初始化
+            AppHandler.Instance.InitComponents();
+            var mainWindow = new MainWindow();
+            if (AppHandler.Instance.Config.UiItem.AutoHideStartup)
+            {
+                // 创建主窗口实例但暂不显示
+                mainWindow.ShowInTaskbar = false;
+                mainWindow.WindowState = WindowState.Minimized;
+                mainWindow.IsVisible = false;
+
+            }
+            desktop.MainWindow = mainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
