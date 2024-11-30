@@ -33,7 +33,15 @@ public partial class App : Application
             AppHandler.Instance.InitComponents();
 
             desktop.Exit += OnExit;
-            desktop.MainWindow = new MainWindow();
+            var mainWindow = new MainWindow();
+            if (!AppHandler.Instance.Config.UiItem.AutoHideStartup)
+            {
+                desktop.MainWindow = mainWindow;
+            }
+            else
+            {
+                desktop.MainWindow = null;
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

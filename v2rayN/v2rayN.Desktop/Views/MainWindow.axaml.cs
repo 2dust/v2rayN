@@ -397,6 +397,10 @@ namespace v2rayN.Desktop.Views
             if (bl)
             {
                 this.Show();
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    desktop.MainWindow = this;
+                }
                 if (this.WindowState == WindowState.Minimized)
                 {
                     this.WindowState = WindowState.Normal;
