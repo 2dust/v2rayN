@@ -356,6 +356,7 @@ namespace ServiceLib.ViewModels
             if (await ConfigHandler.SaveConfig(_config) == 0)
             {
                 await AutoStartupHandler.UpdateTask(_config);
+                AppHandler.Instance.Reset();
 
                 NoticeHandler.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);
