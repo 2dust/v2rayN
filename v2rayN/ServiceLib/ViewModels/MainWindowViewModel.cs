@@ -282,7 +282,6 @@ namespace ServiceLib.ViewModels
             try
             {
                 Logging.SaveLog("MyAppExit Begin");
-                //if (blWindowsShutDown)
                 await SysProxyHandler.UpdateSysProxy(_config, true);
 
                 await ConfigHandler.SaveConfig(_config);
@@ -296,7 +295,10 @@ namespace ServiceLib.ViewModels
             catch { }
             finally
             {
-                _updateView?.Invoke(EViewAction.Shutdown, null);
+                if (!blWindowsShutDown)
+                {
+                    _updateView?.Invoke(EViewAction.Shutdown, null);
+                }
             }
         }
 

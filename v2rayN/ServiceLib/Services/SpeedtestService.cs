@@ -185,7 +185,7 @@ namespace ServiceLib.Services
             {
                 if (pid > 0)
                 {
-                    CoreHandler.Instance.CoreStopPid(pid);
+                    await CoreHandler.Instance.CoreStopPid(pid);
                 }
                 await ProfileExHandler.Instance.SaveTo();
             }
@@ -252,7 +252,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                CoreHandler.Instance.CoreStopPid(pid);
+                await CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
             await ProfileExHandler.Instance.SaveTo();
@@ -317,7 +317,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                CoreHandler.Instance.CoreStopPid(pid);
+                await CoreHandler.Instance.CoreStopPid(pid);
             }
             UpdateFunc("", ResUI.SpeedtestingCompleted);
             await ProfileExHandler.Instance.SaveTo();

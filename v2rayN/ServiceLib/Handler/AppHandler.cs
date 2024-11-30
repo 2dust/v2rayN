@@ -27,7 +27,7 @@
             get
             {
                 _statePort2 ??= Utils.GetFreePort(GetLocalPort(EInboundProtocol.api2));
-                return _statePort2.Value;
+                return _statePort2.Value + (_config.TunModeItem.EnableTun ? 1 : 0);
             }
         }
 
@@ -76,6 +76,13 @@
             Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
             Logging.ClearLogs();
 
+            return true;
+        }
+
+        public bool Reset()
+        {
+            _statePort = null;
+            _statePort2 = null;
             return true;
         }
 

@@ -21,6 +21,7 @@ namespace v2rayN.Desktop.Views
         private WindowNotificationManager? _manager;
         private CheckUpdateView? _checkUpdateView;
         private BackupAndRestoreView? _backupAndRestoreView;
+        private bool _blCloseByUser = false;
 
         public MainWindow()
         {
@@ -284,6 +285,11 @@ namespace v2rayN.Desktop.Views
 
         protected override async void OnClosing(WindowClosingEventArgs e)
         {
+            if (_blCloseByUser)
+            {
+                return;
+            }
+
             Logging.SaveLog("OnClosing -> " + e.CloseReason.ToString());
 
             switch (e.CloseReason)
@@ -379,6 +385,8 @@ namespace v2rayN.Desktop.Views
             {
                 return;
             }
+
+            _blCloseByUser = true;
             StorageUI();
 
             await ViewModel?.MyAppExitAsync(false);

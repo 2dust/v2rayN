@@ -3140,7 +3140,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Linux system sudo password 的本地化字符串。
+        ///   查找类似 System sudo password 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPassword {
             get {
