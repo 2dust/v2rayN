@@ -31,9 +31,17 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             AppHandler.Instance.InitComponents();
-
+            desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
             desktop.Exit += OnExit;
-            desktop.MainWindow = new MainWindow();
+            var mainWindow = new MainWindow();
+            if (!AppHandler.Instance.Config.UiItem.AutoHideStartup)
+            {
+                desktop.MainWindow = mainWindow;
+            }
+            else
+            {
+                desktop.MainWindow = null;
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
