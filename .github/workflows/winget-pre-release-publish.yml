@@ -1,0 +1,31 @@
+name: WinGet submission on pre-release
+# based off of https://github.com/nushell/nushell/blob/main/.github/workflows/winget-submission.yml
+# inspired by https://github.com/microsoft/PowerToys/blob/main/.github/workflows/package-submissions.yml
+# Modified by @MerrickZ https://github.com/anpho
+
+on:
+  workflow_dispatch:
+  release:
+    types: [prereleased]
+
+jobs:
+  winget:
+    name: Publish winget package
+    runs-on: windows-latest
+    steps:
+      - name: Submit v2ray package to Windows Package Manager Community Repository
+        run: |
+
+          $wingetPackage = "2dust.v2rayN.Pre-release"
+          $gitToken = "${{ secrets.PT_WINGET }}"
+
+          $github = Invoke-RestMethod -uri "https://api.github.com/repos/2dust/v2rayN/releases" 
+
+          $targetRelease = $github | Where-Object -Property prerelease -match 'True' | Select -First 1
+          $installerUrl  = $targetRelease | Select -ExpandProperty assets -First 1 | Where-Object -Property name -match 'v2rayN-windows-64-With-Core\.zip' | Select -ExpandProperty browser_download_url
+
+          $ver = $targetRelease.tag_name
+
+          # getting latest wingetcreate file
+          iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+          .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$installerUrl|x64" -t $gitToken
