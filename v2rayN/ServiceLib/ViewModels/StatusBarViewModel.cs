@@ -456,9 +456,9 @@ namespace ServiceLib.ViewModels
             sb.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http)}]");
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
-            if (_config.Inbound[0].AllowLANConn)
+            if (_config.Inbound.First().AllowLANConn)
             {
-                if (_config.Inbound[0].NewPort4LAN)
+                if (_config.Inbound.First().NewPort4LAN)
                 {
                     StringBuilder sb2 = new();
                     sb2.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");

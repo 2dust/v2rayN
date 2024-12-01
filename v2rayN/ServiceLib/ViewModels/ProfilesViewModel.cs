@@ -374,7 +374,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    SelectedProfile = lstModel[0];
+                    SelectedProfile = lstModel.First();
                 }
             }
         }
@@ -395,7 +395,7 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                SelectedSub = _subItems[0];
+                SelectedSub = _subItems.First();
             }
         }
 

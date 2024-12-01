@@ -62,7 +62,7 @@ namespace ServiceLib.Handler
             {
                 if (config.Inbound.Count > 0)
                 {
-                    config.Inbound[0].Protocol = EInboundProtocol.socks.ToString();
+                    config.Inbound.First().Protocol = EInboundProtocol.socks.ToString();
                 }
             }
 
@@ -70,7 +70,7 @@ namespace ServiceLib.Handler
 
             if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
-                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies[0];//"IPIfNonMatch";
+                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();//"IPIfNonMatch";
             }
 
             config.KcpItem ??= new KcpItem
@@ -111,7 +111,7 @@ namespace ServiceLib.Handler
             {
                 if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    config.UiItem.CurrentLanguage = Global.Languages[0];
+                    config.UiItem.CurrentLanguage = Global.Languages.First();
                 }
                 else
                 {
@@ -132,7 +132,7 @@ namespace ServiceLib.Handler
             }
             if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedTestUrl))
             {
-                config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls[0];
+                config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
             }
             if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedPingTestUrl))
             {
@@ -148,7 +148,7 @@ namespace ServiceLib.Handler
 
             config.Mux4SboxItem ??= new()
             {
-                Protocol = Global.SingboxMuxs[0],
+                Protocol = Global.SingboxMuxs.First(),
                 MaxConnections = 8
             };
 
@@ -429,7 +429,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[0].IndexId) - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile.First().IndexId) - 1;
 
                         break;
                     }

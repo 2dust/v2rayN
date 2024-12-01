@@ -313,8 +313,8 @@ namespace ServiceLib.Common
                     continue;
                 }
 
-                var key = Uri.UnescapeDataString(keyValue[0]);
-                var val = Uri.UnescapeDataString(keyValue[1]);
+                var key = Uri.UnescapeDataString(keyValue.First());
+                var val = Uri.UnescapeDataString(keyValue.Last());
 
                 if (result[key] is null)
                 {
@@ -622,8 +622,8 @@ namespace ServiceLib.Common
                     {
                         if (host.StartsWith("#")) continue;
                         var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (hostItem.Length < 2) continue;
-                        systemHosts.Add(hostItem[1], hostItem[0]);
+                        if (hostItem.Length != 2) continue;
+                        systemHosts.Add(hostItem.Last(), hostItem.First());
                     }
                 }
             }

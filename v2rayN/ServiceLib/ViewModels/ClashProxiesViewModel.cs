@@ -239,7 +239,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    SelectedGroup = _proxyGroups[0];
+                    SelectedGroup = _proxyGroups.First();
                 }
             }
             else
