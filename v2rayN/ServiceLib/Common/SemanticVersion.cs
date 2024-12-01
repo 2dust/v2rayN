@@ -31,8 +31,8 @@
                 var parts = this.version.Split('.');
                 if (parts.Length == 2)
                 {
-                    this.major = int.Parse(parts[0]);
-                    this.minor = int.Parse(parts[1]);
+                    this.major = int.Parse(parts.First());
+                    this.minor = int.Parse(parts.Last());
                     this.patch = 0;
                 }
                 else if (parts.Length is 3 or 4)

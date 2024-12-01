@@ -52,7 +52,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 await GenInbounds(singboxConfig);
 
-                await GenOutbound(node, singboxConfig.outbounds[0]);
+                await GenOutbound(node, singboxConfig.outbounds.First());
 
                 await GenMoreOutbounds(node, singboxConfig);
 
@@ -495,8 +495,8 @@ namespace ServiceLib.Services.CoreConfig
                     singboxConfig.inbounds.Add(inbound);
 
                     inbound.listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                    inbound.sniff = _config.Inbound[0].SniffingEnabled;
-                    inbound.sniff_override_destination = _config.Inbound[0].RouteOnly ? false : _config.Inbound[0].SniffingEnabled;
+                    inbound.sniff = _config.Inbound.First().SniffingEnabled;
+                    inbound.sniff_override_destination = _config.Inbound.First().RouteOnly ? false : _config.Inbound.First().SniffingEnabled;
                     inbound.domain_strategy = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainStrategy4Singbox) ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
 
                     var routing = await ConfigHandler.GetDefaultRouting(_config);
@@ -509,9 +509,9 @@ namespace ServiceLib.Services.CoreConfig
                     var inbound2 = GetInbound(inbound, EInboundProtocol.http, false);
                     singboxConfig.inbounds.Add(inbound2);
 
-                    if (_config.Inbound[0].AllowLANConn)
+                    if (_config.Inbound.First().AllowLANConn)
                     {
-                        if (_config.Inbound[0].NewPort4LAN)
+                        if (_config.Inbound.First().NewPort4LAN)
                         {
                             var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
                             inbound3.listen = listen;
@@ -522,10 +522,10 @@ namespace ServiceLib.Services.CoreConfig
                             singboxConfig.inbounds.Add(inbound4);
 
                             //auth
-                            if (Utils.IsNotEmpty(_config.Inbound[0].User) && Utils.IsNotEmpty(_config.Inbound[0].Pass))
+                            if (Utils.IsNotEmpty(_config.Inbound.First().User) && Utils.IsNotEmpty(_config.Inbound.First().Pass))
                             {
-                                inbound3.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
-                                inbound4.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
+                                inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
+                                inbound4.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
                             }
                         }
                         else
@@ -540,11 +540,11 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     if (_config.TunModeItem.Mtu <= 0)
                     {
-                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus[0]);
+                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus.First());
                     }
                     if (Utils.IsNullOrEmpty(_config.TunModeItem.Stack))
                     {
-                        _config.TunModeItem.Stack = Global.TunStacks[0];
+                        _config.TunModeItem.Stack = Global.TunStacks.First();
                     }
 
                     var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
@@ -552,8 +552,8 @@ namespace ServiceLib.Services.CoreConfig
                     tunInbound.mtu = _config.TunModeItem.Mtu;
                     tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                     tunInbound.stack = _config.TunModeItem.Stack;
-                    tunInbound.sniff = _config.Inbound[0].SniffingEnabled;
-                    //tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
+                    tunInbound.sniff = _config.Inbound.First().SniffingEnabled;
+                    //tunInbound.sniff_override_destination = _config.inbound.First().routeOnly ? false : _config.inbound.First().sniffingEnabled;
                     if (_config.TunModeItem.EnableIPv6Address == false)
                     {
                         tunInbound.address = ["172.18.0.1/30"];
@@ -867,7 +867,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 //current proxy
-                var outbound = singboxConfig.outbounds[0];
+                var outbound = singboxConfig.outbounds.First();
                 var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
 
                 //Previous proxy
@@ -910,7 +910,7 @@ namespace ServiceLib.Services.CoreConfig
             try
             {
                 var dnsOutbound = "dns_out";
-                if (!_config.Inbound[0].SniffingEnabled)
+                if (!_config.Inbound.First().SniffingEnabled)
                 {
                     singboxConfig.route.rules.Add(new()
                     {

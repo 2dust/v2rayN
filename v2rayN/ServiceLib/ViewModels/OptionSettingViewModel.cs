@@ -122,7 +122,7 @@ namespace ServiceLib.ViewModels
 
             #region Core
 
-            var inbound = _config.Inbound[0];
+            var inbound = _config.Inbound.First();
             localPort = inbound.LocalPort;
             udpEnabled = inbound.UdpEnabled;
             sniffingEnabled = inbound.SniffingEnabled;
@@ -285,15 +285,15 @@ namespace ServiceLib.ViewModels
             //}
 
             //Core
-            _config.Inbound[0].LocalPort = localPort;
-            _config.Inbound[0].UdpEnabled = udpEnabled;
-            _config.Inbound[0].SniffingEnabled = sniffingEnabled;
-            _config.Inbound[0].DestOverride = destOverride?.ToList();
-            _config.Inbound[0].RouteOnly = routeOnly;
-            _config.Inbound[0].AllowLANConn = allowLANConn;
-            _config.Inbound[0].NewPort4LAN = newPort4LAN;
-            _config.Inbound[0].User = user;
-            _config.Inbound[0].Pass = pass;
+            _config.Inbound.First().LocalPort = localPort;
+            _config.Inbound.First().UdpEnabled = udpEnabled;
+            _config.Inbound.First().SniffingEnabled = sniffingEnabled;
+            _config.Inbound.First().DestOverride = destOverride?.ToList();
+            _config.Inbound.First().RouteOnly = routeOnly;
+            _config.Inbound.First().AllowLANConn = allowLANConn;
+            _config.Inbound.First().NewPort4LAN = newPort4LAN;
+            _config.Inbound.First().User = user;
+            _config.Inbound.First().Pass = pass;
             if (_config.Inbound.Count > 1)
             {
                 _config.Inbound.RemoveAt(1);

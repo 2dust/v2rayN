@@ -348,7 +348,7 @@ namespace ServiceLib.Services
                 if (!IPAddress.TryParse(url, out IPAddress? ipAddress))
                 {
                     IPHostEntry ipHostInfo = Dns.GetHostEntry(url);
-                    ipAddress = ipHostInfo.AddressList[0];
+                    ipAddress = ipHostInfo.AddressList.First();
                 }
 
                 var timer = Stopwatch.StartNew();

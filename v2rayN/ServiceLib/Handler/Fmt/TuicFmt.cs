@@ -21,8 +21,8 @@
             var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
             if (userInfoParts.Length == 2)
             {
-                item.Id = userInfoParts[0];
-                item.Security = userInfoParts[1];
+                item.Id = userInfoParts.First();
+                item.Security = userInfoParts.Last();
             }
 
             var query = Utils.ParseQueryString(url.Query);

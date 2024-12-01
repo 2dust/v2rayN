@@ -25,7 +25,7 @@ namespace v2rayN.Views
             {
                 clbdestOverride.Items.Add(it);
             });
-            _config.Inbound[0].DestOverride?.ForEach(it =>
+            _config.Inbound.First().DestOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
             });
@@ -211,7 +211,7 @@ namespace v2rayN.Views
                 {
                     files.AddRange(Directory.GetFiles(path, pattern));
                 }
-                var culture = _config.UiItem.CurrentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
+                var culture = _config.UiItem.CurrentLanguage == Global.Languages.First() ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var ttf in files)
                 {

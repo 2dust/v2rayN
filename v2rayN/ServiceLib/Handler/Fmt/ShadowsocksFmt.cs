@@ -99,8 +99,8 @@ namespace ServiceLib.Handler.Fmt
                 {
                     return null;
                 }
-                item.Security = userInfoParts[0];
-                item.Id = Utils.UrlDecode(userInfoParts[1]);
+                item.Security = userInfoParts.First();
+                item.Id = Utils.UrlDecode(userInfoParts.Last());
             }
             else
             {
@@ -111,8 +111,8 @@ namespace ServiceLib.Handler.Fmt
                 {
                     return null;
                 }
-                item.Security = userInfoParts[0];
-                item.Id = userInfoParts[1];
+                item.Security = userInfoParts.First();
+                item.Id = userInfoParts.Last();
             }
 
             var queryParameters = Utils.ParseQueryString(parsedUrl.Query);

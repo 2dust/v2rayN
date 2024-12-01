@@ -222,7 +222,6 @@
         public int ProxiesSorting { get; set; }
         public bool ProxiesAutoRefresh { get; set; }
         public int ProxiesAutoDelayTestInterval { get; set; } = 10;
-        public int ConnectionsSorting { get; set; }
         public bool ConnectionsAutoRefresh { get; set; }
         public int ConnectionsRefreshInterval { get; set; } = 2;
     }

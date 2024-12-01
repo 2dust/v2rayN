@@ -88,7 +88,7 @@ namespace ServiceLib.Services.CoreConfig
                 //external-controller
                 fileContent["external-controller"] = $"{Global.Loopback}:{AppHandler.Instance.StatePort2}";
                 //allow-lan
-                if (_config.Inbound[0].AllowLANConn)
+                if (_config.Inbound.First().AllowLANConn)
                 {
                     fileContent["allow-lan"] = "true";
                     fileContent["bind-address"] = "*";
