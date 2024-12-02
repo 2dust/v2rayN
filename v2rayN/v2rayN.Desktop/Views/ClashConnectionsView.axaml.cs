@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
@@ -12,6 +13,7 @@ namespace v2rayN.Desktop.Views
         {
             InitializeComponent();
             ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
+            btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
             this.WhenActivated(disposables =>
             {
@@ -40,6 +42,19 @@ namespace v2rayN.Desktop.Views
             }
 
             return await Task.FromResult(true);
+        }
+
+        private void BtnAutofitColumnWidth_Click(object? sender, RoutedEventArgs e)
+        {
+            AutofitColumnWidth();
+        }
+
+        private void AutofitColumnWidth()
+        {
+            foreach (var it in lstConnections.Columns)
+            {
+                it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
         }
 
         private void btnClose_Click(object? sender, RoutedEventArgs e)
