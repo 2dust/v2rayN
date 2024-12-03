@@ -188,7 +188,7 @@
         public static readonly List<string> DomainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> Fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
         public static readonly List<string> UserAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
-        public static readonly List<string> XhttpMode = new() { "auto", "packet-up", "stream-up" };
+        public static readonly List<string> XhttpMode = new() { "auto", "packet-up", "stream-up", "stream-one" };
 
         public static readonly List<string> AllowInsecure = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
