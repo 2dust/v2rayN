@@ -264,16 +264,8 @@
                 return (ECoreType)profileItem.CoreType;
             }
 
-            if (_config.CoreTypeItem == null)
-            {
-                return ECoreType.Xray;
-            }
-            var item = _config.CoreTypeItem.FirstOrDefault(it => it.ConfigType == eConfigType);
-            if (item == null)
-            {
-                return ECoreType.Xray;
-            }
-            return item.CoreType;
+            var item = _config.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
+            return item?.CoreType ?? ECoreType.Xray;
         }
 
         #endregion Core Type

@@ -20,20 +20,10 @@ namespace v2rayN.Views
 
             ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 
-            if (profileItem.ConfigType == EConfigType.VLESS)
+            Global.CoreTypes.ForEach(it =>
             {
-                Global.CoreTypes4VLESS.ForEach(it =>
-                {
-                    cmbCoreType.Items.Add(it);
-                });
-            }
-            else
-            {
-                Global.CoreTypes.ForEach(it =>
-                {
-                    cmbCoreType.Items.Add(it);
-                });
-            }
+                cmbCoreType.Items.Add(it);
+            });
             cmbCoreType.Items.Add(string.Empty);
 
             cmbStreamSecurity.Items.Add(string.Empty);
