@@ -639,6 +639,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
 
             RefreshServers();
+            SelectedMoveToGroup = null;
             SelectedMoveToGroup = new();
             //Reload();
         }

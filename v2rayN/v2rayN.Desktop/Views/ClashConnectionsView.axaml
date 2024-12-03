@@ -42,6 +42,23 @@
                 </Button.Content>
             </Button>
 
+            <Button
+                x:Name="btnAutofitColumnWidth"
+                Width="30"
+                Height="30"
+                Margin="8,0"
+                Classes="Success"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                <Button.Content>
+                    <PathIcon
+                        Width="20"
+                        Height="20"
+                        Data="{StaticResource building_fit}"
+                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+
             <TextBlock
                 Margin="8,0"
                 VerticalAlignment="Center"
