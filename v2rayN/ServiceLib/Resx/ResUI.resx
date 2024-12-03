@@ -755,7 +755,7 @@
     <value>Turn on Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>SOCKS Port</value>
+    <value>Mixed Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Start on boot</value>
@@ -992,7 +992,7 @@
     <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6;</value>
+    <value>Pac port = +2; Xray API port = +3; mihomo API port = +4;</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Set this with admin privileges, get admin privileges after startup</value>

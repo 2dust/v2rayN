@@ -13,8 +13,7 @@
 
             try
             {
-                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-                var portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
                 if (port <= 0)
                 {
                     return false;
@@ -23,7 +22,7 @@
                 {
                     case ESysProxyType.ForcedChange when Utils.IsWindows():
                         {
-                            GetWindowsProxyString(config, port, portSocks, out var strProxy, out var strExceptions);
+                            GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
                             ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
                             break;
                         }
@@ -64,7 +63,7 @@
             return true;
         }
 
-        private static void GetWindowsProxyString(Config config, int port, int portSocks, out string strProxy, out string strExceptions)
+        private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
         {
             strExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
             if (config.SystemProxyItem.NotProxyLocalAddress)
@@ -82,7 +81,7 @@
                 strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
                     .Replace("{ip}", Global.Loopback)
                     .Replace("{http_port}", port.ToString())
-                    .Replace("{socks_port}", portSocks.ToString());
+                    .Replace("{socks_port}", port.ToString());
             }
         }
 

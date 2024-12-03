@@ -755,7 +755,7 @@
     <value>开启流量探测</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>本地socks监听端口</value>
+    <value>本地混合监听端口</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>开机启动(可能会不成功)</value>
@@ -992,7 +992,7 @@
     <value>拷贝字体TTF/TTC文件到目录guiFonts，重启设置</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http端口= +1；Pac端口= +4；*ray API端口= +5；mihomo API端口= +6；</value>
+    <value>Pac端口= +2；Xray API端口= +3；mihomo API端口= +4；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理员权限设置此项，在启动后获得管理员权限</value>

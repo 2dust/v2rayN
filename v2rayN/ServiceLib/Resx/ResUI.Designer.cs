@@ -3311,7 +3311,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 SOCKS Port 的本地化字符串。
+        ///   查找类似 Mixed Port 的本地化字符串。
         /// </summary>
         public static string TbSettingsSocksPort {
             get {
@@ -3320,7 +3320,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6; 的本地化字符串。
+        ///   查找类似 Pac port = +2; Xray API port = +3; mihomo API port = +4; 的本地化字符串。
         /// </summary>
         public static string TbSettingsSocksPortTip {
             get {

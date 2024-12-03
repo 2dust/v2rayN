@@ -78,10 +78,8 @@ namespace ServiceLib.Services.CoreConfig
                     return ret;
                 }
 
-                //port
-                fileContent["port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-                //socks-port
-                fileContent["socks-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                //mixed-port
+                fileContent["mixed-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
                 //log-level
                 fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
 

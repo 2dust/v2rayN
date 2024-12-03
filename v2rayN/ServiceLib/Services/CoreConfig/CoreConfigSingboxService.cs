@@ -174,7 +174,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         listen = Global.Loopback,
                         listen_port = port,
-                        type = EInboundProtocol.http.ToString(),
+                        type = EInboundProtocol.mixed.ToString(),
                     };
                     inbound.tag = inbound.type + inbound.listen_port.ToString();
                     singboxConfig.inbounds.Add(inbound);
@@ -488,7 +488,7 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     var inbound = new Inbound4Sbox()
                     {
-                        type = EInboundProtocol.socks.ToString(),
+                        type = EInboundProtocol.mixed.ToString(),
                         tag = EInboundProtocol.socks.ToString(),
                         listen = Global.Loopback,
                     };
@@ -505,10 +505,6 @@ namespace ServiceLib.Services.CoreConfig
                         inbound.domain_strategy = routing.DomainStrategy4Singbox;
                     }
 
-                    //http
-                    var inbound2 = GetInbound(inbound, EInboundProtocol.http, false);
-                    singboxConfig.inbounds.Add(inbound2);
-
                     if (_config.Inbound.First().AllowLANConn)
                     {
                         if (_config.Inbound.First().NewPort4LAN)
@@ -517,21 +513,15 @@ namespace ServiceLib.Services.CoreConfig
                             inbound3.listen = listen;
                             singboxConfig.inbounds.Add(inbound3);
 
-                            var inbound4 = GetInbound(inbound, EInboundProtocol.http2, false);
-                            inbound4.listen = listen;
-                            singboxConfig.inbounds.Add(inbound4);
-
                             //auth
                             if (Utils.IsNotEmpty(_config.Inbound.First().User) && Utils.IsNotEmpty(_config.Inbound.First().Pass))
                             {
                                 inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
-                                inbound4.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
                             }
                         }
                         else
                         {
                             inbound.listen = listen;
-                            inbound2.listen = listen;
                         }
                     }
                 }
@@ -574,7 +564,7 @@ namespace ServiceLib.Services.CoreConfig
             var inbound = JsonUtils.DeepCopy(inItem);
             inbound.tag = protocol.ToString();
             inbound.listen_port = inItem.listen_port + (int)protocol;
-            inbound.type = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
+            inbound.type = EInboundProtocol.mixed.ToString();
             return inbound;
         }
 
