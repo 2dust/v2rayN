@@ -8,8 +8,8 @@ namespace ServiceLib.Services
     public class SpeedtestService
     {
         private Config? _config;
-        private List<ServerTestItem> _selecteds;
         private Action<SpeedTestResult>? _updateFunc;
+
         private bool _exitLoop = false;
 
         public SpeedtestService(Config config, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> updateFunc)
@@ -17,7 +17,7 @@ namespace ServiceLib.Services
             _config = config;
             _updateFunc = updateFunc;
 
-            _selecteds = new List<ServerTestItem>();
+            var lstSelected = new List<ServerTestItem>();
             foreach (var it in selecteds)
             {
                 if (it.ConfigType == EConfigType.Custom)
@@ -28,7 +28,7 @@ namespace ServiceLib.Services
                 {
                     continue;
                 }
-                _selecteds.Add(new ServerTestItem()
+                lstSelected.Add(new ServerTestItem()
                 {
                     IndexId = it.IndexId,
                     Address = it.Address,
@@ -36,8 +36,9 @@ namespace ServiceLib.Services
                     ConfigType = it.ConfigType
                 });
             }
+
             //clear test result
-            foreach (var it in _selecteds)
+            foreach (var it in lstSelected)
             {
                 switch (actionType)
                 {
@@ -60,25 +61,44 @@ namespace ServiceLib.Services
                 }
             }
 
-            switch (actionType)
-            {
-                case ESpeedActionType.Tcping:
-                    Task.Run(RunTcpingAsync);
-                    break;
-
-                case ESpeedActionType.Realping:
-                    Task.Run(RunRealPingAsync);
-                    break;
-
-                case ESpeedActionType.Speedtest:
-                    Task.Run(RunSpeedTestAsync);
-                    break;
-
-                case ESpeedActionType.Mixedtest:
-                    Task.Run(RunMixedTestAsync);
-                    break;
-            }
             MessageBus.Current.Listen<string>(EMsgCommand.StopSpeedtest.ToString()).Subscribe(ExitLoop);
+
+            Task.Run(async () => { await RunAsync(actionType, lstSelected); });
+        }
+
+        private async Task RunAsync(ESpeedActionType actionType, List<ServerTestItem> lstSelected)
+        {
+            if (actionType == ESpeedActionType.Tcping)
+            {
+                await RunTcpingAsync(lstSelected);
+                return;
+            }
+
+            List<List<ServerTestItem>> lstTest = new();
+            lstTest.Add(lstSelected.Where(t => t.ConfigType is not (EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard)).ToList());
+            lstTest.Add(lstSelected.Where(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard).ToList());
+
+            foreach (var lst in lstTest)
+            {
+                switch (actionType)
+                {
+                    case ESpeedActionType.Realping:
+                        await RunRealPingAsync(lst);
+                        break;
+
+                    case ESpeedActionType.Speedtest:
+                        await RunSpeedTestAsync(lst);
+                        break;
+
+                    case ESpeedActionType.Mixedtest:
+                        await RunMixedTestAsync(lst);
+                        break;
+                }
+
+                await Task.Delay(1000);
+            }
+
+            UpdateFunc("", ResUI.SpeedtestingCompleted);
         }
 
         private void ExitLoop(string x)
@@ -88,12 +108,12 @@ namespace ServiceLib.Services
             UpdateFunc("", ResUI.SpeedtestingStop);
         }
 
-        private async Task RunTcpingAsync()
+        private async Task RunTcpingAsync(List<ServerTestItem> selecteds)
         {
             try
             {
                 List<Task> tasks = [];
-                foreach (var it in _selecteds)
+                foreach (var it in selecteds)
                 {
                     if (it.ConfigType == EConfigType.Custom)
                     {
@@ -127,12 +147,12 @@ namespace ServiceLib.Services
             }
         }
 
-        private async Task RunRealPingAsync()
+        private async Task RunRealPingAsync(List<ServerTestItem> selecteds)
         {
             var pid = -1;
             try
             {
-                pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+                pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
                 if (pid < 0)
                 {
                     UpdateFunc("", ResUI.FailedToRunCore);
@@ -142,7 +162,7 @@ namespace ServiceLib.Services
                 var downloadHandle = new DownloadService();
 
                 List<Task> tasks = new();
-                foreach (var it in _selecteds)
+                foreach (var it in selecteds)
                 {
                     if (!it.AllowTest)
                     {
@@ -186,10 +206,10 @@ namespace ServiceLib.Services
             }
         }
 
-        private async Task RunSpeedTestAsync()
+        private async Task RunSpeedTestAsync(List<ServerTestItem> selecteds)
         {
             var pid = -1;
-            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -201,7 +221,7 @@ namespace ServiceLib.Services
 
             DownloadService downloadHandle = new();
 
-            foreach (var it in _selecteds)
+            foreach (var it in selecteds)
             {
                 if (_exitLoop)
                 {
@@ -244,14 +264,13 @@ namespace ServiceLib.Services
             {
                 await CoreHandler.Instance.CoreStopPid(pid);
             }
-            UpdateFunc("", ResUI.SpeedtestingCompleted);
             await ProfileExHandler.Instance.SaveTo();
         }
 
-        private async Task RunSpeedTestMulti()
+        private async Task RunSpeedTestMulti(List<ServerTestItem> selecteds)
         {
             var pid = -1;
-            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(_selecteds);
+            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (pid < 0)
             {
                 UpdateFunc("", ResUI.FailedToRunCore);
@@ -263,7 +282,7 @@ namespace ServiceLib.Services
 
             DownloadService downloadHandle = new();
 
-            foreach (var it in _selecteds)
+            foreach (var it in selecteds)
             {
                 if (_exitLoop)
                 {
@@ -309,17 +328,16 @@ namespace ServiceLib.Services
             {
                 await CoreHandler.Instance.CoreStopPid(pid);
             }
-            UpdateFunc("", ResUI.SpeedtestingCompleted);
             await ProfileExHandler.Instance.SaveTo();
         }
 
-        private async Task RunMixedTestAsync()
+        private async Task RunMixedTestAsync(List<ServerTestItem> selecteds)
         {
-            await RunRealPingAsync();
+            await RunRealPingAsync(selecteds);
 
             await Task.Delay(1000);
 
-            await RunSpeedTestMulti();
+            await RunSpeedTestMulti(selecteds);
         }
 
         private async Task<string> GetRealPingTime(DownloadService downloadHandle, IWebProxy webProxy)
