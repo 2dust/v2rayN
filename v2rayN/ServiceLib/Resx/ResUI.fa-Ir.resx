@@ -845,7 +845,7 @@
     <value>حذف انتخاب شده</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Set as active rule</value>
+    <value>تنظیم کردن به عنوان قانون فعال</value>
   </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>تطبیق دامنه</value>
@@ -857,19 +857,19 @@
     <value>فعال کردن عملکرد پیشرفته</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.Block Domain or IP</value>
+    <value>3. مسدود کردن دامنه یا IP</value>
   </data>
   <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.Direct Domain or IP</value>
+    <value>2. دایرکت کردن دامنه یا IP</value>
   </data>
   <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.Proxy Domain or IP</value>
+    <value>1. پروکسی کردن دامنه یا IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>لیست مجموعه قوانین از پیش تعریف شده</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt;</value>
+    <value>*قوانین را تنظیم کنید که با کاما از هم جدا شده اند (,); کاما در حالت عادی با &lt;COMMA&gt;</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>وارد کردن قوانین از کلیپ بورد</value>
@@ -878,7 +878,7 @@
     <value>وارد کردن قوانین از فایل</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>وارد کردن قوانین از Sub Url</value>
+    <value>وارد کردن قوانین از آدرس اینترنتی Sub</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
     <value>تنظیم قانون</value>
@@ -902,7 +902,7 @@
     <value>دامنه و آی پی در هنگام ذخیره به طور خودکار مرتب می شوند</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
-    <value>Ruleobject Doc</value>
+    <value>مستندات شی قانون</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
     <value>پشتیبانی از DnsObject</value>
@@ -920,16 +920,16 @@
     <value>فقط مسیر</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
-    <value>يەرلىك (Intranet) ئادرېسلارغا ۋاكالەتچى مۇلازىمېتىر ئىشلەتمەڭ</value>
+    <value>از سرورهای پروکسی برای آدرس های محلی (اینترانت) استفاده نکنید</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>One-click test Latency and speed (Ctrl+E)</value>
+    <value>تاخیر و سرعت تست با یک کلیک (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>تاخیر (میلی‌ثانیه)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Speed(M/s)</value>
+    <value>سرعت (M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>Core اجرا نشد، لطفاً گزارش را ببینید</value>
@@ -944,7 +944,7 @@
     <value>پیکربندی قدیمی guiNConfig را وارد شود</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>Tun را فعال شود</value>
+    <value>فعال سازی Tun</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>پورت جدید برای LAN</value>
@@ -956,10 +956,10 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http and ws</value>
+    <value>این پارامتر فقط برای tcp/http و ws معتبر است</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>فعال‌سازی شتاب‌دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
+    <value>فعال‌ سازی شتاب‌ دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>فعال کردن کش فایل مجموعه قوانین برای sing-box</value>
@@ -968,7 +968,7 @@
     <value>مرتب سازی</value>
   </data>
   <data name="TbSortingDefault" xml:space="preserve">
-    <value>Default</value>
+    <value>پیش فرض</value>
   </data>
   <data name="TbSortingDelay" xml:space="preserve">
     <value>تاخیر</value>
@@ -1007,10 +1007,10 @@
     <value>نوع قانون</value>
   </data>
   <data name="menuModeDirect" xml:space="preserve">
-    <value>Direct</value>
+    <value>مستقیم</value>
   </data>
   <data name="menuModeGlobal" xml:space="preserve">
-    <value>Global</value>
+    <value>جهانی</value>
   </data>
   <data name="menuModeNothing" xml:space="preserve">
     <value>تغییر نده</value>
@@ -1019,25 +1019,25 @@
     <value>قانون</value>
   </data>
   <data name="menuProxiesDelaytest" xml:space="preserve">
-    <value>Latency Test</value>
+    <value>تست تأخیر</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
-    <value>Part Node Latency Test</value>
+    <value>تست تاخیر قسمت گره (نقطه اتصال)</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>Select active node (Enter)</value>
+    <value>انتخاب گره فعال (Enter)</value>
   </data>
   <data name="menuRemoteBackup" xml:space="preserve">
-    <value>Backup to remote (WebDAV)</value>
+    <value>پشتیبان گیری از راه دور (WebDAV)</value>
   </data>
   <data name="menuRemoteRestore" xml:space="preserve">
-    <value>Restore from remote (WebDAV)</value>
+    <value>بازیابی از راه دور (WebDAV)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
-    <value>Default domain strategy for outbound</value>
+    <value>استراتژی دامنه پیش فرض برای خروجی</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-Server lowest latency</value>
+    <value>کمترین تأخیر چند سروره</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
     <value>Main layout orientation(Require restart)</value>
