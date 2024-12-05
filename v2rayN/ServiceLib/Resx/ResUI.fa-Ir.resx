@@ -857,7 +857,7 @@
     <value>فعال کردن عملکرد پیشرفته</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3. مسدود کردن دامنه یا IP</value>
+    <value>3. مسدود کردن دامنه یا آیپی</value>
   </data>
   <data name="TbRoutingTabDirect" xml:space="preserve">
     <value>2. دایرکت کردن دامنه یا IP</value>
@@ -1229,37 +1229,37 @@
     <value>ویرایش سرور (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Double-click server make active</value>
+    <value>روی server make active دوبار کلیک کنید</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
-    <value>Test completed</value>
+    <value>تست تکمیل شد</value>
   </data>
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
-    <value>Default TLS fingerprint</value>
+    <value>پیش فرض TLS fingerprint</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>FontFamily(Require restart)</value>
+    <value>FontFamily (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
+    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید، تنظیمات را مجددا راه اندازی کنید</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac port = +2; Xray API port = +3; mihomo API port = +4;</value>
+    <value>پورت Pac = +2; پورت Xray API = +3; پورت mihomo API = +4;</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
-    <value>Set this with admin privileges, get admin privileges after startup</value>
+    <value>این را با امتیازات ادمین تنظیم کنید، پس از راه اندازی، امتیازات مدیر را دریافت کنید</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
-    <value>Font Size</value>
+    <value>اندازه فونت</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>SpeedTest Single Timeout Value</value>
+    <value>یمقدار تاخیر تست سرعت منفرد</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>SpeedTest URL</value>
+    <value>/آدرس اینترنتی SpeedTest</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
-    <value>Move up and down</value>
+    <value>بالا و پایین حرکت کنید</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
     <value>PublicKey</value>
@@ -1268,46 +1268,46 @@
     <value>Add [Hysteria2] server</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria Max bandwidth (Up/Dw)</value>
+    <value>حداکتر پهنای باند هیستریا (آپلود/دانلود)</value>
   </data>
   <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>Follow System Theme</value>
+    <value>دنبال کردن تم سیستم</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [TUIC] server</value>
+    <value>افزودن سرور [TUIC]</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Updating subscription, only determine remarks exists</value>
+    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی وجود دارد</value>
   </data>
   <data name="menuProxiesReload" xml:space="preserve">
-    <value>Refresh Proxies</value>
+    <value>تازه سازی پروکسی ها</value>
   </data>
   <data name="TbSortingNetwork" xml:space="preserve">
-    <value>Network</value>
+    <value>شبکه</value>
   </data>
   <data name="TbSortingType" xml:space="preserve">
-    <value>Type</value>
+    <value>نوع</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [HTTP] server</value>
+    <value>افزودن سرور [HTTP]</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>Speed Ping Test URL</value>
+    <value>آدرس اینترنتی تست پینگ سرعت</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
+    <value>از Xray استفاده کنید و حالت non-Tun را فعال کنید، که با پراکسی قبلی گروه در تضاد است</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>Custom the rule-set of sing-box</value>
+    <value>سفارش سازی مجموعه قوانین از sing box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
-    <value>Successful operation. Click the settings menu to reboot the app.</value>
+    <value>عملکرد موفقیت آمیز بود، روی منوی تنظیمات کلیک کنید تا برنامه راه اندازی مجدد شود.</value>
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
-    <value>Open the storage location</value>
+    <value>باز کردن محل ذخیره سازی</value>
   </data>
   <data name="TbSortingChain" xml:space="preserve">
     <value>Chain</value>
@@ -1316,58 +1316,58 @@
     <value>Host</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>Use System Hosts</value>
+    <value>استفاده کردن از System Hosts</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>Enable fragment</value>
+    <value>فعال کردن فرگمنت</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Auto ScrollToEnd</value>
+    <value>خودکار ScrollToEnd</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
-    <value>Test terminating...</value>
+    <value>پایان تست...</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
     <value>Next proxy remarks</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
-    <value>obfs password</value>
+    <value>پسورد obfs</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
-    <value>Congestion control</value>
+    <value>کنترل تراکم</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Previous proxy remarks</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>آدرس (IP, IPv6)</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
     <value>Reserved(2,3,4)</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
+    <value>کلید خصوصی</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [WireGuard] server</value>
+    <value>افزودن سرور [WireGuard]</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
-    <value>Enable IPv6 Address</value>
+    <value>فعال سازی آدرس IPv6</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>Enable additional Inbound</value>
+    <value>فعال سازی additional Inbound</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exists and is unique</value>
+    <value>لطفاً مطمئن شوید که ملاحظات وجود دارد و منحصر به فرد است</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
     <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
-    <value>System sudo password</value>
+    <value>رمز عبور sudo سیستم</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password is encrypted and stored only in local files.</value>
+    <value>رمز عبور رمزگذاری شده و فقط در فایل های محلی ذخیره می شود.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>لطفاً ابتدا رمز عبور sudo را در تنظیمات حالت Tun تنظیم کنید</value>
