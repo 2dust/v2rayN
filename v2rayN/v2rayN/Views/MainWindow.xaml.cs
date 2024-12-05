@@ -40,7 +40,6 @@ namespace v2rayN.Views
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
-            WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
             switch (_config.UiItem.MainGirdOrientation)
             {
                 case EGirdOrientation.Horizontal:
@@ -48,6 +47,7 @@ namespace v2rayN.Views
                     tabMsgView.Content ??= new MsgView();
                     tabClashProxies.Content ??= new ClashProxiesView();
                     tabClashConnections.Content ??= new ClashConnectionsView();
+                    gridMain.Visibility = Visibility.Visible;
                     break;
 
                 case EGirdOrientation.Vertical:
@@ -55,6 +55,7 @@ namespace v2rayN.Views
                     tabMsgView1.Content ??= new MsgView();
                     tabClashProxies1.Content ??= new ClashProxiesView();
                     tabClashConnections1.Content ??= new ClashConnectionsView();
+                    gridMain1.Visibility = Visibility.Visible;
                     break;
 
                 case EGirdOrientation.Tab:
@@ -63,6 +64,7 @@ namespace v2rayN.Views
                     tabMsgView2.Content ??= new MsgView();
                     tabClashProxies2.Content ??= new ClashProxiesView();
                     tabClashConnections2.Content ??= new ClashConnectionsView();
+                    gridMain2.Visibility = Visibility.Visible;
                     break;
             }
             pbTheme.Content ??= new ThemeSettingView();
@@ -108,7 +110,6 @@ namespace v2rayN.Views
                 switch (_config.UiItem.MainGirdOrientation)
                 {
                     case EGirdOrientation.Horizontal:
-                        gridMain.Visibility = Visibility.Visible;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
@@ -116,7 +117,6 @@ namespace v2rayN.Views
                         break;
 
                     case EGirdOrientation.Vertical:
-                        gridMain1.Visibility = Visibility.Visible;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
@@ -125,7 +125,6 @@ namespace v2rayN.Views
 
                     case EGirdOrientation.Tab:
                     default:
-                        gridMain2.Visibility = Visibility.Visible;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
@@ -142,6 +141,7 @@ namespace v2rayN.Views
 
             RestoreUI();
             AddHelpMenuItem();
+            WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
         }
 
         #region Event

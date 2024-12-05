@@ -41,7 +41,34 @@ namespace v2rayN.Desktop.Views
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
-            //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            switch (_config.UiItem.MainGirdOrientation)
+            {
+                case EGirdOrientation.Horizontal:
+                    tabProfiles.Content ??= new ProfilesView(this);
+                    tabMsgView.Content ??= new MsgView();
+                    tabClashProxies.Content ??= new ClashProxiesView();
+                    tabClashConnections.Content ??= new ClashConnectionsView();
+                    gridMain.IsVisible = true;
+                    break;
+
+                case EGirdOrientation.Vertical:
+                    tabProfiles1.Content ??= new ProfilesView(this);
+                    tabMsgView1.Content ??= new MsgView();
+                    tabClashProxies1.Content ??= new ClashProxiesView();
+                    tabClashConnections1.Content ??= new ClashConnectionsView();
+                    gridMain1.IsVisible = true;
+                    break;
+
+                case EGirdOrientation.Tab:
+                default:
+                    tabProfiles2.Content ??= new ProfilesView(this);
+                    tabMsgView2.Content ??= new MsgView();
+                    tabClashProxies2.Content ??= new ClashProxiesView();
+                    tabClashConnections2.Content ??= new ClashConnectionsView();
+                    gridMain2.IsVisible = true;
+                    break;
+            }
+            conTheme.Content ??= new ThemeSettingView();
 
             this.WhenActivated(disposables =>
             {
@@ -84,7 +111,6 @@ namespace v2rayN.Desktop.Views
                 switch (_config.UiItem.MainGirdOrientation)
                 {
                     case EGirdOrientation.Horizontal:
-                        gridMain.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(disposables);
@@ -92,7 +118,6 @@ namespace v2rayN.Desktop.Views
                         break;
 
                     case EGirdOrientation.Vertical:
-                        gridMain1.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(disposables);
@@ -101,7 +126,6 @@ namespace v2rayN.Desktop.Views
 
                     case EGirdOrientation.Tab:
                     default:
-                        gridMain2.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
@@ -128,35 +152,10 @@ namespace v2rayN.Desktop.Views
                 menuGlobalHotkeySetting.IsVisible = false;
             }
             menuAddServerViaScan.IsVisible = false;
-
-            switch (_config.UiItem.MainGirdOrientation)
-            {
-                case EGirdOrientation.Horizontal:
-                    tabProfiles.Content ??= new ProfilesView(this);
-                    tabMsgView.Content ??= new MsgView();
-                    tabClashProxies.Content ??= new ClashProxiesView();
-                    tabClashConnections.Content ??= new ClashConnectionsView();
-                    break;
-
-                case EGirdOrientation.Vertical:
-                    tabProfiles1.Content ??= new ProfilesView(this);
-                    tabMsgView1.Content ??= new MsgView();
-                    tabClashProxies1.Content ??= new ClashProxiesView();
-                    tabClashConnections1.Content ??= new ClashConnectionsView();
-                    break;
-
-                case EGirdOrientation.Tab:
-                default:
-                    tabProfiles2.Content ??= new ProfilesView(this);
-                    tabMsgView2.Content ??= new MsgView();
-                    tabClashProxies2.Content ??= new ClashProxiesView();
-                    tabClashConnections2.Content ??= new ClashConnectionsView();
-                    break;
-            }
-            conTheme.Content ??= new ThemeSettingView();
-
+            
             RestoreUI();
             AddHelpMenuItem();
+            //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
         }
 
         #region Event
