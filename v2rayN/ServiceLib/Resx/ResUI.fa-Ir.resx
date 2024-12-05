@@ -323,7 +323,7 @@
     <value>آدرس اینترنتی (اختیاری)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
-    <value>مقدار</value>
+    <value>شمارش</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
     <value>لطفا آدرس (آدرس اینترنتی) را وارد کنید</value>
@@ -386,10 +386,10 @@
     <value>*Kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>Global hotkey {0} registered failed, reason {1}</value>
+    <value>کلید میانبر جهانی {0} ثبت نشد، دلیل کلید میانبر جهانی {0} ثبت ناموفق بود، دلیل {1}{1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
-    <value>Global hotkey {0} registered successfully</value>
+    <value>کلید میانبر جهانی {0} با موفقیت ثبت شد</value>
   </data>
   <data name="UngroupedServers" xml:space="preserve">
     <value>گروه بندی نشده</value>
@@ -398,7 +398,7 @@
     <value>همه سرورها</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Please browse to import server configuration</value>
+    <value>لطفاً برای وارد کردن پیکربندی سرور مرور کنید</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>درحال تست کردن...</value>
@@ -593,7 +593,7 @@
     <value>آدرس</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>اجازه ناامن</value>
+    <value>اعطای مجوز ناامن</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>Alpn</value>
@@ -605,7 +605,7 @@
     <value>Fingerprint</value>
   </data>
   <data name="TbHeaderType" xml:space="preserve">
-    <value>Camouflage type</value>
+    <value>نوع Camouflage</value>
   </data>
   <data name="TbId" xml:space="preserve">
     <value>UUID(id)</value>
@@ -620,13 +620,13 @@
     <value>پورت</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
-    <value>Alias (remarks)</value>
+    <value>نام مستعار (ملاحظات)</value>
   </data>
   <data name="TbRequestHost" xml:space="preserve">
     <value>Camouflage domain(host)</value>
   </data>
   <data name="TbSecurity" xml:space="preserve">
-    <value>Encryption method (security)</value>
+    <value>روش رمزگذاری (امنیتی)</value>
   </data>
   <data name="TbSNI" xml:space="preserve">
     <value>SNI</value>
@@ -635,7 +635,7 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*Default value tcp</value>
+    <value>*مقدار پیش فرض tcp</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>نوع هسته</value>
@@ -644,7 +644,7 @@
     <value>جریان</value>
   </data>
   <data name="TbGUID" xml:space="preserve">
-    <value>Generate</value>
+    <value>ساختن</value>
   </data>
   <data name="TbId3" xml:space="preserve">
     <value>رمزعبور</value>
@@ -668,10 +668,10 @@
     <value>txtPreSocksPort</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
+    <value>* پس از تنظیم این مقدار، یک سرویس جوراب با استفاده از Xray/sing-box (Tun) برای ارائه عملکردهایی مانند نمایش سرعت شروع می شود.</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
-    <value>Browse</value>
+    <value>مرور کردن</value>
   </data>
   <data name="TbEdit" xml:space="preserve">
     <value>ویرایش</value>
@@ -683,7 +683,7 @@
     <value>اتصالات از LAN را مجاز کنید</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Auto hide startup</value>
+    <value>راه اندازی مخفی کردن خودکار</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>فاصله به روز رسانی خودکار و Geo (ساعت)</value>
@@ -692,7 +692,7 @@
     <value>هسته: تنظیمات اولیه</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS settings</value>
+    <value>تنظیمات V2ray DNS</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>هسته: تنظیمات KCP</value>
@@ -701,7 +701,7 @@
     <value>تنظیمات CoreType</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>اجازه ناامن</value>
+    <value>اعطای مجوز ناامن</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
     <value>Outbound Freedom domainStrategy</value>
