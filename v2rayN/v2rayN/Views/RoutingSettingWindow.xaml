@@ -9,9 +9,10 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuRoutingSetting}"
-    Width="990"
+    Width="1000"
     Height="700"
     x:TypeArguments="vms:RoutingSettingViewModel"
+    ResizeMode="CanResize"
     ShowInTaskbar="False"
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
@@ -174,7 +175,7 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn
-                                Width="250"
+                                Width="*"
                                 Binding="{Binding Remarks}"
                                 Header="{x:Static resx:ResUI.LvRemarks}" />
                             <DataGridTextColumn
@@ -186,7 +187,7 @@
                                 Binding="{Binding Sort}"
                                 Header="{x:Static resx:ResUI.LvSort}" />
                             <DataGridTextColumn
-                                Width="300"
+                                Width="*"
                                 Binding="{Binding Url}"
                                 Header="{x:Static resx:ResUI.LvUrl}" />
                             <DataGridTextColumn

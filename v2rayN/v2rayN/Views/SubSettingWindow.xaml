@@ -9,9 +9,10 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSubSetting}"
-    Width="800"
-    Height="600"
+    Width="1000"
+    Height="700"
     x:TypeArguments="vms:SubSettingViewModel"
+    ResizeMode="CanResize"
     ShowInTaskbar="False"
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
@@ -92,7 +93,7 @@
                 Style="{StaticResource DefDataGrid}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Width="120"
+                        Width="*"
                         Binding="{Binding Remarks}"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <DataGridTextColumn
