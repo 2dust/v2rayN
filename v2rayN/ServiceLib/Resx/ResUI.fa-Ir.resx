@@ -716,7 +716,7 @@
     <value>استثنا</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses beginning with,Use semicolon (;)</value>
+    <value>استثنا: از سرور پروکسی برای آدرس هایی که با شروع می شوند استفاده نکنید، از نقطه ویرگول (;) استفاده کنید.</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>پورت Http</value>
@@ -725,7 +725,7 @@
     <value>هنگام به‌روزرسانی هسته، فایل‌های Geo را نادیده بگیرید</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Keep older when deduplication</value>
+    <value>هنگام کپی برداری، نگه داری قدیمی تر ها</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>ثبت گزارش های محلی</value>
@@ -734,25 +734,25 @@
     <value>سطح ثبت رویداد</value>
   </data>
   <data name="TbSettingsMuxEnabled" xml:space="preserve">
-    <value>Turn on Mux Multiplexing</value>
+    <value>فعال کردن Mux Multiplexing</value>
   </data>
   <data name="TbSettingsN" xml:space="preserve">
     <value>تنظیمات v2rayN</value>
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
-    <value>Auth pass</value>
+    <value>مجوز احراز هویت</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
     <value>سفارشی DNS (multiple, separated by commas (,))</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
-    <value>Set Win10 UWP Loopback</value>
+    <value>تنظیم کردن Win10 UWP Loopback</value>
   </data>
   <data name="TbSettingsSniffingEnabled" xml:space="preserve">
-    <value>Turn on Sniffing</value>
+    <value>فعال کردن Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Mixed Port</value>
+    <value>پورت Mixed</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>درهنگام راه ائدازی شروع شود</value>
@@ -761,22 +761,22 @@
     <value>فعال کردن آمار (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
-    <value>Subscription conversion Url</value>
+    <value>آدرس اینترنتی تبدیل اشتراک</value>
   </data>
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>تنظیمات پراکسی سیستم</value>
   </data>
   <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>Enable Security Protocol TLS v1.3 (subscription/update)</value>
+    <value>فعال کردن پروتکل امنیتی TLS نسخه 1.3 (اشتراک/به‌روزرسانی)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tray right-click menu servers display limit</value>
+    <value>محدودیت نمایش سرورهای منوی سینی کلیک راست</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
-    <value>UDP را فعال شود</value>
+    <value>فعال سازی UDP</value>
   </data>
   <data name="TbSettingsUser" xml:space="preserve">
-    <value>Auth user</value>
+    <value>تایید کاربر</value>
   </data>
   <data name="TbClearSystemProxy" xml:space="preserve">
     <value>پاک کردن پروکسی سیستم</value>
@@ -821,16 +821,16 @@
     <value>پایین (D)</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>Move to top (T)</value>
+    <value>حرکت به بالا (T)</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>Up (U)</value>
+    <value>بالا (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>Filter, support regular</value>
+    <value>فیلتر، پشتیبانی منظم</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
-    <value>{0} Website</value>
+    <value>{0} وب سایت</value>
   </data>
   <data name="menuRoutingAdvanced" xml:space="preserve">
     <value>عملکرد پیشرفته</value>
