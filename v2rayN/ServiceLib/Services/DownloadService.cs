@@ -280,7 +280,7 @@ namespace ServiceLib.Services
             {
                 return null;
             }
-            var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
+            var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
             if (await SocketCheck(Global.Loopback, httpPort) == false)
             {
                 return null;

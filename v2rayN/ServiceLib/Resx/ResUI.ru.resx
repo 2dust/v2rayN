@@ -761,7 +761,7 @@
     <value>Включить сниффинг</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Порт Socks</value>
+    <value>Mixed Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Автозапуск</value>
@@ -1310,7 +1310,7 @@
     <value>Move up and down</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6;</value>
+    <value>Pac port = +2; Xray API port = +3; mihomo API port = +4;</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
     <value>Install the font to the system and restart the settings</value>

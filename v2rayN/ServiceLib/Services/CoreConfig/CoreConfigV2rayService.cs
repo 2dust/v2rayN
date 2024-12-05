@@ -322,7 +322,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         listen = Global.Loopback,
                         port = port,
-                        protocol = EInboundProtocol.http.ToString(),
+                        protocol = EInboundProtocol.socks.ToString(),
                     };
                     inbound.tag = inbound.protocol + inbound.port.ToString();
                     v2rayConfig.inbounds.Add(inbound);
@@ -391,12 +391,8 @@ namespace ServiceLib.Services.CoreConfig
                 var listen = "0.0.0.0";
                 v2rayConfig.inbounds = [];
 
-                Inbounds4Ray? inbound = GetInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
+                var inbound = GetInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
                 v2rayConfig.inbounds.Add(inbound);
-
-                //http
-                Inbounds4Ray? inbound2 = GetInbound(_config.Inbound.First(), EInboundProtocol.http, false);
-                v2rayConfig.inbounds.Add(inbound2);
 
                 if (_config.Inbound.First().AllowLANConn)
                 {
@@ -406,24 +402,16 @@ namespace ServiceLib.Services.CoreConfig
                         inbound3.listen = listen;
                         v2rayConfig.inbounds.Add(inbound3);
 
-                        var inbound4 = GetInbound(_config.Inbound.First(), EInboundProtocol.http2, false);
-                        inbound4.listen = listen;
-                        v2rayConfig.inbounds.Add(inbound4);
-
                         //auth
                         if (Utils.IsNotEmpty(_config.Inbound.First().User) && Utils.IsNotEmpty(_config.Inbound.First().Pass))
                         {
                             inbound3.settings.auth = "password";
                             inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
-
-                            inbound4.settings.auth = "password";
-                            inbound4.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
                         }
                     }
                     else
                     {
                         inbound.listen = listen;
-                        inbound2.listen = listen;
                     }
                 }
             }
@@ -449,7 +437,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             inbound.tag = protocol.ToString();
             inbound.port = inItem.LocalPort + (int)protocol;
-            inbound.protocol = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
+            inbound.protocol = EInboundProtocol.socks.ToString();
             inbound.settings.udp = inItem.UdpEnabled;
             inbound.sniffing.enabled = inItem.SniffingEnabled;
             inbound.sniffing.destOverride = inItem.DestOverride;

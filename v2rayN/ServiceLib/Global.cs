@@ -182,14 +182,13 @@
         public static readonly List<string> Flows = new() { "", "xtls-rprx-vision", "xtls-rprx-vision-udp443" };
         public static readonly List<string> Networks = new() { "tcp", "kcp", "ws", "httpupgrade", "xhttp", "h2", "quic", "grpc" };
         public static readonly List<string> KcpHeaderTypes = new() { "srtp", "utp", "wechat-video", "dtls", "wireguard" };
-        public static readonly List<string> CoreTypes = new() { "v2fly", "Xray", "sing_box" };
-        public static readonly List<string> CoreTypes4VLESS = new() { "Xray", "sing_box" };
+        public static readonly List<string> CoreTypes = new() { "Xray", "sing_box" };
         public static readonly List<string> DomainStrategies = new() { "AsIs", "IPIfNonMatch", "IPOnDemand" };
         public static readonly List<string> DomainStrategies4Singbox = new() { "ipv4_only", "ipv6_only", "prefer_ipv4", "prefer_ipv6", "" };
         public static readonly List<string> DomainMatchers = new() { "linear", "mph", "" };
         public static readonly List<string> Fingerprints = new() { "chrome", "firefox", "safari", "ios", "android", "edge", "360", "qq", "random", "randomized", "" };
         public static readonly List<string> UserAgent = new() { "chrome", "firefox", "safari", "edge", "none" };
-        public static readonly List<string> XhttpMode = new() { "auto", "packet-up", "stream-up" };
+        public static readonly List<string> XhttpMode = new() { "auto", "packet-up", "stream-up", "stream-one" };
 
         public static readonly List<string> AllowInsecure = new() { "true", "false", "" };
         public static readonly List<string> DomainStrategy4Freedoms = new() { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
@@ -199,7 +198,7 @@
         public static readonly List<string> Languages = new() { "zh-Hans", "zh-Hant", "en", "fa-Ir", "ru" };
         public static readonly List<string> Alpns = new() { "h3", "h2", "http/1.1", "h3,h2", "h2,http/1.1", "h3,h2,http/1.1", "" };
         public static readonly List<string> LogLevels = new() { "debug", "info", "warning", "error", "none" };
-        public static readonly List<string> InboundTags = new() { "socks", "http", "socks2", "http2" };
+        public static readonly List<string> InboundTags = new() { "socks", "socks2" };
         public static readonly List<string> RuleProtocols = new() { "http", "tls", "bittorrent" };
         public static readonly List<string> RuleNetworks = new() { "", "tcp", "udp", "tcp,udp" };
         public static readonly List<string> destOverrideProtocols = ["http", "tls", "quic", "fakedns", "fakedns+others"];

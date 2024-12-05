@@ -755,7 +755,7 @@
     <value>開啟流量探測</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>本機SOCKS偵聽埠</value>
+    <value>本機混合偵聽埠</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>開機啟動(可能會不成功)</value>
@@ -992,7 +992,7 @@
     <value>複製字型TTF/TTC檔案到目錄guiFonts，重啟設定</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http連接埠= +1；Pac連接埠= +4；*ray API連接埠= +5；mihomo API連接埠= +6；</value>
+    <value>Pac連接埠= +2；Xray API連接埠= +3；mihomo API連接埠= +4；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理員權限設定此項，在啟動後獲得管理員權限</value>
