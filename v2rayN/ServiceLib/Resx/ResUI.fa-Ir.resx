@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Batch export share URL to clipboard successfully</value>
+    <value>ارسال دسته ای URL اشتراک گذاری به کلیپ بورد با موفقیت</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
     <value>لطفا ابتدا تنظیمات سرور را بررسی کنید</value>
@@ -136,7 +136,7 @@
     <value>دانلود</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>Whether to download? {0}</value>
+    <value>آیا برای دانلود؟ {0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>تبدیل فایل پیکربندی انجام نشد</value>
@@ -226,7 +226,7 @@
     <value>هیچ اشتراک معتبری تنظیم نشده است</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>Resolve {0} successfully</value>
+    <value>حل {0} با موفقیت</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>شروع به دریافت اشتراک شد</value>
@@ -253,19 +253,19 @@
     <value>هسته با موفقیت بروزرسانی شد! راه اندازی مجدد سرویس...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-VMess or ss protocol</value>
+    <value>پروتکل غیر VMess یا ss</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
+    <value>فایل Core (نام فایل: {1}) در زیر پوشه ({0}) یافت نشد، لطفاً آن را دانلود کرده و در پوشه قرار دهید، آدرس دانلود: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
-    <value>Scan completed, no valid QR code found</value>
+    <value>اسکن کامل شد، QRcode معتبری یافت نشد</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
     <value> عملیات انجام نشد، لطفا بررسی کنید و دوباره امتحان کنید</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Please Fill Remarks</value>
+    <value>لطفا ملاحظات را پر کنید</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
     <value>لطفاً روش رمزگذاری را انتخاب کنید</value>
@@ -277,16 +277,16 @@
     <value>لطفا ابتدا سرور را انتخاب کنید</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+    <value>حذف مجدد سرورها تکمیل شد. قدیمی: {0}، جدید: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
     <value>آیا مطمئن هستید که سرور را حذف می کنید؟</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
-    <value>The client configuration file is saved at: {0}</value>
+    <value>فایل پیکربندی کلاینت در این آدرس ذخیره می شود: {0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})...</value>
+    <value>شروع سرویس ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
     <value>پیکربندی با موفقیت انجام شد
@@ -317,19 +317,19 @@
     <value>{0},یکی از مورد نیاز.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
-    <value>Remarks</value>
+    <value>ملاحظات</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>Url(Optional)</value>
+    <value>آدرس اینترنتی (اختیاری)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
-    <value>Count</value>
+    <value>مقدار</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Please fill in the address (Url)</value>
+    <value>لطفا آدرس (آدرس اینترنتی) را وارد کنید</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
+    <value>آیا می خواهید قوانین را اضافه کنید؟ برای ضمیمه بله را انتخاب کنید، در غیر این صورت جایگزین کنید</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
     <value>دانلود GeoFile: {0} با موفقیت</value>
