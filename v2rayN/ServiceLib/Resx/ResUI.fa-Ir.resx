@@ -602,7 +602,7 @@
     <value>AlterId</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
-    <value>Fingerprint</value>
+    <value>اثرانگشت</value>
   </data>
   <data name="TbHeaderType" xml:space="preserve">
     <value>نوع Camouflage</value>
@@ -1235,7 +1235,7 @@
     <value>تست تکمیل شد</value>
   </data>
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
-    <value>پیش فرض TLS fingerprint</value>
+    <value>اثر انگشت tls پیش فرض</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>FontFamily (نیاز به راه اندازی مجدد)</value>
