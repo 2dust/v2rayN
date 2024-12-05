@@ -698,7 +698,7 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="14"
+                            Grid.Row="13"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -706,6 +706,22 @@
                             Text="{x:Static resx:ResUI.TbSettingsAutoUpdateInterval}" />
                         <TextBox
                             x:Name="txtautoUpdateInterval"
+                            Grid.Row="13"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefTextBox}" />
+
+                        <TextBlock
+                            Grid.Row="14"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
+                        <TextBox
+                            x:Name="txttrayMenuServersLimit"
                             Grid.Row="14"
                             Grid.Column="1"
                             Width="200"
@@ -719,15 +735,23 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
-                        <TextBox
-                            x:Name="txttrayMenuServersLimit"
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
+                        <ComboBox
+                            x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource DefTextBox}" />
+                            MaxDropDownHeight="1000"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="15"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="16"
@@ -735,23 +759,15 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
-                        <ComboBox
-                            x:Name="cmbcurrentFontFamily"
+                            Text="{x:Static resx:ResUI.TbSettingsSpeedTestPageSize}" />
+                        <TextBox
+                            x:Name="txtSpeedTestPageSize"
                             Grid.Row="16"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            MaxDropDownHeight="1000"
-                            Style="{StaticResource DefComboBox}" />
-                        <TextBlock
-                            Grid.Row="16"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
-                            TextWrapping="Wrap" />
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
                             Grid.Row="17"

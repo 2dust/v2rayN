@@ -1381,4 +1381,7 @@
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>關閉視窗時隱藏至托盤</value>
   </data>
+  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
+    <value>測速時自動分批的每批數量（最大1000）</value>
+  </data>
 </root>

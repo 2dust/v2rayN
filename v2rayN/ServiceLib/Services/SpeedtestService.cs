@@ -74,9 +74,24 @@ namespace ServiceLib.Services
                 return;
             }
 
+            var pageSize = _config.SpeedTestItem.SpeedTestPageSize;
+            if (pageSize is <= 0 or > 1000)
+            {
+                pageSize = 1000;
+            }
+
             List<List<ServerTestItem>> lstTest = new();
-            lstTest.Add(lstSelected.Where(t => t.ConfigType is not (EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard)).ToList());
-            lstTest.Add(lstSelected.Where(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard).ToList());
+            var lst1 = lstSelected.Where(t => t.ConfigType is not (EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard)).ToList();
+            var lst2 = lstSelected.Where(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard).ToList();
+
+            for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
+            {
+                lstTest.Add(lst1.Skip(num * pageSize).Take(pageSize).ToList());
+            }
+            for (var num = 0; num < (int)Math.Ceiling(lst2.Count * 1.0 / pageSize); num++)
+            {
+                lstTest.Add(lst2.Skip(num * pageSize).Take(pageSize).ToList());
+            }
 
             foreach (var lst in lstTest)
             {
@@ -95,7 +110,7 @@ namespace ServiceLib.Services
                         break;
                 }
 
-                await Task.Delay(1000);
+                await Task.Delay(100);
             }
 
             UpdateFunc("", ResUI.SpeedtestingCompleted);

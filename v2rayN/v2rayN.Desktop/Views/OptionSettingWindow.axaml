@@ -532,25 +532,39 @@
                             Classes="Margin8" />
 
                         <TextBlock
-                            Grid.Row="16"
+                            Grid.Row="15"
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
                         <ComboBox
                             x:Name="cmbcurrentFontFamily"
-                            Grid.Row="16"
+                            Grid.Row="15"
                             Grid.Column="1"
                             Width="200"
                             Classes="Margin8"
                             MaxDropDownHeight="1000" />
                         <TextBlock
-                            Grid.Row="16"
+                            Grid.Row="15"
                             Grid.Column="2"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyLinuxTip}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsSpeedTestPageSize}" />
+                        <TextBox
+                            x:Name="txtSpeedTestPageSize"
+                            Grid.Row="16"
+                            Grid.Column="1"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            Classes="Margin8" />
 
                         <TextBlock
                             Grid.Row="17"
