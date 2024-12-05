@@ -174,7 +174,7 @@ namespace ServiceLib.Handler
                 var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
                 if (itemSocks != null)
                 {
-                    var preCoreType = _config.RunningCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
+                    var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
                     var fileName = Utils.GetConfigPath(Global.CorePreConfigFileName);
                     var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
                     if (result.Success)

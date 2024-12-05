@@ -1029,12 +1029,11 @@ namespace ServiceLib.Handler
         public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
         {
             ProfileItem? itemSocks = null;
-            var preCoreType = ECoreType.sing_box;
             if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
             {
                 itemSocks = new ProfileItem()
                 {
-                    CoreType = preCoreType,
+                    CoreType = ECoreType.sing_box,
                     ConfigType = EConfigType.SOCKS,
                     Address = Global.Loopback,
                     Sni = node.Address, //Tun2SocksAddress
@@ -1043,7 +1042,7 @@ namespace ServiceLib.Handler
             }
             else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
             {
-                preCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
+                var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
                 itemSocks = new ProfileItem()
                 {
                     CoreType = preCoreType,
