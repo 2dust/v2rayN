@@ -248,7 +248,7 @@ namespace ServiceLib.Services.CoreConfig
                 v2rayConfig.outbounds.Clear();
                 v2rayConfig.routing.rules.Clear();
 
-                var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
@@ -270,8 +270,8 @@ namespace ServiceLib.Services.CoreConfig
                     }
 
                     //find unused port
-                    var port = httpPort;
-                    for (var k = httpPort; k < Global.MaxPort; k++)
+                    var port = initPort;
+                    for (var k = initPort; k < Global.MaxPort; k++)
                     {
                         if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                         {
@@ -283,7 +283,7 @@ namespace ServiceLib.Services.CoreConfig
                         }
                         //found
                         port = k;
-                        httpPort = port + 1;
+                        initPort = port + 1;
                         break;
                     }
 

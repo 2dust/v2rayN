@@ -122,7 +122,7 @@ namespace ServiceLib.Services.CoreConfig
                 singboxConfig.inbounds.Clear();
                 singboxConfig.outbounds.RemoveAt(0);
 
-                var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
@@ -144,8 +144,8 @@ namespace ServiceLib.Services.CoreConfig
                     }
 
                     //find unused port
-                    var port = httpPort;
-                    for (int k = httpPort; k < Global.MaxPort; k++)
+                    var port = initPort;
+                    for (int k = initPort; k < Global.MaxPort; k++)
                     {
                         if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                         {
@@ -157,7 +157,7 @@ namespace ServiceLib.Services.CoreConfig
                         }
                         //found
                         port = k;
-                        httpPort = port + 1;
+                        initPort = port + 1;
                         break;
                     }
 

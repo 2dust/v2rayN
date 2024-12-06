@@ -280,13 +280,13 @@ namespace ServiceLib.Services
             {
                 return null;
             }
-            var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-            if (await SocketCheck(Global.Loopback, httpPort) == false)
+            var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+            if (await SocketCheck(Global.Loopback, port) == false)
             {
                 return null;
             }
 
-            return new WebProxy(Global.Loopback, httpPort);
+            return new WebProxy($"socks5://{Global.Loopback}:{port}");
         }
 
         private async Task<bool> SocketCheck(string ip, int port)

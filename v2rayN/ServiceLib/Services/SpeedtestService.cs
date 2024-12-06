@@ -191,7 +191,7 @@ namespace ServiceLib.Services
                     {
                         try
                         {
-                            WebProxy webProxy = new(Global.Loopback, it.Port);
+                            var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
                             var output = await GetRealPingTime(downloadHandle, webProxy);
 
                             ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
@@ -262,7 +262,7 @@ namespace ServiceLib.Services
                 var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new(Global.Loopback, it.Port);
+                var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
 
                 await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
@@ -324,7 +324,7 @@ namespace ServiceLib.Services
                 var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                 if (item is null) continue;
 
-                WebProxy webProxy = new(Global.Loopback, it.Port);
+                var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
                 _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
                 {
                     decimal.TryParse(msg, out var dec);
