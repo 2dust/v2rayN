@@ -120,9 +120,14 @@ namespace ServiceLib.Handler
             }
 
             config.ConstItem ??= new ConstItem();
-            if (Utils.IsNullOrEmpty(config.ConstItem.DefIEProxyExceptions))
+            if (Utils.IsNotEmpty(config.ConstItem.DefIEProxyExceptions))
             {
-                config.ConstItem.DefIEProxyExceptions = Global.IEProxyExceptions;
+                config.SystemProxyItem.SystemProxyExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
+                config.ConstItem.DefIEProxyExceptions = string.Empty;
+            }
+            if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
+            {
+                config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
             }
 
             config.SpeedTestItem ??= new();

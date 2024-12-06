@@ -65,7 +65,7 @@
 
         private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
         {
-            strExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
+            strExceptions = config.SystemProxyItem.SystemProxyExceptions;
             if (config.SystemProxyItem.NotProxyLocalAddress)
             {
                 strExceptions = $"<local>;{strExceptions}";

@@ -68,7 +68,8 @@
         public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
         public const string AutoRunName = "v2rayNAutoRun";
         public const string CustomIconName = "v2rayN.ico";
-        public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
+        public const string SystemProxyExceptionsWindows = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
+        public const string SystemProxyExceptionsLinux = "localhost, 127.0.0.0/8, ::1";
         public const string RoutingRuleComma = "<COMMA>";
         public const string GrpcGunMode = "gun";
         public const string GrpcMultiMode = "multi";
