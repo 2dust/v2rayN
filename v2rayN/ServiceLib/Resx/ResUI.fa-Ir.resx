@@ -1064,7 +1064,7 @@
     <value>شما در حال حاضر در حال اجرای یک بسته مستقل هستید، لطفاً فایل SelfContained.7z را به صورت دستی دانلود کنید تا آن را از حالت فشرده خارج کرده و بازنویسی کنید!</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <valueپیکربندی سفارشی socks port</value>
+    <value>پیکربندی سفارشی socks port</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>پشتیبان گیری و بازیابی</value>
