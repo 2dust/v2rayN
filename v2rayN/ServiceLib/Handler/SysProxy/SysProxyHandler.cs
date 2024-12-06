@@ -14,6 +14,7 @@
             try
             {
                 var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                var exceptions = config.SystemProxyItem.SystemProxyExceptions;
                 if (port <= 0)
                 {
                     return false;
@@ -27,7 +28,7 @@
                             break;
                         }
                     case ESysProxyType.ForcedChange when Utils.IsLinux():
-                        await ProxySettingLinux.SetProxy(Global.Loopback, port);
+                        await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
                         break;
 
                     case ESysProxyType.ForcedChange when Utils.IsOSX():

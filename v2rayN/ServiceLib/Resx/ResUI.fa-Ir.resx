@@ -1380,11 +1380,14 @@
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>جیسون خام XHTTP Extra, فرمت: { XHTTPObject }</value>
-  </data> 
+  </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>هنگام بستن پنجره در سینی پنهان شوید</value>
   </data>
   <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
     <value>تعداد در هر زمان برای دسته خودکار در طول تست سرعت (حداکثر 1000)</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
   </data>
 </root>

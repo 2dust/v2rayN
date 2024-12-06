@@ -3059,6 +3059,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Exception. Do not use proxy server for addresses,with a comma (,) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsExceptionTip2 {
+            get {
+                return ResourceManager.GetString("TbSettingsExceptionTip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Follow System Theme 的本地化字符串。
         /// </summary>
         public static string TbSettingsFollowSystemTheme {

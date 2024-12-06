@@ -697,7 +697,10 @@
 
             <TabItem Name="tabSystemproxy" Header="{x:Static resx:ResUI.TbSettingsSystemproxy}">
                 <DockPanel Classes="Margin8">
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
+                    <StackPanel
+                        Name="panSystemProxyAdvanced"
+                        DockPanel.Dock="Bottom"
+                        Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
@@ -723,11 +726,17 @@
                     </StackPanel>
 
                     <TextBlock
-                        Grid.Row="1"
+                        Name="txbSettingsExceptionTip"
                         VerticalAlignment="Center"
                         Classes="Margin8"
                         DockPanel.Dock="Top"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip}" />
+                    <TextBlock
+                        Name="txbSettingsExceptionTip2"
+                        VerticalAlignment="Center"
+                        Classes="Margin8"
+                        DockPanel.Dock="Top"
+                        Text="{x:Static resx:ResUI.TbSettingsExceptionTip2}" />
                     <TextBox
                         x:Name="txtsystemProxyExceptions"
                         VerticalAlignment="Stretch"

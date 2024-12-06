@@ -166,9 +166,14 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
 
-            if (!Utils.IsWindows())
+            if (Utils.IsWindows())
             {
-                tabSystemproxy.IsVisible = false;
+                txbSettingsExceptionTip2.IsVisible = false;
+            }
+            else
+            {
+                txbSettingsExceptionTip.IsVisible = false;
+                panSystemProxyAdvanced.IsVisible = false;
             }
 
             if (Utils.IsOSX())

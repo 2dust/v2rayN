@@ -1387,4 +1387,7 @@
   <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
     <value>Number per time for auto batch during speedtest(max 1000)</value>
   </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+  </data>
 </root>

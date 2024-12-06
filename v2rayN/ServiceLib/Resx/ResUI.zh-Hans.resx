@@ -1384,4 +1384,7 @@
   <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
     <value>测速时自动分批的每批数量（最大1000）</value>
   </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>例外. 对于下列地址不使用代理配置文件:使用逗号(,)分隔</value>
+  </data>
 </root>
