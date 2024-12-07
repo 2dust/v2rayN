@@ -283,6 +283,7 @@ namespace ServiceLib.ViewModels
             try
             {
                 Logging.SaveLog("MyAppExitAsync Begin");
+                MessageBus.Current.SendMessage("", EMsgCommand.AppExit.ToString());
 
                 await ConfigHandler.SaveConfig(_config);
                 await SysProxyHandler.UpdateSysProxy(_config, true);

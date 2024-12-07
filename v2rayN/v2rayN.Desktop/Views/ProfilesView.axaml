@@ -56,28 +56,23 @@
                             Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
-                <SplitButton
+
+                <Button
                     x:Name="btnAutofitColumnWidth"
-                    Width="54"
+                    Width="30"
                     Height="30"
-                    Margin="20,0"
-                    Padding="2"
-                    Classes="Tertiary"
-                    Theme="{DynamicResource BorderlessSplitButton}"
+                    Margin="4,0"
+                    Classes="Success"
+                    Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <SplitButton.Content>
+                    <Button.Content>
                         <PathIcon
                             Width="24"
                             Height="24"
                             Data="{StaticResource building_fit}"
                             Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
-                    </SplitButton.Content>
-                    <SplitButton.Flyout>
-                        <MenuFlyout>
-                            <MenuItem Name="menuStorageUI" Header="{x:Static resx:ResUI.menuStorageUI}" />
-                        </MenuFlyout>
-                    </SplitButton.Flyout>
-                </SplitButton>
+                    </Button.Content>
+                </Button>
 
                 <TextBox
                     x:Name="txtServerFilter"

@@ -6,6 +6,7 @@
         SendMsgView,
         SendSnackMsg,
         RefreshProfiles,
-        StopSpeedtest
+        StopSpeedtest,
+        AppExit
     }
 }

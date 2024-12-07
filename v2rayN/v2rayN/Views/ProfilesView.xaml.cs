@@ -1,6 +1,7 @@
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using Splat;
+using System;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,7 +25,6 @@ namespace v2rayN.Views
 
             _config = AppHandler.Instance.Config;
 
-            Application.Current.Exit += Current_Exit;
             btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
             txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;
             lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
@@ -90,14 +90,10 @@ namespace v2rayN.Views
 
             RestoreUI();
             ViewModel?.RefreshServers();
+            MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
         }
 
         #region Event
-
-        private void Current_Exit(object sender, ExitEventArgs e)
-        {
-            StorageUI();
-        }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
@@ -356,7 +352,7 @@ namespace v2rayN.Views
             }
         }
 
-        private void StorageUI()
+        private void StorageUI(string? n = null)
         {
             List<ColumnItem> lvColumnItem = new();
             for (int k = 0; k < lstProfiles.Columns.Count; k++)
@@ -370,7 +366,6 @@ namespace v2rayN.Views
                 });
             }
             _config.UiItem.MainColumnItem = lvColumnItem;
-            ConfigHandler.SaveConfig(_config);
         }
 
         #endregion UI

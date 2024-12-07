@@ -26,7 +26,6 @@ namespace v2rayN.Views
             _config = AppHandler.Instance.Config;
             ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
-            Application.Current.Exit += Current_Exit;
             App.Current.SessionEnding += Current_SessionEnding;
             this.Closing += MainWindow_Closing;
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
@@ -142,6 +141,7 @@ namespace v2rayN.Views
             RestoreUI();
             AddHelpMenuItem();
             WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
         }
 
         #region Event
@@ -263,11 +263,6 @@ namespace v2rayN.Views
         {
             e.Cancel = true;
             ShowHideWindow(false);
-        }
-
-        private void Current_Exit(object sender, ExitEventArgs e)
-        {
-            StorageUI();
         }
 
         private async void Current_SessionEnding(object sender, SessionEndingCancelEventArgs e)
@@ -402,7 +397,7 @@ namespace v2rayN.Views
             }
         }
 
-        private void StorageUI()
+        private void StorageUI(string? n = null)
         {
             _config.UiItem.MainWidth = Utils.ToInt(this.Width);
             _config.UiItem.MainHeight = Utils.ToInt(this.Height);
