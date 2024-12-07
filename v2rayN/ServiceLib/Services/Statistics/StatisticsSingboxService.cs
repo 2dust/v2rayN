@@ -10,7 +10,7 @@ namespace ServiceLib.Services.Statistics
         private ClientWebSocket? webSocket;
         private Action<ServerSpeedItem>? _updateFunc;
         private string Url => $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
-        
+
         public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;

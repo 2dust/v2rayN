@@ -409,7 +409,9 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         await GenInbounds(singboxConfig);
                         await GenExperimental(singboxConfig);
-                        JsonUtils.ToFile(singboxConfig, fileName, false);
+
+                        var content = JsonUtils.Serialize(singboxConfig, true);
+                        await File.WriteAllTextAsync(fileName, content);
                     }
                 }
                 else

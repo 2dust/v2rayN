@@ -459,7 +459,7 @@ namespace ServiceLib.ViewModels
                 if (_config.Inbound.First().NewPort4LAN)
                 {
                     StringBuilder sb2 = new();
-                    sb2.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");                    
+                    sb2.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");
                     InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
                 }
                 else
