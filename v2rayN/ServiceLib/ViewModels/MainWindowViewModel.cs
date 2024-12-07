@@ -282,16 +282,16 @@ namespace ServiceLib.ViewModels
         {
             try
             {
-                Logging.SaveLog("MyAppExit Begin");
-                await SysProxyHandler.UpdateSysProxy(_config, true);
+                Logging.SaveLog("MyAppExitAsync Begin");
 
                 await ConfigHandler.SaveConfig(_config);
+                await SysProxyHandler.UpdateSysProxy(_config, true);
                 await ProfileExHandler.Instance.SaveTo();
                 await StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
                 await CoreHandler.Instance.CoreStop();
 
-                Logging.SaveLog("MyAppExit End");
+                Logging.SaveLog("MyAppExitAsync End");
             }
             catch { }
             finally

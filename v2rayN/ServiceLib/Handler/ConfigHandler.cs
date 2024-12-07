@@ -9,7 +9,6 @@ namespace ServiceLib.Handler
     public class ConfigHandler
     {
         private static readonly string _configRes = Global.ConfigFileName;
-        private static readonly object _objLock = new();
 
         #region ConfigHandler
 
@@ -67,7 +66,6 @@ namespace ServiceLib.Handler
             }
 
             config.RoutingBasicItem ??= new();
-
             if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
                 config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();//"IPIfNonMatch";
@@ -120,15 +118,6 @@ namespace ServiceLib.Handler
             }
 
             config.ConstItem ??= new ConstItem();
-            if (Utils.IsNotEmpty(config.ConstItem.DefIEProxyExceptions))
-            {
-                config.SystemProxyItem.SystemProxyExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
-                config.ConstItem.DefIEProxyExceptions = string.Empty;
-            }
-            if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
-            {
-                config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
-            }
 
             config.SpeedTestItem ??= new();
             if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -167,6 +156,16 @@ namespace ServiceLib.Handler
             config.WebDavItem ??= new();
             config.CheckUpdateItem ??= new();
 
+            if (Utils.IsNotEmpty(config.ConstItem.DefIEProxyExceptions))
+            {
+                config.SystemProxyItem.SystemProxyExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
+                config.ConstItem.DefIEProxyExceptions = string.Empty;
+            }
+            if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
+            {
+                config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
+            }
+
             return config;
         }
 
@@ -177,30 +176,26 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> SaveConfig(Config config)
         {
-            lock (_objLock)
+            try
             {
-                try
-                {
-                    //save temp file
-                    var resPath = Utils.GetConfigPath(_configRes);
-                    var tempPath = $"{resPath}_temp";
-                    if (JsonUtils.ToFile(config, tempPath) != 0)
-                    {
-                        return -1;
-                    }
+                //save temp file
+                var resPath = Utils.GetConfigPath(_configRes);
+                var tempPath = $"{resPath}_temp";
 
-                    if (File.Exists(resPath))
-                    {
-                        File.Delete(resPath);
-                    }
-                    //rename
-                    File.Move(tempPath, resPath);
-                }
-                catch (Exception ex)
+                var content = JsonUtils.Serialize(config, true, true);
+                if (content.IsNullOrEmpty())
                 {
-                    Logging.SaveLog("ToJsonFile", ex);
                     return -1;
                 }
+                await File.WriteAllTextAsync(tempPath, content);
+
+                //rename
+                File.Move(tempPath, resPath, true);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("ToJsonFile", ex);
+                return -1;
             }
 
             return 0;

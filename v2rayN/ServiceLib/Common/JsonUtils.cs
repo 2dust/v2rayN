@@ -70,8 +70,9 @@ namespace ServiceLib.Common
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="indented"></param>
+        /// <param name="nullValue"></param>
         /// <returns></returns>
-        public static string Serialize(object? obj, bool indented = true)
+        public static string Serialize(object? obj, bool indented = true, bool nullValue = false)
         {
             var result = string.Empty;
             try
@@ -82,8 +83,8 @@ namespace ServiceLib.Common
                 }
                 var options = new JsonSerializerOptions
                 {
-                    WriteIndented = indented ? true : false,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    WriteIndented = indented,
+                    DefaultIgnoreCondition = nullValue ? JsonIgnoreCondition.Never : JsonIgnoreCondition.WhenWritingNull
                 };
                 result = JsonSerializer.Serialize(obj, options);
             }
@@ -100,38 +101,5 @@ namespace ServiceLib.Common
         /// <param name="obj"></param>
         /// <returns></returns>
         public static JsonNode? SerializeToNode(object? obj) => JsonSerializer.SerializeToNode(obj);
-
-        /// <summary>
-        /// Save as json file
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="filePath"></param>
-        /// <param name="nullValue"></param>
-        /// <returns></returns>
-        public static int ToFile(object? obj, string? filePath, bool nullValue = true)
-        {
-            if (filePath is null)
-            {
-                return -1;
-            }
-            try
-            {
-                using var file = File.Create(filePath);
-
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    DefaultIgnoreCondition = nullValue ? JsonIgnoreCondition.Never : JsonIgnoreCondition.WhenWritingNull
-                };
-
-                JsonSerializer.Serialize(file, obj, options);
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-                return -1;
-            }
-        }
     }
 }
