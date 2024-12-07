@@ -152,7 +152,7 @@ namespace v2rayN.Desktop.Views
                 menuGlobalHotkeySetting.IsVisible = false;
             }
             menuAddServerViaScan.IsVisible = false;
-            
+
             RestoreUI();
             AddHelpMenuItem();
             //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);

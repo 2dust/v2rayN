@@ -51,6 +51,7 @@ namespace v2rayN.Views
         {
             AutofitColumnWidth();
         }
+
         private void AutofitColumnWidth()
         {
             foreach (var it in lstConnections.Columns)
