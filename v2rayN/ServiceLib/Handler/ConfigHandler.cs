@@ -766,69 +766,66 @@ namespace ServiceLib.Handler
                               }).ToList();
 
             Enum.TryParse(colName, true, out EServerColName name);
-            var propertyName = string.Empty;
-            switch (name)
-            {
-                case EServerColName.ConfigType:
-                case EServerColName.Remarks:
-                case EServerColName.Address:
-                case EServerColName.Port:
-                case EServerColName.Network:
-                case EServerColName.StreamSecurity:
-                    propertyName = name.ToString();
-                    break;
-
-                case EServerColName.DelayVal:
-                    propertyName = "Delay";
-                    break;
-
-                case EServerColName.SpeedVal:
-                    propertyName = "Speed";
-                    break;
-
-                case EServerColName.SubRemarks:
-                    propertyName = "Subid";
-                    break;
-
-                default:
-                    return -1;
-            }
-
-            var items = lstProfile.AsQueryable();
 
             if (asc)
             {
-                lstProfile = items.OrderBy(propertyName).ToList();
+                lstProfile = name switch
+                {
+                    EServerColName.ConfigType => lstProfile.OrderBy(t => t.ConfigType).ToList(),
+                    EServerColName.Remarks => lstProfile.OrderBy(t => t.Remarks).ToList(),
+                    EServerColName.Address => lstProfile.OrderBy(t => t.Address).ToList(),
+                    EServerColName.Port => lstProfile.OrderBy(t => t.Port).ToList(),
+                    EServerColName.Network => lstProfile.OrderBy(t => t.Network).ToList(),
+                    EServerColName.StreamSecurity => lstProfile.OrderBy(t => t.StreamSecurity).ToList(),
+                    EServerColName.DelayVal => lstProfile.OrderBy(t => t.Delay).ToList(),
+                    EServerColName.SpeedVal => lstProfile.OrderBy(t => t.Speed).ToList(),
+                    EServerColName.SubRemarks => lstProfile.OrderBy(t => t.Subid).ToList(),
+                    _ => lstProfile
+                };
             }
             else
             {
-                lstProfile = items.OrderByDescending(propertyName).ToList();
+                lstProfile = name switch
+                {
+                    EServerColName.ConfigType => lstProfile.OrderByDescending(t => t.ConfigType).ToList(),
+                    EServerColName.Remarks => lstProfile.OrderByDescending(t => t.Remarks).ToList(),
+                    EServerColName.Address => lstProfile.OrderByDescending(t => t.Address).ToList(),
+                    EServerColName.Port => lstProfile.OrderByDescending(t => t.Port).ToList(),
+                    EServerColName.Network => lstProfile.OrderByDescending(t => t.Network).ToList(),
+                    EServerColName.StreamSecurity => lstProfile.OrderByDescending(t => t.StreamSecurity).ToList(),
+                    EServerColName.DelayVal => lstProfile.OrderByDescending(t => t.Delay).ToList(),
+                    EServerColName.SpeedVal => lstProfile.OrderByDescending(t => t.Speed).ToList(),
+                    EServerColName.SubRemarks => lstProfile.OrderByDescending(t => t.Subid).ToList(),
+                    _ => lstProfile
+                };
             }
-            for (int i = 0; i < lstProfile.Count; i++)
+
+            for (var i = 0; i < lstProfile.Count; i++)
             {
                 ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
             }
-            if (name == EServerColName.DelayVal)
+            switch (name)
             {
-                var maxSort = lstProfile.Max(t => t.Sort) + 10;
-                foreach (var item in lstProfile)
-                {
-                    if (item.Delay <= 0)
+                case EServerColName.DelayVal:
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        var maxSort = lstProfile.Max(t => t.Sort) + 10;
+                        foreach (var item in lstProfile.Where(item => item.Delay <= 0))
+                        {
+                            ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        }
+
+                        break;
                     }
-                }
-            }
-            if (name == EServerColName.SpeedVal)
-            {
-                var maxSort = lstProfile.Max(t => t.Sort) + 10;
-                foreach (var item in lstProfile)
-                {
-                    if (item.Speed <= 0)
+                case EServerColName.SpeedVal:
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        var maxSort = lstProfile.Max(t => t.Sort) + 10;
+                        foreach (var item in lstProfile.Where(item => item.Speed <= 0))
+                        {
+                            ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        }
+
+                        break;
                     }
-                }
             }
 
             return 0;

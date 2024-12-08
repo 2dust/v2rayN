@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using System.Reflection;
 
 namespace v2rayN.Desktop.Common
 {
@@ -41,7 +40,7 @@ namespace v2rayN.Desktop.Common
         public static WindowIcon GetAppIcon(ESysProxyType sysProxyType)
         {
             var index = (int)sysProxyType + 1;
-            var uri = new Uri($"avares://{Assembly.GetExecutingAssembly().GetName().Name}/Assets/NotifyIcon{index}.ico");
+            var uri = new Uri(Path.Combine(Global.AvaAssets, $"NotifyIcon{index}.ico"));
             using var bitmap = new Bitmap(AssetLoader.Open(uri));
             return new(bitmap);
         }

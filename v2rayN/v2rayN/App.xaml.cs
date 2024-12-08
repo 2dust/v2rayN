@@ -14,7 +14,6 @@ namespace v2rayN
 
         public App()
         {
-            // Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;

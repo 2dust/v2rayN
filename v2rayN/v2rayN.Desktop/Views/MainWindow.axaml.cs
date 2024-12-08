@@ -156,6 +156,7 @@ namespace v2rayN.Desktop.Views
             RestoreUI();
             AddHelpMenuItem();
             //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
         }
 
         #region Event
@@ -441,7 +442,7 @@ namespace v2rayN.Desktop.Views
             }
         }
 
-        private void StorageUI()
+        private void StorageUI(string? n = null)
         {
             _config.UiItem.MainWidth = Utils.ToInt(this.Width);
             _config.UiItem.MainHeight = Utils.ToInt(this.Height);
@@ -456,7 +457,6 @@ namespace v2rayN.Desktop.Views
                 _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
                 _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
             }
-            ConfigHandler.SaveConfig(_config);
         }
 
         private void AddHelpMenuItem()
