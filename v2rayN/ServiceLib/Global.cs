@@ -78,6 +78,7 @@
         public const string SpeedUnit = "";
         public const int MinFontSize = 10;
         public const string RebootAs = "rebootas";
+        public const string AvaAssets = "avares://v2rayN/Assets/";
 
         public static readonly List<string> IEProxyProtocols = new() {
                         "{ip}:{http_port}",
