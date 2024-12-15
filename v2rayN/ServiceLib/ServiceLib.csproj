@@ -18,7 +18,7 @@
 		<PackageReference Include="QRCoder" Version="1.6.0" />
 		<PackageReference Include="CliWrap" Version="3.7.0" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
-		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.20" />
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" />
 
 	</ItemGroup>
