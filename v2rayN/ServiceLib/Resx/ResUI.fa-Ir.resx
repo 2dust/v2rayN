@@ -1388,6 +1388,6 @@
     <value>تعداد در هر زمان برای دسته خودکار در طول تست سرعت (حداکثر 1000)</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+    <value>استثنا:از سرور پروکسی برای آدرس ها، با کاما (،) استفاده نکنید</value>
   </data>
 </root>
