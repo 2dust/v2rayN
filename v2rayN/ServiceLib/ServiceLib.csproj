@@ -16,9 +16,9 @@
 		<PackageReference Include="WebDav.Client" Version="2.8.0" />
 		<PackageReference Include="YamlDotNet" Version="16.2.1" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
-		<PackageReference Include="CliWrap" Version="3.6.7" /> 
+		<PackageReference Include="CliWrap" Version="3.7.0" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
-		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.20" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" />
 
 	</ItemGroup>

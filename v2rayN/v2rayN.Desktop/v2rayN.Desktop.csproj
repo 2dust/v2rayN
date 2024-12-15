@@ -28,8 +28,8 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.2" />
         <PackageReference Include="DialogHost.Avalonia" Version="0.8.1" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />		
-        <PackageReference Include="Semi.Avalonia" Version="11.2.1.1" />
-        <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.1" />
+        <PackageReference Include="Semi.Avalonia" Version="11.2.1.2" />
+        <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.2" />
         <PackageReference Include="ReactiveUI" Version="20.1.63" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 	</ItemGroup>
