@@ -28,8 +28,6 @@
     <EmbeddedResource Include="Sample\clash_tun_yaml" />
     <EmbeddedResource Include="Sample\custom_routing_black" />
     <EmbeddedResource Include="Sample\custom_routing_global" />
-    <EmbeddedResource Include="Sample\custom_routing_locked" />
-    <EmbeddedResource Include="Sample\custom_routing_rules" />
     <EmbeddedResource Include="Sample\custom_routing_white" />
     <EmbeddedResource Include="Sample\dns_singbox_normal" />
     <EmbeddedResource Include="Sample\dns_v2ray_normal" />
