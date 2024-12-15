@@ -99,10 +99,5 @@
     "domain": [
       "geosite:cn"
     ]
-  },
-  {
-    "remarks": "最终代理",
-    "port": "0-65535",
-    "outboundTag": "proxy"
   }
 ]
