@@ -20,7 +20,7 @@ namespace v2rayN.Views
             _config.GlobalHotkeys ??= new List<KeyEventItem>();
 
             btnReset.Click += btnReset_Click;
-            btnSave.Click += btnSave_Click;
+            btnSave.Click += btnSave_ClickAsync;
 
             txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
             txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
@@ -99,11 +99,11 @@ namespace v2rayN.Views
             }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnSave_ClickAsync(object sender, RoutedEventArgs e)
         {
             _config.GlobalHotkeys = _TextBoxKeyEventItem.Values.ToList();
 
-            if (ConfigHandler.SaveConfig(_config).Result == 0)
+            if (await ConfigHandler.SaveConfig(_config) == 0)
             {
                 HotkeyHandler.Instance.ReLoad();
                 this.DialogResult = true;
