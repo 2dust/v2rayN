@@ -13,7 +13,7 @@ Check [Release files introduction](https://github.com/2dust/v2rayN/wiki/Release-
 ### Windows
 - Run `v2rayN.exe`
 ### Linux
-- `chmod +x v2rayN` Run `./v2rayN`
+- `chmod +x v2rayN` Run `./v2rayN` under user permissions
 ```
 Debian 9+
 Ubuntu 16.04+
