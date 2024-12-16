@@ -9,7 +9,6 @@ namespace ServiceLib.ViewModels
     {
         private ConcurrentQueue<string> _queueMsg = new();
         private int _numMaxMsg = 500;
-        private string _lastMsgFilter = string.Empty;
         private bool _lastMsgFilterNotAvailable;
         private bool _blLockShow = false;
 
@@ -28,7 +27,7 @@ namespace ServiceLib.ViewModels
 
             this.WhenAnyValue(
                x => x.MsgFilter)
-                   .Subscribe(c => _config.MsgUIItem.MainMsgFilter = MsgFilter);
+                   .Subscribe(c => DoMsgFilter());
 
             this.WhenAnyValue(
               x => x.AutoRefresh,
@@ -77,8 +76,7 @@ namespace ServiceLib.ViewModels
         private async Task EnqueueQueueMsg(string msg)
         {
             //filter msg
-            if (MsgFilter != _lastMsgFilter) _lastMsgFilterNotAvailable = false;
-            if (Utils.IsNotEmpty(MsgFilter) && !_lastMsgFilterNotAvailable)
+            if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
             {
                 try
                 {
@@ -87,12 +85,12 @@ namespace ServiceLib.ViewModels
                         return;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _queueMsg.Enqueue(ex.Message);
                     _lastMsgFilterNotAvailable = true;
                 }
             }
-            _lastMsgFilter = MsgFilter;
 
             //Enqueue
             if (_queueMsg.Count > _numMaxMsg)
@@ -112,6 +110,12 @@ namespace ServiceLib.ViewModels
         public void ClearMsg()
         {
             _queueMsg.Clear();
+        }
+
+        private void DoMsgFilter()
+        {
+            _config.MsgUIItem.MainMsgFilter = MsgFilter;
+            _lastMsgFilterNotAvailable = false;
         }
     }
 }
