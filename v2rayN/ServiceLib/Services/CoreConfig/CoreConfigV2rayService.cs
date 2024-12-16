@@ -359,7 +359,7 @@ namespace ServiceLib.Services.CoreConfig
 
         #region private gen function
 
-        public async Task<int> GenLog(V2rayConfig v2rayConfig)
+        private async Task<int> GenLog(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -384,7 +384,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenInbounds(V2rayConfig v2rayConfig)
+        private async Task<int> GenInbounds(V2rayConfig v2rayConfig)
         {
             try
             {
@@ -481,7 +481,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenRoutingUserRule(RulesItem4Ray? rule, V2rayConfig v2rayConfig)
+        private async Task<int> GenRoutingUserRule(RulesItem4Ray? rule, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -559,7 +559,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
+        private async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
         {
             try
             {
@@ -754,7 +754,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        private async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
         {
             try
             {
@@ -778,14 +778,15 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+        private async Task<int> GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
         {
             try
             {
                 streamSettings.network = node.GetNetwork();
-                string host = node.RequestHost.TrimEx();
-                string sni = node.Sni;
-                string useragent = "";
+                var host = node.RequestHost.TrimEx();
+                var path = node.Path.TrimEx();
+                var sni = node.Sni.TrimEx();
+                var useragent = "";
                 if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
                 {
                     try
@@ -858,9 +859,9 @@ namespace ServiceLib.Services.CoreConfig
                         {
                             type = node.HeaderType
                         };
-                        if (Utils.IsNotEmpty(node.Path))
+                        if (Utils.IsNotEmpty(path))
                         {
-                            kcpSettings.seed = node.Path;
+                            kcpSettings.seed = path;
                         }
                         streamSettings.kcpSettings = kcpSettings;
                         break;
@@ -868,9 +869,10 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.ws):
                         WsSettings4Ray wsSettings = new();
                         wsSettings.headers = new Headers4Ray();
-                        string path = node.Path;
+                    
                         if (Utils.IsNotEmpty(host))
                         {
+                            wsSettings.host = host;
                             wsSettings.headers.Host = host;
                         }
                         if (Utils.IsNotEmpty(path))
@@ -888,9 +890,9 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.httpupgrade):
                         HttpupgradeSettings4Ray httpupgradeSettings = new();
 
-                        if (Utils.IsNotEmpty(node.Path))
+                        if (Utils.IsNotEmpty(path))
                         {
-                            httpupgradeSettings.path = node.Path;
+                            httpupgradeSettings.path = path;
                         }
                         if (Utils.IsNotEmpty(host))
                         {
@@ -909,9 +911,9 @@ namespace ServiceLib.Services.CoreConfig
                             scMinPostsIntervalMs = "30-50"
                         };
 
-                        if (Utils.IsNotEmpty(node.Path))
+                        if (Utils.IsNotEmpty(path))
                         {
-                            xhttpSettings.path = node.Path;
+                            xhttpSettings.path = path;
                         }
                         if (Utils.IsNotEmpty(host))
                         {
@@ -937,7 +939,7 @@ namespace ServiceLib.Services.CoreConfig
                         {
                             httpSettings.host = Utils.String2List(host);
                         }
-                        httpSettings.path = node.Path;
+                        httpSettings.path = path;
 
                         streamSettings.httpSettings = httpSettings;
 
@@ -947,7 +949,7 @@ namespace ServiceLib.Services.CoreConfig
                         QuicSettings4Ray quicsettings = new()
                         {
                             security = host,
-                            key = node.Path,
+                            key = path,
                             header = new Header4Ray
                             {
                                 type = node.HeaderType
@@ -971,7 +973,7 @@ namespace ServiceLib.Services.CoreConfig
                         GrpcSettings4Ray grpcSettings = new()
                         {
                             authority = Utils.IsNullOrEmpty(host) ? null : host,
-                            serviceName = node.Path,
+                            serviceName = path,
                             multiMode = node.HeaderType == Global.GrpcMultiMode,
                             idle_timeout = _config.GrpcItem.IdleTimeout,
                             health_check_timeout = _config.GrpcItem.HealthCheckTimeout,
@@ -1001,9 +1003,9 @@ namespace ServiceLib.Services.CoreConfig
                             request = request.Replace("$requestUserAgent$", $"{useragent.AppendQuotes()}");
                             //Path
                             string pathHttp = @"/";
-                            if (Utils.IsNotEmpty(node.Path))
+                            if (Utils.IsNotEmpty(path))
                             {
-                                string[] arrPath = node.Path.Split(',');
+                                string[] arrPath = path.Split(',');
                                 pathHttp = string.Join(",".AppendQuotes(), arrPath);
                             }
                             request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
@@ -1021,7 +1023,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
+        private async Task<int> GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
         {
             try
             {
@@ -1084,7 +1086,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
+        private async Task<int> GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
         {
             if (node == null)
             { return 0; }
@@ -1104,7 +1106,7 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        public async Task<int> GenStatistic(V2rayConfig v2rayConfig)
+        private async Task<int> GenStatistic(V2rayConfig v2rayConfig)
         {
             if (_config.GuiItem.EnableStatistics)
             {
