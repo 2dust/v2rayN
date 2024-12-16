@@ -27,7 +27,7 @@
                 </StackPanel>
 
                 <StackPanel
-                    Width="240"
+                    Width="120"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
