@@ -700,8 +700,7 @@ namespace ServiceLib.Services.CoreConfig
 
                             await GenOutboundMux(node, outbound, _config.CoreBasicItem.MuxEnabled);
 
-                            if (node.StreamSecurity == Global.StreamSecurityReality
-                                || node.StreamSecurity == Global.StreamSecurity)
+                            if (node.StreamSecurity == Global.StreamSecurityReality || node.StreamSecurity == Global.StreamSecurity)
                             {
                                 if (Utils.IsNotEmpty(node.Flow))
                                 {
@@ -745,7 +744,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 outbound.protocol = Global.ProtocolTypes[node.ConfigType];
-                await GenBoundStreamSettings(node, outbound.streamSettings);
+                await GenBoundStreamSettings(node, outbound);
             }
             catch (Exception ex)
             {
@@ -778,10 +777,11 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private async Task<int> GenBoundStreamSettings(ProfileItem node, StreamSettings4Ray streamSettings)
+        private async Task<int> GenBoundStreamSettings(ProfileItem node, Outbounds4Ray outbound)
         {
             try
             {
+                var streamSettings = outbound.streamSettings;
                 streamSettings.network = node.GetNetwork();
                 var host = node.RequestHost.TrimEx();
                 var path = node.Path.TrimEx();
@@ -869,7 +869,7 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.ws):
                         WsSettings4Ray wsSettings = new();
                         wsSettings.headers = new Headers4Ray();
-                    
+
                         if (Utils.IsNotEmpty(host))
                         {
                             wsSettings.host = host;
@@ -904,12 +904,7 @@ namespace ServiceLib.Services.CoreConfig
                     //xhttp
                     case nameof(ETransport.xhttp):
                         streamSettings.network = ETransport.xhttp.ToString();
-                        XhttpSettings4Ray xhttpSettings = new()
-                        {
-                            scMaxEachPostBytes = "500000-1000000",
-                            scMaxConcurrentPosts = "50-100",
-                            scMinPostsIntervalMs = "30-50"
-                        };
+                        XhttpSettings4Ray xhttpSettings = new();
 
                         if (Utils.IsNotEmpty(path))
                         {
@@ -929,6 +924,7 @@ namespace ServiceLib.Services.CoreConfig
                         }
 
                         streamSettings.xhttpSettings = xhttpSettings;
+                        await GenOutboundMux(node, outbound, false);
 
                         break;
                     //h2

@@ -350,20 +350,8 @@ namespace ServiceLib.Models
         public string? path { get; set; }
         public string? host { get; set; }
         public string? mode { get; set; }
-        public object? scMaxEachPostBytes { get; set; }
-        public object? scMaxConcurrentPosts { get; set; }
-        public object? scMinPostsIntervalMs { get; set; }
-        //public Xmux4Ray? xmux { get; set; }
         public object? extra { get; set; }
     }
-
-    //public class Xmux4Ray
-    //{
-    //    public object? maxConcurrency { get; set; }
-    //    public object? maxConnections { get; set; }
-    //    public object? cMaxReuseTimes { get; set; }
-    //    public object? cMaxLifetimeMs { get; set; }
-    //}
 
     public class HttpSettings4Ray
     {
