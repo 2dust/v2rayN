@@ -693,9 +693,16 @@ namespace ServiceLib.Common
             return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
         }
 
-        public static string StartupPath()
-        {
+        public static string StartupPath() {
+          try {
+            string tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "guiConfigs");
+            if (!Directory.Exists(tempPath)) {
+              Directory.CreateDirectory(tempPath);
+            }
             return AppDomain.CurrentDomain.BaseDirectory;
+          } catch (IOException) {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
+          }
         }
 
         public static string GetTempPath(string filename = "")
