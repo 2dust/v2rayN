@@ -69,7 +69,7 @@
             {
                 lstCmd.Add(new CmdItem()
                 {
-                    Cmd = "kwriteconfig5",
+                    Cmd = GetKdeVersion(),
                     Arguments = ["--file", $"{configDir}/kioslaverc", "--group", "Proxy Settings", "--key", "ProxyType", "0"]
                 });
             }
@@ -88,12 +88,13 @@
         private static List<CmdItem> GetSetCmd4Kde(string type, string host, int port, string configDir)
         {
             List<CmdItem> lstCmd = [];
+            var cmd = GetKdeVersion();
 
             if (type.IsNullOrEmpty())
             {
                 lstCmd.Add(new()
                 {
-                    Cmd = "kwriteconfig5",
+                    Cmd = cmd,
                     Arguments = ["--file", $"{configDir}/kioslaverc", "--group", "Proxy Settings", "--key", "ProxyType", "1"]
                 });
             }
@@ -101,7 +102,7 @@
             {
                 lstCmd.Add(new()
                 {
-                    Cmd = "kwriteconfig5",
+                    Cmd = cmd,
                     Arguments = ["--file", $"{configDir}/kioslaverc", "--group", "Proxy Settings", "--key", "NoProxyFor", host]
                 });
             }
@@ -110,7 +111,7 @@
                 var type2 = type.Equals("https") ? "http" : type;
                 lstCmd.Add(new CmdItem()
                 {
-                    Cmd = "kwriteconfig5",
+                    Cmd = cmd,
                     Arguments = ["--file", $"{configDir}/kioslaverc", "--group", "Proxy Settings", "--key", $"{type}Proxy", $"{type2}://{host}:{port}"]
                 });
             }
@@ -171,6 +172,15 @@
             }
 
             return isKde;
+        }
+        private static string GetKdeVersion()
+        {
+            var ver = Environment.GetEnvironmentVariable("KDE_SESSION_VERSION") ?? "0";
+            return ver switch
+            {
+                "6" => "kwriteconfig6",
+                _ => "kwriteconfig5"
+            };
         }
     }
 }
