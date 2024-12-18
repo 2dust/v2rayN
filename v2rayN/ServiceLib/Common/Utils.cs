@@ -529,15 +529,9 @@ namespace ServiceLib.Common
         {
             try
             {
-                if (blFull)
-                {
-                    return
-                        $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
-                }
-                else
-                {
-                    return $"{Global.AppName}/{GetVersionInfo()}";
-                }
+                return blFull
+                    ? $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {StartupPath()}"
+                    : $"{Global.AppName}/{GetVersionInfo()}";
             }
             catch (Exception ex)
             {
@@ -677,6 +671,27 @@ namespace ServiceLib.Common
 
         #region TempPath
 
+        public static bool HasWritePermission()
+        {
+            try
+            {
+                var tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "guiTemps");
+                if (!Directory.Exists(tempPath))
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
+                var fileName = Path.Combine(tempPath, GetGuid());
+                File.Create(fileName).Close();
+                File.Delete(fileName);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static string GetPath(string fileName)
         {
             var startupPath = StartupPath();
@@ -695,6 +710,11 @@ namespace ServiceLib.Common
 
         public static string StartupPath()
         {
+            if (Utils.IsLinux() && Environment.GetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA") == "1")
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
+            }
+
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
@@ -852,6 +872,7 @@ namespace ServiceLib.Common
         public static async Task<string?> SetLinuxChmod(string? fileName)
         {
             if (fileName.IsNullOrEmpty()) return null;
+            //File.SetUnixFileMode(fileName, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
             return await GetCliWrapOutput("/bin/bash", arg);
         }

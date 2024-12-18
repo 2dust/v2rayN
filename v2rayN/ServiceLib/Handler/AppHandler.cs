@@ -46,6 +46,11 @@
 
         public bool InitApp()
         {
+            if (Utils.IsLinux() && Utils.HasWritePermission() == false)
+            {
+                Environment.SetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA", "1", EnvironmentVariableTarget.Process);
+            }
+
             Logging.Setup();
             var config = ConfigHandler.LoadConfig();
             if (config == null)
