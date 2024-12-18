@@ -684,7 +684,7 @@ namespace ServiceLib.Common
                 File.Create(fileName).Close();
                 File.Delete(fileName);
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception)
             {
                 return false;
             }
