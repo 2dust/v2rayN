@@ -76,7 +76,7 @@
         public const int MaxPort = 65536;
         public const string DelayUnit = "";
         public const string SpeedUnit = "";
-        public const int MinFontSize = 10;
+        public const int MinFontSize = 8;
         public const string RebootAs = "rebootas";
         public const string AvaAssets = "avares://v2rayN/Assets/";
 
