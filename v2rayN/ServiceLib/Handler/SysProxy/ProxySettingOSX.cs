@@ -52,7 +52,7 @@
                     lstCmd.Add(new CmdItem()
                     {
                         Cmd = "networksetup",
-                        Arguments = [$"-{type}", interf, host, (type.Contains("socks") ? (port - 1) : port).ToString()]
+                        Arguments = [$"-{type}", interf, host, port.ToString()]
                     });
                 }
                 if (exceptions.IsNotEmpty())
