@@ -8,7 +8,7 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSetting}"
     Width="1000"
-    Height="700"
+    Height="600"
     x:DataType="vms:OptionSettingViewModel"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"

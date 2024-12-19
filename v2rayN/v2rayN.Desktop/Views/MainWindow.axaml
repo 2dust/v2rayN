@@ -10,7 +10,7 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
     Width="900"
-    Height="700"
+    Height="600"
     MinWidth="900"
     x:DataType="vms:MainWindowViewModel"
     Icon="/Assets/NotifyIcon1.ico"
