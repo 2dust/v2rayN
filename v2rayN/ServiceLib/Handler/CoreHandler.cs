@@ -24,7 +24,7 @@ namespace ServiceLib.Handler
             Environment.SetEnvironmentVariable("V2RAY_LOCATION_ASSET", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("XRAY_LOCATION_ASSET", Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
 
-            if (Utils.IsLinux() || Utils.IsOSX())
+            if (Utils.IsNonWindows())
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
                 foreach (var it in coreInfo)
@@ -221,7 +221,7 @@ namespace ServiceLib.Handler
         {
             return _config.TunModeItem.EnableTun
                    && eCoreType == ECoreType.sing_box
-                   && (Utils.IsLinux() || Utils.IsOSX())
+                   && (Utils.IsNonWindows())
                 //&& _config.TunModeItem.LinuxSudoPwd.IsNotEmpty()
                 ;
         }

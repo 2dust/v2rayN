@@ -215,7 +215,7 @@ namespace v2rayN.Desktop.Views
                 {
                     return lstFonts;
                 }
-                else if (Utils.IsLinux() || Utils.IsOSX())
+                else if (Utils.IsNonWindows())
                 {
                     var result = await Utils.GetLinuxFontFamily("zh");
                     if (result.IsNullOrEmpty())

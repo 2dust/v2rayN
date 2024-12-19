@@ -46,7 +46,7 @@
 
         public bool InitApp()
         {
-            if (Utils.IsLinux() && Utils.HasWritePermission() == false)
+            if (Utils.IsNonWindows() && Utils.HasWritePermission() == false)
             {
                 Environment.SetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA", "1", EnvironmentVariableTarget.Process);
             }

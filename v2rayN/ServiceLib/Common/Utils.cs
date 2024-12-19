@@ -710,7 +710,7 @@ namespace ServiceLib.Common
 
         public static string StartupPath()
         {
-            if (Utils.IsLinux() && Environment.GetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA") == "1")
+            if (Utils.IsNonWindows() && Environment.GetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA") == "1")
             {
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
             }
@@ -837,6 +837,8 @@ namespace ServiceLib.Common
         public static bool IsLinux() => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
         public static bool IsOSX() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        public static bool IsNonWindows() => !RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         public static string GetExeName(string name)
         {
