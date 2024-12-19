@@ -16,9 +16,9 @@
         /// </summary>
         private static readonly List<string> LstTypes = ["setwebproxy", "setsecurewebproxy", "setsocksfirewallproxy"];
 
-        public static async Task SetProxy(string host, int port)
+        public static async Task SetProxy(string host, int port, string exceptions)
         {
-            var lstCmd = GetSetCmds(host, port);
+            var lstCmd = GetSetCmds(host, port, exceptions);
             await ExecCmd(lstCmd);
         }
 
@@ -42,7 +42,7 @@
             }
         }
 
-        private static List<CmdItem> GetSetCmds(string host, int port)
+        private static List<CmdItem> GetSetCmds(string host, int port, string exceptions)
         {
             List<CmdItem> lstCmd = [];
             foreach (var interf in LstInterface)
@@ -53,6 +53,16 @@
                     {
                         Cmd = "networksetup",
                         Arguments = [$"-{type}", interf, host, (type.Contains("socks") ? (port - 1) : port).ToString()]
+                    });
+                }
+                if (exceptions.IsNotEmpty())
+                {
+                    List<string> args = [$"-setproxybypassdomains", interf];
+                    args.AddRange(exceptions.Split(','));
+                    lstCmd.Add(new CmdItem()
+                    {
+                        Cmd = "networksetup",
+                        Arguments = args
                     });
                 }
             }

@@ -32,7 +32,7 @@
                         break;
 
                     case ESysProxyType.ForcedChange when Utils.IsOSX():
-                        await ProxySettingOSX.SetProxy(Global.Loopback, port);
+                        await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
                         break;
 
                     case ESysProxyType.ForcedClear when Utils.IsWindows():
