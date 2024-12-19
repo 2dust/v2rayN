@@ -23,7 +23,6 @@
                 </StackPanel>
 
                 <StackPanel
-                    Width="120"
                     Margin="8,0"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
@@ -34,7 +33,6 @@
 
                 <StackPanel
                     x:Name="spEnableTun"
-                    Width="100"
                     Margin="8,0"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"

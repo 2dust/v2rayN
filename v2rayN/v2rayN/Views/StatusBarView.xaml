@@ -27,7 +27,7 @@
                 </StackPanel>
 
                 <StackPanel
-                    Width="120"
+                    Width="Auto"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
@@ -38,7 +38,7 @@
 
                 <StackPanel
                     x:Name="spEnableTun"
-                    Width="auto"
+                    Width="Auto"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"
@@ -46,6 +46,7 @@
                     <TextBlock
                         Margin="{StaticResource MarginLeftRight8}"
                         VerticalAlignment="Center"
+                        Style="{StaticResource StatusbarItem}"
                         Text="{x:Static resx:ResUI.TbEnableTunAs}" />
                     <ToggleButton
                         x:Name="togEnableTun"
