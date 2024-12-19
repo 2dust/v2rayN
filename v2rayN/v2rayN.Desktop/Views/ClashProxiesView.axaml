@@ -105,7 +105,7 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="0"
+                            Margin="-6"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>
@@ -143,13 +143,12 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="0"
+                            Margin="-6"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>
                                 <Border
                                     Width="5"
-                                    Height="30"
                                     Margin="0,1"
                                     Background="YellowGreen"
                                     CornerRadius="4"

@@ -1,7 +1,6 @@
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using Splat;
-using System;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -342,10 +341,7 @@ namespace v2rayN.Views
                         }
                         if (item.Name.ToLower().StartsWith("to"))
                         {
-                            if (!_config.GuiItem.EnableStatistics)
-                            {
-                                item2.Visibility = Visibility.Hidden;
-                            }
+                            item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
                         }
                     }
                 }

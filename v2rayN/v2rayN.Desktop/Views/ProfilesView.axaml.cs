@@ -323,7 +323,7 @@ namespace v2rayN.Desktop.Views
                 ViewModel?.RefreshServers();
             }
         }
-         
+
         //#endregion Event
 
         //#region UI
@@ -353,10 +353,7 @@ namespace v2rayN.Desktop.Views
                         }
                         if (item.Name.ToLower().StartsWith("to"))
                         {
-                            if (!_config.GuiItem.EnableStatistics)
-                            {
-                                item2.IsVisible = false;
-                            }
+                            item2.IsVisible = _config.GuiItem.EnableStatistics;
                         }
                     }
                 }
