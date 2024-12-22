@@ -1391,12 +1391,12 @@
     <value>استثنا:از سرور پروکسی برای آدرس ها، با کاما (،) استفاده نکنید</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
-    <value>Sniffing type</value>
+    <value>نوع Sniffing</value>
   </data>
   <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
-    <value>Enable second mixed port</value>
+    <value>فعال کردن دومین پورت ترکیبی</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks: local port, socks2: second local port, socks3: LAN port</value>
+    <value>socks:پورت محلی، socks2: پورت دوم محلی، socks3: پورت LAN</value>
   </data>
 </root>
