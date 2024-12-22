@@ -223,12 +223,6 @@ namespace v2rayN.Views
             {
                 switch (e.Key)
                 {
-                    case Key.V:
-                        var clipboardData = WindowsUtils.GetClipboardData();
-                        var service = Locator.Current.GetService<MainWindowViewModel>();
-                        if (service != null) _ = service.AddServerViaClipboardAsync(clipboardData);
-                        break;
-
                     case Key.A:
                         menuSelectAll_Click(null, null);
                         break;

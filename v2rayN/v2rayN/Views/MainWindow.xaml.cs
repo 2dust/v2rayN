@@ -278,6 +278,13 @@ namespace v2rayN.Views
             {
                 switch (e.Key)
                 {
+                    case Key.V:
+                        if (Keyboard.FocusedElement is TextBox) return;
+                        var clipboardData = WindowsUtils.GetClipboardData();
+                        var service = Locator.Current.GetService<MainWindowViewModel>();
+                        if (service != null) _ = service.AddServerViaClipboardAsync(clipboardData);
+                        break;
+
                     case Key.S:
                         ScanScreenTaskAsync().ContinueWith(_ => { });
                         break;
