@@ -2600,6 +2600,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 socks: local port, socks2: second local port, socks3: LAN port 的本地化字符串。
+        /// </summary>
+        public static string TbRoutingInboundTagTips {
+            get {
+                return ResourceManager.GetString("TbRoutingInboundTagTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Domain 的本地化字符串。
         /// </summary>
         public static string TbRoutingRuleDomain {
@@ -2911,6 +2920,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsDefUserAgentTips {
             get {
                 return ResourceManager.GetString("TbSettingsDefUserAgentTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sniffing type 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDestOverride {
+            get {
+                return ResourceManager.GetString("TbSettingsDestOverride", resourceCulture);
             }
         }
         
@@ -3302,6 +3320,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable second mixed port 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSecondLocalPortEnabled {
+            get {
+                return ResourceManager.GetString("TbSettingsSecondLocalPortEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set Win10 UWP Loopback 的本地化字符串。
         /// </summary>
         public static string TbSettingsSetUWP {
@@ -3329,7 +3356,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Pac port = +2; Xray API port = +3; mihomo API port = +4; 的本地化字符串。
+        ///   查找类似 Pac port = +3; Xray API port = +4; mihomo API port = +5; 的本地化字符串。
         /// </summary>
         public static string TbSettingsSocksPortTip {
             get {

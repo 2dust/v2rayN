@@ -394,11 +394,17 @@ namespace ServiceLib.Services.CoreConfig
                 var inbound = GetInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
                 v2rayConfig.inbounds.Add(inbound);
 
+                if (_config.Inbound.First().SecondLocalPortEnabled)
+                {
+                    var inbound2 = GetInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
+                    v2rayConfig.inbounds.Add(inbound2);
+                }
+
                 if (_config.Inbound.First().AllowLANConn)
                 {
                     if (_config.Inbound.First().NewPort4LAN)
                     {
-                        var inbound3 = GetInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
+                        var inbound3 = GetInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
                         inbound3.listen = listen;
                         v2rayConfig.inbounds.Add(inbound3);
 

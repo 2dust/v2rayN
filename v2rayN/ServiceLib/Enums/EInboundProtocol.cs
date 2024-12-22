@@ -4,6 +4,7 @@
     {
         socks = 0,
         socks2,
+        socks3,
         pac,
         api,
         api2,

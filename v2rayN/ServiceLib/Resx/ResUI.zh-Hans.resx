@@ -992,7 +992,7 @@
     <value>拷贝字体TTF/TTC文件到目录guiFonts，重启设置</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac端口= +2；Xray API端口= +3；mihomo API端口= +4；</value>
+    <value>Pac端口= +3；Xray API端口= +4；mihomo API端口= +5；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理员权限设置此项，在启动后获得管理员权限</value>
@@ -1386,5 +1386,14 @@
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>例外. 对于下列地址不使用代理配置文件:使用逗号(,)分隔</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>流量探测类型</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>开启第二个本地监听端口</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>socks：本地端口，socks2：第二个本地端口，socks3：局域网端口</value>
   </data>
 </root>

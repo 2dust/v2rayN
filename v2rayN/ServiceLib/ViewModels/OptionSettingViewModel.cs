@@ -9,6 +9,7 @@ namespace ServiceLib.ViewModels
         #region Core
 
         [Reactive] public int localPort { get; set; }
+        [Reactive] public bool SecondLocalPortEnabled { get; set; }
         [Reactive] public bool udpEnabled { get; set; }
         [Reactive] public bool sniffingEnabled { get; set; }
         public IList<string> destOverride { get; set; }
@@ -125,6 +126,7 @@ namespace ServiceLib.ViewModels
 
             var inbound = _config.Inbound.First();
             localPort = inbound.LocalPort;
+            SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
             udpEnabled = inbound.UdpEnabled;
             sniffingEnabled = inbound.SniffingEnabled;
             routeOnly = inbound.RouteOnly;
@@ -288,6 +290,7 @@ namespace ServiceLib.ViewModels
 
             //Core
             _config.Inbound.First().LocalPort = localPort;
+            _config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
             _config.Inbound.First().UdpEnabled = udpEnabled;
             _config.Inbound.First().SniffingEnabled = sniffingEnabled;
             _config.Inbound.First().DestOverride = destOverride?.ToList();

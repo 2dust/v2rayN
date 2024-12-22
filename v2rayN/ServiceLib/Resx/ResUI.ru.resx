@@ -1310,7 +1310,7 @@
     <value>Move up and down</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac port = +2; Xray API port = +3; mihomo API port = +4;</value>
+    <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
     <value>Install the font to the system and restart the settings</value>
@@ -1389,5 +1389,14 @@
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Sniffing type</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>Enable second mixed port</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>socks: local port, socks2: second local port, socks3: LAN port</value>
   </data>
 </root>

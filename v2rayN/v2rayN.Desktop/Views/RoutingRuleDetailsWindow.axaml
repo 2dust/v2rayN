@@ -119,6 +119,13 @@
                 Classes="Margin8"
                 SelectionMode="Multiple"
                 Theme="{DynamicResource PureCardRadioGroupListBox}" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Classes="Margin8"
+                Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
+
 
             <TextBlock
                 Grid.Row="5"

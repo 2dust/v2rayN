@@ -507,11 +507,17 @@ namespace ServiceLib.Services.CoreConfig
                         inbound.domain_strategy = routing.DomainStrategy4Singbox;
                     }
 
+                    if (_config.Inbound.First().SecondLocalPortEnabled)
+                    {
+                        var inbound2 = GetInbound(inbound, EInboundProtocol.socks2, true);
+                        singboxConfig.inbounds.Add(inbound2);
+                    }
+
                     if (_config.Inbound.First().AllowLANConn)
                     {
                         if (_config.Inbound.First().NewPort4LAN)
                         {
-                            var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
+                            var inbound3 = GetInbound(inbound, EInboundProtocol.socks3, true);
                             inbound3.listen = listen;
                             singboxConfig.inbounds.Add(inbound3);
 
