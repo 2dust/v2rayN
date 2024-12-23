@@ -25,13 +25,8 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: v2rayN-macos-64
+        name: v2rayN-osx
         path: |
-          ./v2rayN/v2rayN-macos-64.zip
+          ./v2rayN/v2rayN-osx.zip
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: v2rayN-macos-arm64
-        path: |
-          ./v2rayN/v2rayN-macos-arm64.zip
+     
