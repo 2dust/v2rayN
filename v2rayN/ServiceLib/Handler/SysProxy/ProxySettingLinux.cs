@@ -35,6 +35,16 @@
             List<string> lstType = ["", "http", "https", "socks", "ftp"];
             List<CmdItem> lstCmd = [];
 
+            //GNOME
+            foreach (var type in lstType)
+            {
+                lstCmd.AddRange(GetSetCmd4Gnome(type, host, port));
+            }
+            if (exceptions.IsNotEmpty())
+            {
+                lstCmd.AddRange(GetSetCmd4Gnome("exceptions", exceptions, 0));
+            }
+
             if (isKde)
             {
                 foreach (var type in lstType)
@@ -45,17 +55,13 @@
                 {
                     lstCmd.AddRange(GetSetCmd4Kde("exceptions", exceptions, 0, configDir));
                 }
-            }
-            else
-            {
-                foreach (var type in lstType)
+
+                // Notify system to reload
+                lstCmd.Add(new CmdItem()
                 {
-                    lstCmd.AddRange(GetSetCmd4Gnome(type, host, port));
-                }
-                if (exceptions.IsNotEmpty())
-                {
-                    lstCmd.AddRange(GetSetCmd4Gnome("exceptions", exceptions, 0));
-                }
+                    Cmd = "dbus-send",
+                    Arguments = ["--type=signal", "/KIO/Scheduler", "org.kde.KIO.Scheduler.reparseSlaveConfiguration", "string:''"]
+                });
             }
             return lstCmd;
         }
@@ -65,6 +71,13 @@
             var isKde = IsKde(out var configDir);
             List<CmdItem> lstCmd = [];
 
+            //GNOME
+            lstCmd.Add(new CmdItem()
+            {
+                Cmd = "gsettings",
+                Arguments = ["set", "org.gnome.system.proxy", "mode", "none"]
+            });
+
             if (isKde)
             {
                 lstCmd.Add(new CmdItem()
@@ -72,16 +85,14 @@
                     Cmd = GetKdeVersion(),
                     Arguments = ["--file", $"{configDir}/kioslaverc", "--group", "Proxy Settings", "--key", "ProxyType", "0"]
                 });
-            }
-            else
-            {
+
+                // Notify system to reload
                 lstCmd.Add(new CmdItem()
                 {
-                    Cmd = "gsettings",
-                    Arguments = ["set", "org.gnome.system.proxy", "mode", "none"]
+                    Cmd = "dbus-send",
+                    Arguments = ["--type=signal", "/KIO/Scheduler", "org.kde.KIO.Scheduler.reparseSlaveConfiguration", "string:''"]
                 });
             }
-
             return lstCmd;
         }
 
@@ -161,7 +172,11 @@
         {
             configDir = "/home";
             var desktop = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
-            var isKde = string.Equals(desktop, "KDE", StringComparison.OrdinalIgnoreCase);
+            var desktop2 = Environment.GetEnvironmentVariable("XDG_SESSION_DESKTOP");
+            var isKde = string.Equals(desktop, "KDE", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(desktop, "plasma", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(desktop2, "KDE", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(desktop2, "plasma", StringComparison.OrdinalIgnoreCase);
             if (isKde)
             {
                 var homeDir = Environment.GetEnvironmentVariable("HOME");
@@ -173,6 +188,7 @@
 
             return isKde;
         }
+
         private static string GetKdeVersion()
         {
             var ver = Environment.GetEnvironmentVariable("KDE_SESSION_VERSION") ?? "0";
