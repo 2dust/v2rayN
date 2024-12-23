@@ -1,4 +1,4 @@
-name: release Windows
+name: release Linux
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       matrix:
         configuration: [Release]
 
-    runs-on: windows-latest 
+    runs-on: ubuntu-latest 
 
     steps:
     - name: Checkout
@@ -20,22 +20,13 @@ jobs:
 
     - name: Build
       run:  cd v2rayN && 
-        ./build.ps1
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: v2rayN-windows-64
-        path: |
-          ./v2rayN/v2rayN-windows-64.zip
+        ./build-linux.sh
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: v2rayN-windows-arm64
+        name: v2rayN-linux
         path: |
-          ./v2rayN/v2rayN-windows-arm64.zip
+          ./v2rayN/v2rayN-linux.zip
 
-
-
- 
+     
