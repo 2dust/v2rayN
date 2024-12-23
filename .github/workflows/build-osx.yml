@@ -19,7 +19,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build
-      run:  cd v2rayN && 
+      run: |
+        cd v2rayN 
+        chmod 755 build-osx.sh
         ./build-osx.sh
 
     - name: Upload build artifacts

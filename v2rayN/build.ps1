@@ -3,7 +3,7 @@ param (
 	[ValidateNotNullOrEmpty()]
 	[string]
 	$OutputPathWin64 = './bin/v2rayN/win-x64',
-	$OutputPathWinArm64 = './bin/v2rayN/win-arm64',
+	$OutputPathWinArm64 = './bin/v2rayN/win-arm64'
 )
 
 Write-Host 'Building Windows'
