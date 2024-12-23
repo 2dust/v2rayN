@@ -141,12 +141,7 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <Grid Classes="Margin8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <Grid Classes="Margin8" ColumnDefinitions="*,10,*">
 
                         <TextBox
                             x:Name="txtnormalDNS2"

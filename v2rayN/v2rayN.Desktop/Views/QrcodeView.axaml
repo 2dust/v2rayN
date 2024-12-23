@@ -8,11 +8,7 @@
     d:DesignHeight="480"
     d:DesignWidth="400"
     mc:Ignorable="d">
-    <Grid Margin="30">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid Margin="30" RowDefinitions="Auto,Auto">
 
         <Image
             Name="imgQrcode"

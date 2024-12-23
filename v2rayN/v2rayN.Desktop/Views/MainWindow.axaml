@@ -124,12 +124,10 @@
             <view:StatusBarView DockPanel.Dock="Bottom" />
 
             <Grid>
-                <Grid x:Name="gridMain" IsVisible="False">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+                <Grid
+                    x:Name="gridMain"
+                    ColumnDefinitions="1*,10,1*"
+                    IsVisible="False">
                     <ContentControl x:Name="tabProfiles" Grid.Column="0" />
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
                     <TabControl
@@ -141,12 +139,10 @@
                         <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
-                <Grid x:Name="gridMain1" IsVisible="False">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
+                <Grid
+                    x:Name="gridMain1"
+                    IsVisible="False"
+                    RowDefinitions="1*,10,1*">
                     <ContentControl x:Name="tabProfiles1" Grid.Row="0" />
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                     <TabControl

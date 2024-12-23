@@ -25,17 +25,10 @@
                 VerticalAlignment="Center"
                 Theme="{StaticResource CardBorder}">
 
-                <Grid Classes="Margin8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="200" />
-                    </Grid.ColumnDefinitions>
+                <Grid
+                    Classes="Margin8"
+                    ColumnDefinitions="300,200"
+                    RowDefinitions="Auto,Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
@@ -77,18 +70,10 @@
                 Margin="4"
                 VerticalAlignment="Center"
                 Theme="{StaticResource CardBorder}">
-                <Grid Classes="Margin8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="200" />
-                    </Grid.ColumnDefinitions>
+                <Grid
+                    Classes="Margin8"
+                    ColumnDefinitions="300,200"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             Grid.Row="0"
@@ -111,18 +96,7 @@
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="300" />
-                                            </Grid.ColumnDefinitions>
+                                        <Grid ColumnDefinitions="Auto,300" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="0"

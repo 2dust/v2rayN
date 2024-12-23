@@ -109,7 +109,8 @@ namespace v2rayN.Desktop.ViewModels
                 x.OfType<Menu>(),
                 x.OfType<ContextMenu>(),
                 x.OfType<DataGridRow>(),
-                x.OfType<ListBoxItem>()
+                x.OfType<ListBoxItem>(),
+                x.OfType<HeaderedContentControl>()
             ));
             style.Add(new Setter()
             {
@@ -137,6 +138,7 @@ namespace v2rayN.Desktop.ViewModels
                     x.OfType<ContextMenu>(),
                     x.OfType<DataGridRow>(),
                     x.OfType<ListBoxItem>(),
+                    x.OfType<HeaderedContentControl>(),
                     x.OfType<WindowNotificationManager>()
                 ));
                 style.Add(new Setter()

@@ -46,20 +46,11 @@
                 IsCancel="True" />
         </StackPanel>
 
-        <Grid Classes="Margin8" DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Grid
+            Classes="Margin8"
+            ColumnDefinitions="Auto,Auto,Auto"
+            DockPanel.Dock="Top"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"

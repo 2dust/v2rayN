@@ -53,15 +53,7 @@
                             Margin="-8"
                             VerticalAlignment="Center"
                             Theme="{StaticResource CardBorder}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="3*" />
-                                </Grid.ColumnDefinitions>
+                            <Grid ColumnDefinitions="1*,1*,3*" RowDefinitions="Auto">
                                 <ToggleSwitch
                                     x:Name="togAutoRefresh"
                                     Grid.Column="0"
