@@ -451,21 +451,20 @@ namespace ServiceLib.ViewModels
         public async Task InboundDisplayStatus()
         {
             StringBuilder sb = new();
-            sb.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]");
+            sb.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}");
+            if (_config.Inbound.First().SecondLocalPortEnabled)
+            {
+                sb.Append($",{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}");
+            }
+            sb.Append(']');
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
             if (_config.Inbound.First().AllowLANConn)
             {
-                if (_config.Inbound.First().NewPort4LAN)
-                {
-                    StringBuilder sb2 = new();
-                    sb2.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks3)}]");
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
-                }
-                else
-                {
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb}";
-                }
+                var lan = _config.Inbound.First().NewPort4LAN
+                    ? $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
+                    : $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]";
+                InboundLanDisplay = $"{ResUI.LabLAN}:{lan}";
             }
             else
             {
