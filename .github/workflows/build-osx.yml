@@ -21,14 +21,17 @@ jobs:
     - name: Build
       run: |
         cd v2rayN 
-        chmod 755 build-osx.sh
-        ./build-osx.sh
+        OutputPath='./bin/v2rayN'
+        OutputPath64="${OutputPath}/osx-x64"
+        OutputPathArm64="${OutputPath}/osx-arm64"
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN-osx
         path: |
-          ./v2rayN/v2rayN-osx.zip
+          ./v2rayN/bin/v2rayN
 
      
