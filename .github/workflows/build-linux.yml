@@ -1,6 +1,11 @@
 name: release Linux
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
   push:
     branches: [ "master" ]
   pull_request:
@@ -21,14 +26,40 @@ jobs:
     - name: Build
       run: |
         cd v2rayN 
-        chmod 755 build-linux.sh
-        ./build-linux.sh
+        OutputPath='./bin/v2rayN'
+        OutputPath64="${OutputPath}/linux-x64"
+        OutputPathArm64="${OutputPath}/linux-arm64"
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN-linux
         path: |
-          ./v2rayN/v2rayN-linux.zip
+          ./v2rayN/bin/v2rayN
 
-     
+    - name: Package debian 
+      if: github.event.inputs.release_tag != ''
+      run: |
+        cd v2rayN 
+        chmod 755 package-debian.sh
+        ./package-debian.sh ${{ github.event.inputs.release_tag }} x64
+        ./package-debian.sh ${{ github.event.inputs.release_tag }} arm64
+
+    - name: Upload Package artifacts
+      uses: actions/upload-artifact@v4 
+      if: github.event.inputs.release_tag != ''
+      with:
+        name: v2rayN-linux-Package
+        path: |
+           ${{ github.workspace }}/v2rayN/v2rayN*.deb
+
+    - name: Upload to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN/v2rayN*.deb
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
