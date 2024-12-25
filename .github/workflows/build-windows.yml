@@ -1,0 +1,39 @@
+name: release Windows
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        cd v2rayN 
+        OutputPath='./bin/v2rayN'
+        OutputPath64="${OutputPath}/win-x64"
+        OutputPathArm64="${OutputPath}/win-arm64"
+        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64
+        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPathArm64
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: v2rayN-windows
+        path: |
+          ./v2rayN/bin/v2rayN
+
+
+
+ 
