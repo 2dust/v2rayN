@@ -1,10 +1,21 @@
 name: release Windows
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
+
+env:
+  OutputArch: "windows-64"
+  OutputArchArm: "windows-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/windows-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/windows-arm64"
+  OutputPath64Sc:  "${{ github.workspace }}/v2rayN/Release/windows-64-SelfContained"
 
 jobs:
   build:
@@ -21,19 +32,32 @@ jobs:
     - name: Build
       run: |
         cd v2rayN 
-        OutputPath='./bin/v2rayN'
-        OutputPath64="${OutputPath}/win-x64"
-        OutputPathArm64="${OutputPath}/win-arm64"
         dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64
         dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPathArm64
-        
+        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64Sc
+  
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: v2rayN-windows
         path: |
-          ./v2rayN/bin/v2rayN
-
-
-
- 
+          ${{ github.workspace }}/v2rayN/Release/windows* 
+    
+    # release zip archive
+    - name: Package release zip archive
+      if: github.event.inputs.release_tag != ''
+      run: | 
+        chmod 755 package-release-zip.sh
+        ./package-release-zip.sh $OutputArch $OutputPath64
+        ./package-release-zip.sh "windows-64-With-Core" $OutputPath64
+        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+        ./package-release-zip.sh "windows-64-SelfContained" $OutputPath64Sc
+        ./package-release-zip.sh "windows-64-SelfContained-With-Core" $OutputPath64Sc
+    
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true

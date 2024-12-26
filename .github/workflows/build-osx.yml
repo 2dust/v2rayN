@@ -1,10 +1,20 @@
 name: release macOS
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
+
+env:
+  OutputArch: "macos-64"
+  OutputArchArm: "macos-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/macos-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/macos-arm64"
 
 jobs:
   build:
@@ -21,17 +31,28 @@ jobs:
     - name: Build
       run: |
         cd v2rayN 
-        OutputPath='./bin/v2rayN'
-        OutputPath64="${OutputPath}/osx-x64"
-        OutputPathArm64="${OutputPath}/osx-arm64"
         dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
         dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: v2rayN-osx
+        name: v2rayN-macos
         path: |
-          ./v2rayN/bin/v2rayN
-
-     
+          ${{ github.workspace }}/v2rayN/Release/macos*
+    
+    # release zip archive
+    - name: Package release zip archive
+      if: github.event.inputs.release_tag != ''
+      run: | 
+        chmod 755 package-release-zip.sh
+        ./package-release-zip.sh $OutputArch $OutputPath64
+        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+    
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true

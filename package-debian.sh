@@ -1,16 +1,15 @@
 #!/bin/bash
 
-version="$1"
-arch="$2"
+Arch="$1"
+OutputPath="$2"
+Version="$3"
 
-OutputPath="v2rayN-linux-${arch}"
-mkdir -p "${OutputPath}/DEBIAN"
-mkdir -p "${OutputPath}/opt"
-cp -r "./bin/v2rayN/linux-${arch}" "${OutputPath}/opt"
-mv "${OutputPath}/opt/linux-${arch}" "${OutputPath}/opt/v2rayN"
+PackagePath="v2rayN-Package-${Arch}"
+mkdir -p "${PackagePath}/DEBIAN"
+mkdir -p "${PackagePath}/opt"
+cp -rf $OutputPath "${PackagePath}/opt/v2rayN"
 
-
-if [ $arch = "x64" ]; then
+if [ $Arch = "linux-64" ]; then
     Arch2="amd64" 
 else
     Arch2="arm64"
@@ -18,15 +17,15 @@ fi
 echo $Arch2
 
 # basic
-cat >"${OutputPath}/DEBIAN/control" <<-EOF
+cat >"${PackagePath}/DEBIAN/control" <<-EOF
 Package: v2rayN
-Version: $version
+Version: $Version
 Architecture: $Arch2
 Maintainer: https://github.com/2dust/v2rayN
 Description: A GUI client for Windows and Linux, support Xray core and sing-box-core and others
 EOF
 
-cat >"${OutputPath}/DEBIAN/postinst" <<-EOF
+cat >"${PackagePath}/DEBIAN/postinst" <<-EOF
 if [ ! -s /usr/share/applications/v2rayN.desktop ]; then
     cat >/usr/share/applications/v2rayN.desktop<<-END
 [Desktop Entry]
@@ -43,9 +42,10 @@ fi
 update-desktop-database
 EOF
 
-sudo chmod 0755 "${OutputPath}/DEBIAN/postinst"
-sudo chmod 0755 "${OutputPath}/opt/v2rayN/v2rayN"
+sudo chmod 0755 "${PackagePath}/DEBIAN/postinst"
+sudo chmod 0755 "${PackagePath}/opt/v2rayN/v2rayN"
 
 # desktop && PATH
 
-sudo dpkg-deb -Zxz --build $OutputPath
+sudo dpkg-deb -Zxz --build $PackagePath
+sudo mv "${PackagePath}.deb" "v2rayN-${Arch}.deb"
