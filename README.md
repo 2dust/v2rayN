@@ -1,5 +1,5 @@
 # v2rayN
-A GUI client for Windows and Linux, support [Xray core](https://github.com/XTLS/Xray-core) and [sing-box-core](https://github.com/SagerNet/sing-box/releases) and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
+A GUI client for Windows, Linux and macOS, support [Xray core](https://github.com/XTLS/Xray-core) and [sing-box-core](https://github.com/SagerNet/sing-box/releases) and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
 
 
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/2dust/v2rayN)](https://github.com/2dust/v2rayN/commits/master)
@@ -18,6 +18,11 @@ Check [Release files introduction](https://github.com/2dust/v2rayN/wiki/Release-
 Debian 9+
 Ubuntu 16.04+
 Fedora 30+
+```
+### macOS
+- `chmod +x v2rayN` Run `./v2rayN` under user permissions
+```
+macOS 10.14+
 ```
 
 ## Requirements  
