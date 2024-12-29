@@ -41,18 +41,19 @@ jobs:
         path: |
           ${{ github.workspace }}/v2rayN/Release/macos*
     
-    # release zip archive
-    - name: Package release zip archive
+    # release osx package
+    - name: Package osx 
       if: github.event.inputs.release_tag != ''
-      run: | 
-        chmod 755 package-release-zip.sh
-        ./package-release-zip.sh $OutputArch $OutputPath64
-        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+      run: |
+        brew install create-dmg
+        chmod 755 package-osx.sh
+        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }} 
+        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
     
-    - name: Upload zip archive to release
+    - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
       if: github.event.inputs.release_tag != ''
       with:
-        file: ${{ github.workspace }}/v2rayN*.zip
+        file: ${{ github.workspace }}/v2rayN*.dmg
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
