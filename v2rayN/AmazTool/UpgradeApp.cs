@@ -10,7 +10,7 @@ namespace AmazTool
         {
             Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
 
-            Waiting(9);
+            Waiting(8);
 
             if (!File.Exists(fileName))
             {
@@ -91,7 +91,7 @@ namespace AmazTool
             }
 
             Console.WriteLine(Resx.Resource.Restartv2rayN);
-            Waiting(9);
+            Waiting(3);
             Process process = new()
             {
                 StartInfo = new()
