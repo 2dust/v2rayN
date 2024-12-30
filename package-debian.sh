@@ -8,6 +8,7 @@ PackagePath="v2rayN-Package-${Arch}"
 mkdir -p "${PackagePath}/DEBIAN"
 mkdir -p "${PackagePath}/opt"
 cp -rf $OutputPath "${PackagePath}/opt/v2rayN"
+echo "When this file exists, app will not store configs under this folder" > "${PackagePath}/opt/v2rayN/NotStoreConfigHere.txt"
 
 if [ $Arch = "linux-64" ]; then
     Arch2="amd64" 
@@ -44,6 +45,7 @@ EOF
 
 sudo chmod 0755 "${PackagePath}/DEBIAN/postinst"
 sudo chmod 0755 "${PackagePath}/opt/v2rayN/v2rayN"
+sudo chmod 0755 "${PackagePath}/opt/v2rayN/AmazTool"
 
 # desktop && PATH
 

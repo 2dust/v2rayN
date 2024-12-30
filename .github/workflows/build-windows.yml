@@ -35,6 +35,10 @@ jobs:
         dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64
         dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPathArm64
         dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64Sc
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true  -p:EnableWindowsTargeting=true	-o $OutputPath64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true  -p:EnableWindowsTargeting=true	-o $OutputPathArm64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true  -p:EnableWindowsTargeting=true	-o $OutputPath64Sc
+
   
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

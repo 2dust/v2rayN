@@ -33,6 +33,8 @@ jobs:
         cd v2rayN 
         dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
         dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r linux-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPath64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r linux-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPathArm64
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

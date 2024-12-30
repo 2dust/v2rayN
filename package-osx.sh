@@ -4,14 +4,10 @@ Arch="$1"
 OutputPath="$2"
 Version="$3"
 
-FileName="v2rayN-${Arch}.zip"
-wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/$FileName"
-7z x $FileName
-cp -rf v2rayN-${Arch}/* $OutputPath
-
 PackagePath="v2rayN-Package-${Arch}"
 mkdir -p "$PackagePath/v2rayN.app/Contents/Resources"
 cp -rf "$OutputPath" "$PackagePath/v2rayN.app/Contents/MacOS"
+echo "When this file exists, app will not store configs under this folder" > "$PackagePath/v2rayN.app/Contents/MacOS/NotStoreConfigHere.txt"
 chmod +x "$PackagePath/v2rayN.app/Contents/MacOS/v2rayN"
 
 mkdir -p "$PackagePath/icons.iconset"
@@ -43,7 +39,7 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
   <key>CFBundleIconName</key>
   <string>AppIcon</string>
   <key>CFBundleIdentifier</key>
-  <string>v2rayN.desktop</string>
+  <string>2dust.v2rayN</string>
   <key>CFBundleName</key>
   <string>v2rayN</string>
   <key>CFBundlePackageType</key>
