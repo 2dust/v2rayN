@@ -4,7 +4,7 @@
 	<TargetFramework>net8.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<Version>7.4.2</Version>
+	<Version>7.5.0</Version>
   </PropertyGroup>
  
 	<ItemGroup>
@@ -14,7 +14,7 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="Splat.NLog" Version="15.2.22" />
 		<PackageReference Include="WebDav.Client" Version="2.8.0" />
-		<PackageReference Include="YamlDotNet" Version="16.2.1" />
+		<PackageReference Include="YamlDotNet" Version="16.3.0" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
 		<PackageReference Include="CliWrap" Version="3.7.0" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
