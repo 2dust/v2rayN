@@ -304,7 +304,7 @@ namespace v2rayN.Desktop.Views
 
         private async void MainWindow_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.KeyModifiers == KeyModifiers.Control)
+            if (e.KeyModifiers is KeyModifiers.Control or KeyModifiers.Meta)
             {
                 switch (e.Key)
                 {
