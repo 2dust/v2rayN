@@ -528,17 +528,18 @@ namespace ServiceLib.ViewModels
 
         private async Task OpenTheFileLocation()
         {
+            var path = Utils.StartupPath();
             if (Utils.IsWindows())
             {
-                Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
+                Utils.ProcessStart(path);
             }
             else if (Utils.IsLinux())
             {
-                Utils.ProcessStart("nautilus", Utils.GetConfigPath());
+                Utils.ProcessStart("nautilus", path);
             }
             else if (Utils.IsOSX())
             {
-                Utils.ProcessStart("open", Utils.GetConfigPath());
+                Utils.ProcessStart("open", path);
             }
         }
 
