@@ -593,6 +593,9 @@ namespace ServiceLib.Common
                     return;
                 }
 
+                if (fileName.Contains(' ')) fileName = fileName.AppendQuotes();
+                if (arguments.Contains(' ')) arguments = arguments.AppendQuotes();
+
                 Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
             }
             catch (Exception ex)
