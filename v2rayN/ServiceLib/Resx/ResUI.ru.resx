@@ -1039,6 +1039,9 @@
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>Россия</value>
   </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Иран</value>
+  </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>Используйте Настройки -&gt; Региональные пресеты вместо изменения этого поля</value>
   </data>

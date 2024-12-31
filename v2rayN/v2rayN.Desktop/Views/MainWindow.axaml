@@ -80,6 +80,7 @@
                         <MenuItem Header="{x:Static resx:ResUI.menuRegionalPresets}">
                             <MenuItem x:Name="menuRegionalPresetsDefault" Header="{x:Static resx:ResUI.menuRegionalPresetsDefault}" />
                             <MenuItem x:Name="menuRegionalPresetsRussia" Header="{x:Static resx:ResUI.menuRegionalPresetsRussia}" />
+                            <MenuItem x:Name="menuRegionalPresetsIran" Header="{x:Static resx:ResUI.menuRegionalPresetsIran}" />
                         </MenuItem>
                         <MenuItem x:Name="menuBackupAndRestore" Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />

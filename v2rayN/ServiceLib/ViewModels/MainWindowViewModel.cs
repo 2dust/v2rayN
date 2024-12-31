@@ -50,6 +50,8 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> RegionalPresetRussiaCmd { get; }
 
+        public ReactiveCommand<Unit, Unit> RegionalPresetIranCmd { get; }
+
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
         [Reactive]
@@ -195,6 +197,11 @@ namespace ServiceLib.ViewModels
             RegionalPresetRussiaCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await ApplyRegionalPreset(EPresetType.Russia);
+            });
+
+            RegionalPresetIranCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyRegionalPreset(EPresetType.Iran);
             });
 
             #endregion WhenAnyValue && ReactiveCommand

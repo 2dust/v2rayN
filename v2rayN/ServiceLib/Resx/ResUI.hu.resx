@@ -1342,6 +1342,9 @@
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>Oroszország</value>
   </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Irán</value>
+  </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>A Kínában élő felhasználók figyelmen kívül hagyhatják ezt a tételt</value>
   </data>
