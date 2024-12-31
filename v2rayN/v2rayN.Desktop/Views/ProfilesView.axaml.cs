@@ -187,12 +187,7 @@ namespace v2rayN.Desktop.Views
 
         private void lstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            List<ProfileItemModel> lst = [];
-            foreach (var item in lstProfiles.SelectedItems)
-            {
-                lst.Add((ProfileItemModel)item);
-            }
-            ViewModel.SelectedProfiles = lst;
+            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
         }
 
         private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)

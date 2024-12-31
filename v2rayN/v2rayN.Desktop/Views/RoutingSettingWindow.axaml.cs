@@ -107,12 +107,7 @@ namespace v2rayN.Desktop.Views
 
         private void lstRoutings_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            List<RoutingItemModel> lst = [];
-            foreach (var item in lstRoutings.SelectedItems)
-            {
-                lst.Add((RoutingItemModel)item);
-            }
-            ViewModel.SelectedSources = lst;
+            ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
         }
 
         private void LstRoutings_DoubleTapped(object? sender, TappedEventArgs e)

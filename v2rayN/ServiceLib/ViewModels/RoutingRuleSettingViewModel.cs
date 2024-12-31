@@ -177,12 +177,12 @@ namespace ServiceLib.ViewModels
             }
 
             var lst = new List<RulesItem>();
-            foreach (var it in SelectedSources ?? [SelectedSource])
+            var sources = SelectedSources ?? [SelectedSource];
+            foreach (var it in _rules)
             {
-                var item = _rules.FirstOrDefault(t => t.Id == it?.Id);
-                if (item != null)
+                if (sources.Any(t => t.Id == it?.Id))
                 {
-                    var item2 = JsonUtils.DeepCopy(item); //JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                    var item2 = JsonUtils.DeepCopy(it);
                     item2.Id = null;
                     lst.Add(item2 ?? new());
                 }
