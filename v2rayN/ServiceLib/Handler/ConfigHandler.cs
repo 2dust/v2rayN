@@ -68,7 +68,7 @@ namespace ServiceLib.Handler
             config.RoutingBasicItem ??= new();
             if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
-                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();//"IPIfNonMatch";
+                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();
             }
 
             config.KcpItem ??= new KcpItem
