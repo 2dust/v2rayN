@@ -9,7 +9,7 @@
         /// <summary>
         /// 应用接口类型
         /// </summary>
-        private static readonly List<string> LstInterface = ["Ethernet", "Wi-Fi", "Thunderbolt Bridge"];
+        private static readonly List<string> LstInterface = ["Ethernet", "Wi-Fi", "Thunderbolt Bridge", "USB 10/100/1000 LAN"];
 
         /// <summary>
         /// 代理类型，对应 http,https,socks
