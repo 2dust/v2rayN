@@ -134,7 +134,7 @@ namespace v2rayN.Desktop.Views
                 }
             });
 
-            this.Title = $"{Utils.GetVersion()} - {(AppHandler.Instance.IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            this.Title = $"{Utils.GetVersion()}";
             if (Utils.IsWindows())
             {
                 ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
