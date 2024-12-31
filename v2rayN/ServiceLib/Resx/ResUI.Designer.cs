@@ -1258,6 +1258,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Iran 的本地化字符串。
+        /// </summary>
+        public static string menuRegionalPresetsIran {
+            get {
+                return ResourceManager.GetString("menuRegionalPresetsIran", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Reload 的本地化字符串。
         /// </summary>
         public static string menuReload {
