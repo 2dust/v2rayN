@@ -2,10 +2,6 @@
 {
     public class ProxySettingOSX
     {
-        /*
-         * 仅测试了，MacOS 13.7.1 x86 版本，其他版本有待确认
-         */
-
         /// <summary>
         /// 应用接口类型
         /// </summary>
@@ -18,13 +14,15 @@
 
         public static async Task SetProxy(string host, int port, string exceptions)
         {
-            var lstCmd = GetSetCmds(host, port, exceptions);
+            var lstInterface = await GetListNetworkServices();
+            var lstCmd = GetSetCmds(lstInterface, host, port, exceptions);
             await ExecCmd(lstCmd);
         }
 
         public static async Task UnsetProxy()
         {
-            var lstCmd = GetUnsetCmds();
+            var lstInterface = await GetListNetworkServices();
+            var lstCmd = GetUnsetCmds(lstInterface);
             await ExecCmd(lstCmd);
         }
 
@@ -42,10 +40,10 @@
             }
         }
 
-        private static List<CmdItem> GetSetCmds(string host, int port, string exceptions)
+        private static List<CmdItem> GetSetCmds(List<string> lstInterface, string host, int port, string exceptions)
         {
             List<CmdItem> lstCmd = [];
-            foreach (var interf in LstInterface)
+            foreach (var interf in lstInterface)
             {
                 foreach (var type in LstTypes)
                 {
@@ -70,10 +68,10 @@
             return lstCmd;
         }
 
-        private static List<CmdItem> GetUnsetCmds()
+        private static List<CmdItem> GetUnsetCmds(List<string> lstInterface)
         {
             List<CmdItem> lstCmd = [];
-            foreach (var interf in LstInterface)
+            foreach (var interf in lstInterface)
             {
                 foreach (var type in LstTypes)
                 {
@@ -86,6 +84,17 @@
             }
 
             return lstCmd;
+        }
+
+        public static async Task<List<string>> GetListNetworkServices()
+        {
+            var services = await Utils.GetListNetworkServices();
+            if (services.IsNullOrEmpty())
+            {
+                return LstInterface;
+            }
+            var lst = services.Split(Environment.NewLine);
+            return lst.Length > 0 ? LstInterface.Intersect(lst).ToList() : LstInterface;
         }
     }
 }
