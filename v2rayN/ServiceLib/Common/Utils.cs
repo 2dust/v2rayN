@@ -889,6 +889,7 @@ namespace ServiceLib.Common
         public static async Task<string?> SetLinuxChmod(string? fileName)
         {
             if (fileName.IsNullOrEmpty()) return null;
+            if (fileName.Contains(' ')) fileName = fileName.AppendQuotes();
             //File.SetUnixFileMode(fileName, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
             return await GetCliWrapOutput("/bin/bash", arg);
@@ -906,6 +907,12 @@ namespace ServiceLib.Common
             return IsWindows()
                 ? Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%")
                 : Environment.GetEnvironmentVariable("HOME");
+        }
+
+        public static async Task<string?> GetListNetworkServices()
+        {
+            var arg = new List<string>() { "-c", $"networksetup -listallnetworkservices" };
+            return await GetCliWrapOutput("/bin/bash", arg);
         }
 
         #endregion Platform
