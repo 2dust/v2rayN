@@ -77,8 +77,7 @@
 
         public bool InitComponents()
         {
-            Logging.SaveLog($"v2rayN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
-            Logging.SaveLog($"{Environment.OSVersion} - {(Environment.Is64BitOperatingSystem ? 64 : 32)}");
+            Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
             Logging.LoggingEnabled(_config.GuiItem.EnableLog);
             Logging.ClearLogs();
 
