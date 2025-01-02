@@ -327,9 +327,10 @@ namespace ServiceLib.Handler
             {
                 return null;
             }
-            try { proc?.Kill(true); } catch { }
-            try { proc?.Close(); } catch { }
-            try { proc?.Dispose(); } catch { }
+            try { proc?.Kill(true); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
+            try { proc?.Kill(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
+            try { proc?.Close(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
+            try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
 
             await Task.Delay(100);
             return null;
