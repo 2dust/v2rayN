@@ -343,6 +343,11 @@ namespace ServiceLib.ViewModels
             _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
         }
 
+        public void Shutdown()
+        {
+            _updateView?.Invoke(EViewAction.Shutdown, null);
+        }
+
         #endregion Actions
 
         #region Servers && Groups
@@ -509,7 +514,7 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public async Task RebootAsAdmin()
+        public async Task RebootAsAdmin(bool blAdmin = true)
         {
             try
             {
@@ -519,7 +524,7 @@ namespace ServiceLib.ViewModels
                     Arguments = Global.RebootAs,
                     WorkingDirectory = Utils.StartupPath(),
                     FileName = Utils.GetExePath().AppendQuotes(),
-                    Verb = "runas",
+                    Verb = blAdmin ? "runas" : null,
                 };
                 Process.Start(startInfo);
                 await MyAppExitAsync(false);

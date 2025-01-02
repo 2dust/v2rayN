@@ -141,7 +141,21 @@ namespace ServiceLib.ViewModels
             var result = await CreateZipFileFromDirectory(fileBackup);
             if (result)
             {
-                Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
+                var service = Locator.Current.GetService<MainWindowViewModel>();
+                await service?.MyAppExitAsync(true);
+                await SQLiteHelper.Instance.DisposeDbConnectionAsync();
+
+                var toPath = Utils.GetConfigPath();
+                FileManager.ZipExtractToFile(fileName, toPath, "");
+
+                if (Utils.IsWindows())
+                {
+                    service?.RebootAsAdmin(false);
+                }
+                else
+                {
+                    service?.Shutdown();
+                }
             }
             else
             {
