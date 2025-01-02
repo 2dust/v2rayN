@@ -59,7 +59,7 @@
                                     Grid.Column="0"
                                     Margin="8"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"

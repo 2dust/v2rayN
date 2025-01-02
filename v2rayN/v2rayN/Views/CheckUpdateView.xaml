@@ -82,7 +82,7 @@
                                     Grid.Column="0"
                                     Margin="{StaticResource Margin8}"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
                                 <TextBlock
                                     Grid.Column="1"

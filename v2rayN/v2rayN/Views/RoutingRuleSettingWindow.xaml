@@ -121,7 +121,7 @@
                     Width="300"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    VerticalAlignment="Center"
                     AcceptsReturn="True"
                     Style="{StaticResource DefTextBox}"
                     TextWrapping="Wrap" />
@@ -181,7 +181,7 @@
                 Grid.Column="1"
                 Width="600"
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 AcceptsReturn="True"
                 Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
@@ -199,7 +199,7 @@
                 Grid.Column="1"
                 Width="600"
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 AcceptsReturn="True"
                 Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
@@ -228,7 +228,7 @@
                 Grid.Column="1"
                 Width="600"
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 AcceptsReturn="True"
                 Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
