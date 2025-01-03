@@ -591,26 +591,6 @@ namespace ServiceLib.Common
             return Guid.TryParse(strSrc, out _);
         }
 
-        public static void ProcessStart(string? fileName, string arguments = "")
-        {
-            try
-            {
-                if (fileName.IsNullOrEmpty())
-                {
-                    return;
-                }
-
-                if (fileName.Contains(' ')) fileName = fileName.AppendQuotes();
-                if (arguments.Contains(' ')) arguments = arguments.AppendQuotes();
-
-                Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-        }
-
         public static Dictionary<string, string> GetSystemHosts()
         {
             var systemHosts = new Dictionary<string, string>();

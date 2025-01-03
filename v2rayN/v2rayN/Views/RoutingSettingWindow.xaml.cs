@@ -122,12 +122,12 @@ namespace v2rayN.Views
 
         private void linkdomainStrategy_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://xtls.github.io/config/routing.html");
+            ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html");
         }
 
         private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
+            ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
         }
 
         private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)

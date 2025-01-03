@@ -1,9 +1,7 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Diagnostics;
 using System.Reactive;
-using System.Reactive.Linq;
 
 namespace ServiceLib.ViewModels
 {
@@ -319,20 +317,9 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            Process process = new()
+            var id = ProcUtils.ProcessStart(fileName, arg, Utils.StartupPath());
+            if (id > 0)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = fileName,
-                    Arguments = arg.AppendQuotes(),
-                    WorkingDirectory = Utils.StartupPath()
-                }
-            };
-            process.Start();
-            if (process.Id > 0)
-            {
-                await MyAppExitAsync(false);
                 await MyAppExitAsync(false);
             }
         }
@@ -513,22 +500,10 @@ namespace ServiceLib.ViewModels
             }
         }
 
-        public async Task RebootAsAdmin(bool blAdmin = true)
+        public async Task RebootAsAdmin()
         {
-            try
-            {
-                ProcessStartInfo startInfo = new()
-                {
-                    UseShellExecute = true,
-                    Arguments = Global.RebootAs,
-                    WorkingDirectory = Utils.StartupPath(),
-                    FileName = Utils.GetExePath().AppendQuotes(),
-                    Verb = blAdmin ? "runas" : null,
-                };
-                Process.Start(startInfo);
-                await MyAppExitAsync(false);
-            }
-            catch { }
+            ProcUtils.RebootAsAdmin();
+            await MyAppExitAsync(false);
         }
 
         private async Task ClearServerStatistics()
@@ -542,15 +517,15 @@ namespace ServiceLib.ViewModels
             var path = Utils.StartupPath();
             if (Utils.IsWindows())
             {
-                Utils.ProcessStart(path);
+                ProcUtils.ProcessStart(path);
             }
             else if (Utils.IsLinux())
             {
-                Utils.ProcessStart("nautilus", path);
+                ProcUtils.ProcessStart("nautilus", path);
             }
             else if (Utils.IsOSX())
             {
-                Utils.ProcessStart("open", path);
+                ProcUtils.ProcessStart("open", path);
             }
         }
 

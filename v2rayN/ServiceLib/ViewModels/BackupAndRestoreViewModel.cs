@@ -130,11 +130,6 @@ namespace ServiceLib.ViewModels
                 DisplayOperationMsg(ResUI.LocalRestoreInvalidZipTips);
                 return;
             }
-            if (!Utils.UpgradeAppExists(out _))
-            {
-                DisplayOperationMsg(ResUI.UpgradeAppNotExistTip);
-                return;
-            }
 
             //backup first
             var fileBackup = Utils.GetBackupPath(BackupFileName);
@@ -150,12 +145,9 @@ namespace ServiceLib.ViewModels
 
                 if (Utils.IsWindows())
                 {
-                    service?.RebootAsAdmin(false);
+                    ProcUtils.RebootAsAdmin(false);
                 }
-                else
-                {
-                    service?.Shutdown();
-                }
+                service?.Shutdown();
             }
             else
             {

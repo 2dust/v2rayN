@@ -103,7 +103,7 @@ namespace ServiceLib.ViewModels
             address = Utils.GetConfigPath(address);
             if (File.Exists(address))
             {
-                Utils.ProcessStart(address);
+                ProcUtils.ProcessStart(address);
             }
             else
             {

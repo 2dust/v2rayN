@@ -203,7 +203,7 @@ namespace v2rayN.Desktop.Views
 
         private void linkCustomRulesetPath4Singbox(object? sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://github.com/2dust/v2rayCustomRoutingList/blob/master/singbox_custom_ruleset_example.json");
+            ProcUtils.ProcessStart("https://github.com/2dust/v2rayCustomRoutingList/blob/master/singbox_custom_ruleset_example.json");
         }
     }
 }
