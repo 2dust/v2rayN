@@ -246,7 +246,7 @@ namespace v2rayN.Views
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("fill fonts error", ex);
+                Logging.SaveLog("GetFonts", ex);
             }
             return lstFonts.OrderBy(t => t).ToList();
         }

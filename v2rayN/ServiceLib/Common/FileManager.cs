@@ -6,6 +6,8 @@ namespace ServiceLib.Common
 {
     public static class FileManager
     {
+        private static readonly string _tag = "FileManager";
+
         public static bool ByteArrayToFile(string fileName, byte[] content)
         {
             try
@@ -15,7 +17,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return false;
         }
@@ -30,7 +32,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -46,7 +48,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -60,7 +62,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -79,7 +81,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 throw;
             }
         }
@@ -105,13 +107,13 @@ namespace ServiceLib.Common
                     }
                     catch (IOException ex)
                     {
-                        Logging.SaveLog(ex.Message, ex);
+                        Logging.SaveLog(_tag, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return false;
             }
             return true;
@@ -130,7 +132,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return null;
             }
         }
@@ -148,7 +150,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return false;
             }
             return true;

@@ -279,9 +279,8 @@ namespace ServiceLib.ViewModels
                     Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Logging.SaveLog(ex.Message, ex);
             }
         }
 

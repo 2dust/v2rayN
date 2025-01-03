@@ -9,6 +9,7 @@ namespace ServiceLib.Handler
     public class ConfigHandler
     {
         private static readonly string _configRes = Global.ConfigFileName;
+        private static readonly string _tag = "ConfigHandler";
 
         #region ConfigHandler
 
@@ -194,7 +195,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("ToJsonFile", ex);
+                Logging.SaveLog(_tag, ex);
                 return -1;
             }
 
@@ -500,7 +501,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return -1;
             }
 
@@ -987,7 +988,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("Remove Item", ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return 0;

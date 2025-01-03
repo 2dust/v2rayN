@@ -7,6 +7,7 @@ namespace ServiceLib.Services
     {
         private Action<bool, string>? _updateFunc;
         private int _timeout = 30;
+        private static readonly string _tag = "UpdateService";
 
         public async Task CheckUpdateGuiN(Config config, Action<bool, string> updateFunc, bool preRelease)
         {
@@ -272,7 +273,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new RetResult(false, ex.Message);
             }
@@ -356,7 +357,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new SemanticVersion("");
             }
@@ -415,7 +416,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new RetResult(false, ex.Message);
             }

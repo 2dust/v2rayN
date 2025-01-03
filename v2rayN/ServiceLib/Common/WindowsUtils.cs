@@ -4,6 +4,7 @@ namespace ServiceLib.Common
 {
     internal static class WindowsUtils
     {
+        private static readonly string _tag = "WindowsUtils";
         public static string? RegReadValue(string path, string name, string def)
         {
             RegistryKey? regKey = null;
@@ -15,7 +16,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             finally
             {
@@ -41,7 +42,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             finally
             {

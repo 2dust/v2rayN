@@ -2,6 +2,7 @@
 {
     public static class SysProxyHandler
     {
+        private static readonly string _tag = "SysProxyHandler";
         public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
         {
             var type = config.SystemProxyItem.SysProxyType;
@@ -59,7 +60,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return true;
         }

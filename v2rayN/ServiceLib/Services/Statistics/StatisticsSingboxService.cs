@@ -10,6 +10,7 @@ namespace ServiceLib.Services.Statistics
         private ClientWebSocket? webSocket;
         private Action<ServerSpeedItem>? _updateFunc;
         private string Url => $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
+        private static readonly string _tag = "StatisticsSingboxService";
 
         public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)
         {
@@ -48,7 +49,7 @@ namespace ServiceLib.Services.Statistics
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 

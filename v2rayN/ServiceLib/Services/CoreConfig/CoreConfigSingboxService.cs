@@ -7,6 +7,7 @@ namespace ServiceLib.Services.CoreConfig
     public class CoreConfigSingboxService
     {
         private Config _config;
+        private static readonly string _tag = "CoreConfigSingboxService";
 
         public CoreConfigSingboxService(Config config)
         {
@@ -71,7 +72,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientConfig4Singbox", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -114,7 +115,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(_tag, ex);
                 }
 
                 await GenLog(singboxConfig);
@@ -235,7 +236,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -351,7 +352,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -432,7 +433,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -473,7 +474,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -562,7 +563,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -695,7 +696,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -718,7 +719,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -768,7 +769,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -845,7 +846,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -897,7 +898,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return 0;
@@ -969,7 +970,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1085,7 +1086,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1184,7 +1185,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }

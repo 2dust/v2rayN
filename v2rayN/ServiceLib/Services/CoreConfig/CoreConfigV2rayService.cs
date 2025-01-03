@@ -7,6 +7,7 @@ namespace ServiceLib.Services.CoreConfig
     public class CoreConfigV2rayService
     {
         private Config _config;
+        private static readonly string _tag = "CoreConfigV2rayService";
 
         public CoreConfigV2rayService(Config config)
         {
@@ -70,7 +71,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientConfig4V2ray", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -197,7 +198,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -240,7 +241,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(_tag, ex);
                 }
 
                 await GenLog(v2rayConfig);
@@ -349,7 +350,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -379,7 +380,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -423,7 +424,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -482,7 +483,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -560,7 +561,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -754,7 +755,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -778,7 +779,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1020,7 +1021,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1083,7 +1084,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1241,7 +1242,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return 0;

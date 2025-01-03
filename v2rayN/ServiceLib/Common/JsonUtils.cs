@@ -6,6 +6,8 @@ namespace ServiceLib.Common
 {
     public class JsonUtils
     {
+        private static readonly string _tag = "JsonUtils";
+
         /// <summary>
         /// DeepCopy
         /// </summary>
@@ -90,7 +92,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return result;
         }

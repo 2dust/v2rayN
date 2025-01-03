@@ -5,6 +5,8 @@ namespace ServiceLib.Handler
 {
     public static class AutoStartupHandler
     {
+        private static readonly string _tag = "AutoStartupHandler";
+
         public static async Task<bool> UpdateTask(Config config)
         {
             if (Utils.IsWindows())
@@ -62,7 +64,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -123,7 +125,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -143,7 +145,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 

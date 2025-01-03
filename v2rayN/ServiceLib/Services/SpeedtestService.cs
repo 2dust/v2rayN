@@ -11,6 +11,7 @@ namespace ServiceLib.Services
         private Action<SpeedTestResult>? _updateFunc;
 
         private bool _exitLoop = false;
+        private static readonly string _tag = "SpeedtestService";
 
         public SpeedtestService(Config config, List<ProfileItem> selecteds, ESpeedActionType actionType, Action<SpeedTestResult> updateFunc)
         {
@@ -146,7 +147,7 @@ namespace ServiceLib.Services
                         }
                         catch (Exception ex)
                         {
-                            Logging.SaveLog(ex.Message, ex);
+                            Logging.SaveLog(_tag, ex);
                         }
                     }));
                 }
@@ -154,7 +155,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             finally
             {
@@ -201,7 +202,7 @@ namespace ServiceLib.Services
                         }
                         catch (Exception ex)
                         {
-                            Logging.SaveLog(ex.Message, ex);
+                            Logging.SaveLog(_tag, ex);
                         }
                     }));
                 }
@@ -209,7 +210,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             finally
             {
@@ -389,7 +390,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return responseTime;
         }

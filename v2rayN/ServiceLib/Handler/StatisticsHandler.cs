@@ -12,7 +12,7 @@
 
         private StatisticsXrayService? _statisticsXray;
         private StatisticsSingboxService? _statisticsSingbox;
-
+        private static readonly string _tag = "StatisticsHandler";
         public List<ServerStatItem> ServerStat => _lstServerStat;
 
         public async Task Init(Config config, Action<ServerSpeedItem> updateFunc)
@@ -39,7 +39,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -61,7 +61,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 

@@ -6,6 +6,7 @@ namespace ServiceLib.Services.CoreConfig
     public class CoreConfigClashService
     {
         private Config _config;
+        private static readonly string _tag = "CoreConfigClashService";
 
         public CoreConfigClashService(Config config)
         {
@@ -131,7 +132,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog("GenerateClientConfigClash-Mixin", ex);
+                    Logging.SaveLog($"{_tag}-Mixin", ex);
                 }
 
                 var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
@@ -151,7 +152,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientConfigClash", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }

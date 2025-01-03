@@ -235,7 +235,7 @@ namespace v2rayN.Desktop.Views
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("fill fonts error", ex);
+                Logging.SaveLog("GetFonts", ex);
             }
             return lstFonts;
         }

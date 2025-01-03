@@ -13,6 +13,7 @@ namespace ServiceLib.Services
         public event EventHandler<RetResult>? UpdateCompleted;
 
         public event ErrorEventHandler? Error;
+        private static readonly string _tag = "DownloadService";
 
         public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
         {
@@ -68,7 +69,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
 
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
@@ -113,7 +114,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -131,7 +132,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -177,7 +178,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -208,7 +209,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -232,13 +233,13 @@ namespace ServiceLib.Services
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(_tag, ex);
                     return -1;
                 }
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return -1;
             }
         }

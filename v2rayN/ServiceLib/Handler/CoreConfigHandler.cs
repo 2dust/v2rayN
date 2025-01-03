@@ -1,10 +1,14 @@
-﻿namespace ServiceLib.Handler
+﻿using YamlDotNet.Core.Tokens;
+
+namespace ServiceLib.Handler
 {
     /// <summary>
     /// Core configuration file processing class
     /// </summary>
     public class CoreConfigHandler
     {
+        private static readonly string _tag = "CoreConfigHandler";
+
         public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
         {
             var config = AppHandler.Instance.Config;
@@ -82,7 +86,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientCustomConfig", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }

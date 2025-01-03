@@ -13,6 +13,7 @@ namespace v2rayN
 {
     internal static class WindowsUtils
     {
+        private static readonly string _tag = "WindowsUtils";
         /// <summary>
         /// 获取剪贴板数
         /// </summary>
@@ -31,7 +32,7 @@ namespace v2rayN
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return strData;
         }

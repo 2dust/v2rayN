@@ -72,7 +72,6 @@ namespace ServiceLib.Handler.SysProxy
             catch (Exception ex)
             {
                 SetProxyFallback(strProxy, exceptions, type);
-                //Logging.SaveLog(ex.Message, ex);
                 return false;
             }
         }
