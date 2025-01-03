@@ -15,6 +15,7 @@ namespace ServiceLib.Handler
         private Process? _processPre;
         private int _linuxSudoPid = -1;
         private Action<bool, string>? _updateFunc;
+        private const string _tag = "CoreHandler";
 
         public async Task Init(Config config, Action<bool, string> updateFunc)
         {
@@ -97,12 +98,14 @@ namespace ServiceLib.Handler
             {
                 if (_process != null)
                 {
-                    _process = await KillProcess(_process);
+                    await KillProcess(_process, true);
+                    _process = null;
                 }
 
                 if (_processPre != null)
                 {
-                    _processPre = await KillProcess(_processPre);
+                    await KillProcess(_processPre, true);
+                    _processPre = null;
                 }
 
                 if (_linuxSudoPid > 0)
@@ -113,7 +116,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -121,11 +124,11 @@ namespace ServiceLib.Handler
         {
             try
             {
-                await KillProcess(Process.GetProcessById(pid));
+                await KillProcess(Process.GetProcessById(pid), false);
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -206,7 +209,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ShowMsg(false, ex.Message);
                 return -1;
             }
@@ -315,25 +318,39 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ShowMsg(true, ex.Message);
                 return null;
             }
         }
 
-        private async Task<Process?> KillProcess(Process? proc)
+        private async Task KillProcess(Process? proc, bool review)
         {
             if (proc is null)
             {
-                return null;
+                return;
             }
-            try { proc?.Kill(true); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
-            try { proc?.Kill(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
-            try { proc?.Close(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
-            try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(ex.Message, ex); }
 
-            await Task.Delay(100);
-            return null;
+            var fileName = proc?.MainModule?.FileName;
+            var processName = proc?.ProcessName;
+
+            try { proc?.Kill(true); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+            try { proc?.Kill(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+            try { proc?.Close(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+            try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+
+            await Task.Delay(500);
+            if (review)
+            {
+                var proc2 = Process.GetProcessesByName(processName)
+                    .FirstOrDefault(t => t.MainModule?.FileName == fileName);
+                if (proc2 != null)
+                {
+                    Logging.SaveLog($"{_tag}, KillProcess not completing the job");
+                    await KillProcess(proc2, false);
+                    proc2 = null;
+                }
+            }
         }
 
         #endregion Process
