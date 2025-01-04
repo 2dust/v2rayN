@@ -216,7 +216,7 @@ namespace ServiceLib.Services
             {
                 if (pid > 0)
                 {
-                    await CoreHandler.Instance.CoreStopPid(pid);
+                    await ProcUtils.ProcessKill(pid);
                 }
                 await ProfileExHandler.Instance.SaveTo();
             }
@@ -278,7 +278,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                await CoreHandler.Instance.CoreStopPid(pid);
+                await ProcUtils.ProcessKill(pid);
             }
             await ProfileExHandler.Instance.SaveTo();
         }
@@ -342,7 +342,7 @@ namespace ServiceLib.Services
 
             if (pid > 0)
             {
-                await CoreHandler.Instance.CoreStopPid(pid);
+                await ProcUtils.ProcessKill(pid);
             }
             await ProfileExHandler.Instance.SaveTo();
         }

@@ -29,6 +29,27 @@
             return _coreInfo ?? [];
         }
 
+        public string GetCoreExecFile(CoreInfo? coreInfo, out string msg)
+        {
+            var fileName = string.Empty;
+            msg = string.Empty;
+            foreach (var name in coreInfo?.CoreExes)
+            {
+                var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
+                if (File.Exists(vName))
+                {
+                    fileName = vName;
+                    break;
+                }
+            }
+            if (fileName.IsNullOrEmpty())
+            {
+                msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
+                Logging.SaveLog(msg);
+            }
+            return fileName;
+        }
+
         private void InitCoreInfo()
         {
             _coreInfo = [];

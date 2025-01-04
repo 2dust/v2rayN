@@ -55,7 +55,7 @@ namespace ServiceLib.Handler
         {
             if (node == null)
             {
-                ShowMsg(false, ResUI.CheckServerSettings);
+                UpdateFunc(false, ResUI.CheckServerSettings);
                 return;
             }
 
@@ -63,13 +63,13 @@ namespace ServiceLib.Handler
             var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
             if (result.Success != true)
             {
-                ShowMsg(true, result.Msg);
+                UpdateFunc(true, result.Msg);
                 return;
             }
 
-            ShowMsg(true, $"{node.GetSummary()}");
-            ShowMsg(false, $"{Utils.GetRuntimeInfo()}");
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+            UpdateFunc(true, $"{node.GetSummary()}");
+            UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
+            UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
             await CoreStop();
             await Task.Delay(100);
             await CoreStart(node);
@@ -81,15 +81,23 @@ namespace ServiceLib.Handler
             var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard) ? ECoreType.sing_box : ECoreType.Xray;
             var configPath = Utils.GetConfigPath(Global.CoreSpeedtestConfigFileName);
             var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
-            ShowMsg(false, result.Msg);
+            UpdateFunc(false, result.Msg);
             if (result.Success != true)
             {
                 return -1;
             }
 
-            ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-            ShowMsg(false, configPath);
-            return await CoreStartSpeedtest(configPath, coreType);
+            UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+            UpdateFunc(false, configPath);
+
+            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
+            var proc = await RunProcess(coreInfo, Global.CoreSpeedtestConfigFileName, true, false);
+            if (proc is null)
+            {
+                return -1;
+            }
+
+            return proc.Id;
         }
 
         public async Task CoreStop()
@@ -98,13 +106,13 @@ namespace ServiceLib.Handler
             {
                 if (_process != null)
                 {
-                    await KillProcess(_process, true);
+                    await ProcUtils.ProcessKill(_process, true);
                     _process = null;
                 }
 
                 if (_processPre != null)
                 {
-                    await KillProcess(_processPre, true);
+                    await ProcUtils.ProcessKill(_processPre, true);
                     _processPre = null;
                 }
 
@@ -120,40 +128,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        public async Task CoreStopPid(int pid)
-        {
-            try
-            {
-                await KillProcess(Process.GetProcessById(pid), false);
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-        }
-
         #region Private
-
-        private string CoreFindExe(CoreInfo coreInfo)
-        {
-            var fileName = string.Empty;
-            foreach (var name in coreInfo.CoreExes)
-            {
-                var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
-                if (File.Exists(vName))
-                {
-                    fileName = vName;
-                    break;
-                }
-            }
-            if (Utils.IsNullOrEmpty(fileName))
-            {
-                var msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
-                Logging.SaveLog(msg);
-                ShowMsg(false, msg);
-            }
-            return fileName;
-        }
 
         private async Task CoreStart(ProfileItem node)
         {
@@ -194,28 +169,7 @@ namespace ServiceLib.Handler
             }
         }
 
-        private async Task<int> CoreStartSpeedtest(string configPath, ECoreType coreType)
-        {
-            try
-            {
-                var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
-                var proc = await RunProcess(coreInfo, Global.CoreSpeedtestConfigFileName, true, false);
-                if (proc is null)
-                {
-                    return -1;
-                }
-
-                return proc.Id;
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-                ShowMsg(false, ex.Message);
-                return -1;
-            }
-        }
-
-        private void ShowMsg(bool notify, string msg)
+        private void UpdateFunc(bool notify, string msg)
         {
             _updateFunc?.Invoke(notify, msg);
         }
@@ -233,11 +187,12 @@ namespace ServiceLib.Handler
 
         #region Process
 
-        private async Task<Process?> RunProcess(CoreInfo coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
+        private async Task<Process?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
         {
-            var fileName = CoreFindExe(coreInfo);
+            var fileName = CoreInfoHandler.Instance.GetCoreExecFile(coreInfo, out var msg);
             if (Utils.IsNullOrEmpty(fileName))
             {
+                UpdateFunc(false, msg);
                 return null;
             }
 
@@ -272,12 +227,12 @@ namespace ServiceLib.Handler
                     proc.OutputDataReceived += (sender, e) =>
                     {
                         if (Utils.IsNullOrEmpty(e.Data)) return;
-                        ShowMsg(false, e.Data + Environment.NewLine);
+                        UpdateFunc(false, e.Data + Environment.NewLine);
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
                         if (Utils.IsNullOrEmpty(e.Data)) return;
-                        ShowMsg(false, e.Data + Environment.NewLine);
+                        UpdateFunc(false, e.Data + Environment.NewLine);
 
                         if (!startUpSuccessful)
                         {
@@ -319,37 +274,8 @@ namespace ServiceLib.Handler
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
-                ShowMsg(true, ex.Message);
+                UpdateFunc(true, ex.Message);
                 return null;
-            }
-        }
-
-        private async Task KillProcess(Process? proc, bool review)
-        {
-            if (proc is null)
-            {
-                return;
-            }
-
-            var fileName = proc?.MainModule?.FileName;
-            var processName = proc?.ProcessName;
-
-            try { proc?.Kill(true); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
-            try { proc?.Kill(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
-            try { proc?.Close(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
-            try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
-
-            await Task.Delay(500);
-            if (review)
-            {
-                var proc2 = Process.GetProcessesByName(processName)
-                    .FirstOrDefault(t => t.MainModule?.FileName == fileName);
-                if (proc2 != null)
-                {
-                    Logging.SaveLog($"{_tag}, KillProcess not completing the job");
-                    await KillProcess(proc2, false);
-                    proc2 = null;
-                }
             }
         }
 
