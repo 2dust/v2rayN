@@ -21,11 +21,11 @@ namespace AmazTool
             Console.WriteLine(Resx.Resource.TryTerminateProcess);
             try
             {
-                var existing = Process.GetProcessesByName(V2rayN);
+                var existing = Process.GetProcessesByName(Utils.V2rayN);
                 foreach (var pp in existing)
                 {
                     var path = pp.MainModule?.FileName ?? "";
-                    if (path.StartsWith(GetPath(V2rayN)))
+                    if (path.StartsWith(Utils.GetPath(Utils.V2rayN)))
                     {
                         pp?.Kill();
                         pp?.WaitForExit(1000);
@@ -42,7 +42,7 @@ namespace AmazTool
             StringBuilder sb = new();
             try
             {
-                string thisAppOldFile = $"{GetExePath()}.tmp";
+                string thisAppOldFile = $"{Utils.GetExePath()}.tmp";
                 File.Delete(thisAppOldFile);
                 string splitKey = "/";
 
@@ -62,12 +62,12 @@ namespace AmazTool
                         if (lst.Length == 1) continue;
                         string fullName = string.Join(splitKey, lst[1..lst.Length]);
 
-                        if (string.Equals(GetExePath(), GetPath(fullName), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(Utils.GetExePath(), Utils.GetPath(fullName), StringComparison.OrdinalIgnoreCase))
                         {
-                            File.Move(GetExePath(), thisAppOldFile);
+                            File.Move(Utils.GetExePath(), thisAppOldFile);
                         }
 
-                        string entryOutputPath = GetPath(fullName);
+                        string entryOutputPath = Utils.GetPath(fullName);
                         Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
                         entry.ExtractToFile(entryOutputPath, true);
 
@@ -92,39 +92,11 @@ namespace AmazTool
 
             Console.WriteLine(Resx.Resource.Restartv2rayN);
             Waiting(2);
-            Process process = new()
-            {
-                StartInfo = new()
-                {
-                    UseShellExecute = true,
-                    FileName = V2rayN,
-                    WorkingDirectory = StartupPath()
-                }
-            };
-            process.Start();
+
+            Utils.StartV2RayN();
         }
 
-        private static string GetExePath()
-        {
-            return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
-        }
-
-        private static string StartupPath()
-        {
-            return AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        private static string GetPath(string fileName)
-        {
-            string startupPath = StartupPath();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return startupPath;
-            }
-            return Path.Combine(startupPath, fileName);
-        }
-
-        private static void Waiting(int second)
+        public static void Waiting(int second)
         {
             for (var i = second; i > 0; i--)
             {
@@ -132,7 +104,5 @@ namespace AmazTool
                 Thread.Sleep(1000);
             }
         }
-
-        private static string V2rayN => "v2rayN";
     }
 }

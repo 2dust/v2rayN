@@ -15,8 +15,15 @@
                 return;
             }
 
-            var fileName = Uri.UnescapeDataString(string.Join(" ", args));
-            UpgradeApp.Upgrade(fileName);
+            var argData = Uri.UnescapeDataString(string.Join(" ", args));
+            if (argData.Equals("rebootas"))
+            {
+                Thread.Sleep(1000);
+                Utils.StartV2RayN();
+                return;
+            }
+
+            UpgradeApp.Upgrade(argData);
         }
     }
 }
