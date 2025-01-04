@@ -47,6 +47,7 @@ namespace v2rayN.ViewModels
         private void RestoreUI()
         {
             ModifyTheme();
+            ModifyFontSize();
             if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
                 var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
@@ -121,14 +122,10 @@ namespace v2rayN.ViewModels
                y => y > 0)
                   .Subscribe(c =>
                   {
-                      if (CurrentFontSize >= Global.MinFontSize)
+                      if (_config.UiItem.CurrentFontSize != CurrentFontSize && CurrentFontSize >= Global.MinFontSize)
                       {
                           _config.UiItem.CurrentFontSize = CurrentFontSize;
-                          double size = (long)CurrentFontSize;
-                          Application.Current.Resources["StdFontSize"] = size;
-                          Application.Current.Resources["StdFontSize1"] = size + 1;
-                          Application.Current.Resources["StdFontSize-1"] = size - 1;
-
+                          ModifyFontSize();
                           ConfigHandler.SaveConfig(_config);
                       }
                   });
@@ -156,6 +153,14 @@ namespace v2rayN.ViewModels
             theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
             _paletteHelper.SetTheme(theme);
             WindowsUtils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+        }
+
+        private void ModifyFontSize()
+        {
+            double size = (long)CurrentFontSize;
+            Application.Current.Resources["StdFontSize"] = size;
+            Application.Current.Resources["StdFontSize1"] = size + 1;
+            Application.Current.Resources["StdFontSize-1"] = size - 1;
         }
 
         public void ChangePrimaryColor(System.Windows.Media.Color color)

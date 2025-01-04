@@ -31,6 +31,7 @@ namespace v2rayN.Desktop.ViewModels
         {
             ModifyTheme();
             ModifyFontFamily();
+            ModifyFontSize();
         }
 
         private void BindingUI()
@@ -67,11 +68,10 @@ namespace v2rayN.Desktop.ViewModels
                     y => y > 0)
                 .Subscribe(c =>
                 {
-                    if (CurrentFontSize >= Global.MinFontSize)
+                    if (_config.UiItem.CurrentFontSize != CurrentFontSize && CurrentFontSize >= Global.MinFontSize)
                     {
                         _config.UiItem.CurrentFontSize = CurrentFontSize;
-                        double size = CurrentFontSize;
-                        ModifyFontSize(size);
+                        ModifyFontSize();
                         ConfigHandler.SaveConfig(_config);
                     }
                 });
@@ -100,8 +100,9 @@ namespace v2rayN.Desktop.ViewModels
             }
         }
 
-        private void ModifyFontSize(double size)
+        private void ModifyFontSize()
         {
+            double size = CurrentFontSize;
             Style style = new(x => Selectors.Or(
                 x.OfType<Button>(),
                 x.OfType<TextBox>(),
