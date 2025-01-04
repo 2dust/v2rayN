@@ -517,10 +517,10 @@ namespace ServiceLib.Common
 
         #region 杂项
 
-        public static bool UpgradeAppExists(out string fileName)
+        public static bool UpgradeAppExists(out string upgradeFileName)
         {
-            fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GetExeName("AmazTool"));
-            return File.Exists(fileName);
+            upgradeFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GetExeName("AmazTool"));
+            return File.Exists(upgradeFileName);
         }
 
         /// <summary>

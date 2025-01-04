@@ -147,6 +147,13 @@ namespace ServiceLib.ViewModels
                 {
                     ProcUtils.RebootAsAdmin(false);
                 }
+                else
+                {
+                    if (Utils.UpgradeAppExists(out var upgradeFileName))
+                    {
+                        ProcUtils.ProcessStart(upgradeFileName, Global.RebootAs, Utils.StartupPath());
+                    }
+                }
                 service?.Shutdown();
             }
             else

@@ -310,14 +310,14 @@ namespace ServiceLib.ViewModels
 
         public async Task UpgradeApp(string arg)
         {
-            if (!Utils.UpgradeAppExists(out var fileName))
+            if (!Utils.UpgradeAppExists(out var upgradeFileName))
             {
                 NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
                 Logging.SaveLog("UpgradeApp does not exist");
                 return;
             }
 
-            var id = ProcUtils.ProcessStart(fileName, arg, Utils.StartupPath());
+            var id = ProcUtils.ProcessStart(upgradeFileName, arg, Utils.StartupPath());
             if (id > 0)
             {
                 await MyAppExitAsync(false);
