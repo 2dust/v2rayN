@@ -303,7 +303,7 @@ namespace ServiceLib.ViewModels
             {
                 if (!blWindowsShutDown)
                 {
-                    _updateView?.Invoke(EViewAction.Shutdown, null);
+                    _updateView?.Invoke(EViewAction.Shutdown, false);
                 }
             }
         }
@@ -329,9 +329,9 @@ namespace ServiceLib.ViewModels
             _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
         }
 
-        public void Shutdown()
+        public void Shutdown(bool byUser)
         {
-            _updateView?.Invoke(EViewAction.Shutdown, null);
+            _updateView?.Invoke(EViewAction.Shutdown, byUser);
         }
 
         #endregion Actions

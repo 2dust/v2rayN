@@ -154,7 +154,7 @@ namespace ServiceLib.ViewModels
                         ProcUtils.ProcessStart(upgradeFileName, Global.RebootAs, Utils.StartupPath());
                     }
                 }
-                service?.Shutdown();
+                service?.Shutdown(true);
             }
             else
             {

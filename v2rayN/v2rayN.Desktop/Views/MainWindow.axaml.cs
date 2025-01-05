@@ -223,6 +223,10 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.Shutdown:
+                    if (obj != null && _blCloseByUser == false)
+                    {
+                        _blCloseByUser = (bool)obj;
+                    }
                     StorageUI();
                     if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {

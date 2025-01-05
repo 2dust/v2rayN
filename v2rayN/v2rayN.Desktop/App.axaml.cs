@@ -71,12 +71,8 @@ public partial class App : Application
 
     private async void MenuExit_Click(object? sender, EventArgs e)
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            var service = Locator.Current.GetService<MainWindowViewModel>();
-            if (service != null) await service.MyAppExitAsync(false);
-
-            desktop.Shutdown();
-        }
+        var service = Locator.Current.GetService<MainWindowViewModel>();
+        if (service != null) await service.MyAppExitAsync(true);
+        service?.Shutdown(true);
     }
 }
