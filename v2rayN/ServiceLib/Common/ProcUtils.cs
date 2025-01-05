@@ -81,6 +81,7 @@ public static class ProcUtils
             return;
         }
 
+        var procId = review ? proc?.Id : null;
         var fileName = review ? proc?.MainModule?.FileName : null;
         var processName = review ? proc?.ProcessName : null;
 
@@ -90,15 +91,27 @@ public static class ProcUtils
         try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
 
         await Task.Delay(300);
-        if (review && fileName != null)
+        if (review && procId != null && fileName != null)
         {
-            var proc2 = Process.GetProcessesByName(processName)
-                .FirstOrDefault(t => t.MainModule?.FileName == fileName);
-            if (proc2 != null)
+            try
             {
-                Logging.SaveLog($"{_tag}, KillProcess not completing the job");
-                await ProcessKill(proc2, false);
-                proc2 = null;
+                var lstProc = Process.GetProcessesByName(processName);
+                foreach (var proc2 in lstProc)
+                {
+                    if (proc2.Id == procId)
+                    {
+                        Logging.SaveLog($"{_tag}, KillProcess not completing the job, procId");
+                        await ProcessKill(proc2, false);
+                    }
+                    if (proc2.MainModule != null && proc2.MainModule?.FileName == fileName)
+                    {
+                        Logging.SaveLog($"{_tag}, KillProcess not completing the job, fileName");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
             }
         }
     }
