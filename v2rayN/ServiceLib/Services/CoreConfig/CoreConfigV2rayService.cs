@@ -154,7 +154,7 @@ namespace ServiceLib.Services.CoreConfig
                     var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     await GenOutbound(item, outbound);
                     outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                    v2rayConfig.outbounds.Add(outbound);
+                    v2rayConfig.outbounds.Insert(0, outbound);
                     tagProxy.Add(outbound.tag);
                 }
                 if (tagProxy.Count <= 0)

@@ -313,7 +313,7 @@ namespace ServiceLib.Services.CoreConfig
                     var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     await GenOutbound(item, outbound);
                     outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                    singboxConfig.outbounds.Add(outbound);
+                    singboxConfig.outbounds.Insert(0, outbound);
                     tagProxy.Add(outbound.tag);
                 }
                 if (tagProxy.Count <= 0)
