@@ -14,7 +14,6 @@ namespace ServiceLib.Handler
         private string _webDir = Global.AppName + "_backup";
         private readonly string _webFileName = "backup.zip";
         private readonly string _tag = "WebDav--";
-         
 
         public WebDavHandler()
         {

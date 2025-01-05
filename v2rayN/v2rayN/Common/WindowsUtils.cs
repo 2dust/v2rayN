@@ -14,6 +14,7 @@ namespace v2rayN
     internal static class WindowsUtils
     {
         private static readonly string _tag = "WindowsUtils";
+
         /// <summary>
         /// 获取剪贴板数
         /// </summary>

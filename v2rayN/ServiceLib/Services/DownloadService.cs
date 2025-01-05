@@ -13,6 +13,7 @@ namespace ServiceLib.Services
         public event EventHandler<RetResult>? UpdateCompleted;
 
         public event ErrorEventHandler? Error;
+
         private static readonly string _tag = "DownloadService";
 
         public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
