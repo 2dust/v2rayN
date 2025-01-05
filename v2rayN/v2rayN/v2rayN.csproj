@@ -14,7 +14,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.2.0" />
 		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.2.0" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" /> 
 		<PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />

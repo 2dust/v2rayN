@@ -3,12 +3,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:semi="https://irihi.tech/semi"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:DataType="vms:StatusBarViewModel"
     RequestedThemeVariant="Default">
     <Application.Styles>
+        <semi:SemiTheme />
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
-        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
         <StyleInclude Source="avares://DialogHost.Avalonia/Styles.xaml" />
     </Application.Styles>
