@@ -182,15 +182,12 @@ namespace ServiceLib.Services.CoreConfig
                         rule.balancerTag = balancer.tag;
                     }
                 }
-                else
+                v2rayConfig.routing.rules.Add(new()
                 {
-                    v2rayConfig.routing.rules.Add(new()
-                    {
-                        network = "tcp,udp",
-                        balancerTag = balancer.tag,
-                        type = "field"
-                    });
-                }
+                    network = "tcp,udp",
+                    balancerTag = balancer.tag,
+                    type = "field"
+                });
 
                 ret.Success = true;
                 ret.Data = JsonUtils.Serialize(v2rayConfig);

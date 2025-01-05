@@ -333,7 +333,7 @@ namespace ServiceLib.Services.CoreConfig
                     outbounds = tagProxy,
                     interrupt_exist_connections = false,
                 };
-                singboxConfig.outbounds.Add(outUrltest);
+                singboxConfig.outbounds.Insert(0, outUrltest);
 
                 //add selector outbound
                 var outSelector = new Outbound4Sbox
@@ -344,7 +344,7 @@ namespace ServiceLib.Services.CoreConfig
                     interrupt_exist_connections = false,
                 };
                 outSelector.outbounds.Insert(0, outUrltest.tag);
-                singboxConfig.outbounds.Add(outSelector);
+                singboxConfig.outbounds.Insert(0, outSelector);
 
                 ret.Success = true;
                 ret.Data = JsonUtils.Serialize(singboxConfig);
