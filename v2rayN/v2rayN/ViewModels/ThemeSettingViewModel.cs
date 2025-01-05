@@ -122,7 +122,7 @@ namespace v2rayN.ViewModels
                y => y > 0)
                   .Subscribe(c =>
                   {
-                      if (_config.UiItem.CurrentFontSize != CurrentFontSize && CurrentFontSize >= Global.MinFontSize)
+                      if (_config.UiItem.CurrentFontSize != CurrentFontSize)
                       {
                           _config.UiItem.CurrentFontSize = CurrentFontSize;
                           ModifyFontSize();
@@ -158,6 +158,8 @@ namespace v2rayN.ViewModels
         private void ModifyFontSize()
         {
             double size = (long)CurrentFontSize;
+            if (size < Global.MinFontSize) size = Global.MinFontSize;
+
             Application.Current.Resources["StdFontSize"] = size;
             Application.Current.Resources["StdFontSize1"] = size + 1;
             Application.Current.Resources["StdFontSize-1"] = size - 1;
