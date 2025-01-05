@@ -93,8 +93,9 @@
             {
                 return LstInterface;
             }
-            var lst = services.Split(Environment.NewLine);
-            return lst.Length > 0 ? LstInterface.Intersect(lst).ToList() : LstInterface;
+
+            var lst = services.Split(Environment.NewLine).Where(t => t.Length > 0 && t.Contains('*') == false);
+            return lst.ToList();
         }
     }
 }
