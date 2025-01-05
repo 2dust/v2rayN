@@ -158,7 +158,7 @@ namespace v2rayN.ViewModels
         private void ModifyFontSize()
         {
             double size = (long)CurrentFontSize;
-            if (size < Global.MinFontSize) size = Global.MinFontSize;
+            if (size < Global.MinFontSize) return;
 
             Application.Current.Resources["StdFontSize"] = size;
             Application.Current.Resources["StdFontSize1"] = size + 1;
