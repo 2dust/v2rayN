@@ -127,7 +127,7 @@
     <value>配置格式不正确</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意,自定义配置完全依赖您自己的配置，不能使用所有设置功能。如需使用系统代理请手动修改监听端口。</value>
+    <value>注意，自定义配置完全依赖您自己的配置，不能使用所有设置功能。如需使用系统代理请手动修改监听端口。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下载开始...</value>
@@ -136,7 +136,7 @@
     <value>下载</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>是否下载? {0}</value>
+    <value>是否下载？{0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>转换配置文件失败</value>
@@ -154,7 +154,7 @@
     <value>读取配置文件失败</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>请填写正确格式服务器端口</value>
+    <value>请填写正确格式的服务器端口</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>请填写本地监听端口</value>
@@ -169,16 +169,16 @@
     <value>请填写用户ID</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>不是正确的配置，请检查</value>
+    <value>配置不正确，请检查</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>初始化配置</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} {1} 已是最新版本。</value>
+    <value>{0} {1} 已是最新版本</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} {1} 已是最新版本。</value>
+    <value>{0} {1} 已是最新版本</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>地址</value>
@@ -226,7 +226,7 @@
     <value>未设置有效的订阅</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>解析{0}成功</value>
+    <value>解析 {0} 成功</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>开始获取订阅内容</value>
@@ -259,10 +259,10 @@
     <value>在文件夹 ({0}) 下未找到Core文件 (文件名:{1})，请下载后放入文件夹，下载地址: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
-    <value>扫描完成,未发现有效二维码</value>
+    <value>扫描完成，未发现有效二维码</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value>操作失败，请检查重试</value>
+    <value>操作失败，请检查并重试</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
     <value>请填写别名</value>
@@ -280,10 +280,10 @@
     <value>服务器去重完成。原数量: {0}，现数量: {1}</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>是否确定移除服务器?</value>
+    <value>是否确定移除服务器？</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
-    <value>客户端配置文件保存在:{0}</value>
+    <value>客户端配置文件保存在：{0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
     <value>启动服务({0})...</value>
@@ -311,10 +311,10 @@
     <value>请先选择规则</value>
   </data>
   <data name="RemoveRules" xml:space="preserve">
-    <value>是否确定移除规则?</value>
+    <value>是否确定移除规则？</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0},必填其中一项.</value>
+    <value>{0}，必填其中一项.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>别名</value>
@@ -329,10 +329,10 @@
     <value>请填写Url</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>是否追加规则?选择是则追加,选择否则替换</value>
+    <value>是否追加规则？选择“是”则追加，选择“否”则全部替换。</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>下载 GeoFile: {0} 成功</value>
+    <value>下载 GeoFile：{0} 成功</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>信息</value>
@@ -386,7 +386,7 @@
     <value>*Kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>注册全局热键 {0} 失败,原因 {1}</value>
+    <value>注册全局热键 {0} 失败，原因：{1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>注册全局热键 {0} 成功</value>
@@ -485,10 +485,10 @@
     <value>暗黑模式</value>
   </data>
   <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>是否跟随系统主题</value>
+    <value>跟随系统主题</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>语言(重启)</value>
+    <value>语言(需重启)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>从剪贴板导入分享链接 (Ctrl+V)</value>
@@ -638,7 +638,7 @@
     <value>传输层安全(TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*默认tcp,选错会无法连接</value>
+    <value>*默认tcp，选错会无法连接</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core类型</value>
@@ -671,7 +671,7 @@
     <value>Socks端口</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* 自定义配置的Socks端口值，可不设置；当设置此值后，将使用Xray/sing-box(Tun)额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
+    <value>*自定义配置的Socks端口值，可不设置；当设置此值后，将使用Xray/sing-box(Tun)额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>浏览</value>
@@ -680,7 +680,7 @@
     <value>编辑</value>
   </data>
   <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
-    <value>高级代理设置, 协议选择(可选)</value>
+    <value>高级代理设置，协议选择(可选)</value>
   </data>
   <data name="TbSettingsAllowLAN" xml:space="preserve">
     <value>允许来自局域网的连接</value>
@@ -689,19 +689,19 @@
     <value>启动后隐藏窗口</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>自动更新Geo文件的间隔(单位小时)</value>
+    <value>自动更新Geo文件的间隔(小时)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: 基础设置</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS设置</value>
+    <value>v2ray DNS设置</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP设置</value>
   </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
-    <value>Core类型设置</value>
+    <value>Core 类型设置</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
     <value>默认跳过证书验证(allowInsecure)</value>
@@ -719,7 +719,7 @@
     <value>例外</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>例外. 对于下列字符开头的地址不使用代理配置文件:使用分号(;)分隔</value>
+    <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号(;)分隔。</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>本地http监听端口</value>
@@ -746,7 +746,7 @@
     <value>认证密码</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自定义DNS(可多个,用逗号(,)分隔)</value>
+    <value>自定义DNS(可多个，用逗号(,)分隔)</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>解除Win10 UWP应用回环代理限制</value>
@@ -791,7 +791,7 @@
     <value>全局热键设置</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>直接按键盘进行设置, 重启后生效</value>
+    <value>直接按键盘进行设置，重启后生效</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>不改变系统代理</value>
@@ -830,7 +830,7 @@
     <value>上移 (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>过滤器, 支持正则</value>
+    <value>过滤器(支持正则)</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官网</value>
@@ -872,7 +872,7 @@
     <value>预定义规则集列表</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*设置的路由规则,用逗号(,)分隔;正则中的逗号用&lt;COMMA&gt;替代</value>
+    <value>*设置的路由规则，用逗号(,)分隔；正则中的逗号用&lt;COMMA&gt;替代</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>从剪贴板中导入规则</value>
@@ -902,13 +902,13 @@
     <value>路由规则详情设置</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>保存时Domain, IP, 进程名 自动排序</value>
+    <value>保存时 Domain, IP, 进程名 自动排序</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>规则详细说明文档</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支持填写DnsObject,JSON格式，点击查看文档</value>
+    <value>支持填写DnsObject，JSON格式，点击查看文档</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分组此处请留空</value>
@@ -920,7 +920,7 @@
     <value>系统代理设置改变</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
-    <value>RouteOnly</value>
+    <value>仅限路由(routeOnly)</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
     <value>请勿将代理服务器用于本地（Intranet）地址</value>
@@ -935,7 +935,7 @@
     <value>速度(M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>运行Core失败，请看日志</value>
+    <value>运行Core失败，请查看日志</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>别名正则过滤</value>
@@ -953,7 +953,7 @@
     <value>为局域网开启新的端口</value>
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
-    <value>Tun模式设置</value>
+    <value>Tun 模式设置</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>移至订阅分组</value>
@@ -1373,7 +1373,7 @@
     <value>请先在Tun模式设置中设置sudo密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>请不要用sudo运行本app</value>
+    <value>请不要用sudo运行本程序</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp 模式</value>
@@ -1388,7 +1388,7 @@
     <value>测试时自动分批的每批数量（最大1000）</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>例外. 对于下列地址不使用代理配置文件:使用逗号(,)分隔</value>
+    <value>例外：对于下列地址不使用代理配置文件。使用逗号(,)分隔。</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>流量探测类型</value>
