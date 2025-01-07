@@ -1038,9 +1038,13 @@ namespace ServiceLib.Services.CoreConfig
                 //Outbound Freedom domainStrategy
                 if (Utils.IsNotEmpty(domainStrategy4Freedom))
                 {
-                    var outbound = v2rayConfig.outbounds[1];
-                    outbound.settings.domainStrategy = domainStrategy4Freedom;
-                    outbound.settings.userLevel = 0;
+                    var outbound = v2rayConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
+                    if (outbound != null)
+                    {
+                        outbound.settings = new();
+                        outbound.settings.domainStrategy = domainStrategy4Freedom;
+                        outbound.settings.userLevel = 0;
+                    }
                 }
 
                 var obj = JsonUtils.ParseJson(normalDNS);
