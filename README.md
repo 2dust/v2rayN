@@ -22,7 +22,7 @@ Fedora 30+
 ### macOS
 - `chmod +x v2rayN` Run `./v2rayN` under user permissions
 ```
-macOS 10.14+
+macOS 11+
 ```
 
 ## Requirements  
