@@ -567,6 +567,7 @@ namespace ServiceLib.Services.CoreConfig
         {
             try
             {
+                var muxEnabled = _config.CoreBasicItem.MuxEnabled;
                 switch (node.ConfigType)
                 {
                     case EConfigType.VMess:
@@ -607,7 +608,7 @@ namespace ServiceLib.Services.CoreConfig
                                 usersItem.security = Global.DefaultSecurity;
                             }
 
-                            await GenOutboundMux(node, outbound, _config.CoreBasicItem.MuxEnabled);
+                            await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
 
                             outbound.settings.servers = null;
                             break;
@@ -632,7 +633,7 @@ namespace ServiceLib.Services.CoreConfig
                             serversItem.ota = false;
                             serversItem.level = 1;
 
-                            await GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound);
 
                             outbound.settings.vnext = null;
                             break;
@@ -668,7 +669,7 @@ namespace ServiceLib.Services.CoreConfig
                                 serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
                             }
 
-                            await GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound);
 
                             outbound.settings.vnext = null;
                             break;
@@ -702,22 +703,15 @@ namespace ServiceLib.Services.CoreConfig
                             usersItem.email = Global.UserEMail;
                             usersItem.encryption = node.Security;
 
-                            await GenOutboundMux(node, outbound, _config.CoreBasicItem.MuxEnabled);
-
-                            if (node.StreamSecurity == Global.StreamSecurityReality || node.StreamSecurity == Global.StreamSecurity)
+                            if (node.Flow.IsNullOrEmpty())
                             {
-                                if (Utils.IsNotEmpty(node.Flow))
-                                {
-                                    usersItem.flow = node.Flow;
-
-                                    await GenOutboundMux(node, outbound, false);
-                                }
+                                await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
                             }
-                            if (node.StreamSecurity == Global.StreamSecurityReality && Utils.IsNullOrEmpty(node.Flow))
+                            else
                             {
-                                await GenOutboundMux(node, outbound, _config.CoreBasicItem.MuxEnabled);
+                                usersItem.flow = node.Flow;
+                                await GenOutboundMux(node, outbound, false, muxEnabled);
                             }
-
                             outbound.settings.servers = null;
                             break;
                         }
@@ -740,7 +734,7 @@ namespace ServiceLib.Services.CoreConfig
                             serversItem.ota = false;
                             serversItem.level = 1;
 
-                            await GenOutboundMux(node, outbound, false);
+                            await GenOutboundMux(node, outbound);
 
                             outbound.settings.vnext = null;
                             break;
@@ -757,21 +751,23 @@ namespace ServiceLib.Services.CoreConfig
             return 0;
         }
 
-        private async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabled)
+        private async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabledTCP = false, bool enabledUDP = false)
         {
             try
             {
-                if (enabled)
+                outbound.mux.enabled = false;
+                outbound.mux.concurrency = -1;
+
+                if (enabledTCP)
                 {
                     outbound.mux.enabled = true;
                     outbound.mux.concurrency = _config.Mux4RayItem.Concurrency;
+                }
+                else if (enabledUDP)
+                {
+                    outbound.mux.enabled = true;
                     outbound.mux.xudpConcurrency = _config.Mux4RayItem.XudpConcurrency;
                     outbound.mux.xudpProxyUDP443 = _config.Mux4RayItem.XudpProxyUDP443;
-                }
-                else
-                {
-                    outbound.mux.enabled = false;
-                    outbound.mux.concurrency = -1;
                 }
             }
             catch (Exception ex)
@@ -928,7 +924,7 @@ namespace ServiceLib.Services.CoreConfig
                         }
 
                         streamSettings.xhttpSettings = xhttpSettings;
-                        await GenOutboundMux(node, outbound, false);
+                        await GenOutboundMux(node, outbound);
 
                         break;
                     //h2
