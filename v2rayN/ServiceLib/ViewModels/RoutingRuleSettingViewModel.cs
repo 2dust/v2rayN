@@ -2,6 +2,8 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ServiceLib.ViewModels
 {
@@ -189,7 +191,13 @@ namespace ServiceLib.ViewModels
             }
             if (lst.Count > 0)
             {
-                await _updateView?.Invoke(EViewAction.SetClipboardData, JsonUtils.Serialize(lst));
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+                await _updateView?.Invoke(EViewAction.SetClipboardData, JsonUtils.Serialize(lst, options));
             }
         }
 

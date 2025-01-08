@@ -98,6 +98,30 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
+        /// Serialize Object to Json string
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static string Serialize(object? obj, JsonSerializerOptions options)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (obj == null)
+                {
+                    return result;
+                }
+                result = JsonSerializer.Serialize(obj, options);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// SerializeToNode
         /// </summary>
         /// <param name="obj"></param>
