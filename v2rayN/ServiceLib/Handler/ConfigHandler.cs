@@ -156,6 +156,12 @@ namespace ServiceLib.Handler
             config.SystemProxyItem ??= new();
             config.WebDavItem ??= new();
             config.CheckUpdateItem ??= new();
+            config.Fragment4RayItem ??= new()
+            {
+                Packets = "tlshello",
+                Length = "100-200",
+                Interval = "10-20"
+            };
 
             if (Utils.IsNotEmpty(config.ConstItem.DefIEProxyExceptions))
             {

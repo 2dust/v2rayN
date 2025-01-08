@@ -1167,9 +1167,9 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         fragment = new()
                         {
-                            packets = "tlshello",
-                            length = "100-200",
-                            interval = "10-20"
+                            packets = _config.Fragment4RayItem?.Packets,
+                            length = _config.Fragment4RayItem?.Length,
+                            interval = _config.Fragment4RayItem?.Interval
                         }
                     }
                 };
