@@ -114,7 +114,7 @@
                             Grid.ColumnSpan="2"
                             HorizontalAlignment="Left"
                             Classes="Margin8"
-                            SelectionMode="Multiple"
+                            SelectionMode="Multiple,Toggle"
                             Theme="{DynamicResource CardCheckGroupListBox}" />
 
                         <TextBlock

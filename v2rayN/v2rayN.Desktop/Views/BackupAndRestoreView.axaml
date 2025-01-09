@@ -10,6 +10,12 @@
     d:DesignWidth="800"
     x:DataType="vms:BackupAndRestoreViewModel"
     mc:Ignorable="d">
+    <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="MinWidth" Value="180" />
+        </Style>
+    </UserControl.Styles>
+
 
     <DockPanel Classes="Margin8">
         <DockPanel Classes="Margin8" DockPanel.Dock="Bottom">
@@ -23,7 +29,7 @@
             <Border
                 Margin="4"
                 VerticalAlignment="Center"
-                Theme="{StaticResource CardBorder}">
+                Theme="{DynamicResource CardBorder}">
 
                 <Grid
                     Classes="Margin8"
@@ -69,7 +75,7 @@
             <Border
                 Margin="4"
                 VerticalAlignment="Center"
-                Theme="{StaticResource CardBorder}">
+                Theme="{DynamicResource CardBorder}">
                 <Grid
                     Classes="Margin8"
                     ColumnDefinitions="300,200"

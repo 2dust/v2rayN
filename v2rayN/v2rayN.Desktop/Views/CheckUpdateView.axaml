@@ -35,7 +35,11 @@
                 Content="{x:Static resx:ResUI.menuCheckUpdate}" />
         </StackPanel>
 
-        <StackPanel>
+        <Border
+            Margin="4"
+            VerticalAlignment="Center"
+            Theme="{DynamicResource CardBorder}">
+
             <ListBox
                 x:Name="lstCheckUpdates"
                 BorderThickness="1"
@@ -47,12 +51,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border
-                            Width="500"
-                            Height="80"
-                            Margin="-8"
-                            VerticalAlignment="Center"
-                            Theme="{StaticResource CardBorder}">
+                        <Panel Width="500" VerticalAlignment="Center">
                             <Grid ColumnDefinitions="1*,1*,3*" RowDefinitions="Auto">
                                 <ToggleSwitch
                                     x:Name="togAutoRefresh"
@@ -73,11 +72,10 @@
                                     Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />
                             </Grid>
-                        </Border>
+                        </Panel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </Border>
     </DockPanel>
-
 </UserControl>
