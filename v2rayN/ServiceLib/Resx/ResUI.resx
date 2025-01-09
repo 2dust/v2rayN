@@ -842,7 +842,7 @@
     <value>Add</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>Import Advanced Rules</value>
+    <value>Import Rules</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
     <value>Remove selected (Delete)</value>

@@ -95,7 +95,7 @@
                 HorizontalAlignment="Left"
                 Classes="Margin8"
                 SelectionMode="Multiple"
-                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                Theme="{DynamicResource CardCheckGroupListBox}" />
 
             <TextBlock
                 Grid.Row="4"
@@ -109,7 +109,7 @@
                 Grid.Column="1"
                 Classes="Margin8"
                 SelectionMode="Multiple"
-                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="2"

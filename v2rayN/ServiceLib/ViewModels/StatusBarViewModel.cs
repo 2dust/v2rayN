@@ -48,18 +48,6 @@ namespace ServiceLib.ViewModels
         [Reactive]
         public bool BlSystemProxyPac { get; set; }
 
-        [Reactive]
-        public bool BlNotSystemProxyClear { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxySet { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxyNothing { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxyPac { get; set; }
-
         public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
         public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
         public ReactiveCommand<Unit, Unit> SystemProxyNothingCmd { get; }
@@ -332,11 +320,6 @@ namespace ServiceLib.ViewModels
             BlSystemProxySet = (type == ESysProxyType.ForcedChange);
             BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
             BlSystemProxyPac = (type == ESysProxyType.Pac);
-
-            BlNotSystemProxyClear = !BlSystemProxyClear;
-            BlNotSystemProxySet = !BlSystemProxySet;
-            BlNotSystemProxyNothing = !BlSystemProxyNothing;
-            BlNotSystemProxyPac = !BlSystemProxyPac;
 
             if (blChange)
             {

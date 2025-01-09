@@ -1348,7 +1348,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Import Advanced Rules 的本地化字符串。
+        ///   查找类似 Import Rules 的本地化字符串。
         /// </summary>
         public static string menuRoutingAdvancedImportRules {
             get {

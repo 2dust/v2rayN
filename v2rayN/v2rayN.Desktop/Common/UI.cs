@@ -17,13 +17,11 @@ namespace v2rayN.Desktop.Common
 
         public static async Task<string?> OpenFileDialog(Window owner, FilePickerFileType? filter)
         {
-            var topLevel = TopLevel.GetTopLevel(owner);
-            if (topLevel == null)
-            {
-                return null;
-            }
+            var sp = GetStorageProvider(owner);
+            if (sp is null) return null;
+          
             // Start async operation to open the dialog.
-            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var files = await sp.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 AllowMultiple = false,
                 FileTypeFilter = filter is null ? [FilePickerFileTypes.All, FilePickerFileTypes.ImagePng] : [filter]
@@ -34,17 +32,21 @@ namespace v2rayN.Desktop.Common
 
         public static async Task<string?> SaveFileDialog(Window owner, string filter)
         {
-            var topLevel = TopLevel.GetTopLevel(owner);
-            if (topLevel == null)
-            {
-                return null;
-            }
+            var sp = GetStorageProvider(owner);
+            if (sp is null) return null;
+
             // Start async operation to open the dialog.
-            var files = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var files = await sp.SaveFilePickerAsync(new FilePickerSaveOptions
             {
             });
 
             return files?.TryGetLocalPath();
+        }
+
+        private static IStorageProvider? GetStorageProvider(Window owner)
+        {
+            var topLevel = TopLevel.GetTopLevel(owner);
+            return topLevel?.StorageProvider;
         }
     }
 }

@@ -843,7 +843,7 @@
     <value>新增規則集</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>一鍵匯入進階規則</value>
+    <value>一鍵匯入規則集</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
     <value>移除所選規則 (Delete)</value>
