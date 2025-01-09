@@ -48,7 +48,7 @@
       <None Update="v2rayN.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="v2rayN2.png">
+      <None Update="v2rayN.icns">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup> 
