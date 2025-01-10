@@ -1259,7 +1259,8 @@ namespace ServiceLib.Services.CoreConfig
                 singboxConfig.experimental ??= new Experimental4Sbox();
                 singboxConfig.experimental.cache_file = new CacheFile4Sbox()
                 {
-                    enabled = true
+                    enabled = true,
+                    path = Utils.GetConfigPath("cache.db")
                 };
             }
 
