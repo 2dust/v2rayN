@@ -59,14 +59,14 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-
-            _blLockShow = true;
             if (!_config.UiItem.ShowInTaskbar)
             {
-                await Task.Delay(1000);
+                return;
             }
 
-            await Task.Delay(100);
+            _blLockShow = true;
+
+            await Task.Delay(500);
             var txt = string.Join("", _queueMsg.ToArray());
             await _updateView?.Invoke(EViewAction.DispatcherShowMsg, txt);
 

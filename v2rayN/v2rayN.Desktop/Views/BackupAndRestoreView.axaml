@@ -14,14 +14,13 @@
         </Style>
     </UserControl.Styles>
 
-
     <DockPanel Classes="Margin8">
-        <DockPanel Classes="Margin8" DockPanel.Dock="Bottom">
+        <StackPanel Classes="Margin8" DockPanel.Dock="Bottom">
             <TextBlock
                 Name="txtMsg"
                 HorizontalAlignment="Left"
                 Classes="Margin8" />
-        </DockPanel>
+        </StackPanel>
 
         <StackPanel>
             <Border
@@ -90,6 +89,7 @@
                         <Button
                             Width="30"
                             Height="30"
+                            MinWidth="30"
                             Margin="10,0"
                             Theme="{DynamicResource BorderlessButton}">
                             <Button.Content>
