@@ -1402,4 +1402,7 @@
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
     <value>socks: local port, socks2: second local port, socks3: LAN port</value>
   </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
 </root>

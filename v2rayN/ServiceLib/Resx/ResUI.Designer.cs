@@ -3464,6 +3464,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Theme 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTheme {
+            get {
+                return ResourceManager.GetString("TbSettingsTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable Security Protocol TLS v1.3 (subscription/update) 的本地化字符串。
         /// </summary>
         public static string TbSettingsTLS13 {

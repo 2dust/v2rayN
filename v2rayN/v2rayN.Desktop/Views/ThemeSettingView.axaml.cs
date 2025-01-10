@@ -16,6 +16,11 @@ namespace v2rayN.Desktop.Views
             InitializeComponent();
             ViewModel = new ThemeSettingViewModel();
 
+            foreach (ETheme it in Enum.GetValues(typeof(ETheme)))
+            {
+                cmbCurrentTheme.Items.Add(it.ToString());
+            }
+
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 10; i++)
             {
                 cmbCurrentFontSize.Items.Add(i);
@@ -28,8 +33,7 @@ namespace v2rayN.Desktop.Views
 
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.FollowSystemTheme, v => v.togFollowSystemTheme.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.CurrentTheme, v => v.cmbCurrentTheme.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentLanguage, v => v.cmbCurrentLanguage.SelectedValue).DisposeWith(disposables);
             });
