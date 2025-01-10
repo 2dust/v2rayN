@@ -165,7 +165,7 @@
                                         Classes="Solid Red"
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
                                         IsVisible="{Binding IsActive}"
-                                        Theme="{StaticResource TagLabel}" />
+                                        Theme="{DynamicResource TagLabel}" />
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"

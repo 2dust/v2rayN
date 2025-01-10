@@ -94,7 +94,7 @@
                 Grid.Column="1"
                 HorizontalAlignment="Left"
                 Classes="Margin8"
-                SelectionMode="Multiple"
+                SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
 
             <TextBlock
@@ -108,7 +108,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Classes="Margin8"
-                SelectionMode="Multiple"
+                SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
                 Grid.Row="4"

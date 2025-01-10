@@ -18,40 +18,29 @@
         <StackPanel
             Classes="Margin8"
             DockPanel.Dock="Top"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            Spacing="4">
             <Menu>
                 <MenuItem x:Name="menuRoutingAdvancedAdd2" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
                 <MenuItem x:Name="menuRoutingAdvancedImportRules2" Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
             </Menu>
 
-            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center">
                 <HyperlinkButton Classes="WithIcon" Click="linkdomainStrategy_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy}" />
                 </HyperlinkButton>
             </TextBlock>
-            <ComboBox
-                x:Name="cmbdomainStrategy"
-                Width="110"
-                Margin="8,0,0,0" />
+            <ComboBox x:Name="cmbdomainStrategy" Width="110" />
             <Separator />
-            <TextBlock
-                Margin="8,0,0,0"
-                VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbdomainMatcher}" />
-            <ComboBox
-                x:Name="cmbdomainMatcher"
-                Width="60"
-                Margin="8,0,0,0" />
+            <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.TbdomainMatcher}" />
+            <ComboBox x:Name="cmbdomainMatcher" Width="60" />
             <Separator />
-            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center">
                 <HyperlinkButton Classes="WithIcon" Click="linkdomainStrategy4Singbox_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
                 </HyperlinkButton>
             </TextBlock>
-            <ComboBox
-                x:Name="cmbdomainStrategy4Singbox"
-                Width="100"
-                Margin="8,0,0,0" />
+            <ComboBox x:Name="cmbdomainStrategy4Singbox" Width="100" />
         </StackPanel>
 
         <StackPanel

@@ -1399,4 +1399,7 @@
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
     <value>socks：本地端口，socks2：第二个本地端口，socks3：局域网端口</value>
   </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>主题</value>
+  </data>
 </root>

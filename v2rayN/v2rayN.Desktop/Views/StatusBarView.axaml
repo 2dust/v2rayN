@@ -45,7 +45,7 @@
                         x:Name="togEnableTun"
                         HorizontalAlignment="Center"
                         Classes="Margin8"
-                        Theme="{StaticResource SimpleToggleSwitch}" />
+                        Theme="{DynamicResource SimpleToggleSwitch}" />
                 </StackPanel>
 
                 <StackPanel

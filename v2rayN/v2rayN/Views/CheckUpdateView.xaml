@@ -64,7 +64,6 @@
                     <DataTemplate>
                         <Border
                             Width="500"
-                            Height="50"
                             Margin="{StaticResource Margin8}"
                             Padding="0"
                             VerticalAlignment="Center">

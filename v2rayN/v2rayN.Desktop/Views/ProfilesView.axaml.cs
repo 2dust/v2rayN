@@ -15,7 +15,12 @@ namespace v2rayN.Desktop.Views
     public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         private static Config _config;
-        private Window _window;
+        private Window? _window;
+
+        public ProfilesView()
+        {
+            InitializeComponent();
+        }
 
         public ProfilesView(Window window)
         {

@@ -9,7 +9,12 @@ namespace v2rayN.Desktop.Views
 {
     public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestoreViewModel>
     {
-        private Window _window;
+        private Window? _window;
+
+        public BackupAndRestoreView()
+        {
+            InitializeComponent();
+        }
 
         public BackupAndRestoreView(Window window)
         {
