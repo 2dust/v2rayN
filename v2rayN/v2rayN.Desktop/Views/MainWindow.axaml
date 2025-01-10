@@ -150,71 +150,20 @@
                         x:Name="tabMain1"
                         Grid.Row="2"
                         TabStripPlacement="Left">
-                        <TabItem x:Name="tabMsgView1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashProxies1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbProxies}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashConnections1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbConnections}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
+                        <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                        <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
+                        <TabItem x:Name="tabClashConnections1" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
                 <Grid x:Name="gridMain2" IsVisible="False">
                     <TabControl x:Name="tabMain2" TabStripPlacement="Left">
-                        <TabItem x:Name="tabProfiles2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.menuServers}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabMsgView2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashProxies2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbProxies}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashConnections2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbConnections}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
+                        <TabItem x:Name="tabProfiles2" Header="{x:Static resx:ResUI.menuServers}" />
+                        <TabItem x:Name="tabMsgView2" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                        <TabItem x:Name="tabClashProxies2" Header="{x:Static resx:ResUI.TbProxies}" />
+                        <TabItem x:Name="tabClashConnections2" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
-
             </Grid>
-
         </DockPanel>
     </dialogHost:DialogHost>
 </Window>

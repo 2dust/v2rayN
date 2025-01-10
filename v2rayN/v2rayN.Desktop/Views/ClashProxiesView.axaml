@@ -95,7 +95,8 @@
             <ListBox
                 x:Name="lstProxyGroups"
                 DockPanel.Dock="Left"
-                ItemsSource="{Binding ProxyGroups}">
+                ItemsSource="{Binding ProxyGroups}"
+                Theme="{StaticResource ButtonRadioGroupListBox}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -105,24 +106,25 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="-6"
+                            Margin="-8,-4"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
-                            <DockPanel>
-                                <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
-                                    <DockPanel Grid.Row="0">
-                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </DockPanel>
-                                    <TextBlock Grid.Row="2" Text="{Binding Now}" />
-                                </Grid>
-                            </DockPanel>
+                            <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </DockPanel>
+                                <TextBlock Grid.Row="2" Text="{Binding Now}" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
 
-            <ListBox x:Name="lstProxyDetails" ItemsSource="{Binding ProxyDetails}">
+            <ListBox
+                x:Name="lstProxyDetails"
+                ItemsSource="{Binding ProxyDetails}"
+                Theme="{StaticResource ButtonRadioGroupListBox}">
                 <ItemsControl.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
@@ -138,7 +140,7 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="-6"
+                            Margin="-12,-4"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>

@@ -43,7 +43,8 @@
             <ListBox
                 x:Name="lstCheckUpdates"
                 BorderThickness="1"
-                ItemsSource="{Binding CheckUpdateModels}">
+                ItemsSource="{Binding CheckUpdateModels}"
+                Theme="{StaticResource ButtonRadioGroupListBox}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
