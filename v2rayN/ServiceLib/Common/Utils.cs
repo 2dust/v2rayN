@@ -558,7 +558,7 @@ namespace ServiceLib.Common
 
         public static string GetRuntimeInfo()
         {
-            return $"{Utils.GetVersion()} | {Utils.StartupPath()} | {Utils.GetExePath()} | {Environment.OSVersion} | {(Environment.Is64BitOperatingSystem ? 64 : 32)}";
+            return $"{Utils.GetVersion()} | {Utils.StartupPath()} | {Utils.GetExePath()} | {Environment.OSVersion}";
         }
 
         /// <summary>

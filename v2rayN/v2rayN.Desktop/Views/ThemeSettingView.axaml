@@ -15,7 +15,7 @@
             <Setter Property="Width" Value="100" />
         </Style>
         <Style Selector="ComboBox">
-            <Setter Property="Width" Value="150" />
+            <Setter Property="Width" Value="130" />
         </Style>
     </UserControl.Styles>
 
@@ -33,7 +33,7 @@
         </Button.Content>
         <Button.Flyout>
             <Flyout>
-                <StackPanel>
+                <StackPanel Margin="0,12">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             VerticalAlignment="Center"
