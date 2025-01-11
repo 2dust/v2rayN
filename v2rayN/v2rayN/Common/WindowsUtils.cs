@@ -64,14 +64,6 @@ namespace v2rayN
                 BitmapSizeOptions.FromEmptyOptions());
         }
 
-        public static bool IsDarkTheme()
-        {
-            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            var obj = key?.GetValue("AppsUseLightTheme");
-            int.TryParse(obj?.ToString(), out var value);
-            return value == 0;
-        }
-
         public static void RemoveTunDevice()
         {
             try
@@ -103,7 +95,19 @@ namespace v2rayN
             }
         }
 
-        public static void SetDarkBorder(Window window, bool dark)
+        public static void SetDarkBorder(Window window, string? theme)
+        {
+            var isDark = theme switch
+            {
+                nameof(ETheme.Dark) => true,
+                nameof(ETheme.Light) => false,
+                _ => IsDarkTheme(),
+            };
+
+            SetDarkBorder(window, isDark);
+        }
+
+        private static void SetDarkBorder(Window window, bool dark)
         {
             // Make sure the handle is created before the window is shown
             IntPtr hWnd = new WindowInteropHelper(window).EnsureHandle();
@@ -111,6 +115,14 @@ namespace v2rayN
             uint attributeSize = (uint)Marshal.SizeOf(attribute);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
+        }
+
+        private static bool IsDarkTheme()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            var obj = key?.GetValue("AppsUseLightTheme");
+            int.TryParse(obj?.ToString(), out var value);
+            return value == 0;
         }
 
         #region Windows API

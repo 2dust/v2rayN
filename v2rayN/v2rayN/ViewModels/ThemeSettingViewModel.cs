@@ -16,23 +16,17 @@ namespace v2rayN.ViewModels
     {
         private readonly PaletteHelper _paletteHelper = new();
 
-        [Reactive]
-        public bool ColorModeDark { get; set; }
-
         private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
         public IObservableCollection<Swatch> Swatches => _swatches;
 
         [Reactive]
         public Swatch SelectedSwatch { get; set; }
 
-        [Reactive]
-        public int CurrentFontSize { get; set; }
+        [Reactive] public string CurrentTheme { get; set; }
 
-        [Reactive]
-        public bool FollowSystemTheme { get; set; }
+        [Reactive] public int CurrentFontSize { get; set; }
 
-        [Reactive]
-        public string CurrentLanguage { get; set; }
+        [Reactive] public string CurrentLanguage { get; set; }
 
         public ThemeSettingViewModel()
         {
@@ -62,40 +56,27 @@ namespace v2rayN.ViewModels
 
         private void BindingUI()
         {
-            ColorModeDark = _config.UiItem.ColorModeDark;
-            FollowSystemTheme = _config.UiItem.FollowSystemTheme;
             _swatches.AddRange(new SwatchesProvider().Swatches);
             if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
                 SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
             }
+            CurrentTheme = _config.UiItem.CurrentTheme;
             CurrentFontSize = _config.UiItem.CurrentFontSize;
             CurrentLanguage = _config.UiItem.CurrentLanguage;
 
             this.WhenAnyValue(
-                  x => x.ColorModeDark,
-                  y => y == true)
-                      .Subscribe(c =>
-                      {
-                          if (_config.UiItem.ColorModeDark != ColorModeDark)
-                          {
-                              _config.UiItem.ColorModeDark = ColorModeDark;
-                              ModifyTheme();
-                              ConfigHandler.SaveConfig(_config);
-                          }
-                      });
-
-            this.WhenAnyValue(x => x.FollowSystemTheme,
-                y => y == true)
-                    .Subscribe(c =>
-                    {
-                        if (_config.UiItem.FollowSystemTheme != FollowSystemTheme)
-                        {
-                            _config.UiItem.FollowSystemTheme = FollowSystemTheme;
-                            ModifyTheme();
-                            ConfigHandler.SaveConfig(_config);
-                        }
-                    });
+                    x => x.CurrentTheme,
+                    y => y != null && !y.IsNullOrEmpty())
+                .Subscribe(c =>
+                 {
+                     if (_config.UiItem.CurrentTheme != CurrentTheme)
+                     {
+                         _config.UiItem.CurrentTheme = CurrentTheme;
+                         ModifyTheme();
+                         ConfigHandler.SaveConfig(_config);
+                     }
+                 });
 
             this.WhenAnyValue(
               x => x.SelectedSwatch,
@@ -147,12 +128,18 @@ namespace v2rayN.ViewModels
 
         public void ModifyTheme()
         {
-            var theme = _paletteHelper.GetTheme();
+            var baseTheme = CurrentTheme switch
+            {
+                nameof(ETheme.Dark) => BaseTheme.Dark,
+                nameof(ETheme.Light) => BaseTheme.Light,
+                _ => BaseTheme.Inherit,
+            };
 
-            var isDarkTheme = FollowSystemTheme ? WindowsUtils.IsDarkTheme() : ColorModeDark;
-            theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
+            var theme = _paletteHelper.GetTheme();
+            theme.SetBaseTheme(baseTheme);
             _paletteHelper.SetTheme(theme);
-            WindowsUtils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+
+            WindowsUtils.SetDarkBorder(Application.Current.MainWindow, CurrentTheme);
         }
 
         private void ModifyFontSize()
@@ -182,7 +169,7 @@ namespace v2rayN.ViewModels
             var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
             hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
             {
-                if (config.UiItem.FollowSystemTheme)
+                if (config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
                 {
                     const int WM_SETTINGCHANGE = 0x001A;
                     if (msg == WM_SETTINGCHANGE)

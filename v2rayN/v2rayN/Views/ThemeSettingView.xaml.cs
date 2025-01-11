@@ -13,6 +13,11 @@ namespace v2rayN.Views
         {
             InitializeComponent();
             ViewModel = new ThemeSettingViewModel();
+            foreach (ETheme it in Enum.GetValues(typeof(ETheme)))
+            {
+                if ((int)it > 2) continue;
+                cmbCurrentTheme.Items.Add(it.ToString());
+            }
 
             for (int i = Global.MinFontSize; i <= Global.MinFontSize + 10; i++)
             {
@@ -26,8 +31,7 @@ namespace v2rayN.Views
 
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.ColorModeDark, v => v.togDarkMode.IsChecked).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.FollowSystemTheme, v => v.togFollowSystemTheme.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.CurrentTheme, v => v.cmbCurrentTheme.SelectedValue).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.Swatches, v => v.cmbSwatches.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSwatch, v => v.cmbSwatches.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.CurrentFontSize, v => v.cmbCurrentFontSize.Text).DisposeWith(disposables);

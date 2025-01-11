@@ -25,29 +25,20 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-            <ToggleButton
-                x:Name="togDarkMode"
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="{StaticResource Margin8}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbSettingsFollowSystemTheme}" />
-            <ToggleButton
-                x:Name="togFollowSystemTheme"
+                Text="{x:Static resx:ResUI.TbSettingsTheme}" />
+            <ComboBox
+                x:Name="cmbCurrentTheme"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="{StaticResource Margin8}" />
+                Width="120"
+                Margin="{StaticResource Margin8}"
+                Style="{StaticResource DefComboBox}" />
 
             <TextBlock
                 Grid.Row="2"
@@ -59,7 +50,7 @@
                 x:Name="cmbSwatches"
                 Grid.Row="2"
                 Grid.Column="1"
-                Width="100"
+                Width="120"
                 Margin="{StaticResource Margin8}"
                 DisplayMemberPath="Name"
                 Style="{StaticResource DefComboBox}" />
@@ -74,7 +65,7 @@
                 x:Name="cmbCurrentFontSize"
                 Grid.Row="3"
                 Grid.Column="1"
-                Width="100"
+                Width="120"
                 Margin="{StaticResource Margin8}"
                 Style="{StaticResource DefComboBox}" />
 
@@ -88,7 +79,7 @@
                 x:Name="cmbCurrentLanguage"
                 Grid.Row="4"
                 Grid.Column="1"
-                Width="100"
+                Width="120"
                 Margin="{StaticResource Margin8}"
                 Style="{StaticResource DefComboBox}" />
         </Grid>
