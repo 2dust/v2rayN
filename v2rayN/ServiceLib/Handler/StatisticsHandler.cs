@@ -72,6 +72,11 @@
                 return;
             }
 
+            if(indexId == toIndexId)
+            {
+                return;
+            }
+
             var stat = _lstServerStat.FirstOrDefault(t => t.IndexId == indexId);
             if (stat == null)
             {
