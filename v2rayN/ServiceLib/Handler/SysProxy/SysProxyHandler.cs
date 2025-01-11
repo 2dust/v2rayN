@@ -16,7 +16,7 @@
             try
             {
                 var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                var exceptions = config.SystemProxyItem.SystemProxyExceptions;
+                var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
                 if (port <= 0)
                 {
                     return false;
@@ -68,7 +68,7 @@
 
         private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
         {
-            strExceptions = config.SystemProxyItem.SystemProxyExceptions;
+            strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
             if (config.SystemProxyItem.NotProxyLocalAddress)
             {
                 strExceptions = $"<local>;{strExceptions}";
