@@ -10,7 +10,7 @@ namespace AmazTool
         {
             Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
 
-            Waiting(3);
+            Waiting(5);
 
             if (!File.Exists(fileName))
             {

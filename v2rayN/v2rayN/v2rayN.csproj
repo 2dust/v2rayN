@@ -9,7 +9,7 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Resources\v2rayN.ico</ApplicationIcon>
-		<Copyright>Copyright © 2017-2024 (GPLv3)</Copyright>
+		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 	
