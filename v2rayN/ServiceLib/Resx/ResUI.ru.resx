@@ -481,12 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Цвет</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>Тёмный режим</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>Следить за системной темой</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>Язык (требуется перезапуск)</value>
   </data>
@@ -862,9 +856,6 @@
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Доменная стратегия</value>
   </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>Включить расширенные функции</value>
-  </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3.Заблокировать домен или IP</value>
   </data>
@@ -948,9 +939,6 @@
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
     <value>Показать логи</value>
-  </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>Импортировать старый конфиг guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Режим VPN</value>
@@ -1269,9 +1257,6 @@
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
     <value>Convert target type</value>
-  </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>Save Interface Layout</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0} : {1}/s↑ | {2}/s↓</value>

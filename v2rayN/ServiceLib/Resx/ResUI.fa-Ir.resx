@@ -481,9 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>رنگ</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>حالت تاریک</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>زبان</value>
   </data>
@@ -853,9 +850,6 @@
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>استراتژی دامنه</value>
   </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>فعال کردن عملکرد پیشرفته</value>
-  </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3. مسدود کردن دامنه یا آیپی</value>
   </data>
@@ -939,9 +933,6 @@
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
     <value>نمایش گزارش</value>
-  </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>پیکربندی قدیمی guiNConfig را وارد شود</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>فعال سازی Tun</value>
@@ -1104,9 +1095,6 @@
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>فعال سازی</value>
-  </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>ذخیره طرح رابط</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>منبع فایل های جغرافیایی (اختیاری)</value>
@@ -1272,9 +1260,6 @@
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>حداکتر پهنای باند هیستریا (آپلود/دانلود)</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>دنبال کردن تم سیستم</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
     <value>افزودن سرور [TUIC]</value>

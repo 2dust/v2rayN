@@ -481,12 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>颜色</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>暗黑模式</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>跟随系统主题</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>语言(需重启)</value>
   </data>
@@ -856,9 +850,6 @@
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
   </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>启用高级功能</value>
-  </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3.阻止的Domain或IP</value>
   </data>
@@ -942,9 +933,6 @@
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
     <value>显示日志</value>
-  </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>导入旧的配置文件guiNConfig</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>启用Tun</value>
@@ -1314,9 +1302,6 @@
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>活动</value>
-  </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>保存界面布局</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo文件来源(可选)</value>

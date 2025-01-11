@@ -943,15 +943,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Import old config (guiNConfig) 的本地化字符串。
-        /// </summary>
-        public static string menuImportOldGuiConfig {
-            get {
-                return ResourceManager.GetString("menuImportOldGuiConfig", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Import Rules From Clipboard 的本地化字符串。
         /// </summary>
         public static string menuImportRulesFromClipboard {
@@ -1533,15 +1524,6 @@ namespace ServiceLib.Resx {
         public static string menuSpeedServer {
             get {
                 return ResourceManager.GetString("menuSpeedServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Save Interface Layout 的本地化字符串。
-        /// </summary>
-        public static string menuStorageUI {
-            get {
-                return ResourceManager.GetString("menuStorageUI", resourceCulture);
             }
         }
         
@@ -2357,15 +2339,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable advanced function 的本地化字符串。
-        /// </summary>
-        public static string TbenableRoutingAdvanced {
-            get {
-                return ResourceManager.GetString("TbenableRoutingAdvanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable Tun 的本地化字符串。
         /// </summary>
         public static string TbEnableTunAs {
@@ -2816,15 +2789,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Dark Mode 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsColorMode {
-            get {
-                return ResourceManager.GetString("TbSettingsColorMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Core: basic settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCore {
@@ -3091,15 +3055,6 @@ namespace ServiceLib.Resx {
         public static string TbSettingsExceptionTip2 {
             get {
                 return ResourceManager.GetString("TbSettingsExceptionTip2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Follow System Theme 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsFollowSystemTheme {
-            get {
-                return ResourceManager.GetString("TbSettingsFollowSystemTheme", resourceCulture);
             }
         }
         

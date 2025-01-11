@@ -481,12 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Color</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>Dark Mode</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>Follow System Theme</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>Language (Restart)</value>
   </data>
@@ -856,9 +850,6 @@
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain strategy</value>
   </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>Enable advanced function</value>
-  </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3.Block Domain or IP</value>
   </data>
@@ -942,9 +933,6 @@
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
     <value>Display Log</value>
-  </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>Import old config (guiNConfig)</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Enable Tun</value>
@@ -1317,9 +1305,6 @@
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>Active</value>
-  </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>Save Interface Layout</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo files source (optional)</value>

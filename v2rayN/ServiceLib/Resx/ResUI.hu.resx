@@ -481,12 +481,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Szín</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>Sötét mód</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>Kövesse a rendszer témáját</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>Nyelv (Újraindítás)</value>
   </data>
@@ -856,9 +850,6 @@
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain stratégia</value>
   </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>Fejlett funkció engedélyezése</value>
-  </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3. Domain vagy IP blokkolása</value>
   </data>
@@ -942,9 +933,6 @@
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
     <value>Napló megjelenítése</value>
-  </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>Régi konfiguráció importálása (guiNConfig)</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Tun engedélyezése</value>
@@ -1317,9 +1305,6 @@
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>Aktív</value>
-  </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>Szoftverfelület elmentése</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo fájlok forrása (opcionális)</value>
