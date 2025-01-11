@@ -162,12 +162,7 @@ namespace ServiceLib.Handler
                 Length = "100-200",
                 Interval = "10-20"
             };
-
-            if (Utils.IsNotEmpty(config.ConstItem.DefIEProxyExceptions))
-            {
-                config.SystemProxyItem.SystemProxyExceptions = $"{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
-                config.ConstItem.DefIEProxyExceptions = string.Empty;
-            }
+             
             if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
             {
                 config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
