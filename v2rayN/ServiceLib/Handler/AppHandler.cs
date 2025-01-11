@@ -106,7 +106,13 @@
             if (Utils.IsWindows())
             {
                 _processJob ??= new();
-                _processJob?.AddProcess(processHandle);
+                try
+                {
+                    _processJob?.AddProcess(processHandle);
+                }
+                catch
+                {
+                }
             }
         }
 

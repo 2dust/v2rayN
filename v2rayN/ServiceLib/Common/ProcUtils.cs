@@ -81,9 +81,7 @@ public static class ProcUtils
             return;
         }
 
-        var procId = review ? proc?.Id : null;
-        var fileName = review ? proc?.MainModule?.FileName : null;
-        var processName = review ? proc?.ProcessName : null;
+        GetProcessKeyInfo(proc, review, out var procId, out var fileName, out var processName);
 
         try { proc?.Kill(true); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
         try { proc?.Kill(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
@@ -91,6 +89,29 @@ public static class ProcUtils
         try { proc?.Dispose(); } catch (Exception ex) { Logging.SaveLog(_tag, ex); }
 
         await Task.Delay(300);
+        await ProcessKillByKeyInfo(review, procId, fileName, processName);
+    }
+
+    private static void GetProcessKeyInfo(Process? proc, bool review, out int? procId, out string? fileName, out string? processName)
+    {
+        procId = null;
+        fileName = null;
+        processName = null;
+        if (!review) return;
+        try
+        {
+            procId = proc?.Id;
+            fileName = proc?.MainModule?.FileName;
+            processName = proc?.ProcessName;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private static async Task ProcessKillByKeyInfo(bool review, int? procId, string? fileName, string? processName)
+    {
         if (review && procId != null && fileName != null)
         {
             try

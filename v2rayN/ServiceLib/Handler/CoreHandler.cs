@@ -258,6 +258,7 @@ namespace ServiceLib.Handler
                     proc.BeginErrorReadLine();
                 }
 
+                AppHandler.Instance.AddProcess(proc.Handle);
                 if (proc.WaitForExit(1000))
                 {
                     proc.CancelErrorRead();
