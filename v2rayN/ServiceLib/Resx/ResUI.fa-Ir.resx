@@ -836,7 +836,7 @@
     <value>اضافه کردن</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>وارد کردن قوانین پیشرفته</value>
+    <value>وارد کردن مجموعه قوانین</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
     <value>حذف انتخاب شده</value>
@@ -1388,6 +1388,6 @@
     <value>socks:پورت محلی، socks2: پورت دوم محلی، socks3: پورت LAN</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
-    <value>Theme</value>
+    <value>تم</value>
   </data>
 </root>
