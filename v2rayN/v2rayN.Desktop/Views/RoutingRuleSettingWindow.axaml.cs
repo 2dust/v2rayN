@@ -27,7 +27,7 @@ namespace v2rayN.Desktop.Views
             lstRules.SelectionChanged += lstRules_SelectionChanged;
             lstRules.DoubleTapped += LstRules_DoubleTapped;
             menuRuleSelectAll.Click += menuRuleSelectAll_Click;
-            btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
+            //btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
             btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_ClickAsync;
 
             ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
@@ -51,7 +51,7 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.SelectedRouting.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.SelectedValue).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SelectedRouting.Url, v => v.txtUrl.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SelectedRouting.CustomIcon, v => v.txtCustomIcon.Text).DisposeWith(disposables);
+                //this.Bind(ViewModel, vm => vm.SelectedRouting.CustomIcon, v => v.txtCustomIcon.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.CustomRulesetPath4Singbox, v => v.txtCustomRulesetPath4Singbox.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.Sort, v => v.txtSort.Text).DisposeWith(disposables);
 
@@ -179,16 +179,16 @@ namespace v2rayN.Desktop.Views
             lstRules.SelectAll();
         }
 
-        private async void btnBrowseCustomIcon_Click(object? sender, RoutedEventArgs e)
-        {
-            var fileName = await UI.OpenFileDialog(this, FilePickerFileTypes.ImagePng);
-            if (fileName.IsNullOrEmpty())
-            {
-                return;
-            }
+        //private async void btnBrowseCustomIcon_Click(object? sender, RoutedEventArgs e)
+        //{
+        //    var fileName = await UI.OpenFileDialog(this, FilePickerFileTypes.ImagePng);
+        //    if (fileName.IsNullOrEmpty())
+        //    {
+        //        return;
+        //    }
 
-            txtCustomIcon.Text = fileName;
-        }
+        //    txtCustomIcon.Text = fileName;
+        //}
 
         private async void btnBrowseCustomRulesetPath4Singbox_ClickAsync(object? sender, RoutedEventArgs e)
         {

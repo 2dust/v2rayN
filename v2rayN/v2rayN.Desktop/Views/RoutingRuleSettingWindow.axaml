@@ -123,6 +123,7 @@
                 Classes="Margin8"
                 TextWrapping="Wrap" />
 
+            <!--
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
@@ -144,6 +145,7 @@
                 Grid.Column="2"
                 Classes="Margin8"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
+            -->
 
             <TextBlock
                 Grid.Row="4"
