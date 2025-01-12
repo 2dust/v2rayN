@@ -210,13 +210,13 @@ namespace ServiceLib.ViewModels
             var address = $"{Global.Loopback}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}";
 
             var sb = new StringBuilder();
-            sb.AppendLine($"{cmd} http_proxy=http://{address}");
-            sb.AppendLine($"{cmd} https_proxy=http://{address}");
-            sb.AppendLine($"{cmd} all_proxy=socks5://{address}");
+            sb.AppendLine($"{cmd} http_proxy={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} https_proxy={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} all_proxy={Global.Socks5Protocol}{address}");
             sb.AppendLine("");
-            sb.AppendLine($"{cmd} HTTP_PROXY=http://{address}");
-            sb.AppendLine($"{cmd} HTTPS_PROXY=http://{address}");
-            sb.AppendLine($"{cmd} ALL_PROXY=socks5://{address}");
+            sb.AppendLine($"{cmd} HTTP_PROXY={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
             await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
         }

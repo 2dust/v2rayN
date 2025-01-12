@@ -63,6 +63,7 @@
         public const string HttpProtocol = "http://";
         public const string HttpsProtocol = "https://";
         public const string SocksProtocol = "socks://";
+        public const string Socks5Protocol = "socks5://";
 
         public const string UserEMail = "t@t.tt";
         public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
