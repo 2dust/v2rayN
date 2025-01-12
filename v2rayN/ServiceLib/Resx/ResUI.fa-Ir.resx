@@ -1390,4 +1390,7 @@
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>تم</value>
   </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Copy proxy command to clipboard</value>
+  </data>
 </root>

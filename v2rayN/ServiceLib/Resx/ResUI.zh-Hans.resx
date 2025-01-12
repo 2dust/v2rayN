@@ -1387,4 +1387,7 @@
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主题</value>
   </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>复制终端代理命令至剪贴板</value>
+  </data>
 </root>

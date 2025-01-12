@@ -194,6 +194,11 @@
                         Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
                     <Separator />
                     <MenuItem
+                        x:Name="menuCopyProxyCmdToClipboard"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
+                    <Separator />
+                    <MenuItem
                         x:Name="menuExit"
                         Height="{StaticResource MenuItemHeight}"
                         Header="{x:Static resx:ResUI.menuExit}" />

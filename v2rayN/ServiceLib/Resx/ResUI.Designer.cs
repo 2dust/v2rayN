@@ -844,6 +844,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Copy proxy command to clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuCopyProxyCmdToClipboard {
+            get {
+                return ResourceManager.GetString("menuCopyProxyCmdToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clone selected server 的本地化字符串。
         /// </summary>
         public static string menuCopyServer {

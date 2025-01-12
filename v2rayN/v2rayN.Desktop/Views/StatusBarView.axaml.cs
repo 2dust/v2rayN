@@ -69,6 +69,11 @@ namespace v2rayN.Desktop.Views
                     },
                     DispatcherPriority.Default);
                     break;
+
+                case EViewAction.SetClipboardData:
+                    if (obj is null) return false;
+                    await AvaUtils.SetClipboardData(this, (string)obj);
+                    break;
             }
             return await Task.FromResult(true);
         }
