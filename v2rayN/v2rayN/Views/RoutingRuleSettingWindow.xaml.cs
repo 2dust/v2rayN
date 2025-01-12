@@ -17,7 +17,7 @@ namespace v2rayN.Views
             lstRules.SelectionChanged += lstRules_SelectionChanged;
             lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
             menuRuleSelectAll.Click += menuRuleSelectAll_Click;
-            //btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
+            btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
             btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
 
             ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
@@ -41,7 +41,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SelectedRouting.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.Text).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SelectedRouting.Url, v => v.txtUrl.Text).DisposeWith(disposables);
-                //this.Bind(ViewModel, vm => vm.SelectedRouting.CustomIcon, v => v.txtCustomIcon.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SelectedRouting.CustomIcon, v => v.txtCustomIcon.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.CustomRulesetPath4Singbox, v => v.txtCustomRulesetPath4Singbox.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedRouting.Sort, v => v.txtSort.Text).DisposeWith(disposables);
 
@@ -173,16 +173,16 @@ namespace v2rayN.Views
             lstRules.SelectAll();
         }
 
-        //private void btnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
-        //{
-        //    if (UI.OpenFileDialog(out string fileName,
-        //        "PNG,ICO|*.png;*.ico") != true)
-        //    {
-        //        return;
-        //    }
+        private void btnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (UI.OpenFileDialog(out string fileName,
+                "PNG,ICO|*.png;*.ico") != true)
+            {
+                return;
+            }
 
-        //    txtCustomIcon.Text = fileName;
-        //}
+            txtCustomIcon.Text = fileName;
+        }
 
         private void btnBrowseCustomRulesetPath4Singbox_Click(object sender, RoutedEventArgs e)
         {

@@ -186,7 +186,6 @@
                 Style="{StaticResource DefTextBox}"
                 TextWrapping="Wrap" />
 
-            <!--
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
@@ -211,7 +210,6 @@
                 Margin="{StaticResource MarginLeftRight4}"
                 Content="{x:Static resx:ResUI.TbBrowse}"
                 Style="{StaticResource DefButton}" />
-            -->
 
             <TextBlock
                 Grid.Row="4"
