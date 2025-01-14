@@ -80,6 +80,7 @@
             Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
             Logging.LoggingEnabled(_config.GuiItem.EnableLog);
             Logging.ClearLogs();
+            ClearTemps();
 
             return true;
         }
@@ -89,6 +90,36 @@
             _statePort = null;
             _statePort2 = null;
             return true;
+        }
+
+        private void ClearTemps()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    var now = DateTime.Now.AddMonths(-1);
+                    var dir = Utils.GetTempPath();
+                    var files = Directory.GetFiles(dir, "*.*");
+                    foreach (var filePath in files)
+                    {
+                        var file = new FileInfo(filePath);
+                        if (file.CreationTime >= now) continue;
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+            });
         }
 
         #endregion Init
@@ -168,45 +199,6 @@
             }
 
             return await SQLiteHelper.Instance.QueryAsync<ProfileItemModel>(sql);
-        }
-
-        public async Task<List<ProfileItemModel>?> ProfileItemsEx(string subid, string filter)
-        {
-            var lstModel = await ProfileItems(_config.SubIndexId, filter);
-
-            await ConfigHandler.SetDefaultServer(_config, lstModel);
-
-            var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
-            var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
-            lstModel = (from t in lstModel
-                        join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
-                        from t22 in t2b.DefaultIfEmpty()
-                        join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
-                        from t33 in t3b.DefaultIfEmpty()
-                        select new ProfileItemModel
-                        {
-                            IndexId = t.IndexId,
-                            ConfigType = t.ConfigType,
-                            Remarks = t.Remarks,
-                            Address = t.Address,
-                            Port = t.Port,
-                            Security = t.Security,
-                            Network = t.Network,
-                            StreamSecurity = t.StreamSecurity,
-                            Subid = t.Subid,
-                            SubRemarks = t.SubRemarks,
-                            IsActive = t.IndexId == _config.IndexId,
-                            Sort = t33 == null ? 0 : t33.Sort,
-                            Delay = t33 == null ? 0 : t33.Delay,
-                            DelayVal = t33?.Delay != 0 ? $"{t33?.Delay} {Global.DelayUnit}" : string.Empty,
-                            SpeedVal = t33?.Speed != 0 ? $"{t33?.Speed} {Global.SpeedUnit}" : string.Empty,
-                            TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
-                            TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
-                            TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
-                            TotalUp = t22 == null ? "" : Utils.HumanFy(t22.TotalUp)
-                        }).OrderBy(t => t.Sort).ToList();
-
-            return lstModel;
         }
 
         public async Task<ProfileItem?> GetProfileItem(string indexId)
