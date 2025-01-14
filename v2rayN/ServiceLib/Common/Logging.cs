@@ -25,36 +25,6 @@ namespace ServiceLib.Common
             }
         }
 
-        public static void ClearLogs()
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    var now = DateTime.Now.AddMonths(-1);
-                    var dir = Utils.GetLogPath();
-                    var files = Directory.GetFiles(dir, "*.txt");
-                    foreach (var filePath in files)
-                    {
-                        var file = new FileInfo(filePath);
-                        if (file.CreationTime >= now) continue;
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-            });
-        }
-
         public static void SaveLog(string strContent)
         {
             if (!LogManager.IsLoggingEnabled()) return;

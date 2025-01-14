@@ -196,5 +196,26 @@ namespace ServiceLib.Common
                 }
             }
         }
+
+        public static void DeleteExpiredFiles(string sourceDir, DateTime dtLine)
+        {
+            try
+            {
+                var files = Directory.GetFiles(sourceDir, "*.*");
+                foreach (var filePath in files)
+                {
+                    var file = new FileInfo(filePath);
+                    if (file.CreationTime >= dtLine)
+                    {
+                        continue;
+                    }
+                    file.Delete();
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 }

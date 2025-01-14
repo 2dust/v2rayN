@@ -79,8 +79,8 @@
         {
             Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
             Logging.LoggingEnabled(_config.GuiItem.EnableLog);
-            Logging.ClearLogs();
-            ClearTemps();
+
+            ClearExpiredFiles();
 
             return true;
         }
@@ -92,33 +92,12 @@
             return true;
         }
 
-        private void ClearTemps()
+        private void ClearExpiredFiles()
         {
             Task.Run(() =>
             {
-                try
-                {
-                    var now = DateTime.Now.AddMonths(-1);
-                    var dir = Utils.GetTempPath();
-                    var files = Directory.GetFiles(dir, "*.*");
-                    foreach (var filePath in files)
-                    {
-                        var file = new FileInfo(filePath);
-                        if (file.CreationTime >= now) continue;
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
+                FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
+                FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
             });
         }
 
