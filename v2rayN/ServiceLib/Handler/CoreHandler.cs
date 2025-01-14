@@ -67,13 +67,17 @@ namespace ServiceLib.Handler
                 return;
             }
 
-            UpdateFunc(true, $"{node.GetSummary()}");
+            UpdateFunc(false, $"{node.GetSummary()}");
             UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
             UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
             await CoreStop();
             await Task.Delay(100);
             await CoreStart(node);
             await CoreStartPreService(node);
+            if (_process != null)
+            {
+                UpdateFunc(true, $"{node.GetSummary()}");
+            }
         }
 
         public async Task<int> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
@@ -220,8 +224,6 @@ namespace ServiceLib.Handler
                     await RunProcessAsLinuxSudo(proc, fileName, coreInfo, configPath);
                 }
 
-                var startUpErrorMessage = new StringBuilder();
-                var startUpSuccessful = false;
                 if (displayLog)
                 {
                     proc.OutputDataReceived += (sender, e) =>
@@ -233,11 +235,6 @@ namespace ServiceLib.Handler
                     {
                         if (Utils.IsNullOrEmpty(e.Data)) return;
                         UpdateFunc(false, e.Data + Environment.NewLine);
-
-                        if (!startUpSuccessful)
-                        {
-                            startUpErrorMessage.Append(e.Data + Environment.NewLine);
-                        }
                     };
                 }
                 proc.Start();
@@ -258,18 +255,12 @@ namespace ServiceLib.Handler
                     proc.BeginErrorReadLine();
                 }
 
+                await Task.Delay(500);
                 AppHandler.Instance.AddProcess(proc.Handle);
-                if (proc.WaitForExit(1000))
+                if (proc is null or { HasExited: true })
                 {
-                    proc.CancelErrorRead();
-                    throw new Exception(displayLog ? startUpErrorMessage.ToString() : "启动进程失败并退出 (Failed to start the process and exited)");
+                    throw new Exception(ResUI.FailedToRunCore);
                 }
-                else
-                {
-                    startUpSuccessful = true;
-                }
-
-                AppHandler.Instance.AddProcess(proc.Handle);
                 return proc;
             }
             catch (Exception ex)

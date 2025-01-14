@@ -222,6 +222,7 @@ namespace ServiceLib.ViewModels
                 await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
 
+            BlReloadEnabled = true;
             await Reload();
             await AutoHideStartup();
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
@@ -533,8 +534,17 @@ namespace ServiceLib.ViewModels
 
         #region core job
 
-        public async Task Reload()
+        public async Task Reload(int times = 0)
         {
+            //If there are unfinished reload job, wait a few seconds and exec again.
+            if (!BlReloadEnabled)
+            {
+                await Task.Delay(3000);
+                if (times > 3) return;
+                await Reload(++times);
+                return;
+            }
+
             BlReloadEnabled = false;
 
             await LoadCore();
@@ -558,16 +568,8 @@ namespace ServiceLib.ViewModels
 
         private async Task LoadCore()
         {
-            //if (_config.tunModeItem.enableTun)
-            //{
-            //    Task.Delay(1000).Wait();
-            //    WindowsUtils.RemoveTunDevice();
-            //}
-            await Task.Run(async () =>
-            {
-                var node = await ConfigHandler.GetDefaultServer(_config);
-                await CoreHandler.Instance.LoadCore(node);
-            });
+            var node = await ConfigHandler.GetDefaultServer(_config);
+            await CoreHandler.Instance.LoadCore(node);
         }
 
         public async Task CloseCore()
