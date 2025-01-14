@@ -63,6 +63,8 @@ namespace ServiceLib.ViewModels
 
         #endregion Menu
 
+        private bool _hasNextReloadJob = false;
+
         #region Init
 
         public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -534,14 +536,12 @@ namespace ServiceLib.ViewModels
 
         #region core job
 
-        public async Task Reload(int times = 0)
+        public async Task Reload()
         {
-            //If there are unfinished reload job, wait a few seconds and exec again.
+            //If there are unfinished reload job, marked with next job.
             if (!BlReloadEnabled)
             {
-                await Task.Delay(3000);
-                if (times > 3) return;
-                await Reload(++times);
+                _hasNextReloadJob = true;
                 return;
             }
 
@@ -552,12 +552,19 @@ namespace ServiceLib.ViewModels
             await SysProxyHandler.UpdateSysProxy(_config, false);
 
             _updateView?.Invoke(EViewAction.DispatcherReload, null);
+
+            BlReloadEnabled = true;
+            if (_hasNextReloadJob)
+            {
+                _hasNextReloadJob = false;
+                await Reload();
+            }
         }
 
         public void ReloadResult()
         {
+            // BlReloadEnabled = true;
             //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);
-            BlReloadEnabled = true;
             ShowClashUI = _config.IsRunningCore(ECoreType.sing_box);
             if (ShowClashUI)
             {
