@@ -423,10 +423,12 @@ namespace ServiceLib.ViewModels
                         Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                         return;
                     }
-                    //else if (Utils.IsLinux())
-                    //{
-                    //    NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
-                    //}
+                    else if (Utils.IsOSX())
+                    {
+                        _config.TunModeItem.EnableTun = false;
+                        NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
+                        return;
+                    }
                 }
                 await ConfigHandler.SaveConfig(_config);
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();
