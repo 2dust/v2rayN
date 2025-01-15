@@ -137,6 +137,7 @@ namespace ServiceLib.ViewModels
             NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(null);
+                await Task.CompletedTask;
             });
 
             AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -180,7 +181,7 @@ namespace ServiceLib.ViewModels
             {
                 InitUpdateView(updateView);
             }
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -478,6 +479,7 @@ namespace ServiceLib.ViewModels
             {
                 InboundLanDisplay = $"{ResUI.LabLAN}:{Global.None}";
             }
+            await Task.CompletedTask;
         }
 
         public void UpdateStatistics(ServerSpeedItem update)

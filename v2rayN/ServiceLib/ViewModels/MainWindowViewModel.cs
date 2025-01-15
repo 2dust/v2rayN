@@ -206,7 +206,7 @@ namespace ServiceLib.ViewModels
 
             #endregion WhenAnyValue && ReactiveCommand
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -252,7 +252,7 @@ namespace ServiceLib.ViewModels
                 RefreshServers();
                 if (indexIdOld != _config.IndexId)
                 {
-                    Reload();
+                    _ = Reload();
                 }
                 if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
                 {
@@ -406,6 +406,7 @@ namespace ServiceLib.ViewModels
         public async Task AddServerViaScanAsync()
         {
             _updateView?.Invoke(EViewAction.ScanScreenTask, null);
+            await Task.CompletedTask;
         }
 
         public async Task ScanScreenResult(byte[]? bytes)
@@ -417,6 +418,7 @@ namespace ServiceLib.ViewModels
         public async Task AddServerViaImageAsync()
         {
             _updateView?.Invoke(EViewAction.ScanImageTask, null);
+            await Task.CompletedTask;
         }
 
         public async Task ScanImageResult(string fileName)
@@ -530,6 +532,7 @@ namespace ServiceLib.ViewModels
             {
                 ProcUtils.ProcessStart("open", path);
             }
+            await Task.CompletedTask;
         }
 
         #endregion Setting
@@ -548,8 +551,8 @@ namespace ServiceLib.ViewModels
             BlReloadEnabled = false;
 
             await LoadCore();
-            Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
             await SysProxyHandler.UpdateSysProxy(_config, false);
+            Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
             _updateView?.Invoke(EViewAction.DispatcherReload, null);
 
@@ -591,6 +594,7 @@ namespace ServiceLib.ViewModels
             {
                 ShowHideWindow(false);
             }
+            await Task.CompletedTask;
         }
 
         #endregion core job

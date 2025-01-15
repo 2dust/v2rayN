@@ -162,7 +162,7 @@ namespace ServiceLib.Handler
                 Length = "100-200",
                 Interval = "10-20"
             };
-             
+
             if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
             {
                 config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
@@ -472,7 +472,7 @@ namespace ServiceLib.Handler
             }
 
             ProfileExHandler.Instance.SetSort(lstProfile[index].IndexId, sort);
-            return 0;
+            return await Task.FromResult(0);
         }
 
         /// <summary>
@@ -1050,7 +1050,7 @@ namespace ServiceLib.Handler
                     Port = node.PreSocksPort.Value,
                 };
             }
-
+            await Task.CompletedTask;
             return itemSocks;
         }
 
@@ -1620,7 +1620,7 @@ namespace ServiceLib.Handler
                         break;
                     }
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)

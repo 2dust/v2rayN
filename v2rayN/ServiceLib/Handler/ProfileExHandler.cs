@@ -20,7 +20,7 @@ namespace ServiceLib.Handler
         public async Task Init()
         {
             await InitData();
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 while (true)
                 {
@@ -32,7 +32,7 @@ namespace ServiceLib.Handler
 
         public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()
         {
-            return _lstProfileEx;
+            return await Task.FromResult(_lstProfileEx);
         }
 
         private async Task InitData()

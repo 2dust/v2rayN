@@ -67,7 +67,7 @@ namespace ServiceLib.ViewModels
                 await SaveRoutingAsync();
             });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()

@@ -379,7 +379,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenInbounds(V2rayConfig v2rayConfig)
@@ -423,7 +423,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
@@ -560,7 +560,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
@@ -774,7 +774,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenBoundStreamSettings(ProfileItem node, Outbounds4Ray outbound)
@@ -1103,7 +1103,7 @@ namespace ServiceLib.Services.CoreConfig
                     servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
                 }
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenStatistic(V2rayConfig v2rayConfig)
@@ -1150,7 +1150,7 @@ namespace ServiceLib.Services.CoreConfig
                     v2rayConfig.routing.rules.Add(apiRoutingRule);
                 }
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)

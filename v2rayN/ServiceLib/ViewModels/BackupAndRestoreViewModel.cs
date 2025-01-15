@@ -176,7 +176,7 @@ namespace ServiceLib.ViewModels
             FileManager.CopyDirectory(configDir, configDirTemp, false, "cache.db");
             var ret = FileManager.CreateFromDirectory(configDirZipTemp, fileName);
             Directory.Delete(configDirZipTemp, true);
-            return ret;
+            return await Task.FromResult(ret);
         }
     }
 }

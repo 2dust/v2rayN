@@ -72,7 +72,7 @@
                 return;
             }
 
-            if(indexId == toIndexId)
+            if (indexId == toIndexId)
             {
                 return;
             }
@@ -101,7 +101,7 @@
 
         private void UpdateServerStatHandler(ServerSpeedItem server)
         {
-            UpdateServerStat(server);
+            _ = UpdateServerStat(server);
         }
 
         private async Task UpdateServerStat(ServerSpeedItem server)

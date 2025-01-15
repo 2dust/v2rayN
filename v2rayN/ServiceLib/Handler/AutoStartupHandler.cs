@@ -45,6 +45,8 @@ namespace ServiceLib.Handler
             {
                 AutoStartTaskService(autoRunName, "", "");
             }
+
+            await Task.CompletedTask;
         }
 
         private static async Task SetTaskWindows()
@@ -66,6 +68,7 @@ namespace ServiceLib.Handler
             {
                 Logging.SaveLog(_tag, ex);
             }
+            await Task.CompletedTask;
         }
 
         /// <summary>
@@ -127,6 +130,7 @@ namespace ServiceLib.Handler
             {
                 Logging.SaveLog(_tag, ex);
             }
+            await Task.CompletedTask;
         }
 
         private static async Task SetTaskLinux()

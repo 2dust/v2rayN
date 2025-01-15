@@ -25,6 +25,7 @@ namespace ServiceLib.ViewModels
             BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 _updateView?.Invoke(EViewAction.BrowseServer, null);
+                await Task.CompletedTask;
             });
             EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -109,6 +110,7 @@ namespace ServiceLib.ViewModels
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FailedReadConfiguration);
             }
+            await Task.CompletedTask;
         }
     }
 }

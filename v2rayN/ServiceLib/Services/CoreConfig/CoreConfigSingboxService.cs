@@ -476,7 +476,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenInbounds(SingboxConfig singboxConfig)
@@ -721,7 +721,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenOutboundTls(ProfileItem node, Outbound4Sbox outbound)
@@ -771,7 +771,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenOutboundTransport(ProfileItem node, Outbound4Sbox outbound)
@@ -848,7 +848,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenMoreOutbounds(ProfileItem node, SingboxConfig singboxConfig)
@@ -1088,7 +1088,7 @@ namespace ServiceLib.Services.CoreConfig
             {
                 Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private bool ParseV2Domain(string domain, Rule4Sbox rule)
@@ -1240,7 +1240,7 @@ namespace ServiceLib.Services.CoreConfig
             }
 
             singboxConfig.dns = dns4Sbox;
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenExperimental(SingboxConfig singboxConfig)
@@ -1264,7 +1264,7 @@ namespace ServiceLib.Services.CoreConfig
                 };
             }
 
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> ConvertGeo2Ruleset(SingboxConfig singboxConfig)

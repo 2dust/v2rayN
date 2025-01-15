@@ -80,7 +80,7 @@
 
                 ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
                 ret.Success = true;
-                return ret;
+                return await Task.FromResult(ret);
             }
             catch (Exception ex)
             {

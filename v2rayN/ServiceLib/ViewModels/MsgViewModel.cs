@@ -105,6 +105,7 @@ namespace ServiceLib.ViewModels
             {
                 _queueMsg.Enqueue(Environment.NewLine);
             }
+            await Task.CompletedTask;
         }
 
         public void ClearMsg()

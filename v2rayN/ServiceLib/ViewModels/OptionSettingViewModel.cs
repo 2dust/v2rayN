@@ -115,7 +115,7 @@ namespace ServiceLib.ViewModels
                 await SaveSettingAsync();
             });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -261,6 +261,7 @@ namespace ServiceLib.ViewModels
                         break;
                 }
             });
+            await Task.CompletedTask;
         }
 
         private async Task SaveSettingAsync()
@@ -410,6 +411,7 @@ namespace ServiceLib.ViewModels
                 }
                 item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
             }
+            await Task.CompletedTask;
         }
     }
 }

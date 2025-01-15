@@ -231,7 +231,7 @@ namespace ServiceLib.ViewModels
                 MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(OnNext);
             }
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()

@@ -248,7 +248,9 @@ namespace v2rayN.Views
             {
                 Logging.SaveLog("GetFonts", ex);
             }
-            return lstFonts.OrderBy(t => t).ToList();
+
+            var lst = lstFonts.OrderBy(t => t).ToList();
+            return await Task.FromResult(lst);
         }
 
         private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

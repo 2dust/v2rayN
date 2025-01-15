@@ -48,7 +48,7 @@ namespace ServiceLib.ViewModels
                 await ClashConnectionClose(true);
             });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -73,6 +73,7 @@ namespace ServiceLib.ViewModels
                       Task.Delay(1000).Wait();
                   }
               });
+            await Task.CompletedTask;
         }
 
         private async Task GetClashConnections()

@@ -135,7 +135,7 @@
             return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.Sort).ToListAsync();
         }
 
-        public async Task<SubItem?> GetSubItem(string subid)
+        public async Task<SubItem?> GetSubItem(string? subid)
         {
             return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.Id == subid);
         }
