@@ -719,8 +719,8 @@
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>本機HTTP偵聽埠</value>
   </data>
-  <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>更新Core時忽略Geo檔案</value>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>顯示即時速度（需重啟）</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>去重時保留序號較小的項</value>
@@ -756,7 +756,7 @@
     <value>開機啟動(可能會不成功)</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>啟用統計(即時網速顯示，需重啟)</value>
+    <value>啟用流量統計（需重啟）</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>訂閱轉換網址(可選)</value>

@@ -718,8 +718,8 @@
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>HTTP Port</value>
   </data>
-  <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>Ignore Geo files when updating core</value>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Display real-time speed (Require restart)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>Keep older when deduplication</value>
@@ -755,7 +755,7 @@
     <value>Start on boot</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Enable Statistics (Require restart)</value>
+    <value>Enable traffic statistics (Require restart)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion URL</value>

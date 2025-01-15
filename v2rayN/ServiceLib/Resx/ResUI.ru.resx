@@ -724,8 +724,8 @@
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>HTTP порт</value>
   </data>
-  <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>Игнорировать файлы Geo при обновлении ядра</value>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Display real-time speed</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>Сохранить старые при удалении дублей</value>

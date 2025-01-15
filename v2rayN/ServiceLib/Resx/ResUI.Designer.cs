@@ -2915,6 +2915,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Display real-time speed 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsDisplayRealTimeSpeed {
+            get {
+                return ResourceManager.GetString("TbSettingsDisplayRealTimeSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Outbound DNS address 的本地化字符串。
         /// </summary>
         public static string TbSettingsDomainDNSAddress {
@@ -3109,15 +3118,6 @@ namespace ServiceLib.Resx {
         public static string TbSettingsHysteriaBandwidth {
             get {
                 return ResourceManager.GetString("TbSettingsHysteriaBandwidth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Ignore Geo files when updating core 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsIgnoreGeoUpdateCore {
-            get {
-                return ResourceManager.GetString("TbSettingsIgnoreGeoUpdateCore", resourceCulture);
             }
         }
         
@@ -3401,7 +3401,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable Statistics (Require restart) 的本地化字符串。
+        ///   查找类似 Enable traffic statistics (Require restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsStatistics {
             get {

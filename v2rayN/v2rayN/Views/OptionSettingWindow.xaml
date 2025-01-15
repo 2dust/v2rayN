@@ -601,9 +601,9 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
+                            Text="{x:Static resx:ResUI.TbSettingsDisplayRealTimeSpeed}" />
                         <ToggleButton
-                            x:Name="togKeepOlderDedupl"
+                            x:Name="togDisplayRealTimeSpeed"
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
@@ -615,9 +615,9 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsIgnoreGeoUpdateCore}" />
+                            Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
                         <ToggleButton
-                            x:Name="togIgnoreGeoUpdateCore"
+                            x:Name="togKeepOlderDedupl"
                             Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"

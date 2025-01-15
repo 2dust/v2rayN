@@ -219,7 +219,7 @@ namespace ServiceLib.ViewModels
             await CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
-            if (_config.GuiItem.EnableStatistics)
+            if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
             {
                 await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
@@ -272,16 +272,13 @@ namespace ServiceLib.ViewModels
 
         public void SetStatisticsResult(ServerSpeedItem update)
         {
-            try
+            if (_config.GuiItem.DisplayRealTimeSpeed)
             {
                 Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-                if ((update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
-                {
-                    Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
-                }
             }
-            catch
+            if (_config.GuiItem.EnableStatistics && (update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
             {
+                Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
             }
         }
 

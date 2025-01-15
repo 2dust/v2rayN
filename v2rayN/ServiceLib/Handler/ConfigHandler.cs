@@ -94,10 +94,7 @@ namespace ServiceLib.Handler
                 EnableTun = false,
                 Mtu = 9000,
             };
-            config.GuiItem ??= new()
-            {
-                EnableStatistics = false,
-            };
+            config.GuiItem ??= new();
             config.MsgUIItem ??= new();
 
             config.UiItem ??= new UIItem()

@@ -49,7 +49,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool AutoRun { get; set; }
         [Reactive] public bool EnableStatistics { get; set; }
         [Reactive] public bool KeepOlderDedupl { get; set; }
-        [Reactive] public bool IgnoreGeoUpdateCore { get; set; }
+        [Reactive] public bool DisplayRealTimeSpeed { get; set; }
         [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
         [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
@@ -164,8 +164,8 @@ namespace ServiceLib.ViewModels
 
             AutoRun = _config.GuiItem.AutoRun;
             EnableStatistics = _config.GuiItem.EnableStatistics;
+            DisplayRealTimeSpeed = _config.GuiItem.DisplayRealTimeSpeed;
             KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
-            IgnoreGeoUpdateCore = _config.GuiItem.IgnoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
             EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
@@ -273,6 +273,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
+                              || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                             || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                             || EnableHWA != _config.GuiItem.EnableHWA
                             || CurrentFontFamily != _config.UiItem.CurrentFontFamily
@@ -318,8 +319,8 @@ namespace ServiceLib.ViewModels
 
             _config.GuiItem.AutoRun = AutoRun;
             _config.GuiItem.EnableStatistics = EnableStatistics;
+            _config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
             _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
-            _config.GuiItem.IgnoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
             _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;

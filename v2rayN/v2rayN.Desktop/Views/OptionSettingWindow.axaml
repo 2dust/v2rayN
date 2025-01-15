@@ -385,9 +385,9 @@
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
+                            Text="{x:Static resx:ResUI.TbSettingsDisplayRealTimeSpeed}" />
                         <ToggleSwitch
-                            x:Name="togKeepOlderDedupl"
+                            x:Name="togDisplayRealTimeSpeed"
                             Grid.Row="3"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
@@ -398,9 +398,9 @@
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsIgnoreGeoUpdateCore}" />
+                            Text="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
                         <ToggleSwitch
-                            x:Name="togIgnoreGeoUpdateCore"
+                            x:Name="togKeepOlderDedupl"
                             Grid.Row="4"
                             Grid.Column="1"
                             HorizontalAlignment="Left"

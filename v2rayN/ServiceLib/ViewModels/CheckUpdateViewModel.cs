@@ -259,7 +259,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    FileManager.ZipExtractToFile(fileName, toPath, _config.GuiItem.IgnoreGeoUpdateCore ? "geo" : "");
+                    FileManager.ZipExtractToFile(fileName, toPath, "geo");
                 }
 
                 if (Utils.IsNonWindows())

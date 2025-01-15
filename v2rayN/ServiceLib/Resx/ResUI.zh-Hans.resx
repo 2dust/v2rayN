@@ -718,8 +718,8 @@
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>本地http监听端口</value>
   </data>
-  <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>更新Core时忽略Geo文件</value>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>显示实时速度（需重启）</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>去重时保留序号较小的项</value>
@@ -755,7 +755,7 @@
     <value>开机启动(可能会不成功)</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>启用统计(实时网速显示，需重启)</value>
+    <value>启用流量统计（需重启）</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>订阅转换网址(可选)</value>

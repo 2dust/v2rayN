@@ -1108,7 +1108,7 @@ namespace ServiceLib.Services.CoreConfig
 
         private async Task<int> GenStatistic(V2rayConfig v2rayConfig)
         {
-            if (_config.GuiItem.EnableStatistics)
+            if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
             {
                 string tag = EInboundProtocol.api.ToString();
                 Metrics4Ray apiObj = new();

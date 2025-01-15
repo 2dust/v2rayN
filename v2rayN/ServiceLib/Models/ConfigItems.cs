@@ -67,21 +67,13 @@
     public class GUIItem
     {
         public bool AutoRun { get; set; }
-
         public bool EnableStatistics { get; set; }
-
+        public bool DisplayRealTimeSpeed { get; set; }
         public bool KeepOlderDedupl { get; set; }
-
-        public bool IgnoreGeoUpdateCore { get; set; } = true;
-
         public int AutoUpdateInterval { get; set; }
-
         public bool EnableSecurityProtocolTls13 { get; set; }
-
         public int TrayMenuServersLimit { get; set; } = 20;
-
         public bool EnableHWA { get; set; } = false;
-
         public bool EnableLog { get; set; } = true;
     }
 
