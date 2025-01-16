@@ -719,7 +719,7 @@
     <value>پورت Http</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>Display real-time speed</value>
+    <value>نمایش سرعت در زمان واقعی</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>هنگام کپی برداری، نگه داری قدیمی تر ها</value>
