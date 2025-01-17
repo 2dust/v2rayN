@@ -39,5 +39,14 @@ namespace AmazTool
             };
             process.Start();
         }
+
+        public static void Waiting(int second)
+        {
+            for (var i = second; i > 0; i--)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(1000);
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace AmazTool
         {
             Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
 
-            Waiting(5);
+            Utils.Waiting(5);
 
             if (!File.Exists(fileName))
             {
@@ -42,12 +42,12 @@ namespace AmazTool
             StringBuilder sb = new();
             try
             {
-                string thisAppOldFile = $"{Utils.GetExePath()}.tmp";
+                var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
                 File.Delete(thisAppOldFile);
-                string splitKey = "/";
+                var splitKey = "/";
 
-                using ZipArchive archive = ZipFile.OpenRead(fileName);
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                using var archive = ZipFile.OpenRead(fileName);
+                foreach (var entry in archive.Entries)
                 {
                     try
                     {
@@ -60,15 +60,20 @@ namespace AmazTool
 
                         var lst = entry.FullName.Split(splitKey);
                         if (lst.Length == 1) continue;
-                        string fullName = string.Join(splitKey, lst[1..lst.Length]);
+                        var fullName = string.Join(splitKey, lst[1..lst.Length]);
 
                         if (string.Equals(Utils.GetExePath(), Utils.GetPath(fullName), StringComparison.OrdinalIgnoreCase))
                         {
                             File.Move(Utils.GetExePath(), thisAppOldFile);
                         }
 
-                        string entryOutputPath = Utils.GetPath(fullName);
+                        var entryOutputPath = Utils.GetPath(fullName);
                         Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
+                        //In the bin folder, if the file already exists, it will be skipped
+                        if (fullName.StartsWith("bin") && File.Exists(entryOutputPath))
+                        {
+                            continue;
+                        }
                         entry.ExtractToFile(entryOutputPath, true);
 
                         Console.WriteLine(entryOutputPath);
@@ -91,18 +96,9 @@ namespace AmazTool
             }
 
             Console.WriteLine(Resx.Resource.Restartv2rayN);
-            Waiting(2);
+            Utils.Waiting(2);
 
             Utils.StartV2RayN();
-        }
-
-        public static void Waiting(int second)
-        {
-            for (var i = second; i > 0; i--)
-            {
-                Console.WriteLine(i);
-                Thread.Sleep(1000);
-            }
         }
     }
 }
