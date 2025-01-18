@@ -48,7 +48,7 @@
         {
             if (Utils.IsNonWindows() && Utils.HasWritePermission() == false)
             {
-                Environment.SetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA", "1", EnvironmentVariableTarget.Process);
+                Environment.SetEnvironmentVariable(Global.LocalAppData, "1", EnvironmentVariableTarget.Process);
             }
 
             Logging.Setup();

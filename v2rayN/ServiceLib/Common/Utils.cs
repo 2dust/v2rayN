@@ -706,7 +706,7 @@ namespace ServiceLib.Common
 
         public static string StartupPath()
         {
-            if (Utils.IsNonWindows() && Environment.GetEnvironmentVariable("V2RAYN_LOCAL_APPLICATION_DATA") == "1")
+            if (Utils.IsNonWindows() && Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
             {
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
             }
