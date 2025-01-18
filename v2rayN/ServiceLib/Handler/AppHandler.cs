@@ -46,7 +46,7 @@
 
         public bool InitApp()
         {
-            if (Utils.IsNonWindows() && Utils.HasWritePermission() == false)
+            if (Utils.HasWritePermission() == false)
             {
                 Environment.SetEnvironmentVariable(Global.LocalAppData, "1", EnvironmentVariableTarget.Process);
             }

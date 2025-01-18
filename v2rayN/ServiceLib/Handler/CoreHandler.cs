@@ -25,6 +25,17 @@ namespace ServiceLib.Handler
             Environment.SetEnvironmentVariable(Global.V2RayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable(Global.XrayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
 
+            //Copy the bin folder to the storage location (for init)
+            if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
+            {
+                var fromPath = Utils.GetBaseDirectory("bin");
+                var toPath = Utils.GetBinPath("");
+                if (fromPath != toPath)
+                {
+                    FileManager.CopyDirectory(fromPath, toPath, true, false);
+                }
+            }
+
             if (Utils.IsNonWindows())
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();

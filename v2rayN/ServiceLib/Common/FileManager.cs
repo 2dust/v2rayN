@@ -156,7 +156,7 @@ namespace ServiceLib.Common
             return true;
         }
 
-        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, string? ignoredName)
+        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, bool overwrite, string? ignoredName = null)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);
@@ -183,7 +183,11 @@ namespace ServiceLib.Common
                     continue;
                 }
                 var targetFilePath = Path.Combine(destinationDir, file.Name);
-                file.CopyTo(targetFilePath, true);
+                if (!overwrite && File.Exists(targetFilePath))
+                {
+                    continue;
+                }
+                file.CopyTo(targetFilePath, overwrite);
             }
 
             // If recursive and copying subdirectories, recursively call this method
@@ -192,7 +196,7 @@ namespace ServiceLib.Common
                 foreach (var subDir in dirs)
                 {
                     var newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, newDestinationDir, true, ignoredName);
+                    CopyDirectory(subDir.FullName, newDestinationDir, true, overwrite, ignoredName);
                 }
             }
         }

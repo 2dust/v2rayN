@@ -519,7 +519,7 @@ namespace ServiceLib.Common
 
         public static bool UpgradeAppExists(out string upgradeFileName)
         {
-            upgradeFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GetExeName("AmazTool"));
+            upgradeFileName = Path.Combine(GetBaseDirectory(), GetExeName("AmazTool"));
             return File.Exists(upgradeFileName);
         }
 
@@ -666,12 +666,12 @@ namespace ServiceLib.Common
             try
             {
                 //When this file exists, it is equivalent to having no permission to read and write
-                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NotStoreConfigHere.txt")))
+                if (File.Exists(Path.Combine(GetBaseDirectory(), "NotStoreConfigHere.txt")))
                 {
                     return false;
                 }
 
-                var tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "guiTemps");
+                var tempPath = Path.Combine(GetBaseDirectory(), "guiTemps");
                 if (!Directory.Exists(tempPath))
                 {
                     Directory.CreateDirectory(tempPath);
@@ -699,6 +699,11 @@ namespace ServiceLib.Common
             return Path.Combine(startupPath, fileName);
         }
 
+        public static string GetBaseDirectory(string fileName = "")
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+        }
+
         public static string GetExePath()
         {
             return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
@@ -706,12 +711,12 @@ namespace ServiceLib.Common
 
         public static string StartupPath()
         {
-            if (Utils.IsNonWindows() && Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
+            if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
             {
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
             }
 
-            return AppDomain.CurrentDomain.BaseDirectory;
+            return GetBaseDirectory();
         }
 
         public static string GetTempPath(string filename = "")

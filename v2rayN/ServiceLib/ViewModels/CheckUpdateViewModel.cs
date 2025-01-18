@@ -248,7 +248,7 @@ namespace ServiceLib.ViewModels
                     {
                         foreach (var subDir in dir.GetDirectories())
                         {
-                            FileManager.CopyDirectory(subDir.FullName, toPath, false, null);
+                            FileManager.CopyDirectory(subDir.FullName, toPath, false, true);
                             subDir.Delete(true);
                         }
                     }
