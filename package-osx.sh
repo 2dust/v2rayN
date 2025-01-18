@@ -4,6 +4,11 @@ Arch="$1"
 OutputPath="$2"
 Version="$3"
 
+FileName="v2rayN-${Arch}.zip"
+wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/$FileName"
+7z x $FileName
+cp -rf v2rayN-${Arch}/* $OutputPath
+
 PackagePath="v2rayN-Package-${Arch}"
 mkdir -p "$PackagePath/v2rayN.app/Contents/Resources"
 cp -rf "$OutputPath" "$PackagePath/v2rayN.app/Contents/MacOS"
