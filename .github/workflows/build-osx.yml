@@ -60,6 +60,14 @@ jobs:
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
 
+    - name: Upload sha256 checksum to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.sha256
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+
     # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''

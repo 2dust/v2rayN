@@ -56,3 +56,7 @@ create-dmg \
     --app-drop-link 500 185 \
     "v2rayN-${Arch}.dmg" \
     "$PackagePath/v2rayN.app"
+
+# 为生成的 DMG 文件创建 SHA256 校验值文件
+SHA256File="v2rayN-${Arch}.dmg.sha256"
+shasum -a 256 "v2rayN-${Arch}.dmg" > "$SHA256File"
