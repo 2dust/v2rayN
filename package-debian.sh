@@ -5,7 +5,7 @@ OutputPath="$2"
 Version="$3"
 
 FileName="v2rayN-${Arch}.zip"
-wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/$FileName"
+wget -nv -O $FileName "https://github.com/cg3s/v2rayN-core-bin/raw/refs/heads/master/$FileName"
 7z x $FileName
 cp -rf v2rayN-${Arch}/* $OutputPath
 
@@ -27,7 +27,7 @@ cat >"${PackagePath}/DEBIAN/control" <<-EOF
 Package: v2rayN
 Version: $Version
 Architecture: $Arch2
-Maintainer: https://github.com/2dust/v2rayN
+Maintainer: https://github.com/cg3s/v2rayN
 Description: A GUI client for Windows and Linux, support Xray core and sing-box-core and others
 EOF
 

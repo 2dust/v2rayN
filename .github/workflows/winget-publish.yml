@@ -16,10 +16,10 @@ jobs:
       - name: Submit v2ray package to Windows Package Manager Community Repository
         run: |
 
-          $wingetPackage = "2dust.v2rayN"
+          $wingetPackage = "cg3s.v2rayN"
           $gitToken = "${{ secrets.PT_WINGET }}"
 
-          $github = Invoke-RestMethod -uri "https://api.github.com/repos/2dust/v2rayN/releases" 
+          $github = Invoke-RestMethod -uri "https://api.github.com/repos/cg3s/v2rayN/releases" 
 
           $targetRelease = $github | Where-Object -Property prerelease -match 'False' | Select -First 1
           $installerUrl  = $targetRelease | Select -ExpandProperty assets -First 1 | Where-Object -Property name -match 'v2rayN-windows-64\.zip*' | Select -ExpandProperty browser_download_url
