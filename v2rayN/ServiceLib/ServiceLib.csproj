@@ -8,7 +8,7 @@
   </PropertyGroup>
  
 	<ItemGroup>
-		<PackageReference Include="Downloader" Version="3.3.1" />
+		<PackageReference Include="Downloader" Version="3.3.3" />
 		<PackageReference Include="ReactiveUI" Version="20.1.63" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
@@ -16,7 +16,7 @@
 		<PackageReference Include="WebDav.Client" Version="2.8.0" />
 		<PackageReference Include="YamlDotNet" Version="16.3.0" />
 		<PackageReference Include="QRCoder" Version="1.6.0" />
-		<PackageReference Include="CliWrap" Version="3.7.0" /> 
+		<PackageReference Include="CliWrap" Version="3.7.1" /> 
 		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" />
