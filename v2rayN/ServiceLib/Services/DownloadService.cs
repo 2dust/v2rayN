@@ -14,6 +14,8 @@ namespace ServiceLib.Services
 
         public event ErrorEventHandler? Error;
 
+        private static readonly string _tag = "DownloadService";
+
         public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
         {
             try
@@ -68,7 +70,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
 
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
@@ -113,7 +115,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -131,7 +133,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -177,7 +179,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -208,7 +210,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 Error?.Invoke(this, new ErrorEventArgs(ex));
                 if (ex.InnerException != null)
                 {
@@ -232,13 +234,13 @@ namespace ServiceLib.Services
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(_tag, ex);
                     return -1;
                 }
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return -1;
             }
         }
@@ -280,13 +282,13 @@ namespace ServiceLib.Services
             {
                 return null;
             }
-            var httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-            if (await SocketCheck(Global.Loopback, httpPort) == false)
+            var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+            if (await SocketCheck(Global.Loopback, port) == false)
             {
                 return null;
             }
 
-            return new WebProxy(Global.Loopback, httpPort);
+            return new WebProxy($"socks5://{Global.Loopback}:{port}");
         }
 
         private async Task<bool> SocketCheck(string ip, int port)

@@ -56,13 +56,13 @@ public partial class App : Application
     {
     }
 
-    private void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
+    private async void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             if (desktop.MainWindow != null)
             {
-                var clipboardData = AvaUtils.GetClipboardData(desktop.MainWindow).Result;
+                var clipboardData = await AvaUtils.GetClipboardData(desktop.MainWindow);
                 var service = Locator.Current.GetService<MainWindowViewModel>();
                 if (service != null) _ = service.AddServerViaClipboardAsync(clipboardData);
             }
@@ -71,12 +71,8 @@ public partial class App : Application
 
     private async void MenuExit_Click(object? sender, EventArgs e)
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            var service = Locator.Current.GetService<MainWindowViewModel>();
-            if (service != null) await service.MyAppExitAsync(false);
-
-            desktop.Shutdown();
-        }
+        var service = Locator.Current.GetService<MainWindowViewModel>();
+        if (service != null) await service.MyAppExitAsync(true);
+        service?.Shutdown(true);
     }
 }

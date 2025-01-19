@@ -2,29 +2,27 @@
 {
     public class ProxySettingOSX
     {
-        /*
-         * 仅测试了，MacOS 13.7.1 x86 版本，其他版本有待确认
-         */
-
         /// <summary>
         /// 应用接口类型
         /// </summary>
-        private static readonly List<string> LstInterface = ["Ethernet", "Wi-Fi", "Thunderbolt Bridge"];
+        private static readonly List<string> LstInterface = ["Ethernet", "Wi-Fi", "Thunderbolt Bridge", "USB 10/100/1000 LAN"];
 
         /// <summary>
         /// 代理类型，对应 http,https,socks
         /// </summary>
         private static readonly List<string> LstTypes = ["setwebproxy", "setsecurewebproxy", "setsocksfirewallproxy"];
 
-        public static async Task SetProxy(string host, int port)
+        public static async Task SetProxy(string host, int port, string exceptions)
         {
-            var lstCmd = GetSetCmds(host, port);
+            var lstInterface = await GetListNetworkServices();
+            var lstCmd = GetSetCmds(lstInterface, host, port, exceptions);
             await ExecCmd(lstCmd);
         }
 
         public static async Task UnsetProxy()
         {
-            var lstCmd = GetUnsetCmds();
+            var lstInterface = await GetListNetworkServices();
+            var lstCmd = GetUnsetCmds(lstInterface);
             await ExecCmd(lstCmd);
         }
 
@@ -42,17 +40,27 @@
             }
         }
 
-        private static List<CmdItem> GetSetCmds(string host, int port)
+        private static List<CmdItem> GetSetCmds(List<string> lstInterface, string host, int port, string exceptions)
         {
             List<CmdItem> lstCmd = [];
-            foreach (var interf in LstInterface)
+            foreach (var interf in lstInterface)
             {
                 foreach (var type in LstTypes)
                 {
                     lstCmd.Add(new CmdItem()
                     {
                         Cmd = "networksetup",
-                        Arguments = [$"-{type}", interf, host, (type.Contains("socks") ? (port - 1) : port).ToString()]
+                        Arguments = [$"-{type}", interf, host, port.ToString()]
+                    });
+                }
+                if (exceptions.IsNotEmpty())
+                {
+                    List<string> args = [$"-setproxybypassdomains", interf];
+                    args.AddRange(exceptions.Split(','));
+                    lstCmd.Add(new CmdItem()
+                    {
+                        Cmd = "networksetup",
+                        Arguments = args
                     });
                 }
             }
@@ -60,10 +68,10 @@
             return lstCmd;
         }
 
-        private static List<CmdItem> GetUnsetCmds()
+        private static List<CmdItem> GetUnsetCmds(List<string> lstInterface)
         {
             List<CmdItem> lstCmd = [];
-            foreach (var interf in LstInterface)
+            foreach (var interf in lstInterface)
             {
                 foreach (var type in LstTypes)
                 {
@@ -76,6 +84,18 @@
             }
 
             return lstCmd;
+        }
+
+        public static async Task<List<string>> GetListNetworkServices()
+        {
+            var services = await Utils.GetListNetworkServices();
+            if (services.IsNullOrEmpty())
+            {
+                return LstInterface;
+            }
+
+            var lst = services.Split(Environment.NewLine).Where(t => t.Length > 0 && t.Contains('*') == false);
+            return lst.ToList();
         }
     }
 }

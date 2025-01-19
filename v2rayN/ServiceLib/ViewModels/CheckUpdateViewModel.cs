@@ -248,7 +248,7 @@ namespace ServiceLib.ViewModels
                     {
                         foreach (var subDir in dir.GetDirectories())
                         {
-                            FileManager.CopyDirectory(subDir.FullName, toPath, false, null);
+                            FileManager.CopyDirectory(subDir.FullName, toPath, false, true);
                             subDir.Delete(true);
                         }
                     }
@@ -259,10 +259,10 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    FileManager.ZipExtractToFile(fileName, toPath, _config.GuiItem.IgnoreGeoUpdateCore ? "geo" : "");
+                    FileManager.ZipExtractToFile(fileName, toPath, "geo");
                 }
 
-                if (Utils.IsLinux())
+                if (Utils.IsNonWindows())
                 {
                     var filesList = (new DirectoryInfo(toPath)).GetFiles().Select(u => u.FullName).ToList();
                     foreach (var file in filesList)

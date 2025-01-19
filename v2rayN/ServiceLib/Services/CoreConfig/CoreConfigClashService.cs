@@ -6,6 +6,7 @@ namespace ServiceLib.Services.CoreConfig
     public class CoreConfigClashService
     {
         private Config _config;
+        private static readonly string _tag = "CoreConfigClashService";
 
         public CoreConfigClashService(Config config)
         {
@@ -78,17 +79,15 @@ namespace ServiceLib.Services.CoreConfig
                     return ret;
                 }
 
-                //port
-                fileContent["port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-                //socks-port
-                fileContent["socks-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                //mixed-port
+                fileContent["mixed-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
                 //log-level
                 fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
 
                 //external-controller
                 fileContent["external-controller"] = $"{Global.Loopback}:{AppHandler.Instance.StatePort2}";
                 //allow-lan
-                if (_config.Inbound[0].AllowLANConn)
+                if (_config.Inbound.First().AllowLANConn)
                 {
                     fileContent["allow-lan"] = "true";
                     fileContent["bind-address"] = "*";
@@ -133,7 +132,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog("GenerateClientConfigClash-Mixin", ex);
+                    Logging.SaveLog($"{_tag}-Mixin", ex);
                 }
 
                 var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
@@ -153,7 +152,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientConfigClash", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }

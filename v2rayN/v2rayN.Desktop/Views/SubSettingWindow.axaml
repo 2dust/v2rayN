@@ -8,10 +8,8 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSubSetting}"
-    Width="800"
+    Width="900"
     Height="600"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     x:DataType="vms:SubSettingViewModel"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
@@ -49,11 +47,11 @@
                 </DataGrid.KeyBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Width="120"
+                        Width="*"
                         Binding="{Binding Remarks}"
                         Header="{x:Static resx:ResUI.LvRemarks}" />
                     <DataGridTextColumn
-                        Width="150"
+                        Width="*"
                         Binding="{Binding Url}"
                         Header="{x:Static resx:ResUI.LvUrl}" />
                     <DataGridCheckBoxColumn

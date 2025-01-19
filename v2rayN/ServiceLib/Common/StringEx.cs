@@ -22,7 +22,7 @@ namespace ServiceLib.Common
         public static bool BeginWithAny(this string s, IEnumerable<char> chars)
         {
             if (s.IsNullOrEmpty()) return false;
-            return chars.Contains(s[0]);
+            return chars.Contains(s.First());
         }
 
         private static bool IsWhiteSpace(this string value)
@@ -61,7 +61,7 @@ namespace ServiceLib.Common
                 return string.Empty;
             }
 
-            return char.ToUpper(value[0]) + value[1..];
+            return char.ToUpper(value.First()) + value[1..];
         }
 
         public static string AppendQuotes(this string value)

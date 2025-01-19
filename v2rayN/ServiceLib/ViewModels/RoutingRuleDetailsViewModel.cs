@@ -74,15 +74,16 @@ namespace ServiceLib.ViewModels
             SelectedSource.Protocol = ProtocolItems?.ToList();
             SelectedSource.InboundTag = InboundTagItems?.ToList();
 
-            bool hasRule = SelectedSource.Domain?.Count > 0
+            var hasRule = SelectedSource.Domain?.Count > 0
               || SelectedSource.Ip?.Count > 0
               || SelectedSource.Protocol?.Count > 0
               || SelectedSource.Process?.Count > 0
-              || Utils.IsNotEmpty(SelectedSource.Port);
+              || Utils.IsNotEmpty(SelectedSource.Port)
+              || Utils.IsNotEmpty(SelectedSource.Network);
 
             if (!hasRule)
             {
-                NoticeHandler.Instance.Enqueue(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Port/Protocol/Domain/IP/Process"));
+                NoticeHandler.Instance.Enqueue(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Network/Port/Protocol/Domain/IP/Process"));
                 return;
             }
             //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

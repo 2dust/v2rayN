@@ -51,6 +51,8 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.SubUpdateCmd, v => v.menuSubUpdate2).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SubUpdateViaProxyCmd, v => v.menuSubUpdateViaProxy2).DisposeWith(disposables);
 
+                this.BindCommand(ViewModel, vm => vm.CopyProxyCmdToClipboardCmd, v => v.menuCopyProxyCmdToClipboard).DisposeWith(disposables);
+
                 this.OneWayBind(ViewModel, vm => vm.RunningServerToolTipText, v => v.tbNotify.ToolTipText).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.NotifyLeftClickCmd, v => v.tbNotify.LeftClickCommand).DisposeWith(disposables);
 
@@ -95,6 +97,10 @@ namespace v2rayN.Views
                         tbNotify.Icon = await WindowsHandler.Instance.GetNotifyIcon(_config);
                         Application.Current.MainWindow.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
+                    break;
+                case EViewAction.SetClipboardData:
+                    if (obj is null) return false;
+                    WindowsUtils.SetClipboardData((string)obj);
                     break;
             }
             return await Task.FromResult(true);

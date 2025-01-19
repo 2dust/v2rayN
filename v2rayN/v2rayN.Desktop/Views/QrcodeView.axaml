@@ -4,16 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     d:DesignHeight="480"
     d:DesignWidth="400"
     mc:Ignorable="d">
-    <Grid Margin="30">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
+    <Grid Margin="30" RowDefinitions="Auto,Auto">
         <Image
             Name="imgQrcode"
             Width="300"
@@ -27,7 +21,6 @@
             VerticalAlignment="Center"
             IsReadOnly="True"
             MaxLines="1" />
-
 
     </Grid>
 </UserControl>

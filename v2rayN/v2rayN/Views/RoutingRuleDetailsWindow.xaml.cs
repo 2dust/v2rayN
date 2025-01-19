@@ -58,7 +58,7 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.UiItem.ColorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -89,7 +89,7 @@ namespace v2rayN.Views
 
         private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
+            ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
         }
     }
 }

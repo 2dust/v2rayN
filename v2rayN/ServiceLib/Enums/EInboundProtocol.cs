@@ -3,12 +3,12 @@
     public enum EInboundProtocol
     {
         socks = 0,
-        http,
         socks2,
-        http2,
+        socks3,
         pac,
         api,
         api2,
+        mixed,
         speedtest = 21
     }
 }

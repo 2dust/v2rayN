@@ -3,12 +3,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:semi="https://irihi.tech/semi"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:DataType="vms:StatusBarViewModel"
     RequestedThemeVariant="Default">
     <Application.Styles>
+        <semi:SemiTheme />
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
-        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
         <StyleInclude Source="avares://DialogHost.Avalonia/Styles.xaml" />
     </Application.Styles>
@@ -31,37 +32,25 @@
                         <NativeMenuItem
                             Command="{Binding SystemProxyClearCmd}"
                             Header="{x:Static resx:ResUI.menuSystemProxyClear}"
-                            IsVisible="{Binding BlNotSystemProxyClear}" />
-                        <NativeMenuItem
-                            Command="{Binding SystemProxyClearCmd}"
-                            Header="{x:Static resx:ResUI.menuSystemProxyClear}"
-                            Icon="/Assets/NotifyIcon1.ico"
-                            IsVisible="{Binding BlSystemProxyClear}" />
-
+                            IsChecked="{Binding BlSystemProxyClear}"
+                            ToggleType="Radio" />
                         <NativeMenuItem
                             Command="{Binding SystemProxySetCmd}"
                             Header="{x:Static resx:ResUI.menuSystemProxySet}"
-                            IsVisible="{Binding BlNotSystemProxySet}" />
-                        <NativeMenuItem
-                            Command="{Binding SystemProxySetCmd}"
-                            Header="{x:Static resx:ResUI.menuSystemProxySet}"
-                            Icon="/Assets/NotifyIcon2.ico"
-                            IsVisible="{Binding BlSystemProxySet}" />
-
+                            IsChecked="{Binding BlSystemProxySet}"
+                            ToggleType="Radio" />
                         <NativeMenuItem
                             Command="{Binding SystemProxyNothingCmd}"
                             Header="{x:Static resx:ResUI.menuSystemProxyNothing}"
-                            IsVisible="{Binding BlNotSystemProxyNothing}" />
-                        <NativeMenuItem
-                            Command="{Binding SystemProxyNothingCmd}"
-                            Header="{x:Static resx:ResUI.menuSystemProxyNothing}"
-                            Icon="/Assets/NotifyIcon3.ico"
-                            IsVisible="{Binding BlSystemProxyNothing}" />
+                            IsChecked="{Binding BlSystemProxyNothing}"
+                            ToggleType="Radio" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
                         <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Command="{Binding CopyProxyCmdToClipboardCmd}" Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Command="{Binding NotifyLeftClickCmd}" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
                         <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />

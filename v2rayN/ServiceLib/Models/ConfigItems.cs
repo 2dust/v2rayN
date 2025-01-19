@@ -24,21 +24,16 @@
     public class InItem
     {
         public int LocalPort { get; set; }
-
         public string Protocol { get; set; }
-
         public bool UdpEnabled { get; set; }
-
         public bool SniffingEnabled { get; set; } = true;
         public List<string>? DestOverride { get; set; } = ["http", "tls"];
         public bool RouteOnly { get; set; }
         public bool AllowLANConn { get; set; }
-
         public bool NewPort4LAN { get; set; }
-
         public string User { get; set; }
-
         public string Pass { get; set; }
+        public bool SecondLocalPortEnabled { get; set; }
     }
 
     [Serializable]
@@ -72,21 +67,13 @@
     public class GUIItem
     {
         public bool AutoRun { get; set; }
-
         public bool EnableStatistics { get; set; }
-
+        public bool DisplayRealTimeSpeed { get; set; }
         public bool KeepOlderDedupl { get; set; }
-
-        public bool IgnoreGeoUpdateCore { get; set; } = true;
-
         public int AutoUpdateInterval { get; set; }
-
         public bool EnableSecurityProtocolTls13 { get; set; }
-
         public int TrayMenuServersLimit { get; set; } = 20;
-
         public bool EnableHWA { get; set; } = false;
-
         public bool EnableLog { get; set; } = true;
     }
 
@@ -107,9 +94,8 @@
         public double MainGirdHeight1 { get; set; }
         public double MainGirdHeight2 { get; set; }
         public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
-        public bool ColorModeDark { get; set; }
-        public bool FollowSystemTheme { get; set; }
         public string? ColorPrimaryName { get; set; }
+        public string? CurrentTheme { get; set; }
         public string CurrentLanguage { get; set; }
         public string CurrentFontFamily { get; set; }
         public int CurrentFontSize { get; set; }
@@ -124,8 +110,7 @@
     [Serializable]
     public class ConstItem
     {
-        public string DefIEProxyExceptions { get; set; }
-        public string SubConvertUrl { get; set; } = string.Empty;
+        public string? SubConvertUrl { get; set; }
         public string? GeoSourceUrl { get; set; }
         public string? SrsSourceUrl { get; set; }
         public string? RouteRulesTemplateSourceUrl { get; set; }
@@ -171,6 +156,7 @@
         public int SpeedTestTimeout { get; set; }
         public string SpeedTestUrl { get; set; }
         public string SpeedPingTestUrl { get; set; }
+        public int SpeedTestPageSize { get; set; }
     }
 
     [Serializable]
@@ -180,7 +166,6 @@
         public string DomainStrategy4Singbox { get; set; }
         public string DomainMatcher { get; set; }
         public string RoutingIndexId { get; set; }
-        public bool EnableRoutingAdvanced { get; set; }
     }
 
     [Serializable]
@@ -223,7 +208,6 @@
         public int ProxiesSorting { get; set; }
         public bool ProxiesAutoRefresh { get; set; }
         public int ProxiesAutoDelayTestInterval { get; set; } = 10;
-        public int ConnectionsSorting { get; set; }
         public bool ConnectionsAutoRefresh { get; set; }
         public int ConnectionsRefreshInterval { get; set; } = 2;
     }
@@ -251,5 +235,13 @@
     {
         public bool CheckPreReleaseUpdate { get; set; }
         public List<string>? SelectedCoreTypes { get; set; }
+    }
+
+    [Serializable]
+    public class Fragment4RayItem
+    {
+        public string? Packets { get; set; }
+        public string? Length { get; set; }
+        public string? Interval { get; set; }
     }
 }

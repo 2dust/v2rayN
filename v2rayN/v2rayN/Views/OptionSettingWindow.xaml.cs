@@ -25,7 +25,7 @@ namespace v2rayN.Views
             {
                 clbdestOverride.Items.Add(it);
             });
-            _config.Inbound[0].DestOverride?.ForEach(it =>
+            _config.Inbound.First().DestOverride?.ForEach(it =>
             {
                 clbdestOverride.SelectedItems.Add(it);
             });
@@ -104,6 +104,7 @@ namespace v2rayN.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(ViewModel, vm => vm.localPort, v => v.txtlocalPort.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SecondLocalPortEnabled, v => v.togSecondLocalPortEnabled.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.udpEnabled, v => v.togudpEnabled.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.sniffingEnabled, v => v.togsniffingEnabled.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.routeOnly, v => v.togrouteOnly.IsChecked).DisposeWith(disposables);
@@ -135,8 +136,8 @@ namespace v2rayN.Views
 
                 this.Bind(ViewModel, vm => vm.AutoRun, v => v.togAutoRun.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableStatistics, v => v.togEnableStatistics.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DisplayRealTimeSpeed, v => v.togDisplayRealTimeSpeed.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.KeepOlderDedupl, v => v.togKeepOlderDedupl.IsChecked).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.IgnoreGeoUpdateCore, v => v.togIgnoreGeoUpdateCore.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableAutoAdjustMainLvColWidth, v => v.togEnableAutoAdjustMainLvColWidth.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableUpdateSubOnlyRemarksExist, v => v.togEnableUpdateSubOnlyRemarksExist.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableSecurityProtocolTls13, v => v.togEnableSecurityProtocolTls13.IsChecked).DisposeWith(disposables);
@@ -149,6 +150,7 @@ namespace v2rayN.Views
                 this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SpeedTestPageSize, v => v.txtSpeedTestPageSize.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.EnableHWA, v => v.togEnableHWA.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
@@ -175,7 +177,7 @@ namespace v2rayN.Views
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.UiItem.ColorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -211,7 +213,7 @@ namespace v2rayN.Views
                 {
                     files.AddRange(Directory.GetFiles(path, pattern));
                 }
-                var culture = _config.UiItem.CurrentLanguage == Global.Languages[0] ? "zh-cn" : "en-us";
+                var culture = _config.UiItem.CurrentLanguage == Global.Languages.First() ? "zh-cn" : "en-us";
                 var culture2 = "en-us";
                 foreach (var ttf in files)
                 {
@@ -244,9 +246,11 @@ namespace v2rayN.Views
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("fill fonts error", ex);
+                Logging.SaveLog("GetFonts", ex);
             }
-            return lstFonts.OrderBy(t => t).ToList();
+
+            var lst = lstFonts.OrderBy(t => t).ToList();
+            return await Task.FromResult(lst);
         }
 
         private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

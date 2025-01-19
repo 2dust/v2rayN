@@ -6,6 +6,8 @@ namespace ServiceLib.Common
 {
     public static class FileManager
     {
+        private static readonly string _tag = "FileManager";
+
         public static bool ByteArrayToFile(string fileName, byte[] content)
         {
             try
@@ -15,7 +17,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return false;
         }
@@ -30,7 +32,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -46,7 +48,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -60,7 +62,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -79,7 +81,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 throw;
             }
         }
@@ -105,13 +107,13 @@ namespace ServiceLib.Common
                     }
                     catch (IOException ex)
                     {
-                        Logging.SaveLog(ex.Message, ex);
+                        Logging.SaveLog(_tag, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return false;
             }
             return true;
@@ -130,7 +132,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return null;
             }
         }
@@ -148,13 +150,13 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return false;
             }
             return true;
         }
 
-        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, string? ignoredName)
+        public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive, bool overwrite, string? ignoredName = null)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);
@@ -181,7 +183,11 @@ namespace ServiceLib.Common
                     continue;
                 }
                 var targetFilePath = Path.Combine(destinationDir, file.Name);
-                file.CopyTo(targetFilePath, true);
+                if (!overwrite && File.Exists(targetFilePath))
+                {
+                    continue;
+                }
+                file.CopyTo(targetFilePath, overwrite);
             }
 
             // If recursive and copying subdirectories, recursively call this method
@@ -190,8 +196,29 @@ namespace ServiceLib.Common
                 foreach (var subDir in dirs)
                 {
                     var newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, newDestinationDir, true, ignoredName);
+                    CopyDirectory(subDir.FullName, newDestinationDir, true, overwrite, ignoredName);
                 }
+            }
+        }
+
+        public static void DeleteExpiredFiles(string sourceDir, DateTime dtLine)
+        {
+            try
+            {
+                var files = Directory.GetFiles(sourceDir, "*.*");
+                foreach (var filePath in files)
+                {
+                    var file = new FileInfo(filePath);
+                    if (file.CreationTime >= dtLine)
+                    {
+                        continue;
+                    }
+                    file.Delete();
+                }
+            }
+            catch
+            {
+                // ignored
             }
         }
     }

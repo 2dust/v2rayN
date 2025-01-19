@@ -13,7 +13,7 @@ namespace ServiceLib.Handler
         private string? _lastDescription;
         private string _webDir = Global.AppName + "_backup";
         private readonly string _webFileName = "backup.zip";
-        private string _logTitle = "WebDav--";
+        private readonly string _tag = "WebDav--";
 
         public WebDavHandler()
         {
@@ -81,13 +81,13 @@ namespace ServiceLib.Handler
         private void SaveLog(string desc)
         {
             _lastDescription = desc;
-            Logging.SaveLog(_logTitle + desc);
+            Logging.SaveLog(_tag + desc);
         }
 
         private void SaveLog(Exception ex)
         {
             _lastDescription = ex.Message;
-            Logging.SaveLog(_logTitle, ex);
+            Logging.SaveLog(_tag, ex);
         }
 
         public async Task<bool> CheckConnection()

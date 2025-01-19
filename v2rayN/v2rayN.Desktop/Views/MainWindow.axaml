@@ -10,7 +10,7 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
     Width="900"
-    Height="700"
+    Height="600"
     MinWidth="900"
     x:DataType="vms:MainWindowViewModel"
     Icon="/Assets/NotifyIcon1.ico"
@@ -80,6 +80,7 @@
                         <MenuItem Header="{x:Static resx:ResUI.menuRegionalPresets}">
                             <MenuItem x:Name="menuRegionalPresetsDefault" Header="{x:Static resx:ResUI.menuRegionalPresetsDefault}" />
                             <MenuItem x:Name="menuRegionalPresetsRussia" Header="{x:Static resx:ResUI.menuRegionalPresetsRussia}" />
+                            <MenuItem x:Name="menuRegionalPresetsIran" Header="{x:Static resx:ResUI.menuRegionalPresetsIran}" />
                         </MenuItem>
                         <MenuItem x:Name="menuBackupAndRestore" Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
@@ -116,12 +117,10 @@
             <view:StatusBarView DockPanel.Dock="Bottom" />
 
             <Grid>
-                <Grid x:Name="gridMain" IsVisible="False">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+                <Grid
+                    x:Name="gridMain"
+                    ColumnDefinitions="1*,10,1*"
+                    IsVisible="False">
                     <ContentControl x:Name="tabProfiles" Grid.Column="0" />
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
                     <TabControl
@@ -133,83 +132,30 @@
                         <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
-                <Grid x:Name="gridMain1" IsVisible="False">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
+                <Grid
+                    x:Name="gridMain1"
+                    IsVisible="False"
+                    RowDefinitions="1*,10,1*">
                     <ContentControl x:Name="tabProfiles1" Grid.Row="0" />
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
                     <TabControl
                         x:Name="tabMain1"
                         Grid.Row="2"
                         TabStripPlacement="Left">
-                        <TabItem x:Name="tabMsgView1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashProxies1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbProxies}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashConnections1">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbConnections}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
+                        <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                        <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
+                        <TabItem x:Name="tabClashConnections1" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
                 <Grid x:Name="gridMain2" IsVisible="False">
                     <TabControl x:Name="tabMain2" TabStripPlacement="Left">
-                        <TabItem x:Name="tabProfiles2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.menuServers}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabMsgView2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.MsgInformationTitle}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashProxies2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbProxies}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem x:Name="tabClashConnections2">
-                            <TabItem.Header>
-                                <StackPanel>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{x:Static resx:ResUI.TbConnections}" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
+                        <TabItem x:Name="tabProfiles2" Header="{x:Static resx:ResUI.menuServers}" />
+                        <TabItem x:Name="tabMsgView2" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
+                        <TabItem x:Name="tabClashProxies2" Header="{x:Static resx:ResUI.TbProxies}" />
+                        <TabItem x:Name="tabClashConnections2" Header="{x:Static resx:ResUI.TbConnections}" />
                     </TabControl>
                 </Grid>
-
             </Grid>
-
         </DockPanel>
     </dialogHost:DialogHost>
 </Window>

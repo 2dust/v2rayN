@@ -90,13 +90,13 @@ namespace ServiceLib.ViewModels
             y => y == true)
                 .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
         {
             await ProxiesReload();
-            DelayTestTask();
+            _ = DelayTestTask();
         }
 
         private async Task DoRulemodeSelected(bool c)
@@ -239,7 +239,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    SelectedGroup = _proxyGroups[0];
+                    SelectedGroup = _proxyGroups.First();
                 }
             }
             else
@@ -265,7 +265,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            _proxies.TryGetValue(name, out ProxiesItem proxy);
+            _proxies.TryGetValue(name, out var proxy);
             if (proxy == null || proxy.all == null)
             {
                 return;
@@ -316,7 +316,7 @@ namespace ServiceLib.ViewModels
         {
             if (_proxies is null)
                 return null;
-            _proxies.TryGetValue(name, out ProxiesItem proxy2);
+            _proxies.TryGetValue(name, out var proxy2);
             if (proxy2 != null)
             {
                 return proxy2;
@@ -399,6 +399,7 @@ namespace ServiceLib.ViewModels
 
                 _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.Name, Delay = result });
             });
+            await Task.CompletedTask;
         }
 
         public void ProxiesDelayTestResult(SpeedTestResult result)
@@ -434,7 +435,7 @@ namespace ServiceLib.ViewModels
         public async Task DelayTestTask()
         {
             var lastTime = DateTime.Now;
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 while (true)
                 {
@@ -457,6 +458,7 @@ namespace ServiceLib.ViewModels
                     lastTime = dtNow;
                 }
             });
+            await Task.CompletedTask;
         }
 
         #endregion task

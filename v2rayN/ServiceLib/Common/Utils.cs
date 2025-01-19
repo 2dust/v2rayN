@@ -15,6 +15,8 @@ namespace ServiceLib.Common
 {
     public class Utils
     {
+        private static readonly string _tag = "Utils";
+
         #region 资源操作
 
         /// <summary>
@@ -36,7 +38,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return result;
@@ -57,7 +59,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return null;
@@ -92,7 +94,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return string.Empty;
@@ -117,7 +119,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return null;
@@ -139,7 +141,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return null;
@@ -159,7 +161,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("Base64Encode", ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return string.Empty;
@@ -193,7 +195,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("Base64Decode", ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return string.Empty;
@@ -313,8 +315,8 @@ namespace ServiceLib.Common
                     continue;
                 }
 
-                var key = Uri.UnescapeDataString(keyValue[0]);
-                var val = Uri.UnescapeDataString(keyValue[1]);
+                var key = Uri.UnescapeDataString(keyValue.First());
+                var val = Uri.UnescapeDataString(keyValue.Last());
 
                 if (result[key] is null)
                 {
@@ -483,7 +485,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return false;
@@ -515,10 +517,10 @@ namespace ServiceLib.Common
 
         #region 杂项
 
-        public static bool UpgradeAppExists(out string fileName)
+        public static bool UpgradeAppExists(out string upgradeFileName)
         {
-            fileName = Path.Combine(Utils.StartupPath(), GetExeName("AmazTool"));
-            return File.Exists(fileName);
+            upgradeFileName = Path.Combine(GetBaseDirectory(), GetExeName("AmazTool"));
+            return File.Exists(upgradeFileName);
         }
 
         /// <summary>
@@ -529,19 +531,13 @@ namespace ServiceLib.Common
         {
             try
             {
-                if (blFull)
-                {
-                    return
-                        $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture} - {File.GetLastWriteTime(GetExePath()):yyyy/MM/dd}";
-                }
-                else
-                {
-                    return $"{Global.AppName}/{GetVersionInfo()}";
-                }
+                return blFull
+                    ? $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture}"
+                    : $"{Global.AppName}/{GetVersionInfo()}";
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return Global.AppName;
@@ -555,9 +551,14 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return "0.0";
             }
+        }
+
+        public static string GetRuntimeInfo()
+        {
+            return $"{Utils.GetVersion()} | {Utils.StartupPath()} | {Utils.GetExePath()} | {Environment.OSVersion}";
         }
 
         /// <summary>
@@ -579,7 +580,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return string.Empty;
@@ -588,23 +589,6 @@ namespace ServiceLib.Common
         public static bool IsGuidByParse(string strSrc)
         {
             return Guid.TryParse(strSrc, out _);
-        }
-
-        public static void ProcessStart(string? fileName, string arguments = "")
-        {
-            try
-            {
-                if (fileName.IsNullOrEmpty())
-                {
-                    return;
-                }
-
-                Process.Start(new ProcessStartInfo(fileName, arguments) { UseShellExecute = true });
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(ex.Message, ex);
-            }
         }
 
         public static Dictionary<string, string> GetSystemHosts()
@@ -622,14 +606,14 @@ namespace ServiceLib.Common
                     {
                         if (host.StartsWith("#")) continue;
                         var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (hostItem.Length < 2) continue;
-                        systemHosts.Add(hostItem[1], hostItem[0]);
+                        if (hostItem.Length != 2) continue;
+                        systemHosts.Add(hostItem.Last(), hostItem.First());
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return systemHosts;
@@ -677,6 +661,33 @@ namespace ServiceLib.Common
 
         #region TempPath
 
+        public static bool HasWritePermission()
+        {
+            try
+            {
+                //When this file exists, it is equivalent to having no permission to read and write
+                if (File.Exists(Path.Combine(GetBaseDirectory(), "NotStoreConfigHere.txt")))
+                {
+                    return false;
+                }
+
+                var tempPath = Path.Combine(GetBaseDirectory(), "guiTemps");
+                if (!Directory.Exists(tempPath))
+                {
+                    Directory.CreateDirectory(tempPath);
+                }
+                var fileName = Path.Combine(tempPath, GetGuid());
+                File.Create(fileName).Close();
+                File.Delete(fileName);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static string GetPath(string fileName)
         {
             var startupPath = StartupPath();
@@ -688,6 +699,11 @@ namespace ServiceLib.Common
             return Path.Combine(startupPath, fileName);
         }
 
+        public static string GetBaseDirectory(string fileName = "")
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+        }
+
         public static string GetExePath()
         {
             return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
@@ -695,7 +711,12 @@ namespace ServiceLib.Common
 
         public static string StartupPath()
         {
-            return AppDomain.CurrentDomain.BaseDirectory;
+            if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
+            }
+
+            return GetBaseDirectory();
         }
 
         public static string GetTempPath(string filename = "")
@@ -818,6 +839,8 @@ namespace ServiceLib.Common
 
         public static bool IsOSX() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
+        public static bool IsNonWindows() => !RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         public static string GetExeName(string name)
         {
             return IsWindows() ? $"{name}.exe" : name;
@@ -829,18 +852,19 @@ namespace ServiceLib.Common
             {
                 return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
             }
-            else
-            {
-                var id = GetLinuxUserId().Result ?? "1000";
-                if (int.TryParse(id, out var userId))
-                {
-                    return userId == 0;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            return false;
+            //else
+            //{
+            //    var id = GetLinuxUserId().Result ?? "1000";
+            //    if (int.TryParse(id, out var userId))
+            //    {
+            //        return userId == 0;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
         }
 
         private static async Task<string?> GetLinuxUserId()
@@ -852,6 +876,8 @@ namespace ServiceLib.Common
         public static async Task<string?> SetLinuxChmod(string? fileName)
         {
             if (fileName.IsNullOrEmpty()) return null;
+            if (fileName.Contains(' ')) fileName = fileName.AppendQuotes();
+            //File.SetUnixFileMode(fileName, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
             return await GetCliWrapOutput("/bin/bash", arg);
         }
@@ -868,6 +894,12 @@ namespace ServiceLib.Common
             return IsWindows()
                 ? Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%")
                 : Environment.GetEnvironmentVariable("HOME");
+        }
+
+        public static async Task<string?> GetListNetworkServices()
+        {
+            var arg = new List<string>() { "-c", $"networksetup -listallnetworkservices" };
+            return await GetCliWrapOutput("/bin/bash", arg);
         }
 
         #endregion Platform

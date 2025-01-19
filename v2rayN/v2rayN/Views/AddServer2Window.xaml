@@ -85,7 +85,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         AcceptsReturn="True"
                         Style="{StaticResource MyOutlinedTextBox}" />
 
@@ -102,7 +102,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
                         Style="{StaticResource MyOutlinedTextBox}" />

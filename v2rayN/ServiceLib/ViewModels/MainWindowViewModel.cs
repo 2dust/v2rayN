@@ -1,9 +1,7 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Diagnostics;
 using System.Reactive;
-using System.Reactive.Linq;
 
 namespace ServiceLib.ViewModels
 {
@@ -50,6 +48,8 @@ namespace ServiceLib.ViewModels
 
         public ReactiveCommand<Unit, Unit> RegionalPresetRussiaCmd { get; }
 
+        public ReactiveCommand<Unit, Unit> RegionalPresetIranCmd { get; }
+
         public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
         [Reactive]
@@ -62,6 +62,8 @@ namespace ServiceLib.ViewModels
         public int TabMainSelectedIndex { get; set; }
 
         #endregion Menu
+
+        private bool _hasNextReloadJob = false;
 
         #region Init
 
@@ -197,9 +199,14 @@ namespace ServiceLib.ViewModels
                 await ApplyRegionalPreset(EPresetType.Russia);
             });
 
+            RegionalPresetIranCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await ApplyRegionalPreset(EPresetType.Iran);
+            });
+
             #endregion WhenAnyValue && ReactiveCommand
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -212,11 +219,12 @@ namespace ServiceLib.ViewModels
             await CoreHandler.Instance.Init(_config, UpdateHandler);
             TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
-            if (_config.GuiItem.EnableStatistics)
+            if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
             {
                 await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
             }
 
+            BlReloadEnabled = true;
             await Reload();
             await AutoHideStartup();
             Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
@@ -244,7 +252,7 @@ namespace ServiceLib.ViewModels
                 RefreshServers();
                 if (indexIdOld != _config.IndexId)
                 {
-                    Reload();
+                    _ = Reload();
                 }
                 if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
                 {
@@ -264,17 +272,13 @@ namespace ServiceLib.ViewModels
 
         public void SetStatisticsResult(ServerSpeedItem update)
         {
-            try
+            if (_config.GuiItem.DisplayRealTimeSpeed)
             {
                 Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-                if ((update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
-                {
-                    Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
-                }
             }
-            catch (Exception ex)
+            if (_config.GuiItem.EnableStatistics && (update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
             }
         }
 
@@ -282,46 +286,39 @@ namespace ServiceLib.ViewModels
         {
             try
             {
-                Logging.SaveLog("MyAppExit Begin");
-                //if (blWindowsShutDown)
-                await SysProxyHandler.UpdateSysProxy(_config, true);
+                Logging.SaveLog("MyAppExitAsync Begin");
+                MessageBus.Current.SendMessage("", EMsgCommand.AppExit.ToString());
 
                 await ConfigHandler.SaveConfig(_config);
+                await SysProxyHandler.UpdateSysProxy(_config, true);
                 await ProfileExHandler.Instance.SaveTo();
                 await StatisticsHandler.Instance.SaveTo();
                 StatisticsHandler.Instance.Close();
                 await CoreHandler.Instance.CoreStop();
 
-                Logging.SaveLog("MyAppExit End");
+                Logging.SaveLog("MyAppExitAsync End");
             }
             catch { }
             finally
             {
-                _updateView?.Invoke(EViewAction.Shutdown, null);
+                if (!blWindowsShutDown)
+                {
+                    _updateView?.Invoke(EViewAction.Shutdown, false);
+                }
             }
         }
 
         public async Task UpgradeApp(string arg)
         {
-            if (!Utils.UpgradeAppExists(out var fileName))
+            if (!Utils.UpgradeAppExists(out var upgradeFileName))
             {
                 NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
                 Logging.SaveLog("UpgradeApp does not exist");
                 return;
             }
 
-            Process process = new()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = fileName,
-                    Arguments = arg.AppendQuotes(),
-                    WorkingDirectory = Utils.StartupPath()
-                }
-            };
-            process.Start();
-            if (process.Id > 0)
+            var id = ProcUtils.ProcessStart(upgradeFileName, arg, Utils.StartupPath());
+            if (id > 0)
             {
                 await MyAppExitAsync(false);
             }
@@ -330,6 +327,11 @@ namespace ServiceLib.ViewModels
         public void ShowHideWindow(bool? blShow)
         {
             _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
+        }
+
+        public void Shutdown(bool byUser)
+        {
+            _updateView?.Invoke(EViewAction.Shutdown, byUser);
         }
 
         #endregion Actions
@@ -401,6 +403,7 @@ namespace ServiceLib.ViewModels
         public async Task AddServerViaScanAsync()
         {
             _updateView?.Invoke(EViewAction.ScanScreenTask, null);
+            await Task.CompletedTask;
         }
 
         public async Task ScanScreenResult(byte[]? bytes)
@@ -412,6 +415,7 @@ namespace ServiceLib.ViewModels
         public async Task AddServerViaImageAsync()
         {
             _updateView?.Invoke(EViewAction.ScanImageTask, null);
+            await Task.CompletedTask;
         }
 
         public async Task ScanImageResult(string fileName)
@@ -500,20 +504,8 @@ namespace ServiceLib.ViewModels
 
         public async Task RebootAsAdmin()
         {
-            try
-            {
-                ProcessStartInfo startInfo = new()
-                {
-                    UseShellExecute = true,
-                    Arguments = Global.RebootAs,
-                    WorkingDirectory = Utils.StartupPath(),
-                    FileName = Utils.GetExePath().AppendQuotes(),
-                    Verb = "runas",
-                };
-                Process.Start(startInfo);
-                await MyAppExitAsync(false);
-            }
-            catch { }
+            ProcUtils.RebootAsAdmin();
+            await MyAppExitAsync(false);
         }
 
         private async Task ClearServerStatistics()
@@ -524,18 +516,20 @@ namespace ServiceLib.ViewModels
 
         private async Task OpenTheFileLocation()
         {
+            var path = Utils.StartupPath();
             if (Utils.IsWindows())
             {
-                Utils.ProcessStart("Explorer", $"/select,{Utils.GetConfigPath()}");
+                ProcUtils.ProcessStart(path);
             }
             else if (Utils.IsLinux())
             {
-                Utils.ProcessStart("nautilus", Utils.GetConfigPath());
+                ProcUtils.ProcessStart("nautilus", path);
             }
             else if (Utils.IsOSX())
             {
-                Utils.ProcessStart("open", Utils.GetConfigPath());
+                ProcUtils.ProcessStart("open", path);
             }
+            await Task.CompletedTask;
         }
 
         #endregion Setting
@@ -544,19 +538,33 @@ namespace ServiceLib.ViewModels
 
         public async Task Reload()
         {
+            //If there are unfinished reload job, marked with next job.
+            if (!BlReloadEnabled)
+            {
+                _hasNextReloadJob = true;
+                return;
+            }
+
             BlReloadEnabled = false;
 
             await LoadCore();
-            Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
             await SysProxyHandler.UpdateSysProxy(_config, false);
+            Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
             _updateView?.Invoke(EViewAction.DispatcherReload, null);
+
+            BlReloadEnabled = true;
+            if (_hasNextReloadJob)
+            {
+                _hasNextReloadJob = false;
+                await Reload();
+            }
         }
 
         public void ReloadResult()
         {
+            // BlReloadEnabled = true;
             //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);
-            BlReloadEnabled = true;
             ShowClashUI = _config.IsRunningCore(ECoreType.sing_box);
             if (ShowClashUI)
             {
@@ -567,16 +575,8 @@ namespace ServiceLib.ViewModels
 
         private async Task LoadCore()
         {
-            //if (_config.tunModeItem.enableTun)
-            //{
-            //    Task.Delay(1000).Wait();
-            //    WindowsUtils.RemoveTunDevice();
-            //}
-            await Task.Run(async () =>
-            {
-                var node = await ConfigHandler.GetDefaultServer(_config);
-                await CoreHandler.Instance.LoadCore(node);
-            });
+            var node = await ConfigHandler.GetDefaultServer(_config);
+            await CoreHandler.Instance.LoadCore(node);
         }
 
         public async Task CloseCore()
@@ -591,6 +591,7 @@ namespace ServiceLib.ViewModels
             {
                 ShowHideWindow(false);
             }
+            await Task.CompletedTask;
         }
 
         #endregion core job

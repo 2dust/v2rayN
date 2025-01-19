@@ -25,22 +25,6 @@
                 VerticalContentAlignment="Center"
                 Watermark="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
 
-            <TextBlock
-                Margin="8,0"
-                VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbSorting}" />
-            <ComboBox
-                x:Name="cmbSorting"
-                Width="100"
-                Margin="8,0">
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpSpeed}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownSpeed}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingUpTraffic}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDownTraffic}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingTime}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingHost}" />
-            </ComboBox>
-
             <Button
                 x:Name="btnConnectionCloseAll"
                 Width="30"
@@ -54,6 +38,23 @@
                         Width="20"
                         Height="20"
                         Data="{StaticResource building_delete}"
+                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+
+            <Button
+                x:Name="btnAutofitColumnWidth"
+                Width="30"
+                Height="30"
+                Margin="8,0"
+                Classes="Success"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                <Button.Content>
+                    <PathIcon
+                        Width="20"
+                        Height="20"
+                        Data="{StaticResource building_fit}"
                         Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
@@ -85,11 +86,11 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Width="240"
+                    Width="300"
                     Binding="{Binding Host}"
                     Header="{x:Static resx:ResUI.TbSortingHost}" />
                 <DataGridTextColumn
-                    Width="160"
+                    Width="500"
                     Binding="{Binding Chain}"
                     Header="{x:Static resx:ResUI.TbSortingChain}" />
                 <DataGridTextColumn
@@ -97,17 +98,9 @@
                     Binding="{Binding Network}"
                     Header="{x:Static resx:ResUI.TbSortingNetwork}" />
                 <DataGridTextColumn
-                    Width="100"
+                    Width="160"
                     Binding="{Binding Type}"
                     Header="{x:Static resx:ResUI.TbSortingType}" />
-                <DataGridTextColumn
-                    Width="100"
-                    Binding="{Binding UploadTraffic}"
-                    Header="{x:Static resx:ResUI.TbSortingUpTraffic}" />
-                <DataGridTextColumn
-                    Width="100"
-                    Binding="{Binding DownloadTraffic}"
-                    Header="{x:Static resx:ResUI.TbSortingDownTraffic}" />
                 <DataGridTextColumn
                     Width="100"
                     Binding="{Binding Elapsed}"

@@ -7,6 +7,7 @@ namespace ServiceLib.Services
     {
         private Action<bool, string>? _updateFunc;
         private int _timeout = 30;
+        private static readonly string _tag = "UpdateService";
 
         public async Task CheckUpdateGuiN(Config config, Action<bool, string> updateFunc, bool preRelease)
         {
@@ -249,9 +250,9 @@ namespace ServiceLib.Services
             var ip = Global.None;
             if (time > 0)
             {
-                var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, "ipapi");
+                var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, Global.IPAPIUrl);
                 var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-                ip = $"({ipInfo?.country}) {ipInfo?.ip}";
+                ip = $"({ipInfo?.country_code}) {ipInfo?.ip}";
             }
 
             updateFunc?.Invoke(false, string.Format(ResUI.TestMeOutput, time, ip));
@@ -272,7 +273,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new RetResult(false, ex.Message);
             }
@@ -356,7 +357,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new SemanticVersion("");
             }
@@ -415,7 +416,7 @@ namespace ServiceLib.Services
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 _updateFunc?.Invoke(false, ex.Message);
                 return new RetResult(false, ex.Message);
             }
@@ -447,6 +448,15 @@ namespace ServiceLib.Services
                 {
                     Architecture.Arm64 => coreInfo?.DownloadUrlLinuxArm64,
                     Architecture.X64 => coreInfo?.DownloadUrlLinux64,
+                    _ => null,
+                };
+            }
+            else if (Utils.IsOSX())
+            {
+                return RuntimeInformation.ProcessArchitecture switch
+                {
+                    Architecture.Arm64 => coreInfo?.DownloadUrlOSXArm64,
+                    Architecture.X64 => coreInfo?.DownloadUrlOSX64,
                     _ => null,
                 };
             }

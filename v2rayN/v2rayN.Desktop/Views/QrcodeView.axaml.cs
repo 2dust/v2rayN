@@ -5,6 +5,11 @@ namespace v2rayN.Desktop.Views
 {
     public partial class QrcodeView : UserControl
     {
+        public QrcodeView()
+        {
+            InitializeComponent();
+        }
+
         public QrcodeView(string? url)
         {
             InitializeComponent();

@@ -2,6 +2,8 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ServiceLib.ViewModels
 {
@@ -177,19 +179,25 @@ namespace ServiceLib.ViewModels
             }
 
             var lst = new List<RulesItem>();
-            foreach (var it in SelectedSources ?? [SelectedSource])
+            var sources = SelectedSources ?? [SelectedSource];
+            foreach (var it in _rules)
             {
-                var item = _rules.FirstOrDefault(t => t.Id == it?.Id);
-                if (item != null)
+                if (sources.Any(t => t.Id == it?.Id))
                 {
-                    var item2 = JsonUtils.DeepCopy(item); //JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                    var item2 = JsonUtils.DeepCopy(it);
                     item2.Id = null;
                     lst.Add(item2 ?? new());
                 }
             }
             if (lst.Count > 0)
             {
-                await _updateView?.Invoke(EViewAction.SetClipboardData, JsonUtils.Serialize(lst));
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+                await _updateView?.Invoke(EViewAction.SetClipboardData, JsonUtils.Serialize(lst, options));
             }
         }
 
@@ -249,7 +257,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            string result = Utils.LoadResource(fileName);
+            var result = Utils.LoadResource(fileName);
             if (Utils.IsNullOrEmpty(result))
             {
                 return;

@@ -6,6 +6,8 @@ namespace ServiceLib.Common
 {
     public class YamlUtils
     {
+        private static readonly string _tag = "YamlUtils";
+
         #region YAML
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("FromYaml", ex);
+                Logging.SaveLog(_tag, ex);
                 return deserializer.Deserialize<T>("");
             }
         }
@@ -53,7 +55,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return result;
         }
@@ -71,7 +73,7 @@ namespace ServiceLib.Common
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("PreprocessYaml", ex);
+                Logging.SaveLog(_tag, ex);
                 return null;
             }
         }

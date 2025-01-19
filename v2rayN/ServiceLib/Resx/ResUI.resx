@@ -478,12 +478,6 @@
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Color</value>
   </data>
-  <data name="TbSettingsColorMode" xml:space="preserve">
-    <value>Dark Mode</value>
-  </data>
-  <data name="TbSettingsFollowSystemTheme" xml:space="preserve">
-    <value>Follow System Theme</value>
-  </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
     <value>Language (Restart)</value>
   </data>
@@ -721,8 +715,8 @@
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>HTTP Port</value>
   </data>
-  <data name="TbSettingsIgnoreGeoUpdateCore" xml:space="preserve">
-    <value>Ignore Geo files when updating core</value>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Display real-time speed (Require restart)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>Keep older when deduplication</value>
@@ -752,13 +746,13 @@
     <value>Turn on Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>SOCKS Port</value>
+    <value>Mixed Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Start on boot</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Enable Statistics (Require restart)</value>
+    <value>Enable traffic statistics (Require restart)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion URL</value>
@@ -839,7 +833,7 @@
     <value>Add</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>Import Advanced Rules</value>
+    <value>Import Rules</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
     <value>Remove selected (Delete)</value>
@@ -847,20 +841,11 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Set as active rule(Enter)</value>
   </data>
-  <data name="menuRoutingBasic" xml:space="preserve">
-    <value>Basic Function</value>
-  </data>
-  <data name="menuRoutingBasicImportRules" xml:space="preserve">
-    <value>Import Basic Rules</value>
-  </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>Domain Matcher</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain strategy</value>
-  </data>
-  <data name="TbenableRoutingAdvanced" xml:space="preserve">
-    <value>Enable advanced function</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
     <value>3.Block Domain or IP</value>
@@ -946,9 +931,6 @@
   <data name="TbDisplayLog" xml:space="preserve">
     <value>Display Log</value>
   </data>
-  <data name="menuImportOldGuiConfig" xml:space="preserve">
-    <value>Import old config (guiNConfig)</value>
-  </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Enable Tun</value>
   </data>
@@ -995,7 +977,7 @@
     <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>http port = +1; Pac port = +4; *ray API port = +5; mihomo API port = +6;</value>
+    <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Set this with admin privileges, get admin privileges after startup</value>
@@ -1321,9 +1303,6 @@
   <data name="TipActiveServer" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="menuStorageUI" xml:space="preserve">
-    <value>Save Interface Layout</value>
-  </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo files source (optional)</value>
   </data>
@@ -1344,6 +1323,9 @@
   </data>
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>Russia</value>
+  </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Iran</value>
   </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>Users in China region can ignore this item</value>
@@ -1367,7 +1349,7 @@
     <value>Remarks Memo</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
-    <value>Linux system sudo password</value>
+    <value>System sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password is encrypted and stored only in local files.</value>
@@ -1386,5 +1368,26 @@
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>
+  </data>
+  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
+    <value>Number per time for auto batch during speedtest(max 1000)</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Sniffing type</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>Enable second mixed port</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>socks: local port, socks2: second local port, socks3: LAN port</value>
+  </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Copy proxy command to clipboard</value>
   </data>
 </root>

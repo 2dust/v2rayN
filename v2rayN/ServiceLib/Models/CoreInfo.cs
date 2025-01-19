@@ -12,6 +12,8 @@
         public string? DownloadUrlWinArm64 { get; set; }
         public string? DownloadUrlLinux64 { get; set; }
         public string? DownloadUrlLinuxArm64 { get; set; }
+        public string? DownloadUrlOSX64 { get; set; }
+        public string? DownloadUrlOSXArm64 { get; set; }
         public string? Match { get; set; }
         public string? VersionArg { get; set; }
         public bool RedirectInfo { get; set; }

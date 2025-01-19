@@ -1,0 +1,1396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>A megosztási link másolása a vágólapra sikerült</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Kérjük, először ellenőrizze a szerverbeállításokat</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value>Érvénytelen konfigurációs formátum</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Vegye figyelembe, hogy a testreszabott konfiguráció teljes mértékben az ön konfigurációjától függ, és nem működik minden beállítással. Ha a rendszer proxyját szeretné használni, kérjük, módosítsa a figyelési portot kézzel.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Letöltés...</value>
+  </data>
+  <data name="downloadSpeed" xml:space="preserve">
+    <value>Letöltés</value>
+  </data>
+  <data name="DownloadYesNo" xml:space="preserve">
+    <value>Le szeretné tölteni? {0}</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Nem sikerült a konfigurációs fájl átalakítása</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Nem sikerült a gyári konfigurációs fájl generálása</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value>Nem sikerült lekérni a gyári konfigurációt</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Nem sikerült a testreszabott konfigurációs szerver importálása</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Nem sikerült a konfigurációs fájl beolvasása</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Kérjük, adja meg a helyes formátumú szerverportot</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Kérjük, adja meg a helyi figyelési portot</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Kérjük, töltse ki a jelszót</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Kérjük, adja meg a szerver címét</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>Kérjük, adja meg a felhasználói azonosítót</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value>Nem helyes a konfiguráció, kérjük, ellenőrizze</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>Kezi konfiguráció</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} {1} már naprakész.</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} {1} már naprakész.</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Cím</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Biztonság</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Típus</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Előfizetési csoport</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Letöltési forgalom ma</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Feltöltési forgalom ma</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Összes letöltési forgalom</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Összes feltöltési forgalom</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Szállítás</value>
+  </data>
+  <data name="MsgClearSubscription" xml:space="preserve">
+    <value>Eredeti előfizetési tartalom törlése</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>A Core letöltése sikerült</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Nem sikerült az előfizetési tartalom importálása</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Az előfizetési tartalom sikeresen lekérve</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>Nincs érvényes előfizetés meghatározva</value>
+  </data>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>Resolve {0} sikeresen</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Kezdje el az előfizetések lekérését</value>
+  </data>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Kezdődik a frissítés: {0}...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Érvénytelen előfizetési tartalom</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>Kicsomagolás folyamatban......</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Az előfizetések frissítése befejeződött</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Az előfizetések frissítése elkezdődött</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>A Core sikeresen frissítve</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>A Core sikeresen frissítve! Szolgáltatás újraindítása...</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Nem-VMess vagy ss protokoll</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>A Core fájl (fájl neve: {1}) nem található a mappában ({0}), kérjük, töltse le és helyezze a mappába, letöltési cím: {2}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Beolvasás befejeződött, nem található érvényes QR-kód</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>A művelet nem sikerült, kérjük, ellenőrizze és próbálja újra</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Kérjük, töltse ki a megjegyzéseket</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Kérjük, válassza ki a titkosítási módszert</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Kérjük, válasszon egy protokollt</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Kérjük, először válassza ki a szervert</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>A szerverek duplikáció eltávolítása befejeződött. Régi: {0}, Új: {1}.</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Biztosan el kívánja távolítani a szervert?</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>A kliens konfigurációs fájl mentve van itt: {0}</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Szolgáltatás indítása ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Konfiguráció sikeres
+{0}</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>A testreszabott konfigurációs szerver sikeresen importálva</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>{0} szerver importálva a vágólapról</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>A megosztott link sikeresen importálva a beolvasás során</value>
+  </data>
+  <data name="TestMeOutput" xml:space="preserve">
+    <value>A késleltetés: {0} ms, {1}</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>A művelet sikeres</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>Kérjük, válassza ki a szabályokat</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>Biztosan el kívánja távolítani a szabályokat?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0}, az egyik kötelező.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>Megjegyzések</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>URL (Opcionális)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Szám</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>Kérjük, adja meg az URL-t</value>
+  </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Hozzá kívánja adni a szabályokat? Válassza az igent az összefűzéshez, válassza a másikat a cseréhez</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>GeoFile letöltése: {0} sikerült</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>Információ</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>Testreszabott ikona</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>Kérjük, adja meg a helyes egyedi DNS-t</value>
+  </data>
+  <data name="TransportPathTip1" xml:space="preserve">
+    <value>*ws/httpupgrade/xhttp útvonal</value>
+  </data>
+  <data name="TransportPathTip2" xml:space="preserve">
+    <value>*h2 útvonal</value>
+  </data>
+  <data name="TransportPathTip3" xml:space="preserve">
+    <value>*QUIC kulcs/KCP mag</value>
+  </data>
+  <data name="TransportPathTip4" xml:space="preserve">
+    <value>*grpc szolgáltatás neve</value>
+  </data>
+  <data name="TransportRequestHostTip1" xml:space="preserve">
+    <value>*http host, vesszővel elválasztva (,)</value>
+  </data>
+  <data name="TransportRequestHostTip2" xml:space="preserve">
+    <value>*ws/httpupgrade/xhttp host</value>
+  </data>
+  <data name="TransportRequestHostTip3" xml:space="preserve">
+    <value>*h2 host, vesszővel elválasztva (,)</value>
+  </data>
+  <data name="TransportRequestHostTip4" xml:space="preserve">
+    <value>*QUIC biztonság</value>
+  </data>
+  <data name="TransportHeaderTypeTip1" xml:space="preserve">
+    <value>*tcp álcázási típus</value>
+  </data>
+  <data name="TransportHeaderTypeTip2" xml:space="preserve">
+    <value>*kcp álcázási típus</value>
+  </data>
+  <data name="TransportHeaderTypeTip3" xml:space="preserve">
+    <value>*QUIC álcázási típus</value>
+  </data>
+  <data name="TransportHeaderTypeTip4" xml:space="preserve">
+    <value>*grpc mód</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*kcp mag</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>A globális billentyűparancs {0} bejegyzése nem sikerült, ok: {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>A globális billentyűparancs {0} sikeresen bejegyezve</value>
+  </data>
+  <data name="UngroupedServers" xml:space="preserve">
+    <value>Összegyűjtetlen</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>Összes</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Kérjük, keresse meg a szerver konfigurációjának importálásához</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Tesztelés...</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>LAN</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Helyi</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Szerver szűrő, nyomja meg az Enter-t a végrehajtáshoz</value>
+  </data>
+  <data name="menuCheckUpdate" xml:space="preserve">
+    <value>Frissítés ellenőrzése</value>
+  </data>
+  <data name="menuClose" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="menuExit" xml:space="preserve">
+    <value>Kilépés</value>
+  </data>
+  <data name="menuGlobalHotkeySetting" xml:space="preserve">
+    <value>Globális billentyűparancs beállítása</value>
+  </data>
+  <data name="menuHelp" xml:space="preserve">
+    <value>Segítség</value>
+  </data>
+  <data name="menuOptionSetting" xml:space="preserve">
+    <value>Opció beállítása</value>
+  </data>
+  <data name="menuPromotion" xml:space="preserve">
+    <value>Promóció</value>
+  </data>
+  <data name="menuReload" xml:space="preserve">
+    <value>Újratöltés</value>
+  </data>
+  <data name="menuRoutingSetting" xml:space="preserve">
+    <value>Útvonal beállítása</value>
+  </data>
+  <data name="menuServers" xml:space="preserve">
+    <value>Szerverek</value>
+  </data>
+  <data name="menuSetting" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="menuSubGroupUpdate" xml:space="preserve">
+    <value>Frissítse a jelenlegi előfizetést proxy nélkül</value>
+  </data>
+  <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
+    <value>Frissítse a jelenlegi előfizetést proxyval</value>
+  </data>
+  <data name="menuSubscription" xml:space="preserve">
+    <value>Előfizetési csoport</value>
+  </data>
+  <data name="menuSubSetting" xml:space="preserve">
+    <value>Előfizetési csoport beállítások</value>
+  </data>
+  <data name="menuSubUpdate" xml:space="preserve">
+    <value>Előfizetések frissítése proxy nélkül</value>
+  </data>
+  <data name="menuSubUpdateViaProxy" xml:space="preserve">
+    <value>Előfizetések frissítése proxyval</value>
+  </data>
+  <data name="menuSystemproxy" xml:space="preserve">
+    <value>Rendszerproxy</value>
+  </data>
+  <data name="menuSystemProxyClear" xml:space="preserve">
+    <value>Rendszerproxy törlése</value>
+  </data>
+  <data name="menuSystemProxyNothing" xml:space="preserve">
+    <value>Ne változtassa meg a rendszer proxyját</value>
+  </data>
+  <data name="menuSystemProxyPac" xml:space="preserve">
+    <value>PAC mód</value>
+  </data>
+  <data name="menuSystemProxySet" xml:space="preserve">
+    <value>Rendszerproxy beállítása</value>
+  </data>
+  <data name="TbSettingsColor" xml:space="preserve">
+    <value>Szín</value>
+  </data>
+  <data name="TbSettingsLanguage" xml:space="preserve">
+    <value>Nyelv (Újraindítás)</value>
+  </data>
+  <data name="menuAddServerViaClipboard" xml:space="preserve">
+    <value>Importálja a megosztott linkeket a vágólapról (Ctrl+V)</value>
+  </data>
+  <data name="menuAddServerViaScan" xml:space="preserve">
+    <value>QR kód beolvasása a képernyőn (Ctrl+S)</value>
+  </data>
+  <data name="menuCopyServer" xml:space="preserve">
+    <value>Kiválasztott szerver klónozása</value>
+  </data>
+  <data name="menuRemoveDuplicateServer" xml:space="preserve">
+    <value>Duplikált szerverek eltávolítása</value>
+  </data>
+  <data name="menuRemoveServer" xml:space="preserve">
+    <value>Kiválasztott szerver(törlés)</value>
+  </data>
+  <data name="menuSetDefaultServer" xml:space="preserve">
+    <value>Aktív szerverként beállítani (Enter)</value>
+  </data>
+  <data name="menuClearServerStatistics" xml:space="preserve">
+    <value>Minden szolgáltatási statisztika törlése</value>
+  </data>
+  <data name="menuRealPingServer" xml:space="preserve">
+    <value>A szerverek valós késleltetésének tesztelése (Ctrl+R)</value>
+  </data>
+  <data name="menuSortServerResult" xml:space="preserve">
+    <value>Sorrend szerinti tesztelési eredmény</value>
+  </data>
+  <data name="menuSpeedServer" xml:space="preserve">
+    <value>A szerverek letöltési sebességének tesztelése (Ctrl+T)</value>
+  </data>
+  <data name="menuTcpingServer" xml:space="preserve">
+    <value>Szerver tesztelése tcping-gel (Ctrl+O)</value>
+  </data>
+  <data name="menuExport2ClientConfig" xml:space="preserve">
+    <value>A kiválasztott szerver exportálása a teljes konfigurációhoz</value>
+  </data>
+  <data name="menuExport2ShareUrl" xml:space="preserve">
+    <value>A megosztási link kattintásra másolása (Ctrl+C)</value>
+  </data>
+  <data name="menuAddCustomServer" xml:space="preserve">
+    <value>Testreszabott konfigurációs szerver hozzáadása</value>
+  </data>
+  <data name="menuAddShadowsocksServer" xml:space="preserve">
+    <value>[Shadowsocks] szerver hozzáadása</value>
+  </data>
+  <data name="menuAddSocksServer" xml:space="preserve">
+    <value>[SOCKS] szerver hozzáadása</value>
+  </data>
+  <data name="menuAddTrojanServer" xml:space="preserve">
+    <value>[Trojan] szerver hozzáadása</value>
+  </data>
+  <data name="menuAddVlessServer" xml:space="preserve">
+    <value>[VLESS] szerver hozzáadása</value>
+  </data>
+  <data name="menuAddVmessServer" xml:space="preserve">
+    <value>[VMess] szerver hozzáadása</value>
+  </data>
+  <data name="menuSelectAll" xml:space="preserve">
+    <value>Mindet kijelölni (Ctrl+A)</value>
+  </data>
+  <data name="menuMsgViewClear" xml:space="preserve">
+    <value>Összes törlése</value>
+  </data>
+  <data name="menuMsgViewCopy" xml:space="preserve">
+    <value>Másolás (Ctrl+C)</value>
+  </data>
+  <data name="menuMsgViewCopyAll" xml:space="preserve">
+    <value>Összes másolása</value>
+  </data>
+  <data name="menuMsgViewSelectAll" xml:space="preserve">
+    <value>Összes kijelölése (Ctrl+A)</value>
+  </data>
+  <data name="menuSubAdd" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="menuSubDelete" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="menuSubEdit" xml:space="preserve">
+    <value>Szerkesztés</value>
+  </data>
+  <data name="menuSubShare" xml:space="preserve">
+    <value>Megosztás</value>
+  </data>
+  <data name="LvEnabled" xml:space="preserve">
+    <value>A frissítés engedélyezése</value>
+  </data>
+  <data name="LvSort" xml:space="preserve">
+    <value>Sorrend</value>
+  </data>
+  <data name="LvUserAgent" xml:space="preserve">
+    <value>Felhasználói ügynök</value>
+  </data>
+  <data name="TbCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="TbConfirm" xml:space="preserve">
+    <value>Megerősít</value>
+  </data>
+  <data name="GbTransport" xml:space="preserve">
+    <value>Szállítás</value>
+  </data>
+  <data name="TbAddress" xml:space="preserve">
+    <value>Cím</value>
+  </data>
+  <data name="TbAllowInsecure" xml:space="preserve">
+    <value>Engedélyezett nem biztosított</value>
+  </data>
+  <data name="TbAlpn" xml:space="preserve">
+    <value>ALPN</value>
+  </data>
+  <data name="TbAlterId" xml:space="preserve">
+    <value>AlterID</value>
+  </data>
+  <data name="TbFingerprint" xml:space="preserve">
+    <value>Ujjlenyomat</value>
+  </data>
+  <data name="TbHeaderType" xml:space="preserve">
+    <value>Álcázás típusa</value>
+  </data>
+  <data name="TbId" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbNetwork" xml:space="preserve">
+    <value>Szállítási protokoll (hálózat)</value>
+  </data>
+  <data name="TbPath" xml:space="preserve">
+    <value>Útvonal</value>
+  </data>
+  <data name="TbPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="TbRemarks" xml:space="preserve">
+    <value>Álnév (megjegyzések)</value>
+  </data>
+  <data name="TbRequestHost" xml:space="preserve">
+    <value>Álcázott domain (hoszt)</value>
+  </data>
+  <data name="TbSecurity" xml:space="preserve">
+    <value>Kódolási módszer (biztonság)</value>
+  </data>
+  <data name="TbSNI" xml:space="preserve">
+    <value>SNI</value>
+  </data>
+  <data name="TbStreamSecurity" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TipNetwork" xml:space="preserve">
+    <value>*Alapértelmezett érték tcp</value>
+  </data>
+  <data name="TbCoreType" xml:space="preserve">
+    <value>Yalap típusa</value>
+  </data>
+  <data name="TbFlow5" xml:space="preserve">
+    <value>Folyam</value>
+  </data>
+  <data name="TbGUID" xml:space="preserve">
+    <value>Generálás</value>
+  </data>
+  <data name="TbId3" xml:space="preserve">
+    <value>Jelszó</value>
+  </data>
+  <data name="TbId4" xml:space="preserve">
+    <value>Jelszó (opcionális)</value>
+  </data>
+  <data name="TbId5" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbSecurity3" xml:space="preserve">
+    <value>Kódolás</value>
+  </data>
+  <data name="TbSecurity4" xml:space="preserve">
+    <value>Felhasználó (opcionális)</value>
+  </data>
+  <data name="TbSecurity5" xml:space="preserve">
+    <value>Kódolás</value>
+  </data>
+  <data name="TbPreSocksPort" xml:space="preserve">
+    <value>Socks port</value>
+  </data>
+  <data name="TipPreSocksPort" xml:space="preserve">
+    <value>* Ezen érték beállítása után egy socks szolgáltatás indul el Xray/sing-box(Tun) használatával, amely funkcionalitásokat biztosít, mint például a sebesség megjelenítése</value>
+  </data>
+  <data name="TbBrowse" xml:space="preserve">
+    <value>Böngészés</value>
+  </data>
+  <data name="TbEdit" xml:space="preserve">
+    <value>Szerkesztés</value>
+  </data>
+  <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
+    <value>Fejlett proxy beállítások, protokoll választás (opcionális)</value>
+  </data>
+  <data name="TbSettingsAllowLAN" xml:space="preserve">
+    <value>Kapcsolatok engedélyezése a LAN-ról</value>
+  </data>
+  <data name="TbSettingsAutoHideStartup" xml:space="preserve">
+    <value>Automatikus elrejtés indításkor</value>
+  </data>
+  <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
+    <value>Geo automatikus frissítési időköz (órák)</value>
+  </data>
+  <data name="TbSettingsCore" xml:space="preserve">
+    <value>Yalap: alapbeállítások</value>
+  </data>
+  <data name="TbSettingsCoreDns" xml:space="preserve">
+    <value>V2ray DNS beállítások</value>
+  </data>
+  <data name="TbSettingsCoreKcp" xml:space="preserve">
+    <value>Yalap: KCP beállítások</value>
+  </data>
+  <data name="TbSettingsCoreType" xml:space="preserve">
+    <value>Yalap típusa beállítások</value>
+  </data>
+  <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
+    <value>Engedélyezett a nem biztonságos</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
+    <value>Kimenő szabadság domain stratégia</value>
+  </data>
+  <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
+    <value>Otomatikusan állítja be az oszlop szélességét előfizetés frissítése után</value>
+  </data>
+  <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
+    <value>Frissítések ellenőrzése a kiadás előtt</value>
+  </data>
+  <data name="TbSettingsException" xml:space="preserve">
+    <value>Kivétel</value>
+  </data>
+  <data name="TbSettingsExceptionTip" xml:space="preserve">
+    <value>Kivétel. Ne használjon proxy szervert a címek esetében, amelyek pontosan itt kezdődnek, használjon pontosvesszőt (;)</value>
+  </data>
+  <data name="TbSettingsHttpPort" xml:space="preserve">
+    <value>HTTP Port</value>
+  </data>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Display real-time speed</value>
+  </data>
+  <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
+    <value>Régi megőrzése a deduplikáció során</value>
+  </data>
+  <data name="TbSettingsLogEnabled" xml:space="preserve">
+    <value>Napló engedélyezése</value>
+  </data>
+  <data name="TbSettingsLogLevel" xml:space="preserve">
+    <value>Napló szint</value>
+  </data>
+  <data name="TbSettingsMuxEnabled" xml:space="preserve">
+    <value>Mux multiplexelés bekapcsolása</value>
+  </data>
+  <data name="TbSettingsN" xml:space="preserve">
+    <value>v2rayN beállítások</value>
+  </data>
+  <data name="TbSettingsPass" xml:space="preserve">
+    <value>Hitelesítő jelszó</value>
+  </data>
+  <data name="TbSettingsRemoteDNS" xml:space="preserve">
+    <value>Testreszabott DNS (több, vesszővel elválasztva (,))</value>
+  </data>
+  <data name="TbSettingsSetUWP" xml:space="preserve">
+    <value>Win10 UWP Loopback beállítása</value>
+  </data>
+  <data name="TbSettingsSniffingEnabled" xml:space="preserve">
+    <value>Sniffing bekapcsolása</value>
+  </data>
+  <data name="TbSettingsSocksPort" xml:space="preserve">
+    <value>Keverék Port</value>
+  </data>
+  <data name="TbSettingsStartBoot" xml:space="preserve">
+    <value>Indításkor indítani</value>
+  </data>
+  <data name="TbSettingsStatistics" xml:space="preserve">
+    <value>Statisztikák engedélyezése (indítás szükséges)</value>
+  </data>
+  <data name="TbSettingsSubConvert" xml:space="preserve">
+    <value>Előfizetés átalakító URL</value>
+  </data>
+  <data name="TbSettingsSystemproxy" xml:space="preserve">
+    <value>Rendszer proxy beállítások</value>
+  </data>
+  <data name="TbSettingsTLS13" xml:space="preserve">
+    <value>Biztonsági protokoll TLS v1.3 engedélyezése (előfizetés/frissítés)</value>
+  </data>
+  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
+    <value>A tálcán megjelenő menü szerverek megjelenítési korlátozása</value>
+  </data>
+  <data name="TbSettingsUdpEnabled" xml:space="preserve">
+    <value>UDP engedélyezése</value>
+  </data>
+  <data name="TbSettingsUser" xml:space="preserve">
+    <value>Hitelesítő felhasználó</value>
+  </data>
+  <data name="TbClearSystemProxy" xml:space="preserve">
+    <value>Rendszer proxy törlése</value>
+  </data>
+  <data name="TbDisplayGUI" xml:space="preserve">
+    <value>GUI megjelenítése</value>
+  </data>
+  <data name="TbGlobalHotkeySetting" xml:space="preserve">
+    <value>Globális gyorsbillentyű beállítások</value>
+  </data>
+  <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
+    <value>Állítsa be közvetlenül a billentyűzet megnyomásával, indítás után érvényes</value>
+  </data>
+  <data name="TbNotChangeSystemProxy" xml:space="preserve">
+    <value>Ne változtassa meg a rendszer proxy-t</value>
+  </data>
+  <data name="TbReset" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="TbSetSystemProxy" xml:space="preserve">
+    <value>Rendszer proxy beállítása</value>
+  </data>
+  <data name="TbSystemProxyPac" xml:space="preserve">
+    <value>PAC módban</value>
+  </data>
+  <data name="menuShareServer" xml:space="preserve">
+    <value>Megosztási szerver (Ctrl+F)</value>
+  </data>
+  <data name="menuRouting" xml:space="preserve">
+    <value>Útvonal</value>
+  </data>
+  <data name="NotRunAsAdmin" xml:space="preserve">
+    <value>Nem adminisztrátorként fut</value>
+  </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>Futtatás adminisztrátorként</value>
+  </data>
+  <data name="menuMoveBottom" xml:space="preserve">
+    <value>Áthelyezés a végére (B)</value>
+  </data>
+  <data name="menuMoveDown" xml:space="preserve">
+    <value>Le (D)</value>
+  </data>
+  <data name="menuMoveTop" xml:space="preserve">
+    <value>Áthelyezés a tetejére (T)</value>
+  </data>
+  <data name="menuMoveUp" xml:space="preserve">
+    <value>Fel (U)</value>
+  </data>
+  <data name="MsgFilterTitle" xml:space="preserve">
+    <value>Szűrő, támogatja a reguláris kifejezéseket</value>
+  </data>
+  <data name="menuWebsiteItem" xml:space="preserve">
+    <value>{0} Weboldal</value>
+  </data>
+  <data name="menuRoutingAdvanced" xml:space="preserve">
+    <value>Fejlett funkció</value>
+  </data>
+  <data name="menuRoutingAdvancedAdd" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
+    <value>Fejlett szabályok importálása</value>
+  </data>
+  <data name="menuRoutingAdvancedRemove" xml:space="preserve">
+    <value>Kiválasztott eltávolítása (Törlés)</value>
+  </data>
+  <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
+    <value>Aktív szabályként beállítása (Enter)</value>
+  </data>
+  <data name="TbdomainMatcher" xml:space="preserve">
+    <value>Domain illesztő</value>
+  </data>
+  <data name="TbdomainStrategy" xml:space="preserve">
+    <value>Domain stratégia</value>
+  </data>
+  <data name="TbRoutingTabBlock" xml:space="preserve">
+    <value>3. Domain vagy IP blokkolása</value>
+  </data>
+  <data name="TbRoutingTabDirect" xml:space="preserve">
+    <value>2. Közvetlen domain vagy IP</value>
+  </data>
+  <data name="TbRoutingTabProxy" xml:space="preserve">
+    <value>1. Proxy domain vagy IP</value>
+  </data>
+  <data name="TbRoutingTabRuleList" xml:space="preserve">
+    <value>Előre definiált szabálykészletlista</value>
+  </data>
+  <data name="TbRoutingTips" xml:space="preserve">
+    <value>* Állítsa be a szabályokat, vesszővel elválasztva (,); A reguláris kifejezésben a vesszőt &lt;COMMA&gt; -ra cseréli</value>
+  </data>
+  <data name="menuImportRulesFromClipboard" xml:space="preserve">
+    <value>Szabályok importálása a vágólapról</value>
+  </data>
+  <data name="menuImportRulesFromFile" xml:space="preserve">
+    <value>Szabályok importálása fájlból</value>
+  </data>
+  <data name="menuImportRulesFromUrl" xml:space="preserve">
+    <value>Szabályok importálása előfizetési URL-ből</value>
+  </data>
+  <data name="menuRoutingRuleSetting" xml:space="preserve">
+    <value>Szabálybeállítások</value>
+  </data>
+  <data name="menuRuleAdd" xml:space="preserve">
+    <value>Szabály hozzáadása</value>
+  </data>
+  <data name="menuRuleExportSelected" xml:space="preserve">
+    <value>Kiválasztott szabályok exportálása</value>
+  </data>
+  <data name="menuRuleList" xml:space="preserve">
+    <value>Szabálylista</value>
+  </data>
+  <data name="menuRuleRemove" xml:space="preserve">
+    <value>Szabály eltávolítása (Törlés)</value>
+  </data>
+  <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
+    <value>RoutingRuleDetailsSetting</value>
+  </data>
+  <data name="TbAutoSort" xml:space="preserve">
+    <value>Domain, ip, folyamat automatikusan rendezve lesz a mentés során</value>
+  </data>
+  <data name="TbRuleobjectDoc" xml:space="preserve">
+    <value>Szabály objektum dokumentáció</value>
+  </data>
+  <data name="TbDnsObjectDoc" xml:space="preserve">
+    <value>Támogatja a DnsObject, kattintson a dokumentum megtekintésére</value>
+  </data>
+  <data name="SubUrlTips" xml:space="preserve">
+    <value>Csoporthoz, kérlek, hagyd üresen ezt a mezőt</value>
+  </data>
+  <data name="TipChangeRouting" xml:space="preserve">
+    <value>Útvonal beállítása megváltozott</value>
+  </data>
+  <data name="TipChangeSystemProxy" xml:space="preserve">
+    <value>Rendszer proxy beállítása megváltozott</value>
+  </data>
+  <data name="TbSettingsRouteOnly" xml:space="preserve">
+    <value>Csak útvonal</value>
+  </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Ne használjon proxy szervert a helyi (intranet) címekhez</value>
+  </data>
+  <data name="menuMixedTestServer" xml:space="preserve">
+    <value>Egy kattintásos több teszt késleltetés és sebesség (Ctrl+E)</value>
+  </data>
+  <data name="LvTestDelay" xml:space="preserve">
+    <value>Késleltetés(ms)</value>
+  </data>
+  <data name="LvTestSpeed" xml:space="preserve">
+    <value>Sebesség(M/s)</value>
+  </data>
+  <data name="FailedToRunCore" xml:space="preserve">
+    <value>Nem sikerült futtatni a Core-t, kérlek, nézd meg a naplót</value>
+  </data>
+  <data name="LvFilter" xml:space="preserve">
+    <value>Megjegyzések reguláris szűrő</value>
+  </data>
+  <data name="TbDisplayLog" xml:space="preserve">
+    <value>Napló megjelenítése</value>
+  </data>
+  <data name="TbEnableTunAs" xml:space="preserve">
+    <value>Tun engedélyezése</value>
+  </data>
+  <data name="TbSettingsNewPort4LAN" xml:space="preserve">
+    <value>Új port a LAN-hoz</value>
+  </data>
+  <data name="TbSettingsTunMode" xml:space="preserve">
+    <value>TunMode beállítások</value>
+  </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>Áthelyezés csoporthoz</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>Proxy Drag Drop Szortírozás engedélyezése (indítás szükséges)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>AutoFrissítés</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>Teszt kihagyása</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>Szerver szerkesztése (Ctrl+D)</value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>Kattintson duplán a szerver aktiválásához</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>A teszt befejeződött</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>Alapértelmezett TLS ujjlenyomat</value>
+  </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>Felhasználói ügynök</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>Ez a paraméter csak tcp/http és ws esetén érvényes</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>Betűcsalád (indítás szükséges)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>Kérlek, másold a betűtípus TTF/TTC fájlt a guiFonts könyvtárba, indítsd újra a beállításokat</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>Állítsd be ezt admin jogokkal, indítás után szerezd meg az admin jogokat</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>Betűméret</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>SpeedTest egyéni időtúllépési érték</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>SpeedTest URL</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Feljebb és lejjebb mozgatás</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>Nyilvános kulcs</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>Rövid azonosító</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
+  </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Hardveres gyorsítás engedélyezése (indítás szükséges)</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Várakozás a tesztelésre (nyomj ESC-t a leállításhoz)...</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Kérlek, kapcsold ki, ha szokatlan megszakítás történt</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>A frissítések nincsenek aktiválva, átugorva ez az előfizetés</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Újraindítás adminisztrátorként</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>Több URL, vesszővel elválasztva; Az előfizetés átalakítása érvénytelen lesz</value>
+  </data>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Automatikus frissítési időköz (perc)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Napló engedélyezése fájlba</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Átalakítási cél típusa</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Kérlek, hagyd üresen, ha nincs szükség átalakításra</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>DNS beállítások</value>
+  </data>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>sing-box DNS beállítások</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Kérlek, töltsd ki a DNS struktúrát, kattints a dokumentum megtekintésére</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Kattints az alapértelmezett DNS konfiguráció importálásához</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>sing-box domain stratégia</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>sing-box Mux protokoll</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Teljes folyamat neve (Tun módban)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP vagy IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>[Hysteria2] szerver hozzáadása</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria maximális sávszélesség (Felfelé/Letöltés)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Rendszer gazdagépeket használ</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>[TUIC] szerver hozzáadása</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>Befogadó irányítás</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Előző proxy megjegyzések</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Következő proxy megjegyzések</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Kérlek, győződj meg róla, hogy a megjegyzés létezik és egyedi</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>Kiegészítő bejövő engedélyezése</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>IPv6 cím engedélyezése</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>[WireGuard] szerver hozzáadása</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>Privát kulcs</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Fenntartva (2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Cím (Ip,Ipv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>obfs jelszó</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain vagy IP vagy ProcName) és Port és Protokoll és InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Automatikus görgetés a végére</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Speed Ping Test URL</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>Előfizetés frissítése, csak akkor határozd meg, ha a megjegyzések léteznek</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>A teszt leállítása...</value>
+  </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>*grpc Hatóság</value>
+  </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>[HTTP] szerver hozzáadása</value>
+  </data>
+  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
+    <value>Használja az Xray-t és engedélyezze a nem-Tun módot, amely összeférhet a csoport előző proxy-jával</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>Fragmentum engedélyezése</value>
+  </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>Cache fájl engedélyezése a sing-box számára (szabálykészlet fájlok)</value>
+  </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>Testreszabott a sing-box szabálykészletének</value>
+  </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>Sikeres művelet. Kattintson a beállítási menüre az alkalmazás újraindításához.</value>
+  </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Megnyitja a tárolás helyét</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Rendezés</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Zárlat</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Alapértelmezett</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Késleltetés</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Letöltési sebesség</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>Letöltési forgalom</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>Gazda</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>Hálózat</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>Idő</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>Típus</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>Feltöltési sebesség</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>Feltöltési forgalom</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>Kapcsolatok</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>Kapcsolat bezárása</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>Összes kapcsolat bezárása</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>Proxy-k</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>Szabály mód</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Közvetlen</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Globális</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>Ne változtasson</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>Szabály</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>Késleltetés teszt</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Részleges csomópont késleltetés teszt</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Proxy-k frissítése</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Aktív csomópont kiválasztása (Enter)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Alapértelmezett domain stratégia a kimenő forgalomhoz</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-szerver alacsony késleltetés</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Fő elrendezés irányítása (indítás szükséges)</value>
+  </data>
+  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
+    <value>Multi-szerver terheléselosztás</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Kimenő DNS cím</value>
+  </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Oszlop szélesség automatikus beállítása</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Exportálja a Base64-kódolt megosztási linkeket a vágólapra</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Kiválasztott szerver exportálása teljes konfigurációval a vágólapra</value>
+  </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Fő ablak megjelenítése vagy elrejtése</value>
+  </data>
+  <data name="UpdateStandalonePackageTip" xml:space="preserve">
+    <value>Jelenleg egy önálló csomagot futtatsz, kérlek, töltsd le manuálisan a SelfContained.7z fájlt, bontsd ki és írd felül!</value>
+  </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>Testreszabott konfigurációs socks port</value>
+  </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Biztonsági mentés és visszaállítás</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Biztonsági mentés helyben</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Visszaállítás helyben</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Biztonsági mentés távolról (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Visszaállítás távolról (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Helyi</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Távoli (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav URL</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>WebDav Felhasználónév</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>WebDav Jelszó</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDav Ellenőrzés</value>
+  </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Távoli mappa neve (opcionális)</value>
+  </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>Érvénytelen mentési fájl</value>
+  </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>Gazda szűrő</value>
+  </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>Aktív</value>
+  </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Geo fájlok forrása (opcionális)</value>
+  </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>sing-box szabálykészlet fájlok forrása (opcionális)</value>
+  </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>UpgradeApp nem létezik</value>
+  </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Útvonal szabályok forrása (opcionális)</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Regionális előbeállítások beállítása</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>Alapértelmezett</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Oroszország</value>
+  </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Irán</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>A Kínában élő felhasználók figyelmen kívül hagyhatják ezt a tételt</value>
+  </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>QR kód beolvasása a képen</value>
+  </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>Érvénytelen cím (Url)</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>Kérlek, ne használd a nem biztonságos HTTP protokollt az előfizetés címeknél</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
+    <value>Telepítsd a betűtípust a rendszerbe és indítsd újra a beállításokat</value>
+  </data>
+  <data name="menuExitTips" xml:space="preserve">
+    <value>Biztosan ki akarsz lépni?</value>
+  </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Megjegyzések</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Rendszer sudo jelszó</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>A jelszó titkosítva és csak a helyi fájlokban tárolva.</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
+    <value>Kérlek, először állítsd be a sudo jelszót a Tun módban</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
+    <value>Kérlek, ne futtasd ezt az alkalmazást sudo-ként</value>
+  </data>
+  <data name="TransportHeaderTypeTip5" xml:space="preserve">
+    <value>*xhttp mód</value>
+  </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>XHTTP További nyers JSON, formátum: { XHTTPObject }</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>Minimálás tálcára ablak zárásakor</value>
+  </data>
+  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
+    <value>Szám / időszak az automatikus batch során a sebességvizsgálat során (maximum 1000)</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Kivétel. Ne használj proxy szervert a címeknél, évezz pontosvesszőt (,)</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Sniffing type</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>Enable second mixed port</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>socks: local port, socks2: second local port, socks3: LAN port</value>
+  </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Copy proxy command to clipboard</value>
+  </data>
+</root>

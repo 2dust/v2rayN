@@ -65,12 +65,12 @@ namespace v2rayN.Desktop.Views
 
         private void linkDnsObjectDoc_Click(object? sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://xtls.github.io/config/dns.html#dnsobject");
+            ProcUtils.ProcessStart("https://xtls.github.io/config/dns.html#dnsobject");
         }
 
         private void linkDnsSingboxObjectDoc_Click(object? sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
+            ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
         }
     }
 }

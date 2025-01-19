@@ -48,7 +48,7 @@ namespace ServiceLib.ViewModels
                 await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
             }, canEditRemove);
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()

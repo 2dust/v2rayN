@@ -10,7 +10,7 @@ namespace ServiceLib.Common
     {
         private static readonly Lazy<HttpClientHelper> _instance = new(() =>
         {
-            HttpClientHandler handler = new() { UseCookies = false };
+            SocketsHttpHandler handler = new() { UseCookies = false };
             HttpClientHelper helper = new(new HttpClient(handler));
             return helper;
         });

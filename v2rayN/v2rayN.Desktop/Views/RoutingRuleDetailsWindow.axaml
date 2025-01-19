@@ -8,26 +8,17 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuRoutingRuleDetailsSetting}"
     Width="900"
-    Height="700"
+    Height="600"
     x:DataType="vms:RoutingRuleDetailsViewModel"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <DockPanel>
-        <Grid Classes="Margin8" DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Grid
+            Classes="Margin8"
+            ColumnDefinitions="Auto,Auto,Auto"
+            DockPanel.Dock="Top"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -103,8 +94,8 @@
                 Grid.Column="1"
                 HorizontalAlignment="Left"
                 Classes="Margin8"
-                SelectionMode="Multiple"
-                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                SelectionMode="Multiple,Toggle"
+                Theme="{DynamicResource CardCheckGroupListBox}" />
 
             <TextBlock
                 Grid.Row="4"
@@ -117,8 +108,15 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Classes="Margin8"
-                SelectionMode="Multiple"
-                Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                SelectionMode="Multiple,Toggle"
+                Theme="{DynamicResource CardCheckGroupListBox}" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Classes="Margin8"
+                Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
+
 
             <TextBlock
                 Grid.Row="5"
@@ -169,14 +167,7 @@
                 IsCancel="True" />
         </StackPanel>
 
-        <Grid Classes="Margin8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+        <Grid Classes="Margin8" ColumnDefinitions="1*,10,1*,10,1*">
             <HeaderedContentControl
                 Grid.Column="0"
                 BorderBrush="Gray"

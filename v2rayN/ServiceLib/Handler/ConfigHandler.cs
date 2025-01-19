@@ -9,7 +9,7 @@ namespace ServiceLib.Handler
     public class ConfigHandler
     {
         private static readonly string _configRes = Global.ConfigFileName;
-        private static readonly object _objLock = new();
+        private static readonly string _tag = "ConfigHandler";
 
         #region ConfigHandler
 
@@ -62,17 +62,14 @@ namespace ServiceLib.Handler
             {
                 if (config.Inbound.Count > 0)
                 {
-                    config.Inbound[0].Protocol = EInboundProtocol.socks.ToString();
+                    config.Inbound.First().Protocol = EInboundProtocol.socks.ToString();
                 }
             }
-            config.RoutingBasicItem ??= new()
-            {
-                EnableRoutingAdvanced = true
-            };
 
+            config.RoutingBasicItem ??= new();
             if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
             {
-                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies[0];//"IPIfNonMatch";
+                config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();
             }
 
             config.KcpItem ??= new KcpItem
@@ -97,10 +94,7 @@ namespace ServiceLib.Handler
                 EnableTun = false,
                 Mtu = 9000,
             };
-            config.GuiItem ??= new()
-            {
-                EnableStatistics = false,
-            };
+            config.GuiItem ??= new();
             config.MsgUIItem ??= new();
 
             config.UiItem ??= new UIItem()
@@ -113,7 +107,7 @@ namespace ServiceLib.Handler
             {
                 if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    config.UiItem.CurrentLanguage = Global.Languages[0];
+                    config.UiItem.CurrentLanguage = Global.Languages.First();
                 }
                 else
                 {
@@ -122,10 +116,6 @@ namespace ServiceLib.Handler
             }
 
             config.ConstItem ??= new ConstItem();
-            if (Utils.IsNullOrEmpty(config.ConstItem.DefIEProxyExceptions))
-            {
-                config.ConstItem.DefIEProxyExceptions = Global.IEProxyExceptions;
-            }
 
             config.SpeedTestItem ??= new();
             if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -134,7 +124,7 @@ namespace ServiceLib.Handler
             }
             if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedTestUrl))
             {
-                config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls[0];
+                config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
             }
             if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedPingTestUrl))
             {
@@ -150,7 +140,7 @@ namespace ServiceLib.Handler
 
             config.Mux4SboxItem ??= new()
             {
-                Protocol = Global.SingboxMuxs[0],
+                Protocol = Global.SingboxMuxs.First(),
                 MaxConnections = 8
             };
 
@@ -163,6 +153,17 @@ namespace ServiceLib.Handler
             config.SystemProxyItem ??= new();
             config.WebDavItem ??= new();
             config.CheckUpdateItem ??= new();
+            config.Fragment4RayItem ??= new()
+            {
+                Packets = "tlshello",
+                Length = "100-200",
+                Interval = "10-20"
+            };
+
+            if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
+            {
+                config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
+            }
 
             return config;
         }
@@ -174,30 +175,26 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> SaveConfig(Config config)
         {
-            lock (_objLock)
+            try
             {
-                try
-                {
-                    //save temp file
-                    var resPath = Utils.GetConfigPath(_configRes);
-                    var tempPath = $"{resPath}_temp";
-                    if (JsonUtils.ToFile(config, tempPath) != 0)
-                    {
-                        return -1;
-                    }
+                //save temp file
+                var resPath = Utils.GetConfigPath(_configRes);
+                var tempPath = $"{resPath}_temp";
 
-                    if (File.Exists(resPath))
-                    {
-                        File.Delete(resPath);
-                    }
-                    //rename
-                    File.Move(tempPath, resPath);
-                }
-                catch (Exception ex)
+                var content = JsonUtils.Serialize(config, true, true);
+                if (content.IsNullOrEmpty())
                 {
-                    Logging.SaveLog("ToJsonFile", ex);
                     return -1;
                 }
+                await File.WriteAllTextAsync(tempPath, content);
+
+                //rename
+                File.Move(tempPath, resPath, true);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                return -1;
             }
 
             return 0;
@@ -385,7 +382,7 @@ namespace ServiceLib.Handler
             }
 
             var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
-            return await SetDefaultServerIndex(config, item.IndexId);
+            return await SetDefaultServerIndex(config, item?.IndexId);
         }
 
         public static async Task<ProfileItem?> GetDefaultServer(Config config)
@@ -431,7 +428,7 @@ namespace ServiceLib.Handler
                         {
                             return 0;
                         }
-                        sort = ProfileExHandler.Instance.GetSort(lstProfile[0].IndexId) - 1;
+                        sort = ProfileExHandler.Instance.GetSort(lstProfile.First().IndexId) - 1;
 
                         break;
                     }
@@ -472,7 +469,7 @@ namespace ServiceLib.Handler
             }
 
             ProfileExHandler.Instance.SetSort(lstProfile[index].IndexId, sort);
-            return 0;
+            return await Task.FromResult(0);
         }
 
         /// <summary>
@@ -502,7 +499,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return -1;
             }
 
@@ -768,69 +765,66 @@ namespace ServiceLib.Handler
                               }).ToList();
 
             Enum.TryParse(colName, true, out EServerColName name);
-            var propertyName = string.Empty;
-            switch (name)
-            {
-                case EServerColName.ConfigType:
-                case EServerColName.Remarks:
-                case EServerColName.Address:
-                case EServerColName.Port:
-                case EServerColName.Network:
-                case EServerColName.StreamSecurity:
-                    propertyName = name.ToString();
-                    break;
-
-                case EServerColName.DelayVal:
-                    propertyName = "Delay";
-                    break;
-
-                case EServerColName.SpeedVal:
-                    propertyName = "Speed";
-                    break;
-
-                case EServerColName.SubRemarks:
-                    propertyName = "Subid";
-                    break;
-
-                default:
-                    return -1;
-            }
-
-            var items = lstProfile.AsQueryable();
 
             if (asc)
             {
-                lstProfile = items.OrderBy(propertyName).ToList();
+                lstProfile = name switch
+                {
+                    EServerColName.ConfigType => lstProfile.OrderBy(t => t.ConfigType).ToList(),
+                    EServerColName.Remarks => lstProfile.OrderBy(t => t.Remarks).ToList(),
+                    EServerColName.Address => lstProfile.OrderBy(t => t.Address).ToList(),
+                    EServerColName.Port => lstProfile.OrderBy(t => t.Port).ToList(),
+                    EServerColName.Network => lstProfile.OrderBy(t => t.Network).ToList(),
+                    EServerColName.StreamSecurity => lstProfile.OrderBy(t => t.StreamSecurity).ToList(),
+                    EServerColName.DelayVal => lstProfile.OrderBy(t => t.Delay).ToList(),
+                    EServerColName.SpeedVal => lstProfile.OrderBy(t => t.Speed).ToList(),
+                    EServerColName.SubRemarks => lstProfile.OrderBy(t => t.Subid).ToList(),
+                    _ => lstProfile
+                };
             }
             else
             {
-                lstProfile = items.OrderByDescending(propertyName).ToList();
+                lstProfile = name switch
+                {
+                    EServerColName.ConfigType => lstProfile.OrderByDescending(t => t.ConfigType).ToList(),
+                    EServerColName.Remarks => lstProfile.OrderByDescending(t => t.Remarks).ToList(),
+                    EServerColName.Address => lstProfile.OrderByDescending(t => t.Address).ToList(),
+                    EServerColName.Port => lstProfile.OrderByDescending(t => t.Port).ToList(),
+                    EServerColName.Network => lstProfile.OrderByDescending(t => t.Network).ToList(),
+                    EServerColName.StreamSecurity => lstProfile.OrderByDescending(t => t.StreamSecurity).ToList(),
+                    EServerColName.DelayVal => lstProfile.OrderByDescending(t => t.Delay).ToList(),
+                    EServerColName.SpeedVal => lstProfile.OrderByDescending(t => t.Speed).ToList(),
+                    EServerColName.SubRemarks => lstProfile.OrderByDescending(t => t.Subid).ToList(),
+                    _ => lstProfile
+                };
             }
-            for (int i = 0; i < lstProfile.Count; i++)
+
+            for (var i = 0; i < lstProfile.Count; i++)
             {
                 ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
             }
-            if (name == EServerColName.DelayVal)
+            switch (name)
             {
-                var maxSort = lstProfile.Max(t => t.Sort) + 10;
-                foreach (var item in lstProfile)
-                {
-                    if (item.Delay <= 0)
+                case EServerColName.DelayVal:
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        var maxSort = lstProfile.Max(t => t.Sort) + 10;
+                        foreach (var item in lstProfile.Where(item => item.Delay <= 0))
+                        {
+                            ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        }
+
+                        break;
                     }
-                }
-            }
-            if (name == EServerColName.SpeedVal)
-            {
-                var maxSort = lstProfile.Max(t => t.Sort) + 10;
-                foreach (var item in lstProfile)
-                {
-                    if (item.Speed <= 0)
+                case EServerColName.SpeedVal:
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        var maxSort = lstProfile.Max(t => t.Sort) + 10;
+                        foreach (var item in lstProfile.Where(item => item.Speed <= 0))
+                        {
+                            ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        }
+
+                        break;
                     }
-                }
             }
 
             return 0;
@@ -992,7 +986,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("Remove Item", ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return 0;
@@ -1026,6 +1020,35 @@ namespace ServiceLib.Handler
 
             result.Data = indexId;
             return result;
+        }
+
+        public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
+        {
+            ProfileItem? itemSocks = null;
+            if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
+            {
+                itemSocks = new ProfileItem()
+                {
+                    CoreType = ECoreType.sing_box,
+                    ConfigType = EConfigType.SOCKS,
+                    Address = Global.Loopback,
+                    Sni = node.Address, //Tun2SocksAddress
+                    Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
+                };
+            }
+            else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
+            {
+                var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
+                itemSocks = new ProfileItem()
+                {
+                    CoreType = preCoreType,
+                    ConfigType = EConfigType.SOCKS,
+                    Address = Global.Loopback,
+                    Port = node.PreSocksPort.Value,
+                };
+            }
+            await Task.CompletedTask;
+            return itemSocks;
         }
 
         #endregion Server
@@ -1295,6 +1318,20 @@ namespace ServiceLib.Handler
                 if (existItem != null)
                 {
                     await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
+                }
+            }
+
+            //Keep the last traffic statistics
+            if (lstOriSub != null)
+            {
+                var lstSub = await AppHandler.Instance.ProfileItems(subid);
+                foreach (var item in lstSub)
+                {
+                    var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
+                    if (existItem != null)
+                    {
+                        await StatisticsHandler.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
+                    }
                 }
             }
 
@@ -1580,7 +1617,7 @@ namespace ServiceLib.Handler
                         break;
                     }
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
@@ -1600,7 +1637,7 @@ namespace ServiceLib.Handler
             var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
             if (item is null)
             {
-                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(t => t.Locked == false);
+                var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
                 await SetDefaultRouting(config, item2);
                 return item2;
             }
@@ -1674,6 +1711,15 @@ namespace ServiceLib.Handler
         {
             var ver = "V3-";
             var items = await AppHandler.Instance.RoutingItems();
+
+            //TODO Temporary code to be removed later
+            var lockItem = items?.FirstOrDefault(t => t.Locked == true);
+            if (lockItem != null)
+            {
+                await ConfigHandler.RemoveRoutingItem(lockItem);
+                items = await AppHandler.Instance.RoutingItems();
+            }
+
             if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(ver)).ToList().Count > 0)
             {
                 return 0;
@@ -1712,11 +1758,6 @@ namespace ServiceLib.Handler
                 await SetDefaultRouting(config, item2);
             }
             return 0;
-        }
-
-        public static async Task<RoutingItem?> GetLockedRoutingItem(Config config)
-        {
-            return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Locked == true);
         }
 
         public static async Task RemoveRoutingItem(RoutingItem routingItem)
@@ -1825,6 +1866,16 @@ namespace ServiceLib.Handler
 
                     await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
                     await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
+
+                    return true;
+
+                case EPresetType.Iran:
+                    config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
+                    config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
+                    config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
+
+                    await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
+                    await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
 
                     return true;
             }

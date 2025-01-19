@@ -25,6 +25,7 @@ namespace ServiceLib.ViewModels
             BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 _updateView?.Invoke(EViewAction.BrowseServer, null);
+                await Task.CompletedTask;
             });
             EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -103,12 +104,13 @@ namespace ServiceLib.ViewModels
             address = Utils.GetConfigPath(address);
             if (File.Exists(address))
             {
-                Utils.ProcessStart(address);
+                ProcUtils.ProcessStart(address);
             }
             else
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FailedReadConfiguration);
             }
+            await Task.CompletedTask;
         }
     }
 }

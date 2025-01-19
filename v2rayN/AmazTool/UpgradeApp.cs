@@ -8,42 +8,46 @@ namespace AmazTool
     {
         public static void Upgrade(string fileName)
         {
-            Console.WriteLine($"{LocalizationHelper.GetLocalizedValue("Start_Unzipping")}\n{fileName}");
+            Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
 
-            Thread.Sleep(9000);
+            Utils.Waiting(5);
 
             if (!File.Exists(fileName))
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Upgrade_File_Not_Found"));
+                Console.WriteLine(Resx.Resource.UpgradeFileNotFound);
                 return;
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Try_Terminate_Process"));
+            Console.WriteLine(Resx.Resource.TryTerminateProcess);
             try
             {
-                var existing = Process.GetProcessesByName(V2rayN);
+                var existing = Process.GetProcessesByName(Utils.V2rayN);
                 foreach (var pp in existing)
                 {
-                    pp?.Kill();
-                    pp?.WaitForExit(1000);
+                    var path = pp.MainModule?.FileName ?? "";
+                    if (path.StartsWith(Utils.GetPath(Utils.V2rayN)))
+                    {
+                        pp?.Kill();
+                        pp?.WaitForExit(1000);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // Access may be denied without admin right. The user may not be an administrator.
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Terminate_Process") + ex.StackTrace);
+                Console.WriteLine(Resx.Resource.FailedTerminateProcess + ex.StackTrace);
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Start_Unzipping"));
+            Console.WriteLine(Resx.Resource.StartUnzipping);
             StringBuilder sb = new();
             try
             {
-                string thisAppOldFile = $"{GetExePath()}.tmp";
+                var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
                 File.Delete(thisAppOldFile);
-                string splitKey = "/";
+                var splitKey = "/";
 
-                using ZipArchive archive = ZipFile.OpenRead(fileName);
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                using var archive = ZipFile.OpenRead(fileName);
+                foreach (var entry in archive.Entries)
                 {
                     try
                     {
@@ -56,15 +60,20 @@ namespace AmazTool
 
                         var lst = entry.FullName.Split(splitKey);
                         if (lst.Length == 1) continue;
-                        string fullName = string.Join(splitKey, lst[1..lst.Length]);
+                        var fullName = string.Join(splitKey, lst[1..lst.Length]);
 
-                        if (string.Equals(GetExePath(), GetPath(fullName), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(Utils.GetExePath(), Utils.GetPath(fullName), StringComparison.OrdinalIgnoreCase))
                         {
-                            File.Move(GetExePath(), thisAppOldFile);
+                            File.Move(Utils.GetExePath(), thisAppOldFile);
                         }
 
-                        string entryOutputPath = GetPath(fullName);
+                        var entryOutputPath = Utils.GetPath(fullName);
                         Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
+                        //In the bin folder, if the file already exists, it will be skipped
+                        if (fullName.StartsWith("bin") && File.Exists(entryOutputPath))
+                        {
+                            continue;
+                        }
                         entry.ExtractToFile(entryOutputPath, true);
 
                         Console.WriteLine(entryOutputPath);
@@ -77,49 +86,19 @@ namespace AmazTool
             }
             catch (Exception ex)
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + ex.StackTrace);
+                Console.WriteLine(Resx.Resource.FailedUpgrade + ex.StackTrace);
                 //return;
             }
             if (sb.Length > 0)
             {
-                Console.WriteLine(LocalizationHelper.GetLocalizedValue("Failed_Upgrade") + sb.ToString());
+                Console.WriteLine(Resx.Resource.FailedUpgrade + sb.ToString());
                 //return;
             }
 
-            Console.WriteLine(LocalizationHelper.GetLocalizedValue("Restart_v2rayN"));
-            Thread.Sleep(9000);
-            Process process = new()
-            {
-                StartInfo = new()
-                {
-                    UseShellExecute = true,
-                    FileName = V2rayN,
-                    WorkingDirectory = StartupPath()
-                }
-            };
-            process.Start();
-        }
+            Console.WriteLine(Resx.Resource.Restartv2rayN);
+            Utils.Waiting(2);
 
-        private static string GetExePath()
-        {
-            return Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
+            Utils.StartV2RayN();
         }
-
-        private static string StartupPath()
-        {
-            return AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        private static string GetPath(string fileName)
-        {
-            string startupPath = StartupPath();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return startupPath;
-            }
-            return Path.Combine(startupPath, fileName);
-        }
-
-        private static string V2rayN => "v2rayN";
     }
 }

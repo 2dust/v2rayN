@@ -1,6 +1,7 @@
 using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace v2rayN.Views
@@ -14,6 +15,7 @@ namespace v2rayN.Views
         {
             InitializeComponent();
             ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
+            btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
             this.WhenActivated(disposables =>
             {
@@ -24,7 +26,6 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ConnectionCloseAllCmd, v => v.menuConnectionCloseAll).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.HostFilter, v => v.txtHostFilter.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SortingSelected, v => v.cmbSorting.SelectedIndex).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ConnectionCloseAllCmd, v => v.btnConnectionCloseAll).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
             });
@@ -44,6 +45,19 @@ namespace v2rayN.Views
             }
 
             return await Task.FromResult(true);
+        }
+
+        private void BtnAutofitColumnWidth_Click(object sender, RoutedEventArgs e)
+        {
+            AutofitColumnWidth();
+        }
+
+        private void AutofitColumnWidth()
+        {
+            foreach (var it in lstConnections.Columns)
+            {
+                it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
         }
 
         private void btnClose_Click(object sender, System.Windows.RoutedEventArgs e)

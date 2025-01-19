@@ -28,7 +28,7 @@
                 Text="{x:Static resx:ResUI.menuRulemode}" />
             <ComboBox
                 x:Name="cmbRulemode"
-                Width="80"
+                Width="100"
                 Margin="8,0">
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
@@ -41,7 +41,7 @@
                 Text="{x:Static resx:ResUI.TbSorting}" />
             <ComboBox
                 x:Name="cmbSorting"
-                Width="60"
+                Width="100"
                 Margin="8,0">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
@@ -95,7 +95,8 @@
             <ListBox
                 x:Name="lstProxyGroups"
                 DockPanel.Dock="Left"
-                ItemsSource="{Binding ProxyGroups}">
+                ItemsSource="{Binding ProxyGroups}"
+                Theme="{StaticResource ButtonRadioGroupListBox}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -105,29 +106,25 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="0"
+                            Margin="-8,-4"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
-                            <DockPanel>
-                                <Grid Grid.Column="0" Classes="Margin8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="8" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
-                                    <DockPanel Grid.Row="0">
-                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </DockPanel>
-                                    <TextBlock Grid.Row="2" Text="{Binding Now}" />
-                                </Grid>
-                            </DockPanel>
+                            <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </DockPanel>
+                                <TextBlock Grid.Row="2" Text="{Binding Now}" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
 
-            <ListBox x:Name="lstProxyDetails" ItemsSource="{Binding ProxyDetails}">
+            <ListBox
+                x:Name="lstProxyDetails"
+                ItemsSource="{Binding ProxyDetails}"
+                Theme="{StaticResource ButtonRadioGroupListBox}">
                 <ItemsControl.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
@@ -143,24 +140,18 @@
                     <DataTemplate>
                         <Border
                             Width="160"
-                            Margin="0"
+                            Margin="-12,-4"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
                             <DockPanel>
                                 <Border
                                     Width="5"
-                                    Height="30"
                                     Margin="0,1"
                                     Background="YellowGreen"
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
                                     IsVisible="{Binding IsActive}" />
-                                <Grid Classes="Margin8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="8" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
+                                <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
                                     <TextBlock Grid.Row="0" Text="{Binding Name}" />
                                     <DockPanel Grid.Row="2">
                                         <TextBlock

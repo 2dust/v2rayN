@@ -1,0 +1,77 @@
+name: release Linux
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+  push:
+    branches:
+      - master
+
+env:
+  OutputArch: "linux-64"
+  OutputArchArm: "linux-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/linux-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/linux-arm64"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        cd v2rayN 
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
+        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r linux-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r linux-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPath64
+        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r linux-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPathArm64
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: v2rayN-linux
+        path: |
+          ${{ github.workspace }}/v2rayN/Release/linux*
+
+    # release debian package
+    - name: Package debian 
+      if: github.event.inputs.release_tag != ''
+      run: |
+        chmod 755 package-debian.sh
+        ./package-debian.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }} 
+        ./package-debian.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }} 
+
+    - name: Upload deb to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.deb
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+    
+    # release zip archive
+    - name: Package release zip archive
+      if: github.event.inputs.release_tag != ''
+      run: | 
+        chmod 755 package-release-zip.sh
+        ./package-release-zip.sh $OutputArch $OutputPath64
+        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+    
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true

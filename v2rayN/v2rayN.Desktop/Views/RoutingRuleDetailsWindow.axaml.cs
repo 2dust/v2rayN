@@ -95,7 +95,7 @@ namespace v2rayN.Desktop.Views
 
         private void linkRuleobjectDoc_Click(object? sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
+            ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
         }
     }
 }

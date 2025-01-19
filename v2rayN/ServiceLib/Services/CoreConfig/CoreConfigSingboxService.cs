@@ -7,6 +7,7 @@ namespace ServiceLib.Services.CoreConfig
     public class CoreConfigSingboxService
     {
         private Config _config;
+        private static readonly string _tag = "CoreConfigSingboxService";
 
         public CoreConfigSingboxService(Config config)
         {
@@ -26,7 +27,7 @@ namespace ServiceLib.Services.CoreConfig
                     ret.Msg = ResUI.CheckServerSettings;
                     return ret;
                 }
-                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.splithttp) or nameof(ETransport.xhttp))
+                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
                 {
                     ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
                     return ret;
@@ -52,7 +53,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 await GenInbounds(singboxConfig);
 
-                await GenOutbound(node, singboxConfig.outbounds[0]);
+                await GenOutbound(node, singboxConfig.outbounds.First());
 
                 await GenMoreOutbounds(node, singboxConfig);
 
@@ -71,7 +72,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GenerateClientConfig4Singbox", ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -90,8 +91,8 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(Global.SingboxSampleClient);
-                string txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
+                var result = Utils.GetEmbedText(Global.SingboxSampleClient);
+                var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -114,15 +115,15 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog(ex.Message, ex);
+                    Logging.SaveLog(_tag, ex);
                 }
 
                 await GenLog(singboxConfig);
                 //GenDns(new(), singboxConfig);
-                singboxConfig.inbounds.Clear(); // Remove "proxy" service for speedtest, avoiding port conflicts.
+                singboxConfig.inbounds.Clear();
                 singboxConfig.outbounds.RemoveAt(0);
 
-                int httpPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+                var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
                 foreach (var it in selecteds)
                 {
@@ -144,8 +145,8 @@ namespace ServiceLib.Services.CoreConfig
                     }
 
                     //find unused port
-                    var port = httpPort;
-                    for (int k = httpPort; k < Global.MaxPort; k++)
+                    var port = initPort;
+                    for (int k = initPort; k < Global.MaxPort; k++)
                     {
                         if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                         {
@@ -157,7 +158,7 @@ namespace ServiceLib.Services.CoreConfig
                         }
                         //found
                         port = k;
-                        httpPort = port + 1;
+                        initPort = port + 1;
                         break;
                     }
 
@@ -174,7 +175,7 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         listen = Global.Loopback,
                         listen_port = port,
-                        type = EInboundProtocol.http.ToString(),
+                        type = EInboundProtocol.mixed.ToString(),
                     };
                     inbound.tag = inbound.type + inbound.listen_port.ToString();
                     singboxConfig.inbounds.Add(inbound);
@@ -235,7 +236,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -312,7 +313,7 @@ namespace ServiceLib.Services.CoreConfig
                     var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     await GenOutbound(item, outbound);
                     outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                    singboxConfig.outbounds.Add(outbound);
+                    singboxConfig.outbounds.Insert(0, outbound);
                     tagProxy.Add(outbound.tag);
                 }
                 if (tagProxy.Count <= 0)
@@ -332,7 +333,7 @@ namespace ServiceLib.Services.CoreConfig
                     outbounds = tagProxy,
                     interrupt_exist_connections = false,
                 };
-                singboxConfig.outbounds.Add(outUrltest);
+                singboxConfig.outbounds.Insert(0, outUrltest);
 
                 //add selector outbound
                 var outSelector = new Outbound4Sbox
@@ -343,7 +344,7 @@ namespace ServiceLib.Services.CoreConfig
                     interrupt_exist_connections = false,
                 };
                 outSelector.outbounds.Insert(0, outUrltest.tag);
-                singboxConfig.outbounds.Add(outSelector);
+                singboxConfig.outbounds.Insert(0, outSelector);
 
                 ret.Success = true;
                 ret.Data = JsonUtils.Serialize(singboxConfig);
@@ -351,7 +352,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -409,7 +410,9 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         await GenInbounds(singboxConfig);
                         await GenExperimental(singboxConfig);
-                        JsonUtils.ToFile(singboxConfig, fileName, false);
+
+                        var content = JsonUtils.Serialize(singboxConfig, true);
+                        await File.WriteAllTextAsync(fileName, content);
                     }
                 }
                 else
@@ -430,7 +433,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
@@ -440,7 +443,7 @@ namespace ServiceLib.Services.CoreConfig
 
         #region private gen function
 
-        public async Task<int> GenLog(SingboxConfig singboxConfig)
+        private async Task<int> GenLog(SingboxConfig singboxConfig)
         {
             try
             {
@@ -471,9 +474,9 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenInbounds(SingboxConfig singboxConfig)
@@ -488,53 +491,46 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     var inbound = new Inbound4Sbox()
                     {
-                        type = EInboundProtocol.socks.ToString(),
+                        type = EInboundProtocol.mixed.ToString(),
                         tag = EInboundProtocol.socks.ToString(),
                         listen = Global.Loopback,
                     };
                     singboxConfig.inbounds.Add(inbound);
 
                     inbound.listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                    inbound.sniff = _config.Inbound[0].SniffingEnabled;
-                    inbound.sniff_override_destination = _config.Inbound[0].RouteOnly ? false : _config.Inbound[0].SniffingEnabled;
+                    inbound.sniff = _config.Inbound.First().SniffingEnabled;
+                    inbound.sniff_override_destination = _config.Inbound.First().RouteOnly ? false : _config.Inbound.First().SniffingEnabled;
                     inbound.domain_strategy = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainStrategy4Singbox) ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-                    if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+                    var routing = await ConfigHandler.GetDefaultRouting(_config);
+                    if (Utils.IsNotEmpty(routing.DomainStrategy4Singbox))
                     {
-                        var routing = await ConfigHandler.GetDefaultRouting(_config);
-                        if (Utils.IsNotEmpty(routing.DomainStrategy4Singbox))
-                        {
-                            inbound.domain_strategy = routing.DomainStrategy4Singbox;
-                        }
+                        inbound.domain_strategy = routing.DomainStrategy4Singbox;
                     }
 
-                    //http
-                    var inbound2 = GetInbound(inbound, EInboundProtocol.http, false);
-                    singboxConfig.inbounds.Add(inbound2);
-
-                    if (_config.Inbound[0].AllowLANConn)
+                    if (_config.Inbound.First().SecondLocalPortEnabled)
                     {
-                        if (_config.Inbound[0].NewPort4LAN)
+                        var inbound2 = GetInbound(inbound, EInboundProtocol.socks2, true);
+                        singboxConfig.inbounds.Add(inbound2);
+                    }
+
+                    if (_config.Inbound.First().AllowLANConn)
+                    {
+                        if (_config.Inbound.First().NewPort4LAN)
                         {
-                            var inbound3 = GetInbound(inbound, EInboundProtocol.socks2, true);
+                            var inbound3 = GetInbound(inbound, EInboundProtocol.socks3, true);
                             inbound3.listen = listen;
                             singboxConfig.inbounds.Add(inbound3);
 
-                            var inbound4 = GetInbound(inbound, EInboundProtocol.http2, false);
-                            inbound4.listen = listen;
-                            singboxConfig.inbounds.Add(inbound4);
-
                             //auth
-                            if (Utils.IsNotEmpty(_config.Inbound[0].User) && Utils.IsNotEmpty(_config.Inbound[0].Pass))
+                            if (Utils.IsNotEmpty(_config.Inbound.First().User) && Utils.IsNotEmpty(_config.Inbound.First().Pass))
                             {
-                                inbound3.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
-                                inbound4.users = new() { new() { username = _config.Inbound[0].User, password = _config.Inbound[0].Pass } };
+                                inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
                             }
                         }
                         else
                         {
                             inbound.listen = listen;
-                            inbound2.listen = listen;
                         }
                     }
                 }
@@ -543,19 +539,20 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     if (_config.TunModeItem.Mtu <= 0)
                     {
-                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus[0]);
+                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus.First());
                     }
                     if (Utils.IsNullOrEmpty(_config.TunModeItem.Stack))
                     {
-                        _config.TunModeItem.Stack = Global.TunStacks[0];
+                        _config.TunModeItem.Stack = Global.TunStacks.First();
                     }
 
                     var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(Utils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
+                    tunInbound.interface_name = Utils.IsOSX() ? $"utun{new Random().Next(99)}" : "singbox_tun";
                     tunInbound.mtu = _config.TunModeItem.Mtu;
                     tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                     tunInbound.stack = _config.TunModeItem.Stack;
-                    tunInbound.sniff = _config.Inbound[0].SniffingEnabled;
-                    //tunInbound.sniff_override_destination = _config.inbound[0].routeOnly ? false : _config.inbound[0].sniffingEnabled;
+                    tunInbound.sniff = _config.Inbound.First().SniffingEnabled;
+                    //tunInbound.sniff_override_destination = _config.inbound.First().routeOnly ? false : _config.inbound.First().sniffingEnabled;
                     if (_config.TunModeItem.EnableIPv6Address == false)
                     {
                         tunInbound.address = ["172.18.0.1/30"];
@@ -566,7 +563,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -576,11 +573,11 @@ namespace ServiceLib.Services.CoreConfig
             var inbound = JsonUtils.DeepCopy(inItem);
             inbound.tag = protocol.ToString();
             inbound.listen_port = inItem.listen_port + (int)protocol;
-            inbound.type = bSocks ? EInboundProtocol.socks.ToString() : EInboundProtocol.http.ToString();
+            inbound.type = EInboundProtocol.mixed.ToString();
             return inbound;
         }
 
-        public async Task<int> GenOutbound(ProfileItem node, Outbound4Sbox outbound)
+        private async Task<int> GenOutbound(ProfileItem node, Outbound4Sbox outbound)
         {
             try
             {
@@ -699,12 +696,12 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
 
-        public async Task<int> GenOutboundMux(ProfileItem node, Outbound4Sbox outbound)
+        private async Task<int> GenOutboundMux(ProfileItem node, Outbound4Sbox outbound)
         {
             try
             {
@@ -722,12 +719,12 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
-        public async Task<int> GenOutboundTls(ProfileItem node, Outbound4Sbox outbound)
+        private async Task<int> GenOutboundTls(ProfileItem node, Outbound4Sbox outbound)
         {
             try
             {
@@ -772,12 +769,12 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
-        public async Task<int> GenOutboundTransport(ProfileItem node, Outbound4Sbox outbound)
+        private async Task<int> GenOutboundTransport(ProfileItem node, Outbound4Sbox outbound)
         {
             try
             {
@@ -849,9 +846,9 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> GenMoreOutbounds(ProfileItem node, SingboxConfig singboxConfig)
@@ -869,7 +866,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 //current proxy
-                var outbound = singboxConfig.outbounds[0];
+                var outbound = singboxConfig.outbounds.First();
                 var txtOutbound = Utils.GetEmbedText(Global.SingboxSampleOutbound);
 
                 //Previous proxy
@@ -901,7 +898,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return 0;
@@ -912,7 +909,7 @@ namespace ServiceLib.Services.CoreConfig
             try
             {
                 var dnsOutbound = "dns_out";
-                if (!_config.Inbound[0].SniffingEnabled)
+                if (!_config.Inbound.First().SniffingEnabled)
                 {
                     singboxConfig.route.rules.Add(new()
                     {
@@ -958,28 +955,13 @@ namespace ServiceLib.Services.CoreConfig
                     });
                 }
 
-                if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+                var routing = await ConfigHandler.GetDefaultRouting(_config);
+                if (routing != null)
                 {
-                    var routing = await ConfigHandler.GetDefaultRouting(_config);
-                    if (routing != null)
+                    var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
+                    foreach (var item in rules ?? [])
                     {
-                        var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
-                        foreach (var item in rules ?? [])
-                        {
-                            if (item.Enabled)
-                            {
-                                await GenRoutingUserRule(item, singboxConfig.route.rules);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    var lockedItem = await ConfigHandler.GetLockedRoutingItem(_config);
-                    if (lockedItem != null)
-                    {
-                        var rules = JsonUtils.Deserialize<List<RulesItem>>(lockedItem.RuleSet);
-                        foreach (var item in rules ?? [])
+                        if (item.Enabled)
                         {
                             await GenRoutingUserRule(item, singboxConfig.route.rules);
                         }
@@ -988,7 +970,7 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
@@ -1019,7 +1001,7 @@ namespace ServiceLib.Services.CoreConfig
             }
         }
 
-        public async Task<int> GenRoutingUserRule(RulesItem item, List<Rule4Sbox> rules)
+        private async Task<int> GenRoutingUserRule(RulesItem item, List<Rule4Sbox> rules)
         {
             try
             {
@@ -1104,9 +1086,9 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private bool ParseV2Domain(string domain, Rule4Sbox rule)
@@ -1177,7 +1159,7 @@ namespace ServiceLib.Services.CoreConfig
             return true;
         }
 
-        public async Task<int> GenDns(ProfileItem? node, SingboxConfig singboxConfig)
+        private async Task<int> GenDns(ProfileItem? node, SingboxConfig singboxConfig)
         {
             try
             {
@@ -1203,12 +1185,12 @@ namespace ServiceLib.Services.CoreConfig
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return 0;
         }
 
-        public async Task<int> GenDnsDomains(ProfileItem? node, SingboxConfig singboxConfig, DNSItem? dNSItem)
+        private async Task<int> GenDnsDomains(ProfileItem? node, SingboxConfig singboxConfig, DNSItem? dNSItem)
         {
             var dns4Sbox = singboxConfig.dns ?? new();
             dns4Sbox.servers ??= [];
@@ -1258,10 +1240,10 @@ namespace ServiceLib.Services.CoreConfig
             }
 
             singboxConfig.dns = dns4Sbox;
-            return 0;
+            return await Task.FromResult(0);
         }
 
-        public async Task<int> GenExperimental(SingboxConfig singboxConfig)
+        private async Task<int> GenExperimental(SingboxConfig singboxConfig)
         {
             //if (_config.guiItem.enableStatistics)
             {
@@ -1277,11 +1259,12 @@ namespace ServiceLib.Services.CoreConfig
                 singboxConfig.experimental ??= new Experimental4Sbox();
                 singboxConfig.experimental.cache_file = new CacheFile4Sbox()
                 {
-                    enabled = true
+                    enabled = true,
+                    path = Utils.GetConfigPath("cache.db")
                 };
             }
 
-            return 0;
+            return await Task.FromResult(0);
         }
 
         private async Task<int> ConvertGeo2Ruleset(SingboxConfig singboxConfig)
@@ -1334,20 +1317,18 @@ namespace ServiceLib.Services.CoreConfig
 
             //load custom ruleset file
             List<Ruleset4Sbox> customRulesets = [];
-            if (_config.RoutingBasicItem.EnableRoutingAdvanced)
+
+            var routing = await ConfigHandler.GetDefaultRouting(_config);
+            if (Utils.IsNotEmpty(routing.CustomRulesetPath4Singbox))
             {
-                var routing = await ConfigHandler.GetDefaultRouting(_config);
-                if (Utils.IsNotEmpty(routing.CustomRulesetPath4Singbox))
+                var result = Utils.LoadResource(routing.CustomRulesetPath4Singbox);
+                if (Utils.IsNotEmpty(result))
                 {
-                    var result = Utils.LoadResource(routing.CustomRulesetPath4Singbox);
-                    if (Utils.IsNotEmpty(result))
-                    {
-                        customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
-                            .Where(t => t.tag != null)
-                            .Where(t => t.type != null)
-                            .Where(t => t.format != null)
-                            .ToList();
-                    }
+                    customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
+                        .Where(t => t.tag != null)
+                        .Where(t => t.type != null)
+                        .Where(t => t.format != null)
+                        .ToList();
                 }
             }
 

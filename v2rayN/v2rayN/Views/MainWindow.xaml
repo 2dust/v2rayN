@@ -194,6 +194,10 @@
                                         x:Name="menuRegionalPresetsRussia"
                                         Height="{StaticResource MenuItemHeight}"
                                         Header="{x:Static resx:ResUI.menuRegionalPresetsRussia}" />
+                                    <MenuItem
+                                        x:Name="menuRegionalPresetsIran"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuRegionalPresetsIran}" />
                                 </MenuItem>
                                 <MenuItem
                                     x:Name="menuBackupAndRestore"

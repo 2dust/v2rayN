@@ -231,7 +231,7 @@ namespace ServiceLib.ViewModels
                 MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(OnNext);
             }
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -360,7 +360,7 @@ namespace ServiceLib.ViewModels
 
         public async Task RefreshServersBiz()
         {
-            var lstModel = await AppHandler.Instance.ProfileItemsEx(_config.SubIndexId, _serverFilter);
+            var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
             _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
             _profileItems.Clear();
@@ -374,7 +374,7 @@ namespace ServiceLib.ViewModels
                 }
                 else
                 {
-                    SelectedProfile = lstModel[0];
+                    SelectedProfile = lstModel.First();
                 }
             }
         }
@@ -395,8 +395,47 @@ namespace ServiceLib.ViewModels
             }
             else
             {
-                SelectedSub = _subItems[0];
+                SelectedSub = _subItems.First();
             }
+        }
+
+        private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
+        {
+            var lstModel = await AppHandler.Instance.ProfileItems(_config.SubIndexId, filter);
+
+            await ConfigHandler.SetDefaultServer(_config, lstModel);
+
+            var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
+            var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
+            lstModel = (from t in lstModel
+                        join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
+                        from t22 in t2b.DefaultIfEmpty()
+                        join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
+                        from t33 in t3b.DefaultIfEmpty()
+                        select new ProfileItemModel
+                        {
+                            IndexId = t.IndexId,
+                            ConfigType = t.ConfigType,
+                            Remarks = t.Remarks,
+                            Address = t.Address,
+                            Port = t.Port,
+                            Security = t.Security,
+                            Network = t.Network,
+                            StreamSecurity = t.StreamSecurity,
+                            Subid = t.Subid,
+                            SubRemarks = t.SubRemarks,
+                            IsActive = t.IndexId == _config.IndexId,
+                            Sort = t33 == null ? 0 : t33.Sort,
+                            Delay = t33 == null ? 0 : t33.Delay,
+                            DelayVal = t33?.Delay != 0 ? $"{t33?.Delay} {Global.DelayUnit}" : string.Empty,
+                            SpeedVal = t33?.Speed != 0 ? $"{t33?.Speed} {Global.SpeedUnit}" : string.Empty,
+                            TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
+                            TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
+                            TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
+                            TotalUp = t22 == null ? "" : Utils.HumanFy(t22.TotalUp)
+                        }).OrderBy(t => t.Sort).ToList();
+
+            return lstModel;
         }
 
         #endregion Servers && Groups
@@ -639,6 +678,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
 
             RefreshServers();
+            SelectedMoveToGroup = null;
             SelectedMoveToGroup = new();
             //Reload();
         }

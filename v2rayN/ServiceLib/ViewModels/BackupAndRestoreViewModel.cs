@@ -130,18 +130,31 @@ namespace ServiceLib.ViewModels
                 DisplayOperationMsg(ResUI.LocalRestoreInvalidZipTips);
                 return;
             }
-            if (!Utils.UpgradeAppExists(out _))
-            {
-                DisplayOperationMsg(ResUI.UpgradeAppNotExistTip);
-                return;
-            }
 
             //backup first
             var fileBackup = Utils.GetBackupPath(BackupFileName);
             var result = await CreateZipFileFromDirectory(fileBackup);
             if (result)
             {
-                Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
+                var service = Locator.Current.GetService<MainWindowViewModel>();
+                await service?.MyAppExitAsync(true);
+                await SQLiteHelper.Instance.DisposeDbConnectionAsync();
+
+                var toPath = Utils.GetConfigPath();
+                FileManager.ZipExtractToFile(fileName, toPath, "");
+
+                if (Utils.IsWindows())
+                {
+                    ProcUtils.RebootAsAdmin(false);
+                }
+                else
+                {
+                    if (Utils.UpgradeAppExists(out var upgradeFileName))
+                    {
+                        ProcUtils.ProcessStart(upgradeFileName, Global.RebootAs, Utils.StartupPath());
+                    }
+                }
+                service?.Shutdown(true);
             }
             else
             {
@@ -160,10 +173,10 @@ namespace ServiceLib.ViewModels
             var configDirZipTemp = Utils.GetTempPath($"v2rayN_{DateTime.Now:yyyyMMddHHmmss}");
             var configDirTemp = Path.Combine(configDirZipTemp, _guiConfigs);
 
-            await Task.Run(() => FileManager.CopyDirectory(configDir, configDirTemp, false, "cache.db"));
-            var ret = await Task.Run(() => FileManager.CreateFromDirectory(configDirZipTemp, fileName));
-            await Task.Run(() => Directory.Delete(configDirZipTemp, true));
-            return ret;
+            FileManager.CopyDirectory(configDir, configDirTemp, false, true, "cache.db");
+            var ret = FileManager.CreateFromDirectory(configDirZipTemp, fileName);
+            Directory.Delete(configDirZipTemp, true);
+            return await Task.FromResult(ret);
         }
     }
 }

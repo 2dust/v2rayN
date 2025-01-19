@@ -705,7 +705,7 @@
                                     x:Name="txtExtra"
                                     Width="400"
                                     Margin="{StaticResource Margin4}"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Center"
                                     AcceptsReturn="True"
                                     MinLines="6"
                                     Style="{StaticResource MyOutlinedTextBox}"

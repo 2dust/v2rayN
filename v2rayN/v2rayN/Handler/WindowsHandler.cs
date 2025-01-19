@@ -8,6 +8,7 @@ namespace v2rayN.Handler
     {
         private static readonly Lazy<WindowsHandler> instance = new(() => new());
         public static WindowsHandler Instance => instance.Value;
+        private static readonly string _tag = "WindowsHandler";
 
         public async Task<Icon> GetNotifyIcon(Config config)
         {
@@ -39,7 +40,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return Properties.Resources.NotifyIcon1;
             }
         }
@@ -54,11 +55,6 @@ namespace v2rayN.Handler
         {
             try
             {
-                if (!config.RoutingBasicItem.EnableRoutingAdvanced)
-                {
-                    return null;
-                }
-
                 var item = await ConfigHandler.GetDefaultRouting(config);
                 if (item == null || Utils.IsNullOrEmpty(item.CustomIcon) || !File.Exists(item.CustomIcon))
                 {
@@ -94,7 +90,7 @@ namespace v2rayN.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return null;
             }
         }

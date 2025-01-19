@@ -9,6 +9,7 @@ namespace ServiceLib.ViewModels
         #region Core
 
         [Reactive] public int localPort { get; set; }
+        [Reactive] public bool SecondLocalPortEnabled { get; set; }
         [Reactive] public bool udpEnabled { get; set; }
         [Reactive] public bool sniffingEnabled { get; set; }
         public IList<string> destOverride { get; set; }
@@ -48,7 +49,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool AutoRun { get; set; }
         [Reactive] public bool EnableStatistics { get; set; }
         [Reactive] public bool KeepOlderDedupl { get; set; }
-        [Reactive] public bool IgnoreGeoUpdateCore { get; set; }
+        [Reactive] public bool DisplayRealTimeSpeed { get; set; }
         [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
         [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
         [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
@@ -62,6 +63,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public int SpeedTestTimeout { get; set; }
         [Reactive] public string SpeedTestUrl { get; set; }
         [Reactive] public string SpeedPingTestUrl { get; set; }
+        [Reactive] public int SpeedTestPageSize { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
         [Reactive] public string SubConvertUrl { get; set; }
         [Reactive] public int MainGirdOrientation { get; set; }
@@ -113,7 +115,7 @@ namespace ServiceLib.ViewModels
                 await SaveSettingAsync();
             });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -122,8 +124,9 @@ namespace ServiceLib.ViewModels
 
             #region Core
 
-            var inbound = _config.Inbound[0];
+            var inbound = _config.Inbound.First();
             localPort = inbound.LocalPort;
+            SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
             udpEnabled = inbound.UdpEnabled;
             sniffingEnabled = inbound.SniffingEnabled;
             routeOnly = inbound.RouteOnly;
@@ -161,8 +164,8 @@ namespace ServiceLib.ViewModels
 
             AutoRun = _config.GuiItem.AutoRun;
             EnableStatistics = _config.GuiItem.EnableStatistics;
+            DisplayRealTimeSpeed = _config.GuiItem.DisplayRealTimeSpeed;
             KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
-            IgnoreGeoUpdateCore = _config.GuiItem.IgnoreGeoUpdateCore;
             EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
             EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
             EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
@@ -175,6 +178,7 @@ namespace ServiceLib.ViewModels
             CurrentFontFamily = _config.UiItem.CurrentFontFamily;
             SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
             SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
+            SpeedTestPageSize = _config.SpeedTestItem.SpeedTestPageSize;
             SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
             EnableHWA = _config.GuiItem.EnableHWA;
             SubConvertUrl = _config.ConstItem.SubConvertUrl;
@@ -257,6 +261,7 @@ namespace ServiceLib.ViewModels
                         break;
                 }
             });
+            await Task.CompletedTask;
         }
 
         private async Task SaveSettingAsync()
@@ -268,6 +273,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
+                              || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                             || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                             || EnableHWA != _config.GuiItem.EnableHWA
                             || CurrentFontFamily != _config.UiItem.CurrentFontFamily
@@ -285,15 +291,16 @@ namespace ServiceLib.ViewModels
             //}
 
             //Core
-            _config.Inbound[0].LocalPort = localPort;
-            _config.Inbound[0].UdpEnabled = udpEnabled;
-            _config.Inbound[0].SniffingEnabled = sniffingEnabled;
-            _config.Inbound[0].DestOverride = destOverride?.ToList();
-            _config.Inbound[0].RouteOnly = routeOnly;
-            _config.Inbound[0].AllowLANConn = allowLANConn;
-            _config.Inbound[0].NewPort4LAN = newPort4LAN;
-            _config.Inbound[0].User = user;
-            _config.Inbound[0].Pass = pass;
+            _config.Inbound.First().LocalPort = localPort;
+            _config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
+            _config.Inbound.First().UdpEnabled = udpEnabled;
+            _config.Inbound.First().SniffingEnabled = sniffingEnabled;
+            _config.Inbound.First().DestOverride = destOverride?.ToList();
+            _config.Inbound.First().RouteOnly = routeOnly;
+            _config.Inbound.First().AllowLANConn = allowLANConn;
+            _config.Inbound.First().NewPort4LAN = newPort4LAN;
+            _config.Inbound.First().User = user;
+            _config.Inbound.First().Pass = pass;
             if (_config.Inbound.Count > 1)
             {
                 _config.Inbound.RemoveAt(1);
@@ -312,8 +319,8 @@ namespace ServiceLib.ViewModels
 
             _config.GuiItem.AutoRun = AutoRun;
             _config.GuiItem.EnableStatistics = EnableStatistics;
+            _config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
             _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
-            _config.GuiItem.IgnoreGeoUpdateCore = IgnoreGeoUpdateCore;
             _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
             _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
             _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
@@ -325,6 +332,7 @@ namespace ServiceLib.ViewModels
             _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
             _config.UiItem.CurrentFontFamily = CurrentFontFamily;
             _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
+            _config.SpeedTestItem.SpeedTestPageSize = SpeedTestPageSize;
             _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
             _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
             _config.GuiItem.EnableHWA = EnableHWA;
@@ -356,6 +364,7 @@ namespace ServiceLib.ViewModels
             if (await ConfigHandler.SaveConfig(_config) == 0)
             {
                 await AutoStartupHandler.UpdateTask(_config);
+                AppHandler.Instance.Reset();
 
                 NoticeHandler.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
                 _updateView?.Invoke(EViewAction.CloseWindow, null);
@@ -403,6 +412,7 @@ namespace ServiceLib.ViewModels
                 }
                 item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
             }
+            await Task.CompletedTask;
         }
     }
 }

@@ -76,8 +76,10 @@
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             IsReadOnlyCaretVisible="True"
+            IsUndoEnabled="False"
             TextAlignment="Left"
             TextWrapping="Wrap"
+            UndoLimit="0"
             VerticalScrollBarVisibility="Visible">
             <TextBox.ContextMenu>
                 <ContextMenu Style="{StaticResource DefContextMenu}">

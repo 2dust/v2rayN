@@ -1,9 +1,9 @@
-﻿using PacLib;
-
-namespace ServiceLib.Handler.SysProxy
+﻿namespace ServiceLib.Handler.SysProxy
 {
     public static class SysProxyHandler
     {
+        private static readonly string _tag = "SysProxyHandler";
+
         public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
         {
             var type = config.SystemProxyItem.SysProxyType;
@@ -15,8 +15,8 @@ namespace ServiceLib.Handler.SysProxy
 
             try
             {
-                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.http);
-                var portSocks = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
                 if (port <= 0)
                 {
                     return false;
@@ -25,16 +25,16 @@ namespace ServiceLib.Handler.SysProxy
                 {
                     case ESysProxyType.ForcedChange when Utils.IsWindows():
                         {
-                            GetWindowsProxyString(config, port, portSocks, out var strProxy, out var strExceptions);
+                            GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
                             ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
                             break;
                         }
                     case ESysProxyType.ForcedChange when Utils.IsLinux():
-                        await ProxySettingLinux.SetProxy(Global.Loopback, port);
+                        await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
                         break;
 
                     case ESysProxyType.ForcedChange when Utils.IsOSX():
-                        await ProxySettingOSX.SetProxy(Global.Loopback, port);
+                        await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
                         break;
 
                     case ESysProxyType.ForcedClear when Utils.IsWindows():
@@ -61,17 +61,17 @@ namespace ServiceLib.Handler.SysProxy
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
             return true;
         }
 
-        private static void GetWindowsProxyString(Config config, int port, int portSocks, out string strProxy, out string strExceptions)
+        private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
         {
-            strExceptions = "";
+            strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
             if (config.SystemProxyItem.NotProxyLocalAddress)
             {
-                strExceptions = $"<local>;{config.ConstItem.DefIEProxyExceptions};{config.SystemProxyItem.SystemProxyExceptions}";
+                strExceptions = $"<local>;{strExceptions}";
             }
 
             strProxy = string.Empty;
@@ -84,7 +84,7 @@ namespace ServiceLib.Handler.SysProxy
                 strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
                     .Replace("{ip}", Global.Loopback)
                     .Replace("{http_port}", port.ToString())
-                    .Replace("{socks_port}", portSocks.ToString());
+                    .Replace("{socks_port}", port.ToString());
             }
         }
 

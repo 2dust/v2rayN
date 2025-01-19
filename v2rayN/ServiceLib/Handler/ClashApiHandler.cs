@@ -9,6 +9,7 @@ namespace ServiceLib.Handler
 
         private Dictionary<string, ProxiesItem>? _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
+        private static readonly string _tag = "ClashApiHandler";
 
         public async Task<Tuple<ClashProxies, ClashProviders>?> GetClashProxiesAsync(Config config)
         {
@@ -109,7 +110,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog("GetClashProxyGroups", ex);
+                Logging.SaveLog(_tag, ex);
                 return null;
             }
         }
@@ -125,7 +126,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -153,7 +154,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
@@ -169,7 +170,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
 
             return null;
@@ -184,7 +185,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 

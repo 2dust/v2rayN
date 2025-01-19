@@ -47,6 +47,7 @@
         public SystemProxyItem SystemProxyItem { get; set; }
         public WebDavItem WebDavItem { get; set; }
         public CheckUpdateItem CheckUpdateItem { get; set; }
+        public Fragment4RayItem? Fragment4RayItem { get; set; }
         public List<InItem> Inbound { get; set; }
         public List<KeyEventItem> GlobalHotkeys { get; set; }
         public List<CoreTypeItem> CoreTypeItem { get; set; }

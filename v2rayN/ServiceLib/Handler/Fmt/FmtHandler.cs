@@ -2,6 +2,8 @@
 {
     public class FmtHandler
     {
+        private static readonly string _tag = "FmtHandler";
+
         public static string? GetShareUri(ProfileItem item)
         {
             try
@@ -23,7 +25,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 return "";
             }
         }
@@ -81,7 +83,7 @@
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
                 msg = ResUI.Incorrectconfiguration;
                 return null;
             }

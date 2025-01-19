@@ -32,6 +32,7 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
         public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
+        public ReactiveCommand<Unit, Unit> CopyProxyCmdToClipboardCmd { get; }
         public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
 
         #region System Proxy
@@ -47,18 +48,6 @@ namespace ServiceLib.ViewModels
 
         [Reactive]
         public bool BlSystemProxyPac { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxyClear { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxySet { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxyNothing { get; set; }
-
-        [Reactive]
-        public bool BlNotSystemProxyPac { get; set; }
 
         public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
         public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
@@ -140,9 +129,15 @@ namespace ServiceLib.ViewModels
                     y => y == true)
                 .Subscribe(async c => await DoEnableTun(c));
 
+            CopyProxyCmdToClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await CopyProxyCmdToClipboard();
+            });
+
             NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(null);
+                await Task.CompletedTask;
             });
 
             AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -186,7 +181,7 @@ namespace ServiceLib.ViewModels
             {
                 InitUpdateView(updateView);
             }
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -208,6 +203,23 @@ namespace ServiceLib.ViewModels
         private async void OnNext(string x)
         {
             await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
+        }
+
+        private async Task CopyProxyCmdToClipboard()
+        {
+            var cmd = Utils.IsWindows() ? "set" : "export";
+            var address = $"{Global.Loopback}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}";
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"{cmd} http_proxy={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} https_proxy={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} all_proxy={Global.Socks5Protocol}{address}");
+            sb.AppendLine("");
+            sb.AppendLine($"{cmd} HTTP_PROXY={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
+            sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
+
+            await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
         }
 
         private async Task AddServerViaClipboard()
@@ -333,11 +345,6 @@ namespace ServiceLib.ViewModels
             BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
             BlSystemProxyPac = (type == ESysProxyType.Pac);
 
-            BlNotSystemProxyClear = !BlSystemProxyClear;
-            BlNotSystemProxySet = !BlSystemProxySet;
-            BlNotSystemProxyNothing = !BlSystemProxyNothing;
-            BlNotSystemProxyPac = !BlSystemProxyPac;
-
             if (blChange)
             {
                 _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
@@ -347,11 +354,6 @@ namespace ServiceLib.ViewModels
         public async Task RefreshRoutingsMenu()
         {
             _routingItems.Clear();
-            if (!_config.RoutingBasicItem.EnableRoutingAdvanced)
-            {
-                BlRouting = false;
-                return;
-            }
 
             BlRouting = true;
             var routings = await AppHandler.Instance.RoutingItems();
@@ -422,10 +424,12 @@ namespace ServiceLib.ViewModels
                         Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                         return;
                     }
-                    //else if (Utils.IsLinux())
-                    //{
-                    //    NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
-                    //}
+                    else if (Utils.IsOSX())
+                    {
+                        _config.TunModeItem.EnableTun = false;
+                        NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
+                        return;
+                    }
                 }
                 await ConfigHandler.SaveConfig(_config);
                 Locator.Current.GetService<MainWindowViewModel>()?.Reload();
@@ -442,6 +446,10 @@ namespace ServiceLib.ViewModels
             {
                 return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
             }
+            else if (Utils.IsOSX())
+            {
+                return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
+            }
             return false;
         }
 
@@ -452,36 +460,38 @@ namespace ServiceLib.ViewModels
         public async Task InboundDisplayStatus()
         {
             StringBuilder sb = new();
-            sb.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]");
-            sb.Append(" | ");
-            sb.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http)}]");
+            sb.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}");
+            if (_config.Inbound.First().SecondLocalPortEnabled)
+            {
+                sb.Append($",{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}");
+            }
+            sb.Append(']');
             InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
-            if (_config.Inbound[0].AllowLANConn)
+            if (_config.Inbound.First().AllowLANConn)
             {
-                if (_config.Inbound[0].NewPort4LAN)
-                {
-                    StringBuilder sb2 = new();
-                    sb2.Append($"[{EInboundProtocol.socks}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}]");
-                    sb2.Append(" | ");
-                    sb2.Append($"[{EInboundProtocol.http}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.http2)}]");
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb2}";
-                }
-                else
-                {
-                    InboundLanDisplay = $"{ResUI.LabLAN}:{sb}";
-                }
+                var lan = _config.Inbound.First().NewPort4LAN
+                    ? $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
+                    : $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]";
+                InboundLanDisplay = $"{ResUI.LabLAN}:{lan}";
             }
             else
             {
-                InboundLanDisplay = $"{ResUI.LabLAN}:None";
+                InboundLanDisplay = $"{ResUI.LabLAN}:{Global.None}";
             }
+            await Task.CompletedTask;
         }
 
         public void UpdateStatistics(ServerSpeedItem update)
         {
-            SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
-            SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
+            try
+            {
+                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
+                SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
+            }
+            catch
+            {
+            }
         }
 
         #endregion UI

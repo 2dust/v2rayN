@@ -29,7 +29,7 @@
         public string? destinationPort { get; set; }
         public string? host { get; set; }
         public string? nsMode { get; set; }
-        public object uid { get; set; }
+        public object? uid { get; set; }
         public string? process { get; set; }
         public string? processPath { get; set; }
         public string? remoteDestination { get; set; }

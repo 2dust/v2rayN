@@ -10,6 +10,15 @@
     d:DesignWidth="800"
     x:DataType="vms:ThemeSettingViewModel"
     mc:Ignorable="d">
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Width" Value="100" />
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Width" Value="130" />
+        </Style>
+    </UserControl.Styles>
+
     <Button
         Width="30"
         Height="30"
@@ -24,36 +33,35 @@
         </Button.Content>
         <Button.Flyout>
             <Flyout>
-                <StackPanel>
+                <StackPanel Margin="0,12">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
-                            Text="{x:Static resx:ResUI.TbSettingsColorMode}" />
-                        <ToggleSwitch x:Name="togDarkMode" Classes="Margin8" />
+                            Text="{x:Static resx:ResUI.TbSettingsTheme}" />
+                        <ComboBox
+                            x:Name="cmbCurrentTheme"
+                            HorizontalAlignment="Center"
+                            Classes="Margin8" />
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
                         <ComboBox
                             x:Name="cmbCurrentFontSize"
-                            Width="100"
+                            HorizontalAlignment="Center"
                             Classes="Margin8" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Width="100"
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                         <ComboBox
                             x:Name="cmbCurrentLanguage"
-                            Width="100"
+                            HorizontalAlignment="Center"
                             Classes="Margin8" />
                     </StackPanel>
                 </StackPanel>

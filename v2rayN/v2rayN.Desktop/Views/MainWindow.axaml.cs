@@ -21,6 +21,7 @@ namespace v2rayN.Desktop.Views
         private WindowNotificationManager? _manager;
         private CheckUpdateView? _checkUpdateView;
         private BackupAndRestoreView? _backupAndRestoreView;
+        private bool _blCloseByUser = false;
 
         public MainWindow()
         {
@@ -39,7 +40,34 @@ namespace v2rayN.Desktop.Views
             ViewModel = new MainWindowViewModel(UpdateViewHandler);
             Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
-            //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            switch (_config.UiItem.MainGirdOrientation)
+            {
+                case EGirdOrientation.Horizontal:
+                    tabProfiles.Content ??= new ProfilesView(this);
+                    tabMsgView.Content ??= new MsgView();
+                    tabClashProxies.Content ??= new ClashProxiesView();
+                    tabClashConnections.Content ??= new ClashConnectionsView();
+                    gridMain.IsVisible = true;
+                    break;
+
+                case EGirdOrientation.Vertical:
+                    tabProfiles1.Content ??= new ProfilesView(this);
+                    tabMsgView1.Content ??= new MsgView();
+                    tabClashProxies1.Content ??= new ClashProxiesView();
+                    tabClashConnections1.Content ??= new ClashConnectionsView();
+                    gridMain1.IsVisible = true;
+                    break;
+
+                case EGirdOrientation.Tab:
+                default:
+                    tabProfiles2.Content ??= new ProfilesView(this);
+                    tabMsgView2.Content ??= new MsgView();
+                    tabClashProxies2.Content ??= new ClashProxiesView();
+                    tabClashConnections2.Content ??= new ClashConnectionsView();
+                    gridMain2.IsVisible = true;
+                    break;
+            }
+            conTheme.Content ??= new ThemeSettingView();
 
             this.WhenActivated(disposables =>
             {
@@ -75,6 +103,7 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.OpenTheFileLocationCmd, v => v.menuOpenTheFileLocation).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RegionalPresetDefaultCmd, v => v.menuRegionalPresetsDefault).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RegionalPresetRussiaCmd, v => v.menuRegionalPresetsRussia).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.RegionalPresetIranCmd, v => v.menuRegionalPresetsIran).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.ReloadCmd, v => v.menuReload).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
@@ -82,7 +111,6 @@ namespace v2rayN.Desktop.Views
                 switch (_config.UiItem.MainGirdOrientation)
                 {
                     case EGirdOrientation.Horizontal:
-                        gridMain.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(disposables);
@@ -90,7 +118,6 @@ namespace v2rayN.Desktop.Views
                         break;
 
                     case EGirdOrientation.Vertical:
-                        gridMain1.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(disposables);
@@ -99,7 +126,6 @@ namespace v2rayN.Desktop.Views
 
                     case EGirdOrientation.Tab:
                     default:
-                        gridMain2.IsVisible = true;
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(disposables);
                         this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
@@ -107,7 +133,7 @@ namespace v2rayN.Desktop.Views
                 }
             });
 
-            this.Title = $"{Utils.GetVersion()} - {(AppHandler.Instance.IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            this.Title = $"{Utils.GetVersion()}";
             if (Utils.IsWindows())
             {
                 ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
@@ -127,34 +153,10 @@ namespace v2rayN.Desktop.Views
             }
             menuAddServerViaScan.IsVisible = false;
 
-            switch (_config.UiItem.MainGirdOrientation)
-            {
-                case EGirdOrientation.Horizontal:
-                    tabProfiles.Content ??= new ProfilesView(this);
-                    tabMsgView.Content ??= new MsgView();
-                    tabClashProxies.Content ??= new ClashProxiesView();
-                    tabClashConnections.Content ??= new ClashConnectionsView();
-                    break;
-
-                case EGirdOrientation.Vertical:
-                    tabProfiles1.Content ??= new ProfilesView(this);
-                    tabMsgView1.Content ??= new MsgView();
-                    tabClashProxies1.Content ??= new ClashProxiesView();
-                    tabClashConnections1.Content ??= new ClashConnectionsView();
-                    break;
-
-                case EGirdOrientation.Tab:
-                default:
-                    tabProfiles2.Content ??= new ProfilesView(this);
-                    tabMsgView2.Content ??= new MsgView();
-                    tabClashProxies2.Content ??= new ClashProxiesView();
-                    tabClashConnections2.Content ??= new ClashConnectionsView();
-                    break;
-            }
-            conTheme.Content ??= new ThemeSettingView();
-
             RestoreUI();
             AddHelpMenuItem();
+            //WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+            MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
         }
 
         #region Event
@@ -220,6 +222,10 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.Shutdown:
+                    if (obj != null && _blCloseByUser == false)
+                    {
+                        _blCloseByUser = (bool)obj;
+                    }
                     StorageUI();
                     if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
@@ -278,6 +284,11 @@ namespace v2rayN.Desktop.Views
 
         protected override async void OnClosing(WindowClosingEventArgs e)
         {
+            if (_blCloseByUser)
+            {
+                return;
+            }
+
             Logging.SaveLog("OnClosing -> " + e.CloseReason.ToString());
 
             switch (e.CloseReason)
@@ -297,7 +308,7 @@ namespace v2rayN.Desktop.Views
 
         private async void MainWindow_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.KeyModifiers == KeyModifiers.Control)
+            if (e.KeyModifiers is KeyModifiers.Control or KeyModifiers.Meta)
             {
                 switch (e.Key)
                 {
@@ -320,9 +331,14 @@ namespace v2rayN.Desktop.Views
             }
         }
 
+        //private void menuPromotion_Click(object? sender, RoutedEventArgs e)
+        //{
+        //    ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+        //}
+
         private void menuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
+            ProcUtils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
         }
 
         public async Task ScanScreenTaskAsync()
@@ -368,6 +384,8 @@ namespace v2rayN.Desktop.Views
             {
                 return;
             }
+
+            _blCloseByUser = true;
             StorageUI();
 
             await ViewModel?.MyAppExitAsync(false);
@@ -428,7 +446,7 @@ namespace v2rayN.Desktop.Views
             }
         }
 
-        private void StorageUI()
+        private void StorageUI(string? n = null)
         {
             _config.UiItem.MainWidth = Utils.ToInt(this.Width);
             _config.UiItem.MainHeight = Utils.ToInt(this.Height);
@@ -443,7 +461,6 @@ namespace v2rayN.Desktop.Views
                 _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
                 _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
             }
-            ConfigHandler.SaveConfig(_config);
         }
 
         private void AddHelpMenuItem()
@@ -467,7 +484,7 @@ namespace v2rayN.Desktop.Views
         {
             if (sender is MenuItem item)
             {
-                Utils.ProcessStart(item.Tag?.ToString());
+                ProcUtils.ProcessStart(item.Tag?.ToString());
             }
         }
 

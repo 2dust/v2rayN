@@ -73,5 +73,19 @@ namespace ServiceLib.Common
         {
             return _dbAsync.Table<T>();
         }
+
+        public async Task DisposeDbConnectionAsync()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                _db?.Close();
+                _db?.Dispose();
+                _db = null;
+
+                _dbAsync?.GetConnection()?.Close();
+                _dbAsync?.GetConnection()?.Dispose();
+                _dbAsync = null;
+            });
+        }
     }
 }

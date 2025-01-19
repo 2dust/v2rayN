@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,8 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pac" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\pac.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
+  <data name="Restartv2rayN" xml:space="preserve">
+    <value>正在重启，请等待...</value>
+  </data>
+  <data name="Guidelines" xml:space="preserve">
+    <value>请从主应用运行。</value>
+  </data>
+  <data name="UpgradeFileNotFound" xml:space="preserve">
+    <value>升级失败，文件不存在。</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>正在进行中，请等待...</value>
+  </data>
+  <data name="TryTerminateProcess" xml:space="preserve">
+    <value>尝试结束 v2rayN 进程...</value>
+  </data>
+  <data name="FailedTerminateProcess" xml:space="preserve">
+    <value>请手动关闭正在运行的v2rayN，否则可能升级失败。</value>
+  </data>
+  <data name="StartUnzipping" xml:space="preserve">
+    <value>开始解压缩更新包...</value>
+  </data>
+  <data name="SuccessUnzipping" xml:space="preserve">
+    <value>解压缩更新包成功。</value>
+  </data>
+  <data name="FailedUnzipping" xml:space="preserve">
+    <value>解压缩更新包失败。</value>
+  </data>
+  <data name="FailedUpgrade" xml:space="preserve">
+    <value>升级失败。</value>
+  </data>
+  <data name="SuccessUpgrade" xml:space="preserve">
+    <value>升级成功。</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>提示</value>
   </data>
 </root>

@@ -3,18 +3,17 @@
     public class StatisticsXrayService
     {
         private const long linkBase = 1024;
-        private string _url;
         private ServerSpeedItem _serverSpeedItem = new();
         private Config _config;
         private bool _exitFlag;
         private Action<ServerSpeedItem>? _updateFunc;
+        private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort}/debug/vars";
 
         public StatisticsXrayService(Config config, Action<ServerSpeedItem> updateFunc)
         {
             _config = config;
             _updateFunc = updateFunc;
             _exitFlag = false;
-            _url = $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort}/debug/vars";
 
             Task.Run(Run);
         }
@@ -36,7 +35,7 @@
                         continue;
                     }
 
-                    var result = await HttpClientHelper.Instance.TryGetAsync(_url);
+                    var result = await HttpClientHelper.Instance.TryGetAsync(Url);
                     if (result != null)
                     {
                         var server = ParseOutput(result) ?? new ServerSpeedItem();

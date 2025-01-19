@@ -50,7 +50,7 @@ namespace v2rayN.Views
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCmd, v => v.btnImportDefConfig4Singbox).DisposeWith(disposables);
             });
-            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.FollowSystemTheme ? !WindowsUtils.IsLightTheme() : AppHandler.Instance.Config.UiItem.ColorModeDark);
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -66,12 +66,12 @@ namespace v2rayN.Views
 
         private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://xtls.github.io/config/dns.html#dnsobject");
+            ProcUtils.ProcessStart("https://xtls.github.io/config/dns.html#dnsobject");
         }
 
         private void linkDnsSingboxObjectDoc_Click(object sender, RoutedEventArgs e)
         {
-            Utils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
+            ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
         }
     }
 }

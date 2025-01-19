@@ -82,12 +82,7 @@ namespace v2rayN.Desktop.Views
 
         private void LstSubscription_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            List<SubItem> lst = [];
-            foreach (var item in lstSubscription.SelectedItems)
-            {
-                lst.Add((SubItem)item);
-            }
-            ViewModel.SelectedSources = lst;
+            ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
         }
 
         private void menuClose_Click(object? sender, RoutedEventArgs e)

@@ -22,26 +22,17 @@ namespace ServiceLib.ViewModels
         public string HostFilter { get; set; }
 
         [Reactive]
-        public int SortingSelected { get; set; }
-
-        [Reactive]
         public bool AutoRefresh { get; set; }
 
         public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
         {
             _config = AppHandler.Instance.Config;
             _updateView = updateView;
-            SortingSelected = _config.ClashUIItem.ConnectionsSorting;
             AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
 
             var canEditRemove = this.WhenAnyValue(
              x => x.SelectedSource,
              selectedSource => selectedSource != null && Utils.IsNotEmpty(selectedSource.Id));
-
-            this.WhenAnyValue(
-              x => x.SortingSelected,
-              y => y >= 0)
-                  .Subscribe(async c => await DoSortingSelected(c));
 
             this.WhenAnyValue(
                x => x.AutoRefresh,
@@ -57,7 +48,7 @@ namespace ServiceLib.ViewModels
                 await ClashConnectionClose(true);
             });
 
-            Init();
+            _ = Init();
         }
 
         private async Task Init()
@@ -82,20 +73,7 @@ namespace ServiceLib.ViewModels
                       Task.Delay(1000).Wait();
                   }
               });
-        }
-
-        private async Task DoSortingSelected(bool c)
-        {
-            if (!c)
-            {
-                return;
-            }
-            if (SortingSelected != _config.ClashUIItem.ConnectionsSorting)
-            {
-                _config.ClashUIItem.ConnectionsSorting = SortingSelected;
-            }
-
-            await GetClashConnections();
+            await Task.CompletedTask;
         }
 
         private async Task GetClashConnections()
@@ -115,7 +93,7 @@ namespace ServiceLib.ViewModels
 
             var dtNow = DateTime.Now;
             var lstModel = new List<ClashConnectionModel>();
-            foreach (var item in connections ?? [])
+            foreach (var item in connections ?? new())
             {
                 var host = $"{(Utils.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
                 if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
@@ -131,44 +109,13 @@ namespace ServiceLib.ViewModels
                 model.Host = host;
                 var sp = (dtNow - item.start);
                 model.Time = sp.TotalSeconds < 0 ? 1 : sp.TotalSeconds;
-                model.Upload = item.upload;
-                model.Download = item.download;
-                model.UploadTraffic = $"{Utils.HumanFy((long)item.upload)}";
-                model.DownloadTraffic = $"{Utils.HumanFy((long)item.download)}";
                 model.Elapsed = sp.ToString(@"hh\:mm\:ss");
-                model.Chain = item.chains?.Count > 0 ? item.chains[0] : string.Empty;
+                item.chains?.Reverse();
+                model.Chain = $"{item.rule} , {string.Join("->", item.chains ?? new())}";
 
                 lstModel.Add(model);
             }
             if (lstModel.Count <= 0) { return; }
-
-            //sort
-            switch (SortingSelected)
-            {
-                case 0:
-                    lstModel = lstModel.OrderBy(t => t.Upload / t.Time).ToList();
-                    break;
-
-                case 1:
-                    lstModel = lstModel.OrderBy(t => t.Download / t.Time).ToList();
-                    break;
-
-                case 2:
-                    lstModel = lstModel.OrderBy(t => t.Upload).ToList();
-                    break;
-
-                case 3:
-                    lstModel = lstModel.OrderBy(t => t.Download).ToList();
-                    break;
-
-                case 4:
-                    lstModel = lstModel.OrderBy(t => t.Time).ToList();
-                    break;
-
-                case 5:
-                    lstModel = lstModel.OrderBy(t => t.Host).ToList();
-                    break;
-            }
 
             _connectionItems.AddRange(lstModel);
         }

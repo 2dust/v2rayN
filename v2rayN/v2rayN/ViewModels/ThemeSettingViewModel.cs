@@ -16,29 +16,23 @@ namespace v2rayN.ViewModels
     {
         private readonly PaletteHelper _paletteHelper = new();
 
-        [Reactive]
-        public bool ColorModeDark { get; set; }
-
         private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
         public IObservableCollection<Swatch> Swatches => _swatches;
 
         [Reactive]
         public Swatch SelectedSwatch { get; set; }
 
-        [Reactive]
-        public int CurrentFontSize { get; set; }
+        [Reactive] public string CurrentTheme { get; set; }
 
-        [Reactive]
-        public bool FollowSystemTheme { get; set; }
+        [Reactive] public int CurrentFontSize { get; set; }
 
-        [Reactive]
-        public string CurrentLanguage { get; set; }
+        [Reactive] public string CurrentLanguage { get; set; }
 
         public ThemeSettingViewModel()
         {
             _config = AppHandler.Instance.Config;
 
-            RegisterSystemColorSet(_config, Application.Current.MainWindow, (bool bl) => { ModifyTheme(bl); });
+            RegisterSystemColorSet(_config, Application.Current.MainWindow, ModifyTheme);
 
             BindingUI();
             RestoreUI();
@@ -46,15 +40,8 @@ namespace v2rayN.ViewModels
 
         private void RestoreUI()
         {
-            if (FollowSystemTheme)
-            {
-                ModifyTheme(!WindowsUtils.IsLightTheme());
-            }
-            else
-            {
-                ModifyTheme(_config.UiItem.ColorModeDark);
-            }
-
+            ModifyTheme();
+            ModifyFontSize();
             if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
                 var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
@@ -69,47 +56,27 @@ namespace v2rayN.ViewModels
 
         private void BindingUI()
         {
-            ColorModeDark = _config.UiItem.ColorModeDark;
-            FollowSystemTheme = _config.UiItem.FollowSystemTheme;
             _swatches.AddRange(new SwatchesProvider().Swatches);
             if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
             {
                 SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
             }
+            CurrentTheme = _config.UiItem.CurrentTheme;
             CurrentFontSize = _config.UiItem.CurrentFontSize;
             CurrentLanguage = _config.UiItem.CurrentLanguage;
 
             this.WhenAnyValue(
-                  x => x.ColorModeDark,
-                  y => y == true)
-                      .Subscribe(c =>
-                      {
-                          if (_config.UiItem.ColorModeDark != ColorModeDark)
-                          {
-                              _config.UiItem.ColorModeDark = ColorModeDark;
-                              ModifyTheme(ColorModeDark);
-                              ConfigHandler.SaveConfig(_config);
-                          }
-                      });
-
-            this.WhenAnyValue(x => x.FollowSystemTheme,
-                y => y == true)
-                    .Subscribe(c =>
-                    {
-                        if (_config.UiItem.FollowSystemTheme != FollowSystemTheme)
-                        {
-                            _config.UiItem.FollowSystemTheme = FollowSystemTheme;
-                            ConfigHandler.SaveConfig(_config);
-                            if (FollowSystemTheme)
-                            {
-                                ModifyTheme(!WindowsUtils.IsLightTheme());
-                            }
-                            else
-                            {
-                                ModifyTheme(ColorModeDark);
-                            }
-                        }
-                    });
+                    x => x.CurrentTheme,
+                    y => y != null && !y.IsNullOrEmpty())
+                .Subscribe(c =>
+                 {
+                     if (_config.UiItem.CurrentTheme != CurrentTheme)
+                     {
+                         _config.UiItem.CurrentTheme = CurrentTheme;
+                         ModifyTheme();
+                         ConfigHandler.SaveConfig(_config);
+                     }
+                 });
 
             this.WhenAnyValue(
               x => x.SelectedSwatch,
@@ -136,14 +103,10 @@ namespace v2rayN.ViewModels
                y => y > 0)
                   .Subscribe(c =>
                   {
-                      if (CurrentFontSize >= Global.MinFontSize)
+                      if (_config.UiItem.CurrentFontSize != CurrentFontSize)
                       {
                           _config.UiItem.CurrentFontSize = CurrentFontSize;
-                          double size = (long)CurrentFontSize;
-                          Application.Current.Resources["StdFontSize"] = size;
-                          Application.Current.Resources["StdFontSize1"] = size + 1;
-                          Application.Current.Resources["StdFontSize-1"] = size - 1;
-
+                          ModifyFontSize();
                           ConfigHandler.SaveConfig(_config);
                       }
                   });
@@ -163,13 +126,30 @@ namespace v2rayN.ViewModels
                 });
         }
 
-        public void ModifyTheme(bool isDarkTheme)
+        public void ModifyTheme()
         {
-            var theme = _paletteHelper.GetTheme();
+            var baseTheme = CurrentTheme switch
+            {
+                nameof(ETheme.Dark) => BaseTheme.Dark,
+                nameof(ETheme.Light) => BaseTheme.Light,
+                _ => BaseTheme.Inherit,
+            };
 
-            theme.SetBaseTheme(isDarkTheme ? BaseTheme.Dark : BaseTheme.Light);
+            var theme = _paletteHelper.GetTheme();
+            theme.SetBaseTheme(baseTheme);
             _paletteHelper.SetTheme(theme);
-            WindowsUtils.SetDarkBorder(Application.Current.MainWindow, isDarkTheme);
+
+            WindowsUtils.SetDarkBorder(Application.Current.MainWindow, CurrentTheme);
+        }
+
+        private void ModifyFontSize()
+        {
+            double size = (long)CurrentFontSize;
+            if (size < Global.MinFontSize) return;
+
+            Application.Current.Resources["StdFontSize"] = size;
+            Application.Current.Resources["StdFontSize1"] = size + 1;
+            Application.Current.Resources["StdFontSize-1"] = size - 1;
         }
 
         public void ChangePrimaryColor(System.Windows.Media.Color color)
@@ -183,20 +163,20 @@ namespace v2rayN.ViewModels
             _paletteHelper.SetTheme(theme);
         }
 
-        public void RegisterSystemColorSet(Config config, Window window, Action<bool> updateFunc)
+        public void RegisterSystemColorSet(Config config, Window window, Action updateFunc)
         {
             var helper = new WindowInteropHelper(window);
             var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
             hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
             {
-                if (config.UiItem.FollowSystemTheme)
+                if (config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
                 {
                     const int WM_SETTINGCHANGE = 0x001A;
                     if (msg == WM_SETTINGCHANGE)
                     {
                         if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
                         {
-                            updateFunc?.Invoke(!WindowsUtils.IsLightTheme());
+                            updateFunc?.Invoke();
                         }
                     }
                 }

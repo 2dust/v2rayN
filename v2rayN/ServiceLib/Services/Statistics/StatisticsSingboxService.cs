@@ -8,8 +8,9 @@ namespace ServiceLib.Services.Statistics
         private Config _config;
         private bool _exitFlag;
         private ClientWebSocket? webSocket;
-        private string url = string.Empty;
         private Action<ServerSpeedItem>? _updateFunc;
+        private string Url => $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
+        private static readonly string _tag = "StatisticsSingboxService";
 
         public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)
         {
@@ -26,12 +27,10 @@ namespace ServiceLib.Services.Statistics
 
             try
             {
-                url = $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
-
                 if (webSocket == null)
                 {
                     webSocket = new ClientWebSocket();
-                    await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
+                    await webSocket.ConnectAsync(new Uri(Url), CancellationToken.None);
                 }
             }
             catch { }
@@ -50,7 +49,7 @@ namespace ServiceLib.Services.Statistics
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 

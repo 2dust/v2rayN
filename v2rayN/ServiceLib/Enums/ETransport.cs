@@ -6,7 +6,6 @@
         kcp,
         ws,
         httpupgrade,
-        splithttp,
         xhttp,
         h2,
         http,

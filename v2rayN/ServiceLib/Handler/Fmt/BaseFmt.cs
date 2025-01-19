@@ -93,7 +93,6 @@ namespace ServiceLib.Handler.Fmt
                     }
                     break;
 
-                case nameof(ETransport.splithttp):
                 case nameof(ETransport.xhttp):
                     if (Utils.IsNotEmpty(item.RequestHost))
                     {
@@ -179,7 +178,6 @@ namespace ServiceLib.Handler.Fmt
                     item.Path = Utils.UrlDecode(query["path"] ?? "/");
                     break;
 
-                case nameof(ETransport.splithttp):
                 case nameof(ETransport.xhttp):
                     item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
                     item.Path = Utils.UrlDecode(query["path"] ?? "/");

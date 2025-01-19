@@ -15,30 +15,39 @@
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
     <Grid>
-        <materialDesign:ColorZone Height="50" Mode="Standard">
+        <materialDesign:ColorZone
+            Height="auto"
+            Margin="{StaticResource Margin4}"
+            Mode="Standard">
             <DockPanel>
                 <StackPanel
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Right">
-                    <TextBlock x:Name="txtSpeedProxyDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="{StaticResource Margin4}" />
-                    <TextBlock x:Name="txtSpeedDirectDisplay" Style="{StaticResource StatusbarItem}" />
+                    <TextBlock
+                        x:Name="txtSpeedProxyDisplay"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource StatusbarItem}" />
+                    <Border Margin="1" />
+                    <TextBlock
+                        x:Name="txtSpeedDirectDisplay"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
 
                 <StackPanel
-                    Width="240"
+                    Width="Auto"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left">
                     <TextBlock x:Name="txtInboundDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="{StaticResource Margin4}" />
+                    <Border Margin="1" />
                     <TextBlock x:Name="txtInboundLanDisplay" Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
 
                 <StackPanel
                     x:Name="spEnableTun"
-                    Width="auto"
+                    Width="Auto"
                     Margin="{StaticResource MarginLeftRight8}"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"
@@ -46,6 +55,7 @@
                     <TextBlock
                         Margin="{StaticResource MarginLeftRight8}"
                         VerticalAlignment="Center"
+                        Style="{StaticResource StatusbarItem}"
                         Text="{x:Static resx:ResUI.TbEnableTunAs}" />
                     <ToggleButton
                         x:Name="togEnableTun"
@@ -84,7 +94,7 @@
 
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
                     <TextBlock x:Name="txtRunningServerDisplay" Style="{StaticResource StatusbarItem}" />
-                    <Border Margin="{StaticResource Margin4}" />
+                    <Border Margin="1" />
                     <TextBlock x:Name="txtRunningInfoDisplay" Style="{StaticResource StatusbarItem}" />
                 </StackPanel>
             </DockPanel>
@@ -191,6 +201,11 @@
                         x:Name="menuSubUpdateViaProxy2"
                         Height="{StaticResource MenuItemHeight}"
                         Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
+                    <Separator />
+                    <MenuItem
+                        x:Name="menuCopyProxyCmdToClipboard"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
                     <Separator />
                     <MenuItem
                         x:Name="menuExit"

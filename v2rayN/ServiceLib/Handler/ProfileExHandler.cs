@@ -10,6 +10,7 @@ namespace ServiceLib.Handler
         private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
         private Queue<string> _queIndexIds = new();
         public static ProfileExHandler Instance => _instance.Value;
+        private static readonly string _tag = "ProfileExHandler";
 
         public ProfileExHandler()
         {
@@ -19,7 +20,7 @@ namespace ServiceLib.Handler
         public async Task Init()
         {
             await InitData();
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 while (true)
                 {
@@ -31,7 +32,7 @@ namespace ServiceLib.Handler
 
         public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()
         {
-            return _lstProfileEx;
+            return await Task.FromResult(_lstProfileEx);
         }
 
         private async Task InitData()
@@ -87,7 +88,7 @@ namespace ServiceLib.Handler
                 }
                 catch (Exception ex)
                 {
-                    Logging.SaveLog("ProfileExHandler", ex);
+                    Logging.SaveLog(_tag, ex);
                 }
             }
         }
@@ -119,7 +120,7 @@ namespace ServiceLib.Handler
             }
             catch (Exception ex)
             {
-                Logging.SaveLog(ex.Message, ex);
+                Logging.SaveLog(_tag, ex);
             }
         }
 
