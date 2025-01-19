@@ -58,10 +58,8 @@ jobs:
       run: | 
         chmod 755 package-release-zip.sh
         ./package-release-zip.sh $OutputArch $OutputPath64
-        ./package-release-zip.sh "windows-64-With-Core" $OutputPath64
         ./package-release-zip.sh $OutputArchArm $OutputPathArm64
         ./package-release-zip.sh "windows-64-SelfContained" $OutputPath64Sc
-        ./package-release-zip.sh "windows-64-SelfContained-With-Core" $OutputPath64Sc
     
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
