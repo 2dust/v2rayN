@@ -58,7 +58,22 @@ jobs:
         file: ${{ github.workspace }}/v2rayN*.deb
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
-    
+
+    - name: Package AppImage 
+      if: github.event.inputs.release_tag != ''
+      run: |
+        chmod 755 package-appimage.sh
+        ./package-appimage.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }} 
+        ./package-appimage.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }} 
+
+    - name: Upload AppImage to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.AppImage
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+
     # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''
