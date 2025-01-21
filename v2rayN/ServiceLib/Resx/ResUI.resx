@@ -320,7 +320,7 @@
     <value>Remarks</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>URL(Optional)</value>
+    <value>URL (optional)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>Count</value>
@@ -338,7 +338,7 @@
     <value>Information</value>
   </data>
   <data name="LvCustomIcon" xml:space="preserve">
-    <value>Custom Icon</value>
+    <value>Custom icon</value>
   </data>
   <data name="FillCorrectDNSText" xml:space="preserve">
     <value>Please fill in the correct custom DNS</value>
@@ -683,7 +683,7 @@
     <value>Auto hide startup</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Automatic update interval of Geo (hours)</value>
+    <value>Automatic update interval for Geo files (hours)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: basic settings</value>
@@ -704,7 +704,7 @@
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Automatically adjust column width after updating subscription</value>
+    <value>Automatically adjust column width after subscription update</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>Check for pre-release updates</value>
@@ -713,16 +713,16 @@
     <value>Exception</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses beginning with,Use semicolon (;)</value>
+    <value>Exclusions: Do not use proxy server for addresses beginning with the following. Use semicolon (;) to separate entries.</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>HTTP Port</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>Display real-time speed (Require restart)</value>
+    <value>Display real-time speed (requires restart)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Keep older when deduplication</value>
+    <value>Keep the older when de-duplicating</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>Enable Log</value>
@@ -755,7 +755,7 @@
     <value>Start on boot</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Enable traffic statistics (Require restart)</value>
+    <value>Enable traffic statistics (requires restart)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion URL</value>
@@ -785,7 +785,7 @@
     <value>Global Hotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Set directly by pressing the keyboard, take effect after restart</value>
+    <value>Set directly by pressing the keyboard; Takes effect after restart</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>Do not change system proxy</value>
@@ -842,7 +842,7 @@
     <value>Remove selected (Delete)</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Set as active rule(Enter)</value>
+    <value>Set as active rule (Enter)</value>
   </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>Domain Matcher</value>
@@ -863,7 +863,7 @@
     <value>Pre-defined Rule Set List</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt;</value>
+    <value>*Separate rules by commas (,); For a literal comma use &lt;COMMA&gt;; Prefix # to ignore a rule</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>Import Rules From Clipboard</value>
@@ -899,7 +899,7 @@
     <value>Ruleobject Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Support DnsObject, Click to view the document</value>
+    <value>Supports DnsObject; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
@@ -917,7 +917,7 @@
     <value>Do not use proxy servers for local (intranet) addresses</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>One-click multi test Latency and speed (Ctrl+E)</value>
+    <value>One-click multi-test latency and speed (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>Delay(ms)</value>
@@ -947,7 +947,7 @@
     <value>Move to group</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>Enable Server Drag Drop Sort(Require restart)</value>
+    <value>Enable sorting servers by drag-n-drop (requires restart)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>AutoRefresh</value>
@@ -959,7 +959,7 @@
     <value>Edit Server (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Double-click server make active</value>
+    <value>Double-clicking server makes it active</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>Test completed</value>
@@ -974,10 +974,10 @@
     <value>This parameter is valid only for tcp/http and ws</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>FontFamily(Require restart)</value>
+    <value>Font family (requires restart)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
+    <value>Copy the font TTF/TTC file to the directory guiFonts; Reopen the settings window</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
@@ -1007,7 +1007,7 @@
     <value>SpiderX</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Enable hardware acceleration(Require restart)</value>
+    <value>Enable hardware acceleration (requires restart)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
     <value>Waiting for testing (press ESC to terminate)...</value>
@@ -1235,7 +1235,7 @@
     <value>Multi-Server lowest latency</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Main layout orientation(Require restart)</value>
+    <value>Main layout orientation (requires restart)</value>
   </data>
   <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
     <value>Multi-server load balancing</value>
@@ -1376,7 +1376,7 @@
     <value>Number per time for auto batch during speedtest(max 1000)</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+    <value>Exclusions: Do not use proxy server for the following addresses. Use comma (,) to separate entries.</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>Sniffing type</value>
