@@ -125,6 +125,42 @@ namespace ServiceLib.Common
             return null;
         }
 
+        public static void RemoveTunDevice()
+        {
+            try
+            {
+                var sum = MD5.HashData(Encoding.UTF8.GetBytes("wintunsingbox_tun"));
+                var guid = new Guid(sum);
+                string pnputilPath = @"C:\Windows\System32\pnputil.exe";
+                string arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" /subtree """;
+                // string command = $"C:\\Windows\\System32\\pnputil.exe /remove-device \"SWD\\Wintun\\{{{guid}}}\" /subtree";
+
+                Logging.SaveLog("pnp command: " + arg);
+
+                // Try to remove the device
+                Process proc = new()
+                {
+                    StartInfo = new()
+                    {
+                        FileName = pnputilPath,
+                        Arguments = arg,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                proc.Start();
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+                Logging.SaveLog("pnputil output log: " + output);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
+        }
+
         /// <summary>
         /// 逗号分隔的字符串,先排序后转List
         /// </summary>
