@@ -683,7 +683,7 @@
     <value>راه اندازی مخفی کردن خودکار</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>فاصله به روز رسانی خودکار و Geo (ساعت)</value>
+    <value>فاصله به روز رسانی خودکار برای فایل های Geo (ساعت)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>هسته: تنظیمات اولیه</value>
@@ -704,7 +704,7 @@
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>پس از به‌روزرسانی اشتراک، عرض ستون را به صورت خودکار تنظیم شود</value>
+    <value>پس از به‌روزرسانی اشتراک، عرض ستون به صورت خودکار تنظیم شود</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>به روز رسانی های پیش از انتشار را بررسی شود</value>
@@ -713,16 +713,16 @@
     <value>استثنا</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>استثنا: از سرور پروکسی برای آدرس هایی که با شروع می شوند استفاده نکنید، از نقطه ویرگول (;) استفاده کنید.</value>
+    <value>استثناها: از سرور پروکسی برای آدرس هایی که با موارد زیر شروع می شوند استفاده نکنید. برای جدا کردن ورودی ها از نقطه ویرگول (;) استفاده کنید.</value>
   </data>
   <data name="TbSettingsHttpPort" xml:space="preserve">
     <value>پورت Http</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>نمایش سرعت در زمان واقعی</value>
+    <value>نمایش سرعت واقعی (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>هنگام کپی برداری، نگه داری قدیمی تر ها</value>
+    <value>هنگام حذف کپی، قدیمی تر را نگه دارید</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>ثبت گزارش های محلی</value>
@@ -755,7 +755,7 @@
     <value>درهنگام راه ائدازی شروع شود</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>فعال کردن آمار (نیاز به راه اندازی مجدد)</value>
+    <value>فعال کردن آمار ترافیک (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>آدرس اینترنتی تبدیل اشتراک</value>
@@ -863,7 +863,7 @@
     <value>لیست مجموعه قوانین از پیش تعریف شده</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*قوانین را تنظیم کنید که با کاما از هم جدا شده اند (,); کاما در حالت عادی با &lt;COMMA&gt;</value>
+    <value>*قوانین را با کاما (,) جدا کنید. برای کاما به معنای واقعی کلمه از &lt;COMMA&gt;; پیشوند # برای نادیده گرفتن یک قانون</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>وارد کردن قوانین از کلیپ بورد</value>
@@ -899,7 +899,7 @@
     <value>مستندات شی قانون</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>پشتیبانی از DnsObject</value>
+    <value>پشتیبانی از DnsObject. برای مشاهده مستندات کلیک کنید</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>گروه لطفا اینجا را خالی بگذارید</value>
@@ -950,7 +950,7 @@
     <value>این پارامتر فقط برای tcp/http و ws معتبر است</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>فعال‌ سازی شتاب‌ دهنده سخت‌افزاری (نیاز به راه‌اندازی مجدد)</value>
+    <value>فعال‌ سازی شتاب‌ دهنده سخت‌ افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>فعال کردن کش فایل مجموعه قوانین برای sing-box</value>
@@ -1208,7 +1208,7 @@
     <value>انتقال به گروه</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>فعال کردن مرتب سازی با کشیدن سرور (نیاز به راه اندازی مجدد)</value>
+    <value>فعال کردن مرتب‌سازی سرورها با کشیدن و رها کردن (نیاز به راه‌اندازی مجدد)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>بازخوانی خودکار</value>
@@ -1220,7 +1220,7 @@
     <value>ویرایش سرور (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>روی server make active دوبار کلیک کنید</value>
+    <value>دوبار کلیک کردن سرور باعث فعال شدن آن می شود</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>تست تکمیل شد</value>
@@ -1232,7 +1232,7 @@
     <value>FontFamily (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید، تنظیمات را مجددا راه اندازی کنید</value>
+    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید. پنجره تنظیمات را دوباره باز کنید</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>پورت Pac = +3; پورت Xray API = +4; پورت mihomo API = +5;</value>
@@ -1376,7 +1376,7 @@
     <value>تعداد در هر زمان برای دسته خودکار در طول تست سرعت (حداکثر 1000)</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>استثنا:از سرور پروکسی برای آدرس ها، با کاما (،) استفاده نکنید</value>
+    <value>موارد استثنا: از سرور پروکسی برای آدرس های زیر استفاده نکنید. برای جدا کردن ورودی ها از کاما (،) استفاده کنید.</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>نوع Sniffing</value>
