@@ -1,4 +1,4 @@
-name: release Windows desktop (Avalonia UI)
+name: release Windows Desktop (Avalonia UI)
 
 on:
   workflow_dispatch:
