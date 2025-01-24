@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" />
 		<PackageReference Include="H.NotifyIcon.Wpf" />
+		<PackageReference Include="ReactiveUI.Fody"/>
 		<PackageReference Include="ReactiveUI.WPF" />
 	</ItemGroup>
 

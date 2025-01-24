@@ -20,6 +20,8 @@
 		<PackageReference Include="MessageBox.Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
 		<PackageReference Include="Semi.Avalonia.DataGrid" />
+		<PackageReference Include="ReactiveUI"/>
+		<PackageReference Include="ReactiveUI.Fody"/>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -18,6 +18,7 @@
 		<PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
 		<PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
 		<PackageVersion Include="QRCoder" Version="1.6.0" />
+		<PackageVersion Include="ReactiveUI" Version="20.1.63" />
 		<PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageVersion Include="ReactiveUI.WPF" Version="20.1.63" />
 		<PackageVersion Include="Semi.Avalonia" Version="11.2.1.4" />

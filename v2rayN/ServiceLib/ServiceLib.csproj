@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" />
+		<PackageReference Include="ReactiveUI"/>
 		<PackageReference Include="ReactiveUI.Fody" />
 		<PackageReference Include="sqlite-net-pcl" />
 		<PackageReference Include="Splat.NLog" />
