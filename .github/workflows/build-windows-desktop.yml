@@ -6,6 +6,7 @@ on:
       release_tag:
         required: false
         type: string
+        description: "Tag for the release (optional)"
   push:
     branches:
       - master
