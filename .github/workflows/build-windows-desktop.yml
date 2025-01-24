@@ -1,0 +1,50 @@
+name: release Windows desktop (Avalonia UI)
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+  push:
+    branches:
+      - master
+
+env:
+  OutputArch: "windows-64"
+  OutputArchArm: "windows-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/windows-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/windows-arm64"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
+
+    - name: Setup
+      uses: actions/setup-dotnet@v4.2.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build
+      run: |
+        cd v2rayN 
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r win-x64   --self-contained=true -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:EnableWindowsTargeting=true -o $OutputPath64
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r win-arm64 --self-contained=true -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:EnableWindowsTargeting=true -o $OutputPathArm64
+        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-x64   --self-contained=true -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:PublishTrimmed=true -p:EnableWindowsTargeting=true -o $OutputPath64
+        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-arm64 --self-contained=true -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:PublishTrimmed=true -p:EnableWindowsTargeting=true -o $OutputPathArm64
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4.6.0
+      with:
+        name: v2rayN-windows-desktop
+        path: |
+          ${{ github.workspace }}/v2rayN/Release/windows*
+    
