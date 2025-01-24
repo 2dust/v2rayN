@@ -10,7 +10,13 @@ on:
   push:
     branches:
       - '*'
-
+  pull_request:
+    branches:
+      - '*'
+    types:
+      - opened
+      - reopened
+      - synchronize
 env:
   OutputArch: "macos-64"
   OutputArchArm: "macos-arm64"

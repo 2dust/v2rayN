@@ -10,7 +10,13 @@ on:
   push:
     branches:
       - '*'
-
+  pull_request:
+    branches:
+      - '*'
+    types:
+      - opened
+      - reopened
+      - synchronize
 env:
   OutputArch: "windows-64"
   OutputArchArm: "windows-arm64"
