@@ -403,7 +403,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom Icon 的本地化字符串。
+        ///   查找类似 Custom icon 的本地化字符串。
         /// </summary>
         public static string LvCustomIcon {
             get {
@@ -610,7 +610,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 URL(Optional) 的本地化字符串。
+        ///   查找类似 URL (optional) 的本地化字符串。
         /// </summary>
         public static string LvUrl {
             get {
@@ -1006,7 +1006,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 One-click multi test Latency and speed (Ctrl+E) 的本地化字符串。
+        ///   查找类似 One-click multi-test latency and speed (Ctrl+E) 的本地化字符串。
         /// </summary>
         public static string menuMixedTestServer {
             get {
@@ -1366,7 +1366,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set as active rule(Enter) 的本地化字符串。
+        ///   查找类似 Set as active rule (Enter) 的本地化字符串。
         /// </summary>
         public static string menuRoutingAdvancedSetDefault {
             get {
@@ -2294,7 +2294,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Support DnsObject, Click to view the document 的本地化字符串。
+        ///   查找类似 Supports DnsObject; Click to view documentation 的本地化字符串。
         /// </summary>
         public static string TbDnsObjectDoc {
             get {
@@ -2384,7 +2384,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set directly by pressing the keyboard, take effect after restart 的本地化字符串。
+        ///   查找类似 Set directly by pressing the keyboard; Takes effect after restart 的本地化字符串。
         /// </summary>
         public static string TbGlobalHotkeySettingTip {
             get {
@@ -2663,7 +2663,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt; 的本地化字符串。
+        ///   查找类似 *Separate rules by commas (,); For a literal comma use &lt;COMMA&gt;; Prefix # to ignore a rule 的本地化字符串。
         /// </summary>
         public static string TbRoutingTips {
             get {
@@ -2771,7 +2771,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Automatic update interval of Geo (hours) 的本地化字符串。
+        ///   查找类似 Automatic update interval for Geo files (hours) 的本地化字符串。
         /// </summary>
         public static string TbSettingsAutoUpdateInterval {
             get {
@@ -2843,7 +2843,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 FontFamily(Require restart) 的本地化字符串。
+        ///   查找类似 Font family (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamily {
             get {
@@ -2861,7 +2861,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Copy the font TTF/TTC file to the directory guiFonts, restart the settings 的本地化字符串。
+        ///   查找类似 Copy the font TTF/TTC file to the directory guiFonts; Reopen the settings window 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamilyTip {
             get {
@@ -2915,7 +2915,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Display real-time speed 的本地化字符串。
+        ///   查找类似 Display real-time speed (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsDisplayRealTimeSpeed {
             get {
@@ -2951,7 +2951,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Double-click server make active 的本地化字符串。
+        ///   查找类似 Double-clicking server makes it active 的本地化字符串。
         /// </summary>
         public static string TbSettingsDoubleClick2Activate {
             get {
@@ -2960,7 +2960,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Automatically adjust column width after updating subscription 的本地化字符串。
+        ///   查找类似 Automatically adjust column width after subscription update 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableAutoAdjustMainLvColWidth {
             get {
@@ -2987,7 +2987,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable Server Drag Drop Sort(Require restart) 的本地化字符串。
+        ///   查找类似 Enable sorting servers by drag-n-drop (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableDragDropSort {
             get {
@@ -3023,7 +3023,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable hardware acceleration(Require restart) 的本地化字符串。
+        ///   查找类似 Enable hardware acceleration (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableHWA {
             get {
@@ -3059,7 +3059,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Exception. Do not use proxy server for addresses beginning with,Use semicolon (;) 的本地化字符串。
+        ///   查找类似 Exclusions: Do not use proxy server for addresses beginning with the following. Use semicolon (;) to separate entries. 的本地化字符串。
         /// </summary>
         public static string TbSettingsExceptionTip {
             get {
@@ -3068,7 +3068,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Exception. Do not use proxy server for addresses,with a comma (,) 的本地化字符串。
+        ///   查找类似 Exclusions: Do not use proxy server for the following addresses. Use comma (,) to separate entries. 的本地化字符串。
         /// </summary>
         public static string TbSettingsExceptionTip2 {
             get {
@@ -3122,7 +3122,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Keep older when deduplication 的本地化字符串。
+        ///   查找类似 Keep the older when de-duplicating 的本地化字符串。
         /// </summary>
         public static string TbSettingsKeepOlderDedupl {
             get {
@@ -3203,7 +3203,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Main layout orientation(Require restart) 的本地化字符串。
+        ///   查找类似 Main layout orientation (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsMainGirdOrientation {
             get {
@@ -3401,7 +3401,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable traffic statistics (Require restart) 的本地化字符串。
+        ///   查找类似 Enable traffic statistics (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsStatistics {
             get {
