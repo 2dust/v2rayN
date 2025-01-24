@@ -1,56 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Assets\v2rayN.ico</ApplicationIcon>
-        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-	    <Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
-        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <AssemblyName>v2rayN</AssemblyName>
-    </PropertyGroup>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<AssemblyName>v2rayN</AssemblyName>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <AvaloniaResource Include="Assets\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectCapability Include="Avalonia" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
-        <PackageReference Include="DialogHost.Avalonia" Version="0.8.1" />
-        <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />		
-        <PackageReference Include="Semi.Avalonia" Version="11.2.1.3" />
-        <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.3" />
-        <PackageReference Include="ReactiveUI" Version="20.1.63" />
-        <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
-    </ItemGroup>
- 
-    <ItemGroup>
-      <EmbeddedResource Include="Assets\v2rayN.ico">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
- 
-    <ItemGroup>
-      <None Update="v2rayN.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="v2rayN.icns">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup> 
- 
+	<ItemGroup>
+		<ProjectCapability Include="Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" />
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+		<PackageReference Include="Avalonia.ReactiveUI" />
+		<PackageReference Include="MessageBox.Avalonia" />
+		<PackageReference Include="Semi.Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\v2rayN.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="v2rayN.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="v2rayN.icns">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>
