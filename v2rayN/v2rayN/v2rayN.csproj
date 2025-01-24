@@ -5,34 +5,35 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows10.0.17763</TargetFramework>
 		<Nullable>enable</Nullable>
-		<UseWPF>true</UseWPF>
+		<UseWPF>true</UseWPF>  
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Resources\v2rayN.ico</ApplicationIcon>
 		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
-		<PackageReference Include="MaterialDesignThemes" />
-		<PackageReference Include="H.NotifyIcon.Wpf" />
-		<PackageReference Include="ReactiveUI.WPF" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.2.0" />
+		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" /> 
+		<PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
 	</ItemGroup>
-
+	
+	<ItemGroup>       
+        <AdditionalFiles Include="app.manifest" />       
+        <EmbeddedResource Include="Resources\v2rayN.ico">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <Resource Include="Resources\NotifyIcon1.ico" />
+        <Resource Include="Resources\NotifyIcon2.ico" />
+        <Resource Include="Resources\NotifyIcon3.ico" />
+        <Resource Include="Resources\NotifyIcon4.ico" />
+        <Resource Include="Resources\v2rayN.ico" />
+    </ItemGroup> 	 
+	
 	<ItemGroup>
-		<AdditionalFiles Include="app.manifest" />
-		<EmbeddedResource Include="Resources\v2rayN.ico">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<Resource Include="Resources\NotifyIcon1.ico" />
-		<Resource Include="Resources\NotifyIcon2.ico" />
-		<Resource Include="Resources\NotifyIcon3.ico" />
-		<Resource Include="Resources\NotifyIcon4.ico" />
-		<Resource Include="Resources\v2rayN.ico" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
+	  <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>
 
 </Project>
