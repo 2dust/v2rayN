@@ -46,9 +46,13 @@ namespace ServiceLib.ViewModels
             if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
             {
                 _checkUpdateModel.Add(GetCheckUpdateModel(_v2rayN));
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
+                //Not Windows and under Win10
+                if (!(Utils.IsWindows() && Environment.OSVersion.Version.Major < 10))
+                {
+                    _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
+                    _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
+                    _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
+                }
             }
             _checkUpdateModel.Add(GetCheckUpdateModel(_geo));
         }
