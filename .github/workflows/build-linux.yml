@@ -63,6 +63,7 @@ jobs:
         file: ${{ github.workspace }}/v2rayN*.deb
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
+        prerelease: true
 
     - name: Package AppImage
       if: github.event.inputs.release_tag != ''
@@ -78,6 +79,7 @@ jobs:
         file: ${{ github.workspace }}/v2rayN*.AppImage
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
+        prerelease: true
 
     # release zip archive
     - name: Package release zip archive
