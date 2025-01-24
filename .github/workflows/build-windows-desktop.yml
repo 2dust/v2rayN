@@ -9,7 +9,7 @@ on:
         description: "Tag for the release (optional)"
   push:
     branches:
-      - master
+      - '*'
 
 env:
   OutputArch: "windows-64"
