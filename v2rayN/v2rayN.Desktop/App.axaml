@@ -7,6 +7,7 @@
     xmlns:semi="https://irihi.tech/semi"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:DataType="vms:StatusBarViewModel"
+    Name="v2rayN"
     RequestedThemeVariant="Default">
     <Application.Styles>
         <semi:SemiTheme />
