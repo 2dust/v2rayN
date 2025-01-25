@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<Version>7.7.0</Version>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" />
-		<PackageReference Include="ReactiveUI"/>
+		<PackageReference Include="ReactiveUI">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="ReactiveUI.Fody" />
 		<PackageReference Include="sqlite-net-pcl" />
 		<PackageReference Include="Splat.NLog" />
@@ -49,9 +48,6 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
 			<SubType>Designer</SubType>
 			<Generator>PublicResXFileCodeGenerator</Generator>

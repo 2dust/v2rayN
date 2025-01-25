@@ -2,37 +2,35 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Assets\v2rayN.ico</ApplicationIcon>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<AssemblyName>v2rayN</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Controls.DataGrid" />
+		<PackageReference Include="Avalonia.Controls.DataGrid">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="Avalonia.Desktop" />
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
 		<PackageReference Include="Avalonia.ReactiveUI" />
 		<PackageReference Include="MessageBox.Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
-		<PackageReference Include="Semi.Avalonia.DataGrid" />
-		<PackageReference Include="ReactiveUI"/>
-		<PackageReference Include="ReactiveUI.Fody"/>
-	</ItemGroup>
-
-	<ItemGroup>
-		<AvaloniaResource Include="Assets\**" />
+		<PackageReference Include="Semi.Avalonia.DataGrid">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="ReactiveUI">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="ReactiveUI.Fody">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectCapability Include="Avalonia" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
 		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>
 
@@ -40,9 +38,6 @@
 		<EmbeddedResource Include="Assets\v2rayN.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Update="v2rayN.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

@@ -2,26 +2,19 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
-		<FileVersion>1.3.1</FileVersion>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Update="Resx\Resource.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resource.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Update="Resx\Resource.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resource.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+
+		<Compile Update="Resx\Resource.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resource.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>
